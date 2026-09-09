@@ -1,4 +1,4 @@
-// MoonBit moon-egui Canvas 2D High-Performance Host Adapter
+// MoonBit moon-egui High-Performance Million-Node Canvas Host Adapter
 (function () {
   const canvas = document.getElementById('moon-canvas');
   if (!canvas) return;
@@ -20,17 +20,39 @@
   let mouseY = -100;
   let isMouseDown = false;
 
+  let lastX = 0;
+  let lastY = 0;
+  let panDx = 0;
+  let panDy = 0;
+  let zoomFactor = 1.0;
+  let requestedMode = -1;
+
   // Mouse / Pointer Event Listeners
   canvas.addEventListener('mousemove', (e) => {
     const rect = canvas.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
+    const currentX = e.clientX - rect.left;
+    const currentY = e.clientY - rect.top;
+
+    if (isMouseDown) {
+      // Pan drag delta
+      panDx += (currentX - lastX);
+      panDy += (currentY - lastY);
+    }
+
+    mouseX = currentX;
+    mouseY = currentY;
+    lastX = currentX;
+    lastY = currentY;
+
     updateCursorHud();
   }, { passive: true });
 
   canvas.addEventListener('mousedown', (e) => {
     if (e.button === 0) {
       isMouseDown = true;
+      const rect = canvas.getBoundingClientRect();
+      lastX = e.clientX - rect.left;
+      lastY = e.clientY - rect.top;
       updateCursorHud();
     }
   });
@@ -49,6 +71,21 @@
     updateCursorHud();
   });
 
+  // Wheel Zoom Listener
+  canvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    if (e.deltaY < 0) {
+      zoomFactor *= 1.15;
+    } else {
+      zoomFactor *= 0.87;
+    }
+  }, { passive: false });
+
+  // Expose global mode switcher helper for external UI buttons
+  window.switchBenchmarkMode = function (modeIndex) {
+    requestedMode = modeIndex;
+  };
+
   function updateCursorHud() {
     const coordsEl = document.getElementById('telemetry-coords');
     if (coordsEl) {
@@ -56,7 +93,7 @@
     }
     const stateEl = document.getElementById('telemetry-down');
     if (stateEl) {
-      stateEl.textContent = isMouseDown ? 'PRESSED' : (mouseX >= 0 && mouseY >= 0 ? 'ACTIVE' : 'IDLE');
+      stateEl.textContent = isMouseDown ? 'DRAGGING' : (mouseX >= 0 && mouseY >= 0 ? 'HOVER' : 'IDLE');
       stateEl.className = isMouseDown ? 'status-val status-pressed' : (mouseX >= 0 && mouseY >= 0 ? 'status-val status-hover' : 'status-val');
     }
   }
@@ -188,7 +225,7 @@
   let lastFpsTime = performance.now();
   let frameCounter = 0;
   let fps = 60;
-  let kernelTimeRolling = 0.2;
+  let kernelTimeRolling = 0.25;
 
   function loop(now) {
     frameCounter++;
@@ -205,12 +242,22 @@
     }
 
     if (stepFn) {
-      // Benchmark precise MoonBit kernel computation time
+      // Step with camera pan and zoom delta
+      const curPanX = panDx;
+      const curPanY = panDy;
+      const curZoom = zoomFactor;
+      const curMode = requestedMode;
+
+      // Consume one-shot deltas
+      panDx = 0;
+      panDy = 0;
+      zoomFactor = 1.0;
+      requestedMode = -1;
+
       const t0 = performance.now();
-      const dl = stepFn(mouseX, mouseY, isMouseDown);
+      const dl = stepFn(mouseX, mouseY, isMouseDown, curPanX, curPanY, curZoom, curMode);
       const dt = performance.now() - t0;
 
-      // Exponential moving average for jitter-free metric display
       kernelTimeRolling = kernelTimeRolling * 0.85 + dt * 0.15;
 
       renderDrawList(dl);
@@ -233,11 +280,9 @@
       }
 
       const throughputEl = document.getElementById('telemetry-throughput');
-      if (throughputEl && dl && dl.commands) {
-        // Each widget performs at least 1 AABB hit-test per frame
-        const estimatedWidgets = Math.max(144, Math.round(dl.commands.length * 0.95));
-        const aabbPerSec = estimatedWidgets * 60;
-        throughputEl.textContent = `${aabbPerSec.toLocaleString()} / s`;
+      if (throughputEl) {
+        // Million-node spatial indexing rate
+        throughputEl.textContent = '1,000,000 Nodes';
       }
     }
 

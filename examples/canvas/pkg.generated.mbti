@@ -9,7 +9,7 @@ import {
 // Values
 pub fn get_logo_color(Int, Int) -> @color.Color?
 
-pub fn step(Double, Double, Bool) -> @draw.DrawList
+pub fn step(Double, Double, Bool, Double, Double, Double, Int) -> @draw.DrawList
 
 // Errors
 

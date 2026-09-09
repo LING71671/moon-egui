@@ -1,16 +1,24 @@
-function _M0TP49LING7167111moon_2degui8examples6canvas14BenchmarkState(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11) {
-  this.grid_dim = param0;
-  this.click_count = param1;
-  this.magnetic_repel = param2;
-  this.wave_pulse = param3;
-  this.frame_tick = param4;
-  this.selected_id = param5;
-  this.selected_col = param6;
-  this.selected_row = param7;
-  this.ripple_cx = param8;
-  this.ripple_cy = param9;
-  this.ripple_active = param10;
-  this.ripple_progress = param11;
+function _M0TP49LING7167111moon_2degui8examples6canvas14BenchmarkState(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14, param15, param16, param17, param18, param19) {
+  this.mode = param0;
+  this.grid_dim = param1;
+  this.click_count = param2;
+  this.magnetic_repel = param3;
+  this.wave_pulse = param4;
+  this.frame_tick = param5;
+  this.selected_id = param6;
+  this.selected_col = param7;
+  this.selected_row = param8;
+  this.ripple_cx = param9;
+  this.ripple_cy = param10;
+  this.ripple_active = param11;
+  this.ripple_progress = param12;
+  this.cam_x = param13;
+  this.cam_y = param14;
+  this.zoom = param15;
+  this.million_selected_id = param16;
+  this.million_selected_col = param17;
+  this.million_selected_row = param18;
+  this.million_visible_count = param19;
 }
 function _M0TPB13StringBuilder(param0) {
   this.val = param0;
@@ -153,7 +161,7 @@ function _M0TPB8MutLocalGbE(param0) {
   this.val = param0;
 }
 const _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger = { method_0: _M0IPB13StringBuilderPB6Logger13write__string, method_1: _M0IP016_24default__implPB6Logger16write__substringGRPB13StringBuilderE, method_2: _M0IPB13StringBuilderPB6Logger11write__view, method_3: _M0IPB13StringBuilderPB6Logger11write__char, method_4: _M0IP016_24default__implPB6Logger28write__string__interpolationGRPB13StringBuilderE, method_5: _M0IP016_24default__implPB6Logger5writeGRPB13StringBuilderE };
-const _M0FP49LING7167111moon_2degui8examples6canvas5state = new _M0TP49LING7167111moon_2degui8examples6canvas14BenchmarkState(32, 0, true, false, 0, -1, -1, -1, 580, 270, false, 0);
+const _M0FP49LING7167111moon_2degui8examples6canvas5state = new _M0TP49LING7167111moon_2degui8examples6canvas14BenchmarkState(1, 32, 0, true, false, 0, -1, -1, -1, 580, 270, false, 0, 20000, 20000, 0.45, -1, -1, -1, 0);
 const _M0FP49LING7167111moon_2degui8examples6canvas14logo__grid__12 = [0, 0, 0, 28844929, 29172868, 0, 0, 29238662, 28779649, 0, 0, 0, 0, 0, 28845186, 29566601, 29894541, 28910721, 28845185, 29960077, 29501064, 28910722, 0, 0, 0, 0, 28844929, 30091407, 29829004, 28910465, 28976258, 29763467, 30156943, 28976002, 0, 0, 0, 0, 28845184, 28910465, 29042052, 28911233, 28910722, 29042051, 29041539, 28844930, 0, 0, 0, 0, 0, 0, 28580733, 28778110, 28778110, 28646011, 0, 0, 0, 0, 0, 0, 0, 0, 29439630, 29373324, 29438604, 29439630, 0, 0, 0, 0, 0, 0, 0, 30767795, 33545205, 33024498, 33157110, 33546487, 30834870, 0, 0, 0, 0, 0, 0, 30171557, 32815838, 31299523, 31432135, 32816095, 30238376, 0, 0, 0, 0, 0, 0, 27197510, 29108873, 28776829, 28776829, 29240458, 0, 0, 0, 0, 0, 0, 0, 30736383, 28942801, 29370247, 29370247, 29928918, 29555967, 0, 0, 0, 0, 0, 29217007, 30799359, 28999869, 28848266, 28980622, 28864177, 29289471, 29940466, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30205432, 0, 0];
 const _M0FP49LING7167111moon_2degui8examples6canvas14logo__grid__20 = [0, 0, 0, 0, 0, 28648319, 29369735, 29172869, 28713343, 0, 0, 28975748, 29173125, 29304198, 28648320, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910207, 29172869, 29041795, 29829004, 28845186, 0, 0, 28910721, 29763211, 29107332, 29107332, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28976001, 29829004, 28844929, 29173124, 28910465, 0, 0, 28845185, 29107588, 28844929, 29829004, 28910465, 0, 0, 0, 0, 0, 0, 0, 0, 28910465, 29304198, 28845186, 28976259, 28910723, 0, 0, 28976259, 28910722, 28845186, 29369735, 28844930, 0, 0, 0, 0, 0, 0, 0, 0, 28845185, 29501064, 29173125, 28910721, 29566601, 29107076, 29042307, 29632138, 28845185, 29173125, 29501065, 28910465, 0, 0, 0, 0, 0, 0, 0, 0, 28844930, 28910722, 28844930, 29501064, 29763467, 28845185, 28779392, 29829004, 29435528, 28845185, 28976258, 28910466, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28976259, 30288017, 28845186, 28910465, 30353553, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28845443, 30550676, 28910977, 28910978, 30485139, 28911235, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28381300, 29106307, 28909697, 28909696, 29106307, 28381558, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28249972, 29701007, 29374093, 29373324, 29373068, 29373836, 29635214, 28446582, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 27985771, 31754434, 33021422, 32758506, 33024498, 33090547, 32825068, 33154289, 31887303, 28052333, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910466, 33552127, 32427490, 32028373, 33554431, 33554431, 32160985, 32493539, 33553919, 29109127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28447352, 32151244, 33024242, 31962068, 31431365, 31630282, 32094679, 33155827, 32349904, 28578936, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779394, 29040514, 29767312, 28844672, 28644986, 28579193, 28778879, 29832849, 29040770, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28574826, 29174666, 29108359, 28911235, 28911235, 29174408, 29240459, 28508258, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29223167, 28694773, 28984728, 28975488, 28975232, 28985241, 30928636, 30667007, 28624876, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28759024, 31057654, 30667519, 28674499, 28846212, 29173381, 29173125, 28846213, 29724100, 29288701, 28561392, 28168435, 0, 0, 0, 0, 0, 0, 0, 0, 28891381, 31517432, 30207999, 28675269, 29237379, 28851088, 28851088, 29500551, 28604602, 28305919, 29546481, 30335991, 0, 0, 0, 0, 0, 0, 0, 0, 28759024, 29285622, 28758769, 28966911, 28862125, 28688101, 28821992, 28730538, 28770303, 28626927, 29547766, 30926841, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 const _M0FP49LING7167111moon_2degui8examples6canvas14logo__grid__32 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 29041538, 29172868, 29173125, 28844931, 0, 0, 0, 0, 0, 0, 29042051, 29173125, 29238661, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779393, 29960077, 28976259, 28910722, 30025614, 28845186, 0, 0, 0, 0, 28779393, 30025614, 28845186, 29041795, 29894540, 28779393, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910721, 29829004, 28844930, 28845185, 28910722, 29107333, 28845186, 0, 0, 0, 0, 28976259, 29041795, 28845185, 28845185, 28910723, 29632138, 28779395, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844928, 29501064, 28910721, 28910722, 28910722, 28845186, 29435272, 28713601, 0, 0, 28910209, 29566601, 28845185, 28910722, 28910722, 28845185, 29566601, 28844928, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29041282, 29107332, 28845186, 28910722, 28910722, 28910722, 28844930, 29697675, 28844931, 0, 0, 28844929, 29763467, 28844930, 28910722, 28910722, 28910722, 28976258, 28976258, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910721, 29763467, 28844930, 28910722, 28910722, 28910722, 28844930, 29763467, 28910722, 0, 0, 28779649, 29763467, 28844930, 28910722, 28910722, 28910722, 28844929, 29697674, 28714114, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910721, 29763467, 28844930, 28910722, 28845185, 28910722, 28845186, 29632138, 28845186, 0, 0, 28845185, 29566601, 28910721, 28910722, 28845185, 28910722, 28844930, 29763467, 28844930, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910465, 29697675, 28910466, 29304198, 29107588, 28845186, 28845186, 29435271, 28910722, 0, 0, 28910465, 29304198, 28910722, 28845185, 29107588, 29304198, 28910465, 29697931, 28844929, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910722, 30156943, 30025614, 28845186, 28910722, 29697674, 28844930, 29173125, 28910466, 0, 0, 28845185, 29041796, 28844930, 29763211, 28910466, 28910466, 30025870, 30091407, 28779649, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29107333, 29500808, 29107075, 0, 29042305, 29369735, 28910722, 28910722, 29041795, 0, 28910213, 29304198, 28910722, 28976259, 29238662, 28845695, 0, 29041795, 29238406, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28713856, 29632138, 28844930, 29697674, 28779393, 28910209, 29829004, 28910465, 29697675, 28779392, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29042305, 29304198, 28844929, 29960077, 28910722, 28844929, 29960077, 28844930, 29172869, 28976514, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779392, 29435528, 29829004, 28845185, 28779649, 29763467, 29501065, 28779393, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28780933, 29304455, 29304455, 28910978, 28910979, 29304455, 29173126, 28911751, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29172355, 29106563, 28844161, 28778623, 29106563, 29106563, 28778623, 28909697, 29106307, 29106820, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28776316, 30025870, 29503885, 29175945, 29176201, 29176202, 29110665, 29176202, 29175688, 29503884, 30026127, 28775803, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28513400, 31418804, 32957167, 33223415, 33288952, 33288952, 33222389, 33222390, 33222902, 33355257, 33289465, 33023472, 31683514, 28447865, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29440143, 33553405, 33288695, 32028374, 32692200, 32692200, 33554431, 33554431, 33488125, 32492770, 32360671, 33553661, 33554431, 29639572, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 27918440, 30761386, 33554431, 32426720, 31365060, 31962324, 31962580, 33554431, 33554174, 32293852, 31564490, 31829456, 31896275, 33554431, 31092402, 27787369, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28579196, 29898643, 33355514, 33487869, 32493283, 33089778, 32493026, 33488382, 33488382, 33554431, 32890861, 32625895, 33554431, 33553661, 30163353, 28578424, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28777341, 30104224, 32625638, 32691944, 31166143, 30237349, 29574292, 29574549, 30104738, 31232192, 32625638, 32626407, 30303142, 28842621, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28911236, 29826696, 28712830, 28778367, 28512888, 28645243, 28777854, 28777598, 28645499, 28512888, 28778111, 28778624, 29826441, 28910979, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29108871, 29959820, 28844672, 28977284, 28976771, 28976771, 28976771, 28977027, 28977284, 28909952, 29959821, 29174663, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29174922, 29174922, 28910209, 28845442, 28910722, 28910722, 28910722, 28976003, 29373069, 29175177, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28694775, 28698109, 28757486, 28856477, 29105535, 28845699, 28845699, 29105535, 28790942, 30269942, 31193599, 30861560, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29548536, 30598648, 29546995, 28696313, 28877266, 28912262, 28913032, 28910466, 28976001, 28913288, 28714372, 30059219, 31454463, 30334964, 28694003, 28890868, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28825331, 30729975, 31649529, 30860790, 28696828, 28851345, 28913545, 28914315, 29041282, 29041282, 28848522, 28848265, 29047696, 29747451, 28824819, 28759540, 28693747, 28693490, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28891126, 29087989, 31583994, 31977722, 30664953, 28627441, 28849035, 29042308, 28845185, 28910979, 28910979, 28844929, 29042821, 28847239, 28493547, 28760821, 28627697, 29153780, 29482229, 28430833, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28890614, 28496626, 30796024, 31190010, 29087475, 28696826, 28873158, 29172869, 28845700, 28741318, 28874187, 28846212, 29303685, 28871875, 28829951, 28890098, 28431091, 30204664, 32240635, 29416180, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28693490, 28760309, 28562672, 28628724, 28628724, 28954865, 28901375, 28798383, 28799668, 28770303, 28770303, 28865717, 28732335, 28637695, 28758513, 28891637, 28628982, 29350644, 31452410, 29481203, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -240,6 +248,12 @@ function _M0IPC13int3IntPB4Show10to__string(self) {
 }
 function _M0MPC16double6Double7to__int(self) {
   return self !== self ? 0 : self >= 2147483647 ? 2147483647 : self <= -2147483648 ? -2147483648 : self | 0;
+}
+function _M0MPC16double6Double7is__nan(self) {
+  return self !== self;
+}
+function _M0MPC16double6Double3max(self, other) {
+  return _M0MPC16double6Double7is__nan(self) ? other : _M0MPC16double6Double7is__nan(other) ? self : self > other ? self : other;
 }
 function _M0FPB7printlnGsE(input) {
   console.log(_M0IPC16string6StringPB4Show10to__string(input));
@@ -638,224 +652,434 @@ function _M0FP49LING7167111moon_2degui8examples6canvas16get__logo__color(size, i
     return _M0MP49LING7167111moon_2degui3src5color5Color3rgb(r, g, b);
   }
 }
-function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mouse_down) {
+function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mouse_down, pan_dx, pan_dy, zoom_delta, switch_mode) {
   _M0FP49LING7167111moon_2degui8examples6canvas5state.frame_tick = _M0FP49LING7167111moon_2degui8examples6canvas5state.frame_tick + 1;
-  if (_M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress = _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress + 10;
-    if (_M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress > 600) {
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active = false;
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress = 0;
+  if (switch_mode >= 0 && switch_mode <= 1) {
+    _M0FP49LING7167111moon_2degui8examples6canvas5state.mode = switch_mode;
+  }
+  if (pan_dx !== 0 || pan_dy !== 0) {
+    _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x - pan_dx / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+    _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y - pan_dy / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+    if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x < 0) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 0;
+    } else {
+      if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x > 40000) {
+        _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 40000;
+      }
+    }
+    if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y < 0) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 0;
+    } else {
+      if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y > 40000) {
+        _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 40000;
+      }
+    }
+  }
+  if (zoom_delta !== 1 && zoom_delta > 0) {
+    const new_zoom = _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom * zoom_delta;
+    if (new_zoom < 0.05) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 0.05;
+    } else {
+      if (new_zoom > 3) {
+        _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 3;
+      } else {
+        _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = new_zoom;
+      }
     }
   }
   const raw = _M0MP49LING7167111moon_2degui3src4core8RawInput11from__mouse(_M0MP49LING7167111moon_2degui3src4math4Vec23new(mouse_x, mouse_y), mouse_down);
   _M0MP49LING7167111moon_2degui3src4core9UIContext12begin__frame(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, raw);
   _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 230);
-  _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "STRESS PROFILE", true);
+  _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "BENCHMARK SUITE", true);
   _M0FP49LING7167111moon_2degui8examples6canvas16separator__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
   _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 2);
-  _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Logo Granularity:", false);
-  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "144 Widgets (12x12)", _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim === 12))) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 12;
+  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "1,000,000 Nodes (Leafer)", _M0FP49LING7167111moon_2degui8examples6canvas5state.mode === 1))) {
+    _M0FP49LING7167111moon_2degui8examples6canvas5state.mode = 1;
   }
-  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "400 Widgets (20x20)", _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim === 20))) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 20;
-  }
-  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "1,024 Widgets (32x32)", _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim === 32))) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 32;
-  }
-  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "1,600 Widgets (40x40)", _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim === 40))) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 40;
+  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Logo Matrix (1.6K Full)", _M0FP49LING7167111moon_2degui8examples6canvas5state.mode === 0))) {
+    _M0FP49LING7167111moon_2degui8examples6canvas5state.mode = 0;
   }
   _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 4);
   _M0FP49LING7167111moon_2degui8examples6canvas16separator__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
   _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 2);
-  let new_repel;
-  let repel_resp;
-  _L: {
-    const _bind = _M0FP49LING7167111moon_2degui8examples6canvas15checkbox__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Magnetic Repulsion", _M0FP49LING7167111moon_2degui8examples6canvas5state.magnetic_repel);
-    const _new_repel = _bind._0;
-    const _repel_resp = _bind._1;
-    new_repel = _new_repel;
-    repel_resp = _repel_resp;
-    break _L;
-  }
-  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(repel_resp)) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.magnetic_repel = new_repel;
-  }
-  let new_wave;
-  let wave_resp;
-  _L$2: {
-    const _bind = _M0FP49LING7167111moon_2degui8examples6canvas15checkbox__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Kinetic Resonance", _M0FP49LING7167111moon_2degui8examples6canvas5state.wave_pulse);
-    const _new_wave = _bind._0;
-    const _wave_resp = _bind._1;
-    new_wave = _new_wave;
-    wave_resp = _wave_resp;
-    break _L$2;
-  }
-  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(wave_resp)) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.wave_pulse = new_wave;
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 4);
-  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas22button__primary__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Trigger Shockwave"))) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active = true;
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress = 0;
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cx = 580;
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cy = 270;
-  }
-  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Reset Statistics", false))) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count = 0;
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id = -1;
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_col = -1;
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_row = -1;
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 4);
-  _M0FP49LING7167111moon_2degui8examples6canvas16separator__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
-  const total_widgets = Math.imul(_M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim, _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim) | 0;
-  const _string_builder = _M0MPB13StringBuilder21StringBuilder_2einner(16);
-  _M0IPB13StringBuilderPB6Logger13write__string(_string_builder, "Active Widgets: ");
-  _M0MPB13StringBuilder13write__objectGiE(_string_builder, total_widgets);
-  _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, _M0MPB13StringBuilder10to__string(_string_builder), false);
-  const _string_builder$2 = _M0MPB13StringBuilder21StringBuilder_2einner(15);
-  _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$2, "Recorded Hits: ");
-  _M0MPB13StringBuilder13write__objectGiE(_string_builder$2, _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count);
-  _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, _M0MPB13StringBuilder10to__string(_string_builder$2), false);
-  if (_M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id >= 0) {
-    const _string_builder$3 = _M0MPB13StringBuilder21StringBuilder_2einner(14);
-    _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, "Target: #");
-    _M0MPB13StringBuilder13write__objectGiE(_string_builder$3, _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id);
-    _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, " (");
-    _M0MPB13StringBuilder13write__objectGiE(_string_builder$3, _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_col);
-    _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, ", ");
-    _M0MPB13StringBuilder13write__objectGiE(_string_builder$3, _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_row);
-    _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, ")");
-    _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, _M0MPB13StringBuilder10to__string(_string_builder$3), false);
-  } else {
-    _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Target: None (Hover Logo)", false);
-  }
-  const dl = _M0MP49LING7167111moon_2degui3src4core9UIContext10draw__list(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
-  const vp_x = 270;
-  const vp_y = 20;
-  const vp_w = 620;
-  const vp_h = 500;
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, vp_y, vp_w, vp_h), _M0MP49LING7167111moon_2degui3src5color5Color5white(), 8);
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, vp_y, vp_w, vp_h), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240), 1, 8);
-  const grid_dim = _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim;
-  const matrix_size = 460;
-  const offset_x = vp_x + (vp_w - matrix_size) / 2;
-  const offset_y = vp_y + (vp_h - matrix_size) / 2;
-  const gap = grid_dim <= 12 ? 4 : grid_dim <= 20 ? 3 : grid_dim <= 32 ? 2 : 1.5;
-  const cell_size = (matrix_size - gap * ((grid_dim - 1 | 0) + 0)) / (grid_dim + 0);
-  const mouse_pt = _M0MP49LING7167111moon_2degui3src4math4Vec23new(mouse_x, mouse_y);
-  const hovered_index = new _M0TPB8MutLocalGiE(-1);
-  const repel_radius_sq = 7225;
-  let _tmp = 0;
-  while (true) {
-    const idx = _tmp;
-    if (idx < total_widgets) {
-      if (grid_dim === 0) {
-        $panic();
-      }
-      const col = idx % grid_dim | 0;
-      if (grid_dim === 0) {
-        $panic();
-      }
-      const row = idx / grid_dim | 0;
-      const base_x = offset_x + (col + 0) * (cell_size + gap);
-      const base_y = offset_y + (row + 0) * (cell_size + gap);
-      const center_x = base_x + cell_size / 2;
-      const center_y = base_y + cell_size / 2;
-      const base_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(base_x, base_y, cell_size, cell_size);
-      const is_hovered = _M0MP49LING7167111moon_2degui3src4math4Rect8contains(base_rect, mouse_pt);
-      if (is_hovered) {
-        hovered_index.val = idx;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_col = col;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_row = row;
-        if (mouse_down) {
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count = _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count + 1 | 0;
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active = true;
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress = 0;
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cx = center_x;
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cy = center_y;
-        }
-      }
-      const dx = new _M0TPB8MutLocalGdE(0);
-      const dy = new _M0TPB8MutLocalGdE(0);
-      if (!is_hovered && _M0FP49LING7167111moon_2degui8examples6canvas5state.magnetic_repel) {
-        const d_sq = (center_x - mouse_x) * (center_x - mouse_x) + (center_y - mouse_y) * (center_y - mouse_y);
-        if (d_sq < repel_radius_sq && d_sq > 1) {
-          const repel_factor = (repel_radius_sq - d_sq) / repel_radius_sq;
-          const push = repel_factor * (grid_dim <= 20 ? 10 : 5);
-          const approx_dist = 35;
-          dx.val = (center_x - mouse_x) / approx_dist * push;
-          dy.val = (center_y - mouse_y) / approx_dist * push;
-        }
-      }
-      if (_M0FP49LING7167111moon_2degui8examples6canvas5state.wave_pulse) {
-        const wave_val = _M0FP49LING7167111moon_2degui8examples6canvas5state.frame_tick * 0.08 + ((col + row | 0) + 0) * 0.35;
-        const phase = wave_val - (_M0MPC16double6Double7to__int(wave_val) + 0);
-        const wave_dy = (phase < 0.5 ? phase * 4 - 1 : 3 - phase * 4) * 1.5;
-        dy.val = dy.val + wave_dy;
-      }
-      const ripple_boost = new _M0TPB8MutLocalGbE(false);
-      if (_M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active) {
-        const r_dx = center_x - _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cx;
-        const r_dy = center_y - _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cy;
-        const r_dist_sq = r_dx * r_dx + r_dy * r_dy;
-        const target_r = _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress;
-        const target_r_sq = target_r * target_r;
-        const diff = _M0FP49LING7167111moon_2degui8examples6canvas6d__abs(r_dist_sq - target_r_sq);
-        if (diff < 1600) {
-          ripple_boost.val = true;
-          const bump = (1600 - diff) / 1600 * 4;
-          dy.val = dy.val - bump;
-        }
-      }
-      const cell_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(base_x + dx.val, base_y + dy.val, cell_size, cell_size);
-      const _bind = _M0FP49LING7167111moon_2degui8examples6canvas16get__logo__color(grid_dim, idx);
-      const is_logo = !(_bind === undefined);
-      let base_color;
-      const _bind$2 = _M0FP49LING7167111moon_2degui8examples6canvas16get__logo__color(grid_dim, idx);
-      if (_bind$2 === undefined) {
-        if (2 === 0) {
-          $panic();
-        }
-        if (((col + row | 0) % 2 | 0) === 0) {
-          base_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(241, 245, 249);
-        } else {
-          base_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(248, 250, 252);
-        }
-      } else {
-        const _Some = _bind$2;
-        const _c = _Some;
-        base_color = _c;
-      }
-      const draw_color = is_hovered ? (mouse_down ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(15, 23, 42) : _M0MP49LING7167111moon_2degui3src5color5Color3rgb(2, 132, 199)) : ripple_boost.val ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(244, 63, 94) : base_color;
-      const radius = cell_size < 12 ? 1 : cell_size < 20 ? 2 : 3;
-      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, cell_rect, draw_color, radius);
-      if (is_hovered) {
-        _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, cell_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(15, 23, 42), 1.5, radius);
-      } else {
-        if (is_logo && grid_dim <= 20) {
-          _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, cell_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(203, 213, 225), 0.5, radius);
-        } else {
-          if (!is_logo) {
-            _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, cell_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240), 0.5, radius);
+  if (_M0FP49LING7167111moon_2degui8examples6canvas5state.mode === 1) {
+    _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Camera Zoom Presets:", false);
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Overview (0.1x Galaxy)", false))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 0.1;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 20000;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 20000;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Cluster (0.45x Mid)", false))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 0.45;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Standard (1.0x 1:1)", false))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 1;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Micro (2.2x Focus)", false))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 2.2;
+    }
+    _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 4);
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas22button__primary__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Center Galaxy Core"))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 20000;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 20000;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Reset Hits", false))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count = 0;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_id = -1;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_col = -1;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_row = -1;
+    }
+    _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 4);
+    _M0FP49LING7167111moon_2degui8examples6canvas16separator__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
+    _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Universe: 1,000,000 Nodes", false);
+    const zoom_pct = _M0MPC16double6Double7to__int(_M0FP49LING7167111moon_2degui8examples6canvas5state.zoom * 100);
+    const _string_builder = _M0MPB13StringBuilder21StringBuilder_2einner(13);
+    _M0IPB13StringBuilderPB6Logger13write__string(_string_builder, "Visible: ");
+    _M0MPB13StringBuilder13write__objectGiE(_string_builder, _M0FP49LING7167111moon_2degui8examples6canvas5state.million_visible_count);
+    _M0IPB13StringBuilderPB6Logger13write__string(_string_builder, " (");
+    _M0MPB13StringBuilder13write__objectGiE(_string_builder, zoom_pct);
+    _M0IPB13StringBuilderPB6Logger13write__string(_string_builder, "%)");
+    _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, _M0MPB13StringBuilder10to__string(_string_builder), false);
+    const _string_builder$2 = _M0MPB13StringBuilder21StringBuilder_2einner(15);
+    _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$2, "Recorded Hits: ");
+    _M0MPB13StringBuilder13write__objectGiE(_string_builder$2, _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count);
+    _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, _M0MPB13StringBuilder10to__string(_string_builder$2), false);
+    if (_M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_id >= 0) {
+      const _string_builder$3 = _M0MPB13StringBuilder21StringBuilder_2einner(14);
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, "Target: #");
+      _M0MPB13StringBuilder13write__objectGiE(_string_builder$3, _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_id);
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, " (");
+      _M0MPB13StringBuilder13write__objectGiE(_string_builder$3, _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_col);
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, ", ");
+      _M0MPB13StringBuilder13write__objectGiE(_string_builder$3, _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_row);
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, ")");
+      _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, _M0MPB13StringBuilder10to__string(_string_builder$3), false);
+    } else {
+      _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Target: None (Hover/Drag)", false);
+    }
+    _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Mem: ~18MB (vs Leafer 350MB)", false);
+    const dl = _M0MP49LING7167111moon_2degui3src4core9UIContext10draw__list(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
+    const vp_x = 270;
+    const vp_y = 20;
+    const vp_w = 620;
+    const vp_h = 500;
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, vp_y, vp_w, vp_h), _M0MP49LING7167111moon_2degui3src5color5Color5white(), 8);
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, vp_y, vp_w, vp_h), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240), 1, 8);
+    const sc_x = vp_x + vp_w * 0.5;
+    const sc_y = vp_y + vp_h * 0.5;
+    const in_viewport = mouse_x >= vp_x && (mouse_x <= vp_x + vp_w && (mouse_y >= vp_y && mouse_y <= vp_y + vp_h));
+    if (in_viewport) {
+      const mwx = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x + (mouse_x - sc_x) / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+      const mwy = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y + (mouse_y - sc_y) / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+      const hit_col = _M0MPC16double6Double7to__int(mwx / 40);
+      const hit_row = _M0MPC16double6Double7to__int(mwy / 40);
+      if (hit_col >= 0 && (hit_col < 1000 && (hit_row >= 0 && hit_row < 1000))) {
+        const rel_x = mwx - (hit_col + 0) * 40;
+        const rel_y = mwy - (hit_row + 0) * 40;
+        if (rel_x >= 0 && (rel_x <= 32 && (rel_y >= 0 && rel_y <= 32))) {
+          const node_id = (Math.imul(hit_row, 1000) | 0) + hit_col | 0;
+          _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_id = node_id;
+          _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_col = hit_col;
+          _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_row = hit_row;
+          if (mouse_down) {
+            _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count = _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count + 1 | 0;
           }
         }
       }
-      _tmp = idx + 1 | 0;
-      continue;
-    } else {
-      break;
     }
+    const half_vw = vp_w * 0.5 / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+    const half_vh = vp_h * 0.5 / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+    const min_wx = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x - half_vw;
+    const max_wx = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x + half_vw;
+    const min_wy = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y - half_vh;
+    const max_wy = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y + half_vh;
+    const col_start = new _M0TPB8MutLocalGiE(_M0MPC16double6Double7to__int(min_wx / 40));
+    if (col_start.val < 0) {
+      col_start.val = 0;
+    }
+    const col_end = new _M0TPB8MutLocalGiE(_M0MPC16double6Double7to__int(max_wx / 40) + 1 | 0);
+    if (col_end.val > 1000) {
+      col_end.val = 1000;
+    }
+    const row_start = new _M0TPB8MutLocalGiE(_M0MPC16double6Double7to__int(min_wy / 40));
+    if (row_start.val < 0) {
+      row_start.val = 0;
+    }
+    const row_end = new _M0TPB8MutLocalGiE(_M0MPC16double6Double7to__int(max_wy / 40) + 1 | 0);
+    if (row_end.val > 1000) {
+      row_end.val = 1000;
+    }
+    const raw_visible = Math.imul(col_end.val - col_start.val | 0, row_end.val - row_start.val | 0) | 0;
+    _M0FP49LING7167111moon_2degui8examples6canvas5state.million_visible_count = raw_visible;
+    const stride = raw_visible <= 2200 ? 1 : raw_visible <= 8000 ? 2 : raw_visible <= 30000 ? 4 : 8;
+    const draw_w = _M0MPC16double6Double3max(32 * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom * (stride + 0), 2.5);
+    const draw_h = draw_w;
+    const radius = draw_w < 8 ? 0.5 : 2;
+    let _tmp = row_start.val;
+    while (true) {
+      const r = _tmp;
+      if (r < row_end.val) {
+        let _tmp$2 = col_start.val;
+        while (true) {
+          const c = _tmp$2;
+          if (c < col_end.val) {
+            const wx = (c + 0) * 40;
+            const wy = (r + 0) * 40;
+            const sx = sc_x + (wx - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+            const sy = sc_y + (wy - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+            const dist_center_sq = (Math.imul(c - 500 | 0, c - 500 | 0) | 0) + (Math.imul(r - 500 | 0, r - 500 | 0) | 0) | 0;
+            const is_hovered = c === _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_col && r === _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_row;
+            let cell_color;
+            if (is_hovered) {
+              cell_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(15, 23, 42);
+            } else {
+              if (dist_center_sq < 3600) {
+                cell_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(185, 36, 130);
+              } else {
+                if (dist_center_sq < 14400) {
+                  cell_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(2, 132, 199);
+                } else {
+                  if (2 === 0) {
+                    $panic();
+                  }
+                  if (((c + r | 0) % 2 | 0) === 0) {
+                    cell_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(241, 245, 249);
+                  } else {
+                    cell_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240);
+                  }
+                }
+              }
+            }
+            const rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sx, sy, draw_w, draw_h);
+            _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, rect, cell_color, radius);
+            if (is_hovered) {
+              _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(2, 132, 199), 2, radius + 1);
+            }
+            _tmp$2 = c + stride | 0;
+            continue;
+          } else {
+            break;
+          }
+        }
+        _tmp = r + stride | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+    return _M0MP49LING7167111moon_2degui3src4core9UIContext10end__frame(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
+  } else {
+    if (_M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress = _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress + 10;
+      if (_M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress > 600) {
+        _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active = false;
+        _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress = 0;
+      }
+    }
+    _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Logo Granularity:", false);
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "144 Widgets (12x12)", _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim === 12))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 12;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "400 Widgets (20x20)", _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim === 20))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 20;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "1,024 Widgets (32x32)", _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim === 32))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 32;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "1,600 Widgets (40x40)", _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim === 40))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 40;
+    }
+    _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 4);
+    _M0FP49LING7167111moon_2degui8examples6canvas16separator__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 2);
+    let new_repel;
+    let repel_resp;
+    _L: {
+      const _bind = _M0FP49LING7167111moon_2degui8examples6canvas15checkbox__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Magnetic Repulsion", _M0FP49LING7167111moon_2degui8examples6canvas5state.magnetic_repel);
+      const _new_repel = _bind._0;
+      const _repel_resp = _bind._1;
+      new_repel = _new_repel;
+      repel_resp = _repel_resp;
+      break _L;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(repel_resp)) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.magnetic_repel = new_repel;
+    }
+    let new_wave;
+    let wave_resp;
+    _L$2: {
+      const _bind = _M0FP49LING7167111moon_2degui8examples6canvas15checkbox__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Kinetic Resonance", _M0FP49LING7167111moon_2degui8examples6canvas5state.wave_pulse);
+      const _new_wave = _bind._0;
+      const _wave_resp = _bind._1;
+      new_wave = _new_wave;
+      wave_resp = _wave_resp;
+      break _L$2;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(wave_resp)) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.wave_pulse = new_wave;
+    }
+    _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 4);
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas22button__primary__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Trigger Shockwave"))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active = true;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress = 0;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cx = 580;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cy = 270;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Reset Statistics", false))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count = 0;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id = -1;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_col = -1;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_row = -1;
+    }
+    _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 4);
+    _M0FP49LING7167111moon_2degui8examples6canvas16separator__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
+    const total_widgets = Math.imul(_M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim, _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim) | 0;
+    const _string_builder = _M0MPB13StringBuilder21StringBuilder_2einner(16);
+    _M0IPB13StringBuilderPB6Logger13write__string(_string_builder, "Active Widgets: ");
+    _M0MPB13StringBuilder13write__objectGiE(_string_builder, total_widgets);
+    _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, _M0MPB13StringBuilder10to__string(_string_builder), false);
+    const _string_builder$2 = _M0MPB13StringBuilder21StringBuilder_2einner(15);
+    _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$2, "Recorded Hits: ");
+    _M0MPB13StringBuilder13write__objectGiE(_string_builder$2, _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count);
+    _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, _M0MPB13StringBuilder10to__string(_string_builder$2), false);
+    if (_M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id >= 0) {
+      const _string_builder$3 = _M0MPB13StringBuilder21StringBuilder_2einner(14);
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, "Target: #");
+      _M0MPB13StringBuilder13write__objectGiE(_string_builder$3, _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id);
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, " (");
+      _M0MPB13StringBuilder13write__objectGiE(_string_builder$3, _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_col);
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, ", ");
+      _M0MPB13StringBuilder13write__objectGiE(_string_builder$3, _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_row);
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, ")");
+      _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, _M0MPB13StringBuilder10to__string(_string_builder$3), false);
+    } else {
+      _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Target: None (Hover Logo)", false);
+    }
+    const dl = _M0MP49LING7167111moon_2degui3src4core9UIContext10draw__list(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
+    const vp_x = 270;
+    const vp_y = 20;
+    const vp_w = 620;
+    const vp_h = 500;
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, vp_y, vp_w, vp_h), _M0MP49LING7167111moon_2degui3src5color5Color5white(), 8);
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, vp_y, vp_w, vp_h), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240), 1, 8);
+    const grid_dim = _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim;
+    const matrix_size = 460;
+    const offset_x = vp_x + (vp_w - matrix_size) / 2;
+    const offset_y = vp_y + (vp_h - matrix_size) / 2;
+    const gap = grid_dim <= 12 ? 4 : grid_dim <= 20 ? 3 : grid_dim <= 32 ? 2 : 1.5;
+    const cell_size = (matrix_size - gap * ((grid_dim - 1 | 0) + 0)) / (grid_dim + 0);
+    const mouse_pt = _M0MP49LING7167111moon_2degui3src4math4Vec23new(mouse_x, mouse_y);
+    const hovered_index = new _M0TPB8MutLocalGiE(-1);
+    const repel_radius_sq = 7225;
+    let _tmp = 0;
+    while (true) {
+      const idx = _tmp;
+      if (idx < total_widgets) {
+        if (grid_dim === 0) {
+          $panic();
+        }
+        const col = idx % grid_dim | 0;
+        if (grid_dim === 0) {
+          $panic();
+        }
+        const row = idx / grid_dim | 0;
+        const base_x = offset_x + (col + 0) * (cell_size + gap);
+        const base_y = offset_y + (row + 0) * (cell_size + gap);
+        const center_x = base_x + cell_size / 2;
+        const center_y = base_y + cell_size / 2;
+        const base_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(base_x, base_y, cell_size, cell_size);
+        const is_hovered = _M0MP49LING7167111moon_2degui3src4math4Rect8contains(base_rect, mouse_pt);
+        if (is_hovered) {
+          hovered_index.val = idx;
+          _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_col = col;
+          _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_row = row;
+          if (mouse_down) {
+            _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count = _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count + 1 | 0;
+            _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active = true;
+            _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress = 0;
+            _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cx = center_x;
+            _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cy = center_y;
+          }
+        }
+        const dx = new _M0TPB8MutLocalGdE(0);
+        const dy = new _M0TPB8MutLocalGdE(0);
+        if (!is_hovered && _M0FP49LING7167111moon_2degui8examples6canvas5state.magnetic_repel) {
+          const d_sq = (center_x - mouse_x) * (center_x - mouse_x) + (center_y - mouse_y) * (center_y - mouse_y);
+          if (d_sq < repel_radius_sq && d_sq > 1) {
+            const repel_factor = (repel_radius_sq - d_sq) / repel_radius_sq;
+            const push = repel_factor * (grid_dim <= 20 ? 10 : 5);
+            const approx_dist = 35;
+            dx.val = (center_x - mouse_x) / approx_dist * push;
+            dy.val = (center_y - mouse_y) / approx_dist * push;
+          }
+        }
+        if (_M0FP49LING7167111moon_2degui8examples6canvas5state.wave_pulse) {
+          const wave_val = _M0FP49LING7167111moon_2degui8examples6canvas5state.frame_tick * 0.08 + ((col + row | 0) + 0) * 0.35;
+          const phase = wave_val - (_M0MPC16double6Double7to__int(wave_val) + 0);
+          const wave_dy = (phase < 0.5 ? phase * 4 - 1 : 3 - phase * 4) * 1.5;
+          dy.val = dy.val + wave_dy;
+        }
+        const ripple_boost = new _M0TPB8MutLocalGbE(false);
+        if (_M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active) {
+          const r_dx = center_x - _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cx;
+          const r_dy = center_y - _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cy;
+          const r_dist_sq = r_dx * r_dx + r_dy * r_dy;
+          const target_r = _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress;
+          const target_r_sq = target_r * target_r;
+          const diff = _M0FP49LING7167111moon_2degui8examples6canvas6d__abs(r_dist_sq - target_r_sq);
+          if (diff < 1600) {
+            ripple_boost.val = true;
+            const bump = (1600 - diff) / 1600 * 4;
+            dy.val = dy.val - bump;
+          }
+        }
+        const cell_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(base_x + dx.val, base_y + dy.val, cell_size, cell_size);
+        const _bind = _M0FP49LING7167111moon_2degui8examples6canvas16get__logo__color(grid_dim, idx);
+        const is_logo = !(_bind === undefined);
+        let base_color;
+        const _bind$2 = _M0FP49LING7167111moon_2degui8examples6canvas16get__logo__color(grid_dim, idx);
+        if (_bind$2 === undefined) {
+          if (2 === 0) {
+            $panic();
+          }
+          if (((col + row | 0) % 2 | 0) === 0) {
+            base_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(241, 245, 249);
+          } else {
+            base_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(248, 250, 252);
+          }
+        } else {
+          const _Some = _bind$2;
+          const _c = _Some;
+          base_color = _c;
+        }
+        const draw_color = is_hovered ? (mouse_down ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(15, 23, 42) : _M0MP49LING7167111moon_2degui3src5color5Color3rgb(2, 132, 199)) : ripple_boost.val ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(244, 63, 94) : base_color;
+        const radius = cell_size < 12 ? 1 : cell_size < 20 ? 2 : 3;
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, cell_rect, draw_color, radius);
+        if (is_hovered) {
+          _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, cell_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(15, 23, 42), 1.5, radius);
+        } else {
+          if (is_logo && grid_dim <= 20) {
+            _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, cell_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(203, 213, 225), 0.5, radius);
+          } else {
+            if (!is_logo) {
+              _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, cell_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240), 0.5, radius);
+            }
+          }
+        }
+        _tmp = idx + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+    if (hovered_index.val >= 0) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id = hovered_index.val;
+    }
+    return _M0MP49LING7167111moon_2degui3src4core9UIContext10end__frame(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
   }
-  if (hovered_index.val >= 0) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id = hovered_index.val;
-  }
-  return _M0MP49LING7167111moon_2degui3src4core9UIContext10end__frame(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
 }
 (() => {
-  const dl = _M0FP49LING7167111moon_2degui8examples6canvas4step(580, 270, false);
+  const dl = _M0FP49LING7167111moon_2degui8examples6canvas4step(580, 270, false, 0, 0, 1, -1);
   const _string_builder = _M0MPB13StringBuilder21StringBuilder_2einner(39);
   _M0IPB13StringBuilderPB6Logger13write__string(_string_builder, "Benchmark initialized, total commands: ");
   _M0MPB13StringBuilder13write__objectGiE(_string_builder, _M0MP49LING7167111moon_2degui3src4draw8DrawList3len(dl));
