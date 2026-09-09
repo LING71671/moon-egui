@@ -13,7 +13,7 @@ name = "LING71671/moon-egui"
 
 version = "0.1.0"
 
-readme = "README.mbt.md"
+readme = "README.md"
 
 repository = "https://github.com/LING71671/moon-egui"
 

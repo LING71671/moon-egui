@@ -1,11 +1,195 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "LING71671/moon-egui"
 
+import {
+  "moonbitlang/core/debug",
+}
+
 // Values
 
 // Errors
 
 // Types and methods
+pub struct Color {
+  r : Int
+  g : Int
+  b : Int
+  a : Int
+} derive(Default, Eq, @debug.Debug)
+pub fn Color::accent_hover() -> Self
+pub fn Color::accent_primary() -> Self
+pub fn Color::bg_active() -> Self
+pub fn Color::bg_app() -> Self
+pub fn Color::bg_hover() -> Self
+pub fn Color::bg_surface() -> Self
+pub fn Color::bg_window() -> Self
+pub fn Color::black() -> Self
+pub fn Color::border_focus() -> Self
+pub fn Color::border_muted() -> Self
+pub fn Color::danger() -> Self
+pub fn Color::hex(Int) -> Self
+pub fn Color::hex_alpha(Int) -> Self
+pub fn Color::lerp(Self, Self, Double) -> Self
+pub fn Color::rgb(Int, Int, Int) -> Self
+pub fn Color::rgba(Int, Int, Int, Int) -> Self
+pub fn Color::success() -> Self
+pub fn Color::text_muted() -> Self
+pub fn Color::text_primary() -> Self
+pub fn Color::transparent() -> Self
+pub fn Color::warning() -> Self
+pub fn Color::white() -> Self
+pub fn Color::with_alpha(Self, Int) -> Self
+
+pub enum DrawCmd {
+  Rect(Rect, Color, Double)
+  RectStroke(Rect, Color, Double, Double)
+  Circle(Vec2, Double, Color)
+  CircleStroke(Vec2, Double, Color, Double)
+  Line(Vec2, Vec2, Color, Double)
+  Text(Vec2, String, Double, Color)
+  Clip(Rect)
+  ResetClip
+} derive(Eq, @debug.Debug)
+
+pub struct DrawList {
+  commands : Array[DrawCmd]
+} derive(Eq, @debug.Debug)
+pub fn DrawList::add_circle(Self, Vec2, Double, Color) -> Unit
+pub fn DrawList::add_circle_stroke(Self, Vec2, Double, Color, Double) -> Unit
+pub fn DrawList::add_line(Self, Vec2, Vec2, Color, Double) -> Unit
+pub fn DrawList::add_rect(Self, Rect, Color, Double) -> Unit
+pub fn DrawList::add_rect_stroke(Self, Rect, Color, Double, Double) -> Unit
+pub fn DrawList::add_text(Self, Vec2, String, Double, Color) -> Unit
+pub fn DrawList::clear(Self) -> Unit
+pub fn DrawList::get_command(Self, Int) -> DrawCmd?
+pub fn DrawList::is_empty(Self) -> Bool
+pub fn DrawList::len(Self) -> Int
+pub fn DrawList::new() -> Self
+pub fn DrawList::pop_clip(Self) -> Unit
+pub fn DrawList::push(Self, DrawCmd) -> Unit
+pub fn DrawList::push_clip(Self, Rect) -> Unit
+
+pub struct Id {
+  val : UInt64
+} derive(Default, Eq, @debug.Debug)
+pub fn Id::combine(Self, Self) -> Self
+pub fn Id::from_string(String) -> Self
+pub fn Id::is_valid(Self) -> Bool
+pub fn Id::new(UInt64) -> Self
+pub fn Id::with_seed(UInt64, String) -> Self
+pub fn Id::zero() -> Self
+
+pub struct IdStack {
+  stack : Array[UInt64]
+} derive(Eq, @debug.Debug)
+pub fn IdStack::current_seed(Self) -> UInt64
+pub fn IdStack::derive_id(Self, String) -> Id
+pub fn IdStack::new() -> Self
+pub fn IdStack::pop(Self) -> Unit
+pub fn IdStack::push(Self, String) -> Unit
+
+pub struct InputState {
+  mut mouse_pos : Vec2
+  mut mouse_prev_pos : Vec2
+  mut mouse_delta : Vec2
+  mut mouse_down : Bool
+  mut mouse_pressed : Bool
+  mut mouse_released : Bool
+  mut scroll_delta : Vec2
+  mut dt : Double
+} derive(Default, Eq, @debug.Debug)
+pub fn InputState::new() -> Self
+pub fn InputState::update(Self, RawInput) -> Unit
+
+pub struct RawInput {
+  mouse_pos : Vec2
+  mouse_down : Bool
+  scroll_delta : Vec2
+  dt : Double
+} derive(Default, Eq, @debug.Debug)
+pub fn RawInput::from_mouse(Vec2, Bool) -> Self
+pub fn RawInput::new() -> Self
+
+pub struct Rect {
+  x : Double
+  y : Double
+  w : Double
+  h : Double
+} derive(Default, Eq, @debug.Debug)
+pub fn Rect::center(Self) -> Vec2
+pub fn Rect::contains(Self, Vec2) -> Bool
+pub fn Rect::expand(Self, Double) -> Self
+pub fn Rect::from_min_max(Vec2, Vec2) -> Self
+pub fn Rect::intersect(Self, Self) -> Self
+pub fn Rect::intersects(Self, Self) -> Bool
+pub fn Rect::max(Self) -> Vec2
+pub fn Rect::min(Self) -> Vec2
+pub fn Rect::new(Double, Double, Double, Double) -> Self
+pub fn Rect::shrink(Self, Double) -> Self
+pub fn Rect::size(Self) -> Vec2
+pub fn Rect::translate(Self, Vec2) -> Self
+
+pub struct Response {
+  id : Id
+  rect : Rect
+  hovered : Bool
+  clicked : Bool
+  pressed : Bool
+  dragged : Bool
+} derive(Default, Eq, @debug.Debug)
+pub fn Response::clicked(Self) -> Bool
+pub fn Response::dragged(Self) -> Bool
+pub fn Response::hovered(Self) -> Bool
+pub fn Response::new(Id, Rect, Bool, Bool, Bool, Bool) -> Self
+pub fn Response::pressed(Self) -> Bool
+
+pub struct UIContext {
+  input : InputState
+  draw_list : DrawList
+  id_stack : IdStack
+  mut hot_id : Id
+  mut active_id : Id
+  mut focused_id : Id
+  mut cursor : Vec2
+  mut available_width : Double
+  mut item_spacing : Vec2
+  clip_stack : Array[Rect]
+  mut auto_id_counter : Int
+} derive(Eq, @debug.Debug)
+pub fn UIContext::active_id(Self) -> Id
+pub fn UIContext::advance_cursor(Self, Vec2) -> Unit
+pub fn UIContext::allocate_space(Self, Vec2) -> (Id, Rect, Response)
+pub fn UIContext::available_width(Self) -> Double
+pub fn UIContext::begin_frame(Self, RawInput) -> Unit
+pub fn UIContext::cursor(Self) -> Vec2
+pub fn UIContext::draw_list(Self) -> DrawList
+pub fn UIContext::end_frame(Self) -> DrawList
+pub fn UIContext::focused_id(Self) -> Id
+pub fn UIContext::hot_id(Self) -> Id
+pub fn UIContext::input(Self) -> InputState
+pub fn UIContext::item_spacing(Self) -> Vec2
+pub fn UIContext::new() -> Self
+pub fn UIContext::pop_id(Self) -> Unit
+pub fn UIContext::push_id(Self, String) -> Unit
+pub fn UIContext::set_available_width(Self, Double) -> Unit
+pub fn UIContext::set_cursor(Self, Vec2) -> Unit
+pub fn UIContext::set_focused_id(Self, Id) -> Unit
+pub fn UIContext::set_item_spacing(Self, Vec2) -> Unit
+
+pub struct Vec2 {
+  x : Double
+  y : Double
+} derive(Default, Eq, @debug.Debug)
+pub fn Vec2::add(Self, Self) -> Self
+pub fn Vec2::dot(Self, Self) -> Double
+pub fn Vec2::length_sq(Self) -> Double
+pub fn Vec2::lerp(Self, Self, Double) -> Self
+pub fn Vec2::max(Self, Self) -> Self
+pub fn Vec2::min(Self, Self) -> Self
+pub fn Vec2::new(Double, Double) -> Self
+pub fn Vec2::scale(Self, Double) -> Self
+pub fn Vec2::sub(Self, Self) -> Self
+pub fn Vec2::zero() -> Self
 
 // Type aliases
 
