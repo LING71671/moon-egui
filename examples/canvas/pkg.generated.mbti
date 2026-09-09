@@ -2,16 +2,19 @@
 package "LING71671/moon-egui/examples/canvas"
 
 import {
+  "LING71671/moon-egui/src/color",
   "LING71671/moon-egui/src/draw",
 }
 
 // Values
+pub fn get_logo_color(Int, Int) -> @color.Color?
+
 pub fn step(Double, Double, Bool) -> @draw.DrawList
 
 // Errors
 
 // Types and methods
-type AppState
+type BenchmarkState
 
 // Type aliases
 
