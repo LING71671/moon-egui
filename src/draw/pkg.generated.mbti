@@ -1,0 +1,46 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "LING71671/moon-egui/src/draw"
+
+import {
+  "LING71671/moon-egui/src/color",
+  "LING71671/moon-egui/src/math",
+  "moonbitlang/core/debug",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub enum DrawCmd {
+  Rect(@math.Rect, @color.Color, Double)
+  RectStroke(@math.Rect, @color.Color, Double, Double)
+  Circle(@math.Vec2, Double, @color.Color)
+  CircleStroke(@math.Vec2, Double, @color.Color, Double)
+  Line(@math.Vec2, @math.Vec2, @color.Color, Double)
+  Text(@math.Vec2, String, Double, @color.Color)
+  Clip(@math.Rect)
+  ResetClip
+} derive(Eq, @debug.Debug)
+
+pub struct DrawList {
+  commands : Array[DrawCmd]
+} derive(Eq, @debug.Debug)
+pub fn DrawList::add_circle(Self, @math.Vec2, Double, @color.Color) -> Unit
+pub fn DrawList::add_circle_stroke(Self, @math.Vec2, Double, @color.Color, Double) -> Unit
+pub fn DrawList::add_line(Self, @math.Vec2, @math.Vec2, @color.Color, Double) -> Unit
+pub fn DrawList::add_rect(Self, @math.Rect, @color.Color, Double) -> Unit
+pub fn DrawList::add_rect_stroke(Self, @math.Rect, @color.Color, Double, Double) -> Unit
+pub fn DrawList::add_text(Self, @math.Vec2, String, Double, @color.Color) -> Unit
+pub fn DrawList::clear(Self) -> Unit
+pub fn DrawList::get_command(Self, Int) -> DrawCmd?
+pub fn DrawList::is_empty(Self) -> Bool
+pub fn DrawList::len(Self) -> Int
+pub fn DrawList::new() -> Self
+pub fn DrawList::pop_clip(Self) -> Unit
+pub fn DrawList::push(Self, DrawCmd) -> Unit
+pub fn DrawList::push_clip(Self, @math.Rect) -> Unit
+
+// Type aliases
+
+// Traits

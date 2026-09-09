@@ -1,0 +1,49 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "LING71671/moon-egui/src/math"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct Rect {
+  x : Double
+  y : Double
+  w : Double
+  h : Double
+} derive(Default, Eq, @debug.Debug)
+pub fn Rect::center(Self) -> Vec2
+pub fn Rect::contains(Self, Vec2) -> Bool
+pub fn Rect::expand(Self, Double) -> Self
+pub fn Rect::from_min_max(Vec2, Vec2) -> Self
+pub fn Rect::intersect(Self, Self) -> Self
+pub fn Rect::intersects(Self, Self) -> Bool
+pub fn Rect::max(Self) -> Vec2
+pub fn Rect::min(Self) -> Vec2
+pub fn Rect::new(Double, Double, Double, Double) -> Self
+pub fn Rect::shrink(Self, Double) -> Self
+pub fn Rect::size(Self) -> Vec2
+pub fn Rect::translate(Self, Vec2) -> Self
+
+pub struct Vec2 {
+  x : Double
+  y : Double
+} derive(Default, Eq, @debug.Debug)
+pub fn Vec2::add(Self, Self) -> Self
+pub fn Vec2::dot(Self, Self) -> Double
+pub fn Vec2::length_sq(Self) -> Double
+pub fn Vec2::lerp(Self, Self, Double) -> Self
+pub fn Vec2::max(Self, Self) -> Self
+pub fn Vec2::min(Self, Self) -> Self
+pub fn Vec2::new(Double, Double) -> Self
+pub fn Vec2::scale(Self, Double) -> Self
+pub fn Vec2::sub(Self, Self) -> Self
+pub fn Vec2::zero() -> Self
+
+// Type aliases
+
+// Traits

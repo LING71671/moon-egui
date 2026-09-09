@@ -1,12 +1,12 @@
 ///|
 pub enum DrawCmd {
-  Rect(Rect, Color, Double)
-  RectStroke(Rect, Color, Double, Double)
-  Circle(Vec2, Double, Color)
-  CircleStroke(Vec2, Double, Color, Double)
-  Line(Vec2, Vec2, Color, Double)
-  Text(Vec2, String, Double, Color)
-  Clip(Rect)
+  Rect(@math.Rect, @color.Color, Double)
+  RectStroke(@math.Rect, @color.Color, Double, Double)
+  Circle(@math.Vec2, Double, @color.Color)
+  CircleStroke(@math.Vec2, Double, @color.Color, Double)
+  Line(@math.Vec2, @math.Vec2, @color.Color, Double)
+  Text(@math.Vec2, String, Double, @color.Color)
+  Clip(@math.Rect)
   ResetClip
 } derive(Eq, Debug)
 
@@ -43,8 +43,8 @@ pub fn DrawList::push(self : DrawList, cmd : DrawCmd) -> Unit {
 ///|
 pub fn DrawList::add_rect(
   self : DrawList,
-  rect : Rect,
-  color : Color,
+  rect : @math.Rect,
+  color : @color.Color,
   corner_radius : Double,
 ) -> Unit {
   self.commands.push(DrawCmd::Rect(rect, color, corner_radius))
@@ -53,8 +53,8 @@ pub fn DrawList::add_rect(
 ///|
 pub fn DrawList::add_rect_stroke(
   self : DrawList,
-  rect : Rect,
-  color : Color,
+  rect : @math.Rect,
+  color : @color.Color,
   stroke_width : Double,
   corner_radius : Double,
 ) -> Unit {
@@ -66,9 +66,9 @@ pub fn DrawList::add_rect_stroke(
 ///|
 pub fn DrawList::add_circle(
   self : DrawList,
-  center : Vec2,
+  center : @math.Vec2,
   radius : Double,
-  color : Color,
+  color : @color.Color,
 ) -> Unit {
   self.commands.push(DrawCmd::Circle(center, radius, color))
 }
@@ -76,9 +76,9 @@ pub fn DrawList::add_circle(
 ///|
 pub fn DrawList::add_circle_stroke(
   self : DrawList,
-  center : Vec2,
+  center : @math.Vec2,
   radius : Double,
-  color : Color,
+  color : @color.Color,
   stroke_width : Double,
 ) -> Unit {
   self.commands.push(DrawCmd::CircleStroke(center, radius, color, stroke_width))
@@ -87,9 +87,9 @@ pub fn DrawList::add_circle_stroke(
 ///|
 pub fn DrawList::add_line(
   self : DrawList,
-  start : Vec2,
-  end : Vec2,
-  color : Color,
+  start : @math.Vec2,
+  end : @math.Vec2,
+  color : @color.Color,
   stroke_width : Double,
 ) -> Unit {
   self.commands.push(DrawCmd::Line(start, end, color, stroke_width))
@@ -98,16 +98,16 @@ pub fn DrawList::add_line(
 ///|
 pub fn DrawList::add_text(
   self : DrawList,
-  pos : Vec2,
+  pos : @math.Vec2,
   text : String,
   font_size : Double,
-  color : Color,
+  color : @color.Color,
 ) -> Unit {
   self.commands.push(DrawCmd::Text(pos, text, font_size, color))
 }
 
 ///|
-pub fn DrawList::push_clip(self : DrawList, rect : Rect) -> Unit {
+pub fn DrawList::push_clip(self : DrawList, rect : @math.Rect) -> Unit {
   self.commands.push(DrawCmd::Clip(rect))
 }
 

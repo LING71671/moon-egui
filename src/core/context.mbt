@@ -1,15 +1,15 @@
 ///|
 pub struct UIContext {
   input : InputState
-  draw_list : DrawList
+  draw_list : @draw.DrawList
   id_stack : IdStack
   mut hot_id : Id
   mut active_id : Id
   mut focused_id : Id
-  mut cursor : Vec2
+  mut cursor : @math.Vec2
   mut available_width : Double
-  mut item_spacing : Vec2
-  clip_stack : Array[Rect]
+  mut item_spacing : @math.Vec2
+  clip_stack : Array[@math.Rect]
   mut auto_id_counter : Int
 } derive(Eq, Debug)
 
@@ -17,14 +17,14 @@ pub struct UIContext {
 pub fn UIContext::new() -> UIContext {
   {
     input: InputState::new(),
-    draw_list: DrawList::new(),
+    draw_list: @draw.DrawList::new(),
     id_stack: IdStack::new(),
     hot_id: Id::zero(),
     active_id: Id::zero(),
     focused_id: Id::zero(),
-    cursor: Vec2::zero(),
+    cursor: @math.Vec2::zero(),
     available_width: 800.0,
-    item_spacing: Vec2::new(0.0, 8.0),
+    item_spacing: @math.Vec2::new(0.0, 8.0),
     clip_stack: [],
     auto_id_counter: 0,
   }
@@ -34,14 +34,14 @@ pub fn UIContext::new() -> UIContext {
 pub fn UIContext::begin_frame(self : UIContext, raw_input : RawInput) -> Unit {
   self.input.update(raw_input)
   self.draw_list.clear()
-  self.cursor = Vec2::zero()
+  self.cursor = @math.Vec2::zero()
   self.clip_stack.clear()
   self.auto_id_counter = 0
   self.hot_id = Id::zero()
 }
 
 ///|
-pub fn UIContext::end_frame(self : UIContext) -> DrawList {
+pub fn UIContext::end_frame(self : UIContext) -> @draw.DrawList {
   self.draw_list
 }
 
@@ -56,32 +56,35 @@ pub fn UIContext::pop_id(self : UIContext) -> Unit {
 }
 
 ///|
-pub fn UIContext::cursor(self : UIContext) -> Vec2 {
+pub fn UIContext::cursor(self : UIContext) -> @math.Vec2 {
   self.cursor
 }
 
 ///|
-pub fn UIContext::set_cursor(self : UIContext, pos : Vec2) -> Unit {
+pub fn UIContext::set_cursor(self : UIContext, pos : @math.Vec2) -> Unit {
   self.cursor = pos
 }
 
 ///|
-pub fn UIContext::advance_cursor(self : UIContext, offset : Vec2) -> Unit {
+pub fn UIContext::advance_cursor(self : UIContext, offset : @math.Vec2) -> Unit {
   self.cursor = self.cursor.add(offset)
 }
 
 ///|
-pub fn UIContext::item_spacing(self : UIContext) -> Vec2 {
+pub fn UIContext::item_spacing(self : UIContext) -> @math.Vec2 {
   self.item_spacing
 }
 
 ///|
-pub fn UIContext::set_item_spacing(self : UIContext, spacing : Vec2) -> Unit {
+pub fn UIContext::set_item_spacing(
+  self : UIContext,
+  spacing : @math.Vec2,
+) -> Unit {
   self.item_spacing = spacing
 }
 
 ///|
-pub fn UIContext::draw_list(self : UIContext) -> DrawList {
+pub fn UIContext::draw_list(self : UIContext) -> @draw.DrawList {
   self.draw_list
 }
 
@@ -125,14 +128,14 @@ pub fn UIContext::set_available_width(self : UIContext, width : Double) -> Unit 
 /// All existing and custom third-party widgets evaluate interaction through this method.
 pub fn UIContext::allocate_space(
   self : UIContext,
-  size : Vec2,
-) -> (Id, Rect, Response) {
+  size : @math.Vec2,
+) -> (Id, @math.Rect, Response) {
   self.auto_id_counter = self.auto_id_counter + 1
   let id = self.id_stack.derive_id(self.auto_id_counter.to_string())
-  let rect = Rect::new(self.cursor.x, self.cursor.y, size.x, size.y)
+  let rect = @math.Rect::new(self.cursor.x, self.cursor.y, size.x, size.y)
 
   // Advance linear layout cursor downwards
-  self.cursor = Vec2::new(
+  self.cursor = @math.Vec2::new(
     self.cursor.x,
     self.cursor.y + size.y + self.item_spacing.y,
   )

@@ -1,7 +1,7 @@
 ///|
 pub struct Response {
   id : Id
-  rect : Rect
+  rect : @math.Rect
   hovered : Bool
   clicked : Bool
   pressed : Bool
@@ -11,13 +11,23 @@ pub struct Response {
 ///|
 pub fn Response::new(
   id : Id,
-  rect : Rect,
+  rect : @math.Rect,
   hovered : Bool,
   clicked : Bool,
   pressed : Bool,
   dragged : Bool,
 ) -> Response {
   { id, rect, hovered, clicked, pressed, dragged, }
+}
+
+///|
+pub fn Response::id(self : Response) -> Id {
+  self.id
+}
+
+///|
+pub fn Response::rect(self : Response) -> @math.Rect {
+  self.rect
 }
 
 ///|

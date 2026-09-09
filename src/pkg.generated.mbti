@@ -1,0 +1,40 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "LING71671/moon-egui/src"
+
+import {
+  "LING71671/moon-egui/src/color",
+  "LING71671/moon-egui/src/core",
+  "LING71671/moon-egui/src/draw",
+  "LING71671/moon-egui/src/math",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+pub using @color {type Color}
+
+pub using @draw {type DrawCmd}
+
+pub using @draw {type DrawList}
+
+pub using @core {type Id}
+
+pub using @core {type IdStack}
+
+pub using @core {type InputState}
+
+pub using @core {type RawInput}
+
+pub using @math {type Rect}
+
+pub using @core {type Response}
+
+pub using @core {type UIContext}
+
+pub using @math {type Vec2}
+
+// Traits

@@ -1,5 +1,6 @@
-// import {
-//   "LING71671/moon-egui" @lib,
-// }
+import {
+  "LING71671/moon-egui/src/core",
+  "LING71671/moon-egui/src/math",
+}
 
 pkgtype(kind: "executable")

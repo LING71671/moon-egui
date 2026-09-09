@@ -1,0 +1,113 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "LING71671/moon-egui/src/core"
+
+import {
+  "LING71671/moon-egui/src/draw",
+  "LING71671/moon-egui/src/math",
+  "moonbitlang/core/debug",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct Id {
+  val : UInt64
+} derive(Default, Eq, @debug.Debug)
+pub fn Id::combine(Self, Self) -> Self
+pub fn Id::from_string(String) -> Self
+pub fn Id::is_valid(Self) -> Bool
+pub fn Id::new(UInt64) -> Self
+pub fn Id::with_seed(UInt64, String) -> Self
+pub fn Id::zero() -> Self
+
+pub struct IdStack {
+  stack : Array[UInt64]
+} derive(Eq, @debug.Debug)
+pub fn IdStack::current_seed(Self) -> UInt64
+pub fn IdStack::derive_id(Self, String) -> Id
+pub fn IdStack::new() -> Self
+pub fn IdStack::pop(Self) -> Unit
+pub fn IdStack::push(Self, String) -> Unit
+
+pub struct InputState {
+  mut mouse_pos : @math.Vec2
+  mut mouse_prev_pos : @math.Vec2
+  mut mouse_delta : @math.Vec2
+  mut mouse_down : Bool
+  mut mouse_pressed : Bool
+  mut mouse_released : Bool
+  mut scroll_delta : @math.Vec2
+  mut dt : Double
+} derive(Default, Eq, @debug.Debug)
+pub fn InputState::dt(Self) -> Double
+pub fn InputState::mouse_delta(Self) -> @math.Vec2
+pub fn InputState::mouse_down(Self) -> Bool
+pub fn InputState::mouse_pos(Self) -> @math.Vec2
+pub fn InputState::mouse_pressed(Self) -> Bool
+pub fn InputState::mouse_released(Self) -> Bool
+pub fn InputState::new() -> Self
+pub fn InputState::update(Self, RawInput) -> Unit
+
+pub struct RawInput {
+  mouse_pos : @math.Vec2
+  mouse_down : Bool
+  scroll_delta : @math.Vec2
+  dt : Double
+} derive(Default, Eq, @debug.Debug)
+pub fn RawInput::from_mouse(@math.Vec2, Bool) -> Self
+pub fn RawInput::new() -> Self
+
+pub struct Response {
+  id : Id
+  rect : @math.Rect
+  hovered : Bool
+  clicked : Bool
+  pressed : Bool
+  dragged : Bool
+} derive(Default, Eq, @debug.Debug)
+pub fn Response::clicked(Self) -> Bool
+pub fn Response::dragged(Self) -> Bool
+pub fn Response::hovered(Self) -> Bool
+pub fn Response::id(Self) -> Id
+pub fn Response::new(Id, @math.Rect, Bool, Bool, Bool, Bool) -> Self
+pub fn Response::pressed(Self) -> Bool
+pub fn Response::rect(Self) -> @math.Rect
+
+pub struct UIContext {
+  input : InputState
+  draw_list : @draw.DrawList
+  id_stack : IdStack
+  mut hot_id : Id
+  mut active_id : Id
+  mut focused_id : Id
+  mut cursor : @math.Vec2
+  mut available_width : Double
+  mut item_spacing : @math.Vec2
+  clip_stack : Array[@math.Rect]
+  mut auto_id_counter : Int
+} derive(Eq, @debug.Debug)
+pub fn UIContext::active_id(Self) -> Id
+pub fn UIContext::advance_cursor(Self, @math.Vec2) -> Unit
+pub fn UIContext::allocate_space(Self, @math.Vec2) -> (Id, @math.Rect, Response)
+pub fn UIContext::available_width(Self) -> Double
+pub fn UIContext::begin_frame(Self, RawInput) -> Unit
+pub fn UIContext::cursor(Self) -> @math.Vec2
+pub fn UIContext::draw_list(Self) -> @draw.DrawList
+pub fn UIContext::end_frame(Self) -> @draw.DrawList
+pub fn UIContext::focused_id(Self) -> Id
+pub fn UIContext::hot_id(Self) -> Id
+pub fn UIContext::input(Self) -> InputState
+pub fn UIContext::item_spacing(Self) -> @math.Vec2
+pub fn UIContext::new() -> Self
+pub fn UIContext::pop_id(Self) -> Unit
+pub fn UIContext::push_id(Self, String) -> Unit
+pub fn UIContext::set_available_width(Self, Double) -> Unit
+pub fn UIContext::set_cursor(Self, @math.Vec2) -> Unit
+pub fn UIContext::set_focused_id(Self, Id) -> Unit
+pub fn UIContext::set_item_spacing(Self, @math.Vec2) -> Unit
+
+// Type aliases
+
+// Traits

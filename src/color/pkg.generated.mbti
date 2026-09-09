@@ -1,0 +1,45 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "LING71671/moon-egui/src/color"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct Color {
+  r : Int
+  g : Int
+  b : Int
+  a : Int
+} derive(Default, Eq, @debug.Debug)
+pub fn Color::accent_hover() -> Self
+pub fn Color::accent_primary() -> Self
+pub fn Color::bg_active() -> Self
+pub fn Color::bg_app() -> Self
+pub fn Color::bg_hover() -> Self
+pub fn Color::bg_surface() -> Self
+pub fn Color::bg_window() -> Self
+pub fn Color::black() -> Self
+pub fn Color::border_focus() -> Self
+pub fn Color::border_muted() -> Self
+pub fn Color::danger() -> Self
+pub fn Color::hex(Int) -> Self
+pub fn Color::hex_alpha(Int) -> Self
+pub fn Color::lerp(Self, Self, Double) -> Self
+pub fn Color::rgb(Int, Int, Int) -> Self
+pub fn Color::rgba(Int, Int, Int, Int) -> Self
+pub fn Color::success() -> Self
+pub fn Color::text_muted() -> Self
+pub fn Color::text_primary() -> Self
+pub fn Color::transparent() -> Self
+pub fn Color::warning() -> Self
+pub fn Color::white() -> Self
+pub fn Color::with_alpha(Self, Int) -> Self
+
+// Type aliases
+
+// Traits
