@@ -101,6 +101,50 @@
       flex-shrink: 0;
     }
 
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .lang-switch-group {
+      display: flex;
+      align-items: center;
+      background: var(--surface-card);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: 2px 6px;
+      gap: 3px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      font-family: var(--font-sans);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .lang-btn:hover {
+      color: var(--text-heading);
+    }
+
+    .lang-btn.active {
+      color: var(--accent-blue);
+      background: #e0f2fe;
+    }
+
+    .lang-sep {
+      color: var(--border-strong);
+      font-size: 11px;
+    }
+
     .header-links {
       display: flex;
       gap: 16px;
@@ -408,27 +452,34 @@
     <!-- Header -->
     <header class="benchmark-header">
       <div class="title-row">
-        <h1>
+        <h1 id="i18n-title">
           <span class="logo-mark"></span>
-          MoonBit 1,000,000 Nodes Spatial Benchmark
+          MoonBit 百万级空间图元压测
         </h1>
-        <div class="header-links">
-          <a href="https://github.com/LING71671/moon-egui" target="_blank" rel="noreferrer">GitHub Repository</a>
-          <a href="https://moonbitlang.github.io/Hackathon2026/" target="_blank" rel="noreferrer">MoonBit Hackathon 2026</a>
+        <div class="header-right">
+          <div class="header-links">
+            <a href="https://github.com/LING71671/moon-egui" target="_blank" rel="noreferrer" id="i18n-repo">GitHub 源码仓库</a>
+            <a href="https://moonbitlang.github.io/Hackathon2026/" target="_blank" rel="noreferrer" id="i18n-hackathon">MoonBit 黑客松 2026</a>
+          </div>
+          <div class="lang-switch-group">
+            <button class="lang-btn active" id="lang-btn-zh" onclick="setLanguage('zh')">中文</button>
+            <span class="lang-sep">/</span>
+            <button class="lang-btn" id="lang-btn-en" onclick="setLanguage('en')">EN</button>
+          </div>
         </div>
       </div>
-      <p class="description">
-        Evaluating a 1,000,000-entity infinite canvas universe (1,000 × 1,000) with sub-millisecond O(1) spatial viewport culling and real-time AABB hit-testing in pure MoonBit. Demonstrating a 95% memory footprint reduction against LeaferJS (~18MB vs ~350MB) and locked 60 FPS interactive pan/zoom.
+      <p class="description" id="i18n-desc">
+        在纯 MoonBit 编译环境下运行 1,000,000 (1000 × 1000) 空间实体无限画布。微秒级 O(1) 视窗数学裁剪与实时 AABB 命中判定，内存较 LeaferJS 降低 95%（~18MB vs ~320MB），60 FPS 满帧丝滑平移缩放。
       </p>
     </header>
 
     <!-- Real-Time Telemetry HUD Strip -->
     <section class="telemetry-strip" aria-label="Performance Metrics">
       <div class="telemetry-card">
-        <span class="telemetry-label">MoonBit Kernel Time</span>
+        <span class="telemetry-label" id="i18n-kernel-label">MoonBit 内核耗时</span>
         <div class="telemetry-val highlight-blue">
           <span id="telemetry-kernel">0.24 ms</span>
-          <span class="telemetry-sub">/ frame</span>
+          <span class="telemetry-sub" id="i18n-kernel-unit">/ 帧</span>
         </div>
         <div class="budget-track">
           <div class="budget-fill" id="telemetry-budget-bar"></div>
@@ -436,29 +487,29 @@
       </div>
 
       <div class="telemetry-card">
-        <span class="telemetry-label">16.6ms Frame Budget</span>
+        <span class="telemetry-label" id="i18n-budget-label">16.6ms 帧预算占用</span>
         <div class="telemetry-val highlight-blue">
           <span id="telemetry-budget-pct">1.4%</span>
-          <span class="telemetry-sub">utilized</span>
+          <span class="telemetry-sub" id="i18n-budget-unit">已使用</span>
         </div>
-        <span class="telemetry-sub">98.6% CPU remaining for host</span>
+        <span class="telemetry-sub" id="i18n-budget-sub">宿主剩余 98.6% CPU 余量</span>
       </div>
 
       <div class="telemetry-card">
-        <span class="telemetry-label">Universe Scale</span>
+        <span class="telemetry-label" id="i18n-scale-label">全域空间规模</span>
         <div class="telemetry-val">
-          <span id="telemetry-throughput">1,000,000 Nodes</span>
+          <span id="telemetry-throughput">1,000,000 节点</span>
         </div>
-        <span class="telemetry-sub">1,000 × 1,000 entities in memory</span>
+        <span class="telemetry-sub" id="i18n-scale-sub">1,000 × 1,000 内存实体</span>
       </div>
 
       <div class="telemetry-card">
-        <span class="telemetry-label">Render Pipeline</span>
+        <span class="telemetry-label" id="i18n-pipeline-label">渲染指令流水线</span>
         <div class="telemetry-val highlight-green">
           <span id="telemetry-fps">60.0</span>
           <span class="telemetry-sub">FPS</span>
         </div>
-        <span class="telemetry-sub"><span id="telemetry-cmds">1,045</span> commands emitted</span>
+        <span class="telemetry-sub"><span id="telemetry-cmds">1,045</span> <span id="i18n-pipeline-sub">条图元指令发射</span></span>
       </div>
     </section>
 
@@ -475,8 +526,9 @@
         </div>
         <div class="titlebar-right">
           <div class="mode-switch-group">
-            <button class="mode-btn active" id="btn-mode-million" onclick="window.switchMode(1)">1,000,000 Nodes</button>
-            <button class="mode-btn" id="btn-mode-logo" onclick="window.switchMode(0)">Logo Matrix (1.6K)</button>
+            <button class="mode-btn active" id="btn-mode-coffee" onclick="window.switchMode(1)">百万杯咖啡 (1M)</button>
+            <button class="mode-btn" id="btn-mode-rect" onclick="window.switchMode(2)">百万矩形 (1M)</button>
+            <button class="mode-btn" id="btn-mode-logo" onclick="window.switchMode(0)">兔头碎片 (1.6K)</button>
           </div>
           <div class="fps-badge">
             <span class="fps-dot"></span>
@@ -491,13 +543,13 @@
 
       <div class="window-statusbar">
         <div class="status-group">
-          <div class="status-item">Pointer: <span class="status-val" id="telemetry-coords">(-, -)</span></div>
-          <div class="status-item">Gesture: <span class="status-val" id="telemetry-down">IDLE</span></div>
-          <div class="status-item">Gesture Controls: <span>Drag to Pan · Wheel to Zoom</span></div>
+          <div class="status-item"><span id="i18n-pointer">指针坐标:</span> <span class="status-val" id="telemetry-coords">(-, -)</span></div>
+          <div class="status-item"><span id="i18n-gesture">交互手势:</span> <span class="status-val" id="telemetry-down">IDLE</span></div>
+          <div class="status-item"><span id="i18n-controls">快捷控制: 拖拽漫游 · 滚轮缩放 · 点击拾取</span></div>
         </div>
         <div class="status-group">
-          <div class="status-item">Memory Footprint: <span class="status-val">~18 MB (Leafer: ~350 MB)</span></div>
-          <div class="status-item">Engine: <span class="status-val">MoonBit v0.1.0</span></div>
+          <div class="status-item"><span id="i18n-mem">内存占用: ~18 MB (Leafer: ~320 MB)</span></div>
+          <div class="status-item"><span id="i18n-engine">内核: MoonBit 原生编译</span></div>
         </div>
       </div>
     </main>
@@ -505,27 +557,27 @@
     <!-- Technical Architecture Specifications -->
     <footer class="spec-grid">
       <div class="spec-cell">
-        <div class="spec-heading">95% Memory Reduction vs LeaferJS</div>
-        <div class="spec-text">
-          JavaScript objects require heavy hidden-class pointers and V8 prototype chains (consuming 320–350MB in LeaferJS and 2.5GB in Fabric.js). MoonBit's compact flat struct model manages 1,000,000 nodes in under 18MB.
+        <div class="spec-heading" id="i18n-spec1-title">较 LeaferJS 节省 95% 内存开销</div>
+        <div class="spec-text" id="i18n-spec1-text">
+          JavaScript 对象在 V8 引擎中附带沉重的 Hidden Class 原型链与字典元数据（LeaferJS 占用约 320~350MB，Fabric.js 超过 2.5GB）。MoonBit 的紧凑定长平铺结构将 1,000,000 节点内存牢牢压在 18MB 以内。
         </div>
-        <div class="spec-metric">Heap Footprint: ~18 MB vs 350 MB</div>
+        <div class="spec-metric" id="i18n-spec1-metric">堆内存消耗: ~18 MB vs 320 MB</div>
       </div>
 
       <div class="spec-cell">
-        <div class="spec-heading">O(1) Spatial Viewport Culling</div>
-        <div class="spec-text">
-          Visible nodes are calculated instantaneously from camera inverse projection in under 0.05ms, eliminating 99.8% of off-screen nodes before submitting draw commands to Canvas 2D.
+        <div class="spec-heading" id="i18n-spec2-title">O(1) 微秒级视窗空间数学裁剪</div>
+        <div class="spec-text" id="i18n-spec2-text">
+          相机平移缩放时，通过逆矩阵反投影在 0.03ms 内瞬间算出屏幕可视区间，无需遍历任何不可见节点，直接过滤掉 99.8% 的无效渲染开销。
         </div>
-        <div class="spec-metric">Culling Time: &lt; 0.05 ms per frame</div>
+        <div class="spec-metric" id="i18n-spec2-metric">裁剪开销: &lt; 0.05 ms / 帧</div>
       </div>
 
       <div class="spec-cell">
-        <div class="spec-heading">Zero-GC Infinite Canvas Pan & Zoom</div>
-        <div class="spec-text">
-          Continuous mouse dragging and wheel zooming across 1,000,000 entities produces 0 bytes of heap garbage, guaranteeing stutter-free 60 FPS without GC frame drops.
+        <div class="spec-heading" id="i18n-spec3-title">零 GC 抖动无限画布平移缩放</div>
+        <div class="spec-text" id="i18n-spec3-text">
+          连续鼠标拖拽与滚轮漫游 1,000,000 个实体，单帧产生 0 字节动态堆垃圾。帧内内存全量复用，杜绝 V8 Major GC 停顿掉帧，稳锁 60 FPS。
         </div>
-        <div class="spec-metric">Frame Budget Headroom: &gt; 98%</div>
+        <div class="spec-metric" id="i18n-spec3-metric">帧时间余量: &gt; 98%</div>
       </div>
     </footer>
   </div>
@@ -535,15 +587,155 @@
   <!-- Host Runner & Benchmark Telemetry -->
   <script src="run.js"></script>
   <script>
+    const I18N = {
+      zh: {
+        pageTitle: "MoonBit 百万级空间图元压测 • moon-egui 无限画布引擎",
+        mainTitle: "MoonBit 百万级空间图元压测",
+        repoLink: "GitHub 源码仓库",
+        hackathonLink: "MoonBit 黑客松 2026",
+        desc: "在纯 MoonBit 编译环境下运行 1,000,000 (1000 × 1000) 空间实体无限画布。微秒级 O(1) 视窗数学裁剪与实时 AABB 命中判定，内存较 LeaferJS 降低 95%（~18MB vs ~320MB），60 FPS 满帧丝滑平移缩放。",
+        kernelLabel: "MoonBit 内核耗时",
+        kernelUnit: "/ 帧",
+        budgetLabel: "16.6ms 帧预算占用",
+        budgetUnit: "已使用",
+        budgetSub: "宿主剩余 98.6% CPU 余量",
+        scaleLabel: "全域空间规模",
+        scaleVal: "1,000,000 节点",
+        scaleSub: "1,000 × 1,000 内存实体",
+        pipelineLabel: "渲染指令流水线",
+        pipelineSub: "条图元指令发射",
+        btnCoffee: "百万杯咖啡 (1M)",
+        btnRect: "百万矩形 (1M)",
+        btnLogo: "兔头碎片 (1.6K)",
+        pointer: "指针坐标:",
+        gesture: "交互手势:",
+        controls: "快捷控制: 拖拽漫游 · 滚轮缩放 · 点击拾取",
+        mem: "内存占用: ~18 MB (Leafer: ~320 MB)",
+        engine: "内核: MoonBit 原生编译",
+        spec1Title: "较 LeaferJS 节省 95% 内存开销",
+        spec1Text: "JavaScript 对象在 V8 引擎中附带沉重的 Hidden Class 原型链与字典元数据（LeaferJS 占用约 320~350MB，Fabric.js 超过 2.5GB）。MoonBit 的紧凑定长平铺结构将 1,000,000 节点内存牢牢压在 18MB 以内。",
+        spec1Metric: "堆内存消耗: ~18 MB vs 320 MB",
+        spec2Title: "O(1) 微秒级视窗空间数学裁剪",
+        spec2Text: "相机平移缩放时，通过逆矩阵反投影在 0.03ms 内瞬间算出屏幕可视区间，无需遍历任何不可见节点，直接过滤掉 99.8% 的无效渲染开销。",
+        spec2Metric: "裁剪开销: < 0.05 ms / 帧",
+        spec3Title: "零 GC 抖动无限画布平移缩放",
+        spec3Text: "连续鼠标拖拽与滚轮漫游 1,000,000 个实体，单帧产生 0 字节动态堆垃圾。帧内内存全量复用，杜绝 V8 Major GC 停顿掉帧，稳锁 60 FPS。",
+        spec3Metric: "帧时间余量: > 98%",
+      },
+      en: {
+        pageTitle: "MoonBit 1,000,000 Nodes Spatial Benchmark • moon-egui",
+        mainTitle: "MoonBit 1,000,000 Nodes Spatial Benchmark",
+        repoLink: "GitHub Repository",
+        hackathonLink: "MoonBit Hackathon 2026",
+        desc: "Evaluating a 1,000,000-entity infinite canvas universe (1,000 × 1,000) with sub-millisecond O(1) spatial viewport culling and real-time AABB hit-testing in pure MoonBit. Demonstrating a 95% memory footprint reduction against LeaferJS (~18MB vs ~320MB) and locked 60 FPS interactive pan/zoom.",
+        kernelLabel: "MoonBit Kernel Time",
+        kernelUnit: "/ frame",
+        budgetLabel: "16.6ms Frame Budget",
+        budgetUnit: "utilized",
+        budgetSub: "98.6% CPU remaining for host",
+        scaleLabel: "Universe Scale",
+        scaleVal: "1,000,000 Nodes",
+        scaleSub: "1,000 × 1,000 entities in memory",
+        pipelineLabel: "Render Pipeline",
+        pipelineSub: "commands emitted",
+        btnCoffee: "1M Coffee Cups",
+        btnRect: "1M Rectangles",
+        btnLogo: "Logo Matrix (1.6K)",
+        pointer: "Pointer:",
+        gesture: "Gesture:",
+        controls: "Controls: Drag to Pan · Wheel to Zoom · Click to Select",
+        statusMem: "Memory Footprint: ~18 MB (Leafer: ~320 MB)",
+        statusEngine: "Engine: MoonBit Native",
+        spec1Title: "95% Memory Reduction vs LeaferJS",
+        spec1Text: "JavaScript objects require heavy hidden-class pointers and V8 prototype chains (consuming 320–350MB in LeaferJS and 2.5GB in Fabric.js). MoonBit's compact flat struct model manages 1,000,000 nodes in under 18MB.",
+        spec1Metric: "Heap Footprint: ~18 MB vs 320 MB",
+        spec2Title: "O(1) Spatial Viewport Culling",
+        spec2Text: "Visible nodes are calculated instantaneously from camera inverse projection in under 0.05ms, eliminating 99.8% of off-screen nodes before submitting draw commands to Canvas 2D.",
+        spec2Metric: "Culling Time: < 0.05 ms per frame",
+        spec3Title: "Zero-GC Infinite Canvas Pan & Zoom",
+        spec3Text: "Continuous mouse dragging and wheel zooming across 1,000,000 entities produces 0 bytes of heap garbage, guaranteeing stutter-free 60 FPS without GC frame drops.",
+        spec3Metric: "Frame Budget Headroom: > 98%",
+      }
+    };
+
+    let currentLang = 'zh';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      try {
+        localStorage.setItem('moon_benchmark_lang', lang);
+      } catch (e) {}
+
+      document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+      const dict = I18N[lang];
+      if (!dict) return;
+
+      document.title = dict.pageTitle;
+      const t = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+
+      const titleEl = document.getElementById('i18n-title');
+      if (titleEl) {
+        titleEl.innerHTML = `<span class="logo-mark"></span> ${dict.mainTitle}`;
+      }
+
+      t('i18n-repo', dict.repoLink);
+      t('i18n-hackathon', dict.hackathonLink);
+      t('i18n-desc', dict.desc);
+      t('i18n-kernel-label', dict.kernelLabel);
+      t('i18n-kernel-unit', dict.kernelUnit);
+      t('i18n-budget-label', dict.budgetLabel);
+      t('i18n-budget-unit', dict.budgetUnit);
+      t('i18n-budget-sub', dict.budgetSub);
+      t('i18n-scale-label', dict.scaleLabel);
+      t('telemetry-throughput', dict.scaleVal);
+      t('i18n-scale-sub', dict.scaleSub);
+      t('i18n-pipeline-label', dict.pipelineLabel);
+      t('i18n-pipeline-sub', dict.pipelineSub);
+      t('btn-mode-coffee', dict.btnCoffee);
+      t('btn-mode-rect', dict.btnRect);
+      t('btn-mode-logo', dict.btnLogo);
+      t('i18n-pointer', dict.pointer);
+      t('i18n-gesture', dict.gesture);
+      t('i18n-controls', dict.controls);
+      t('i18n-mem', dict.mem || dict.statusMem);
+      t('i18n-engine', dict.engine || dict.statusEngine);
+      t('i18n-spec1-title', dict.spec1Title);
+      t('i18n-spec1-text', dict.spec1Text);
+      t('i18n-spec1-metric', dict.spec1Metric);
+      t('i18n-spec2-title', dict.spec2Title);
+      t('i18n-spec2-text', dict.spec2Text);
+      t('i18n-spec2-metric', dict.spec2Metric);
+      t('i18n-spec3-title', dict.spec3Title);
+      t('i18n-spec3-text', dict.spec3Text);
+      t('i18n-spec3-metric', dict.spec3Metric);
+
+      const btnZh = document.getElementById('lang-btn-zh');
+      const btnEn = document.getElementById('lang-btn-en');
+      if (btnZh) btnZh.className = lang === 'zh' ? 'lang-btn active' : 'lang-btn';
+      if (btnEn) btnEn.className = lang === 'en' ? 'lang-btn active' : 'lang-btn';
+    }
+
+    let activeBenchmarkMode = 1;
+
     window.switchMode = function(m) {
+      activeBenchmarkMode = m;
       if (typeof window.switchBenchmarkMode === 'function') {
         window.switchBenchmarkMode(m);
       }
-      const btnMil = document.getElementById('btn-mode-million');
+      const btnCoffee = document.getElementById('btn-mode-coffee');
+      const btnRect = document.getElementById('btn-mode-rect');
       const btnLogo = document.getElementById('btn-mode-logo');
-      if (btnMil) btnMil.className = m === 1 ? 'mode-btn active' : 'mode-btn';
+      if (btnCoffee) btnCoffee.className = m === 1 ? 'mode-btn active' : 'mode-btn';
+      if (btnRect) btnRect.className = m === 2 ? 'mode-btn active' : 'mode-btn';
       if (btnLogo) btnLogo.className = m === 0 ? 'mode-btn active' : 'mode-btn';
     };
+
+    // Initialize default language (Chinese)
+    const savedLang = (typeof localStorage !== 'undefined' && localStorage.getItem('moon_benchmark_lang')) || 'zh';
+    setLanguage(savedLang);
   </script>
 </body>
 </html>

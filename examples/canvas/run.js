@@ -187,6 +187,29 @@
           ctx.stroke();
           break;
         }
+        case 2: { // Circle: cmd._0: center, cmd._1: radius, cmd._2: color
+          const center = cmd._0;
+          const radius = cmd._1;
+          const color = cmd._2;
+          const colorStr = `rgba(${color.r},${color.g},${color.b},${color.a / 255})`;
+          setFill(colorStr);
+          ctx.beginPath();
+          ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+        }
+        case 3: { // CircleStroke: cmd._0: center, cmd._1: radius, cmd._2: color, cmd._3: strokeW
+          const center = cmd._0;
+          const radius = cmd._1;
+          const color = cmd._2;
+          const strokeW = cmd._3 || 1;
+          const colorStr = `rgba(${color.r},${color.g},${color.b},${color.a / 255})`;
+          setStroke(colorStr, strokeW);
+          ctx.beginPath();
+          ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
+          ctx.stroke();
+          break;
+        }
         case 4: { // Line: cmd._0: p1, cmd._1: p2, cmd._2: color, cmd._3: strokeW
           const p1 = cmd._0;
           const p2 = cmd._1;
@@ -210,6 +233,18 @@
           setFont(`600 ${fontSize}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`);
           ctx.textBaseline = 'top';
           ctx.fillText(text, pos.x, pos.y);
+          break;
+        }
+        case 6: { // Clip: cmd._0: rect
+          const rect = cmd._0;
+          ctx.save();
+          ctx.beginPath();
+          ctx.rect(rect.x, rect.y, rect.w, rect.h);
+          ctx.clip();
+          break;
+        }
+        case 7: { // ResetClip
+          ctx.restore();
           break;
         }
       }

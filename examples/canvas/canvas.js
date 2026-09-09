@@ -1,4 +1,4 @@
-function _M0TP49LING7167111moon_2degui8examples6canvas14BenchmarkState(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14, param15, param16, param17, param18, param19) {
+function _M0TP49LING7167111moon_2degui8examples6canvas14BenchmarkState(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14, param15, param16, param17, param18, param19, param20) {
   this.mode = param0;
   this.grid_dim = param1;
   this.click_count = param2;
@@ -12,13 +12,14 @@ function _M0TP49LING7167111moon_2degui8examples6canvas14BenchmarkState(param0, p
   this.ripple_cy = param10;
   this.ripple_active = param11;
   this.ripple_progress = param12;
-  this.cam_x = param13;
-  this.cam_y = param14;
-  this.zoom = param15;
-  this.million_selected_id = param16;
-  this.million_selected_col = param17;
-  this.million_selected_row = param18;
-  this.million_visible_count = param19;
+  this.million_mode = param13;
+  this.cam_x = param14;
+  this.cam_y = param15;
+  this.zoom = param16;
+  this.million_selected_id = param17;
+  this.million_selected_col = param18;
+  this.million_selected_row = param19;
+  this.million_visible_count = param20;
 }
 function _M0TPB13StringBuilder(param0) {
   this.val = param0;
@@ -105,6 +106,7 @@ function _M0DTP49LING7167111moon_2degui3src4draw7DrawCmd4Clip(param0) {
 _M0DTP49LING7167111moon_2degui3src4draw7DrawCmd4Clip.prototype.$tag = 6;
 function _M0DTP49LING7167111moon_2degui3src4draw7DrawCmd9ResetClip() {}
 _M0DTP49LING7167111moon_2degui3src4draw7DrawCmd9ResetClip.prototype.$tag = 7;
+const _M0DTP49LING7167111moon_2degui3src4draw7DrawCmd9ResetClip__ = new _M0DTP49LING7167111moon_2degui3src4draw7DrawCmd9ResetClip();
 function _M0TP49LING7167111moon_2degui3src4core2Id(param0) {
   this.val = param0;
 }
@@ -161,7 +163,7 @@ function _M0TPB8MutLocalGbE(param0) {
   this.val = param0;
 }
 const _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger = { method_0: _M0IPB13StringBuilderPB6Logger13write__string, method_1: _M0IP016_24default__implPB6Logger16write__substringGRPB13StringBuilderE, method_2: _M0IPB13StringBuilderPB6Logger11write__view, method_3: _M0IPB13StringBuilderPB6Logger11write__char, method_4: _M0IP016_24default__implPB6Logger28write__string__interpolationGRPB13StringBuilderE, method_5: _M0IP016_24default__implPB6Logger5writeGRPB13StringBuilderE };
-const _M0FP49LING7167111moon_2degui8examples6canvas5state = new _M0TP49LING7167111moon_2degui8examples6canvas14BenchmarkState(1, 32, 0, true, false, 0, -1, -1, -1, 580, 270, false, 0, 20000, 20000, 0.45, -1, -1, -1, 0);
+const _M0FP49LING7167111moon_2degui8examples6canvas5state = new _M0TP49LING7167111moon_2degui8examples6canvas14BenchmarkState(1, 32, 0, true, false, 0, -1, -1, -1, 580, 270, false, 0, 0, 32000, 38000, 0.85, -1, -1, -1, 0);
 const _M0FP49LING7167111moon_2degui8examples6canvas14logo__grid__12 = [0, 0, 0, 28844929, 29172868, 0, 0, 29238662, 28779649, 0, 0, 0, 0, 0, 28845186, 29566601, 29894541, 28910721, 28845185, 29960077, 29501064, 28910722, 0, 0, 0, 0, 28844929, 30091407, 29829004, 28910465, 28976258, 29763467, 30156943, 28976002, 0, 0, 0, 0, 28845184, 28910465, 29042052, 28911233, 28910722, 29042051, 29041539, 28844930, 0, 0, 0, 0, 0, 0, 28580733, 28778110, 28778110, 28646011, 0, 0, 0, 0, 0, 0, 0, 0, 29439630, 29373324, 29438604, 29439630, 0, 0, 0, 0, 0, 0, 0, 30767795, 33545205, 33024498, 33157110, 33546487, 30834870, 0, 0, 0, 0, 0, 0, 30171557, 32815838, 31299523, 31432135, 32816095, 30238376, 0, 0, 0, 0, 0, 0, 27197510, 29108873, 28776829, 28776829, 29240458, 0, 0, 0, 0, 0, 0, 0, 30736383, 28942801, 29370247, 29370247, 29928918, 29555967, 0, 0, 0, 0, 0, 29217007, 30799359, 28999869, 28848266, 28980622, 28864177, 29289471, 29940466, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30205432, 0, 0];
 const _M0FP49LING7167111moon_2degui8examples6canvas14logo__grid__20 = [0, 0, 0, 0, 0, 28648319, 29369735, 29172869, 28713343, 0, 0, 28975748, 29173125, 29304198, 28648320, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910207, 29172869, 29041795, 29829004, 28845186, 0, 0, 28910721, 29763211, 29107332, 29107332, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28976001, 29829004, 28844929, 29173124, 28910465, 0, 0, 28845185, 29107588, 28844929, 29829004, 28910465, 0, 0, 0, 0, 0, 0, 0, 0, 28910465, 29304198, 28845186, 28976259, 28910723, 0, 0, 28976259, 28910722, 28845186, 29369735, 28844930, 0, 0, 0, 0, 0, 0, 0, 0, 28845185, 29501064, 29173125, 28910721, 29566601, 29107076, 29042307, 29632138, 28845185, 29173125, 29501065, 28910465, 0, 0, 0, 0, 0, 0, 0, 0, 28844930, 28910722, 28844930, 29501064, 29763467, 28845185, 28779392, 29829004, 29435528, 28845185, 28976258, 28910466, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28976259, 30288017, 28845186, 28910465, 30353553, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28845443, 30550676, 28910977, 28910978, 30485139, 28911235, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28381300, 29106307, 28909697, 28909696, 29106307, 28381558, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28249972, 29701007, 29374093, 29373324, 29373068, 29373836, 29635214, 28446582, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 27985771, 31754434, 33021422, 32758506, 33024498, 33090547, 32825068, 33154289, 31887303, 28052333, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910466, 33552127, 32427490, 32028373, 33554431, 33554431, 32160985, 32493539, 33553919, 29109127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28447352, 32151244, 33024242, 31962068, 31431365, 31630282, 32094679, 33155827, 32349904, 28578936, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779394, 29040514, 29767312, 28844672, 28644986, 28579193, 28778879, 29832849, 29040770, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28574826, 29174666, 29108359, 28911235, 28911235, 29174408, 29240459, 28508258, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29223167, 28694773, 28984728, 28975488, 28975232, 28985241, 30928636, 30667007, 28624876, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28759024, 31057654, 30667519, 28674499, 28846212, 29173381, 29173125, 28846213, 29724100, 29288701, 28561392, 28168435, 0, 0, 0, 0, 0, 0, 0, 0, 28891381, 31517432, 30207999, 28675269, 29237379, 28851088, 28851088, 29500551, 28604602, 28305919, 29546481, 30335991, 0, 0, 0, 0, 0, 0, 0, 0, 28759024, 29285622, 28758769, 28966911, 28862125, 28688101, 28821992, 28730538, 28770303, 28626927, 29547766, 30926841, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 const _M0FP49LING7167111moon_2degui8examples6canvas14logo__grid__32 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 29041538, 29172868, 29173125, 28844931, 0, 0, 0, 0, 0, 0, 29042051, 29173125, 29238661, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779393, 29960077, 28976259, 28910722, 30025614, 28845186, 0, 0, 0, 0, 28779393, 30025614, 28845186, 29041795, 29894540, 28779393, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910721, 29829004, 28844930, 28845185, 28910722, 29107333, 28845186, 0, 0, 0, 0, 28976259, 29041795, 28845185, 28845185, 28910723, 29632138, 28779395, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844928, 29501064, 28910721, 28910722, 28910722, 28845186, 29435272, 28713601, 0, 0, 28910209, 29566601, 28845185, 28910722, 28910722, 28845185, 29566601, 28844928, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29041282, 29107332, 28845186, 28910722, 28910722, 28910722, 28844930, 29697675, 28844931, 0, 0, 28844929, 29763467, 28844930, 28910722, 28910722, 28910722, 28976258, 28976258, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910721, 29763467, 28844930, 28910722, 28910722, 28910722, 28844930, 29763467, 28910722, 0, 0, 28779649, 29763467, 28844930, 28910722, 28910722, 28910722, 28844929, 29697674, 28714114, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910721, 29763467, 28844930, 28910722, 28845185, 28910722, 28845186, 29632138, 28845186, 0, 0, 28845185, 29566601, 28910721, 28910722, 28845185, 28910722, 28844930, 29763467, 28844930, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910465, 29697675, 28910466, 29304198, 29107588, 28845186, 28845186, 29435271, 28910722, 0, 0, 28910465, 29304198, 28910722, 28845185, 29107588, 29304198, 28910465, 29697931, 28844929, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910722, 30156943, 30025614, 28845186, 28910722, 29697674, 28844930, 29173125, 28910466, 0, 0, 28845185, 29041796, 28844930, 29763211, 28910466, 28910466, 30025870, 30091407, 28779649, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29107333, 29500808, 29107075, 0, 29042305, 29369735, 28910722, 28910722, 29041795, 0, 28910213, 29304198, 28910722, 28976259, 29238662, 28845695, 0, 29041795, 29238406, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28713856, 29632138, 28844930, 29697674, 28779393, 28910209, 29829004, 28910465, 29697675, 28779392, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29042305, 29304198, 28844929, 29960077, 28910722, 28844929, 29960077, 28844930, 29172869, 28976514, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779392, 29435528, 29829004, 28845185, 28779649, 29763467, 29501065, 28779393, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28780933, 29304455, 29304455, 28910978, 28910979, 29304455, 29173126, 28911751, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29172355, 29106563, 28844161, 28778623, 29106563, 29106563, 28778623, 28909697, 29106307, 29106820, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28776316, 30025870, 29503885, 29175945, 29176201, 29176202, 29110665, 29176202, 29175688, 29503884, 30026127, 28775803, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28513400, 31418804, 32957167, 33223415, 33288952, 33288952, 33222389, 33222390, 33222902, 33355257, 33289465, 33023472, 31683514, 28447865, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29440143, 33553405, 33288695, 32028374, 32692200, 32692200, 33554431, 33554431, 33488125, 32492770, 32360671, 33553661, 33554431, 29639572, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 27918440, 30761386, 33554431, 32426720, 31365060, 31962324, 31962580, 33554431, 33554174, 32293852, 31564490, 31829456, 31896275, 33554431, 31092402, 27787369, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28579196, 29898643, 33355514, 33487869, 32493283, 33089778, 32493026, 33488382, 33488382, 33554431, 32890861, 32625895, 33554431, 33553661, 30163353, 28578424, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28777341, 30104224, 32625638, 32691944, 31166143, 30237349, 29574292, 29574549, 30104738, 31232192, 32625638, 32626407, 30303142, 28842621, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28911236, 29826696, 28712830, 28778367, 28512888, 28645243, 28777854, 28777598, 28645499, 28512888, 28778111, 28778624, 29826441, 28910979, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29108871, 29959820, 28844672, 28977284, 28976771, 28976771, 28976771, 28977027, 28977284, 28909952, 29959821, 29174663, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29174922, 29174922, 28910209, 28845442, 28910722, 28910722, 28910722, 28976003, 29373069, 29175177, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28694775, 28698109, 28757486, 28856477, 29105535, 28845699, 28845699, 29105535, 28790942, 30269942, 31193599, 30861560, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29548536, 30598648, 29546995, 28696313, 28877266, 28912262, 28913032, 28910466, 28976001, 28913288, 28714372, 30059219, 31454463, 30334964, 28694003, 28890868, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28825331, 30729975, 31649529, 30860790, 28696828, 28851345, 28913545, 28914315, 29041282, 29041282, 28848522, 28848265, 29047696, 29747451, 28824819, 28759540, 28693747, 28693490, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28891126, 29087989, 31583994, 31977722, 30664953, 28627441, 28849035, 29042308, 28845185, 28910979, 28910979, 28844929, 29042821, 28847239, 28493547, 28760821, 28627697, 29153780, 29482229, 28430833, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28890614, 28496626, 30796024, 31190010, 29087475, 28696826, 28873158, 29172869, 28845700, 28741318, 28874187, 28846212, 29303685, 28871875, 28829951, 28890098, 28431091, 30204664, 32240635, 29416180, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28693490, 28760309, 28562672, 28628724, 28628724, 28954865, 28901375, 28798383, 28799668, 28770303, 28770303, 28865717, 28732335, 28637695, 28758513, 28891637, 28628982, 29350644, 31452410, 29481203, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -278,6 +280,9 @@ function _M0MPC15array5Array5clearGRP49LING7167111moon_2degui3src4math4RectE(sel
 function _M0MP49LING7167111moon_2degui3src5color5Color3rgb(r, g, b) {
   return new _M0TP49LING7167111moon_2degui3src5color5Color(r, g, b, 255);
 }
+function _M0MP49LING7167111moon_2degui3src5color5Color4rgba(r, g, b, a) {
+  return new _M0TP49LING7167111moon_2degui3src5color5Color(r, g, b, a);
+}
 function _M0MP49LING7167111moon_2degui3src5color5Color5white() {
   return new _M0TP49LING7167111moon_2degui3src5color5Color(255, 255, 255, 255);
 }
@@ -322,11 +327,20 @@ function _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(self, rect, c
 function _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(self, rect, color, stroke_width, corner_radius) {
   _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4draw7DrawCmdE(self.commands, new _M0DTP49LING7167111moon_2degui3src4draw7DrawCmd10RectStroke(rect, color, stroke_width, corner_radius));
 }
+function _M0MP49LING7167111moon_2degui3src4draw8DrawList11add__circle(self, center, radius, color) {
+  _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4draw7DrawCmdE(self.commands, new _M0DTP49LING7167111moon_2degui3src4draw7DrawCmd6Circle(center, radius, color));
+}
 function _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(self, start, end, color, stroke_width) {
   _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4draw7DrawCmdE(self.commands, new _M0DTP49LING7167111moon_2degui3src4draw7DrawCmd4Line(start, end, color, stroke_width));
 }
 function _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(self, pos, text, font_size, color) {
   _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4draw7DrawCmdE(self.commands, new _M0DTP49LING7167111moon_2degui3src4draw7DrawCmd4Text(pos, text, font_size, color));
+}
+function _M0MP49LING7167111moon_2degui3src4draw8DrawList10push__clip(self, rect) {
+  _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4draw7DrawCmdE(self.commands, new _M0DTP49LING7167111moon_2degui3src4draw7DrawCmd4Clip(rect));
+}
+function _M0MP49LING7167111moon_2degui3src4draw8DrawList9pop__clip(self) {
+  _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4draw7DrawCmdE(self.commands, _M0DTP49LING7167111moon_2degui3src4draw7DrawCmd9ResetClip__);
 }
 function _M0IP49LING7167111moon_2degui3src4core2IdPB2Eq5equal(_x_155, _x_156) {
   return BigInt.asUintN(64, _x_155.val) === BigInt.asUintN(64, _x_156.val);
@@ -440,6 +454,10 @@ function _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(self
 function _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(self, width) {
   self.available_width = width;
 }
+function _M0FP49LING7167111moon_2degui8examples6canvas16get__ruler__step(zoom) {
+  const target = 80 / zoom;
+  return target > 50000 ? 100000 : target > 20000 ? 50000 : target > 10000 ? 20000 : target > 5000 ? 10000 : target > 2000 ? 5000 : target > 1000 ? 2000 : target > 500 ? 1000 : target > 200 ? 500 : target > 100 ? 200 : target > 50 ? 100 : 50;
+}
 function _M0FP49LING7167111moon_2degui8examples6canvas6d__abs(val) {
   return val < 0 ? -val : val;
 }
@@ -465,9 +483,7 @@ function _M0FP49LING7167111moon_2degui8examples6canvas12label__light(ui, text, i
   _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(_M0MP49LING7167111moon_2degui3src4core9UIContext10draw__list(ui), _M0MP49LING7167111moon_2degui3src4math4Vec23new(rect.x, rect.y + 1), text, 14, color);
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas13button__light(ui, text, is_active) {
-  const char_w = 8;
-  const text_w = (text.length + 0) * char_w;
-  const w = text_w + 24 > 64 ? text_w + 24 : 64;
+  const w = 210;
   const h = 28;
   let rect;
   let _id;
@@ -514,15 +530,13 @@ function _M0FP49LING7167111moon_2degui8examples6canvas13button__light(ui, text, 
   }
   _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext10draw__list(ui), rect, bg, 5);
   _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext10draw__list(ui), rect, border, 1, 5);
-  const text_x = rect.x + (rect.w - text_w) * 0.5;
+  const text_x = rect.x + 12;
   const text_y = rect.y + (rect.h - 14) * 0.5;
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(_M0MP49LING7167111moon_2degui3src4core9UIContext10draw__list(ui), _M0MP49LING7167111moon_2degui3src4math4Vec23new(text_x, text_y), text, 14, text_col);
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(_M0MP49LING7167111moon_2degui3src4core9UIContext10draw__list(ui), _M0MP49LING7167111moon_2degui3src4math4Vec23new(text_x, text_y), text, 12, text_col);
   return resp;
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas22button__primary__light(ui, text) {
-  const char_w = 8;
-  const text_w = (text.length + 0) * char_w;
-  const w = text_w + 24 > 64 ? text_w + 24 : 64;
+  const w = 210;
   const h = 28;
   let rect;
   let _id;
@@ -558,9 +572,9 @@ function _M0FP49LING7167111moon_2degui8examples6canvas22button__primary__light(u
   }
   _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext10draw__list(ui), rect, bg, 5);
   _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext10draw__list(ui), rect, border, 1, 5);
-  const text_x = rect.x + (rect.w - text_w) * 0.5;
+  const text_x = rect.x + 12;
   const text_y = rect.y + (rect.h - 14) * 0.5;
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(_M0MP49LING7167111moon_2degui3src4core9UIContext10draw__list(ui), _M0MP49LING7167111moon_2degui3src4math4Vec23new(text_x, text_y), text, 14, _M0MP49LING7167111moon_2degui3src5color5Color5white());
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(_M0MP49LING7167111moon_2degui3src4core9UIContext10draw__list(ui), _M0MP49LING7167111moon_2degui3src4math4Vec23new(text_x, text_y), text, 12, _M0MP49LING7167111moon_2degui3src5color5Color5white());
   return resp;
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas15checkbox__light(ui, text, checked) {
@@ -654,8 +668,20 @@ function _M0FP49LING7167111moon_2degui8examples6canvas16get__logo__color(size, i
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mouse_down, pan_dx, pan_dy, zoom_delta, switch_mode) {
   _M0FP49LING7167111moon_2degui8examples6canvas5state.frame_tick = _M0FP49LING7167111moon_2degui8examples6canvas5state.frame_tick + 1;
-  if (switch_mode >= 0 && switch_mode <= 1) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.mode = switch_mode;
+  if (switch_mode >= 0 && switch_mode <= 2) {
+    if (switch_mode === 0) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.mode = 0;
+    } else {
+      if (switch_mode === 1) {
+        _M0FP49LING7167111moon_2degui8examples6canvas5state.mode = 1;
+        _M0FP49LING7167111moon_2degui8examples6canvas5state.million_mode = 0;
+      } else {
+        if (switch_mode === 2) {
+          _M0FP49LING7167111moon_2degui8examples6canvas5state.mode = 1;
+          _M0FP49LING7167111moon_2degui8examples6canvas5state.million_mode = 1;
+        }
+      }
+    }
   }
   if (pan_dx !== 0 || pan_dy !== 0) {
     _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x - pan_dx / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
@@ -663,15 +689,15 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
     if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x < 0) {
       _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 0;
     } else {
-      if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x > 40000) {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 40000;
+      if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x > 64000) {
+        _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 64000;
       }
     }
     if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y < 0) {
       _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 0;
     } else {
-      if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y > 40000) {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 40000;
+      if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y > 76000) {
+        _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 76000;
       }
     }
   }
@@ -693,10 +719,15 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
   _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "BENCHMARK SUITE", true);
   _M0FP49LING7167111moon_2degui8examples6canvas16separator__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
   _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 2);
-  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "1,000,000 Nodes (Leafer)", _M0FP49LING7167111moon_2degui8examples6canvas5state.mode === 1))) {
+  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "百万杯咖啡 (1M Coffee)", _M0FP49LING7167111moon_2degui8examples6canvas5state.mode === 1 && _M0FP49LING7167111moon_2degui8examples6canvas5state.million_mode === 0))) {
     _M0FP49LING7167111moon_2degui8examples6canvas5state.mode = 1;
+    _M0FP49LING7167111moon_2degui8examples6canvas5state.million_mode = 0;
   }
-  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Logo Matrix (1.6K Full)", _M0FP49LING7167111moon_2degui8examples6canvas5state.mode === 0))) {
+  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "百万矩形 (1M Rects)", _M0FP49LING7167111moon_2degui8examples6canvas5state.mode === 1 && _M0FP49LING7167111moon_2degui8examples6canvas5state.million_mode === 1))) {
+    _M0FP49LING7167111moon_2degui8examples6canvas5state.mode = 1;
+    _M0FP49LING7167111moon_2degui8examples6canvas5state.million_mode = 1;
+  }
+  if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Logo 碎片 (1.6K Full)", _M0FP49LING7167111moon_2degui8examples6canvas5state.mode === 0))) {
     _M0FP49LING7167111moon_2degui8examples6canvas5state.mode = 0;
   }
   _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 4);
@@ -704,24 +735,23 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
   _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 2);
   if (_M0FP49LING7167111moon_2degui8examples6canvas5state.mode === 1) {
     _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Camera Zoom Presets:", false);
-    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Overview (0.1x Galaxy)", false))) {
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 0.1;
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 20000;
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 20000;
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "特写聚焦 (1.2x Focus)", false))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 1.2;
     }
-    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Cluster (0.45x Mid)", false))) {
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 0.45;
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "货架全景 (0.5x Shelves)", false))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 0.5;
     }
-    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Standard (1.0x 1:1)", false))) {
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 1;
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "百万鸟瞰 (0.12x Macro)", false))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 0.12;
     }
-    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Micro (2.2x Focus)", false))) {
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 2.2;
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "宇宙中心 (32K, 38K)", false))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 32000;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 38000;
     }
     _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, 4);
-    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas22button__primary__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Center Galaxy Core"))) {
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 20000;
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 20000;
+    if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas22button__primary__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Center Viewport"))) {
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 32000;
+      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 38000;
     }
     if (_M0MP49LING7167111moon_2degui3src4core8Response7clicked(_M0FP49LING7167111moon_2degui8examples6canvas13button__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Reset Hits", false))) {
       _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count = 0;
@@ -757,7 +787,7 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
     } else {
       _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Target: None (Hover/Drag)", false);
     }
-    _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Mem: ~18MB (vs Leafer 350MB)", false);
+    _M0FP49LING7167111moon_2degui8examples6canvas12label__light(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "Mem: ~18MB (vs Leafer 320MB)", false);
     const dl = _M0MP49LING7167111moon_2degui3src4core9UIContext10draw__list(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
     const vp_x = 270;
     const vp_y = 20;
@@ -765,18 +795,26 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
     const vp_h = 500;
     _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, vp_y, vp_w, vp_h), _M0MP49LING7167111moon_2degui3src5color5Color5white(), 8);
     _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, vp_y, vp_w, vp_h), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240), 1, 8);
-    const sc_x = vp_x + vp_w * 0.5;
-    const sc_y = vp_y + vp_h * 0.5;
-    const in_viewport = mouse_x >= vp_x && (mouse_x <= vp_x + vp_w && (mouse_y >= vp_y && mouse_y <= vp_y + vp_h));
-    if (in_viewport) {
+    const ruler_h = 22;
+    const ruler_w = 46;
+    const cv_x = vp_x + ruler_w;
+    const cv_y = vp_y + ruler_h;
+    const cv_w = vp_w - ruler_w;
+    const cv_h = vp_h - ruler_h;
+    const sc_x = cv_x + cv_w * 0.5;
+    const sc_y = cv_y + cv_h * 0.5;
+    const cell_w = 64;
+    const cell_h = 76;
+    const in_canvas = mouse_x >= cv_x && (mouse_x <= cv_x + cv_w && (mouse_y >= cv_y && mouse_y <= cv_y + cv_h));
+    if (in_canvas) {
       const mwx = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x + (mouse_x - sc_x) / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
       const mwy = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y + (mouse_y - sc_y) / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-      const hit_col = _M0MPC16double6Double7to__int(mwx / 40);
-      const hit_row = _M0MPC16double6Double7to__int(mwy / 40);
+      const hit_col = _M0MPC16double6Double7to__int(mwx / cell_w);
+      const hit_row = _M0MPC16double6Double7to__int(mwy / cell_h);
       if (hit_col >= 0 && (hit_col < 1000 && (hit_row >= 0 && hit_row < 1000))) {
-        const rel_x = mwx - (hit_col + 0) * 40;
-        const rel_y = mwy - (hit_row + 0) * 40;
-        if (rel_x >= 0 && (rel_x <= 32 && (rel_y >= 0 && rel_y <= 32))) {
+        const rel_x = mwx - (hit_col + 0) * cell_w;
+        const rel_y = mwy - (hit_row + 0) * cell_h;
+        if (rel_x >= 6 && (rel_x <= 58 && (rel_y >= 4 && rel_y <= 68))) {
           const node_id = (Math.imul(hit_row, 1000) | 0) + hit_col | 0;
           _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_id = node_id;
           _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_col = hit_col;
@@ -787,86 +825,201 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
         }
       }
     }
-    const half_vw = vp_w * 0.5 / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-    const half_vh = vp_h * 0.5 / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+    const half_vw = cv_w * 0.5 / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+    const half_vh = cv_h * 0.5 / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
     const min_wx = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x - half_vw;
     const max_wx = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x + half_vw;
     const min_wy = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y - half_vh;
     const max_wy = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y + half_vh;
-    const col_start = new _M0TPB8MutLocalGiE(_M0MPC16double6Double7to__int(min_wx / 40));
+    const col_start = new _M0TPB8MutLocalGiE(_M0MPC16double6Double7to__int(min_wx / cell_w));
     if (col_start.val < 0) {
       col_start.val = 0;
     }
-    const col_end = new _M0TPB8MutLocalGiE(_M0MPC16double6Double7to__int(max_wx / 40) + 1 | 0);
+    const col_end = new _M0TPB8MutLocalGiE(_M0MPC16double6Double7to__int(max_wx / cell_w) + 1 | 0);
     if (col_end.val > 1000) {
       col_end.val = 1000;
     }
-    const row_start = new _M0TPB8MutLocalGiE(_M0MPC16double6Double7to__int(min_wy / 40));
+    const row_start = new _M0TPB8MutLocalGiE(_M0MPC16double6Double7to__int(min_wy / cell_h));
     if (row_start.val < 0) {
       row_start.val = 0;
     }
-    const row_end = new _M0TPB8MutLocalGiE(_M0MPC16double6Double7to__int(max_wy / 40) + 1 | 0);
+    const row_end = new _M0TPB8MutLocalGiE(_M0MPC16double6Double7to__int(max_wy / cell_h) + 1 | 0);
     if (row_end.val > 1000) {
       row_end.val = 1000;
     }
     const raw_visible = Math.imul(col_end.val - col_start.val | 0, row_end.val - row_start.val | 0) | 0;
     _M0FP49LING7167111moon_2degui8examples6canvas5state.million_visible_count = raw_visible;
-    const stride = raw_visible <= 2200 ? 1 : raw_visible <= 8000 ? 2 : raw_visible <= 30000 ? 4 : 8;
-    const draw_w = _M0MPC16double6Double3max(32 * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom * (stride + 0), 2.5);
-    const draw_h = draw_w;
-    const radius = draw_w < 8 ? 0.5 : 2;
+    const stride = raw_visible <= 1500 ? 1 : raw_visible <= 6000 ? 2 : raw_visible <= 25000 ? 4 : 8;
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList10push__clip(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(cv_x, cv_y, cv_w, cv_h));
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(cv_x, cv_y, cv_w, cv_h), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(250, 250, 252), 0);
+    const shelf_col = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240);
     let _tmp = row_start.val;
     while (true) {
       const r = _tmp;
       if (r < row_end.val) {
-        let _tmp$2 = col_start.val;
-        while (true) {
-          const c = _tmp$2;
-          if (c < col_end.val) {
-            const wx = (c + 0) * 40;
-            const wy = (r + 0) * 40;
-            const sx = sc_x + (wx - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-            const sy = sc_y + (wy - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-            const dist_center_sq = (Math.imul(c - 500 | 0, c - 500 | 0) | 0) + (Math.imul(r - 500 | 0, r - 500 | 0) | 0) | 0;
-            const is_hovered = c === _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_col && r === _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_row;
-            let cell_color;
-            if (is_hovered) {
-              cell_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(15, 23, 42);
-            } else {
-              if (dist_center_sq < 3600) {
-                cell_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(185, 36, 130);
-              } else {
-                if (dist_center_sq < 14400) {
-                  cell_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(2, 132, 199);
-                } else {
-                  if (2 === 0) {
-                    $panic();
-                  }
-                  if (((c + r | 0) % 2 | 0) === 0) {
-                    cell_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(241, 245, 249);
-                  } else {
-                    cell_color = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240);
-                  }
-                }
-              }
-            }
-            const rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sx, sy, draw_w, draw_h);
-            _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, rect, cell_color, radius);
-            if (is_hovered) {
-              _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(2, 132, 199), 2, radius + 1);
-            }
-            _tmp$2 = c + stride | 0;
-            continue;
-          } else {
-            break;
-          }
-        }
+        const shelf_wy = (r + 0 + 1) * cell_h - 4;
+        const shelf_sy = sc_y + (shelf_wy - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(cv_x, shelf_sy), _M0MP49LING7167111moon_2degui3src4math4Vec23new(cv_x + cv_w, shelf_sy), shelf_col, 1.5);
         _tmp = r + stride | 0;
         continue;
       } else {
         break;
       }
     }
+    const item_w = 44 * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom * (stride + 0);
+    const item_h = 58 * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom * (stride + 0);
+    const draw_w = _M0MPC16double6Double3max(item_w, 2.5);
+    const draw_h = _M0MPC16double6Double3max(item_h, 3);
+    let _tmp$2 = row_start.val;
+    while (true) {
+      const r = _tmp$2;
+      if (r < row_end.val) {
+        let _tmp$3 = col_start.val;
+        while (true) {
+          const c = _tmp$3;
+          if (c < col_end.val) {
+            const wx = (c + 0) * cell_w + 10;
+            const wy = (r + 0) * cell_h + 6;
+            const sx = sc_x + (wx - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+            const sy = sc_y + (wy - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+            if (4 === 0) {
+              $panic();
+            }
+            const color_mod = ((Math.imul(c, 7) | 0) + (Math.imul(r, 13) | 0) | 0) % 4 | 0;
+            const base_cup_color = color_mod === 0 ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(16, 185, 129) : color_mod === 1 ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(244, 63, 94) : color_mod === 2 ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(139, 92, 246) : _M0MP49LING7167111moon_2degui3src5color5Color3rgb(2, 132, 199);
+            if (_M0FP49LING7167111moon_2degui8examples6canvas5state.million_mode === 0) {
+              if (_M0FP49LING7167111moon_2degui8examples6canvas5state.zoom >= 0.35 && stride === 1) {
+                _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sx, sy + draw_h * 0.16, draw_w, draw_h * 0.84), base_cup_color, 3);
+                _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sx - draw_w * 0.05, sy, draw_w * 1.1, draw_h * 0.18), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(241, 245, 249), 2);
+                _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sx - draw_w * 0.05, sy, draw_w * 1.1, draw_h * 0.18), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(203, 213, 225), 1, 2);
+                _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sx, sy + draw_h * 0.42, draw_w, draw_h * 0.3), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(254, 243, 199), 1);
+                const badge_r = _M0MPC16double6Double3max(draw_w * 0.12, 1.5);
+                _M0MP49LING7167111moon_2degui3src4draw8DrawList11add__circle(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(sx + draw_w * 0.5, sy + draw_h * 0.57), badge_r, _M0MP49LING7167111moon_2degui3src5color5Color5white());
+              } else {
+                _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sx, sy, draw_w, draw_h), base_cup_color, 1);
+              }
+            } else {
+              _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sx, sy, draw_w, draw_h), base_cup_color, 2);
+              if (draw_w > 8) {
+                _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sx, sy, draw_w, draw_h), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(203, 213, 225), 0.5, 2);
+              }
+            }
+            _tmp$3 = c + stride | 0;
+            continue;
+          } else {
+            break;
+          }
+        }
+        _tmp$2 = r + stride | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+    if (_M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_id >= 0) {
+      const sel_wx = (_M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_col + 0) * cell_w + 10;
+      const sel_wy = (_M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_row + 0) * cell_h + 6;
+      const sel_sx = sc_x + (sel_wx - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+      const sel_sy = sc_y + (sel_wy - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+      const sel_w = 44 * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+      const sel_h = 58 * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sel_sx - 4, sel_sy - 4, sel_w + 8, sel_h + 8), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(139, 92, 246), 2, 4);
+      const hsz = 6;
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sel_sx - 7, sel_sy - 7, hsz, hsz), _M0MP49LING7167111moon_2degui3src5color5Color5white(), 0);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sel_sx - 7, sel_sy - 7, hsz, hsz), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(139, 92, 246), 1.5, 0);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sel_sx + sel_w + 1, sel_sy - 7, hsz, hsz), _M0MP49LING7167111moon_2degui3src5color5Color5white(), 0);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sel_sx + sel_w + 1, sel_sy - 7, hsz, hsz), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(139, 92, 246), 1.5, 0);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sel_sx - 7, sel_sy + sel_h + 1, hsz, hsz), _M0MP49LING7167111moon_2degui3src5color5Color5white(), 0);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sel_sx - 7, sel_sy + sel_h + 1, hsz, hsz), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(139, 92, 246), 1.5, 0);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sel_sx + sel_w + 1, sel_sy + sel_h + 1, hsz, hsz), _M0MP49LING7167111moon_2degui3src5color5Color5white(), 0);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sel_sx + sel_w + 1, sel_sy + sel_h + 1, hsz, hsz), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(139, 92, 246), 1.5, 0);
+      const _string_builder$3 = _M0MPB13StringBuilder21StringBuilder_2einner(6);
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, "#");
+      _M0MPB13StringBuilder13write__objectGiE(_string_builder$3, _M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_id);
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, " [");
+      _M0MPB13StringBuilder13write__objectGiE(_string_builder$3, _M0MPC16double6Double7to__int(sel_wx));
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, ", ");
+      _M0MPB13StringBuilder13write__objectGiE(_string_builder$3, _M0MPC16double6Double7to__int(sel_wy));
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder$3, "]");
+      const tag_txt = _M0MPB13StringBuilder10to__string(_string_builder$3);
+      const tag_w = (tag_txt.length + 0) * 7 + 16;
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sel_sx + (sel_w - tag_w) * 0.5, sel_sy - 22, tag_w, 18), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(15, 23, 42), 4);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(sel_sx + (sel_w - tag_w) * 0.5 + 8, sel_sy - 20), tag_txt, 10, _M0MP49LING7167111moon_2degui3src5color5Color5white());
+    }
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9pop__clip(dl);
+    const ruler_bg = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(248, 250, 252);
+    const ruler_border = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240);
+    const ruler_tick_col = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(148, 163, 184);
+    const ruler_text_col = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(100, 116, 139);
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(cv_x, vp_y, cv_w, ruler_h), ruler_bg, 0);
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(cv_x, vp_y + ruler_h), _M0MP49LING7167111moon_2degui3src4math4Vec23new(cv_x + cv_w, vp_y + ruler_h), ruler_border, 1);
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, cv_y, ruler_w, cv_h), ruler_bg, 0);
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + ruler_w, cv_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + ruler_w, cv_y + cv_h), ruler_border, 1);
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, vp_y, ruler_w, ruler_h), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(241, 245, 249), 0);
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + 12, vp_y + 4), "px", 10, ruler_text_col);
+    const step_x = _M0FP49LING7167111moon_2degui8examples6canvas16get__ruler__step(_M0FP49LING7167111moon_2degui8examples6canvas5state.zoom);
+    const first_tick_x = (_M0MPC16double6Double7to__int(min_wx / step_x) + 0) * step_x;
+    const cur_wx = new _M0TPB8MutLocalGdE(first_tick_x);
+    while (true) {
+      if (cur_wx.val <= max_wx) {
+        const sx = sc_x + (cur_wx.val - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+        if (sx >= cv_x && sx <= cv_x + cv_w) {
+          _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(sx, vp_y + 14), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sx, vp_y + ruler_h), ruler_tick_col, 1);
+          const label_txt = _M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(cur_wx.val), 10);
+          _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(sx + 2, vp_y + 2), label_txt, 9, ruler_text_col);
+        }
+        cur_wx.val = cur_wx.val + step_x;
+        continue;
+      } else {
+        break;
+      }
+    }
+    const step_y = _M0FP49LING7167111moon_2degui8examples6canvas16get__ruler__step(_M0FP49LING7167111moon_2degui8examples6canvas5state.zoom);
+    const first_tick_y = (_M0MPC16double6Double7to__int(min_wy / step_y) + 0) * step_y;
+    const cur_wy = new _M0TPB8MutLocalGdE(first_tick_y);
+    while (true) {
+      if (cur_wy.val <= max_wy) {
+        const sy = sc_y + (cur_wy.val - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+        if (sy >= cv_y && sy <= cv_y + cv_h) {
+          _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + ruler_w - 8, sy), _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + ruler_w, sy), ruler_tick_col, 1);
+          const label_txt = _M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(cur_wy.val), 10);
+          _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + 2, sy - 5), label_txt, 9, ruler_text_col);
+        }
+        cur_wy.val = cur_wy.val + step_y;
+        continue;
+      } else {
+        break;
+      }
+    }
+    if (_M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_id >= 0) {
+      const sel_wx = (_M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_col + 0) * cell_w + 10;
+      const sel_wy = (_M0FP49LING7167111moon_2degui8examples6canvas5state.million_selected_row + 0) * cell_h + 6;
+      const sel_sx = sc_x + (sel_wx - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+      const sel_sy = sc_y + (sel_wy - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+      const sel_sw = 44 * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+      const sel_sh = 58 * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+      if (sel_sx + sel_sw >= cv_x && sel_sx <= cv_x + cv_w) {
+        const proj_x = _M0MPC16double6Double3max(sel_sx, cv_x);
+        const proj_w = _M0MPC16double6Double3max(sel_sw, 16);
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(proj_x, vp_y, proj_w, ruler_h), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(139, 92, 246, 70), 0);
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(proj_x, vp_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(proj_x, vp_y + ruler_h), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(109, 40, 217), 1.5);
+        const coord_txt = _M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(sel_wx), 10);
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(proj_x + 2, vp_y + 2), coord_txt, 9, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(109, 40, 217));
+      }
+      if (sel_sy + sel_sh >= cv_y && sel_sy <= cv_y + cv_h) {
+        const proj_y = _M0MPC16double6Double3max(sel_sy, cv_y);
+        const proj_h = _M0MPC16double6Double3max(sel_sh, 12);
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, proj_y, ruler_w, proj_h), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(139, 92, 246, 70), 0);
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x, proj_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + ruler_w, proj_y), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(109, 40, 217), 1.5);
+        const coord_txt = _M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(sel_wy), 10);
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + 2, proj_y), coord_txt, 9, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(109, 40, 217));
+      }
+    }
+    const hud_w = 340;
+    const hud_x = cv_x + (cv_w - hud_w) * 0.5;
+    const hud_y = cv_y + cv_h - 32;
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(hud_x, hud_y, hud_w, 24), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(15, 23, 42, 230), 12);
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(hud_x + 16, hud_y + 5), "Shift+滚轮 横向 | 拖拽 漫游 | 滚轮 缩放 | 点击 拾取", 11, _M0MP49LING7167111moon_2degui3src5color5Color5white());
     return _M0MP49LING7167111moon_2degui3src4core9UIContext10end__frame(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
   } else {
     if (_M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active) {
@@ -1085,7 +1238,8 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
   _M0MPB13StringBuilder13write__objectGiE(_string_builder, _M0MP49LING7167111moon_2degui3src4draw8DrawList3len(dl));
   _M0FPB7printlnGsE(_M0MPB13StringBuilder10to__string(_string_builder));
 
-  if (typeof window !== 'undefined') window.moon_step = _M0FP49LING7167111moon_2degui8examples6canvas4step;
-  if (typeof globalThis !== 'undefined') globalThis.moon_step = _M0FP49LING7167111moon_2degui8examples6canvas4step;
+if (typeof window !== 'undefined') window.moon_step = _M0FP49LING7167111moon_2degui8examples6canvas4step;
+if (typeof globalThis !== 'undefined') globalThis.moon_step = _M0FP49LING7167111moon_2degui8examples6canvas4step;
 })();
 //# sourceMappingURL=canvas.js.map
+
