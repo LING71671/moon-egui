@@ -25,7 +25,8 @@
   let panDx = 0;
   let panDy = 0;
   let zoomFactor = 1.0;
-  let requestedMode = -1;
+  const initialModeAttr = canvas.getAttribute('data-initial-mode');
+  let requestedMode = initialModeAttr !== null ? parseInt(initialModeAttr, 10) : -1;
 
   // Mouse / Pointer Event Listeners
   canvas.addEventListener('mousemove', (e) => {
@@ -84,6 +85,17 @@
   // Expose global mode switcher helper for external UI buttons
   window.switchBenchmarkMode = function (modeIndex) {
     requestedMode = modeIndex;
+  };
+
+  window.triggerBenchmarkAction = function (action) {
+    if (action === 'fit') requestedMode = 3;
+    else if (action === 'scale100') requestedMode = 4;
+    else if (action === 'center') requestedMode = 5;
+    else if (action === 'drag') requestedMode = 6;
+    else if (action === 'move') requestedMode = 7;
+    else if (action === 'coffee') requestedMode = 1;
+    else if (action === 'rect') requestedMode = 2;
+    else if (action === 'logo') requestedMode = 0;
   };
 
   function updateCursorHud() {

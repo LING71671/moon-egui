@@ -23,6 +23,12 @@ struct BenchmarkState {
   mut million_selected_col : Int
   mut million_selected_row : Int
   mut million_visible_count : Int
+
+  // Drag & Interaction State
+  mut drag_mode : Int // 0: 漫游画布 (Pan Canvas), 1: 拖拽单个物体 (Drag Item)
+  mut item_drag_dx : Double
+  mut item_drag_dy : Double
+  mut is_dragging_item : Bool
 }
 
 ///|
@@ -48,6 +54,10 @@ let state : BenchmarkState = {
   million_selected_col: -1,
   million_selected_row: -1,
   million_visible_count: 0,
+  drag_mode: 0,
+  item_drag_dx: 0.0,
+  item_drag_dy: 0.0,
+  is_dragging_item: false,
 }
 
 ///|
@@ -116,7 +126,7 @@ fn button_light(
   is_active : Bool,
 ) -> @core.Response {
   let w = 210.0
-  let h = 28.0
+  let h = 23.0
   let (_id, rect, resp) = ui.allocate_space(@math.Vec2::new(w, h))
 
   let (bg, border, text_col) = if is_active {
@@ -145,11 +155,11 @@ fn button_light(
     )
   }
 
-  ui.draw_list().add_rect(rect, bg, 5.0)
-  ui.draw_list().add_rect_stroke(rect, border, 1.0, 5.0)
-  let text_x = rect.x + 12.0
-  let text_y = rect.y + (rect.h - 14.0) * 0.5
-  ui.draw_list().add_text(@math.Vec2::new(text_x, text_y), text, 12.0, text_col)
+  ui.draw_list().add_rect(rect, bg, 4.0)
+  ui.draw_list().add_rect_stroke(rect, border, 1.0, 4.0)
+  let text_x = rect.x + 10.0
+  let text_y = rect.y + 4.5
+  ui.draw_list().add_text(@math.Vec2::new(text_x, text_y), text, 11.0, text_col)
   resp
 }
 
@@ -157,24 +167,24 @@ fn button_light(
 /// Tactile light-mode primary action button.
 fn button_primary_light(ui : @core.UIContext, text : String) -> @core.Response {
   let w = 210.0
-  let h = 28.0
+  let h = 23.0
   let (_id, rect, resp) = ui.allocate_space(@math.Vec2::new(w, h))
 
   let (bg, border) = if resp.pressed() {
     (@color.Color::rgb(3, 105, 161), @color.Color::rgb(2, 132, 199))
   } else if resp.hovered() {
-    (@color.Color::rgb(2, 132, 199), @color.Color::rgb(3, 105, 161))
-  } else {
     (@color.Color::rgb(14, 165, 233), @color.Color::rgb(2, 132, 199))
+  } else {
+    (@color.Color::rgb(2, 132, 199), @color.Color::rgb(2, 132, 199))
   }
 
-  ui.draw_list().add_rect(rect, bg, 5.0)
-  ui.draw_list().add_rect_stroke(rect, border, 1.0, 5.0)
-  let text_x = rect.x + 12.0
-  let text_y = rect.y + (rect.h - 14.0) * 0.5
+  ui.draw_list().add_rect(rect, bg, 4.0)
+  ui.draw_list().add_rect_stroke(rect, border, 1.0, 4.0)
+  let text_x = rect.x + 10.0
+  let text_y = rect.y + 4.5
   ui
   .draw_list()
-  .add_text(@math.Vec2::new(text_x, text_y), text, 12.0, @color.Color::white())
+  .add_text(@math.Vec2::new(text_x, text_y), text, 11.0, @color.Color::white())
   resp
 }
 
@@ -248,7 +258,7 @@ fn separator_light(ui : @core.UIContext) -> Unit {
 }
 
 ///|
-/// Core benchmark frame update function with million-node camera support.
+/// Core benchmark frame update function with million-node camera & drag support.
 pub fn step(
   mouse_x : Double,
   mouse_y : Double,
@@ -260,7 +270,7 @@ pub fn step(
 ) -> @draw.DrawList {
   state.frame_tick = state.frame_tick + 1.0
 
-  if switch_mode >= 0 && switch_mode <= 2 {
+  if switch_mode >= 0 {
     if switch_mode == 0 {
       state.mode = 0
     } else if switch_mode == 1 {
@@ -269,31 +279,63 @@ pub fn step(
     } else if switch_mode == 2 {
       state.mode = 1
       state.million_mode = 1
+    } else if switch_mode == 3 {
+      // 100% Fit Mode: All 1,000,000 Nodes Visible
+      state.mode = 1
+      state.zoom = 0.0062
+      state.cam_x = 32000.0
+      state.cam_y = 38000.0
+    } else if switch_mode == 4 {
+      // 100% (1.0x) Scale
+      state.mode = 1
+      state.zoom = 1.0
+    } else if switch_mode == 5 {
+      // Center Viewport
+      state.cam_x = 32000.0
+      state.cam_y = 38000.0
+    } else if switch_mode == 6 {
+      // Switch interaction to Drag Item
+      state.drag_mode = 1
+    } else if switch_mode == 7 {
+      // Switch interaction to Pan Canvas
+      state.drag_mode = 0
     }
   }
 
-  // Camera Pan & Zoom Updates
+  // Camera Pan & Item Drag Updates
   if pan_dx != 0.0 || pan_dy != 0.0 {
-    state.cam_x = state.cam_x - pan_dx / state.zoom
-    state.cam_y = state.cam_y - pan_dy / state.zoom
-    if state.cam_x < 0.0 {
-      state.cam_x = 0.0
-    } else if state.cam_x > 64000.0 {
-      state.cam_x = 64000.0
+    if state.drag_mode == 1 && state.million_selected_id >= 0 {
+      // Dragging selected item across 1M universe!
+      state.item_drag_dx = state.item_drag_dx + pan_dx / state.zoom
+      state.item_drag_dy = state.item_drag_dy + pan_dy / state.zoom
+      state.is_dragging_item = true
+    } else {
+      // Panning camera
+      state.cam_x = state.cam_x - pan_dx / state.zoom
+      state.cam_y = state.cam_y - pan_dy / state.zoom
+      if state.cam_x < 0.0 {
+        state.cam_x = 0.0
+      } else if state.cam_x > 64000.0 {
+        state.cam_x = 64000.0
+      }
+      if state.cam_y < 0.0 {
+        state.cam_y = 0.0
+      } else if state.cam_y > 76000.0 {
+        state.cam_y = 76000.0
+      }
     }
-    if state.cam_y < 0.0 {
-      state.cam_y = 0.0
-    } else if state.cam_y > 76000.0 {
-      state.cam_y = 76000.0
-    }
+  }
+
+  if !mouse_down {
+    state.is_dragging_item = false
   }
 
   if zoom_delta != 1.0 && zoom_delta > 0.0 {
     let new_zoom = state.zoom * zoom_delta
-    if new_zoom < 0.05 {
-      state.zoom = 0.05
-    } else if new_zoom > 3.0 {
-      state.zoom = 3.0
+    if new_zoom < 0.004 {
+      state.zoom = 0.004
+    } else if new_zoom > 4.0 {
+      state.zoom = 4.0
     } else {
       state.zoom = new_zoom
     }
@@ -339,54 +381,78 @@ pub fn step(
   // MODE 1: 1,000,000 (ONE MILLION) NODES INFINITE CANVAS BENCHMARK
   // =========================================================================
   if state.mode == 1 {
-    label_light(ctx, "Camera Zoom Presets:", false)
+    label_light(ctx, "交互模式 (Scene):", false)
+    if button_light(ctx, "拖拽单个物体 (drag)", state.drag_mode == 1).clicked() {
+      state.drag_mode = 1
+      if state.million_selected_id < 0 {
+        state.million_selected_id = 500 * 1000 + 500
+        state.million_selected_col = 500
+        state.million_selected_row = 500
+      }
+    }
+    if button_light(ctx, "漫游画布 (move)", state.drag_mode == 0).clicked() {
+      state.drag_mode = 0
+    }
+
+    ctx.spacer(3.0)
+    label_light(ctx, "视角与缩放预设:", false)
     if button_light(ctx, "特写聚焦 (1.2x Focus)", false).clicked() {
       state.zoom = 1.2
     }
-    if button_light(ctx, "货架全景 (0.5x Shelves)", false).clicked() {
-      state.zoom = 0.5
-    }
-    if button_light(ctx, "百万鸟瞰 (0.12x Macro)", false).clicked() {
-      state.zoom = 0.12
-    }
-    if button_light(ctx, "宇宙中心 (32K, 38K)", false).clicked() {
+    if button_light(ctx, "全景铺满 (fit 100%)", false).clicked() {
+      state.zoom = 0.0062
       state.cam_x = 32000.0
       state.cam_y = 38000.0
+    }
+    if button_light(ctx, "原始比例 (100% 1.0x)", false).clicked() {
+      state.zoom = 1.0
+    }
+    if button_light(ctx, "复位物体拖拽 (Reset)", false).clicked() {
+      state.item_drag_dx = 0.0
+      state.item_drag_dy = 0.0
     }
 
-    ctx.spacer(4.0)
-    if button_primary_light(ctx, "Center Viewport").clicked() {
+    ctx.spacer(3.0)
+    if button_primary_light(ctx, "居中视口 (Center)").clicked() {
       state.cam_x = 32000.0
       state.cam_y = 38000.0
     }
-    if button_light(ctx, "Reset Hits", false).clicked() {
-      state.click_count = 0
+    if button_light(ctx, "清空选中 (Deselect)", false).clicked() {
       state.million_selected_id = -1
       state.million_selected_col = -1
       state.million_selected_row = -1
+      state.item_drag_dx = 0.0
+      state.item_drag_dy = 0.0
     }
 
     ctx.spacer(4.0)
     separator_light(ctx)
 
-    label_light(ctx, "Universe: 1,000,000 Nodes", false)
     let zoom_pct = (state.zoom * 100.0).to_int()
+    let vis_pct = if state.zoom <= 0.007 {
+      100
+    } else {
+      (state.million_visible_count.to_double() / 10000.0).to_int()
+    }
+    let zoom_label = if state.zoom <= 0.007 { "Fit 100%" } else { "\{zoom_pct}%" }
+    label_light(ctx, "Universe: 1,000,000 (\{zoom_label})", false)
     label_light(
       ctx,
-      "Visible: \{state.million_visible_count} (\{zoom_pct}%)",
+      "Visible: \{state.million_visible_count} (\{vis_pct}%)",
       false,
     )
     label_light(ctx, "Recorded Hits: \{state.click_count}", false)
     if state.million_selected_id >= 0 {
+      let status_tag = if state.is_dragging_item { "DRAG" } else { "SEL" }
       label_light(
         ctx,
-        "Target: #\{state.million_selected_id} (\{state.million_selected_col}, \{state.million_selected_row})",
+        "[\{status_tag}] #\{state.million_selected_id} (\{state.million_selected_col}, \{state.million_selected_row})",
         false,
       )
     } else {
-      label_light(ctx, "Target: None (Hover/Drag)", false)
+      label_light(ctx, "Target: None (Click Cup)", false)
     }
-    label_light(ctx, "Mem: ~18MB (vs Leafer 320MB)", false)
+    label_light(ctx, "Memory: ~18MB (Zero GC)", false)
 
     // --- Right Viewport: 1,000,000 Node Spatial Canvas ---
     let dl = ctx.draw_list()
@@ -435,9 +501,13 @@ pub fn step(
         let rel_y = mwy - hit_row.to_double() * cell_h
         if rel_x >= 6.0 && rel_x <= 58.0 && rel_y >= 4.0 && rel_y <= 68.0 {
           let node_id = hit_row * 1000 + hit_col
-          state.million_selected_id = node_id
-          state.million_selected_col = hit_col
-          state.million_selected_row = hit_row
+          if state.million_selected_id != node_id {
+            state.million_selected_id = node_id
+            state.million_selected_col = hit_col
+            state.million_selected_row = hit_row
+            state.item_drag_dx = 0.0
+            state.item_drag_dy = 0.0
+          }
           if mouse_down {
             state.click_count = state.click_count + 1
           }
@@ -516,8 +586,38 @@ pub fn step(
 
     for r = row_start; r < row_end; r = r + stride {
       for c = col_start; c < col_end; c = c + stride {
-        let wx = c.to_double() * cell_w + 10.0
-        let wy = r.to_double() * cell_h + 6.0
+        let is_selected = c == state.million_selected_col &&
+          r == state.million_selected_row
+        let is_dragged = is_selected &&
+          (
+            state.item_drag_dx != 0.0 ||
+            state.item_drag_dy != 0.0 ||
+            state.is_dragging_item
+          )
+
+        let orig_wx = c.to_double() * cell_w + 10.0
+        let orig_wy = r.to_double() * cell_h + 6.0
+
+        // If this coffee cup is lifted/dragged, render a glowing bottom halo on its shelf origin!
+        if is_dragged && state.million_mode == 0 {
+          let halo_sx = sc_x + (orig_wx - state.cam_x) * state.zoom
+          let halo_sy = sc_y + (orig_wy - state.cam_y) * state.zoom
+          let halo_w = 44.0 * state.zoom
+          let halo_h = 58.0 * state.zoom
+          dl.add_circle(
+            @math.Vec2::new(halo_sx + halo_w * 0.5, halo_sy + halo_h * 0.95),
+            (halo_w * 0.65).max(4.0),
+            @color.Color::rgba(244, 63, 94, 60),
+          )
+          dl.add_circle(
+            @math.Vec2::new(halo_sx + halo_w * 0.5, halo_sy + halo_h * 0.95),
+            (halo_w * 0.38).max(2.5),
+            @color.Color::rgba(244, 63, 94, 140),
+          )
+        }
+
+        let wx = if is_dragged { orig_wx + state.item_drag_dx } else { orig_wx }
+        let wy = if is_dragged { orig_wy + state.item_drag_dy } else { orig_wy }
         let sx = sc_x + (wx - state.cam_x) * state.zoom
         let sy = sc_y + (wy - state.cam_y) * state.zoom
 
@@ -604,10 +704,23 @@ pub fn step(
       }
     }
 
-    // Figma-style Selection Bounding Box & 4 Corner Handles
+    // Figma/CAD-style Selection Bounding Box, Circular Handles & Action Button
     if state.million_selected_id >= 0 {
-      let sel_wx = state.million_selected_col.to_double() * cell_w + 10.0
-      let sel_wy = state.million_selected_row.to_double() * cell_h + 6.0
+      let is_dragged = state.item_drag_dx != 0.0 ||
+        state.item_drag_dy != 0.0 ||
+        state.is_dragging_item
+      let sel_orig_wx = state.million_selected_col.to_double() * cell_w + 10.0
+      let sel_orig_wy = state.million_selected_row.to_double() * cell_h + 6.0
+      let sel_wx = if is_dragged {
+        sel_orig_wx + state.item_drag_dx
+      } else {
+        sel_orig_wx
+      }
+      let sel_wy = if is_dragged {
+        sel_orig_wy + state.item_drag_dy
+      } else {
+        sel_orig_wy
+      }
       let sel_sx = sc_x + (sel_wx - state.cam_x) * state.zoom
       let sel_sy = sc_y + (sel_wy - state.cam_y) * state.zoom
       let sel_w = 44.0 * state.zoom
@@ -617,68 +730,51 @@ pub fn step(
       dl.add_rect_stroke(
         @math.Rect::new(sel_sx - 4.0, sel_sy - 4.0, sel_w + 8.0, sel_h + 8.0),
         @color.Color::rgb(139, 92, 246),
-        2.0,
+        1.5,
         4.0,
       )
 
-      // 2. 4 Corner Handles (6x6 white squares with purple border)
-      let hsz = 6.0
+      // 2. 4 Circular Corner Handles (white circle with purple border)
+      let handle_r = 3.5
+      let h_purple = @color.Color::rgb(139, 92, 246)
+      let h_white = @color.Color::white()
+
       // TL
-      dl.add_rect(
-        @math.Rect::new(sel_sx - 7.0, sel_sy - 7.0, hsz, hsz),
-        @color.Color::white(),
-        0.0,
-      )
-      dl.add_rect_stroke(
-        @math.Rect::new(sel_sx - 7.0, sel_sy - 7.0, hsz, hsz),
-        @color.Color::rgb(139, 92, 246),
-        1.5,
-        0.0,
-      )
+      let tl_pos = @math.Vec2::new(sel_sx - 4.0, sel_sy - 4.0)
+      dl.add_circle(tl_pos, handle_r, h_white)
+      dl.add_circle_stroke(tl_pos, handle_r, h_purple, 1.5)
+
       // TR
-      dl.add_rect(
-        @math.Rect::new(sel_sx + sel_w + 1.0, sel_sy - 7.0, hsz, hsz),
-        @color.Color::white(),
-        0.0,
-      )
-      dl.add_rect_stroke(
-        @math.Rect::new(sel_sx + sel_w + 1.0, sel_sy - 7.0, hsz, hsz),
-        @color.Color::rgb(139, 92, 246),
-        1.5,
-        0.0,
-      )
+      let tr_pos = @math.Vec2::new(sel_sx + sel_w + 4.0, sel_sy - 4.0)
+      dl.add_circle(tr_pos, handle_r, h_white)
+      dl.add_circle_stroke(tr_pos, handle_r, h_purple, 1.5)
+
       // BL
-      dl.add_rect(
-        @math.Rect::new(sel_sx - 7.0, sel_sy + sel_h + 1.0, hsz, hsz),
-        @color.Color::white(),
-        0.0,
-      )
-      dl.add_rect_stroke(
-        @math.Rect::new(sel_sx - 7.0, sel_sy + sel_h + 1.0, hsz, hsz),
-        @color.Color::rgb(139, 92, 246),
-        1.5,
-        0.0,
-      )
+      let bl_pos = @math.Vec2::new(sel_sx - 4.0, sel_sy + sel_h + 4.0)
+      dl.add_circle(bl_pos, handle_r, h_white)
+      dl.add_circle_stroke(bl_pos, handle_r, h_purple, 1.5)
+
       // BR
-      dl.add_rect(
-        @math.Rect::new(sel_sx + sel_w + 1.0, sel_sy + sel_h + 1.0, hsz, hsz),
-        @color.Color::white(),
-        0.0,
-      )
-      dl.add_rect_stroke(
-        @math.Rect::new(sel_sx + sel_w + 1.0, sel_sy + sel_h + 1.0, hsz, hsz),
-        @color.Color::rgb(139, 92, 246),
-        1.5,
-        0.0,
-      )
+      let br_pos = @math.Vec2::new(sel_sx + sel_w + 4.0, sel_sy + sel_h + 4.0)
+      dl.add_circle(br_pos, handle_r, h_white)
+      dl.add_circle_stroke(br_pos, handle_r, h_purple, 1.5)
+
+      // Bottom Center Circular Action Handle (matching user reference)
+      let bc_pos = @math.Vec2::new(sel_sx + sel_w * 0.5, sel_sy + sel_h + 8.0)
+      dl.add_circle(bc_pos, handle_r, h_white)
+      dl.add_circle_stroke(bc_pos, handle_r, h_purple, 1.5)
 
       // 3. Floating Inspector Tag
-      let tag_txt = "#\{state.million_selected_id} [\{sel_wx.to_int()}, \{sel_wy.to_int()}]"
+      let tag_txt = if is_dragged {
+        "DRAGGING #\{state.million_selected_id} [\{sel_wx.to_int()}, \{sel_wy.to_int()}]"
+      } else {
+        "#\{state.million_selected_id} [\{sel_wx.to_int()}, \{sel_wy.to_int()}]"
+      }
       let tag_w = tag_txt.length().to_double() * 7.0 + 16.0
       dl.add_rect(
         @math.Rect::new(
           sel_sx + (sel_w - tag_w) * 0.5,
-          sel_sy - 22.0,
+          sel_sy - 24.0,
           tag_w,
           18.0,
         ),
@@ -686,7 +782,7 @@ pub fn step(
         4.0,
       )
       dl.add_text(
-        @math.Vec2::new(sel_sx + (sel_w - tag_w) * 0.5 + 8.0, sel_sy - 20.0),
+        @math.Vec2::new(sel_sx + (sel_w - tag_w) * 0.5 + 8.0, sel_sy - 22.0),
         tag_txt,
         10.0,
         @color.Color::white(),
@@ -783,10 +879,23 @@ pub fn step(
       cur_wy = cur_wy + step_y
     }
 
-    // Top & Left Ruler Projection Indicators when Selected
+    // Top & Left Ruler Projection Indicators when Selected (Tracking drag position)
     if state.million_selected_id >= 0 {
-      let sel_wx = state.million_selected_col.to_double() * cell_w + 10.0
-      let sel_wy = state.million_selected_row.to_double() * cell_h + 6.0
+      let is_dragged = state.item_drag_dx != 0.0 ||
+        state.item_drag_dy != 0.0 ||
+        state.is_dragging_item
+      let sel_orig_wx = state.million_selected_col.to_double() * cell_w + 10.0
+      let sel_orig_wy = state.million_selected_row.to_double() * cell_h + 6.0
+      let sel_wx = if is_dragged {
+        sel_orig_wx + state.item_drag_dx
+      } else {
+        sel_orig_wx
+      }
+      let sel_wy = if is_dragged {
+        sel_orig_wy + state.item_drag_dy
+      } else {
+        sel_orig_wy
+      }
       let sel_sx = sc_x + (sel_wx - state.cam_x) * state.zoom
       let sel_sy = sc_y + (sel_wy - state.cam_y) * state.zoom
       let sel_sw = 44.0 * state.zoom
