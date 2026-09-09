@@ -1,5 +1,9 @@
 # MoonBit 官方编码规范与工程风格指南 (MoonBit Style Guide)
 
+<p>
+  <a href="STYLE_GUIDE_en.md">English</a> · <a href="STYLE_GUIDE.md">简体中文</a>
+</p>
+
 本项目 `moon-egui` 严格遵循 [MoonBit 官方](https://docs.moonbitlang.com) 编码规范、标准库最佳实践（`moonbitlang/core`）以及工具链设计哲学。本指南作为全项目的标准代码与工程规范参考。
 
 ---

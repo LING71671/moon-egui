@@ -1,5 +1,9 @@
 # Contributing to Moon-EGUI
 
+<p>
+  <a href="CONTRIBUTING.md">English</a> · <a href="CONTRIBUTING_zh.md">简体中文</a>
+</p>
+
 Thank you for your interest in contributing to `moon-egui`! This document outlines our development process, coding standards, and testing conventions.
 
 ---

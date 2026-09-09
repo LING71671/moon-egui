@@ -1,5 +1,9 @@
 # Moon-EGUI Architecture & Technical Whitepaper
 
+<p>
+  <a href="ARCHITECTURE.md">English</a> · <a href="ARCHITECTURE_zh.md">简体中文</a>
+</p>
+
 > Comprehensive architectural specification, internal data flow, state management, layout engine, and rendering pipeline for `moon-egui`.
 
 ---

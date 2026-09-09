@@ -1,5 +1,9 @@
 # Moon-EGUI Design System & Token Specifications
 
+<p>
+  <a href="DESIGN_SYSTEM.md">English</a> · <a href="DESIGN_SYSTEM_zh.md">简体中文</a>
+</p>
+
 > Visual hierarchy, design tokens, color scales, spatial rhythm, typography, and interactive state definitions for `moon-egui`.
 
 ---
