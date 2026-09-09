@@ -933,7 +933,7 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
     }
     const raw_visible = Math.imul(col_end.val - col_start.val | 0, row_end.val - row_start.val | 0) | 0;
     _M0FP49LING7167111moon_2degui8examples6canvas5state.million_visible_count = raw_visible;
-    const stride = raw_visible <= 1500 ? 1 : raw_visible <= 6000 ? 2 : raw_visible <= 25000 ? 4 : 8;
+    const stride = raw_visible <= 1500 ? 1 : raw_visible <= 6000 ? 2 : raw_visible <= 25000 ? 4 : raw_visible <= 100000 ? 8 : raw_visible <= 400000 ? 14 : 22;
     _M0MP49LING7167111moon_2degui3src4draw8DrawList10push__clip(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(cv_x, cv_y, cv_w, cv_h));
     _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(cv_x, cv_y, cv_w, cv_h), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(250, 250, 252), 0);
     const shelf_col = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240);

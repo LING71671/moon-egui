@@ -174,13 +174,17 @@
           const radius = cmd._2 || 0;
           const colorStr = `rgba(${color.r},${color.g},${color.b},${color.a / 255})`;
           setFill(colorStr);
-          ctx.beginPath();
-          if (radius > 0 && ctx.roundRect) {
+          if (radius <= 1) {
+            ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+          } else if (ctx.roundRect) {
+            ctx.beginPath();
             ctx.roundRect(rect.x, rect.y, rect.w, rect.h, radius);
+            ctx.fill();
           } else {
+            ctx.beginPath();
             ctx.rect(rect.x, rect.y, rect.w, rect.h);
+            ctx.fill();
           }
-          ctx.fill();
           break;
         }
         case 1: { // RectStroke: cmd._0: rect, cmd._1: color, cmd._2: strokeW, cmd._3: radius

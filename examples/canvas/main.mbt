@@ -544,15 +544,19 @@ pub fn step(
     let raw_visible = (col_end - col_start) * (row_end - row_start)
     state.million_visible_count = raw_visible
 
-    // Adaptive sampling stride so Canvas 2D frame time stays within 16ms
+    // Adaptive sampling stride so Canvas 2D frame time stays strictly within 16.6ms (60 FPS)
     let stride = if raw_visible <= 1500 {
       1
     } else if raw_visible <= 6000 {
       2
     } else if raw_visible <= 25000 {
       4
-    } else {
+    } else if raw_visible <= 100000 {
       8
+    } else if raw_visible <= 400000 {
+      14
+    } else {
+      22
     }
 
     // 1. Clip workspace content
