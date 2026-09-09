@@ -90,7 +90,7 @@ MoonBit 拥有极其独特且清晰的工程范式，提交代码需严格遵守
    ```bash
    git checkout -b feat/your-feature-name
    ```
-3. 参照 `docs/ARCHITECTURE_zh.md` 架构白皮书实现功能；
+3. 参照 `ARCHITECTURE_zh.md` 架构白皮书实现功能；
 4. 确保本地所有格式检查、接口更新与测试 100% 通过：
    ```bash
    moon info && moon fmt && moon test

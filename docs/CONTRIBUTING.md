@@ -90,7 +90,7 @@ Examples:
    ```bash
    git checkout -b feat/your-feature-name
    ```
-3. Implement your changes following the architectural specs in `docs/ARCHITECTURE.md`.
+3. Implement your changes following the architectural specs in `ARCHITECTURE.md`.
 4. Ensure all tests and formatters pass:
    ```bash
    moon info && moon fmt && moon test

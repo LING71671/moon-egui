@@ -5,12 +5,12 @@
 **High-Performance Immediate-Mode GUI Engine for MoonBit and WebAssembly**
 
 <p>
-  <a href="README.md">简体中文</a> · <a href="README_en.md">English</a>
+  <a href="../README.md">简体中文</a> · <a href="README_en.md">English</a>
 </p>
 
 <p>
   <a href="https://github.com/LING71671/moon-egui/actions"><img src="https://img.shields.io/github/actions/workflow/status/LING71671/moon-egui/ci.yml?branch=main&label=CI&style=flat-square" alt="CI Status" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue?style=flat-square" alt="License" /></a>
+  <a href="../LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue?style=flat-square" alt="License" /></a>
   <a href="https://www.moonbitlang.com/"><img src="https://img.shields.io/badge/lang-MoonBit-6B46C1?style=flat-square" alt="MoonBit" /></a>
   <img src="https://img.shields.io/badge/target-Wasm-F97316?style=flat-square" alt="Wasm" />
   <a href="https://moonbitlang.github.io/Hackathon2026/"><img src="https://img.shields.io/badge/hackathon-MoonBit%202026-10B981?style=flat-square" alt="Hackathon 2026" /></a>
@@ -18,7 +18,7 @@
 
 <br />
 
-<img src="media/social_preview.jpg" alt="moon-egui banner" width="100%" />
+<img src="../media/social_preview.jpg" alt="moon-egui banner" width="100%" />
 
 </div>
 
@@ -146,25 +146,26 @@ Because the core produces pure `DrawCmd` tokens without browser dependencies, ev
 - [ ] **Milestone 5: Verification, Benchmarks & Release** (Sep 22 – Sep 24)
   - Comprehensive unit test coverage, performance validation, and final acceptance.
 
-> For full milestone metrics, detailed acceptance criteria, and post-hackathon vision, refer to **[ROADMAP.md](ROADMAP.md)** ([English](ROADMAP_en.md)).
+> For full milestone metrics, detailed acceptance criteria, and future exploration, refer to **[ROADMAP.md](ROADMAP_en.md)** ([中文](ROADMAP.md)).
 
 ---
 
 ## Documentation
 
-Comprehensive design specifications and technical whitepapers are organized in [`docs/`](docs/):
+Comprehensive design specifications and technical whitepapers are organized in this directory:
 
 | Document | Description | Key Focus |
 | :--- | :--- | :--- |
-| **[Roadmap & Milestones](ROADMAP_en.md)** ([中文](ROADMAP.md)) | Timeline & Deliverables | Hackathon milestones, acceptance criteria, long-term vision |
-| **[Architecture Whitepaper](docs/ARCHITECTURE.md)** ([中文](docs/ARCHITECTURE_zh.md)) | Core engine internals | ID hashing, frame lifecycle, cursor layout, clip stack |
-| **[API Reference](docs/API_DESIGN.md)** ([中文](docs/API_DESIGN_zh.md)) | Complete public interface | `UIContext`, widget signatures, containers, Painter API |
-| **[Design System](docs/DESIGN_SYSTEM.md)** ([中文](docs/DESIGN_SYSTEM_zh.md)) | Visual design tokens | Dark/Light palettes, typography scale, spacing rules |
-| **[Style Guide](docs/STYLE_GUIDE_en.md)** ([中文](docs/STYLE_GUIDE.md)) | Official coding conventions | Block style (`///|`), naming, testing tiers, `.mbti` |
+| **[Roadmap & Milestones](ROADMAP_en.md)** ([中文](ROADMAP.md)) | Timeline & Deliverables | Hackathon milestones, acceptance criteria, future work |
+| **[Architecture Whitepaper](ARCHITECTURE.md)** ([中文](ARCHITECTURE_zh.md)) | Core engine internals | ID hashing, frame lifecycle, cursor layout, clip stack |
+| **[API Reference](API_DESIGN.md)** ([中文](API_DESIGN_zh.md)) | Complete public interface | `UIContext`, widget signatures, containers, Painter API |
+| **[Design System](DESIGN_SYSTEM.md)** ([中文](DESIGN_SYSTEM_zh.md)) | Visual design tokens | Dark/Light palettes, typography scale, spacing rules |
+| **[Style Guide](STYLE_GUIDE_en.md)** ([中文](STYLE_GUIDE.md)) | Official coding conventions | Block style (`///|`), naming, testing tiers, `.mbti` |
 | **[Contributing Guide](CONTRIBUTING.md)** ([中文](CONTRIBUTING_zh.md)) | Development workflows | MoonBit conventions, code formatting, test criteria |
+| **[Changelog](CHANGELOG.md)** | Release tracking | Record of all notable changes and releases |
 
 ---
 
 ## License
 
-This project is licensed under the [Apache License 2.0](LICENSE).
+This project is licensed under the [Apache License 2.0](../LICENSE).

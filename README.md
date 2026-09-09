@@ -26,7 +26,7 @@
 
 ## 概述
 
-`moon-egui` 是 [MoonBit](https://www.moonbitlang.com/) 编程语言生态中首个**即时模式图形界面框架（Immediate-Mode GUI）**，面向 WebAssembly、HTML5 Canvas 2D 及高性能游戏场景设计。
+`moon-egui` 是专为 [MoonBit](https://www.moonbitlang.com/) 编程语言打造的轻量级**即时模式图形界面引擎（Immediate-Mode GUI）**，面向 WebAssembly、HTML5 Canvas 2D 及高性能游戏与图形工具场景设计。
 
 设计灵感源自 Rust 著名图形库 `egui` 与 C++ `Dear ImGui`。`moon-egui` 采用即时模式范式：**代码即界面，界面即状态**。与维护沉重 DOM 树的传统保留模式框架不同，`moon-egui` 采用逐帧声明式构建，具备零 DOM 开销、极低内存占用与 60 FPS 稳定流畅渲染能力。
 
@@ -149,7 +149,7 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 - [ ] **第五阶段：全面自动化测试与正式交付**（9月22日 – 9月24日）
   - 达成 150+ 自动化单元测试、完整文档规范与最终版本验收交付。
 
-> 完整攻坚指标、详细验收准则与赛后长期演进规划请参阅 **[ROADMAP.md](ROADMAP.md)** ([English](ROADMAP_en.md))。
+> 完整攻坚指标与详细验收准则请参阅 **[ROADMAP.md](docs/ROADMAP.md)** ([English](docs/ROADMAP_en.md))。
 
 ---
 
@@ -159,12 +159,13 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 
 | 文档名称 | 定位与说明 | 核心覆盖范围 |
 | :--- | :--- | :--- |
-| **[研发路线图与里程碑](ROADMAP.md)** ([English](ROADMAP_en.md)) | 交付周期与规划 | 各阶段交付清单、详细验收准则、赛后长期演进愿景 |
+| **[研发路线图与里程碑](docs/ROADMAP.md)** ([English](docs/ROADMAP_en.md)) | 交付周期与规划 | 各阶段交付清单、详细验收准则与技术演进方向 |
 | **[系统架构与技术白皮书](docs/ARCHITECTURE_zh.md)** ([English](docs/ARCHITECTURE.md)) | 内核运行机制 | Widget ID 哈希定位、游标排版模型、裁剪栈机制 |
 | **[公共 API 参考手册](docs/API_DESIGN_zh.md)** ([English](docs/API_DESIGN.md)) | 开发者接口文档 | `UIContext` 方法签名、容器布局协议、Painter 绘图接口 |
 | **[设计系统与视觉规范](docs/DESIGN_SYSTEM_zh.md)** ([English](docs/DESIGN_SYSTEM.md)) | 界面设计 Token | 深色/浅色配色方案、字阶规范、间距系统、交互状态机 |
 | **[官方编码规范指南](docs/STYLE_GUIDE.md)** ([English](docs/STYLE_GUIDE_en.md)) | 官方研发标准 | 块语法（`///\|`）、命名、可见性、测试分层、`.mbti` 契约 |
-| **[开源贡献规范指南](CONTRIBUTING_zh.md)** ([English](CONTRIBUTING.md)) | 工程协作标准 | MoonBit 块代码规范（`///\|`）、单测准则、Git 提交约定 |
+| **[开源贡献规范指南](docs/CONTRIBUTING_zh.md)** ([English](docs/CONTRIBUTING.md)) | 工程协作标准 | 研发流程、测试准则、Conventional Commits 提交约定 |
+| **[更新日志与版本记录](docs/CHANGELOG.md)** | 版本演进记录 | 项目发布与代码变更历史跟踪 |
 
 ---
 

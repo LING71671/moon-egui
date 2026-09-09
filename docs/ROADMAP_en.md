@@ -101,23 +101,12 @@
   - [ ] **Release Packaging**: Tag and publish `v0.1.0` GitHub release with live demo links.
 * **Acceptance Criteria**:
   - 100% passing CI suite (formatting, build, test, Wasm compilation);
-  - Pristine codebase ready for hackathon evaluation and open-source community adoption.
+  - Complete documentation, runnable demo, and test suite fulfilling all hackathon goals.
 
 ---
 
-## 2. Post-Hackathon Long-Term Vision
+## 2. Future Work
 
-Following the hackathon, `moon-egui` will continue to evolve as the primary GUI foundation for MoonBit:
-
-### v0.2.0: Hardware-Accelerated Rendering Pipeline
-* **WebGL / WebGPU Instanced Batch Renderer**: Compile `DrawCmd` directly into vertex and index buffers, supporting massive scale (10,000+ primitives at 60 FPS).
-
-### v0.3.0: Desktop-Grade Workspace Layouts
-* **Docking System**: Tabbed windows, split panes, and docking zones for building professional Web IDEs and tools;
-* **Rich Text & Code Input**: Multi-line text editing with syntax highlighting and text selection.
-
-### v0.4.0: Cross-Platform Native Desktop
-* **Raylib / SDL2 Backends**: Leverage MoonBit's native C/LLVM backend to build standalone desktop GUI applications for Windows, macOS, and Linux from a single codebase.
-
-### v1.0.0: The Standard GUI Framework for MoonBit
-* Seamless integration with MoonBit game engines (WASM-4, Raylib-mbt) as the standard embedded immediate-mode GUI library.
+- **Hardware-Accelerated Rendering**: Explore WebGL / WebGPU batch rendering pipelines to minimize rasterization overhead for large primitive counts;
+- **Advanced Containers & Layouts**: Explore multi-window docking and tabbed layout capabilities;
+- **Cross-Platform Native Backends**: Leverage MoonBit's native compilation to explore desktop backends (Raylib, SDL).
