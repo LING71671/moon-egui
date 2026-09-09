@@ -9,13 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [0.1.0-alpha.1] - 2026-09-09
+
 ### Added
-- Project scaffolding with MoonBit toolchain configuration (`moon.mod`, `moon.pkg`).
-- Primary Chinese documentation (`README.md`) with English companion (`docs/README_en.md`).
-- Bilingual technical architecture whitepaper (`docs/ARCHITECTURE_zh.md`, `docs/ARCHITECTURE.md`).
-- Bilingual public API design and reference specification (`docs/API_DESIGN_zh.md`, `docs/API_DESIGN.md`).
-- Bilingual design system and visual token specifications (`docs/DESIGN_SYSTEM_zh.md`, `docs/DESIGN_SYSTEM.md`).
-- Bilingual official MoonBit coding style guide (`docs/STYLE_GUIDE.md`, `docs/STYLE_GUIDE_en.md`).
-- Bilingual contributing guidelines and standards (`docs/CONTRIBUTING_zh.md`, `docs/CONTRIBUTING.md`).
-- Engineering roadmap and hackathon milestone specifications (`docs/ROADMAP.md`, `docs/ROADMAP_en.md`).
-- Automated continuous integration workflow with MoonBit toolchain (`.github/workflows/ci.yml`).
+- **Multi-Tier Architecture**: Modular package organization under `src/` (`src/math`, `src/color`, `src/draw`, `src/core`, `src/lib.mbt`) and blackbox integration suite under `test/`.
+- **Mathematical Primitives**: `Vec2` and `Rect` with AABB hit-testing, intersection, margins, and scissor clipping math.
+- **Color System & Tokens**: 32-bit RGBA color model, hex parsing, alpha blending, and industrial dark mode design tokens.
+- **Render-Agnostic Draw Protocol**: Geometric primitive token enum (`DrawCmd`) and buffer-reusable command queue (`DrawList`).
+- **Interaction State Machine**: `RawInput`, `InputState` pointer transition tracking, 64-bit deterministic FNV-1a `Id` hashing, and hierarchical `IdStack`.
+- **IMGUI Context Coordinator**: `UIContext` lifecycle manager with linear cursor layout and `allocate_space` core extensibility primitive.
+- **Documentation Suite**: Comprehensive bilingual documentation in `docs/` covering architecture, API design, design system, coding style, contributing guide, and engineering roadmap.
+- **Automated CI Workflow**: GitHub Actions pipeline verifying formatting (`moon fmt`), unit/integration test suites (`moon test`), and WebAssembly build (`moon build`).
