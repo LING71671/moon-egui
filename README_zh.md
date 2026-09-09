@@ -146,7 +146,7 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 - [ ] **第四阶段：Canvas 2D 桥接与在线 Playground**（9月19日 – 9月21日）
   - 60 FPS HTML5 Canvas 2D 驱动器、GitHub Pages 交互式 WebAssembly 在线演示。
 - [ ] **第五阶段：全面自动化测试与正式交付**（9月22日 – 9月24日）
-  - 达成 150+ 自动化单元测试、性能压测验证、录制答辩演示视频。
+  - 达成 150+ 自动化单元测试、完整文档规范与最终版本验收交付。
 
 ---
 
