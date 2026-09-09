@@ -1,0 +1,5 @@
+// import {
+//   "LING71671/moon-egui" @lib,
+// }
+
+pkgtype(kind: "executable")

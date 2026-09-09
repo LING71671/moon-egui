@@ -1,0 +1,17 @@
+.DS_Store
+_build/
+target/
+target
+.mooncakes/
+.moonagent/
+dist/
+node_modules/
+.vite/
+*.wasm
+
+# Private hackathon application forms & drafts
+.private*
+*PROPOSAL*.md
+*项目申报书*.md
+docs/*PROPOSAL*.md
+docs/*申报书*.md
