@@ -157,6 +157,7 @@ Comprehensive design specifications and technical whitepapers are organized in [
 | **[Architecture Whitepaper](docs/ARCHITECTURE.md)** | Core engine internals | ID hashing, frame lifecycle, cursor layout, clip stack |
 | **[API Reference](docs/API_DESIGN.md)** | Complete public interface | `UIContext`, widget signatures, containers, Painter API |
 | **[Design System](docs/DESIGN_SYSTEM.md)** | Visual design tokens | Dark/Light palettes, typography scale, spacing rules |
+| **[Style Guide](docs/STYLE_GUIDE.md)** | Official coding conventions | Block style (`///|`), naming, testing tiers, `.mbti` |
 | **[Contributing Guide](CONTRIBUTING.md)** | Development workflows | MoonBit conventions, code formatting, test criteria |
 
 ---

@@ -160,6 +160,7 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 | **[系统架构与技术白皮书](docs/ARCHITECTURE.md)** | 内核运行机制 | Widget ID 哈希定位、游标排版模型、裁剪栈机制 |
 | **[公共 API 参考手册](docs/API_DESIGN.md)** | 开发者接口文档 | `UIContext` 方法签名、容器布局协议、Painter 绘图接口 |
 | **[设计系统与视觉规范](docs/DESIGN_SYSTEM.md)** | 界面设计 Token | 深色/浅色配色方案、字阶规范、间距系统、交互状态机 |
+| **[官方编码规范指南](docs/STYLE_GUIDE.md)** | 官方研发标准 | 块语法（`///\|`）、命名、可见性、测试分层、`.mbti` 契约 |
 | **[开源贡献规范指南](CONTRIBUTING.md)** | 工程协作标准 | MoonBit 块代码规范（`///\|`）、单测准则、Git 提交约定 |
 
 ---
