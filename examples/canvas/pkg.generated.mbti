@@ -1,0 +1,18 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "LING71671/moon-egui/examples/canvas"
+
+import {
+  "LING71671/moon-egui/src/draw",
+}
+
+// Values
+pub fn step(Double, Double, Bool) -> @draw.DrawList
+
+// Errors
+
+// Types and methods
+type AppState
+
+// Type aliases
+
+// Traits

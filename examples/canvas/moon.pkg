@@ -1,0 +1,7 @@
+import {
+  "LING71671/moon-egui/src/math",
+  "LING71671/moon-egui/src/draw",
+  "LING71671/moon-egui/src/core",
+}
+
+pkgtype(kind: "executable")

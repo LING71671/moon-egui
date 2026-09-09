@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moon-EGUI • Canvas 2D Live Playground</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root {
+      --bg-primary: #090a0f;
+      --card-bg: rgba(18, 20, 29, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-blue: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.15);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 50% 15%, var(--accent-glow) 0%, transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+    }
+
+    .header-bar {
+      text-align: center;
+      margin-bottom: 24px;
+      max-width: 760px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      color: #60a5fa;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      background-color: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .canvas-window {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      box-shadow: 
+        0 20px 50px -10px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      width: 760px;
+    }
+
+    .window-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .window-controls {
+      display: flex;
+      gap: 7px;
+    }
+
+    .window-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+
+    .window-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+
+    .window-fps {
+      font-size: 11px;
+      font-weight: 600;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    #moon-canvas {
+      display: block;
+      cursor: default;
+      background: #0f1117;
+    }
+
+    .telemetry-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      background: rgba(0, 0, 0, 0.25);
+      border-top: 1px solid var(--card-border);
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .telemetry-item span {
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+
+    .footer-links {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-links a {
+      color: #60a5fa;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-bar">
+    <div class="badge-pill">
+      <div class="pulse-dot"></div>
+      Pure MoonBit • WebAssembly / JS
+    </div>
+    <h1>moon-egui Live Playground</h1>
+    <p class="subtitle">
+      Immediate-Mode GUI engine written 100% in MoonBit, evaluating layout and hit-testing every 16ms and painting directly onto HTML5 Canvas 2D.
+    </p>
+  </div>
+
+  <div class="canvas-window">
+    <div class="window-header">
+      <div class="window-controls">
+        <div class="window-dot dot-red"></div>
+        <div class="window-dot dot-yellow"></div>
+        <div class="window-dot dot-green"></div>
+      </div>
+      <div class="window-title">moon-egui // Immediate-Mode Frame Loop</div>
+      <div class="window-fps"><span id="telemetry-fps">60</span> FPS</div>
+    </div>
+
+    <canvas id="moon-canvas"></canvas>
+
+    <div class="telemetry-bar">
+      <div class="telemetry-item">Pointer: <span id="telemetry-coords">(-, -)</span></div>
+      <div class="telemetry-item">Mouse State: <span id="telemetry-down">UP</span></div>
+      <div class="telemetry-item">DrawCmds: <span id="telemetry-cmds">0</span></div>
+      <div class="telemetry-item">Backend: <span>Canvas 2D</span></div>
+    </div>
+  </div>
+
+  <div class="footer-links">
+    Built for <a href="https://moonbitlang.github.io/Hackathon2026/" target="_blank">MoonBit Hackathon 2026</a> · 
+    <a href="https://github.com/LING71671/moon-egui" target="_blank">GitHub Repository</a>
+  </div>
+
+  <!-- 1. Load MoonBit compiled bundle -->
+  <script src="canvas.js"></script>
+  <!-- 2. Start Canvas 2D event listener and 60 FPS animation loop -->
+  <script src="run.js"></script>
+</body>
+</html>

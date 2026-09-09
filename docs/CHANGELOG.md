@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0-alpha.1] - 2026-09-09
 
 ### Added
+- **Canvas 2D Interactive Web Playground**: Full working HTML5 Canvas 2D live demo in [`examples/canvas/`](examples/canvas/) running 60 FPS in browser with real-time pointer interaction and telemetry.
 - **Core Interactive Widgets**: Ergonomic `label`, `label_colored`, `button`, `button_primary`, `checkbox`, `separator`, and `spacer` methods on `UIContext`.
 - **Multi-Tier Architecture**: Modular package organization under `src/` (`src/math`, `src/color`, `src/draw`, `src/core`, `src/lib.mbt`) and blackbox integration suite under `test/`.
 - **Mathematical Primitives**: `Vec2` and `Rect` with AABB hit-testing, intersection, margins, and scissor clipping math.
