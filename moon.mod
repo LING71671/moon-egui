@@ -19,15 +19,7 @@ repository = "https://github.com/LING71671/moon-egui"
 
 license = "Apache-2.0"
 
-keywords = [
-  "gui",
-  "egui",
-  "imgui",
-  "canvas",
-  "wasm",
-  "immediate-mode",
-  "ui",
-]
+keywords = [ "gui", "egui", "imgui", "canvas", "wasm", "immediate-mode", "ui" ]
 
 preferred_target = "wasm"
 
