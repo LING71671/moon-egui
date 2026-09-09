@@ -4,17 +4,24 @@
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d', { alpha: false });
-  const dpr = window.devicePixelRatio || 1;
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  let dpr = window.devicePixelRatio || 1;
 
-  // Viewport dimensions (920 x 540)
-  const width = 920;
-  const height = 540;
+  function resizeCanvas() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+  }
 
-  canvas.width = Math.round(width * dpr);
-  canvas.height = Math.round(height * dpr);
-  canvas.style.width = width + 'px';
-  canvas.style.height = height + 'px';
-  ctx.scale(dpr, dpr);
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
 
   let mouseX = -100;
   let mouseY = -100;
@@ -128,6 +135,30 @@
   let cachedLineWidth = -1;
   let cachedFont = '';
 
+  const colorMap = new Map();
+  function getColorStr(color) {
+    if (!color) return '#000000';
+    const key = (color.r << 24) | (color.g << 16) | (color.b << 8) | color.a;
+    let s = colorMap.get(key);
+    if (!s) {
+      s = color.a === 255
+        ? `rgb(${color.r},${color.g},${color.b})`
+        : `rgba(${color.r},${color.g},${color.b},${(color.a / 255).toFixed(3)})`;
+      colorMap.set(key, s);
+    }
+    return s;
+  }
+
+  const fontMap = new Map();
+  function getFontStr(fontSize) {
+    let f = fontMap.get(fontSize);
+    if (!f) {
+      f = `600 ${fontSize}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`;
+      fontMap.set(fontSize, f);
+    }
+    return f;
+  }
+
   function setFill(colorStr) {
     if (cachedFillStyle !== colorStr) {
       ctx.fillStyle = colorStr;
@@ -172,18 +203,29 @@
           const rect = cmd._0;
           const color = cmd._1;
           const radius = cmd._2 || 0;
-          const colorStr = `rgba(${color.r},${color.g},${color.b},${color.a / 255})`;
+          const colorStr = getColorStr(color);
           setFill(colorStr);
+
           if (radius <= 1) {
-            ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+            // Batch consecutive rects of identical color into a single fill call
+            if (i + 1 < len && cmds[i + 1] && cmds[i + 1].$tag === 0 && (cmds[i + 1]._2 || 0) <= 1 && cmds[i + 1]._1.r === color.r && cmds[i + 1]._1.g === color.g && cmds[i + 1]._1.b === color.b && cmds[i + 1]._1.a === color.a) {
+              ctx.beginPath();
+              ctx.rect(rect.x, rect.y, rect.w, rect.h);
+              while (i + 1 < len && cmds[i + 1] && cmds[i + 1].$tag === 0 && (cmds[i + 1]._2 || 0) <= 1 && cmds[i + 1]._1.r === color.r && cmds[i + 1]._1.g === color.g && cmds[i + 1]._1.b === color.b && cmds[i + 1]._1.a === color.a) {
+                i++;
+                const nr = cmds[i]._0;
+                ctx.rect(nr.x, nr.y, nr.w, nr.h);
+              }
+              ctx.fill();
+            } else {
+              ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+            }
           } else if (ctx.roundRect) {
             ctx.beginPath();
             ctx.roundRect(rect.x, rect.y, rect.w, rect.h, radius);
             ctx.fill();
           } else {
-            ctx.beginPath();
-            ctx.rect(rect.x, rect.y, rect.w, rect.h);
-            ctx.fill();
+            ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
           }
           break;
         }
@@ -192,7 +234,7 @@
           const color = cmd._1;
           const strokeW = cmd._2 || 1;
           const radius = cmd._3 || 0;
-          const colorStr = `rgba(${color.r},${color.g},${color.b},${color.a / 255})`;
+          const colorStr = getColorStr(color);
           setStroke(colorStr, strokeW);
           ctx.beginPath();
           if (radius > 0 && ctx.roundRect) {
@@ -207,7 +249,7 @@
           const center = cmd._0;
           const radius = cmd._1;
           const color = cmd._2;
-          const colorStr = `rgba(${color.r},${color.g},${color.b},${color.a / 255})`;
+          const colorStr = getColorStr(color);
           setFill(colorStr);
           ctx.beginPath();
           ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
@@ -219,7 +261,7 @@
           const radius = cmd._1;
           const color = cmd._2;
           const strokeW = cmd._3 || 1;
-          const colorStr = `rgba(${color.r},${color.g},${color.b},${color.a / 255})`;
+          const colorStr = getColorStr(color);
           setStroke(colorStr, strokeW);
           ctx.beginPath();
           ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
@@ -231,11 +273,20 @@
           const p2 = cmd._1;
           const color = cmd._2;
           const strokeW = cmd._3 || 1;
-          const colorStr = `rgba(${color.r},${color.g},${color.b},${color.a / 255})`;
+          const colorStr = getColorStr(color);
           setStroke(colorStr, strokeW);
+
+          // Batch consecutive lines of identical stroke & color
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(p2.x, p2.y);
+          while (i + 1 < len && cmds[i + 1] && cmds[i + 1].$tag === 4 && (cmds[i + 1]._3 || 1) === strokeW && cmds[i + 1]._2.r === color.r && cmds[i + 1]._2.g === color.g && cmds[i + 1]._2.b === color.b && cmds[i + 1]._2.a === color.a) {
+            i++;
+            const np1 = cmds[i]._0;
+            const np2 = cmds[i]._1;
+            ctx.moveTo(np1.x, np1.y);
+            ctx.lineTo(np2.x, np2.y);
+          }
           ctx.stroke();
           break;
         }
@@ -244,9 +295,9 @@
           const text = cmd._1;
           const fontSize = cmd._2 || 14;
           const color = cmd._3;
-          const colorStr = `rgba(${color.r},${color.g},${color.b},${color.a / 255})`;
+          const colorStr = getColorStr(color);
           setFill(colorStr);
-          setFont(`600 ${fontSize}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`);
+          setFont(getFontStr(fontSize));
           ctx.textBaseline = 'top';
           ctx.fillText(text, pos.x, pos.y);
           break;
@@ -306,7 +357,7 @@
       requestedMode = -1;
 
       const t0 = performance.now();
-      const dl = stepFn(mouseX, mouseY, isMouseDown, curPanX, curPanY, curZoom, curMode);
+      const dl = stepFn(mouseX, mouseY, isMouseDown, curPanX, curPanY, curZoom, curMode, width, height);
       const dt = performance.now() - t0;
 
       kernelTimeRolling = kernelTimeRolling * 0.85 + dt * 0.15;

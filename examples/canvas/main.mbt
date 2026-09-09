@@ -1,14 +1,11 @@
 ///|
 struct BenchmarkState {
   mut mode : Int // 0: Logo Matrix (144 ~ 1600), 1: 1,000,000 Nodes Universe
-  mut grid_dim : Int // 12, 20, 32, 40 for Mode 0
+  grid_dim : Int // 32
   mut click_count : Int
-  mut magnetic_repel : Bool
-  mut wave_pulse : Bool
+  magnetic_repel : Bool
+  wave_pulse : Bool
   mut frame_tick : Double
-  mut selected_id : Int
-  mut selected_col : Int
-  mut selected_row : Int
   mut ripple_cx : Double
   mut ripple_cy : Double
   mut ripple_active : Bool
@@ -23,6 +20,11 @@ struct BenchmarkState {
   mut million_selected_col : Int
   mut million_selected_row : Int
   mut million_visible_count : Int
+
+  // Logo Matrix Selected State
+  mut selected_id : Int
+  mut selected_col : Int
+  mut selected_row : Int
 
   // Drag & Interaction State
   mut drag_mode : Int // 0: 漫游画布 (Pan Canvas), 1: 拖拽单个物体 (Drag Item)
@@ -39,10 +41,7 @@ let state : BenchmarkState = {
   magnetic_repel: true,
   wave_pulse: false,
   frame_tick: 0.0,
-  selected_id: -1,
-  selected_col: -1,
-  selected_row: -1,
-  ripple_cx: 580.0,
+  ripple_cx: 460.0,
   ripple_cy: 270.0,
   ripple_active: false,
   ripple_progress: 0.0,
@@ -54,6 +53,9 @@ let state : BenchmarkState = {
   million_selected_col: -1,
   million_selected_row: -1,
   million_visible_count: 0,
+  selected_id: -1,
+  selected_col: -1,
+  selected_row: -1,
   drag_mode: 0,
   item_drag_dx: 0.0,
   item_drag_dy: 0.0,
@@ -101,163 +103,6 @@ fn d_abs(val : Double) -> Double {
 }
 
 ///|
-/// Tactile light-mode text label.
-fn label_light(ui : @core.UIContext, text : String, is_header : Bool) -> Unit {
-  let char_w = 8.0
-  let text_w = text.length().to_double() * char_w
-  let w = if text_w > 20.0 { text_w } else { 20.0 }
-  let h = if is_header { 18.0 } else { 15.0 }
-  let (_id, rect, _resp) = ui.allocate_space(@math.Vec2::new(w, h))
-  let color = if is_header {
-    @color.Color::rgb(15, 23, 42) // Slate 900
-  } else {
-    @color.Color::rgb(71, 85, 105) // Slate 600
-  }
-  ui
-  .draw_list()
-  .add_text(@math.Vec2::new(rect.x, rect.y + 1.0), text, 14.0, color)
-}
-
-///|
-/// Tactile light-mode physical button.
-fn button_light(
-  ui : @core.UIContext,
-  text : String,
-  is_active : Bool,
-) -> @core.Response {
-  let w = 210.0
-  let h = 23.0
-  let (_id, rect, resp) = ui.allocate_space(@math.Vec2::new(w, h))
-
-  let (bg, border, text_col) = if is_active {
-    (
-      @color.Color::rgb(15, 23, 42),
-      @color.Color::rgb(15, 23, 42),
-      @color.Color::white(),
-    )
-  } else if resp.pressed() {
-    (
-      @color.Color::rgb(226, 232, 240),
-      @color.Color::rgb(148, 163, 184),
-      @color.Color::rgb(15, 23, 42),
-    )
-  } else if resp.hovered() {
-    (
-      @color.Color::rgb(241, 245, 249),
-      @color.Color::rgb(148, 163, 184),
-      @color.Color::rgb(15, 23, 42),
-    )
-  } else {
-    (
-      @color.Color::white(),
-      @color.Color::rgb(203, 213, 225),
-      @color.Color::rgb(30, 41, 59),
-    )
-  }
-
-  ui.draw_list().add_rect(rect, bg, 4.0)
-  ui.draw_list().add_rect_stroke(rect, border, 1.0, 4.0)
-  let text_x = rect.x + 10.0
-  let text_y = rect.y + 4.5
-  ui.draw_list().add_text(@math.Vec2::new(text_x, text_y), text, 11.0, text_col)
-  resp
-}
-
-///|
-/// Tactile light-mode primary action button.
-fn button_primary_light(ui : @core.UIContext, text : String) -> @core.Response {
-  let w = 210.0
-  let h = 23.0
-  let (_id, rect, resp) = ui.allocate_space(@math.Vec2::new(w, h))
-
-  let (bg, border) = if resp.pressed() {
-    (@color.Color::rgb(3, 105, 161), @color.Color::rgb(2, 132, 199))
-  } else if resp.hovered() {
-    (@color.Color::rgb(14, 165, 233), @color.Color::rgb(2, 132, 199))
-  } else {
-    (@color.Color::rgb(2, 132, 199), @color.Color::rgb(2, 132, 199))
-  }
-
-  ui.draw_list().add_rect(rect, bg, 4.0)
-  ui.draw_list().add_rect_stroke(rect, border, 1.0, 4.0)
-  let text_x = rect.x + 10.0
-  let text_y = rect.y + 4.5
-  ui
-  .draw_list()
-  .add_text(@math.Vec2::new(text_x, text_y), text, 11.0, @color.Color::white())
-  resp
-}
-
-///|
-/// Tactile light-mode checkbox.
-fn checkbox_light(
-  ui : @core.UIContext,
-  text : String,
-  checked : Bool,
-) -> (Bool, @core.Response) {
-  let box_size = 16.0
-  let gap = 8.0
-  let char_w = 8.0
-  let text_w = text.length().to_double() * char_w
-  let w = box_size + gap + text_w
-  let h = 20.0
-  let (_id, rect, resp) = ui.allocate_space(@math.Vec2::new(w, h))
-  let new_state = if resp.clicked() { !checked } else { checked }
-
-  let box_rect = @math.Rect::new(
-    rect.x,
-    rect.y + (h - box_size) * 0.5,
-    box_size,
-    box_size,
-  )
-  if checked {
-    ui.draw_list().add_rect(box_rect, @color.Color::rgb(15, 23, 42), 3.0)
-    let inner = box_rect.shrink(4.0)
-    ui.draw_list().add_rect(inner, @color.Color::white(), 1.5)
-  } else {
-    let bg = if resp.hovered() {
-      @color.Color::rgb(241, 245, 249)
-    } else {
-      @color.Color::white()
-    }
-    let border = if resp.hovered() {
-      @color.Color::rgb(15, 23, 42)
-    } else {
-      @color.Color::rgb(203, 213, 225)
-    }
-    ui.draw_list().add_rect(box_rect, bg, 3.0)
-    ui.draw_list().add_rect_stroke(box_rect, border, 1.0, 3.0)
-  }
-
-  let text_x = rect.x + box_size + gap
-  let text_y = rect.y + (h - 14.0) * 0.5
-  let text_col = if resp.hovered() {
-    @color.Color::rgb(15, 23, 42)
-  } else {
-    @color.Color::rgb(51, 65, 85)
-  }
-  ui.draw_list().add_text(@math.Vec2::new(text_x, text_y), text, 14.0, text_col)
-  (new_state, resp)
-}
-
-///|
-/// Tactile light-mode separator line.
-fn separator_light(ui : @core.UIContext) -> Unit {
-  let w = ui.available_width()
-  let h = 7.0
-  let (_id, rect, _resp) = ui.allocate_space(@math.Vec2::new(w, h))
-  let y = rect.y + 3.0
-  ui
-  .draw_list()
-  .add_line(
-    @math.Vec2::new(rect.x, y),
-    @math.Vec2::new(rect.x + rect.w, y),
-    @color.Color::rgb(226, 232, 240),
-    1.0,
-  )
-}
-
-///|
 /// Core benchmark frame update function with million-node camera & drag support.
 pub fn step(
   mouse_x : Double,
@@ -267,6 +112,8 @@ pub fn step(
   pan_dy : Double,
   zoom_delta : Double,
   switch_mode : Int,
+  vp_w : Double,
+  vp_h : Double,
 ) -> @draw.DrawList {
   state.frame_tick = state.frame_tick + 1.0
 
@@ -346,139 +193,23 @@ pub fn step(
     mouse_down,
   )
   ctx.begin_frame(raw)
-  ctx.set_available_width(230.0)
-
-  // --- Mode Selection Tabs in Sidebar ---
-  label_light(ctx, "BENCHMARK SUITE", true)
-  separator_light(ctx)
-  ctx.spacer(2.0)
-
-  if button_light(
-      ctx,
-      "百万杯咖啡 (1M Coffee)",
-      state.mode == 1 && state.million_mode == 0,
-    ).clicked() {
-    state.mode = 1
-    state.million_mode = 0
-  }
-  if button_light(
-      ctx,
-      "百万矩形 (1M Rects)",
-      state.mode == 1 && state.million_mode == 1,
-    ).clicked() {
-    state.mode = 1
-    state.million_mode = 1
-  }
-  if button_light(ctx, "Logo 碎片 (1.6K Full)", state.mode == 0).clicked() {
-    state.mode = 0
-  }
-
-  ctx.spacer(4.0)
-  separator_light(ctx)
-  ctx.spacer(2.0)
 
   // =========================================================================
-  // MODE 1: 1,000,000 (ONE MILLION) NODES INFINITE CANVAS BENCHMARK
+  // MODE 1: 1,000,000 NODES FULL VIEWPORT INFINITE STUDIO CANVAS
   // =========================================================================
   if state.mode == 1 {
-    label_light(ctx, "交互模式 (Scene):", false)
-    if button_light(ctx, "拖拽单个物体 (drag)", state.drag_mode == 1).clicked() {
-      state.drag_mode = 1
-      if state.million_selected_id < 0 {
-        state.million_selected_id = 500 * 1000 + 500
-        state.million_selected_col = 500
-        state.million_selected_row = 500
-      }
-    }
-    if button_light(ctx, "漫游画布 (move)", state.drag_mode == 0).clicked() {
-      state.drag_mode = 0
-    }
-
-    ctx.spacer(3.0)
-    label_light(ctx, "视角与缩放预设:", false)
-    if button_light(ctx, "特写聚焦 (1.2x Focus)", false).clicked() {
-      state.zoom = 1.2
-    }
-    if button_light(ctx, "全景铺满 (fit 100%)", false).clicked() {
-      state.zoom = 0.0062
-      state.cam_x = 32000.0
-      state.cam_y = 38000.0
-    }
-    if button_light(ctx, "原始比例 (100% 1.0x)", false).clicked() {
-      state.zoom = 1.0
-    }
-    if button_light(ctx, "复位物体拖拽 (Reset)", false).clicked() {
-      state.item_drag_dx = 0.0
-      state.item_drag_dy = 0.0
-    }
-
-    ctx.spacer(3.0)
-    if button_primary_light(ctx, "居中视口 (Center)").clicked() {
-      state.cam_x = 32000.0
-      state.cam_y = 38000.0
-    }
-    if button_light(ctx, "清空选中 (Deselect)", false).clicked() {
-      state.million_selected_id = -1
-      state.million_selected_col = -1
-      state.million_selected_row = -1
-      state.item_drag_dx = 0.0
-      state.item_drag_dy = 0.0
-    }
-
-    ctx.spacer(4.0)
-    separator_light(ctx)
-
-    let zoom_pct = (state.zoom * 100.0).to_int()
-    let vis_pct = if state.zoom <= 0.007 {
-      100
-    } else {
-      (state.million_visible_count.to_double() / 10000.0).to_int()
-    }
-    let zoom_label = if state.zoom <= 0.007 { "Fit 100%" } else { "\{zoom_pct}%" }
-    label_light(ctx, "Universe: 1,000,000 (\{zoom_label})", false)
-    label_light(
-      ctx,
-      "Visible: \{state.million_visible_count} (\{vis_pct}%)",
-      false,
-    )
-    label_light(ctx, "Recorded Hits: \{state.click_count}", false)
-    if state.million_selected_id >= 0 {
-      let status_tag = if state.is_dragging_item { "DRAG" } else { "SEL" }
-      label_light(
-        ctx,
-        "[\{status_tag}] #\{state.million_selected_id} (\{state.million_selected_col}, \{state.million_selected_row})",
-        false,
-      )
-    } else {
-      label_light(ctx, "Target: None (Click Cup)", false)
-    }
-    label_light(ctx, "Memory: ~18MB (Zero GC)", false)
-
-    // --- Right Viewport: 1,000,000 Node Spatial Canvas ---
     let dl = ctx.draw_list()
-    let vp_x = 270.0
-    let vp_y = 20.0
-    let vp_w = 620.0
-    let vp_h = 500.0
-
-    dl.add_rect(
-      @math.Rect::new(vp_x, vp_y, vp_w, vp_h),
-      @color.Color::white(),
-      8.0,
-    )
-    dl.add_rect_stroke(
-      @math.Rect::new(vp_x, vp_y, vp_w, vp_h),
-      @color.Color::rgb(226, 232, 240),
-      1.0,
-      8.0,
-    )
+    let vp_x = 0.0
+    let vp_y = 0.0
+    let cur_w = if vp_w > 100.0 { vp_w } else { 920.0 }
+    let cur_h = if vp_h > 100.0 { vp_h } else { 540.0 }
 
     let ruler_h = 22.0
-    let ruler_w = 46.0
+    let ruler_w = 48.0
     let cv_x = vp_x + ruler_w
     let cv_y = vp_y + ruler_h
-    let cv_w = vp_w - ruler_w
-    let cv_h = vp_h - ruler_h
+    let cv_w = cur_w - ruler_w
+    let cv_h = cur_h - ruler_h
 
     let sc_x = cv_x + cv_w * 0.5
     let sc_y = cv_y + cv_h * 0.5
@@ -545,18 +276,18 @@ pub fn step(
     state.million_visible_count = raw_visible
 
     // Adaptive sampling stride so Canvas 2D frame time stays strictly within 16.6ms (60 FPS)
-    let stride = if raw_visible <= 1500 {
+    let stride = if raw_visible <= 1200 {
       1
-    } else if raw_visible <= 6000 {
+    } else if raw_visible <= 5000 {
       2
-    } else if raw_visible <= 25000 {
+    } else if raw_visible <= 20000 {
       4
-    } else if raw_visible <= 100000 {
+    } else if raw_visible <= 80000 {
       8
-    } else if raw_visible <= 400000 {
-      14
+    } else if raw_visible <= 300000 {
+      16
     } else {
-      22
+      28
     }
 
     // 1. Clip workspace content
@@ -588,120 +319,90 @@ pub fn step(
     let draw_w = item_w.max(2.5)
     let draw_h = item_h.max(3.0)
 
-    for r = row_start; r < row_end; r = r + stride {
-      for c = col_start; c < col_end; c = c + stride {
-        let is_selected = c == state.million_selected_col &&
-          r == state.million_selected_row
-        let is_dragged = is_selected &&
-          (
-            state.item_drag_dx != 0.0 ||
-            state.item_drag_dy != 0.0 ||
-            state.is_dragging_item
-          )
+    if state.zoom >= 0.35 && stride == 1 {
+      for r = row_start; r < row_end; r = r + stride {
+        for c = col_start; c < col_end; c = c + stride {
+          let is_selected = c == state.million_selected_col &&
+            r == state.million_selected_row
+          let is_dragged = is_selected &&
+            (
+              state.item_drag_dx != 0.0 ||
+              state.item_drag_dy != 0.0 ||
+              state.is_dragging_item
+            )
 
-        let orig_wx = c.to_double() * cell_w + 10.0
-        let orig_wy = r.to_double() * cell_h + 6.0
+          let orig_wx = c.to_double() * cell_w + 10.0
+          let orig_wy = r.to_double() * cell_h + 6.0
+          let wx = if is_dragged { orig_wx + state.item_drag_dx } else { orig_wx }
+          let wy = if is_dragged { orig_wy + state.item_drag_dy } else { orig_wy }
+          let sx = sc_x + (wx - state.cam_x) * state.zoom
+          let sy = sc_y + (wy - state.cam_y) * state.zoom
 
-        // If this coffee cup is lifted/dragged, render a glowing bottom halo on its shelf origin!
-        if is_dragged && state.million_mode == 0 {
-          let halo_sx = sc_x + (orig_wx - state.cam_x) * state.zoom
-          let halo_sy = sc_y + (orig_wy - state.cam_y) * state.zoom
-          let halo_w = 44.0 * state.zoom
-          let halo_h = 58.0 * state.zoom
-          dl.add_circle(
-            @math.Vec2::new(halo_sx + halo_w * 0.5, halo_sy + halo_h * 0.95),
-            (halo_w * 0.65).max(4.0),
-            @color.Color::rgba(244, 63, 94, 60),
+          let color_mod = ((c / stride) * 7 + (r / stride) * 13) % 4
+          let base_cup_color = if color_mod == 0 {
+            @color.Color::rgb(16, 185, 129) // Emerald Mint
+          } else if color_mod == 1 {
+            @color.Color::rgb(244, 63, 94) // Strawberry Rose
+          } else if color_mod == 2 {
+            @color.Color::rgb(139, 92, 246) // Aurora Violet
+          } else {
+            @color.Color::rgb(2, 132, 199) // Glacier Cyan
+          }
+
+          let rect_radius = if draw_w < 8.0 { 1.0 } else { 2.0 }
+          dl.add_rect(
+            @math.Rect::new(sx, sy, draw_w, draw_h),
+            base_cup_color,
+            rect_radius,
           )
-          dl.add_circle(
-            @math.Vec2::new(halo_sx + halo_w * 0.5, halo_sy + halo_h * 0.95),
-            (halo_w * 0.38).max(2.5),
-            @color.Color::rgba(244, 63, 94, 140),
-          )
+          if draw_w > 12.0 {
+            dl.add_rect_stroke(
+              @math.Rect::new(sx, sy, draw_w, draw_h),
+              @color.Color::rgb(203, 213, 225),
+              0.5,
+              rect_radius,
+            )
+          }
         }
-
-        let wx = if is_dragged { orig_wx + state.item_drag_dx } else { orig_wx }
-        let wy = if is_dragged { orig_wy + state.item_drag_dy } else { orig_wy }
-        let sx = sc_x + (wx - state.cam_x) * state.zoom
-        let sy = sc_y + (wy - state.cam_y) * state.zoom
-
-        let color_mod = (c * 7 + r * 13) % 4
-        let base_cup_color = if color_mod == 0 {
+      }
+    } else {
+      // Macro Universe: Color-batched linear sweep for maximum Canvas 2D rasterizer efficiency!
+      for target_color = 0; target_color < 4; target_color = target_color + 1 {
+        let base_cup_color = if target_color == 0 {
           @color.Color::rgb(16, 185, 129) // Emerald Mint
-        } else if color_mod == 1 {
+        } else if target_color == 1 {
           @color.Color::rgb(244, 63, 94) // Strawberry Rose
-        } else if color_mod == 2 {
+        } else if target_color == 2 {
           @color.Color::rgb(139, 92, 246) // Aurora Violet
         } else {
           @color.Color::rgb(2, 132, 199) // Glacier Cyan
         }
 
-        if state.million_mode == 0 {
-          // --- 百万杯咖啡 (1M Coffee Cups) ---
-          if state.zoom >= 0.35 && stride == 1 {
-            // High-fidelity coffee cup on shelf
-            // 1. Cup body
-            dl.add_rect(
-              @math.Rect::new(sx, sy + draw_h * 0.16, draw_w, draw_h * 0.84),
-              base_cup_color,
-              3.0,
-            )
-            // 2. Cup lid
-            dl.add_rect(
-              @math.Rect::new(
-                sx - draw_w * 0.05,
-                sy,
-                draw_w * 1.1,
-                draw_h * 0.18,
-              ),
-              @color.Color::rgb(241, 245, 249),
-              2.0,
-            )
-            dl.add_rect_stroke(
-              @math.Rect::new(
-                sx - draw_w * 0.05,
-                sy,
-                draw_w * 1.1,
-                draw_h * 0.18,
-              ),
-              @color.Color::rgb(203, 213, 225),
-              1.0,
-              2.0,
-            )
-            // 3. Kraft paper sleeve
-            dl.add_rect(
-              @math.Rect::new(sx, sy + draw_h * 0.42, draw_w, draw_h * 0.3),
-              @color.Color::rgb(254, 243, 199),
-              1.0,
-            )
-            // 4. White leaf icon badge on sleeve
-            let badge_r = (draw_w * 0.12).max(1.5)
-            dl.add_circle(
-              @math.Vec2::new(sx + draw_w * 0.5, sy + draw_h * 0.57),
-              badge_r,
-              @color.Color::white(),
-            )
-          } else {
-            // Macro galaxy rendering
+        for r = row_start; r < row_end; r = r + stride {
+          for c = col_start; c < col_end; c = c + stride {
+            if ((c / stride) * 7 + (r / stride) * 13) % 4 != target_color {
+              continue
+            }
+            let is_selected = c == state.million_selected_col &&
+              r == state.million_selected_row
+            let is_dragged = is_selected &&
+              (
+                state.item_drag_dx != 0.0 ||
+                state.item_drag_dy != 0.0 ||
+                state.is_dragging_item
+              )
+
+            let orig_wx = c.to_double() * cell_w + 10.0
+            let orig_wy = r.to_double() * cell_h + 6.0
+            let wx = if is_dragged { orig_wx + state.item_drag_dx } else { orig_wx }
+            let wy = if is_dragged { orig_wy + state.item_drag_dy } else { orig_wy }
+            let sx = sc_x + (wx - state.cam_x) * state.zoom
+            let sy = sc_y + (wy - state.cam_y) * state.zoom
+
             dl.add_rect(
               @math.Rect::new(sx, sy, draw_w, draw_h),
               base_cup_color,
-              1.0,
-            )
-          }
-        } else {
-          // --- 百万矩形对标模式 (1M Rectangles) ---
-          dl.add_rect(
-            @math.Rect::new(sx, sy, draw_w, draw_h),
-            base_cup_color,
-            2.0,
-          )
-          if draw_w > 8.0 {
-            dl.add_rect_stroke(
-              @math.Rect::new(sx, sy, draw_w, draw_h),
-              @color.Color::rgb(203, 213, 225),
-              0.5,
-              2.0,
+              0.0,
             )
           }
         }
@@ -954,21 +655,7 @@ pub fn step(
       }
     }
 
-    // Floating Shortcut HUD at Bottom
-    let hud_w = 340.0
-    let hud_x = cv_x + (cv_w - hud_w) * 0.5
-    let hud_y = cv_y + cv_h - 32.0
-    dl.add_rect(
-      @math.Rect::new(hud_x, hud_y, hud_w, 24.0),
-      @color.Color::rgba(15, 23, 42, 230),
-      12.0,
-    )
-    dl.add_text(
-      @math.Vec2::new(hud_x + 16.0, hud_y + 5.0),
-      "Shift+滚轮 横向 | 拖拽 漫游 | 滚轮 缩放 | 点击 拾取",
-      11.0,
-      @color.Color::white(),
-    )
+
 
     ctx.end_frame()
   } else {
@@ -983,94 +670,28 @@ pub fn step(
       }
     }
 
-    label_light(ctx, "Logo Granularity:", false)
-    if button_light(ctx, "144 Widgets (12x12)", state.grid_dim == 12).clicked() {
-      state.grid_dim = 12
-    }
-    if button_light(ctx, "400 Widgets (20x20)", state.grid_dim == 20).clicked() {
-      state.grid_dim = 20
-    }
-    if button_light(ctx, "1,024 Widgets (32x32)", state.grid_dim == 32).clicked() {
-      state.grid_dim = 32
-    }
-    if button_light(ctx, "1,600 Widgets (40x40)", state.grid_dim == 40).clicked() {
-      state.grid_dim = 40
-    }
-
-    ctx.spacer(4.0)
-    separator_light(ctx)
-    ctx.spacer(2.0)
-
-    let (new_repel, repel_resp) = checkbox_light(
-      ctx,
-      "Magnetic Repulsion",
-      state.magnetic_repel,
-    )
-    if repel_resp.clicked() {
-      state.magnetic_repel = new_repel
-    }
-
-    let (new_wave, wave_resp) = checkbox_light(
-      ctx,
-      "Kinetic Resonance",
-      state.wave_pulse,
-    )
-    if wave_resp.clicked() {
-      state.wave_pulse = new_wave
-    }
-
-    ctx.spacer(4.0)
-    if button_primary_light(ctx, "Trigger Shockwave").clicked() {
-      state.ripple_active = true
-      state.ripple_progress = 0.0
-      state.ripple_cx = 580.0
-      state.ripple_cy = 270.0
-    }
-    if button_light(ctx, "Reset Statistics", false).clicked() {
-      state.click_count = 0
-      state.selected_id = -1
-      state.selected_col = -1
-      state.selected_row = -1
-    }
-
-    ctx.spacer(4.0)
-    separator_light(ctx)
-
-    let total_widgets = state.grid_dim * state.grid_dim
-    label_light(ctx, "Active Widgets: \{total_widgets}", false)
-    label_light(ctx, "Recorded Hits: \{state.click_count}", false)
-    if state.selected_id >= 0 {
-      label_light(
-        ctx,
-        "Target: #\{state.selected_id} (\{state.selected_col}, \{state.selected_row})",
-        false,
-      )
-    } else {
-      label_light(ctx, "Target: None (Hover Logo)", false)
-    }
-
     let dl = ctx.draw_list()
-    let vp_x = 270.0
-    let vp_y = 20.0
-    let vp_w = 620.0
-    let vp_h = 500.0
+    let vp_x = 0.0
+    let vp_y = 0.0
+    let cur_w = if vp_w > 100.0 { vp_w } else { 920.0 }
+    let cur_h = if vp_h > 100.0 { vp_h } else { 540.0 }
 
     dl.add_rect(
-      @math.Rect::new(vp_x, vp_y, vp_w, vp_h),
+      @math.Rect::new(vp_x, vp_y, cur_w, cur_h),
       @color.Color::white(),
       8.0,
     )
     dl.add_rect_stroke(
-      @math.Rect::new(vp_x, vp_y, vp_w, vp_h),
+      @math.Rect::new(vp_x, vp_y, cur_w, cur_h),
       @color.Color::rgb(226, 232, 240),
       1.0,
       8.0,
     )
 
     let grid_dim = state.grid_dim
-    let matrix_size = 460.0
-    let offset_x = vp_x + (vp_w - matrix_size) / 2.0
-    let offset_y = vp_y + (vp_h - matrix_size) / 2.0
+    let matrix_size = cur_h.min(cur_w) * 0.8
+    let offset_x = vp_x + (cur_w - matrix_size) / 2.0
+    let offset_y = vp_y + (cur_h - matrix_size) / 2.0
 
     let gap = if grid_dim <= 12 {
       4.0
@@ -1086,6 +707,7 @@ pub fn step(
     let mouse_pt = @math.Vec2::new(mouse_x, mouse_y)
     let mut hovered_index = -1
     let repel_radius_sq = 85.0 * 85.0
+    let total_widgets = grid_dim * grid_dim
 
     for idx = 0; idx < total_widgets; idx = idx + 1 {
       let col = idx % grid_dim
@@ -1228,6 +850,6 @@ pub fn step(
 
 ///|
 fn main {
-  let dl = step(580.0, 270.0, false, 0.0, 0.0, 1.0, -1)
+  let dl = step(580.0, 270.0, false, 0.0, 0.0, 1.0, -1, 920.0, 540.0)
   println("Benchmark initialized, total commands: \{dl.len()}")
 }
