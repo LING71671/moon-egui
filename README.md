@@ -149,6 +149,8 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 - [ ] **第五阶段：全面自动化测试与正式交付**（9月22日 – 9月24日）
   - 达成 150+ 自动化单元测试、完整文档规范与最终版本验收交付。
 
+> 完整攻坚指标、详细验收准则与赛后长期演进规划请参阅 **[ROADMAP.md](ROADMAP.md)** ([English](ROADMAP_en.md))。
+
 ---
 
 ## 架构与技术文档
@@ -157,6 +159,7 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 
 | 文档名称 | 定位与说明 | 核心覆盖范围 |
 | :--- | :--- | :--- |
+| **[研发路线图与里程碑](ROADMAP.md)** ([English](ROADMAP_en.md)) | 交付周期与规划 | 各阶段交付清单、详细验收准则、赛后长期演进愿景 |
 | **[系统架构与技术白皮书](docs/ARCHITECTURE_zh.md)** ([English](docs/ARCHITECTURE.md)) | 内核运行机制 | Widget ID 哈希定位、游标排版模型、裁剪栈机制 |
 | **[公共 API 参考手册](docs/API_DESIGN_zh.md)** ([English](docs/API_DESIGN.md)) | 开发者接口文档 | `UIContext` 方法签名、容器布局协议、Painter 绘图接口 |
 | **[设计系统与视觉规范](docs/DESIGN_SYSTEM_zh.md)** ([English](docs/DESIGN_SYSTEM.md)) | 界面设计 Token | 深色/浅色配色方案、字阶规范、间距系统、交互状态机 |

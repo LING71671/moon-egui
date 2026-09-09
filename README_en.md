@@ -146,6 +146,8 @@ Because the core produces pure `DrawCmd` tokens without browser dependencies, ev
 - [ ] **Milestone 5: Verification, Benchmarks & Release** (Sep 22 – Sep 24)
   - Comprehensive unit test coverage, performance validation, and final acceptance.
 
+> For full milestone metrics, detailed acceptance criteria, and post-hackathon vision, refer to **[ROADMAP.md](ROADMAP.md)** ([English](ROADMAP_en.md)).
+
 ---
 
 ## Documentation
@@ -154,6 +156,7 @@ Comprehensive design specifications and technical whitepapers are organized in [
 
 | Document | Description | Key Focus |
 | :--- | :--- | :--- |
+| **[Roadmap & Milestones](ROADMAP_en.md)** ([中文](ROADMAP.md)) | Timeline & Deliverables | Hackathon milestones, acceptance criteria, long-term vision |
 | **[Architecture Whitepaper](docs/ARCHITECTURE.md)** ([中文](docs/ARCHITECTURE_zh.md)) | Core engine internals | ID hashing, frame lifecycle, cursor layout, clip stack |
 | **[API Reference](docs/API_DESIGN.md)** ([中文](docs/API_DESIGN_zh.md)) | Complete public interface | `UIContext`, widget signatures, containers, Painter API |
 | **[Design System](docs/DESIGN_SYSTEM.md)** ([中文](docs/DESIGN_SYSTEM_zh.md)) | Visual design tokens | Dark/Light palettes, typography scale, spacing rules |
