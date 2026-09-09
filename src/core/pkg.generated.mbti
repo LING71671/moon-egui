@@ -2,6 +2,7 @@
 package "LING71671/moon-egui/src/core"
 
 import {
+  "LING71671/moon-egui/src/color",
   "LING71671/moon-egui/src/draw",
   "LING71671/moon-egui/src/math",
   "moonbitlang/core/debug",
@@ -93,6 +94,9 @@ pub fn UIContext::advance_cursor(Self, @math.Vec2) -> Unit
 pub fn UIContext::allocate_space(Self, @math.Vec2) -> (Id, @math.Rect, Response)
 pub fn UIContext::available_width(Self) -> Double
 pub fn UIContext::begin_frame(Self, RawInput) -> Unit
+pub fn UIContext::button(Self, String) -> Response
+pub fn UIContext::button_primary(Self, String) -> Response
+pub fn UIContext::checkbox(Self, String, Bool) -> (Bool, Response)
 pub fn UIContext::cursor(Self) -> @math.Vec2
 pub fn UIContext::draw_list(Self) -> @draw.DrawList
 pub fn UIContext::end_frame(Self) -> @draw.DrawList
@@ -100,13 +104,17 @@ pub fn UIContext::focused_id(Self) -> Id
 pub fn UIContext::hot_id(Self) -> Id
 pub fn UIContext::input(Self) -> InputState
 pub fn UIContext::item_spacing(Self) -> @math.Vec2
+pub fn UIContext::label(Self, String) -> Response
+pub fn UIContext::label_colored(Self, String, @color.Color) -> Response
 pub fn UIContext::new() -> Self
 pub fn UIContext::pop_id(Self) -> Unit
 pub fn UIContext::push_id(Self, String) -> Unit
+pub fn UIContext::separator(Self) -> Unit
 pub fn UIContext::set_available_width(Self, Double) -> Unit
 pub fn UIContext::set_cursor(Self, @math.Vec2) -> Unit
 pub fn UIContext::set_focused_id(Self, Id) -> Unit
 pub fn UIContext::set_item_spacing(Self, @math.Vec2) -> Unit
+pub fn UIContext::spacer(Self, Double) -> Unit
 
 // Type aliases
 

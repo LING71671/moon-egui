@@ -3,12 +3,23 @@
 /// Run with `moon run cmd/main` from the project root.
 fn main {
   let ctx = @core.UIContext::new()
-  let raw = @core.RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), false)
+  let raw = @core.RawInput::from_mouse(@math.Vec2::new(30.0, 55.0), false)
   ctx.begin_frame(raw)
-  let (_id, rect, resp) = ctx.allocate_space(@math.Vec2::new(100.0, 30.0))
+
+  // Declarative immediate-mode UI frame
+  let _ = ctx.label("=== Moon-EGUI Control Panel ===")
+  ctx.separator()
+  let btn = ctx.button("Launch System")
+  let pbtn = ctx.button_primary("Deploy Wasm")
+  let (fullscreen, chk_resp) = ctx.checkbox("Enable Fullscreen", false)
   let dl = ctx.end_frame()
-  println("moon-egui initialized successfully!")
+
+  println("=== Moon-EGUI v0.1.0 Interactive Frame ===")
+  println("Label rendered: Control Panel")
+  println("Button 'Launch System' hovered: \{btn.hovered()}")
+  println("Button 'Deploy Wasm' hovered: \{pbtn.hovered()}")
   println(
-    "Allocated rect: \{rect.w}x\{rect.h}, hovered: \{resp.hovered}, draw commands: \{dl.len()}",
+    "Checkbox 'Enable Fullscreen' state: \{fullscreen}, hovered: \{chk_resp.hovered()}",
   )
+  println("Total Draw Commands Generated: \{dl.len()}")
 }

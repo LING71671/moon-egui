@@ -52,6 +52,40 @@ test "integration: full immediate-mode gui frame lifecycle" {
 }
 
 ///|
+test "integration: high-level widget composition lifecycle" {
+  let ctx = @core.UIContext::new()
+  // Label at y in [0, 18], cursor -> 26
+  // Separator at y in [26, 35], cursor -> 43
+  // Button at y in [43, 75], cursor -> 83
+  // Checkbox at y in [83, 105], cursor -> 113
+  // Mouse at (30.0, 55.0) which is inside the Button!
+  let raw = @core.RawInput::from_mouse(@math.Vec2::new(30.0, 55.0), false)
+  ctx.begin_frame(raw)
+
+  // 1. Label
+  let resp_lbl = ctx.label("Control Panel")
+  assert_eq(resp_lbl.rect.y, 0.0)
+
+  // 2. Separator
+  ctx.separator()
+
+  // 3. Button
+  let resp_btn = ctx.button("Launch")
+  assert_eq(resp_btn.rect.y, 43.0)
+  assert_true(resp_btn.hovered())
+
+  // 4. Checkbox
+  let (new_chk, resp_chk) = ctx.checkbox("Fullscreen", false)
+  assert_eq(resp_chk.rect.y, 83.0)
+  assert_true(!resp_chk.hovered())
+  assert_true(!new_chk)
+
+  let dl = ctx.end_frame()
+  // label: 1, separator: 1, button: 3, checkbox: 3 => total 8 commands
+  assert_eq(dl.len(), 8)
+}
+
+///|
 test "integration: facade re-exports verification" {
   let v : @gui.Vec2 = @math.Vec2::new(10.0, 20.0)
   assert_eq(v.x, 10.0)
