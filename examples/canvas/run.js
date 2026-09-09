@@ -107,8 +107,8 @@
   function renderDrawList(dl) {
     if (!dl || !dl.commands) return;
 
-    // Fast clear
-    setFill('#0a0c12');
+    // Fast clear with pure white light studio background
+    setFill('#ffffff');
     ctx.fillRect(0, 0, width, height);
 
     const cmds = dl.commands;

@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MoonBit Immediate-Mode Stress Benchmark • moon-egui</title>
+  <title>MoonBit Immediate-Mode Kernel Benchmark • moon-egui</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
     :root {
-      --bg-canvas: #07080c;
-      --surface-base: #0e111a;
-      --surface-elevated: #151926;
-      --border-subtle: #212638;
-      --border-strong: #2e354e;
-      --text-high: #f8fafc;
-      --text-medium: #94a3b8;
-      --text-low: #475569;
-      --accent-cyan: #38bdf8;
-      --accent-emerald: #10b981;
-      --accent-magenta: #b92482;
+      --bg-page: #f8fafc;
+      --surface-card: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border-light: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-heading: #0f172a;
+      --text-body: #334155;
+      --text-muted: #64748b;
+      --accent-blue: #0284c7;
+      --accent-emerald: #059669;
+      --accent-brand: #b92482;
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
       --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
@@ -29,8 +29,8 @@
     }
 
     ::selection {
-      background: rgba(56, 189, 248, 0.25);
-      color: var(--accent-cyan);
+      background: #e0f2fe;
+      color: var(--accent-blue);
     }
 
     ::-webkit-scrollbar {
@@ -38,7 +38,7 @@
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: var(--bg-canvas);
+      background: var(--bg-page);
     }
     ::-webkit-scrollbar-thumb {
       background: var(--border-strong);
@@ -46,8 +46,8 @@
     }
 
     body {
-      background-color: var(--bg-canvas);
-      color: var(--text-high);
+      background-color: var(--bg-page);
+      color: var(--text-body);
       font-family: var(--font-sans);
       min-height: 100vh;
       display: flex;
@@ -56,6 +56,8 @@
       padding: 32px 20px 48px;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
+      background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+      background-size: 24px 24px;
     }
 
     .container {
@@ -84,17 +86,17 @@
       font-size: 22px;
       font-weight: 700;
       letter-spacing: -0.02em;
-      color: var(--text-high);
+      color: var(--text-heading);
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
     .logo-mark {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 4px;
-      background: var(--accent-magenta);
+      background: var(--accent-brand);
       display: inline-block;
       flex-shrink: 0;
     }
@@ -106,19 +108,20 @@
     }
 
     .header-links a {
-      color: var(--text-medium);
+      color: var(--text-muted);
       text-decoration: none;
+      font-weight: 500;
       transition: color 0.15s ease;
     }
 
     .header-links a:hover {
-      color: var(--accent-cyan);
+      color: var(--accent-blue);
     }
 
     p.description {
-      color: var(--text-medium);
+      color: var(--text-muted);
       font-size: 14px;
-      max-width: 860px;
+      max-width: 880px;
       line-height: 1.6;
     }
 
@@ -130,20 +133,21 @@
     }
 
     .telemetry-card {
-      background: var(--surface-base);
-      border: 1px solid var(--border-subtle);
+      background: var(--surface-card);
+      border: 1px solid var(--border-light);
       border-radius: 8px;
       padding: 12px 14px;
       display: flex;
       flex-direction: column;
       gap: 6px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
     }
 
     .telemetry-label {
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--text-low);
+      color: var(--text-muted);
       font-weight: 600;
     }
 
@@ -151,15 +155,15 @@
       font-family: var(--font-mono);
       font-size: 18px;
       font-weight: 700;
-      color: var(--text-high);
+      color: var(--text-heading);
       font-variant-numeric: tabular-nums;
       display: flex;
       align-items: baseline;
       gap: 6px;
     }
 
-    .telemetry-val.highlight-cyan {
-      color: var(--accent-cyan);
+    .telemetry-val.highlight-blue {
+      color: var(--accent-blue);
     }
 
     .telemetry-val.highlight-green {
@@ -168,7 +172,7 @@
 
     .telemetry-sub {
       font-size: 11px;
-      color: var(--text-medium);
+      color: var(--text-muted);
       font-family: var(--font-mono);
       font-weight: 400;
     }
@@ -177,7 +181,7 @@
     .budget-track {
       width: 100%;
       height: 4px;
-      background: var(--surface-elevated);
+      background: var(--surface-subtle);
       border-radius: 2px;
       overflow: hidden;
       margin-top: 4px;
@@ -186,18 +190,18 @@
     .budget-fill {
       height: 100%;
       width: 2%;
-      background: var(--accent-cyan);
+      background: var(--accent-blue);
       border-radius: 2px;
       transition: width 0.1s linear;
     }
 
     /* Main Benchmark Workbench Window */
     .workbench-window {
-      background: var(--surface-base);
+      background: var(--surface-card);
       border: 1px solid var(--border-strong);
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
     }
 
     .window-titlebar {
@@ -205,8 +209,8 @@
       align-items: center;
       justify-content: space-between;
       padding: 10px 16px;
-      background: var(--surface-elevated);
-      border-bottom: 1px solid var(--border-subtle);
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border-light);
       font-size: 12px;
     }
 
@@ -230,7 +234,7 @@
 
     .window-path {
       font-family: var(--font-mono);
-      color: var(--text-medium);
+      color: var(--text-muted);
       font-size: 12px;
     }
 
@@ -261,7 +265,7 @@
     .canvas-stage {
       width: 920px;
       height: 540px;
-      background: #0a0c12;
+      background: #ffffff;
       position: relative;
       margin: 0 auto;
     }
@@ -271,6 +275,7 @@
       width: 920px;
       height: 540px;
       cursor: crosshair;
+      background: #ffffff;
     }
 
     /* Window Status Bar */
@@ -279,11 +284,11 @@
       align-items: center;
       justify-content: space-between;
       padding: 8px 16px;
-      background: var(--surface-elevated);
-      border-top: 1px solid var(--border-subtle);
+      background: #f8fafc;
+      border-top: 1px solid var(--border-light);
       font-family: var(--font-mono);
       font-size: 11px;
-      color: var(--text-medium);
+      color: var(--text-muted);
     }
 
     .status-group {
@@ -298,12 +303,12 @@
     }
 
     .status-val {
-      color: var(--text-high);
+      color: var(--text-heading);
       font-weight: 600;
     }
 
     .status-val.status-pressed {
-      color: var(--accent-cyan);
+      color: var(--accent-blue);
     }
 
     .status-val.status-hover {
@@ -318,31 +323,32 @@
     }
 
     .spec-cell {
-      background: var(--surface-base);
-      border: 1px solid var(--border-subtle);
+      background: var(--surface-card);
+      border: 1px solid var(--border-light);
       border-radius: 8px;
       padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 6px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
     }
 
     .spec-heading {
       font-size: 13px;
       font-weight: 700;
-      color: var(--text-high);
+      color: var(--text-heading);
     }
 
     .spec-text {
       font-size: 12px;
-      color: var(--text-medium);
+      color: var(--text-body);
       line-height: 1.5;
     }
 
     .spec-metric {
       font-family: var(--font-mono);
       font-size: 11px;
-      color: var(--accent-cyan);
+      color: var(--accent-blue);
       margin-top: 4px;
     }
 
@@ -384,8 +390,8 @@
     <section class="telemetry-strip" aria-label="Performance Metrics">
       <div class="telemetry-card">
         <span class="telemetry-label">MoonBit Kernel Time</span>
-        <div class="telemetry-val highlight-cyan">
-          <span id="telemetry-kernel">0.18 ms</span>
+        <div class="telemetry-val highlight-blue">
+          <span id="telemetry-kernel">0.14 ms</span>
           <span class="telemetry-sub">/ frame</span>
         </div>
         <div class="budget-track">
@@ -395,11 +401,11 @@
 
       <div class="telemetry-card">
         <span class="telemetry-label">16.6ms Frame Budget</span>
-        <div class="telemetry-val highlight-cyan">
-          <span id="telemetry-budget-pct">1.1%</span>
+        <div class="telemetry-val highlight-blue">
+          <span id="telemetry-budget-pct">0.8%</span>
           <span class="telemetry-sub">utilized</span>
         </div>
-        <span class="telemetry-sub">98.9% CPU remaining for host</span>
+        <span class="telemetry-sub">99.2% CPU remaining for host</span>
       </div>
 
       <div class="telemetry-card">
