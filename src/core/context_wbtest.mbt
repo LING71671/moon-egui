@@ -138,3 +138,198 @@ test "window container sets local origin and clip" {
   let dl = ctx.end_frame()
   assert_true(dl.len() > 5)
 }
+
+///|
+test "keyboard input events, text input, and modifiers" {
+  let ctx = UIContext::new()
+  let raw = {
+    mouse_pos: @math.Vec2::zero(),
+    mouse_down: false,
+    scroll_delta: @math.Vec2::zero(),
+    dt: 0.0166,
+    events: [
+      Event::Key(Key::Tab, true, Modifiers::none()),
+      Event::Key(Key::A, true, Modifiers::new(true, false, false, false)),
+      Event::TextInput("Moon"),
+    ],
+    text_input: "",
+    modifiers: Modifiers::new(true, false, false, false),
+  }
+
+  ctx.begin_frame(raw)
+  let input = ctx.input()
+  assert_true(input.key_down(Key::Tab))
+  assert_true(input.key_pressed(Key::Tab))
+  assert_true(input.key_down(Key::A))
+  assert_true(input.key_pressed(Key::A))
+  assert_true(!input.key_down(Key::B))
+  assert_eq(input.text_input(), "Moon")
+  assert_true(input.modifiers().ctrl)
+  assert_true(!input.modifiers().shift)
+
+  // Next frame: key released
+  let raw2 = {
+    mouse_pos: @math.Vec2::zero(),
+    mouse_down: false,
+    scroll_delta: @math.Vec2::zero(),
+    dt: 0.0166,
+    events: [Event::Key(Key::Tab, false, Modifiers::none())],
+    text_input: "",
+    modifiers: Modifiers::none(),
+  }
+  ctx.begin_frame(raw2)
+  assert_true(!ctx.input().key_down(Key::Tab))
+  assert_true(ctx.input().key_released(Key::Tab))
+  // Key::A remains down from previous frame because it wasn't released!
+  assert_true(ctx.input().key_down(Key::A))
+  assert_true(!ctx.input().key_pressed(Key::A))
+}
+
+///|
+test "focus state transitions and lifecycle on response" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Click on widget 1 to focus it
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(20.0, 20.0), false)
+  ctx.begin_frame(raw1)
+  let (id1, _, resp1) = ctx.allocate_space(@math.Vec2::new(100.0, 40.0))
+  assert_true(!resp1.has_focus())
+  assert_true(!resp1.gained_focus())
+
+  // Click widget 1
+  ctx.request_focus(id1)
+  assert_true(ctx.has_focus(id1))
+  let _ = ctx.end_frame()
+
+  // Frame 2: Widget 1 retains focus
+  let raw2 = RawInput::new()
+  ctx.begin_frame(raw2)
+  let (_, _, resp1_f2) = ctx.allocate_space(@math.Vec2::new(100.0, 40.0))
+  let (id2, _, resp2_f2) = ctx.allocate_space(@math.Vec2::new(100.0, 40.0))
+  assert_true(resp1_f2.has_focus())
+  assert_true(!resp1_f2.gained_focus())
+  assert_true(!resp2_f2.has_focus())
+
+  // Frame 3: Switch focus to widget 2 during this frame
+  let raw3 = RawInput::new()
+  ctx.begin_frame(raw3)
+  ctx.request_focus(id2)
+  let (_, _, resp1_f3) = ctx.allocate_space(@math.Vec2::new(100.0, 40.0))
+  let (_, _, resp2_f3) = ctx.allocate_space(@math.Vec2::new(100.0, 40.0))
+  assert_true(!resp1_f3.has_focus())
+  assert_true(resp1_f3.lost_focus())
+  assert_true(resp2_f3.has_focus())
+  assert_true(resp2_f3.gained_focus())
+}
+
+///|
+test "tab key navigation cycles through registered focusable widgets" {
+  let ctx = UIContext::new()
+  let id_a = Id::from_string("field_a")
+  let id_b = Id::from_string("field_b")
+  let id_c = Id::from_string("field_c")
+
+  // Frame 1: Register fields and set initial focus to id_a
+  ctx.begin_frame(RawInput::new())
+  ctx.register_focusable(id_a)
+  ctx.register_focusable(id_b)
+  ctx.register_focusable(id_c)
+  ctx.request_focus(id_a)
+  let _ = ctx.end_frame()
+  assert_eq(ctx.focused_id(), id_a)
+
+  // Frame 2: Press Tab -> end_frame should cycle to id_b
+  let raw_tab = {
+    mouse_pos: @math.Vec2::zero(),
+    mouse_down: false,
+    scroll_delta: @math.Vec2::zero(),
+    dt: 0.0166,
+    events: [Event::Key(Key::Tab, true, Modifiers::none())],
+    text_input: "",
+    modifiers: Modifiers::none(),
+  }
+  ctx.begin_frame(raw_tab)
+  ctx.register_focusable(id_a)
+  ctx.register_focusable(id_b)
+  ctx.register_focusable(id_c)
+  let _ = ctx.end_frame()
+  assert_eq(ctx.focused_id(), id_b)
+
+  // Frame 3: Press Tab again -> cycles to id_c
+  ctx.begin_frame(raw_tab)
+  ctx.register_focusable(id_a)
+  ctx.register_focusable(id_b)
+  ctx.register_focusable(id_c)
+  let _ = ctx.end_frame()
+  assert_eq(ctx.focused_id(), id_c)
+
+  // Frame 4: Press Tab again -> wraps around to id_a
+  ctx.begin_frame(raw_tab)
+  ctx.register_focusable(id_a)
+  ctx.register_focusable(id_b)
+  ctx.register_focusable(id_c)
+  let _ = ctx.end_frame()
+  assert_eq(ctx.focused_id(), id_a)
+
+  // Frame 5: Press Shift+Tab -> moves backwards to id_c
+  let raw_shift_tab = {
+    mouse_pos: @math.Vec2::zero(),
+    mouse_down: false,
+    scroll_delta: @math.Vec2::zero(),
+    dt: 0.0166,
+    events: [
+      Event::Key(Key::Tab, true, Modifiers::new(false, true, false, false)),
+    ],
+    text_input: "",
+    modifiers: Modifiers::new(false, true, false, false),
+  }
+  ctx.begin_frame(raw_shift_tab)
+  ctx.register_focusable(id_a)
+  ctx.register_focusable(id_b)
+  ctx.register_focusable(id_c)
+  let _ = ctx.end_frame()
+  assert_eq(ctx.focused_id(), id_c)
+}
+
+///|
+test "nested scissor clipping calculates proper intersection" {
+  let ctx = UIContext::new()
+  ctx.begin_frame(RawInput::new())
+
+  assert_true(ctx.current_clip() is None)
+
+  let r1 = @math.Rect::new(10.0, 10.0, 100.0, 100.0)
+  ctx.push_clip(r1)
+  assert_eq(ctx.current_clip(), Some(r1))
+
+  // Inner clip overlapping partially
+  let r2 = @math.Rect::new(50.0, 50.0, 100.0, 100.0)
+  ctx.push_clip(r2)
+  // Intersection should be [50, 50, 60, 60] (from 50 to 110 in x and y)
+  let expected = @math.Rect::new(50.0, 50.0, 60.0, 60.0)
+  assert_eq(ctx.current_clip(), Some(expected))
+
+  // Pop restores parent clip
+  ctx.pop_clip()
+  assert_eq(ctx.current_clip(), Some(r1))
+
+  ctx.pop_clip()
+  assert_true(ctx.current_clip() is None)
+}
+
+///|
+test "text measurement distinguishes cjk and ascii characters" {
+  let ascii_size = measure_text_size("abc", 10.0)
+  // 3 * 10.0 * 0.58 = 17.4
+  assert_eq(ascii_size.x, 17.4)
+  assert_eq(ascii_size.y, 12.5)
+
+  let cjk_size = measure_text_size("月兔", 10.0)
+  // 2 * 10.0 * 1.05 = 21.0
+  assert_eq(cjk_size.x, 21.0)
+  assert_eq(cjk_size.y, 12.5)
+
+  let mixed_size = measure_text_size("a月", 10.0)
+  // 1 * 5.8 + 1 * 10.5 = 16.3
+  assert_eq(mixed_size.x, 16.3)
+}

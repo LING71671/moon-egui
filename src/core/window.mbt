@@ -56,7 +56,7 @@ pub fn UIContext::window(
   let content_h = size.y - title_bar_h - pad * 2.0
 
   let clip_rect = @math.Rect::new(content_x, content_y, content_w, content_h)
-  self.draw_list.push_clip(clip_rect)
+  self.push_clip(clip_rect)
 
   // Save current context layout state
   let prev_cursor = self.cursor
@@ -70,5 +70,5 @@ pub fn UIContext::window(
   // Restore context state and pop clip
   self.cursor = prev_cursor
   self.available_width = prev_avail_w
-  self.draw_list.pop_clip()
+  self.pop_clip()
 }

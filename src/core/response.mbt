@@ -6,6 +6,9 @@ pub struct Response {
   clicked : Bool
   pressed : Bool
   dragged : Bool
+  has_focus : Bool
+  gained_focus : Bool
+  lost_focus : Bool
 } derive(Eq, Debug, Default)
 
 ///|
@@ -17,7 +20,42 @@ pub fn Response::new(
   pressed : Bool,
   dragged : Bool,
 ) -> Response {
-  { id, rect, hovered, clicked, pressed, dragged, }
+  {
+    id,
+    rect,
+    hovered,
+    clicked,
+    pressed,
+    dragged,
+    has_focus: false,
+    gained_focus: false,
+    lost_focus: false,
+  }
+}
+
+///|
+pub fn Response::with_focus(
+  id : Id,
+  rect : @math.Rect,
+  hovered : Bool,
+  clicked : Bool,
+  pressed : Bool,
+  dragged : Bool,
+  has_focus : Bool,
+  gained_focus : Bool,
+  lost_focus : Bool,
+) -> Response {
+  {
+    id,
+    rect,
+    hovered,
+    clicked,
+    pressed,
+    dragged,
+    has_focus,
+    gained_focus,
+    lost_focus,
+  }
 }
 
 ///|
@@ -48,4 +86,19 @@ pub fn Response::pressed(self : Response) -> Bool {
 ///|
 pub fn Response::dragged(self : Response) -> Bool {
   self.dragged
+}
+
+///|
+pub fn Response::has_focus(self : Response) -> Bool {
+  self.has_focus
+}
+
+///|
+pub fn Response::gained_focus(self : Response) -> Bool {
+  self.gained_focus
+}
+
+///|
+pub fn Response::lost_focus(self : Response) -> Bool {
+  self.lost_focus
 }

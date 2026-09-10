@@ -1,10 +1,97 @@
 ///|
+pub enum Key {
+  Backspace
+  Delete
+  Enter
+  Escape
+  Tab
+  Space
+  ArrowLeft
+  ArrowRight
+  ArrowUp
+  ArrowDown
+  Home
+  End
+  PageUp
+  PageDown
+  A
+  B
+  C
+  D
+  E
+  F
+  G
+  H
+  I
+  J
+  K
+  L
+  M
+  N
+  O
+  P
+  Q
+  R
+  S
+  T
+  U
+  V
+  W
+  X
+  Y
+  Z
+  Num0
+  Num1
+  Num2
+  Num3
+  Num4
+  Num5
+  Num6
+  Num7
+  Num8
+  Num9
+} derive(Eq, Debug, Hash)
+
+///|
+pub struct Modifiers {
+  ctrl : Bool
+  shift : Bool
+  alt : Bool
+  meta : Bool
+} derive(Eq, Debug, Default)
+
+///|
+pub fn Modifiers::none() -> Modifiers {
+  { ctrl: false, shift: false, alt: false, meta: false, }
+}
+
+///|
+pub fn Modifiers::new(
+  ctrl : Bool,
+  shift : Bool,
+  alt : Bool,
+  meta : Bool,
+) -> Modifiers {
+  { ctrl, shift, alt, meta, }
+}
+
+///|
+pub enum Event {
+  Key(Key, Bool, Modifiers)
+  TextInput(String)
+  PointerWheel(@math.Vec2)
+} derive(Eq, Debug)
+
+///|
 pub struct RawInput {
   mouse_pos : @math.Vec2
   mouse_down : Bool
   scroll_delta : @math.Vec2
   dt : Double
-} derive(Eq, Debug, Default)
+  events : Array[Event]
+  text_input : String
+  modifiers : Modifiers
+} derive(Eq, Debug)
 
 ///|
 pub fn RawInput::new() -> RawInput {
@@ -13,6 +100,9 @@ pub fn RawInput::new() -> RawInput {
     mouse_down: false,
     scroll_delta: @math.Vec2::zero(),
     dt: 0.0166,
+    events: [],
+    text_input: "",
+    modifiers: Modifiers::none(),
   }
 }
 
@@ -21,7 +111,15 @@ pub fn RawInput::from_mouse(
   mouse_pos : @math.Vec2,
   mouse_down : Bool,
 ) -> RawInput {
-  { mouse_pos, mouse_down, scroll_delta: @math.Vec2::zero(), dt: 0.0166, }
+  {
+    mouse_pos,
+    mouse_down,
+    scroll_delta: @math.Vec2::zero(),
+    dt: 0.0166,
+    events: [],
+    text_input: "",
+    modifiers: Modifiers::none(),
+  }
 }
 
 ///|
@@ -34,6 +132,12 @@ pub struct InputState {
   mut mouse_released : Bool
   mut scroll_delta : @math.Vec2
   mut dt : Double
+  keys_down : Array[Key]
+  keys_pressed : Array[Key]
+  keys_released : Array[Key]
+  mut text_input : String
+  mut modifiers : Modifiers
+  events : Array[Event]
 } derive(Eq, Debug, Default)
 
 ///|
@@ -47,6 +151,12 @@ pub fn InputState::new() -> InputState {
     mouse_released: false,
     scroll_delta: @math.Vec2::zero(),
     dt: 0.0166,
+    keys_down: [],
+    keys_pressed: [],
+    keys_released: [],
+    text_input: "",
+    modifiers: Modifiers::none(),
+    events: [],
   }
 }
 
@@ -61,6 +171,45 @@ pub fn InputState::update(self : InputState, raw : RawInput) -> Unit {
   self.mouse_released = !raw.mouse_down && was_down
   self.scroll_delta = raw.scroll_delta
   self.dt = if raw.dt > 0.0 { raw.dt } else { 0.0166 }
+
+  self.keys_pressed.clear()
+  self.keys_released.clear()
+  self.text_input = raw.text_input
+  self.modifiers = raw.modifiers
+  self.events.clear()
+
+  for ev in raw.events {
+    self.events.push(ev)
+    match ev {
+      Key(k, is_pressed, _mods) =>
+        if is_pressed {
+          if !self.keys_down.contains(k) {
+            self.keys_down.push(k)
+          }
+          self.keys_pressed.push(k)
+        } else {
+          // Remove from keys_down
+          let mut found_idx = -1
+          for i = 0; i < self.keys_down.length(); i = i + 1 {
+            if self.keys_down[i] == k {
+              found_idx = i
+              break
+            }
+          }
+          if found_idx >= 0 {
+            let _ = self.keys_down.remove(found_idx)
+            self.keys_released.push(k)
+          }
+        }
+      TextInput(s) =>
+        if self.text_input.is_empty() {
+          self.text_input = s
+        } else {
+          self.text_input = self.text_input + s
+        }
+      PointerWheel(delta) => self.scroll_delta = self.scroll_delta.add(delta)
+    }
+  }
 }
 
 ///|
@@ -89,6 +238,41 @@ pub fn InputState::mouse_delta(self : InputState) -> @math.Vec2 {
 }
 
 ///|
+pub fn InputState::scroll_delta(self : InputState) -> @math.Vec2 {
+  self.scroll_delta
+}
+
+///|
 pub fn InputState::dt(self : InputState) -> Double {
   self.dt
+}
+
+///|
+pub fn InputState::key_down(self : InputState, key : Key) -> Bool {
+  self.keys_down.contains(key)
+}
+
+///|
+pub fn InputState::key_pressed(self : InputState, key : Key) -> Bool {
+  self.keys_pressed.contains(key)
+}
+
+///|
+pub fn InputState::key_released(self : InputState, key : Key) -> Bool {
+  self.keys_released.contains(key)
+}
+
+///|
+pub fn InputState::text_input(self : InputState) -> String {
+  self.text_input
+}
+
+///|
+pub fn InputState::modifiers(self : InputState) -> Modifiers {
+  self.modifiers
+}
+
+///|
+pub fn InputState::events(self : InputState) -> Array[Event] {
+  self.events
 }

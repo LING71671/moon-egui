@@ -9,10 +9,17 @@ import {
 }
 
 // Values
+pub fn measure_text_size(String, Double) -> @math.Vec2
 
 // Errors
 
 // Types and methods
+pub enum Event {
+  Key(Key, Bool, Modifiers)
+  TextInput(String)
+  PointerWheel(@math.Vec2)
+} derive(Eq, @debug.Debug)
+
 pub struct Id {
   val : UInt64
 } derive(Default, Eq, @debug.Debug)
@@ -41,15 +48,81 @@ pub struct InputState {
   mut mouse_released : Bool
   mut scroll_delta : @math.Vec2
   mut dt : Double
+  keys_down : Array[Key]
+  keys_pressed : Array[Key]
+  keys_released : Array[Key]
+  mut text_input : String
+  mut modifiers : Modifiers
+  events : Array[Event]
 } derive(Default, Eq, @debug.Debug)
 pub fn InputState::dt(Self) -> Double
+pub fn InputState::events(Self) -> Array[Event]
+pub fn InputState::key_down(Self, Key) -> Bool
+pub fn InputState::key_pressed(Self, Key) -> Bool
+pub fn InputState::key_released(Self, Key) -> Bool
+pub fn InputState::modifiers(Self) -> Modifiers
 pub fn InputState::mouse_delta(Self) -> @math.Vec2
 pub fn InputState::mouse_down(Self) -> Bool
 pub fn InputState::mouse_pos(Self) -> @math.Vec2
 pub fn InputState::mouse_pressed(Self) -> Bool
 pub fn InputState::mouse_released(Self) -> Bool
 pub fn InputState::new() -> Self
+pub fn InputState::scroll_delta(Self) -> @math.Vec2
+pub fn InputState::text_input(Self) -> String
 pub fn InputState::update(Self, RawInput) -> Unit
+
+pub enum Key {
+  Backspace
+  Delete
+  Enter
+  Escape
+  Tab
+  Space
+  ArrowLeft
+  ArrowRight
+  ArrowUp
+  ArrowDown
+  Home
+  End
+  PageUp
+  PageDown
+  A
+  B
+  C
+  D
+  E
+  F
+  G
+  H
+  I
+  J
+  K
+  L
+  M
+  N
+  O
+  P
+  Q
+  R
+  S
+  T
+  U
+  V
+  W
+  X
+  Y
+  Z
+  Num0
+  Num1
+  Num2
+  Num3
+  Num4
+  Num5
+  Num6
+  Num7
+  Num8
+  Num9
+} derive(Eq, Hash, @debug.Debug)
 
 pub enum LayoutDirection {
   TopDown
@@ -63,12 +136,24 @@ pub struct LayoutScope {
   mut max_cross_size : Double
 } derive(Eq, @debug.Debug)
 
+pub struct Modifiers {
+  ctrl : Bool
+  shift : Bool
+  alt : Bool
+  meta : Bool
+} derive(Default, Eq, @debug.Debug)
+pub fn Modifiers::new(Bool, Bool, Bool, Bool) -> Self
+pub fn Modifiers::none() -> Self
+
 pub struct RawInput {
   mouse_pos : @math.Vec2
   mouse_down : Bool
   scroll_delta : @math.Vec2
   dt : Double
-} derive(Default, Eq, @debug.Debug)
+  events : Array[Event]
+  text_input : String
+  modifiers : Modifiers
+} derive(Eq, @debug.Debug)
 pub fn RawInput::from_mouse(@math.Vec2, Bool) -> Self
 pub fn RawInput::new() -> Self
 
@@ -79,14 +164,21 @@ pub struct Response {
   clicked : Bool
   pressed : Bool
   dragged : Bool
+  has_focus : Bool
+  gained_focus : Bool
+  lost_focus : Bool
 } derive(Default, Eq, @debug.Debug)
 pub fn Response::clicked(Self) -> Bool
 pub fn Response::dragged(Self) -> Bool
+pub fn Response::gained_focus(Self) -> Bool
+pub fn Response::has_focus(Self) -> Bool
 pub fn Response::hovered(Self) -> Bool
 pub fn Response::id(Self) -> Id
+pub fn Response::lost_focus(Self) -> Bool
 pub fn Response::new(Id, @math.Rect, Bool, Bool, Bool, Bool) -> Self
 pub fn Response::pressed(Self) -> Bool
 pub fn Response::rect(Self) -> @math.Rect
+pub fn Response::with_focus(Id, @math.Rect, Bool, Bool, Bool, Bool, Bool, Bool, Bool) -> Self
 
 pub struct UIContext {
   input : InputState
@@ -95,12 +187,21 @@ pub struct UIContext {
   mut hot_id : Id
   mut active_id : Id
   mut focused_id : Id
+  mut prev_focused_id : Id
+  mut lost_focus_id : Id
+  mut pending_lost_focus_id : Id
+  focusable_ids : Array[Id]
   mut cursor : @math.Vec2
   mut available_width : Double
   mut item_spacing : @math.Vec2
   clip_stack : Array[@math.Rect]
   mut auto_id_counter : Int
   layout_stack : Array[LayoutScope]
+  scroll_offsets : Array[(Id, Double)]
+  scroll_content_heights : Array[(Id, Double)]
+  text_cursor_positions : Array[(Id, Int)]
+  open_collapsing_ids : Array[(Id, Bool)]
+  mut open_combo_id : Id
   mut wants_capture_mouse : Bool
   mut prev_wants_capture_mouse : Bool
 } derive(Eq, @debug.Debug)
@@ -114,29 +215,54 @@ pub fn UIContext::button_primary(Self, String) -> Response
 pub fn UIContext::button_primary_sized(Self, String, @math.Vec2) -> Response
 pub fn UIContext::button_sized(Self, String, @math.Vec2) -> Response
 pub fn UIContext::checkbox(Self, String, Bool) -> (Bool, Response)
+pub fn UIContext::collapsing_header(Self, String, String, Bool, (Self) -> Unit) -> Response
+pub fn UIContext::combo_box(Self, String, String, Int, Array[String]) -> (Int, Response)
+pub fn UIContext::current_clip(Self) -> @math.Rect?
 pub fn UIContext::cursor(Self) -> @math.Vec2
 pub fn UIContext::draw_list(Self) -> @draw.DrawList
 pub fn UIContext::end_frame(Self) -> @draw.DrawList
 pub fn UIContext::focused_id(Self) -> Id
+pub fn UIContext::get_scroll_content_height(Self, Id) -> Double
+pub fn UIContext::get_scroll_offset(Self, Id) -> Double
+pub fn UIContext::get_text_cursor_pos(Self, Id, Int) -> Int
+pub fn UIContext::has_focus(Self, Id) -> Bool
 pub fn UIContext::horizontal(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::hot_id(Self) -> Id
 pub fn UIContext::input(Self) -> InputState
+pub fn UIContext::is_collapsing_open(Self, Id, Bool) -> Bool
 pub fn UIContext::item_spacing(Self) -> @math.Vec2
 pub fn UIContext::label(Self, String) -> Response
 pub fn UIContext::label_colored(Self, String, @color.Color) -> Response
+pub fn UIContext::measure_text(Self, String, Double) -> @math.Vec2
 pub fn UIContext::new() -> Self
+pub fn UIContext::open_combo_id(Self) -> Id
+pub fn UIContext::pop_clip(Self) -> Unit
 pub fn UIContext::pop_id(Self) -> Unit
+pub fn UIContext::progress_bar(Self, Double, String) -> Response
+pub fn UIContext::push_clip(Self, @math.Rect) -> Unit
 pub fn UIContext::push_id(Self, String) -> Unit
+pub fn UIContext::radio(Self, String, Bool) -> (Bool, Response)
+pub fn UIContext::register_focusable(Self, Id) -> Unit
+pub fn UIContext::request_focus(Self, Id) -> Unit
+pub fn UIContext::scroll_area(Self, String, @math.Vec2, (Self) -> Unit) -> Unit
 pub fn UIContext::separator(Self) -> Unit
 pub fn UIContext::set_active_id(Self, Id) -> Unit
 pub fn UIContext::set_available_width(Self, Double) -> Unit
+pub fn UIContext::set_collapsing_open(Self, Id, Bool) -> Unit
 pub fn UIContext::set_cursor(Self, @math.Vec2) -> Unit
 pub fn UIContext::set_focused_id(Self, Id) -> Unit
 pub fn UIContext::set_item_spacing(Self, @math.Vec2) -> Unit
+pub fn UIContext::set_open_combo_id(Self, Id) -> Unit
+pub fn UIContext::set_scroll_content_height(Self, Id, Double) -> Unit
+pub fn UIContext::set_scroll_offset(Self, Id, Double) -> Unit
+pub fn UIContext::set_text_cursor_pos(Self, Id, Int) -> Unit
 pub fn UIContext::set_wants_capture_mouse(Self, Bool) -> Unit
 pub fn UIContext::slider(Self, String, Double, Double, Double) -> (Double, Response)
 pub fn UIContext::slider_int(Self, String, Int, Int, Int) -> (Int, Response)
 pub fn UIContext::spacer(Self, Double) -> Unit
+pub fn UIContext::surrender_focus(Self, Id) -> Unit
+pub fn UIContext::text_edit(Self, String, String, String) -> (String, Response)
+pub fn UIContext::text_edit_sized(Self, String, String, String, @math.Vec2) -> (String, Response)
 pub fn UIContext::vertical(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::wants_capture_mouse(Self) -> Bool
 pub fn UIContext::window(Self, String, @math.Vec2, @math.Vec2, (Self) -> Unit) -> Unit

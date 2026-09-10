@@ -143,3 +143,236 @@ test "widgets: button_sized and mouse capture integration" {
   let _ = ctx.end_frame()
   assert_true(!ctx.wants_capture_mouse())
 }
+
+///|
+test "widgets: scroll_area content measurement, wheel scrolling and clamping" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Initial layout of scroll area with high content
+  // Container size: (200, 100). Content: 10 labels of height 18 + 8 = 260px.
+  ctx.begin_frame(RawInput::new())
+  ctx.scroll_area("viewport_1", @math.Vec2::new(200.0, 100.0), fn(ui) {
+    for i = 0; i < 10; i = i + 1 {
+      let _ = ui.label("Item " + i.to_string())
+    }
+  })
+  let dl1 = ctx.end_frame()
+  // Clip pushed, labels drawn, clip popped, scrollbar drawn
+  assert_true(dl1.len() > 10)
+
+  // Frame 2: Mouse inside container at (50, 50), scroll wheel down by 40.0
+  let raw2 = {
+    mouse_pos: @math.Vec2::new(50.0, 50.0),
+    mouse_down: false,
+    scroll_delta: @math.Vec2::zero(),
+    dt: 0.0166,
+    events: [Event::PointerWheel(@math.Vec2::new(0.0, -40.0))],
+    text_input: "",
+    modifiers: Modifiers::none(),
+  }
+  ctx.begin_frame(raw2)
+  let mut scrolled_cursor_y = 0.0
+  ctx.scroll_area("viewport_1", @math.Vec2::new(200.0, 100.0), fn(ui) {
+    scrolled_cursor_y = ui.cursor().y
+    let _ = ui.label("Item 0")
+  })
+  let _ = ctx.end_frame()
+
+  // Because scroll_y = 40.0, the inner cursor starts at container_y - scroll_y = 0.0 - 40.0 = -40.0
+  assert_eq(scrolled_cursor_y, -40.0)
+}
+
+///|
+test "widgets: text_edit typing, backspace, and cursor navigation" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Click at (20, 10) to focus text_edit
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(20.0, 10.0), true)
+  ctx.begin_frame(raw1)
+  let (t1, resp1) = ctx.text_edit("input_name", "Hello", "Enter name...")
+  let _ = ctx.end_frame()
+  assert_true(resp1.pressed())
+  assert_eq(t1, "Hello")
+
+  // Frame 2: Backspace key deletes 'o' from end of "Hello" -> "Hell"
+  let raw2 = {
+    mouse_pos: @math.Vec2::zero(),
+    mouse_down: false,
+    scroll_delta: @math.Vec2::zero(),
+    dt: 0.0166,
+    events: [Event::Key(Key::Backspace, true, Modifiers::none())],
+    text_input: "",
+    modifiers: Modifiers::none(),
+  }
+  ctx.begin_frame(raw2)
+  let (t2, _) = ctx.text_edit("input_name", t1, "Enter name...")
+  let _ = ctx.end_frame()
+  assert_eq(t2, "Hell")
+
+  // Frame 3: TextInput inserts "o World" at end of "Hell" -> "Hello World"
+  let raw3 = {
+    mouse_pos: @math.Vec2::zero(),
+    mouse_down: false,
+    scroll_delta: @math.Vec2::zero(),
+    dt: 0.0166,
+    events: [Event::TextInput("o World")],
+    text_input: "",
+    modifiers: Modifiers::none(),
+  }
+  ctx.begin_frame(raw3)
+  let (t3, _) = ctx.text_edit("input_name", t2, "Enter name...")
+  let _ = ctx.end_frame()
+  assert_eq(t3, "Hello World")
+
+  // Frame 4: Home key moves cursor to start (0)
+  let raw4 = {
+    mouse_pos: @math.Vec2::zero(),
+    mouse_down: false,
+    scroll_delta: @math.Vec2::zero(),
+    dt: 0.0166,
+    events: [Event::Key(Key::Home, true, Modifiers::none())],
+    text_input: "",
+    modifiers: Modifiers::none(),
+  }
+  ctx.begin_frame(raw4)
+  let (t4, _) = ctx.text_edit("input_name", t3, "Enter name...")
+  let _ = ctx.end_frame()
+  assert_eq(t4, "Hello World")
+
+  // Frame 5: TextInput inserts ">>> " at start (cursor 0) -> ">>> Hello World"
+  let raw5 = {
+    mouse_pos: @math.Vec2::zero(),
+    mouse_down: false,
+    scroll_delta: @math.Vec2::zero(),
+    dt: 0.0166,
+    events: [Event::TextInput(">>> ")],
+    text_input: "",
+    modifiers: Modifiers::none(),
+  }
+  ctx.begin_frame(raw5)
+  let (t5, _) = ctx.text_edit("input_name", t4, "Enter name...")
+  let dl = ctx.end_frame()
+  assert_eq(t5, ">>> Hello World")
+  assert_true(dl.len() > 3)
+}
+
+///|
+test "widgets: radio button toggle interaction" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Initial state (opt1 = true, opt2 = false)
+  ctx.begin_frame(RawInput::new())
+  let (s1, resp1) = ctx.radio("Option A", true)
+  let (s2, resp2) = ctx.radio("Option B", false)
+  let _ = ctx.end_frame()
+  assert_true(s1)
+  assert_true(!s2)
+  assert_true(!resp1.clicked())
+  assert_true(!resp2.clicked())
+
+  // Frame 2: Mouse click on Option B (starts at y = 22 + 8 = 30)
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(10.0, 40.0), false)
+  // simulate click release
+  let raw_press = RawInput::from_mouse(@math.Vec2::new(10.0, 40.0), true)
+  ctx.begin_frame(raw_press)
+  let _ = ctx.radio("Option A", true)
+  let (_, resp2_press) = ctx.radio("Option B", false)
+  assert_true(resp2_press.pressed())
+
+  ctx.begin_frame(raw2)
+  let _ = ctx.radio("Option A", true)
+  let (s2_clicked, resp2_release) = ctx.radio("Option B", false)
+  assert_true(resp2_release.clicked())
+  assert_true(s2_clicked)
+}
+
+///|
+test "widgets: progress_bar value clamping and drawing" {
+  let ctx = UIContext::new()
+  ctx.begin_frame(RawInput::new())
+
+  let resp1 = ctx.progress_bar(0.65, "65%")
+  assert_eq(resp1.rect.h, 18.0)
+
+  // Clamp over 1.0 and under 0.0
+  let resp2 = ctx.progress_bar(1.5, "")
+  assert_eq(resp2.rect.h, 18.0)
+
+  let resp3 = ctx.progress_bar(-0.5, "")
+  assert_eq(resp3.rect.h, 18.0)
+
+  let dl = ctx.end_frame()
+  assert_true(dl.len() >= 6) // each has rect, border, fill, text
+}
+
+///|
+test "widgets: collapsing_header expand, collapse and indentation" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Header starts closed (default_open: false)
+  ctx.begin_frame(RawInput::new())
+  let mut content_evaluated = false
+  let resp1 = ctx.collapsing_header("sec_1", "Section 1", false, fn(ui) {
+    content_evaluated = true
+    let _ = ui.label("Secret Content")
+  })
+  let _ = ctx.end_frame()
+  assert_true(!content_evaluated)
+  assert_eq(resp1.rect.h, 26.0)
+
+  // Frame 2: Click header to toggle open
+  let raw_press = RawInput::from_mouse(@math.Vec2::new(20.0, 10.0), true)
+  ctx.begin_frame(raw_press)
+  let _ = ctx.collapsing_header("sec_1", "Section 1", false, fn(_ui) {  })
+
+  let raw_release = RawInput::from_mouse(@math.Vec2::new(20.0, 10.0), false)
+  ctx.begin_frame(raw_release)
+  let mut inner_cursor_x = 0.0
+  let resp2 = ctx.collapsing_header("sec_1", "Section 1", false, fn(ui) {
+    content_evaluated = true
+    inner_cursor_x = ui.cursor().x
+    let _ = ui.label("Secret Content")
+  })
+  let _ = ctx.end_frame()
+
+  assert_true(resp2.clicked())
+  assert_true(content_evaluated)
+  // Indented by 16.0 px
+  assert_eq(inner_cursor_x, 16.0)
+  // Outer cursor returns to 0.0
+  assert_eq(ctx.cursor().x, 0.0)
+}
+
+///|
+test "widgets: combo_box popup open and selection" {
+  let ctx = UIContext::new()
+  let options = ["Dark", "Light", "Solarized"]
+
+  // Frame 1: Combo box is closed initially
+  ctx.begin_frame(RawInput::new())
+  let (idx1, _) = ctx.combo_box("combo_theme", "Theme", 0, options)
+  let dl1 = ctx.end_frame()
+  assert_eq(idx1, 0)
+  // Only main box drawn (bg, border, label, text, arrow)
+  assert_true(dl1.len() <= 6)
+
+  // Frame 2: Click on combo box to open dropdown
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(100.0, 14.0), true)
+  ctx.begin_frame(raw2)
+  let _ = ctx.combo_box("combo_theme", "Theme", 0, options)
+  assert_true(ctx.open_combo_id() != Id::zero())
+
+  // Release mouse after opening
+  let raw_rel = RawInput::from_mouse(@math.Vec2::new(100.0, 14.0), false)
+  ctx.begin_frame(raw_rel)
+  let _ = ctx.combo_box("combo_theme", "Theme", 0, options)
+
+  // Frame 3: While open, click on item 1 ("Light")
+  // item 1 is at y = 28 + 2 + 24 * 1 = 54
+  let raw3 = RawInput::from_mouse(@math.Vec2::new(100.0, 56.0), true)
+  ctx.begin_frame(raw3)
+  let (idx3, _) = ctx.combo_box("combo_theme", "Theme", 0, options)
+  assert_eq(idx3, 1)
+  // Menu closes after selection
+  assert_eq(ctx.open_combo_id(), Id::zero())
+}

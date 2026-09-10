@@ -365,3 +365,322 @@ pub fn UIContext::slider_int(
   }
   (rounded, resp)
 }
+
+///|
+/// Render an interactive radio button option.
+/// Returns a tuple of (new_selected_state, response).
+pub fn UIContext::radio(
+  self : UIContext,
+  label : String,
+  selected : Bool,
+) -> (Bool, Response) {
+  let circle_r = 7.0
+  let gap = 8.0
+  let text_size = self.measure_text(label, 13.0)
+  let total_w = circle_r * 2.0 + gap + text_size.x
+  let total_h = 22.0
+  let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, total_h))
+  self.register_focusable(id)
+
+  let new_selected = if resp.clicked() { true } else { selected }
+
+  let center = @math.Vec2::new(rect.x + circle_r + 1.0, rect.y + total_h * 0.5)
+
+  let outer_color = if resp.has_focus() {
+    @color.Color::accent_primary()
+  } else if resp.hovered() {
+    @color.Color::accent_hover()
+  } else if selected {
+    @color.Color::accent_primary()
+  } else {
+    @color.Color::border_muted()
+  }
+
+  let bg_circle_color = if resp.hovered() {
+    @color.Color::bg_hover()
+  } else {
+    @color.Color::bg_surface()
+  }
+
+  self.draw_list.add_circle(center, circle_r, bg_circle_color)
+  self.draw_list.add_circle_stroke(center, circle_r, outer_color, 1.5)
+
+  if selected {
+    self.draw_list.add_circle(center, 3.5, @color.Color::accent_primary())
+  }
+
+  let text_pos = @math.Vec2::new(
+    rect.x + circle_r * 2.0 + gap + 1.0,
+    rect.y + (total_h - 13.0) * 0.5,
+  )
+  let text_color = if resp.hovered() {
+    @color.Color::white()
+  } else {
+    @color.Color::text_primary()
+  }
+  self.draw_list.add_text(text_pos, label, 13.0, text_color)
+
+  (new_selected, resp)
+}
+
+///|
+/// Render a styled progress bar with progress fill and label.
+pub fn UIContext::progress_bar(
+  self : UIContext,
+  fraction : Double,
+  text : String,
+) -> Response {
+  let w = self.available_width
+  let h = 18.0
+  let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
+
+  let clamped_pct = if fraction < 0.0 {
+    0.0
+  } else if fraction > 1.0 {
+    1.0
+  } else {
+    fraction
+  }
+
+  self.draw_list.add_rect(rect, @color.Color::bg_surface(), 4.0)
+  self.draw_list.add_rect_stroke(rect, @color.Color::border_muted(), 1.0, 4.0)
+
+  let fill_w = rect.w * clamped_pct
+  if fill_w > 0.0 {
+    let fill_rect = @math.Rect::new(rect.x, rect.y, fill_w, rect.h)
+    self.draw_list.add_rect(fill_rect, @color.Color::accent_primary(), 4.0)
+  }
+
+  let display_text = if text.is_empty() {
+    (clamped_pct * 100.0).to_int().to_string() + "%"
+  } else {
+    text
+  }
+
+  let text_size = self.measure_text(display_text, 11.0)
+  let text_x = rect.x + (rect.w - text_size.x) * 0.5
+  let text_y = rect.y + (rect.h - 11.0) * 0.5
+  self.draw_list.add_text(
+    @math.Vec2::new(text_x, text_y),
+    display_text,
+    11.0,
+    @color.Color::white(),
+  )
+
+  resp
+}
+
+///|
+/// Render a collapsible section header with expand/collapse arrow indicator and nested content.
+pub fn UIContext::collapsing_header(
+  self : UIContext,
+  id_salt : String,
+  title : String,
+  default_open : Bool,
+  content : (UIContext) -> Unit,
+) -> Response {
+  let header_id = self.id_stack.derive_id(id_salt)
+  let w = self.available_width
+  let h = 26.0
+
+  self.push_id(id_salt)
+  let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
+  self.pop_id()
+
+  let mut is_open = self.is_collapsing_open(header_id, default_open)
+  if resp.clicked() {
+    is_open = !is_open
+    self.set_collapsing_open(header_id, is_open)
+  }
+
+  let bg_color = if resp.hovered() {
+    @color.Color::bg_hover()
+  } else {
+    @color.Color::bg_surface()
+  }
+  self.draw_list.add_rect(rect, bg_color, 4.0)
+
+  let arrow_color = if resp.hovered() {
+    @color.Color::white()
+  } else {
+    @color.Color::text_secondary()
+  }
+  let arrow_char = if is_open { "▼" } else { "▶" }
+  let arrow_x = rect.x + 8.0
+  let arrow_y = rect.y + (h - 10.0) * 0.5
+  self.draw_list.add_text(
+    @math.Vec2::new(arrow_x, arrow_y),
+    arrow_char,
+    10.0,
+    arrow_color,
+  )
+
+  let title_x = rect.x + 24.0
+  let title_y = rect.y + (h - 13.0) * 0.5
+  let text_color = if resp.hovered() {
+    @color.Color::white()
+  } else {
+    @color.Color::text_primary()
+  }
+  self.draw_list.add_text(
+    @math.Vec2::new(title_x, title_y),
+    title,
+    13.0,
+    text_color,
+  )
+
+  if is_open {
+    let prev_cursor = self.cursor
+    let prev_avail_w = self.available_width
+    let indent = 16.0
+
+    self.cursor = @math.Vec2::new(prev_cursor.x + indent, prev_cursor.y)
+    self.available_width = prev_avail_w - indent
+
+    content(self)
+
+    let final_y = self.cursor.y
+    self.cursor = @math.Vec2::new(prev_cursor.x, final_y)
+    self.available_width = prev_avail_w
+  }
+
+  resp
+}
+
+///|
+/// Render a dropdown selection menu.
+/// Returns a tuple of (new_selected_index, response).
+pub fn UIContext::combo_box(
+  self : UIContext,
+  id_salt : String,
+  label : String,
+  selected_index : Int,
+  options : Array[String],
+) -> (Int, Response) {
+  let combo_id = self.id_stack.derive_id(id_salt)
+  let label_size = if !label.is_empty() {
+    self.measure_text(label, 13.0).x + 8.0
+  } else {
+    0.0
+  }
+  let box_w = 140.0
+  let total_w = label_size + box_w
+  let h = 28.0
+
+  self.push_id(id_salt)
+  let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
+  self.pop_id()
+
+  let box_rect = @math.Rect::new(rect.x + label_size, rect.y, box_w, h)
+  let box_hovered = box_rect.contains(self.input.mouse_pos)
+
+  let mut current_idx = selected_index
+  let is_open = self.open_combo_id() == combo_id
+
+  if box_hovered && self.input.mouse_pressed() {
+    if is_open {
+      self.set_open_combo_id(Id::zero())
+    } else {
+      self.set_open_combo_id(combo_id)
+    }
+  }
+
+  if !label.is_empty() {
+    let label_y = rect.y + (h - 13.0) * 0.5
+    self.draw_list.add_text(
+      @math.Vec2::new(rect.x, label_y),
+      label,
+      13.0,
+      @color.Color::text_primary(),
+    )
+  }
+
+  let bg_color = if box_hovered || is_open {
+    @color.Color::bg_hover()
+  } else {
+    @color.Color::bg_surface()
+  }
+  let border_color = if is_open {
+    @color.Color::accent_primary()
+  } else if box_hovered {
+    @color.Color::accent_hover()
+  } else {
+    @color.Color::border_muted()
+  }
+
+  self.draw_list.add_rect(box_rect, bg_color, 4.0)
+  self.draw_list.add_rect_stroke(box_rect, border_color, 1.0, 4.0)
+
+  let selected_str = if current_idx >= 0 && current_idx < options.length() {
+    options[current_idx]
+  } else {
+    ""
+  }
+  let text_y = box_rect.y + (h - 13.0) * 0.5
+  self.draw_list.add_text(
+    @math.Vec2::new(box_rect.x + 8.0, text_y),
+    selected_str,
+    13.0,
+    @color.Color::text_primary(),
+  )
+
+  let arrow_x = box_rect.x + box_w - 18.0
+  let arrow_y = box_rect.y + (h - 10.0) * 0.5
+  self.draw_list.add_text(
+    @math.Vec2::new(arrow_x, arrow_y),
+    "▼",
+    10.0,
+    @color.Color::text_secondary(),
+  )
+
+  if is_open {
+    let item_h = 24.0
+    let menu_h = item_h * options.length().to_double()
+    let menu_rect = @math.Rect::new(
+      box_rect.x,
+      box_rect.y + box_rect.h + 2.0,
+      box_w,
+      menu_h,
+    )
+
+    self.draw_list.add_rect(menu_rect, @color.Color::bg_window(), 4.0)
+    self.draw_list.add_rect_stroke(
+      menu_rect,
+      @color.Color::border_muted(),
+      1.0,
+      4.0,
+    )
+
+    for i = 0; i < options.length(); i = i + 1 {
+      let item_rect = @math.Rect::new(
+        menu_rect.x,
+        menu_rect.y + item_h * i.to_double(),
+        box_w,
+        item_h,
+      )
+      let item_hovered = item_rect.contains(self.input.mouse_pos)
+      if item_hovered {
+        self.draw_list.add_rect(item_rect, @color.Color::accent_primary(), 2.0)
+        if self.input.mouse_pressed() {
+          current_idx = i
+          self.set_open_combo_id(Id::zero())
+        }
+      }
+      let item_text_col = if item_hovered {
+        @color.Color::white()
+      } else if i == current_idx {
+        @color.Color::accent_primary()
+      } else {
+        @color.Color::text_primary()
+      }
+      self.draw_list.add_text(
+        @math.Vec2::new(item_rect.x + 8.0, item_rect.y + (item_h - 12.0) * 0.5),
+        options[i],
+        12.0,
+        item_text_col,
+      )
+    }
+  }
+
+  (current_idx, resp)
+}

@@ -1,0 +1,114 @@
+// Copyright 2026 Ling71671
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+///|
+/// Render a vertical scrolling container with wheel scrolling, nested scissor clipping,
+/// and smooth scrollbar indicator.
+pub fn UIContext::scroll_area(
+  self : UIContext,
+  id_salt : String,
+  size : @math.Vec2,
+  content : (UIContext) -> Unit,
+) -> Unit {
+  let container_id = self.id_stack.derive_id(id_salt)
+  let (_id, container_rect, _resp) = self.allocate_space(size)
+
+  if container_rect.contains(self.input.mouse_pos) {
+    self.wants_capture_mouse = true
+  }
+
+  let mut scroll_y = self.get_scroll_offset(container_id)
+  let prev_content_h = self.get_scroll_content_height(container_id)
+  let max_scroll = if prev_content_h > size.y {
+    prev_content_h - size.y
+  } else {
+    0.0
+  }
+
+  // Handle pointer wheel scrolling inside container
+  if container_rect.contains(self.input.mouse_pos) &&
+    self.input.scroll_delta.y != 0.0 {
+    scroll_y = scroll_y - self.input.scroll_delta.y
+  }
+
+  // Clamp scroll range
+  if scroll_y < 0.0 {
+    scroll_y = 0.0
+  }
+  if scroll_y > max_scroll {
+    scroll_y = max_scroll
+  }
+  self.set_scroll_offset(container_id, scroll_y)
+
+  // Push nested scissor clipping
+  self.push_clip(container_rect)
+
+  // Save current context layout state
+  let prev_cursor = self.cursor
+  let prev_avail_w = self.available_width
+
+  // Adjust available width if scrollbar is present
+  let scrollbar_w = 6.0
+  let inner_w = if max_scroll > 0.0 {
+    size.x - scrollbar_w - 4.0
+  } else {
+    size.x
+  }
+
+  self.cursor = @math.Vec2::new(container_rect.x, container_rect.y - scroll_y)
+  self.available_width = inner_w
+
+  content(self)
+
+  let measured_content_h = self.cursor.y + scroll_y - container_rect.y
+  self.set_scroll_content_height(container_id, measured_content_h)
+
+  // Restore cursor and pop scissor clip
+  self.cursor = prev_cursor
+  self.available_width = prev_avail_w
+  self.pop_clip()
+
+  // Draw scrollbar thumb if content exceeds container height
+  if max_scroll > 0.0 && measured_content_h > 0.0 {
+    let bar_x = container_rect.x + size.x - scrollbar_w - 2.0
+    let bar_track_y = container_rect.y
+    let bar_track_h = size.y
+
+    let ratio = size.y / measured_content_h
+    let raw_thumb_h = size.y * ratio
+    let thumb_h = if raw_thumb_h < 24.0 {
+      24.0
+    } else if raw_thumb_h > bar_track_h {
+      bar_track_h
+    } else {
+      raw_thumb_h
+    }
+
+    let scroll_pct = if max_scroll > 0.0001 {
+      scroll_y / max_scroll
+    } else {
+      0.0
+    }
+    let thumb_y = bar_track_y + scroll_pct * (bar_track_h - thumb_h)
+    let thumb_rect = @math.Rect::new(bar_x, thumb_y, scrollbar_w, thumb_h)
+
+    let is_bar_hovered = thumb_rect.contains(self.input.mouse_pos)
+    let thumb_color = if is_bar_hovered {
+      @color.Color::accent_primary()
+    } else {
+      @color.Color::border_muted()
+    }
+    self.draw_list.add_rect(thumb_rect, thumb_color, 3.0)
+  }
+}
