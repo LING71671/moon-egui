@@ -203,6 +203,10 @@
       color: var(--brand-cyan);
     }
 
+    .render-metric {
+      color: var(--brand-violet);
+    }
+
     .lang-toggle-btn {
       padding: 3px 8px;
       font-size: 11px;
@@ -328,9 +332,11 @@
       <div class="telemetry-capsule">
         <span class="fps-metric"><span id="telemetry-fps">60.0</span> FPS</span>
         <span>·</span>
-        <span class="kernel-metric"><span id="telemetry-kernel">0.15 ms</span></span>
+        <span class="kernel-metric">Kernel <span id="telemetry-kernel">0.15</span> ms</span>
         <span>·</span>
-        <span id="txt-nodes">65,536 节点 (256×256)</span>
+        <span class="render-metric">Render <span id="telemetry-render">0.40</span> ms</span>
+        <span>·</span>
+        <span id="txt-nodes">65,536 逻辑节点 (256×256)</span>
       </div>
       <button class="lang-toggle-btn" id="btn-lang-toggle" onclick="toggleLanguage()">EN</button>
     </div>
@@ -395,6 +401,7 @@
 
     function applyLanguage(lang) {
       currentLang = lang;
+      window.currentBenchmarkLang = lang;
       const t = I18N[lang];
       document.getElementById('txt-back').textContent = t.back;
       document.getElementById('txt-title').textContent = t.title;
@@ -408,6 +415,7 @@
       document.getElementById('txt-shortcuts').innerHTML = t.shortcuts;
       document.getElementById('btn-lang-toggle').textContent = t.langBtn;
       document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+      if (window.updateTelemetryNodes) window.updateTelemetryNodes();
     }
 
     function toggleLanguage() {

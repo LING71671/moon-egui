@@ -90,134 +90,166 @@ fn Response::dragged(self : Response) -> Bool
 所有交互式控件均以方法形式挂载在上下文 `UIContext` 上。
 
 ### 3.1 文本与标签 (Text & Labels)
+* `label` / `label_colored`：**[状态: ✅ 已实现 (Implemented)]**
+* `heading` / `code`：**[状态: 🚧 规划中 (Proposed)]**
+
 ```moonbit
-// 普通纯文本标签
-fn UIContext::label(self : &mut UIContext, text : String) -> Response
+// [已实现] 普通纯文本标签
+fn UIContext::label(self : UIContext, text : String) -> Response
 
-// 视觉加粗放大的标题文本
-fn UIContext::heading(self : &mut UIContext, text : String) -> Response
+// [已实现] 自定义颜色纯文本标签
+fn UIContext::label_colored(self : UIContext, text : String, color : Color) -> Response
 
-// 等宽代码格式文本
-fn UIContext::code(self : &mut UIContext, text : String) -> Response
+// [规划中] 视觉加粗放大的标题文本
+fn UIContext::heading(self : UIContext, text : String) -> Response
+
+// [规划中] 等宽代码格式文本
+fn UIContext::code(self : UIContext, text : String) -> Response
 ```
 
 ### 3.2 交互按钮 (Buttons)
+* `button` / `button_primary`：**[状态: ✅ 已实现 (Implemented)]**
+* `small_button`：**[状态: 🚧 规划中 (Proposed)]**
+
 ```moonbit
-// 标准紧凑型下压按钮
-fn UIContext::button(self : &mut UIContext, label : String) -> Response
+// [已实现] 标准紧凑型下压按钮（Normal / Hover / Pressed 响应）
+fn UIContext::button(self : UIContext, text : String) -> Response
 
-// 主行动点（Primary CTA）强调按钮
-fn UIContext::primary_button(self : &mut UIContext, label : String) -> Response
+// [已实现] 主行动点（Primary CTA）强调按钮
+fn UIContext::button_primary(self : UIContext, text : String) -> Response
 
-// 小型紧凑微缩按钮
-fn UIContext::small_button(self : &mut UIContext, label : String) -> Response
+// [规划中] 小型紧凑微缩按钮
+fn UIContext::small_button(self : UIContext, text : String) -> Response
 ```
 
-### 3.3 数值调节与滑动条 (Value Selectors)
+### 3.3 布局辅助 (Layout Spacing)
+* `separator` / `spacer`：**[状态: ✅ 已实现 (Implemented)]**
+
 ```moonbit
-// 连续型浮点滑动条
-fn UIContext::slider_float(
-  self : &mut UIContext, 
-  label : String, 
-  val : &mut Double, 
-  min : Double, 
-  max : Double
-) -> Response
+// [已实现] 全宽水平分割线
+fn UIContext::separator(self : UIContext) -> Unit
 
-// 步进整型滑动条
-fn UIContext::slider_int(
-  self : &mut UIContext, 
-  label : String, 
-  val : &mut Int, 
-  min : Int, 
-  max : Int
-) -> Response
-
-// Blender 风格的数字微调滑轮（按住数值横向拖拽增减）
-fn UIContext::drag_float(
-  self : &mut UIContext, 
-  label : String, 
-  val : &mut Double, 
-  speed : Double, 
-  min : Double, 
-  max : Double
-) -> Response
+// [已实现] 垂直弹性留白占位
+fn UIContext::spacer(self : UIContext, height : Double) -> Unit
 ```
 
 ### 3.4 布尔与开关控制 (Booleans & Toggles)
-```moonbit
-// 标准方框复选框
-fn UIContext::checkbox(self : &mut UIContext, label : String, checked : &mut Bool) -> Response
+* `checkbox`：**[状态: ✅ 已实现 (Implemented)]**
+* `toggle`：**[状态: 🚧 规划中 (Proposed)]**
 
-// 现代胶囊型滑动开关
-fn UIContext::toggle(self : &mut UIContext, label : String, active : &mut Bool) -> Response
+```moonbit
+// [已实现] 标准方框复选框
+fn UIContext::checkbox(self : UIContext, text : String, checked : Bool) -> (Bool, Response)
+
+// [规划中] 现代胶囊型滑动开关
+fn UIContext::toggle(self : UIContext, text : String, active : Bool) -> (Bool, Response)
 ```
 
-### 3.5 文本输入 (Text Editing)
+### 3.5 数值调节与滑动条 (Value Selectors)
+* **[状态: 🚧 规划中 (Proposed)]**
+
 ```moonbit
-// 单行交互式文本输入框
+// [规划中] 连续型浮点滑动条
+fn UIContext::slider_float(
+  self : UIContext, 
+  label : String, 
+  val : Double, 
+  min : Double, 
+  max : Double
+) -> (Double, Response)
+
+// [规划中] 步进整型滑动条
+fn UIContext::slider_int(
+  self : UIContext, 
+  label : String, 
+  val : Int, 
+  min : Int, 
+  max : Int
+) -> (Int, Response)
+
+// [规划中] Blender 风格的数字微调滑轮（按住数值横向拖拽增减）
+fn UIContext::drag_float(
+  self : UIContext, 
+  label : String, 
+  val : Double, 
+  speed : Double, 
+  min : Double, 
+  max : Double
+) -> (Double, Response)
+```
+
+### 3.6 文本输入 (Text Editing)
+* **[状态: 🚧 规划中 (Proposed)]**
+
+```moonbit
+// [规划中] 单行交互式文本输入框
 fn UIContext::text_input(
-  self : &mut UIContext, 
+  self : UIContext, 
   placeholder : String, 
-  text : &mut String
-) -> Response
+  text : String
+) -> (String, Response)
 ```
 
-### 3.6 遥测反馈与数据可视化 (Telemetry & Feedback)
-```moonbit
-// 连续进度条指示器（取值范围 0.0 至 1.0）
-fn UIContext::progress_bar(self : &mut UIContext, fraction : Double) -> Response
+### 3.7 遥测反馈与数据可视化 (Telemetry & Feedback)
+* **[状态: 🚧 规划中 (Proposed)]**
 
-// 历史波动数据实时折线图（Sparkline）
+```moonbit
+// [规划中] 连续进度条指示器（取值范围 0.0 至 1.0）
+fn UIContext::progress_bar(self : UIContext, fraction : Double) -> Response
+
+// [规划中] 历史波动数据实时折线图（Sparkline）
 fn UIContext::sparkline(
-  self : &mut UIContext, 
+  self : UIContext, 
   label : String, 
   data : Array[Double], 
   height : Double
 ) -> Response
 
-// 悬浮气泡提示（挂载在任意控件响应对象之后）
-fn Response::on_hover_text(self : Response, ui : &mut UIContext, tooltip : String)
+// [规划中] 悬浮气泡提示（挂载在任意控件响应对象之后）
+fn Response::on_hover_text(self : Response, ui : UIContext, tooltip : String) -> Unit
 ```
 
 ---
 
 ## 4. 容器与视窗系统 (Containers & Windows)
+* **[状态: 🚧 规划中 (Proposed)]**
 
 ### 4.1 自由浮动可拖拽视窗 (Floating Window)
 ```moonbit
+// [规划中]
 fn UIContext::window(
-  self : &mut UIContext, 
+  self : UIContext, 
   title : String, 
   default_x : Double, 
   default_y : Double, 
   width : Double, 
   height : Double, 
-  content : (&mut UIContext) -> Unit
-)
+  content : (UIContext) -> Unit
+) -> Unit
 ```
 
 ### 4.2 顶部全局应用程序菜单栏 (Application Menu Bar)
 ```moonbit
-fn UIContext::menu_bar(self : &mut UIContext, content : (&mut UIContext) -> Unit)
-fn UIContext::menu(self : &mut UIContext, title : String, content : (&mut UIContext) -> Unit)
-fn UIContext::menu_item(self : &mut UIContext, label : String) -> Bool
+// [规划中]
+fn UIContext::menu_bar(self : UIContext, content : (UIContext) -> Unit) -> Unit
+fn UIContext::menu(self : UIContext, title : String, content : (UIContext) -> Unit) -> Unit
+fn UIContext::menu_item(self : UIContext, label : String) -> Bool
 ```
 
 ### 4.3 流式排版组织与分组 (Layout Flow)
 ```moonbit
-// 横向排列子元素（水平流式展开）
-fn UIContext::horizontal(self : &mut UIContext, content : (&mut UIContext) -> Unit)
+// [规划中] 横向排列子元素（水平流式展开）
+fn UIContext::horizontal(self : UIContext, content : (UIContext) -> Unit) -> Unit
 
-// 纵向排列子元素（默认垂直堆叠）
-fn UIContext::vertical(self : &mut UIContext, content : (&mut UIContext) -> Unit)
+// [规划中] 纵向排列子元素（默认垂直堆叠）
+fn UIContext::vertical(self : UIContext, content : (UIContext) -> Unit) -> Unit
 
-// 可折叠树形分组面板
+// [规划中] 可折叠树形分组面板
 fn UIContext::collapsing_header(
-  self : &mut UIContext, 
+  self : UIContext, 
   title : String, 
   default_open : Bool, 
-  content : (&mut UIContext) -> Unit
+  content : (UIContext) -> Unit
 )
 
 // 视觉水平分割横线

@@ -129,36 +129,36 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 
 ## 核心特性矩阵
 
-### 桌面与 IDE 级布局系统
-- **系统菜单栏（Menu Bar）**：全局顶部应用菜单，支持多级悬浮下拉交互项。
-- **侧边栏与多栏网格（Side Panels & Columns）**：固定宽度侧边栏与多列自动等宽分栏。
-- **浮动视窗（Floating Windows）**：按住标题栏自由拖拽、动态 Z-index 焦点置顶、折叠与收起。
-- **滚动裁剪视口（ScrollArea & Clipping）**：鼠标滚轮平滑滚动与像素级 Scissor 遮罩裁剪。
+### 已交付可用特性 (Available Now)
+- **底层图形与绘制内核 (Core Draw Engine)**：纯 MoonBit 实现的 `Vec2`, `Rect`, `Color`, `DrawCmd` 平台无关指令流，支持矩形、线段、圆、文本与嵌套矩形裁剪栈（Scissor Clipping）。
+- **交互状态机与空间管理 (Hit-Testing & Space Allocation)**：`UIContext` 维护 `hot_id` / `active_id` 状态机，`allocate_space()` 自动分配几何尺寸并完成鼠标交互命中判定。
+- **基础控件套件 (Available Widgets)**：
+  - **文本标签**：`label`（标准文字）、`label_colored`（自定义颜色文本）。
+  - **交互按钮**：`button`（基础按钮）、`button_primary`（重点操作按钮），内置 Normal / Hover / Pressed 响应。
+  - **复选框**：`checkbox`（交互式开关选框）。
+  - **排版微调**：`separator`（水平分割线）、`spacer`（垂直弹性留白）。
+- **无头纯算与高覆盖测试**：核心图元与组件逻辑完全脱离浏览器，支持通过 `moon test` 进行自动化无头测试。
+- **Canvas 2D 宿主驱动器**：轻量 JavaScript 桥接层与 60 FPS 渲染管线，结合 O(1) 视口边界裁剪与多尺度 LOD 架构。
 
-### 交互控件套件
-- **基础控件**：文本标签、多态交互按钮（正常/悬浮/按下/禁用）、复选框、胶囊开关。
-- **精准调节**：整型与浮点滑动条（Slider）、**Blender 同款数值拖拽调节器（DragValue）**。
-- **数据反馈**：平滑进度条、**实时数据波动折线图（Sparkline Plot）**、悬浮气泡提示（Tooltip）。
-- **结构容器**：折叠分组面板（CollapsingHeader）、分割线（Separator）、弹性占位空白（Spacer）。
-
-### 底层自由手绘引擎（Painter API）
-支持在任意布局容器内直接调用 2D 矢量图元绘制接口（矩形、圆形、贝塞尔曲线、多边形填充、线段与文字），满足游戏 HUD、自定义仪表盘与小地图渲染需求。
-
-### 无头纯算与高覆盖测试
-由于核心逻辑仅生成纯 `DrawCmd` 图元指令流，不绑定任何浏览器 API，每项布局计算、AABB 碰撞检测与状态机流转均可通过 `moon test` 进行自动化无头测试。
+### 规划与演进中特性 (Planned / In Roadmap)
+- **精准调节器**：连续型滑动条（`Slider`）、Blender 同款数值拖拽调节器（`DragValue`）。
+- **高级视窗体系**：浮动可拖拽视窗（`Window`）、动态 Z-index 置顶管理、折叠分组树形面板（`CollapsingHeader`）。
+- **布局容器**：水平排版流（`horizontal`）、滚动裁剪视口（`ScrollArea`）、全局菜单栏（`MenuBar`）。
+- **数据与反馈**：平滑进度条（`ProgressBar`）、实时数据波动折线图（`Sparkline`）、悬浮气泡提示（`Tooltip`）。
 
 ---
 
 ## 开发路线图（2026 年 9 月 9 日 — 9 月 24 日）
 
 - [x] **第一阶段：工程骨架与基础类型**（9月9日 – 9月11日）
-  - 初始化核心数据结构：`Vec2`, `Rect`, `Color`, `InputState`, `DrawCmd`。
-- [ ] **第二阶段：输入状态机与基础排版**（9月12日 – 9月15日）
-  - AABB 空间命中判定、单向流式排版、`Button`, `Label`, `Checkbox`, `Slider`。
+  - 交付核心数据结构：`Vec2`, `Rect`, `Color`, `InputState`, `DrawCmd`, `DrawList`。
+- [x] **第四阶段（提前交付）：Canvas 2D 桥接与在线 Playground**（已上线）
+  - 60 FPS HTML5 Canvas 2D 驱动器、LOD 自适应架构、GitHub Pages 自动化持续交付上线。
+- [>] **第二阶段（推进中）：输入状态机与基础排版**（9月12日 – 9月15日）
+  - 已完成：AABB 空间命中判定、`Button`, `Label`, `Checkbox`, `Separator`, `Spacer`。
+  - 进行中：`Slider` 滑动条、水平布局流（`horizontal`）。
 - [ ] **第三阶段：高级视窗与容器交互**（9月16日 – 9月18日）
   - 浮动可拖拽视窗、动态 Z-index 置顶管理、折叠分组树形面板。
-- [ ] **第四阶段：Canvas 2D 桥接与在线 Playground**（9月19日 – 9月21日）
-  - 60 FPS HTML5 Canvas 2D 驱动器、GitHub Pages 交互式 WebAssembly 在线演示。
 - [ ] **第五阶段：全面自动化测试与正式交付**（9月22日 – 9月24日）
   - 达成 150+ 自动化单元测试、完整文档规范与最终版本验收交付。
 

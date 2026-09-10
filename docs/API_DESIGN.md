@@ -87,135 +87,166 @@ fn Response::dragged(self : Response) -> Bool
 All widgets are invoked as methods on `UIContext`.
 
 ### 3.1 Text & Labels
+* `label` / `label_colored`: **[Status: ✅ Implemented]**
+* `heading` / `code`: **[Status: 🚧 Proposed]**
+
 ```moonbit
-// Plain text label
-fn UIContext::label(self : &mut UIContext, text : String) -> Response
+// [Implemented] Plain text label
+fn UIContext::label(self : UIContext, text : String) -> Response
 
-// Styled heading with enlarged typography
-fn UIContext::heading(self : &mut UIContext, text : String) -> Response
+// [Implemented] Custom tinted text label
+fn UIContext::label_colored(self : UIContext, text : String, color : Color) -> Response
 
-// Monospaced code text
-fn UIContext::code(self : &mut UIContext, text : String) -> Response
+// [Proposed] Styled heading with enlarged typography
+fn UIContext::heading(self : UIContext, text : String) -> Response
+
+// [Proposed] Monospaced code text
+fn UIContext::code(self : UIContext, text : String) -> Response
 ```
 
 ### 3.2 Buttons
+* `button` / `button_primary`: **[Status: ✅ Implemented]**
+* `small_button`: **[Status: 🚧 Proposed]**
+
 ```moonbit
-// Standard push button
-fn UIContext::button(self : &mut UIContext, label : String) -> Response
+// [Implemented] Standard push button (Normal / Hover / Pressed states)
+fn UIContext::button(self : UIContext, text : String) -> Response
 
-// Accent button for primary actions
-fn UIContext::primary_button(self : &mut UIContext, label : String) -> Response
+// [Implemented] Accent button for primary CTA actions
+fn UIContext::button_primary(self : UIContext, text : String) -> Response
 
-// Small compact button
-fn UIContext::small_button(self : &mut UIContext, label : String) -> Response
+// [Proposed] Small compact button
+fn UIContext::small_button(self : UIContext, text : String) -> Response
 ```
 
-### 3.3 Value Selectors & Sliders
+### 3.3 Layout Spacing
+* `separator` / `spacer`: **[Status: ✅ Implemented]**
+
 ```moonbit
-// Continuous floating-point slider
-fn UIContext::slider_float(
-  self : &mut UIContext, 
-  label : String, 
-  val : &mut Double, 
-  min : Double, 
-  max : Double
-) -> Response
+// [Implemented] Full-width horizontal divider line
+fn UIContext::separator(self : UIContext) -> Unit
 
-// Integer step slider
-fn UIContext::slider_int(
-  self : &mut UIContext, 
-  label : String, 
-  val : &mut Int, 
-  min : Int, 
-  max : Int
-) -> Response
-
-// Blender-style DragValue (horizontal scrub on number to adjust)
-fn UIContext::drag_float(
-  self : &mut UIContext, 
-  label : String, 
-  val : &mut Double, 
-  speed : Double, 
-  min : Double, 
-  max : Double
-) -> Response
+// [Implemented] Vertical flexible padding spacer
+fn UIContext::spacer(self : UIContext, height : Double) -> Unit
 ```
 
 ### 3.4 Booleans & Toggles
-```moonbit
-// Standard square checkbox
-fn UIContext::checkbox(self : &mut UIContext, label : String, checked : &mut Bool) -> Response
+* `checkbox`: **[Status: ✅ Implemented]**
+* `toggle`: **[Status: 🚧 Proposed]**
 
-// Modern pill toggle switch
-fn UIContext::toggle(self : &mut UIContext, label : String, active : &mut Bool) -> Response
+```moonbit
+// [Implemented] Standard square checkbox
+fn UIContext::checkbox(self : UIContext, text : String, checked : Bool) -> (Bool, Response)
+
+// [Proposed] Modern pill toggle switch
+fn UIContext::toggle(self : UIContext, text : String, active : Bool) -> (Bool, Response)
 ```
 
-### 3.5 Text Editing
+### 3.5 Value Selectors & Sliders
+* **[Status: 🚧 Proposed]**
+
 ```moonbit
-// Single-line text input field
+// [Proposed] Continuous floating-point slider
+fn UIContext::slider_float(
+  self : UIContext, 
+  label : String, 
+  val : Double, 
+  min : Double, 
+  max : Double
+) -> (Double, Response)
+
+// [Proposed] Integer step slider
+fn UIContext::slider_int(
+  self : UIContext, 
+  label : String, 
+  val : Int, 
+  min : Int, 
+  max : Int
+) -> (Int, Response)
+
+// [Proposed] Blender-style DragValue (horizontal scrub on number to adjust)
+fn UIContext::drag_float(
+  self : UIContext, 
+  label : String, 
+  val : Double, 
+  speed : Double, 
+  min : Double, 
+  max : Double
+) -> (Double, Response)
+```
+
+### 3.6 Text Editing
+* **[Status: 🚧 Proposed]**
+
+```moonbit
+// [Proposed] Single-line text input field
 fn UIContext::text_input(
-  self : &mut UIContext, 
+  self : UIContext, 
   placeholder : String, 
-  text : &mut String
-) -> Response
+  text : String
+) -> (String, Response)
 ```
 
-### 3.6 Telemetry & Visual Feedback
-```moonbit
-// Continuous progress indicator (0.0 to 1.0)
-fn UIContext::progress_bar(self : &mut UIContext, fraction : Double) -> Response
+### 3.7 Telemetry & Visual Feedback
+* **[Status: 🚧 Proposed]**
 
-// Sparkline real-time plot from a history slice
+```moonbit
+// [Proposed] Continuous progress indicator (0.0 to 1.0)
+fn UIContext::progress_bar(self : UIContext, fraction : Double) -> Response
+
+// [Proposed] Sparkline real-time plot from a history slice
 fn UIContext::sparkline(
-  self : &mut UIContext, 
+  self : UIContext, 
   label : String, 
   data : Array[Double], 
   height : Double
 ) -> Response
 
-// Tooltip attached to the previous response
-fn Response::on_hover_text(self : Response, ui : &mut UIContext, tooltip : String)
+// [Proposed] Tooltip attached to the previous response
+fn Response::on_hover_text(self : Response, ui : UIContext, tooltip : String) -> Unit
 ```
 
 ---
 
 ## 4. Containers & Windows
+* **[Status: 🚧 Proposed]**
 
 ### 4.1 Floating Movable Window
 ```moonbit
+// [Proposed]
 fn UIContext::window(
-  self : &mut UIContext, 
+  self : UIContext, 
   title : String, 
   default_x : Double, 
   default_y : Double, 
   width : Double, 
   height : Double, 
-  content : (&mut UIContext) -> Unit
-)
+  content : (UIContext) -> Unit
+) -> Unit
 ```
 
 ### 4.2 Top Application Menu Bar
 ```moonbit
-fn UIContext::menu_bar(self : &mut UIContext, content : (&mut UIContext) -> Unit)
-fn UIContext::menu(self : &mut UIContext, title : String, content : (&mut UIContext) -> Unit)
-fn UIContext::menu_item(self : &mut UIContext, label : String) -> Bool
+// [Proposed]
+fn UIContext::menu_bar(self : UIContext, content : (UIContext) -> Unit) -> Unit
+fn UIContext::menu(self : UIContext, title : String, content : (UIContext) -> Unit) -> Unit
+fn UIContext::menu_item(self : UIContext, label : String) -> Bool
 ```
 
 ### 4.3 Layout Flow & Grouping
 ```moonbit
-// Arrange children horizontally in a row
-fn UIContext::horizontal(self : &mut UIContext, content : (&mut UIContext) -> Unit)
+// [Proposed] Arrange children horizontally in a row
+fn UIContext::horizontal(self : UIContext, content : (UIContext) -> Unit) -> Unit
 
-// Arrange children vertically in a column (default)
-fn UIContext::vertical(self : &mut UIContext, content : (&mut UIContext) -> Unit)
+// [Proposed] Arrange children vertically in a column (default)
+fn UIContext::vertical(self : UIContext, content : (UIContext) -> Unit) -> Unit
 
-// Collapsible tree section
+// [Proposed] Collapsible tree section
 fn UIContext::collapsing_header(
-  self : &mut UIContext, 
+  self : UIContext, 
   title : String, 
   default_open : Bool, 
-  content : (&mut UIContext) -> Unit
-)
+  content : (UIContext) -> Unit
 
 // Visual horizontal separator line
 fn UIContext::separator(self : &mut UIContext)

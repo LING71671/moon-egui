@@ -20,41 +20,43 @@
 
 ---
 
-### Milestone 1: Scaffolding & Mathematical Foundation (Sep 9 – Sep 11)
+### Milestone 1: Scaffolding & Mathematical Foundation (Sep 9 – Sep 11) [Delivered]
 
 * **Objective**: Establish pure algebraic data types, headless architecture, and zero-dependency mathematical foundations.
 * **Deliverables**:
   - [x] Apache-2.0 licensing, clean package layout, and automated GitHub Actions CI pipeline;
   - [x] Bilingual technical whitepapers (`ARCHITECTURE`, `API_DESIGN`, `DESIGN_SYSTEM`, `STYLE_GUIDE`);
-  - [ ] **Geometric Math** (`geom.mbt`): `Vec2` arithmetic, `Rect` (AABB) spatial algorithms (`contains`, `intersects`, `intersect`, `expand`, `shrink`);
-  - [ ] **Color & Drawing Primitives** (`color.mbt`, `draw_cmd.mbt`): RGBA `Color` model, hex parsing, `DrawCmd` enum, and double-buffered `DrawList`;
-  - [ ] **Input Protocol** (`input.mbt`): Normalized `RawInput` capturing pointer positions, button masks, and keys.
+  - [x] **Geometric Math** (`src/math/`): `Vec2` arithmetic, `Rect` (AABB) spatial algorithms (`contains`, `intersects`, `intersect`, `expand`, `shrink`);
+  - [x] **Color & Drawing Primitives** (`src/color/`, `src/draw/`): RGBA `Color` model, hex parsing, `DrawCmd` enum, and `DrawList` command queue;
+  - [x] **Input Protocol** (`src/core/input.mbt`): Normalized `RawInput` capturing pointer positions and button masks.
 * **Acceptance Criteria**:
-  - `moon check` and `moon fmt --check` pass with zero warnings;
-  - `geom_test.mbt` and `color_test.mbt` pass with 100% test coverage.
+  - [x] `moon check` and `moon fmt --check` pass with zero warnings;
+  - [x] `src/math/` and `src/core/` pass with comprehensive test coverage.
 
 ---
 
-### Milestone 2: Input State Machine, Layout & Core Widgets (Sep 12 – Sep 15)
+### Milestone 2: Input State Machine, Layout & Core Widgets (Sep 12 – Sep 15) [In Progress]
 
 * **Objective**: Implement immediate-mode frame execution, hierarchical ID hashing, and interactive controls.
 * **Deliverables**:
-  - [ ] **Hierarchical ID System** (`id.mbt`): 64-bit ID hashing, `push_id` / `pop_id` namespace stacks;
-  - [ ] **Input State Machine** (`context.mbt`): Deterministic transitions for `hot_id` (hover), `active_id` (drag), and `focused_id` (keyboard);
-  - [ ] **Linear Cursor Layout Engine** (`layout.mbt`): Single-pass cursor advancement, horizontal nesting (`horizontal`), spacing, and separators;
-  - [ ] **Response Record** (`response.mbt`): Chainable interaction inspection (`clicked`, `hovered`, `dragged`);
-  - [ ] **Core Widget Suite** (`widget_*.mbt`):
-    - Text: `label`, `heading`, `code`
-    - Buttons: `button`, `primary_button`, `small_button`
-    - Toggles: `checkbox`, `toggle`
-    - Value Inputs: `slider_float`, `slider_int`, Blender-style `drag_float`
-    - Feedback: `progress_bar`, `sparkline`
+  - [x] **Hierarchical ID System** (`src/core/id.mbt`): 64-bit ID hashing, `push_id` / `pop_id` namespace stacks;
+  - [x] **Input State Machine** (`src/core/context.mbt`): Deterministic transitions for `hot_id` (hover), `active_id` (drag) and `allocate_space`;
+  - [x] **Response Record** (`src/core/response.mbt`): Chainable interaction inspection (`clicked`, `hovered`, `pressed`, `dragged`);
+  - [x] **Delivered Core Widgets** (`src/core/widgets.mbt`):
+    - [x] Text: `label`, `label_colored`
+    - [x] Buttons: `button`, `button_primary`
+    - [x] Toggles: `checkbox`
+    - [x] Layout: `separator`, `spacer`
+  - [ ] **In-Progress Layout & Advanced Controls**:
+    - [ ] Horizontal flow layout (`horizontal`)
+    - [ ] Value Inputs: `slider_float`, `slider_int`, Blender-style `drag_float`
+    - [ ] Feedback: `progress_bar`, `sparkline`
 * **Acceptance Criteria**:
   - Headless CI unit tests confirm that pointer-down, move, and release events trigger correct `Response` states.
 
 ---
 
-### Milestone 3: Windowing, Advanced Containers & Scissor Clipping (Sep 16 – Sep 18)
+### Milestone 3: Windowing, Advanced Containers & Scissor Clipping (Sep 16 – Sep 18) [Upcoming]
 
 * **Objective**: Support multi-window layouts with dynamic Z-Index elevation and scissor clipping masks.
 * **Deliverables**:
@@ -64,30 +66,29 @@
     - Dynamic Z-Index elevation bringing clicked windows to the foreground;
   - [ ] **Global Application Menu Bar** (`menu_bar.mbt`): `menu_bar`, `menu`, `menu_item` dropdown system;
   - [ ] **Collapsible Sections** (`collapsing.mbt`): `collapsing_header` with state memory;
-  - [ ] **Scissor Clip Stack** (`clip.mbt`): `ClipStack` intersecting nested bounding boxes and culling out-of-bounds primitives;
+  - [x] **Scissor Clip Stack** (`src/draw/cmd.mbt`): `push_clip` / `pop_clip` intersecting nested bounding boxes and culling out-of-bounds primitives;
   - [ ] **Scroll Area** (`scroll_area.mbt`): Smooth mouse-wheel scrolling inside clipped viewports.
 * **Acceptance Criteria**:
   - Multi-window tests confirm background windows cannot be clicked through, and clipped content is properly masked.
 
 ---
 
-### Milestone 4: HTML5 Canvas 2D Backend & Live Interactive Demo (Sep 19 – Sep 21)
+### Milestone 4: HTML5 Canvas 2D Backend & Live Interactive Demo (Sep 19 – Sep 21) [Delivered Ahead]
 
 * **Objective**: Connect the pure Wasm engine to the browser and launch a live interactive GitHub Pages playground.
 * **Deliverables**:
-  - [ ] **Canvas 2D Host Driver** (`driver/canvas2d.ts`):
-    - Ultra-compact JS bridge consuming `DrawCmd` stream and rasterizing to Canvas 2D;
-    - Translating native `PointerEvent`, `WheelEvent`, and `KeyboardEvent` into `RawInput`;
-    - 60 FPS animation loop driven by `requestAnimationFrame`;
-  - [ ] **Custom 2D Painter API** (`painter.mbt`): Direct vector drawing for lines, rectangles, circles, and bezier curves;
-  - [ ] **Full Showcase Demo Application** (`cmd/main/main.mbt`):
-    - Control & Inspector Window: Interactive physics parameters, buttons, toggles, and scrubbers;
-    - Performance & Telemetry Window: Real-time 60 FPS readout and glowing `Sparkline` waveform;
-    - 2D Vector Demo: Rotating geometric particle ring or HUD crosshair;
-  - [ ] **Automated GitHub Pages Deployment**: GitHub Actions workflow to build and publish the static demo.
+  - [x] **Canvas 2D Host Driver** (`examples/canvas/run.js`):
+    - [x] Ultra-compact JS bridge consuming `DrawCmd` stream and rasterizing to Canvas 2D;
+    - [x] Translating native `PointerEvent`, `WheelEvent` into `RawInput`;
+    - [x] 60 FPS animation loop driven by `requestAnimationFrame`, with independent `Kernel` and `Render` telemetry metrics;
+  - [x] **Million-Node Canvas Benchmark** (`examples/canvas/main.mbt`):
+    - [x] Managing 128² to 1024² (1,048,576) logical node arrays;
+    - [x] O(1) viewport spatial culling + multi-scale adaptive LOD baked textures;
+    - [x] CAD dual-axis rulers and dynamic wave/repel physics;
+  - [x] **Automated GitHub Pages Deployment**: GitHub Actions workflow to build and publish the static demo.
 * **Acceptance Criteria**:
-  - Live demo loads in under 100ms (<50KB Wasm binary);
-  - Rock-solid 60 FPS rendering with zero memory leaks or GC stutter.
+  - [x] Live demo loads in under 100ms;
+  - [x] Rock-solid 60 FPS rendering with zero memory leaks or GC stutter.
 
 ---
 

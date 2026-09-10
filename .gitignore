@@ -15,3 +15,5 @@ node_modules/
 *项目申报书*.md
 docs/*PROPOSAL*.md
 docs/*申报书*.md
+scratch/
+.impeccable/

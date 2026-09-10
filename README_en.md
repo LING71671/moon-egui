@@ -128,37 +128,37 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 ---
 
 ## Core Capabilities
+ 
+### Available Now
+- **Core Draw Engine**: Pure MoonBit implementation of `Vec2`, `Rect`, `Color`, and platform-agnostic `DrawCmd` stream, supporting rectangles, lines, circles, text, and nested scissor clip stacks.
+- **Hit-Testing & Space Allocation**: `UIContext` manages `hot_id` / `active_id` state machine; `allocate_space()` computes geometry bounds and automatic cursor placement.
+- **Available Widget Suite**:
+  - **Labels**: `label` (standard text) and `label_colored` (custom tinted text).
+  - **Buttons**: `button` (standard button) and `button_primary` (accentuated CTA button) with Normal / Hover / Pressed responses.
+  - **Checkbox**: `checkbox` (interactive toggle box).
+  - **Layout Spacing**: `separator` (horizontal divider) and `spacer` (vertical flexible padding).
+- **Headless & Automated Testing**: Core logic produces pure `DrawCmd` streams without browser bindings, verifiable via `moon test`.
+- **Canvas 2D Host Driver**: Lightweight JavaScript bridge and 60 FPS rendering pipeline, coupled with O(1) viewport spatial culling and multi-scale LOD architecture.
 
-### Layout System
-- **Menu Bar**: Top-level application menu with multi-level hover dropdowns.
-- **Side Panels & Columns**: Fixed-width sidebars and equal-width column layouts.
-- **Floating Windows**: Draggable title bars, dynamic Z-index elevation, and collapsible bodies.
-- **ScrollArea & Clipping**: Smooth scrolling with pixel-precise scissor clipping.
-
-### Widget Suite
-- **Basic Widgets**: Text labels, multi-state buttons (normal/hover/active/disabled), checkboxes, and toggles.
-- **Precision Inputs**: Integer and float sliders, Blender-style `DragValue` number scrubbers.
-- **Feedback & Telemetry**: Progress bars, real-time sparkline curves, hover tooltips.
-- **Structural Containers**: Collapsible headers, horizontal separators, flexible spacers.
-
-### Custom Painter API
-Supports direct 2D vector drawing within any layout container (rectangles, circles, bezier curves, polygon fills, lines, and text) for custom telemetry, gauges, or game HUDs.
-
-### Headless & Automated Testing
-Because the core produces a pure `DrawCmd` primitive stream without browser bindings, layout calculations, AABB hit-testing, and state transitions are verifiable via `moon test`.
+### Planned & In Roadmap
+- **Precision Inputs**: Continuous float & integer sliders (`Slider`), Blender-style numeric scrubbers (`DragValue`).
+- **Advanced Windowing**: Floating draggable windows (`Window`), dynamic Z-index elevation, and collapsible tree sections (`CollapsingHeader`).
+- **Layout Containers**: Horizontal layout streams (`horizontal`), scrollable scissor viewports (`ScrollArea`), and top-level menus (`MenuBar`).
+- **Data & Telemetry**: Smooth progress bars (`ProgressBar`), live sparkline plots (`Sparkline`), and hover tooltips (`Tooltip`).
 
 ---
 
 ## Development Roadmap (Sep 9 – Sep 24, 2026)
 
 - [x] **Milestone 1: Scaffolding & Mathematical Primitives** (Sep 9 – Sep 11)
-  - Core data structures: `Vec2`, `Rect`, `Color`, `InputState`, `DrawCmd`.
-- [ ] **Milestone 2: Input State Machine & Basic Widgets** (Sep 12 – Sep 15)
-  - AABB hit-testing, single-pass cursor layout, `Button`, `Label`, `Checkbox`, `Slider`.
+  - Core data structures delivered: `Vec2`, `Rect`, `Color`, `InputState`, `DrawCmd`, `DrawList`.
+- [x] **Milestone 4 (Delivered Ahead): Canvas 2D Backend & Live Playground** (Deployed)
+  - 60 FPS HTML5 Canvas 2D bridge, multi-scale LOD architecture, and automated GitHub Pages deployment.
+- [>] **Milestone 2 (In Progress): Input State Machine & Basic Widgets** (Sep 12 – Sep 15)
+  - Completed: AABB hit-testing, `Button`, `Label`, `Checkbox`, `Separator`, `Spacer`.
+  - In Progress: `Slider`, horizontal layout flows (`horizontal`).
 - [ ] **Milestone 3: Windowing & Container Management** (Sep 16 – Sep 18)
   - Floating draggable windows, dynamic Z-index management, collapsible sections.
-- [ ] **Milestone 4: Canvas 2D Backend & Live Playground** (Sep 19 – Sep 21)
-  - 60 FPS HTML5 Canvas 2D bridge, interactive WebAssembly demo on GitHub Pages.
 - [ ] **Milestone 5: Verification, Benchmarks & Release** (Sep 22 – Sep 24)
   - Comprehensive unit test coverage, documentation specs, and final acceptance.
 

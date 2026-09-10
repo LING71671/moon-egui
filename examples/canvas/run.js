@@ -541,6 +541,24 @@
   let frameCounter = 0;
   let fps = 60;
   let kernelTimeRolling = 0.25;
+  let renderTimeRolling = 0.40;
+
+  function updateNodesTelemetry() {
+    const mState = window.moon_state || globalThis.moon_state;
+    const gridDim = mState ? mState.grid_dim : 256;
+    const totalNodes = gridDim * gridDim;
+    const nodesEl = document.getElementById('txt-nodes');
+    if (nodesEl) {
+      const isEn = (window.currentBenchmarkLang === 'en') || (document.documentElement.lang === 'en');
+      const suffix = isEn ? 'Logical Nodes' : '逻辑节点';
+      nodesEl.textContent = `${totalNodes.toLocaleString()} ${suffix} (${gridDim}×${gridDim})`;
+    }
+    const throughputEl = document.getElementById('telemetry-throughput');
+    if (throughputEl) {
+      throughputEl.textContent = `${totalNodes.toLocaleString()} Logical Nodes`;
+    }
+  }
+  window.updateTelemetryNodes = updateNodesTelemetry;
 
   function loop(now) {
     frameCounter++;
@@ -574,18 +592,26 @@
       const t0 = performance.now();
       const dl = stepFn(mouseX, mouseY, isMouseDown, curPanX, curPanY, curZoom, curMode, width, height);
       const dt = performance.now() - t0;
-
       kernelTimeRolling = kernelTimeRolling * 0.85 + dt * 0.15;
 
+      const t1 = performance.now();
       renderDrawList(dl);
+      const dtRender = performance.now() - t1;
+      renderTimeRolling = renderTimeRolling * 0.85 + dtRender * 0.15;
 
       // Telemetry updates
       const kernelEl = document.getElementById('telemetry-kernel');
       if (kernelEl) {
-        kernelEl.textContent = `${kernelTimeRolling.toFixed(2)} ms`;
+        kernelEl.textContent = `${kernelTimeRolling.toFixed(2)}`;
       }
 
-      const budgetPct = Math.min(100, Math.max(0.1, (kernelTimeRolling / 16.666) * 100));
+      const renderEl = document.getElementById('telemetry-render');
+      if (renderEl) {
+        renderEl.textContent = `${renderTimeRolling.toFixed(2)}`;
+      }
+
+      const totalFrameTime = kernelTimeRolling + renderTimeRolling;
+      const budgetPct = Math.min(100, Math.max(0.1, (totalFrameTime / 16.666) * 100));
       const budgetPctEl = document.getElementById('telemetry-budget-pct');
       if (budgetPctEl) {
         budgetPctEl.textContent = `${budgetPct.toFixed(1)}%`;
@@ -596,17 +622,7 @@
         budgetBar.style.width = `${budgetPct}%`;
       }
 
-      const mState = window.moon_state || globalThis.moon_state;
-      const gridDim = mState ? mState.grid_dim : 256;
-      const totalNodes = gridDim * gridDim;
-      const nodesEl = document.getElementById('txt-nodes');
-      if (nodesEl) {
-        nodesEl.textContent = `${totalNodes.toLocaleString()} 节点 (${gridDim}×${gridDim})`;
-      }
-      const throughputEl = document.getElementById('telemetry-throughput');
-      if (throughputEl) {
-        throughputEl.textContent = `${totalNodes.toLocaleString()} Nodes`;
-      }
+      updateNodesTelemetry();
     }
 
     requestAnimationFrame(loop);
