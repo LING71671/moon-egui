@@ -37,6 +37,27 @@
 
 ---
 
+## 安装
+
+```bash
+moon add ling71671/moon-egui
+```
+
+安装后在 `moon.pkg` 中引入即可使用：
+
+```json
+{
+  "import": [
+    "LING71671/moon-egui/src/core",
+    "LING71671/moon-egui/src/draw",
+    "LING71671/moon-egui/src/math",
+    "LING71671/moon-egui/src/color"
+  ]
+}
+```
+
+---
+
 ## 概述
 
 `moon-egui` 是面向 [MoonBit](https://www.moonbitlang.com/) 编程语言的轻量级**即时模式图形界面库（Immediate-Mode GUI）**，面向 WebAssembly 与 HTML5 Canvas 2D 等图形交互场景设计。

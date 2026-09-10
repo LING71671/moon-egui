@@ -37,6 +37,27 @@ Experience the interactive capabilities and rendering performance of `moon-egui`
 
 ---
 
+## Installation
+
+```bash
+moon add ling71671/moon-egui
+```
+
+Then import the packages in your `moon.pkg`:
+
+```json
+{
+  "import": [
+    "LING71671/moon-egui/src/core",
+    "LING71671/moon-egui/src/draw",
+    "LING71671/moon-egui/src/math",
+    "LING71671/moon-egui/src/color"
+  ]
+}
+```
+
+---
+
 ## Overview
 
 `moon-egui` is a lightweight **immediate-mode GUI (IMGUI) library** designed for the [MoonBit](https://www.moonbitlang.com/) programming language, targeting WebAssembly and HTML5 Canvas 2D graphics environments.
