@@ -35,25 +35,6 @@ pub fn step(
   let win_w = 264.0
   let win_h = 340.0
 
-  // 2. Window Drag Hit-test
-  update_studio_window_drag(state, mouse_x, mouse_y, mouse_down, cur_w, win_w)
-
-  // 3. Camera Pan & Zoom updates
-  update_camera_pan(state, ctx, pan_dx, pan_dy, cur_w, cur_h, win_w, win_h)
-  if !mouse_down {
-    state.is_dragging_item = false
-  }
-  update_camera_zoom(state, ctx, zoom_delta)
-
-  // 4. Begin GUI Frame
-  let raw = @core.RawInput::from_mouse(
-    @math.Vec2::new(mouse_x, mouse_y),
-    mouse_down,
-  )
-  ctx.begin_frame(raw)
-  let dl = ctx.draw_list()
-
-  // 5. Geometry & Layout
   let vp_x = 0.0
   let vp_y = 0.0
   let ruler_h = 22.0
@@ -64,6 +45,24 @@ pub fn step(
   let cv_h = cur_h - ruler_h
   let sc_x = cv_x + cv_w * 0.5
   let sc_y = cv_y + cv_h * 0.5
+
+  // 2. Window Drag Hit-test
+  update_studio_window_drag(state, mouse_x, mouse_y, mouse_down, cur_w, win_w)
+
+  // 3. Camera Pan & Zoom updates (pinning world point under mouse cursor)
+  update_camera_pan(state, ctx, pan_dx, pan_dy, cur_w, cur_h, win_w, win_h)
+  if !mouse_down {
+    state.is_dragging_item = false
+  }
+  update_camera_zoom(state, ctx, zoom_delta, mouse_x, mouse_y, sc_x, sc_y)
+
+  // 4. Begin GUI Frame
+  let raw = @core.RawInput::from_mouse(
+    @math.Vec2::new(mouse_x, mouse_y),
+    mouse_down,
+  )
+  ctx.begin_frame(raw)
+  let dl = ctx.draw_list()
 
   let grid_dim = state.grid_dim
   let matrix_world_size = 10000.0

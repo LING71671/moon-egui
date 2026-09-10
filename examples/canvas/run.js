@@ -104,6 +104,7 @@
     else if (action === 'center') requestedMode = 5;
     else if (action === 'drag') requestedMode = 6;
     else if (action === 'pan' || action === 'move') requestedMode = 7;
+    else if (action === 'panel') requestedMode = 8;
     else if (action === 'pulse') requestedMode = 1;
     else if (action === 'repel') requestedMode = 2;
     else if (action === '128') requestedMode = 128;
@@ -119,7 +120,7 @@
     }
     const stateEl = document.getElementById('telemetry-down');
     if (stateEl) {
-      stateEl.textContent = isMouseDown ? 'DRAGGING' : (mouseX >= 0 && mouseY >= 0 ? 'HOVER' : 'IDLE');
+      stateEl.textContent = isMouseDown ? '拖拽中' : (mouseX >= 0 && mouseY >= 0 ? '悬停' : '就绪');
       stateEl.className = isMouseDown ? 'status-val status-pressed' : (mouseX >= 0 && mouseY >= 0 ? 'status-val status-hover' : 'status-val');
     }
   }
@@ -405,12 +406,10 @@
     ctx.fillRect(dstX, dstY, dstW, dstH);
     ctx.shadowColor = 'transparent';
 
-    // Strict LOD Threshold:
-    // If unitPx < 12.0 || visible_cells > 2500, render the crisp multi-scale baked logo texture (0.02ms).
-    // Only when unitPx >= 12.0 && visible_cells <= 2500 does MoonBit stream full interactive vector cells.
-    const isMicroVector = (unitPx >= 12.0) && (!mState || (mState.visible_cells !== undefined && mState.visible_cells <= 2500));
-
-    if (!isMicroVector) {
+    // 严格 LOD 判定：
+    // 仅在远景全貌 (unitPx < 4.0) 时渲染烘焙位图以获得微秒级帧率；
+    // 一旦 unitPx >= 4.0，进入中近景，MoonBit 实时输出纯矢量节点与 CAD 网格，绝对不绘制背景位图，从根源杜绝拉伸 Logo Bug。
+    if (unitPx < 4.0) {
       const baked = getLogoCanvas(gridDim);
       if (baked) {
         ctx.imageSmoothingEnabled = false;
@@ -607,13 +606,11 @@
     const totalNodes = gridDim * gridDim;
     const nodesEl = document.getElementById('txt-nodes');
     if (nodesEl) {
-      const isEn = (window.currentBenchmarkLang === 'en') || (document.documentElement.lang === 'en');
-      const suffix = isEn ? 'Logical Nodes' : '逻辑节点';
-      nodesEl.textContent = `${totalNodes.toLocaleString()} ${suffix} (${gridDim}×${gridDim})`;
+      nodesEl.textContent = `${totalNodes.toLocaleString()} 逻辑节点 (${gridDim}×${gridDim})`;
     }
     const throughputEl = document.getElementById('telemetry-throughput');
     if (throughputEl) {
-      throughputEl.textContent = `${totalNodes.toLocaleString()} Logical Nodes`;
+      throughputEl.textContent = `${totalNodes.toLocaleString()} 逻辑节点`;
     }
   }
   window.updateTelemetryNodes = updateNodesTelemetry;

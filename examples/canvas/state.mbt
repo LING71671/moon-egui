@@ -45,6 +45,7 @@ pub struct BenchmarkState {
   mut win_pos_x : Double
   mut win_pos_y : Double
   mut win_dragging : Bool
+  mut show_studio : Bool
 }
 
 ///|
@@ -72,6 +73,7 @@ let state : BenchmarkState = {
   win_pos_x: -1.0,
   win_pos_y: -1.0,
   win_dragging: false,
+  show_studio: false,
 }
 
 ///|
@@ -124,6 +126,11 @@ pub fn is_magnetic_repel() -> Bool {
 ///|
 pub fn get_visible_cells() -> Int {
   state.visible_cells
+}
+
+///|
+pub fn is_show_studio() -> Bool {
+  state.show_studio
 }
 
 ///|

@@ -25,6 +25,8 @@ pub fn get_zoom() -> Double
 
 pub fn is_magnetic_repel() -> Bool
 
+pub fn is_show_studio() -> Bool
+
 pub fn is_wave_pulse() -> Bool
 
 pub fn step(Double, Double, Bool, Double, Double, Double, Int, Double, Double) -> @draw.DrawList
@@ -56,6 +58,7 @@ pub struct BenchmarkState {
   mut win_pos_x : Double
   mut win_pos_y : Double
   mut win_dragging : Bool
+  mut show_studio : Bool
 }
 
 // Type aliases

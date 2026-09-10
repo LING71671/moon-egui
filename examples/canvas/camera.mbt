@@ -54,6 +54,12 @@ fn apply_switch_mode(
       state.drag_mode = 1 // 拖拽物体
     } else if switch_mode == 7 {
       state.drag_mode = 0 // 漫游画布
+    } else if switch_mode == 8 {
+      state.show_studio = !state.show_studio // 切换控制面板
+    } else if switch_mode == 9 {
+      state.show_studio = true
+    } else if switch_mode == 10 {
+      state.show_studio = false
     }
   }
 }
@@ -70,7 +76,7 @@ fn update_camera_pan(
   win_h : Double,
 ) -> Unit {
   if pan_dx != 0.0 || pan_dy != 0.0 {
-    if state.win_dragging {
+    if state.win_dragging && state.show_studio {
       state.win_pos_x = state.win_pos_x + pan_dx
       state.win_pos_y = state.win_pos_y + pan_dy
       if state.win_pos_x < 0.0 {
@@ -111,15 +117,26 @@ fn update_camera_zoom(
   state : BenchmarkState,
   ctx : @core.UIContext,
   zoom_delta : Double,
+  mouse_x : Double,
+  mouse_y : Double,
+  sc_x : Double,
+  sc_y : Double,
 ) -> Unit {
   if zoom_delta != 1.0 && zoom_delta > 0.0 && !ctx.wants_capture_mouse() {
-    let new_zoom = state.zoom * zoom_delta
-    if new_zoom < 0.01 {
-      state.zoom = 0.01
-    } else if new_zoom > 25.0 {
-      state.zoom = 25.0
-    } else {
+    let old_zoom = state.zoom
+    let mut new_zoom = old_zoom * zoom_delta
+    if new_zoom < 0.02 {
+      new_zoom = 0.02
+    } else if new_zoom > 8.0 {
+      new_zoom = 8.0
+    }
+    if new_zoom != old_zoom {
+      // Pin world coordinate under mouse cursor
+      let mwx = state.cam_x + (mouse_x - sc_x) / old_zoom
+      let mwy = state.cam_y + (mouse_y - sc_y) / old_zoom
       state.zoom = new_zoom
+      state.cam_x = mwx - (mouse_x - sc_x) / new_zoom
+      state.cam_y = mwy - (mouse_y - sc_y) / new_zoom
     }
   }
 }

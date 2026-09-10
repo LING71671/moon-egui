@@ -144,7 +144,7 @@ fn render_matrix_nodes(
   let repel_radius = pitch * 4.5
   let repel_radius_sq = repel_radius * repel_radius
 
-  let is_micro_vector = unit_px >= 12.0 && total_vis <= 2500
+  let is_micro_vector = unit_px >= 4.0 && total_vis <= 4000
 
   if is_micro_vector {
     let on_screen_cell_w = cell_size * state.zoom
@@ -380,9 +380,9 @@ fn render_selected_transform_frame(
 
     // 3. Floating Inspector Tag
     let tag_txt = if is_dragged {
-      "DRAGGING #\{sel_id} [X:\{c}, Y:\{r}]"
+      "拖拽中 #\{sel_id} [列:\{c}, 行:\{r}]"
     } else {
-      "#\{sel_id} [X:\{c}, Y:\{r}]"
+      "#\{sel_id} [列:\{c}, 行:\{r}]"
     }
     let tag_w = tag_txt.length().to_double() * 7.0 + 16.0
     dl.add_rect(
