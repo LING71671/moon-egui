@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>moon-egui | 全景组件展厅与代码帘幕</title>
+  <title>moon-egui | 组件展厅</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -866,10 +866,10 @@
   <!-- Hero Section -->
   <header class="gallery-hero">
     <div class="container">
-      <span class="pillar-tag">COMPONENT SHOWCASE</span>
-      <h1 class="hero-title">全景组件展厅与代码帘幕</h1>
+      <span class="pillar-tag">COMPONENTS</span>
+      <h1 class="hero-title">组件展厅</h1>
       <p class="hero-subtitle">
-        详细展示 moon-egui 全套即时模式基础组件。拖动中央竖向帘幕长条往右拉，即可随时查阅背后的 MoonBit 声明式源码。
+        探索即时模式基础组件。拖动中央滑块可实时对比 UI 与源码。
       </p>
 
       <!-- Curtain View Mode Presets -->
@@ -877,15 +877,15 @@
         <div class="segmented-control">
           <button class="seg-btn active" id="btnPresetUI">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>
-            纯 UI 视图 (0%)
+            纯 UI (0%)
           </button>
           <button class="seg-btn" id="btnPresetSplit">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
-            50/50 分屏对比
+            50/50 对比
           </button>
           <button class="seg-btn" id="btnPresetCode">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-            源码视图 (100%)
+            源码 (100%)
           </button>
         </div>
       </div>
@@ -902,56 +902,56 @@
         <div class="category-title">基础输入</div>
         <div class="comp-menu">
           <button class="comp-btn active" data-id="button">
-            <span>Button (按钮)</span>
-            <span class="comp-subtag">点击响应</span>
+            <span>Button 按钮</span>
+            <span class="comp-subtag">交互</span>
           </button>
           <button class="comp-btn" data-id="text_edit">
-            <span>TextEdit (文本输入)</span>
-            <span class="comp-subtag">光标编辑</span>
+            <span>TextEdit 文本输入</span>
+            <span class="comp-subtag">编辑</span>
           </button>
         </div>
 
         <div class="category-title">选择与数值</div>
         <div class="comp-menu">
           <button class="comp-btn" data-id="checkbox">
-            <span>Checkbox (复选框)</span>
-            <span class="comp-subtag">布尔开关</span>
+            <span>Checkbox 复选框</span>
+            <span class="comp-subtag">开关</span>
           </button>
           <button class="comp-btn" data-id="radio">
-            <span>Radio (单选按钮)</span>
-            <span class="comp-subtag">互斥分组</span>
+            <span>Radio 单选按钮</span>
+            <span class="comp-subtag">单选</span>
           </button>
           <button class="comp-btn" data-id="slider">
-            <span>Slider (滑动条)</span>
-            <span class="comp-subtag">浮点/整型</span>
+            <span>Slider 滑动条</span>
+            <span class="comp-subtag">数值</span>
           </button>
           <button class="comp-btn" data-id="combo_box">
-            <span>ComboBox (下拉菜单)</span>
-            <span class="comp-subtag">弹出选择</span>
+            <span>ComboBox 下拉框</span>
+            <span class="comp-subtag">选项</span>
           </button>
         </div>
 
         <div class="category-title">反馈与展示</div>
         <div class="comp-menu">
           <button class="comp-btn" data-id="progress_bar">
-            <span>ProgressBar (进度条)</span>
-            <span class="comp-subtag">百分比</span>
+            <span>ProgressBar 进度条</span>
+            <span class="comp-subtag">进度</span>
           </button>
           <button class="comp-btn" data-id="collapsing_header">
-            <span>CollapsingHeader (折叠树)</span>
-            <span class="comp-subtag">树层级</span>
+            <span>CollapsingHeader 折叠树</span>
+            <span class="comp-subtag">树形</span>
           </button>
         </div>
 
         <div class="category-title">容器与排版</div>
         <div class="comp-menu">
           <button class="comp-btn" data-id="scroll_area">
-            <span>ScrollArea (滚动区域)</span>
-            <span class="comp-subtag">Scissor 裁剪</span>
+            <span>ScrollArea 滚动区域</span>
+            <span class="comp-subtag">裁剪</span>
           </button>
           <button class="comp-btn" data-id="window">
-            <span>Window (浮动窗口)</span>
-            <span class="comp-subtag">独立面板</span>
+            <span>Window 浮动窗口</span>
+            <span class="comp-subtag">面板</span>
           </button>
         </div>
       </aside>
@@ -1058,7 +1058,7 @@ pub fn draw_buttons(ui : @core.UIContext, state : AppState) -> Unit {
             </div>
             <div class="sandbox-body">
               <div class="widget-row">
-                <button class="btn-primary" id="demoPrimaryBtn">主要按钮 (Primary)</button>
+                <button class="btn-primary" id="demoPrimaryBtn">主要按钮</button>
                 <button class="btn-secondary" id="demoDefaultBtn">重置计数</button>
               </div>
             </div>
@@ -1194,7 +1194,7 @@ pub fn draw_radio(ui : @core.UIContext, state : AppState) -> Unit {
 }`,
         renderUI: (container, state) => {
           if (state.radioIdx === undefined) state.radioIdx = 0;
-          const opts = ["极简白昼 (Studio Light)", "太空银灰 (Slate Gray)", "高对比黑白 (High Contrast)"];
+          const opts = ["极简白昼", "太空银灰", "高对比度"];
           container.innerHTML = `
             <div class="sandbox-header">
               <span>Radio Group Sandbox</span>
