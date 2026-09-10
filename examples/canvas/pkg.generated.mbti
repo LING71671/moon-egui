@@ -7,14 +7,48 @@ import {
 }
 
 // Values
-pub fn get_logo_color(Int, Int) -> @color.Color?
+pub fn get_cam_x() -> Double
 
-pub fn step(Double, Double, Bool, Double, Double, Double, Int) -> @draw.DrawList
+pub fn get_cam_y() -> Double
+
+pub fn get_grid_dim() -> Int
+
+pub fn get_logo_color(Int, Int, Int) -> @color.Color?
+
+pub fn get_selected_id() -> Int
+
+pub fn get_zoom() -> Double
+
+pub fn is_magnetic_repel() -> Bool
+
+pub fn is_wave_pulse() -> Bool
+
+pub fn step(Double, Double, Bool, Double, Double, Double, Int, Double, Double) -> @draw.DrawList
 
 // Errors
 
 // Types and methods
-type BenchmarkState
+pub struct BenchmarkState {
+  mut grid_dim : Int
+  mut wave_pulse : Bool
+  mut magnetic_repel : Bool
+  mut ripple_active : Bool
+  mut ripple_cx : Double
+  mut ripple_cy : Double
+  mut ripple_progress : Double
+  mut frame_tick : Double
+  mut click_count : Int
+  mut cam_x : Double
+  mut cam_y : Double
+  mut zoom : Double
+  mut selected_id : Int
+  mut selected_col : Int
+  mut selected_row : Int
+  mut drag_mode : Int
+  mut item_drag_dx : Double
+  mut item_drag_dy : Double
+  mut is_dragging_item : Bool
+}
 
 // Type aliases
 

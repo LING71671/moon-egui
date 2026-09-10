@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>moon-egui | 百万矩形压测实验室</title>
+  <title>moon-egui | MoonBit Logo 矩阵极限性能实验室</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #ffffff;
+      --bg: #f8fafc;
       --surface: rgba(255, 255, 255, 0.94);
-      --border: rgba(226, 232, 240, 0.9);
+      --border: #e2e8f0;
       --border-strong: #cbd5e1;
       --text-main: #0f172a;
       --text-muted: #64748b;
       --brand-violet: #7c3aed;
-      --brand-emerald: #10b981;
+      --brand-emerald: #059669;
       --brand-cyan: #0284c7;
       --segment-bg: #f1f5f9;
     }
@@ -34,7 +34,7 @@
       padding: 0;
       overflow: hidden;
       background-color: var(--bg);
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       color: var(--text-main);
       -webkit-font-smoothing: antialiased;
     }
@@ -64,11 +64,11 @@
       justify-content: space-between;
       padding: 0 14px;
       background: var(--surface);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--border);
       border-radius: 10px;
-      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
       gap: 12px;
       max-width: calc(100vw - 32px);
       white-space: nowrap;
@@ -96,7 +96,7 @@
 
     .back-btn:hover {
       color: var(--text-main);
-      background: var(--segment-bg);
+      background: #f1f5f9;
     }
 
     .studio-title {
@@ -106,17 +106,18 @@
       font-size: 13px;
       font-weight: 700;
       letter-spacing: -0.01em;
+      color: var(--text-main);
     }
 
     .studio-badge {
       font-size: 11px;
       font-weight: 600;
       font-family: 'JetBrains Mono', monospace;
-      padding: 1px 6px;
-      background: var(--segment-bg);
-      color: var(--text-muted);
+      padding: 2px 7px;
+      background: #e0f2fe;
+      color: #0369a1;
       border-radius: 4px;
-      border: 1px solid var(--border);
+      border: 1px solid #bae6fd;
     }
 
     /* Segmented Controls */
@@ -139,7 +140,7 @@
 
     .seg-btn {
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 500;
       padding: 4px 10px;
       border-radius: 5px;
       border: none;
@@ -156,7 +157,8 @@
     .seg-btn.active {
       background: #ffffff;
       color: var(--text-main);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
     }
 
     /* Right Telemetry & Language Toggle */
@@ -196,8 +198,8 @@
       font-weight: 700;
       font-family: 'JetBrains Mono', monospace;
       border: 1px solid var(--border);
-      background: #ffffff;
-      color: var(--text-muted);
+      background: #f1f5f9;
+      color: #334155;
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -206,7 +208,7 @@
     .lang-toggle-btn:hover {
       color: var(--text-main);
       border-color: var(--border-strong);
-      background: var(--segment-bg);
+      background: #ffffff;
     }
 
     /* Floating Bottom Info Pill */
@@ -220,11 +222,11 @@
       gap: 12px;
       padding: 5px 12px;
       background: var(--surface);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border);
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
       font-size: 11px;
       color: var(--text-muted);
     }
@@ -242,12 +244,13 @@
     }
 
     .kbd {
-      padding: 1px 4px;
-      background: #ffffff;
-      border: 1px solid var(--border-strong);
+      padding: 1px 5px;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
       border-radius: 3px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 10px;
+      color: var(--text-main);
     }
 
     .hud-coords {
@@ -255,14 +258,14 @@
       font-size: 11px;
       border-left: 1px solid var(--border);
       padding-left: 10px;
-      color: var(--text-main);
+      color: var(--brand-cyan);
     }
   </style>
 </head>
 <body>
 
   <!-- Fullscreen Canvas -->
-  <canvas id="moon-canvas" data-initial-mode="1"></canvas>
+  <canvas id="moon-canvas" data-initial-mode="256"></canvas>
 
   <!-- Top Floating Studio Header -->
   <header class="studio-header">
@@ -274,22 +277,30 @@
       </a>
       <div class="studio-title">
         <span>moon-egui</span>
-        <span class="studio-badge" id="txt-title">百万矩形实验室</span>
+        <span class="studio-badge" id="txt-title">Logo矩阵实验室</span>
       </div>
     </div>
 
     <!-- Center: Segmented Controls -->
     <div class="controls-center">
-      <!-- Entity Morph -->
-      <div class="segmented-control" id="seg-entity">
-        <button class="seg-btn active" id="btn-rect" onclick="setEntity('rect')">1,000,000 矩形</button>
-        <button class="seg-btn" id="btn-logo" onclick="setEntity('logo')">Logo矩阵</button>
+      <!-- Multi-Scale Matrix Dimensions -->
+      <div class="segmented-control" id="seg-dim">
+        <button class="seg-btn" id="btn-dim-128" onclick="setDimension(128)">128² (16K)</button>
+        <button class="seg-btn active" id="btn-dim-256" onclick="setDimension(256)">256² (65K)</button>
+        <button class="seg-btn" id="btn-dim-512" onclick="setDimension(512)">512² (262K)</button>
+        <button class="seg-btn" id="btn-dim-1024" onclick="setDimension(1024)">1024² (1.05M)</button>
+      </div>
+
+      <!-- Physics Dynamics -->
+      <div class="segmented-control" id="seg-physics">
+        <button class="seg-btn active" id="btn-pulse" onclick="togglePhysics('pulse')">🌊 脉冲</button>
+        <button class="seg-btn active" id="btn-repel" onclick="togglePhysics('repel')">🧲 排斥</button>
       </div>
 
       <!-- Interaction Mode -->
       <div class="segmented-control" id="seg-interact">
-        <button class="seg-btn active" id="btn-pan" onclick="setInteract('pan')">漫游画布</button>
-        <button class="seg-btn" id="btn-drag" onclick="setInteract('drag')">拖拽物体</button>
+        <button class="seg-btn active" id="btn-pan" onclick="setInteract('pan')">漫游</button>
+        <button class="seg-btn" id="btn-drag" onclick="setInteract('drag')">拖拽</button>
       </div>
 
       <!-- Camera View -->
@@ -305,9 +316,9 @@
       <div class="telemetry-capsule">
         <span class="fps-metric"><span id="telemetry-fps">60.0</span> FPS</span>
         <span>·</span>
-        <span class="kernel-metric"><span id="telemetry-kernel">0.10 ms</span></span>
+        <span class="kernel-metric"><span id="telemetry-kernel">0.15 ms</span></span>
         <span>·</span>
-        <span id="txt-nodes">1,000,000 矩形</span>
+        <span id="txt-nodes">65,536 节点 (256×256)</span>
       </div>
       <button class="lang-toggle-btn" id="btn-lang-toggle" onclick="toggleLanguage()">EN</button>
     </div>
@@ -316,9 +327,9 @@
   <!-- Quiet Floating Bottom Pill -->
   <div class="studio-footer-pill">
     <div class="shortcuts-list" id="txt-shortcuts">
-      <span class="shortcut-item"><span class="kbd">拖拽</span> 漫游或位移</span>
+      <span class="shortcut-item"><span class="kbd">拖拽</span> 漫游画板/位移选中物体</span>
       <span class="shortcut-item"><span class="kbd">滚轮</span> 缩放视角</span>
-      <span class="shortcut-item"><span class="kbd">点击</span> 选中矩形</span>
+      <span class="shortcut-item"><span class="kbd">点击</span> 激发水波纹/选中节点</span>
     </div>
     <div class="hud-coords">
       <span id="telemetry-coords">(0, 0)</span>
@@ -334,37 +345,35 @@
     const I18N = {
       zh: {
         back: '返回官网',
-        title: '百万矩形实验室',
-        rect: '1,000,000 矩形',
-        logo: 'Logo矩阵',
-        pan: '漫游画布',
-        drag: '拖拽物体',
+        title: 'Logo矩阵实验室',
+        pulse: '🌊 脉冲',
+        repel: '🧲 排斥',
+        pan: '漫游',
+        drag: '拖拽',
         center: '居中',
         fit: '适应全屏',
         scale100: '100%',
-        nodes: '1,000,000 矩形',
         shortcuts: [
-          '<span class="shortcut-item"><span class="kbd">拖拽</span> 漫游或位移</span>',
+          '<span class="shortcut-item"><span class="kbd">拖拽</span> 漫游画板/位移选中物体</span>',
           '<span class="shortcut-item"><span class="kbd">滚轮</span> 缩放视角</span>',
-          '<span class="shortcut-item"><span class="kbd">点击</span> 选中矩形</span>'
+          '<span class="shortcut-item"><span class="kbd">点击</span> 激发水波纹/选中节点</span>'
         ].join(''),
         langBtn: 'EN'
       },
       en: {
         back: 'Back',
-        title: '1,000,000 Rectangles Lab',
-        rect: '1,000,000 Rects',
-        logo: 'Logo Matrix',
-        pan: 'Pan Canvas',
-        drag: 'Drag Item',
+        title: 'Logo Matrix Lab',
+        pulse: '🌊 Pulse',
+        repel: '🧲 Repel',
+        pan: 'Pan',
+        drag: 'Drag',
         center: 'Center',
         fit: 'Fit View',
         scale100: '100%',
-        nodes: '1,000,000 Rectangles',
         shortcuts: [
-          '<span class="shortcut-item"><span class="kbd">Drag</span> Pan / Move</span>',
+          '<span class="shortcut-item"><span class="kbd">Drag</span> Pan Canvas / Move Item</span>',
           '<span class="shortcut-item"><span class="kbd">Wheel</span> Zoom View</span>',
-          '<span class="shortcut-item"><span class="kbd">Click</span> Select Rect</span>'
+          '<span class="shortcut-item"><span class="kbd">Click</span> Trigger Ripple / Select Node</span>'
         ].join(''),
         langBtn: '中'
       }
@@ -377,14 +386,13 @@
       const t = I18N[lang];
       document.getElementById('txt-back').textContent = t.back;
       document.getElementById('txt-title').textContent = t.title;
-      document.getElementById('btn-rect').textContent = t.rect;
-      document.getElementById('btn-logo').textContent = t.logo;
+      document.getElementById('btn-pulse').textContent = t.pulse;
+      document.getElementById('btn-repel').textContent = t.repel;
       document.getElementById('btn-pan').textContent = t.pan;
       document.getElementById('btn-drag').textContent = t.drag;
       document.getElementById('btn-center').textContent = t.center;
       document.getElementById('btn-fit').textContent = t.fit;
       document.getElementById('btn-100').textContent = t.scale100;
-      document.getElementById('txt-nodes').textContent = t.nodes;
       document.getElementById('txt-shortcuts').innerHTML = t.shortcuts;
       document.getElementById('btn-lang-toggle').textContent = t.langBtn;
       document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
@@ -394,14 +402,25 @@
       applyLanguage(currentLang === 'zh' ? 'en' : 'zh');
     }
 
-    function setEntity(type) {
-      document.querySelectorAll('#seg-entity .seg-btn').forEach(b => b.classList.remove('active'));
-      if (type === 'rect') {
-        document.getElementById('btn-rect').classList.add('active');
-        if (window.triggerBenchmarkAction) window.triggerBenchmarkAction('rect');
-      } else if (type === 'logo') {
-        document.getElementById('btn-logo').classList.add('active');
-        if (window.triggerBenchmarkAction) window.triggerBenchmarkAction('logo');
+    function setDimension(dim) {
+      document.querySelectorAll('#seg-dim .seg-btn').forEach(b => b.classList.remove('active'));
+      const btn = document.getElementById('btn-dim-' + dim);
+      if (btn) btn.classList.add('active');
+      if (window.triggerBenchmarkAction) window.triggerBenchmarkAction(String(dim));
+    }
+
+    let pulseActive = true;
+    let repelActive = true;
+
+    function togglePhysics(type) {
+      if (type === 'pulse') {
+        pulseActive = !pulseActive;
+        document.getElementById('btn-pulse').classList.toggle('active', pulseActive);
+        if (window.triggerBenchmarkAction) window.triggerBenchmarkAction('pulse');
+      } else if (type === 'repel') {
+        repelActive = !repelActive;
+        document.getElementById('btn-repel').classList.toggle('active', repelActive);
+        if (window.triggerBenchmarkAction) window.triggerBenchmarkAction('repel');
       }
     }
 
@@ -409,7 +428,7 @@
       document.querySelectorAll('#seg-interact .seg-btn').forEach(b => b.classList.remove('active'));
       if (mode === 'pan') {
         document.getElementById('btn-pan').classList.add('active');
-        if (window.triggerBenchmarkAction) window.triggerBenchmarkAction('move');
+        if (window.triggerBenchmarkAction) window.triggerBenchmarkAction('pan');
       } else if (mode === 'drag') {
         document.getElementById('btn-drag').classList.add('active');
         if (window.triggerBenchmarkAction) window.triggerBenchmarkAction('drag');
