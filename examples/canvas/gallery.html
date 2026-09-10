@@ -469,6 +469,14 @@
       box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);
     }
 
+    .sandbox-box-window {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .sandbox-header {
       font-size: 12px;
       font-weight: 700;
@@ -498,8 +506,8 @@
       top: 0;
       bottom: 0;
       left: 0%;
-      width: 24px;
-      margin-left: -12px;
+      width: 36px;
+      margin-left: -18px;
       z-index: 50;
       cursor: ew-resize;
       display: flex;
@@ -569,6 +577,135 @@
       height: 3px;
       border-radius: 50%;
       background: var(--border-strong);
+    }
+
+    /* Curtain Guide Chip */
+    .curtain-guide-chip {
+      position: absolute;
+      left: 38px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--dark-btn);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 60;
+    }
+
+    .curtain-guide-chip:hover {
+      background: var(--dark-btn-hover);
+      transform: translateY(-50%) translateX(2px);
+    }
+
+    .curtain-guide-chip.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-50%) translateX(-6px);
+    }
+
+    /* Draggable Floating Window Component */
+    .draggable-window-card {
+      width: 100%;
+      max-width: 440px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+      transition: box-shadow 0.15s ease;
+      user-select: none;
+    }
+
+    .draggable-window-card.is-dragging {
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.22);
+      border-color: var(--brand);
+    }
+
+    .win-titlebar {
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 9px 9px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    .win-titlebar:active,
+    .draggable-window-card.is-dragging .win-titlebar {
+      cursor: grabbing;
+      background: #f1f5f9;
+    }
+
+    .win-titlebar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .win-dots {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .win-dot-mini {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .win-title-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .win-drag-cue {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--brand);
+      background: #eff6ff;
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .win-body {
+      padding: 16px;
+      font-size: 13px;
+    }
+
+    .win-coord-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-bottom: 12px;
+    }
+
+    .win-coord-badge b {
+      color: var(--brand);
     }
 
     /* Workbench Footer Status Bar */
@@ -994,7 +1131,7 @@
           </div>
 
           <!-- Draggable Vertical Curtain Divider Bar (帘幕长条) -->
-          <div class="curtain-divider" id="curtainDivider">
+          <div class="curtain-divider" id="curtainDivider" title="左右拖拽对比 UI 与源码">
             <div class="curtain-vertical-line"></div>
             <div class="curtain-handle-pill" id="curtainHandle">
               <span class="curtain-arrows">◀ ▶</span>
@@ -1003,6 +1140,11 @@
                 <span class="curtain-dot"></span>
                 <span class="curtain-dot"></span>
               </div>
+            </div>
+            <!-- Interactive Guide Badge -->
+            <div class="curtain-guide-chip" id="curtainGuideChip" title="向右拖动展开代码对比">
+              <span>向右拖动查看代码</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </div>
           </div>
         </div>
@@ -1482,25 +1624,195 @@ pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
   })
 }`,
         renderUI: (container, state) => {
+          if (state.winX === undefined) state.winX = 0;
+          if (state.winY === undefined) state.winY = 0;
+          if (state.curveWidth === undefined) state.curveWidth = 4.5;
+          if (state.closedPath === undefined) state.closedPath = true;
+
           container.innerHTML = `
-            <div class="sandbox-header">
-              <span>Window Floating Panel</span>
-            </div>
-            <div class="sandbox-body" style="border: 1px solid var(--border); border-radius: 6px; overflow: hidden;">
-              <div style="background: var(--bg-subtle); padding: 6px 10px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 600;">
-                <span>图元属性检查器 (Inspector)</span>
-                <span style="font-size: 10px; color: var(--text-muted);">● 独立裁剪</span>
+            <div class="draggable-window-card" id="winCard" style="transform: translate(${state.winX}px, ${state.winY}px);">
+              <span id="winStatusText" style="display: none;"></span>
+              <div class="win-titlebar" id="winTitleBar">
+                <div class="win-titlebar-left">
+                  <div class="win-dots">
+                    <span class="win-dot-mini" style="background: #cbd5e1;"></span>
+                    <span class="win-dot-mini" style="background: #cbd5e1;"></span>
+                    <span class="win-dot-mini" style="background: #cbd5e1;"></span>
+                  </div>
+                  <span class="win-title-text">图元属性检查器 (Inspector)</span>
+                </div>
+                <span class="win-drag-cue" id="winDragCue">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg>
+                  按住标题栏拖拽
+                </span>
               </div>
-              <div style="padding: 12px; font-size: 13px;">
-                <div style="margin-bottom: 6px; color: var(--text-sub);">几何类型: <b>贝塞尔曲面网格</b></div>
-                <div style="margin-bottom: 10px; color: var(--text-sub);">坐标空间: <b>世界坐标 (X: 120, Y: 80)</b></div>
-                <button class="btn-secondary" style="padding: 4px 10px; font-size: 12px;">聚焦窗口</button>
+              <div class="win-body">
+                <div class="win-coord-badge">
+                  坐标空间: <b id="winCoordText">世界坐标 (X: ${Math.round(120 + state.winX)}, Y: ${Math.round(80 + state.winY)})</b>
+                </div>
+                <div style="margin-bottom: 12px; font-size: 13px; color: var(--text-main);">
+                  当前图元: <b>CAD 贝塞尔样条曲面</b>
+                </div>
+                <div style="margin-bottom: 12px;">
+                  <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sub); margin-bottom: 4px;">
+                    <span>曲线采样线宽</span>
+                    <b id="winSliderVal">${state.curveWidth} px</b>
+                  </div>
+                  <div class="slider-track" id="winSliderTrack">
+                    <div class="slider-fill" id="winSliderFill" style="width: ${(state.curveWidth / 10) * 100}%;"></div>
+                    <div class="slider-thumb" id="winSliderThumb" style="left: ${(state.curveWidth / 10) * 100}%;"></div>
+                  </div>
+                </div>
+                <div class="checkbox-row ${state.closedPath ? 'checked' : ''}" id="winClosedCheck" style="margin-bottom: 14px;">
+                  <div class="checkbox-sq">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <span>闭合多边形路径 (Closed Loop)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <button class="mini-btn" id="winResetBtn">重置位置</button>
+                  <button class="btn-primary" style="padding: 6px 14px; font-size: 12px;" id="winFocusBtn">聚焦检查器</button>
+                </div>
               </div>
             </div>
-            <div class="sandbox-tip">
-              支持拖拽位移、标题栏吸附与完全独立的子控件层次排版。
+            <div class="sandbox-tip" style="margin-top: 14px;">
+              按住上方浅灰标题栏可在画板中自由拖拽；窗口内部子控件（滑动条、复选框）均支持即时模式实时响应。
             </div>
           `;
+
+          const winCard = container.querySelector('#winCard');
+          const titleBar = container.querySelector('#winTitleBar');
+          const dragCue = container.querySelector('#winDragCue');
+          const coordText = container.querySelector('#winCoordText');
+          const statusText = container.querySelector('#winStatusText');
+          const resetBtn = container.querySelector('#winResetBtn');
+          const focusBtn = container.querySelector('#winFocusBtn');
+          const closedCheck = container.querySelector('#winClosedCheck');
+          const sliderTrack = container.querySelector('#winSliderTrack');
+          const sliderFill = container.querySelector('#winSliderFill');
+          const sliderThumb = container.querySelector('#winSliderThumb');
+          const sliderVal = container.querySelector('#winSliderVal');
+
+          // Slider inside window
+          let isSliding = false;
+          const updateSlider = (e) => {
+            const rect = sliderTrack.getBoundingClientRect();
+            let p = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            state.curveWidth = parseFloat((p * 10).toFixed(1));
+            if (state.curveWidth < 0.5) state.curveWidth = 0.5;
+            sliderFill.style.width = (state.curveWidth * 10) + '%';
+            sliderThumb.style.left = (state.curveWidth * 10) + '%';
+            sliderVal.textContent = state.curveWidth + ' px';
+            document.getElementById('statResponse').textContent = `curve_width: ${state.curveWidth}`;
+          };
+          sliderTrack.onmousedown = (e) => {
+            isSliding = true;
+            updateSlider(e);
+            window.addEventListener('mousemove', onSlideMove);
+            window.addEventListener('mouseup', onSlideUp);
+          };
+          function onSlideMove(e) { if (isSliding) updateSlider(e); }
+          function onSlideUp() {
+            isSliding = false;
+            window.removeEventListener('mousemove', onSlideMove);
+            window.removeEventListener('mouseup', onSlideUp);
+          }
+
+          // Checkbox inside window
+          closedCheck.onclick = () => {
+            state.closedPath = !state.closedPath;
+            closedCheck.classList.toggle('checked', state.closedPath);
+            document.getElementById('statResponse').textContent = `closed_path: ${state.closedPath}`;
+          };
+
+          // Focus button
+          focusBtn.onclick = () => {
+            winCard.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.35), 0 16px 32px rgba(15, 23, 42, 0.12)';
+            showToast('已聚焦图元检查器窗口');
+            setTimeout(() => {
+              winCard.style.boxShadow = '';
+            }, 1000);
+          };
+
+          // Drag Window Logic
+          let isWinDragging = false;
+          let startX = 0, startY = 0;
+
+          function setWinPos(x, y) {
+            state.winX = x;
+            state.winY = y;
+            winCard.style.transform = `translate(${x}px, ${y}px)`;
+            const wx = Math.round(120 + x);
+            const wy = Math.round(80 + y);
+            coordText.textContent = `世界坐标 (X: ${wx}, Y: ${wy})`;
+            document.getElementById('statResponse').textContent = `window_pos: (X: ${wx}, Y: ${wy})`;
+          }
+
+          function onWinMouseDown(e) {
+            if (e.target.closest('button') || e.target.closest('input')) return;
+            isWinDragging = true;
+            winCard.classList.add('is-dragging');
+            dragCue.textContent = '拖拽中...';
+            statusText.textContent = '● 正在位移';
+            statusText.style.color = 'var(--brand)';
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            startX = clientX - state.winX;
+            startY = clientY - state.winY;
+
+            window.addEventListener('mousemove', onWinMouseMove);
+            window.addEventListener('mouseup', onWinMouseUp);
+            window.addEventListener('touchmove', onWinTouchMove, { passive: false });
+            window.addEventListener('touchend', onWinMouseUp);
+            e.preventDefault();
+          }
+
+          function onWinMouseMove(e) {
+            if (!isWinDragging) return;
+            let nx = e.clientX - startX;
+            let ny = e.clientY - startY;
+            // Bound clamping so window stays gracefully on stage
+            nx = Math.max(-180, Math.min(180, nx));
+            ny = Math.max(-90, Math.min(90, ny));
+            setWinPos(nx, ny);
+          }
+
+          function onWinTouchMove(e) {
+            if (!isWinDragging || !e.touches || !e.touches[0]) return;
+            let nx = e.touches[0].clientX - startX;
+            let ny = e.touches[0].clientY - startY;
+            nx = Math.max(-180, Math.min(180, nx));
+            ny = Math.max(-90, Math.min(90, ny));
+            setWinPos(nx, ny);
+            e.preventDefault();
+          }
+
+          function onWinMouseUp() {
+            if (!isWinDragging) return;
+            isWinDragging = false;
+            winCard.classList.remove('is-dragging');
+            dragCue.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg> 按住标题栏拖拽';
+            statusText.textContent = '● 自由浮动';
+            statusText.style.color = '';
+            window.removeEventListener('mousemove', onWinMouseMove);
+            window.removeEventListener('mouseup', onWinMouseUp);
+            window.removeEventListener('touchmove', onWinTouchMove);
+            window.removeEventListener('touchend', onWinMouseUp);
+            showToast(`浮动窗口已定位到 X: ${Math.round(120 + state.winX)}, Y: ${Math.round(80 + state.winY)}`);
+          }
+
+          titleBar.addEventListener('mousedown', onWinMouseDown);
+          titleBar.addEventListener('touchstart', onWinMouseDown, { passive: false });
+
+          // Reset Button
+          resetBtn.onclick = () => {
+            winCard.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+            setWinPos(0, 0);
+            setTimeout(() => {
+              winCard.style.transition = '';
+            }, 320);
+            showToast('已重置浮动窗口位置至原点');
+          };
         }
       }
     };
@@ -1535,12 +1847,22 @@ pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
       pct = Math.max(0, Math.min(100, pct));
       appState.curtainPct = pct;
 
-      curtainDivider.style.left = `${pct}%`;
+      // Clamp divider position so handle pill is never clipped at 0% or 100%
+      curtainDivider.style.left = `clamp(18px, ${pct}%, calc(100% - 18px))`;
       uiCurtainLayer.style.clipPath = `inset(0 0 0 ${pct}%)`;
 
       const codePct = Math.round(pct);
       const uiPct = 100 - codePct;
       curtainRatioText.textContent = `代码 ${codePct}% | UI ${uiPct}%`;
+
+      const guideChip = document.getElementById('curtainGuideChip');
+      if (guideChip) {
+        if (pct > 8) {
+          guideChip.classList.add('hidden');
+        } else {
+          guideChip.classList.remove('hidden');
+        }
+      }
 
       document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
       if (pct < 10) {
@@ -1592,6 +1914,16 @@ pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
     curtainDivider.addEventListener('mousedown', startDrag);
     curtainDivider.addEventListener('touchstart', startDrag, { passive: false });
 
+    // Guide Chip Click
+    const guideChip = document.getElementById('curtainGuideChip');
+    if (guideChip) {
+      guideChip.onclick = (e) => {
+        e.stopPropagation();
+        setCurtain(50);
+        showToast('已拉开帘幕，展示 50/50 代码对比');
+      };
+    }
+
     // Presets
     document.getElementById('btnPresetUI').onclick = () => setCurtain(0);
     document.getElementById('btnPresetSplit').onclick = () => setCurtain(50);
@@ -1623,6 +1955,12 @@ pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
       activeCompTitle.textContent = comp.title;
       activeCompSignature.textContent = comp.signature;
       codeSnippetTarget.innerHTML = highlightMoonBit(comp.code);
+
+      if (id === 'window') {
+        sandboxBox.className = 'sandbox-box-window';
+      } else {
+        sandboxBox.className = 'sandbox-box';
+      }
 
       if (!appState.compStates[id]) appState.compStates[id] = {};
       comp.renderUI(sandboxBox, appState.compStates[id]);
