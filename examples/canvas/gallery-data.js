@@ -202,19 +202,22 @@ pub fn draw_toggles(ui : @core.UIContext, state : AppState) -> Unit {
               点击切换开关状态。
             </div>
           `;
-          const triggerToggle = (row, pill, stateKey, name) => {
-            pill.classList.add('is-stretching');
+          const tog1 = container.querySelector('#tog1');
+          const tog2 = container.querySelector('#tog2');
+
+          const triggerToggle = (row, stateKey, label) => {
             state[stateKey] = !state[stateKey];
-            setTimeout(() => {
-              row.classList.toggle('active', state[stateKey]);
-              setTimeout(() => pill.classList.remove('is-stretching'), 100);
-              document.getElementById('statResponse').textContent = `${stateKey}: ${state[stateKey]}`;
-              showToast(`${name}已${state[stateKey] ? '开启' : '关闭'}`);
-            }, 50);
+            row.classList.toggle('active', state[stateKey]);
+            const pill = row.querySelector('.toggle-pill');
+            if (pill) {
+              pill.classList.add('is-stretching');
+              setTimeout(() => pill.classList.remove('is-stretching'), 150);
+            }
+            document.getElementById('statResponse').textContent = `${label}: ${state[stateKey] ? '开启' : '关闭'}`;
           };
 
-          t1.onclick = () => triggerToggle(t1, t1.querySelector('.toggle-pill'), 't1', '网格对齐');
-          t2.onclick = () => triggerToggle(t2, t2.querySelector('.toggle-pill'), 't2', '显示法线');
+          tog1.onclick = () => triggerToggle(tog1, 't1', '网格对齐');
+          tog2.onclick = () => triggerToggle(tog2, 't2', '显示法线');
         }
       },
 
@@ -535,25 +538,88 @@ pub fn draw_combo_box(ui : @core.UIContext, state : AppState) -> Unit {
 }`,
         renderUI: (container, state) => {
           if (state.comboIdx === undefined) state.comboIdx = 0;
-          const opts = ["PNG", "SVG", "WebP", "PDF"];
+          const opts = ["PNG (便携位图)", "SVG (矢量标量)", "WebP (现代有损)", "PDF (印刷矢量)"];
+          const shortOpts = ["PNG", "SVG", "WebP", "PDF"];
+
           container.innerHTML = `
             <div class="sandbox-header">
               <span>ComboBox</span>
             </div>
             <div class="sandbox-body">
-              <select class="input-box" id="comboSelect">
-                ${opts.map((o, i) => `<option value="${i}" ${i === state.comboIdx ? 'selected' : ''}>${o}</option>`).join('')}
-              </select>
+              <div class="custom-combobox" id="cBoxRoot">
+                <div class="combobox-trigger" id="comboTrigger" tabindex="0">
+                  <span id="comboSelectedText">${opts[state.comboIdx]}</span>
+                  <span class="combobox-chevron">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </span>
+                </div>
+                <div class="combobox-menu" id="comboMenu">
+                  ${opts.map((o, i) => `
+                    <div class="combobox-option ${i === state.comboIdx ? 'is-selected' : ''}" data-idx="${i}">
+                      <span>${o}</span>
+                      <span class="combobox-check">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                      </span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
             </div>
             <div class="sandbox-tip">
-              点击下拉选择。
+              点击下拉选择导出格式。
             </div>
           `;
-          const sel = container.querySelector('#comboSelect');
-          sel.onchange = () => {
-            state.comboIdx = parseInt(sel.value);
-            document.getElementById('statResponse').textContent = `selected: ${opts[state.comboIdx]}`;
+
+          const trigger = container.querySelector('#comboTrigger');
+          const menu = container.querySelector('#comboMenu');
+          const text = container.querySelector('#comboSelectedText');
+
+          let isOpen = false;
+          const toggleMenu = (open) => {
+            isOpen = (open !== undefined) ? open : !isOpen;
+            trigger.classList.toggle('is-open', isOpen);
+            menu.classList.toggle('is-open', isOpen);
           };
+
+          trigger.onclick = (e) => {
+            e.stopPropagation();
+            toggleMenu();
+          };
+
+          trigger.onkeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              toggleMenu();
+            } else if (e.key === 'Escape') {
+              toggleMenu(false);
+            }
+          };
+
+          container.querySelectorAll('.combobox-option').forEach(opt => {
+            opt.onclick = (e) => {
+              e.stopPropagation();
+              const idx = parseInt(opt.getAttribute('data-idx'));
+              state.comboIdx = idx;
+              text.textContent = opts[idx];
+              container.querySelectorAll('.combobox-option').forEach((o, i) => {
+                o.classList.toggle('is-selected', i === idx);
+              });
+              toggleMenu(false);
+              document.getElementById('statResponse').textContent = `format: ${shortOpts[idx]} (idx: ${idx})`;
+              showToast(`已选择「${shortOpts[idx]}」格式`);
+            };
+          });
+
+          const closeIfOutside = (e) => {
+            if (!container.contains(e.target)) {
+              toggleMenu(false);
+            }
+          };
+          window.addEventListener('click', closeIfOutside);
         }
       },
 
@@ -780,15 +846,56 @@ pub fn draw_tabs(ui : @core.UIContext, state : AppState) -> Unit {
           if (state.tabIdx === undefined) state.tabIdx = 0;
           const tabs = ["属性", "视口", "图层", "输出"];
           const panels = [
-            "【属性】当前图元：贝塞尔样条",
-            "【视口】分辨率：1920x1080，缩放：1.0x",
-            "【图层】图层 1 (已显示)，图层 2 (已锁定)",
-            "【输出】格式：SVG 矢量图"
+            `<div>
+              <div style="font-weight: 600; font-size: 13.5px; margin-bottom: 8px; color: var(--text-main); display: flex; align-items: center; justify-content: space-between;">
+                <span>图元属性</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; background: #eff6ff; color: var(--brand); padding: 1px 6px; border-radius: 4px;">Active</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 75px 1fr; gap: 6px; font-size: 12px; font-family: 'JetBrains Mono', monospace;">
+                <span style="color: var(--text-muted);">图元类型:</span><span>Bezier Spline (三次贝塞尔)</span>
+                <span style="color: var(--text-muted);">控制点数:</span><span>16 个控制手柄</span>
+                <span style="color: var(--text-muted);">填充模式:</span><span>Non-Zero (非零环绕)</span>
+              </div>
+            </div>`,
+            `<div>
+              <div style="font-weight: 600; font-size: 13.5px; margin-bottom: 8px; color: var(--text-main); display: flex; align-items: center; justify-content: space-between;">
+                <span>视口参数</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; background: #f0fdf4; color: #16a34a; padding: 1px 6px; border-radius: 4px;">60 FPS</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 75px 1fr; gap: 6px; font-size: 12px; font-family: 'JetBrains Mono', monospace;">
+                <span style="color: var(--text-muted);">视口尺寸:</span><span>1920 × 1080 px</span>
+                <span style="color: var(--text-muted);">缩放比例:</span><span>1.00x (100% 原始像素)</span>
+                <span style="color: var(--text-muted);">DPR 缩放:</span><span>2.0x Retina 渲染</span>
+              </div>
+            </div>`,
+            `<div>
+              <div style="font-weight: 600; font-size: 13.5px; margin-bottom: 8px; color: var(--text-main); display: flex; align-items: center; justify-content: space-between;">
+                <span>图层管理</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; background: #faf5ff; color: #9333ea; padding: 1px 6px; border-radius: 4px;">3 Layers</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-family: 'JetBrains Mono', monospace;">
+                <div style="display: flex; justify-content: space-between;"><span>Layer 0: 背景网格</span><span style="color: var(--brand); font-weight: 600;">[显示]</span></div>
+                <div style="display: flex; justify-content: space-between;"><span>Layer 1: 贝塞尔轮廓</span><span style="color: var(--brand); font-weight: 600;">[活跃]</span></div>
+                <div style="display: flex; justify-content: space-between;"><span>Layer 2: 辅助对齐线</span><span style="color: var(--text-muted);">[锁定]</span></div>
+              </div>
+            </div>`,
+            `<div>
+              <div style="font-weight: 600; font-size: 13.5px; margin-bottom: 8px; color: var(--text-main); display: flex; align-items: center; justify-content: space-between;">
+                <span>导出输出</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; background: #fffbeb; color: #d97706; padding: 1px 6px; border-radius: 4px;">Vector</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 75px 1fr; gap: 6px; font-size: 12px; font-family: 'JetBrains Mono', monospace;">
+                <span style="color: var(--text-muted);">导出格式:</span><span>SVG 矢量图形 (.svg)</span>
+                <span style="color: var(--text-muted);">路径优化:</span><span>开启 (精度 2 位小数)</span>
+                <span style="color: var(--text-muted);">嵌入字体:</span><span>JetBrains Mono / Plus Jakarta</span>
+              </div>
+            </div>`
           ];
 
           container.innerHTML = `
             <div class="sandbox-header">
               <span>TabBar</span>
+              <span style="color: var(--brand); font-weight: 600;">${tabs[state.tabIdx]}</span>
             </div>
             <div class="sandbox-body">
               <div class="tabbar-container">
@@ -798,12 +905,12 @@ pub fn draw_tabs(ui : @core.UIContext, state : AppState) -> Unit {
                   </button>
                 `).join('')}
               </div>
-              <div style="background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 6px; padding: 14px; font-size: 13px; color: var(--text-main); font-family: 'JetBrains Mono', monospace;" id="tabContent">
+              <div class="tab-pane-card" id="tabContent">
                 ${panels[state.tabIdx]}
               </div>
             </div>
             <div class="sandbox-tip">
-              点击切换标签。
+              点击选项卡平滑切换内容面板。
             </div>
           `;
 
@@ -811,10 +918,18 @@ pub fn draw_tabs(ui : @core.UIContext, state : AppState) -> Unit {
           container.querySelectorAll('.tabbar-item').forEach(btn => {
             btn.onclick = () => {
               const idx = parseInt(btn.getAttribute('data-idx'));
+              if (state.tabIdx === idx) return;
               state.tabIdx = idx;
               container.querySelectorAll('.tabbar-item').forEach(b => b.classList.remove('active'));
               btn.classList.add('active');
-              content.textContent = panels[idx];
+              container.querySelector('.sandbox-header span:last-child').textContent = tabs[idx];
+
+              // Smooth transition keyframe
+              content.style.animation = 'none';
+              content.offsetHeight; // trigger reflow
+              content.style.animation = '';
+              content.innerHTML = panels[idx];
+
               document.getElementById('statResponse').textContent = `active_tab: [${idx}] ${tabs[idx]}`;
               showToast(`已切换至「${tabs[idx]}」标签`);
             };
@@ -834,22 +949,77 @@ pub fn draw_scroll_area(ui : @core.UIContext, state : AppState) -> Unit {
   })
 }`,
         renderUI: (container, state) => {
+          const logs = [
+            { tag: 'info', text: '内核初始化成功: @core.UIContext 实例就绪', time: '0.00ms' },
+            { tag: 'render', text: '图形后端挂载: Canvas 2D 上下文已激活', time: '1.20ms' },
+            { tag: 'vram', text: '顶点缓冲分配: 64KB 几何图元缓冲区', time: '2.45ms' },
+            { tag: 'info', text: '字体引擎加载: Plus Jakarta Sans / JetBrains Mono', time: '3.10ms' },
+            { tag: 'render', text: '布局树计算完成: 32 个节点已测量约束', time: '4.80ms' },
+            { tag: 'render', text: '第一帧栅格化生成: 耗时 0.42ms (60 FPS 稳定)', time: '5.22ms' },
+            { tag: 'info', text: '事件系统就绪: 鼠标拖拽、滚轮、按键监听', time: '5.90ms' },
+            { tag: 'vram', text: '纹理合批优化: Draw Call 压制至 1 次批处理', time: '6.50ms' },
+            { tag: 'render', text: '贝塞尔样条细分: 细分精度 ε=0.01 曲线平滑', time: '7.12ms' },
+            { tag: 'info', text: '即时模式刷新周期: 16.6ms 每帧循环', time: '8.00ms' },
+            { tag: 'render', text: '剪裁矩形压栈: push_clip_rect() 视口防溢出', time: '9.30ms' },
+            { tag: 'vram', text: '抗锯齿采样使能: subpixel text rendering 开启', time: '10.15ms' },
+            { tag: 'info', text: '组件树就绪: 所有 11 项核心控件待命', time: '11.00ms' },
+            { tag: 'render', text: '滚动视口建立: scroll_area("logs", h=150.0)', time: '12.40ms' },
+            { tag: 'info', text: '系统待命: 等待用户输入操作', time: '13.00ms' }
+          ];
+
           container.innerHTML = `
             <div class="sandbox-header">
               <span>ScrollArea</span>
+              <span id="scrollPosBadge" style="font-family: 'JetBrains Mono', monospace; font-size: 11px;">0px (0%)</span>
             </div>
             <div class="sandbox-body">
-              <div style="width: 100%; height: 140px; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; overflow-y: auto; padding: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.6; color: var(--text-sub);" id="sBox">
-                ${Array.from({length: 20}, (_, i) => `<div>日志记录项 #${i + 1}</div>`).join('')}
+              <div class="scroll-container-wrapper">
+                <div class="scroll-toolbar">
+                  <span>实时渲染事件流 (${logs.length} 项)</span>
+                  <div class="scroll-toolbar-actions">
+                    <button class="scroll-btn-mini" id="btnScrollTop">顶部 ↑</button>
+                    <button class="scroll-btn-mini" id="btnScrollBottom">底部 ↓</button>
+                  </div>
+                </div>
+                <div class="scroll-viewport" id="sBox">
+                  ${logs.map((log, i) => `
+                    <div class="scroll-log-row">
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="log-tag ${log.tag}">${log.tag.toUpperCase()}</span>
+                        <span>${log.text}</span>
+                      </div>
+                      <span style="font-size: 10px; color: var(--text-muted);">${log.time}</span>
+                    </div>
+                  `).join('')}
+                </div>
               </div>
             </div>
             <div class="sandbox-tip">
-              内容超出区域时支持滚动。
+              支持平滑滚动、惯性拖拽以及快速定位。
             </div>
           `;
+
           const sBox = container.querySelector('#sBox');
-          sBox.onscroll = () => {
-            document.getElementById('statResponse').textContent = `scrollTop: ${Math.round(sBox.scrollTop)}px`;
+          const posBadge = container.querySelector('#scrollPosBadge');
+          const btnTop = container.querySelector('#btnScrollTop');
+          const btnBottom = container.querySelector('#btnScrollBottom');
+
+          const updateScrollStats = () => {
+            const top = Math.round(sBox.scrollTop);
+            const max = sBox.scrollHeight - sBox.clientHeight;
+            const pct = max > 0 ? Math.round((top / max) * 100) : 0;
+            posBadge.textContent = `${top}px (${pct}%)`;
+            document.getElementById('statResponse').textContent = `scrollTop: ${top}px (${pct}%)`;
+          };
+
+          sBox.onscroll = updateScrollStats;
+
+          btnTop.onclick = () => {
+            sBox.scrollTo({ top: 0, behavior: 'smooth' });
+          };
+
+          btnBottom.onclick = () => {
+            sBox.scrollTo({ top: sBox.scrollHeight, behavior: 'smooth' });
           };
         }
       },
