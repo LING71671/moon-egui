@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>moon-egui | MoonBit Logo 矩阵极限性能实验室</title>
+  <title>moon-egui | 画板与多尺度矩阵测试</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -49,6 +49,8 @@
       display: block;
       cursor: crosshair;
       z-index: 1;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
     }
 
     /* Top Floating Studio Header Bar */
@@ -287,7 +289,7 @@
       <div class="studio-title">
         <img src="logo.png" alt="moon-egui" class="studio-logo-img" />
         <span>moon-egui</span>
-        <span class="studio-badge" id="txt-title">Logo矩阵实验室</span>
+        <span class="studio-badge" id="txt-title">Logo矩阵画板</span>
       </div>
     </div>
 
@@ -355,7 +357,7 @@
     const I18N = {
       zh: {
         back: '返回官网',
-        title: 'Logo矩阵实验室',
+        title: 'Logo矩阵画板',
         pulse: '脉冲',
         repel: '排斥',
         pan: '漫游',
@@ -372,7 +374,7 @@
       },
       en: {
         back: 'Back',
-        title: 'Logo Matrix Lab',
+        title: 'Logo Matrix Canvas',
         pulse: 'Pulse',
         repel: 'Repel',
         pan: 'Pan',

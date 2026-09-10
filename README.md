@@ -2,14 +2,15 @@
 
 # moon-egui
 
-**专为 MoonBit 与 WebAssembly 打造的高性能即时模式图形界面引擎**
+**面向 MoonBit 与 WebAssembly 的轻量级即时模式图形界面库**
 
 <p>
-  <a href="README.md">简体中文</a> · <a href="README_en.md">English</a>
+  <a href="README.md">简体中文</a>
 </p>
 
 <p>
-  <a href="https://ling71671.github.io/moon-egui/"><img src="https://img.shields.io/badge/demo-live%20benchmark-0284c7?style=flat-square" alt="Live Demo" /></a>
+  <a href="https://ling71671.github.io/moon-egui/"><img src="https://img.shields.io/badge/demo-live%20preview-0284c7?style=flat-square" alt="Live Demo" /></a>
+  <a href="https://ling71671.github.io/moon-egui/benchmark.html"><img src="https://img.shields.io/badge/benchmark-canvas%20test-7c3aed?style=flat-square" alt="Canvas Benchmark" /></a>
   <a href="https://github.com/LING71671/moon-egui/actions"><img src="https://img.shields.io/github/actions/workflow/status/LING71671/moon-egui/ci.yml?branch=main&label=CI&style=flat-square" alt="CI Status" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue?style=flat-square" alt="License" /></a>
   <a href="https://www.moonbitlang.com/"><img src="https://img.shields.io/badge/lang-MoonBit-6B46C1?style=flat-square" alt="MoonBit" /></a>
@@ -25,11 +26,22 @@
 
 ---
 
+## 在线演示 (Live Demos)
+
+您可以通过现代浏览器直接体验 `moon-egui` 的交互功能与图形渲染效果：
+
+- **[在线交互主页 (Interactive Demo)](https://ling71671.github.io/moon-egui/)**
+  包含即时模式基础控件展示、菜单栏、浮动窗口与轻量画板交互预览。
+- **[画板与多尺度矩阵测试 (Canvas & Multi-Scale Benchmark)](https://ling71671.github.io/moon-egui/benchmark.html)**
+  包含 128² 至 1024²（16,384 ~ 1,048,576 节点）多尺度像素晶格阵列、CAD 双轴标尺、视口平移/缩放漫游、以及像素晶格分界线渲染。
+
+---
+
 ## 概述
 
-`moon-egui` 是专为 [MoonBit](https://www.moonbitlang.com/) 编程语言打造的轻量级**即时模式图形界面引擎（Immediate-Mode GUI）**，面向 WebAssembly、HTML5 Canvas 2D 及高性能游戏与图形工具场景设计。
+`moon-egui` 是面向 [MoonBit](https://www.moonbitlang.com/) 编程语言的轻量级**即时模式图形界面库（Immediate-Mode GUI）**，面向 WebAssembly 与 HTML5 Canvas 2D 等图形交互场景设计。
 
-设计灵感源自 Rust 著名图形库 `egui` 与 C++ `Dear ImGui`。`moon-egui` 采用即时模式范式：**代码即界面，界面即状态**。与维护沉重 DOM 树的传统保留模式框架不同，`moon-egui` 采用逐帧声明式构建，具备零 DOM 开销、极低内存占用与 60 FPS 稳定流畅渲染能力。
+设计灵感源自 Rust 社区的 `egui` 与 C++ `Dear ImGui`。`moon-egui` 采用即时模式范式：**代码即界面，界面即状态**。通过逐帧声明式构建，提供直观的 UI 开发体验、轻量级的运行时占用与平稳的渲染表现。
 
 ### 核心规格一览
 

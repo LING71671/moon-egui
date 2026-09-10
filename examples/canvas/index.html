@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>moon-egui | MoonBit 原生即时模式 GUI 引擎官方主页</title>
+  <title>moon-egui | MoonBit 即时模式 GUI 库</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -409,6 +409,11 @@
       background: #ffffff;
     }
 
+    .canvas-box canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
     .canvas-notice {
       margin-top: 14px;
       font-size: 13px;
@@ -576,7 +581,7 @@
 
         <!-- Direct Jump to Dedicated Benchmark Page -->
         <a href="benchmark.html" class="cta-btn-primary" id="i18n-btn-bench">
-          <span>百万节点性能实验室</span>
+          <span>画板节点测试</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </a>
       </div>
@@ -587,22 +592,22 @@
   <section class="hero-section">
     <div class="container">
       <div class="hero-badge">
-        <span>MoonBit 官方即时模式 GUI 引擎</span>
+        <span>MoonBit 即时模式 GUI 库</span>
         <span>•</span>
-        <span>微秒级调度 & 零 GC 内存停顿</span>
+        <span>探索 WebAssembly 画布渲染</span>
       </div>
 
       <h1 class="hero-title">
-        <span id="i18n-hero-title">面向下一代工业级性能的 MoonBit 原生即时模式 GUI 引擎</span>
+        <span id="i18n-hero-title">轻量、实用的 MoonBit 原生即时模式 GUI 库</span>
       </h1>
 
       <p class="hero-desc" id="i18n-hero-desc">
-        专为 CAD、无限画板、EDA 电子设计自动化与高并发工业交互打造。依托 WebAssembly 与 MoonBit 强类型底层，带来微秒级的极低延迟响应与纯粹的零垃圾回收（Zero GC）体验。
+        参考 Dear ImGui 与 egui 设计思想，探索在 WebAssembly 与 Canvas 环境下构建代码即界面的即时模式图形库。提供基础图元绘制、视口裁剪与多节点交互演示。
       </p>
 
       <div class="hero-actions">
         <a href="benchmark.html" class="btn-hero-benchmark" id="i18n-hero-bench-btn">
-          <span>进入 1,000,000 空间节点性能测试实验室</span>
+          <span>进入画板与多尺度节点测试</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </a>
         <a href="https://github.com/LING71671/moon-egui" target="_blank" class="btn-hero-secondary" id="i18n-hero-docs-btn">
@@ -616,33 +621,33 @@
   <div class="container" id="spotlight">
     <div class="benchmark-spotlight">
       <div class="spotlight-text">
-        <div class="spotlight-badge">STRESS TEST BENCHMARK</div>
-        <h2 class="spotlight-title" id="i18n-spot-title">1,000,000 空间节点极限压测实验室</h2>
+        <div class="spotlight-badge">CANVAS & MATRIX DEMO</div>
+        <h2 class="spotlight-title" id="i18n-spot-title">多尺度矩阵与大画布节点测试</h2>
         <p class="spotlight-desc" id="i18n-spot-desc">
-          基于真实的 CAD 无垠坐标系，生成 MoonBit 官方 Logo 空间多尺度矩阵（128² ~ 1024²，包含 1,048,576 个独立空间节点）。验证视口局部性剔除、双轴自适应标尺投影、光波脉冲、磁力排斥与单体精准探针。
+          在无限画板中支持 128² 至 1024² 规模的像素方块阵列，测试视口裁剪、双轴标尺、像素晶格叠加以及即时模式交互响应。
         </p>
 
         <div class="spotlight-metrics">
           <div class="spotlight-metric-item">
             <div class="spotlight-metric-val">0.02 s</div>
-            <div class="spotlight-metric-lbl" id="i18n-spot-m1">极速冷启动</div>
+            <div class="spotlight-metric-lbl" id="i18n-spot-m1">快速加载</div>
           </div>
           <div class="spotlight-metric-item">
             <div class="spotlight-metric-val">~18 MB</div>
-            <div class="spotlight-metric-lbl" id="i18n-spot-m2">常驻内存占用</div>
+            <div class="spotlight-metric-lbl" id="i18n-spot-m2">轻量内存</div>
           </div>
           <div class="spotlight-metric-item">
-            <div class="spotlight-metric-val">100%</div>
-            <div class="spotlight-metric-lbl" id="i18n-spot-m3">百万节点全量可视</div>
+            <div class="spotlight-metric-val">1024²</div>
+            <div class="spotlight-metric-lbl" id="i18n-spot-m3">多尺度网格</div>
           </div>
           <div class="spotlight-metric-item">
             <div class="spotlight-metric-val">60.0 FPS</div>
-            <div class="spotlight-metric-lbl" id="i18n-spot-m4">单体拖拽与平移</div>
+            <div class="spotlight-metric-lbl" id="i18n-spot-m4">交互响应</div>
           </div>
         </div>
 
         <a href="benchmark.html" class="spotlight-btn" id="i18n-spot-btn">
-          <span>立即进入独立压测网页 (benchmark.html)</span>
+          <span>查看画板测试页 (benchmark.html)</span>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </a>
       </div>
@@ -653,8 +658,8 @@
   <section class="interactive-demo-section" id="playground">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title" id="i18n-play-title">即刻体验：MoonBit 原生即时模式物理力场</h2>
-        <p class="section-desc" id="i18n-play-desc">在下方画布中悬停与点击，感受 WebAssembly 带来的微秒级帧更新与流畅动画</p>
+        <h2 class="section-title" id="i18n-play-title">在线画板交互示例</h2>
+        <p class="section-desc" id="i18n-play-desc">在下方画布中悬停或拖拽方块，体验即时模式的基础交互</p>
       </div>
 
       <div class="live-canvas-card">
@@ -664,8 +669,8 @@
         </div>
 
         <div class="canvas-notice">
-          <span><span id="i18n-canvas-notice">当前为首页轻量级即时模式交互预览（144 ~ 1,600 节点）。</span></span>
-          <a href="benchmark.html" id="i18n-canvas-jump">点击前往 1,000,000 节点独立极限压测页面 →</a>
+          <span><span id="i18n-canvas-notice">当前为首页轻量画板预览。</span></span>
+          <a href="benchmark.html" id="i18n-canvas-jump">前往多尺度画板测试页面 →</a>
         </div>
       </div>
     </div>
@@ -675,8 +680,8 @@
   <section class="features-section" id="features">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title" id="i18n-feat-title">工程级架构设计，突破 Web 图形极限</h2>
-        <p class="section-desc" id="i18n-feat-desc">为大规模图形交互、CAD 工业制图与复杂界面打造的即时模式基础设施</p>
+        <h2 class="section-title" id="i18n-feat-title">设计特点</h2>
+        <p class="section-desc" id="i18n-feat-desc">专注于简洁、模块化与易集成的即时模式 GUI 基础组件</p>
       </div>
 
       <div class="features-grid">
@@ -684,48 +689,48 @@
           <div class="feature-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           </div>
-          <h3 class="feature-title" id="i18n-f1-title">纯粹即时模式 (Immediate Mode)</h3>
-          <p class="feature-desc" id="i18n-f1-desc">无多层虚拟 DOM 树，无状态同步漂移。一帧即是一切，代码直观声明，状态与渲染完全解耦统一。</p>
+          <h3 class="feature-title" id="i18n-f1-title">即时模式 (Immediate Mode)</h3>
+          <p class="feature-desc" id="i18n-f1-desc">无需维护复杂的组件状态机，逐帧根据当前数据直接描述界面逻辑，轻量直观。</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <h3 class="feature-title" id="i18n-f2-title">零 GC 内存损耗 (Zero GC Overhead)</h3>
-          <p class="feature-desc" id="i18n-f2-desc">MoonBit 编译为原生紧凑 WebAssembly，内存常驻仅 ~18MB，彻底杜绝复杂高频场景下的 JavaScript GC 停顿与卡顿。</p>
+          <h3 class="feature-title" id="i18n-f2-title">轻量与零额外依赖</h3>
+          <p class="feature-desc" id="i18n-f2-desc">纯 MoonBit 代码编写，无臃肿第三方前端框架依赖，打包产物紧凑。</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3l-6.6-6.6a2 2 0 0 0-2.8 0L2.7 17.9a2 2 0 0 0 0 2.8l.6.6a2 2 0 0 0 2.8 0l2.3-2.3 2.1 2.1 1.4-1.4-2.1-2.1 2.1-2.1 1.4 1.4 2.1-2.1 2.1 2.1 1.4-1.4-2.1-2.1 2.5-2.5a2 2 0 0 0 0-2.8z"/></svg>
           </div>
-          <h3 class="feature-title" id="i18n-f3-title">CAD 双轴标尺与微米投影</h3>
-          <p class="feature-desc" id="i18n-f3-desc">内置 50px 到 100,000px 的自适应双轴刻度标尺，支持被选中物体的空间坐标动态投影高亮。</p>
+          <h3 class="feature-title" id="i18n-f3-title">CAD 双轴刻度标尺</h3>
+          <p class="feature-desc" id="i18n-f3-desc">内置平移缩放自适应标尺与坐标读数，方便进行空间测距与定位观察。</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
           </div>
-          <h3 class="feature-title" id="i18n-f4-title">O(1) 空间局部性与视口剔除</h3>
-          <p class="feature-desc" id="i18n-f4-desc">内置高效空间索引与自适应 LOD 采样算法，百万空间实体仅绘制视口可见区域，内核耗时低于 0.25ms。</p>
+          <h3 class="feature-title" id="i18n-f4-title">视口裁剪与自适应绘制</h3>
+          <p class="feature-desc" id="i18n-f4-desc">仅计算与绘制视口内的可见方块，保证交互平移缩放时的平稳流畅。</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#db2777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
           </div>
-          <h3 class="feature-title" id="i18n-f5-title">统一 DrawCmd 指令流抽象</h3>
-          <p class="feature-desc" id="i18n-f5-desc">渲染管线与宿主环境解耦，无缝对接 HTML Canvas2D、WebGL、WebGPU 以及桌面端原生渲染后端。</p>
+          <h3 class="feature-title" id="i18n-f5-title">解耦的图元指令流</h3>
+          <p class="feature-desc" id="i18n-f5-desc">DrawCmd 指令流与宿主环境解耦，便于对接 Canvas2D、WebGL 或本地图形库。</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           </div>
-          <h3 class="feature-title" id="i18n-f6-title">强类型安全与高可靠性</h3>
-          <p class="feature-desc" id="i18n-f6-desc">充分发挥 MoonBit 现代类型系统优势，编译期排查一切空指针与内存隐患，构建稳如磐石的工业级图形应用。</p>
+          <h3 class="feature-title" id="i18n-f6-title">静态类型安全</h3>
+          <p class="feature-desc" id="i18n-f6-desc">借助 MoonBit 现代类型系统与模式匹配，减少运行时潜在异常。</p>
         </div>
       </div>
     </div>
@@ -780,82 +785,82 @@
     // Bilingual dictionary for homepage
     const homeI18n = {
       zh: {
-        navFeatures: '核心特性',
-        navBenchmark: '性能压测',
-        navPlayground: '在线体验',
+        navFeatures: '设计特点',
+        navBenchmark: '画板测试',
+        navPlayground: '在线演示',
         navQuickstart: '快速上手',
-        btnBench: '百万节点性能压测',
-        heroTitle: '面向下一代工业级性能的 MoonBit 原生即时模式 GUI 引擎',
-        heroDesc: '专为 CAD、无限画板、EDA 电子设计自动化与高并发工业交互打造。依托 WebAssembly 与 MoonBit 强类型底层，带来微秒级的极低延迟响应与纯粹的零垃圾回收（Zero GC）体验。',
-        heroBenchBtn: '进入 1,000,000 空间节点性能测试实验室',
+        btnBench: '画板节点测试',
+        heroTitle: '轻量、实用的 MoonBit 原生即时模式 GUI 库',
+        heroDesc: '参考 Dear ImGui 与 egui 设计思想，探索在 WebAssembly 与 Canvas 环境下构建代码即界面的即时模式图形库。提供基础图元绘制、视口裁剪与多节点交互演示。',
+        heroBenchBtn: '进入画板与多尺度节点测试',
         heroDocsBtn: 'GitHub 源码与文档',
-        spotTitle: '1,000,000 空间节点极限压测实验室',
-        spotDesc: '基于真实的 CAD 无垠坐标系，生成 1,000,000 个独立物体矩阵。验证空间视口局部性剔除、双轴自适应标尺投影、单体精准拖拽与全景 100% 可视能力。',
-        spotM1: '极速冷启动',
-        spotM2: '常驻内存占用',
-        spotM3: '百万节点全量可视',
-        spotM4: '单体拖拽与平移',
-        spotBtn: '立即进入独立压测网页 (benchmark.html)',
-        playTitle: '即刻体验：MoonBit 原生即时模式物理力场',
-        playDesc: '在下方画布中悬停与点击，感受 WebAssembly 带来的微秒级帧更新与流畅动画',
-        canvasNotice: '当前为首页轻量级即时模式交互预览（144 ~ 1,600 节点）。',
-        canvasJump: '点击前往 1,000,000 节点独立极限压测页面 →',
-        featTitle: '工程级架构设计，突破 Web 图形极限',
-        featDesc: '为大规模图形交互、CAD 工业制图与复杂界面打造的即时模式基础设施',
-        f1Title: '纯粹即时模式 (Immediate Mode)',
-        f1Desc: '无多层虚拟 DOM 树，无状态同步漂移。一帧即是一切，代码直观声明，状态与渲染完全解耦统一。',
-        f2Title: '零 GC 内存损耗 (Zero GC Overhead)',
-        f2Desc: 'MoonBit 编译为原生紧凑 WebAssembly，内存常驻仅 ~18MB，彻底杜绝复杂高频场景下的 JavaScript GC 停顿与卡顿。',
-        f3Title: 'CAD 双轴标尺与微米投影',
-        f3Desc: '内置 50px 到 100,000px 的自适应双轴刻度标尺，支持被选中物体的空间坐标动态投影高亮。',
-        f4Title: 'O(1) 空间局部性与视口剔除',
-        f4Desc: '内置高效空间索引与自适应 LOD 采样算法，百万空间实体仅绘制视口可见区域，内核耗时低于 0.25ms。',
-        f5Title: '统一 DrawCmd 指令流抽象',
-        f5Desc: '渲染管线与宿主环境解耦，无缝对接 HTML Canvas2D、WebGL、WebGPU 以及桌面端原生渲染后端。',
-        f6Title: '强类型安全与高可靠性',
-        f6Desc: '充分发挥 MoonBit 现代类型系统优势，编译期排查一切空指针与内存隐患，构建稳如磐石的工业级图形应用。',
+        spotTitle: '多尺度矩阵与大画布节点测试',
+        spotDesc: '在无限画板中支持 128² 至 1024² 规模的像素方块阵列，测试视口裁剪、双轴标尺、像素晶格叠加以及即时模式交互响应。',
+        spotM1: '快速加载',
+        spotM2: '轻量内存',
+        spotM3: '多尺度网格',
+        spotM4: '交互响应',
+        spotBtn: '查看画板测试页 (benchmark.html)',
+        playTitle: '在线画板交互示例',
+        playDesc: '在下方画布中悬停或拖拽方块，体验即时模式的基础交互',
+        canvasNotice: '当前为首页轻量画板预览。',
+        canvasJump: '前往多尺度画板测试页面 →',
+        featTitle: '设计特点',
+        featDesc: '专注于简洁、模块化与易集成的即时模式 GUI 基础组件',
+        f1Title: '即时模式 (Immediate Mode)',
+        f1Desc: '无需维护复杂的组件状态机，逐帧根据当前数据直接描述界面逻辑，轻量直观。',
+        f2Title: '轻量与零额外依赖',
+        f2Desc: '纯 MoonBit 代码编写，无臃肿第三方前端框架依赖，打包产物紧凑。',
+        f3Title: 'CAD 双轴刻度标尺',
+        f3Desc: '内置平移缩放自适应标尺与坐标读数，方便进行空间测距与定位观察。',
+        f4Title: '视口裁剪与自适应绘制',
+        f4Desc: '仅计算与绘制视口内的可见方块，保证交互平移缩放时的平稳流畅。',
+        f5Title: '解耦的图元指令流',
+        f5Desc: 'DrawCmd 指令流与宿主环境解耦，便于对接 Canvas2D、WebGL 或本地图形库。',
+        f6Title: '静态类型安全',
+        f6Desc: '借助 MoonBit 现代类型系统与模式匹配，减少运行时潜在异常。',
         qsTitle: '简洁优雅的即时模式语法',
-        qsDesc: '两分钟上手，用 MoonBit 声明式编写高性能图形界面：',
-        footBench: '百万节点压测实验室'
+        qsDesc: '两分钟上手，用 MoonBit 声明式编写图形界面交互：',
+        footBench: '画板节点测试'
       },
       en: {
         navFeatures: 'Features',
         navBenchmark: 'Benchmark',
         navPlayground: 'Playground',
         navQuickstart: 'Quickstart',
-        btnBench: '1M Nodes Benchmark',
-        heroTitle: 'Next-Generation High-Performance Immediate Mode GUI for MoonBit',
-        heroDesc: 'Engineered for CAD, infinite whiteboards, EDA electronics design, and high-frequency industrial interfaces. Powered by MoonBit and native WebAssembly for microsecond latency and zero GC pauses.',
-        heroBenchBtn: 'Launch 1,000,000 Nodes Benchmark Suite',
+        btnBench: 'Canvas Benchmark',
+        heroTitle: 'A Lightweight Immediate Mode GUI Library for MoonBit',
+        heroDesc: 'Inspired by Dear ImGui and egui, exploring declarative immediate-mode GUI on WebAssembly and HTML5 Canvas. Provides primitive rendering, viewport culling, and interactive multi-node demos.',
+        heroBenchBtn: 'Open Canvas & Multi-Scale Benchmark',
         heroDocsBtn: 'GitHub Docs & Source',
-        spotTitle: '1,000,000 Spatial Nodes Extreme Stress Lab',
-        spotDesc: 'Stress-test 1,000,000 spatial entities with O(1) viewport culling, dual-axis CAD rulers with live selection projection, 60 FPS single-item dragging, and 100% full-canvas fit.',
-        spotM1: 'Instant Cold Start',
-        spotM2: 'Resident Memory',
-        spotM3: '100% Full Canvas Fit',
-        spotM4: 'Drag & Pan 60 FPS',
-        spotBtn: 'Open Dedicated Benchmark (benchmark.html)',
-        playTitle: 'Live Interactive Playground: Kinetic Particle Matrix',
-        playDesc: 'Hover and click inside the canvas below to feel microsecond MoonBit WebAssembly rendering',
-        canvasNotice: 'Currently viewing the lightweight homepage preview (144 ~ 1,600 nodes).',
-        canvasJump: 'Go to the 1,000,000 Nodes Standalone Benchmark Page →',
-        featTitle: 'Industrial Architecture, Redefining Web Graphics',
-        featDesc: 'Immediate-mode foundation for massive graphics, CAD engineering, and real-time visualization',
-        f1Title: 'Pure Immediate Mode Paradigm',
-        f1Desc: 'No heavy virtual DOM trees, no desynchronized state machines. Declarative frames where state equals view.',
-        f2Title: 'Zero GC Overhead',
-        f2Desc: 'Compiled to compact WebAssembly with only ~18MB resident memory. Completely eliminates GC stutter during high-load interaction.',
-        f3Title: 'CAD Dual-Axis Coordinate Rulers',
-        f3Desc: 'Adaptive world ticks from 50px to 100,000px with live purple coordinate projection indicators.',
-        f4Title: 'O(1) Spatial Viewport Culling',
-        f4Desc: 'High-speed spatial culling & adaptive LOD batching keep frame computation time strictly below 0.25ms.',
-        f5Title: 'Unified DrawCmd Stream Abstraction',
-        f5Desc: 'Decoupled rendering backends supporting Canvas2D, WebGL, WebGPU, and native desktop targets.',
-        f6Title: 'Type-Safe & Rock Solid',
-        f6Desc: 'Static typing guarantees zero runtime null pointer crashes, ensuring mission-critical reliability.',
-        qsTitle: 'Concise & Elegant Immediate Mode Syntax',
+        spotTitle: 'Multi-Scale Matrix & Canvas Benchmark',
+        spotDesc: 'Supports 128² to 1024² pixel block arrays on an infinite canvas, benchmarking viewport culling, dual-axis rulers, pixel grid overlay, and responsive interactions.',
+        spotM1: 'Fast Startup',
+        spotM2: 'Low Memory',
+        spotM3: 'Multi-Scale Grid',
+        spotM4: 'Responsive',
+        spotBtn: 'Open Benchmark Page (benchmark.html)',
+        playTitle: 'Interactive Canvas Demo',
+        playDesc: 'Hover or drag pixel blocks below to explore basic immediate-mode interactions',
+        canvasNotice: 'Currently viewing the lightweight homepage canvas preview.',
+        canvasJump: 'Go to the Multi-Scale Benchmark Page →',
+        featTitle: 'Design Principles',
+        featDesc: 'Focused on clean, modular, and easily integrable immediate-mode GUI components',
+        f1Title: 'Immediate Mode Paradigm',
+        f1Desc: 'No complex widget state trees. Directly describe UI logic frame by frame from state.',
+        f2Title: 'Lightweight & Zero Dependencies',
+        f2Desc: 'Written in pure MoonBit without heavy frontend frameworks, resulting in compact bundles.',
+        f3Title: 'CAD Dual-Axis Rulers',
+        f3Desc: 'Adaptive world ticks with coordinate readouts for spatial orientation and inspection.',
+        f4Title: 'Viewport Culling',
+        f4Desc: 'Only computes and draws visible cells, ensuring smooth pan and zoom across scale.',
+        f5Title: 'Decoupled DrawCmd Stream',
+        f5Desc: 'Clean abstraction ready for Canvas2D, WebGL, or native desktop graphics backends.',
+        f6Title: 'Static Type Safety',
+        f6Desc: 'Leverages MoonBit static types and pattern matching to minimize runtime issues.',
+        qsTitle: 'Concise Immediate Mode Syntax',
         qsDesc: 'Get started in two minutes writing declarative MoonBit GUI code:',
-        footBench: '1,000,000 Nodes Benchmark'
+        footBench: 'Canvas Benchmark'
       }
     };
 

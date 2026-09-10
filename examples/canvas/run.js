@@ -18,6 +18,10 @@
     canvas.style.height = height + 'px';
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
+    ctx.imageSmoothingEnabled = false;
+    if ('webkitImageSmoothingEnabled' in ctx) ctx.webkitImageSmoothingEnabled = false;
+    if ('mozImageSmoothingEnabled' in ctx) ctx.mozImageSmoothingEnabled = false;
+    if ('msImageSmoothingEnabled' in ctx) ctx.msImageSmoothingEnabled = false;
   }
 
   window.addEventListener('resize', resizeCanvas);
@@ -207,6 +211,10 @@
     off.width = dim;
     off.height = dim;
     const octx = off.getContext('2d', { willReadFrequently: true });
+    octx.imageSmoothingEnabled = false;
+    if ('webkitImageSmoothingEnabled' in octx) octx.webkitImageSmoothingEnabled = false;
+    if ('mozImageSmoothingEnabled' in octx) octx.mozImageSmoothingEnabled = false;
+    if ('msImageSmoothingEnabled' in octx) octx.msImageSmoothingEnabled = false;
 
     if (logoLoaded && logoImg && logoImg.width > 0) {
       octx.drawImage(logoImg, 0, 0, dim, dim);
@@ -250,12 +258,91 @@
     return cv;
   }
 
+  // CAD Pixel Grid Lines:
+  // Whenever cells reach visible size (unitPx >= 3.5), overlay subtle semi-transparent grid boundary lines.
+  // Guarantees every single square in 1,048,576 matrix has crisp, distinct boundaries even in large flat-colored regions.
+  function drawPixelGridLines(ctx, gridDim, pitch, zoom, camX, camY, cvX, cvY, cvW, cvH, dstX, dstY, dstW, dstH, scX, scY, unitPx) {
+    if (unitPx < 3.5) return;
+
+    const minWx = camX - (cvW * 0.5) / zoom;
+    const maxWx = camX + (cvW * 0.5) / zoom;
+    const minWy = camY - (cvH * 0.5) / zoom;
+    const maxWy = camY + (cvH * 0.5) / zoom;
+
+    const cStart = Math.max(0, Math.floor(minWx / pitch));
+    const cEnd = Math.min(gridDim, Math.ceil(maxWx / pitch));
+    const rStart = Math.max(0, Math.floor(minWy / pitch));
+    const rEnd = Math.min(gridDim, Math.ceil(maxWy / pitch));
+
+    const yTop = Math.max(cvY, dstY);
+    const yBottom = Math.min(cvY + cvH, dstY + dstH);
+    const xLeft = Math.max(cvX, dstX);
+    const xRight = Math.min(cvX + cvW, dstX + dstW);
+
+    if (cEnd <= cStart || rEnd <= rStart || yBottom <= yTop || xRight <= xLeft) return;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(cvX, cvY, cvW, cvH);
+    ctx.clip();
+
+    // Subtle hairline scaling with zoom level
+    const t = Math.min(1.0, Math.max(0.0, (unitPx - 3.5) / 14.0));
+    const darkAlpha = 0.08 + t * 0.16; // 0.08 -> 0.24
+
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = `rgba(15, 23, 42, ${darkAlpha.toFixed(3)})`;
+    ctx.beginPath();
+
+    for (let c = cStart; c <= cEnd; c++) {
+      const sx = Math.floor(scX + (c * pitch - camX) * zoom) + 0.5;
+      if (sx >= xLeft - 0.5 && sx <= xRight + 0.5) {
+        ctx.moveTo(sx, yTop);
+        ctx.lineTo(sx, yBottom);
+      }
+    }
+
+    for (let r = rStart; r <= rEnd; r++) {
+      const sy = Math.floor(scY + (r * pitch - camY) * zoom) + 0.5;
+      if (sy >= yTop - 0.5 && sy <= yBottom + 0.5) {
+        ctx.moveTo(xLeft, sy);
+        ctx.lineTo(xRight, sy);
+      }
+    }
+    ctx.stroke();
+
+    if (unitPx >= 8.0) {
+      const lightAlpha = Math.min(0.24, Math.max(0.05, (unitPx - 8.0) / 16.0 * 0.22));
+      ctx.strokeStyle = `rgba(255, 255, 255, ${lightAlpha.toFixed(3)})`;
+      ctx.beginPath();
+      for (let c = cStart; c <= cEnd; c++) {
+        const sx = Math.floor(scX + (c * pitch - camX) * zoom) + 0.5;
+        if (sx >= xLeft - 0.5 && sx <= xRight + 0.5) {
+          ctx.moveTo(sx, yTop);
+          ctx.lineTo(sx, yBottom);
+        }
+      }
+      for (let r = rStart; r <= rEnd; r++) {
+        const sy = Math.floor(scY + (r * pitch - camY) * zoom) + 0.5;
+        if (sy >= yTop - 0.5 && sy <= yBottom + 0.5) {
+          ctx.moveTo(xLeft, sy);
+          ctx.lineTo(xRight, sy);
+        }
+      }
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
   function renderDrawList(dl) {
     if (!dl || !dl.commands) return;
 
     // Fast clear with clean studio light background
     setFill('#f8fafc');
     ctx.fillRect(0, 0, width, height);
+
+    ctx.imageSmoothingEnabled = false;
 
     const mState = window.moon_state;
     const gridDim = mState ? mState.grid_dim : 256;
@@ -300,13 +387,14 @@
       if (baked) {
         ctx.imageSmoothingEnabled = false;
         ctx.drawImage(baked, 0, 0, baked.width, baked.height, dstX, dstY, dstW, dstH);
-        ctx.imageSmoothingEnabled = true;
       }
     }
     ctx.restore();
 
+    let gridLinesRendered = false;
     const cmds = dl.commands;
     const len = cmds.length;
+
 
     for (let i = 0; i < len; i++) {
       const cmd = cmds[i];
@@ -425,10 +513,21 @@
           break;
         }
         case 7: { // ResetClip
+          // Render CAD pixel grid lines directly on top of the matrix before popping workspace clip,
+          // ensuring grid lines are on top of cells and under CAD rulers.
+          if (!gridLinesRendered) {
+            drawPixelGridLines(ctx, gridDim, pitch, zoom, camX, camY, cvX, cvY, cvW, cvH, dstX, dstY, dstW, dstH, scX, scY, unitPx);
+            gridLinesRendered = true;
+          }
           ctx.restore();
           break;
         }
       }
+    }
+
+    if (!gridLinesRendered) {
+      drawPixelGridLines(ctx, gridDim, pitch, zoom, camX, camY, cvX, cvY, cvW, cvH, dstX, dstY, dstW, dstH, scX, scY, unitPx);
+      gridLinesRendered = true;
     }
 
     const cmdsEl = document.getElementById('telemetry-cmds');

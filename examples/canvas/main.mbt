@@ -210,16 +210,7 @@ pub fn step(
   let grid_dim = state.grid_dim
   let matrix_world_size = 10000.0
   let pitch = matrix_world_size / grid_dim.to_double()
-  let gap = if grid_dim <= 128 {
-    2.0
-  } else if grid_dim <= 256 {
-    1.4
-  } else if grid_dim <= 512 {
-    0.9
-  } else {
-    0.5
-  }
-  let cell_size = (pitch - gap).max(0.6)
+  let cell_size = pitch
 
   // Interactive mouse mapping & hit test
   let in_canvas = mouse_x >= cv_x &&
@@ -343,13 +334,7 @@ pub fn step(
   if is_micro_vector {
     let on_screen_cell_w = cell_size * state.zoom
     let on_screen_cell_h = cell_size * state.zoom
-    let rect_radius = if on_screen_cell_w > 12.0 {
-      2.5
-    } else if on_screen_cell_w > 6.0 {
-      1.5
-    } else {
-      0.0
-    }
+    let rect_radius = 0.0
 
     for r = r_start; r < r_end; r = r + 1 {
       let base_wy = r.to_double() * pitch
@@ -449,17 +434,12 @@ pub fn step(
           rect_radius,
         )
 
-        if on_screen_cell_w > 16.0 {
-          let border_col = if is_hovered {
-            @color.Color::rgb(37, 99, 235)
-          } else {
-            @color.Color::rgb(226, 232, 240)
-          }
+        if is_hovered {
           dl.add_rect_stroke(
             @math.Rect::new(sx, sy, on_screen_cell_w, on_screen_cell_h),
-            border_col,
-            0.5,
-            rect_radius,
+            @color.Color::rgb(37, 99, 235),
+            1.5,
+            0.0,
           )
         }
       }
@@ -511,8 +491,12 @@ pub fn step(
     }
   }
 
+  // End matrix cell clipping (triggers CAD Pixel Grid Lines in run.js)
+  dl.pop_clip()
+
   // Selected Item Transform Frame, Corner Handles & Probe Tooltip
   if state.selected_id >= 0 {
+    dl.push_clip(@math.Rect::new(cv_x, cv_y, cv_w, cv_h))
     let sel_id = state.selected_id
     let r = sel_id / grid_dim
     let c = sel_id % grid_dim
@@ -599,10 +583,8 @@ pub fn step(
       10.0,
       @color.Color::rgb(15, 23, 42),
     )
+    dl.pop_clip()
   }
-
-  // End workspace clipping
-  dl.pop_clip()
 
   // =========================================================================
   // LIGHT CAD COORDINATE RULERS (TOP & LEFT)
