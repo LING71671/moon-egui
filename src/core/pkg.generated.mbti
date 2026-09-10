@@ -216,9 +216,11 @@ pub fn UIContext::button_primary_sized(Self, String, @math.Vec2) -> Response
 pub fn UIContext::button_sized(Self, String, @math.Vec2) -> Response
 pub fn UIContext::checkbox(Self, String, Bool) -> (Bool, Response)
 pub fn UIContext::collapsing_header(Self, String, String, Bool, (Self) -> Unit) -> Response
+pub fn UIContext::color_button(Self, String, @color.Color) -> (Bool, Response)
 pub fn UIContext::combo_box(Self, String, String, Int, Array[String]) -> (Int, Response)
 pub fn UIContext::current_clip(Self) -> @math.Rect?
 pub fn UIContext::cursor(Self) -> @math.Vec2
+pub fn UIContext::drag_value(Self, String, Double, Double, Double, Double) -> (Double, Response)
 pub fn UIContext::draw_list(Self) -> @draw.DrawList
 pub fn UIContext::end_frame(Self) -> @draw.DrawList
 pub fn UIContext::focused_id(Self) -> Id
@@ -261,8 +263,11 @@ pub fn UIContext::slider(Self, String, Double, Double, Double) -> (Double, Respo
 pub fn UIContext::slider_int(Self, String, Int, Int, Int) -> (Int, Response)
 pub fn UIContext::spacer(Self, Double) -> Unit
 pub fn UIContext::surrender_focus(Self, Id) -> Unit
+pub fn UIContext::tab_bar(Self, String, Array[String], Int) -> (Int, Response)
 pub fn UIContext::text_edit(Self, String, String, String) -> (String, Response)
 pub fn UIContext::text_edit_sized(Self, String, String, String, @math.Vec2) -> (String, Response)
+pub fn UIContext::toggle(Self, String, Bool) -> (Bool, Response)
+pub fn UIContext::tooltip(Self, String) -> Unit
 pub fn UIContext::vertical(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::wants_capture_mouse(Self) -> Bool
 pub fn UIContext::window(Self, String, @math.Vec2, @math.Vec2, (Self) -> Unit) -> Unit

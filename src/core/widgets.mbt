@@ -684,3 +684,296 @@ pub fn UIContext::combo_box(
 
   (current_idx, resp)
 }
+
+///|
+/// Render an interactive toggle pill switch.
+/// Returns a tuple of (new_checked_state, response).
+pub fn UIContext::toggle(
+  self : UIContext,
+  text : String,
+  checked : Bool,
+) -> (Bool, Response) {
+  let switch_w = 34.0
+  let switch_h = 18.0
+  let gap = 8.0
+  let char_w = 8.0
+  let text_w = text.length().to_double() * char_w
+  let total_w = switch_w + gap + text_w
+  let h = 22.0
+  let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
+  let new_state = if resp.clicked { !checked } else { checked }
+
+  let switch_rect = @math.Rect::new(
+    rect.x,
+    rect.y + (h - switch_h) * 0.5,
+    switch_w,
+    switch_h,
+  )
+
+  let bg_color = if checked {
+    if resp.hovered {
+      @color.Color::accent_hover()
+    } else {
+      @color.Color::accent_primary()
+    }
+  } else if resp.hovered {
+    @color.Color::bg_hover()
+  } else {
+    @color.Color::border_muted()
+  }
+
+  // Draw pill background
+  self.draw_list.add_rect(switch_rect, bg_color, switch_h * 0.5)
+
+  // Draw sliding thumb circle
+  let thumb_radius = (switch_h - 4.0) * 0.5
+  let thumb_cx = if checked {
+    switch_rect.x + switch_w - 2.0 - thumb_radius
+  } else {
+    switch_rect.x + 2.0 + thumb_radius
+  }
+  let thumb_cy = switch_rect.y + switch_h * 0.5
+  let thumb_rect = @math.Rect::new(
+    thumb_cx - thumb_radius,
+    thumb_cy - thumb_radius,
+    thumb_radius * 2.0,
+    thumb_radius * 2.0,
+  )
+  self.draw_list.add_rect(thumb_rect, @color.Color::white(), thumb_radius)
+
+  // Draw label text
+  let text_x = rect.x + switch_w + gap
+  let text_y = rect.y + (h - 14.0) * 0.5
+  let text_color = if resp.hovered {
+    @color.Color::white()
+  } else {
+    @color.Color::text_primary()
+  }
+  self.draw_list.add_text(
+    @math.Vec2::new(text_x, text_y),
+    text,
+    14.0,
+    text_color,
+  )
+
+  (new_state, resp)
+}
+
+///|
+/// Render a compact numerical drag-value box.
+/// Click and drag horizontally to smoothly adjust the value.
+/// Returns a tuple of (new_value, response).
+pub fn UIContext::drag_value(
+  self : UIContext,
+  label : String,
+  value : Double,
+  speed : Double,
+  min : Double,
+  max : Double,
+) -> (Double, Response) {
+  let char_w = 8.0
+  let label_w = if label.length() > 0 {
+    label.length().to_double() * char_w + 8.0
+  } else {
+    0.0
+  }
+  let box_w = 64.0
+  let total_w = label_w + box_w
+  let h = 22.0
+  let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
+
+  let box_rect = @math.Rect::new(rect.x + label_w, rect.y, box_w, h)
+  let is_hovered = box_rect.contains(self.input.mouse_pos)
+  if is_hovered && self.input.mouse_pressed {
+    self.set_active_id(id)
+  }
+
+  let is_active = self.active_id() == id
+  let mut new_val = value
+
+  if is_active && self.input.mouse_down {
+    let delta_x = self.input.mouse_delta.x
+    let step = if speed > 0.0001 { speed } else { 1.0 }
+    new_val = new_val + delta_x * step
+    if min < max {
+      if new_val < min {
+        new_val = min
+      } else if new_val > max {
+        new_val = max
+      }
+    }
+  }
+
+  // Draw Label
+  if label.length() > 0 {
+    self.draw_list.add_text(
+      @math.Vec2::new(rect.x, rect.y + 4.0),
+      label,
+      13.0,
+      @color.Color::text_primary(),
+    )
+  }
+
+  // Draw Box Background & Stroke
+  let bg_color = if is_active {
+    @color.Color::bg_hover()
+  } else if is_hovered {
+    @color.Color::bg_surface()
+  } else {
+    @color.Color::bg_window()
+  }
+
+  let border_color = if is_active {
+    @color.Color::accent_primary()
+  } else if is_hovered {
+    @color.Color::accent_hover()
+  } else {
+    @color.Color::border_muted()
+  }
+
+  self.draw_list.add_rect(box_rect, bg_color, 4.0)
+  self.draw_list.add_rect_stroke(box_rect, border_color, 1.0, 4.0)
+
+  // Format value to 1 decimal place or integer
+  let rounded_int = (new_val * 10.0).to_int()
+  let whole = rounded_int / 10
+  let frac = (rounded_int % 10).abs()
+  let val_str = whole.to_string() + "." + frac.to_string()
+
+  let text_x = box_rect.x + (box_w - val_str.length().to_double() * 7.0) * 0.5
+  let text_y = box_rect.y + (h - 12.0) * 0.5
+  self.draw_list.add_text(
+    @math.Vec2::new(text_x, text_y),
+    val_str,
+    12.0,
+    if is_active {
+      @color.Color::accent_primary()
+    } else {
+      @color.Color::text_primary()
+    },
+  )
+
+  (new_val, resp)
+}
+
+///|
+/// Render a segmented horizontal tab bar.
+/// Returns a tuple of (new_selected_index, response).
+pub fn UIContext::tab_bar(
+  self : UIContext,
+  _id_str : String,
+  tabs : Array[String],
+  selected_idx : Int,
+) -> (Int, Response) {
+  let char_w = 8.0
+  let mut total_w = 0.0
+  for tab in tabs {
+    total_w = total_w + tab.length().to_double() * char_w + 24.0
+  }
+  let h = 28.0
+  let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
+  let mut current_selected = selected_idx
+
+  // Draw background container
+  self.draw_list.add_rect(rect, @color.Color::bg_window(), 6.0)
+  self.draw_list.add_rect_stroke(rect, @color.Color::border_muted(), 1.0, 6.0)
+
+  let mut cur_x = rect.x
+  for i = 0; i < tabs.length(); i = i + 1 {
+    let tab_text = tabs[i]
+    let tab_w = tab_text.length().to_double() * char_w + 24.0
+    let tab_rect = @math.Rect::new(cur_x, rect.y, tab_w, h)
+    let is_hovered = tab_rect.contains(self.input.mouse_pos)
+    let is_selected = i == current_selected
+
+    if is_hovered && self.input.mouse_pressed {
+      current_selected = i
+    }
+
+    if is_selected {
+      let active_rect = tab_rect.shrink(2.0)
+      self.draw_list.add_rect(active_rect, @color.Color::accent_primary(), 4.0)
+    } else if is_hovered {
+      let hover_rect = tab_rect.shrink(2.0)
+      self.draw_list.add_rect(hover_rect, @color.Color::bg_hover(), 4.0)
+    }
+
+    let text_col = if is_selected {
+      @color.Color::white()
+    } else if is_hovered {
+      @color.Color::white()
+    } else {
+      @color.Color::text_secondary()
+    }
+
+    let text_x = tab_rect.x +
+      (tab_w - tab_text.length().to_double() * char_w) * 0.5
+    let text_y = tab_rect.y + (h - 13.0) * 0.5
+    self.draw_list.add_text(
+      @math.Vec2::new(text_x, text_y),
+      tab_text,
+      13.0,
+      text_col,
+    )
+
+    cur_x = cur_x + tab_w
+  }
+
+  (current_selected, resp)
+}
+
+///|
+/// Render an interactive color preview button.
+/// Clicking it returns clicked in response to toggle a color picker.
+pub fn UIContext::color_button(
+  self : UIContext,
+  _id_str : String,
+  color : @color.Color,
+) -> (Bool, Response) {
+  let size = 22.0
+  let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(size, size))
+
+  let btn_rect = @math.Rect::new(rect.x, rect.y, size, size)
+  let border_color = if resp.pressed {
+    @color.Color::white()
+  } else if resp.hovered {
+    @color.Color::accent_primary()
+  } else {
+    @color.Color::border_muted()
+  }
+
+  // Draw color swatch
+  self.draw_list.add_rect(btn_rect, color, 4.0)
+  self.draw_list.add_rect_stroke(btn_rect, border_color, 1.5, 4.0)
+
+  (resp.clicked, resp)
+}
+
+///|
+/// Render an on-hover floating tooltip bubble at cursor position.
+pub fn UIContext::tooltip(self : UIContext, text : String) -> Unit {
+  let char_w = 7.0
+  let text_w = text.length().to_double() * char_w
+  let pad_x = 8.0
+  let pad_y = 4.0
+  let tip_w = text_w + pad_x * 2.0
+  let tip_h = 22.0
+
+  let mouse = self.input.mouse_pos
+  let tip_rect = @math.Rect::new(mouse.x + 12.0, mouse.y + 12.0, tip_w, tip_h)
+
+  // Floating bubble with dark background & subtle border
+  self.draw_list.add_rect(tip_rect, @color.Color::bg_window(), 4.0)
+  self.draw_list.add_rect_stroke(
+    tip_rect,
+    @color.Color::border_muted(),
+    1.0,
+    4.0,
+  )
+  self.draw_list.add_text(
+    @math.Vec2::new(tip_rect.x + pad_x, tip_rect.y + pad_y),
+    text,
+    12.0,
+    @color.Color::white(),
+  )
+}

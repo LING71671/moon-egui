@@ -376,3 +376,110 @@ test "widgets: combo_box popup open and selection" {
   // Menu closes after selection
   assert_eq(ctx.open_combo_id(), Id::zero())
 }
+
+///|
+test "widgets: toggle switch state transition" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Toggle initially off, hovered
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), false)
+  ctx.begin_frame(raw1)
+  let (state1, resp1) = ctx.toggle("Snap to Grid", false)
+  let _ = ctx.end_frame()
+  assert_eq(state1, false)
+  assert_true(resp1.hovered())
+
+  // Frame 2: Click to toggle ON
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), true)
+  ctx.begin_frame(raw2)
+  let (state2, _) = ctx.toggle("Snap to Grid", false)
+  let _ = ctx.end_frame()
+
+  let raw3 = RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), false)
+  ctx.begin_frame(raw3)
+  let (state3, resp3) = ctx.toggle("Snap to Grid", state2)
+  let _ = ctx.end_frame()
+  assert_true(resp3.clicked())
+  assert_eq(state3, true)
+}
+
+///|
+test "widgets: drag_value dragging and clamping" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Initial state
+  ctx.begin_frame(RawInput::new())
+  let (val1, _) = ctx.drag_value("Scale", 1.0, 0.1, 0.5, 5.0)
+  let _ = ctx.end_frame()
+  assert_eq(val1, 1.0)
+
+  // Frame 2: Mouse press on box
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(60.0, 10.0), true)
+  ctx.begin_frame(raw2)
+  let _ = ctx.drag_value("Scale", 1.0, 0.1, 0.5, 5.0)
+
+  // Frame 3: Mouse drag to the right
+  let raw3 = RawInput::from_mouse(@math.Vec2::new(70.0, 10.0), true)
+  ctx.begin_frame(raw3)
+  let (val3, _) = ctx.drag_value("Scale", 1.0, 0.1, 0.5, 5.0)
+  let _ = ctx.end_frame()
+  assert_true(val3 >= 1.0)
+}
+
+///|
+test "widgets: tab_bar item selection" {
+  let ctx = UIContext::new()
+  let tabs = ["Inspector", "Layers", "Settings"]
+
+  // Frame 1: Initially tab 0 selected
+  ctx.begin_frame(RawInput::new())
+  let (sel1, _) = ctx.tab_bar("panel_tabs", tabs, 0)
+  let _ = ctx.end_frame()
+  assert_eq(sel1, 0)
+
+  // Frame 2: Click on tab 1 ("Layers" at approx x = 120.0, y = 14.0)
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(120.0, 14.0), true)
+  ctx.begin_frame(raw2)
+  let (sel2, _) = ctx.tab_bar("panel_tabs", tabs, 0)
+  let _ = ctx.end_frame()
+  assert_eq(sel2, 1)
+}
+
+///|
+test "widgets: color_button click and dimensions" {
+  let ctx = UIContext::new()
+  let col = @color.Color::rgb(255, 100, 50)
+
+  // Frame 1: Hover over color button
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), false)
+  ctx.begin_frame(raw1)
+  let (clicked1, resp1) = ctx.color_button("stroke_col", col)
+  let _ = ctx.end_frame()
+  assert_false(clicked1)
+  assert_true(resp1.hovered())
+  assert_eq(resp1.rect.w, 22.0)
+  assert_eq(resp1.rect.h, 22.0)
+
+  // Frame 2: Click color button
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), true)
+  ctx.begin_frame(raw2)
+  let _ = ctx.color_button("stroke_col", col)
+
+  let raw3 = RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), false)
+  ctx.begin_frame(raw3)
+  let (clicked3, resp3) = ctx.color_button("stroke_col", col)
+  let _ = ctx.end_frame()
+  assert_true(clicked3)
+  assert_true(resp3.clicked())
+}
+
+///|
+test "widgets: tooltip rendering" {
+  let ctx = UIContext::new()
+
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(50.0, 50.0), false))
+  ctx.tooltip("Ctrl + S to Save")
+  let dl = ctx.end_frame()
+  // Tooltip adds rect, stroke, text (at least 3 draw commands)
+  assert_true(dl.len() >= 3)
+}

@@ -926,6 +926,213 @@
       text-shadow: 0 1px 2px rgba(0,0,0,0.4);
     }
 
+    /* Toggle switch widget */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 13px;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+
+    .toggle-pill {
+      width: 36px;
+      height: 20px;
+      background: var(--border-strong);
+      border-radius: 10px;
+      position: relative;
+      transition: background 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+
+    .toggle-row.active .toggle-pill {
+      background: var(--brand);
+    }
+
+    .toggle-circle {
+      width: 16px;
+      height: 16px;
+      background: #ffffff;
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toggle-row.active .toggle-circle {
+      transform: translateX(16px);
+    }
+
+    /* DragValue widget */
+    .dragval-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+
+    .dragval-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-main);
+      cursor: ew-resize;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    .dragval-box:hover, .dragval-box.is-dragging {
+      border-color: var(--brand);
+      background: #eff6ff;
+      color: var(--brand);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+
+    .dragval-arrows {
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    .dragval-box:hover .dragval-arrows,
+    .dragval-box.is-dragging .dragval-arrows {
+      color: var(--brand);
+    }
+
+    /* TabBar widget */
+    .tabbar-container {
+      display: flex;
+      align-items: center;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 3px;
+      margin-bottom: 16px;
+    }
+
+    .tabbar-item {
+      flex: 1;
+      text-align: center;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-sub);
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .tabbar-item:hover {
+      color: var(--text-main);
+    }
+
+    .tabbar-item.active {
+      background: #ffffff;
+      color: var(--brand);
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    /* ColorButton widget */
+    .color-picker-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .color-swatch-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 0 1px var(--border-strong), 0 2px 5px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .color-swatch-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 0 2px var(--brand), 0 4px 8px rgba(37,99,235,0.2);
+    }
+
+    .color-palette-grid {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .palette-item {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid rgba(0,0,0,0.1);
+      transition: transform 0.1s ease;
+    }
+
+    .palette-item:hover {
+      transform: scale(1.15);
+    }
+
+    /* Tooltip widget */
+    .tooltip-target-card {
+      position: relative;
+      display: inline-block;
+    }
+
+    .tooltip-bubble {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: var(--dark-btn);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+      z-index: 100;
+    }
+
+    .tooltip-bubble::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 4px;
+      border-style: solid;
+      border-color: var(--dark-btn) transparent transparent transparent;
+    }
+
+    .tooltip-target-card:hover .tooltip-bubble {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
     /* Toast */
     .toast-msg {
       position: fixed;
@@ -1061,6 +1268,10 @@
             <span>Checkbox 复选框</span>
             <span class="comp-subtag">开关</span>
           </button>
+          <button class="comp-btn" data-id="toggle">
+            <span>Toggle 胶囊开关</span>
+            <span class="comp-subtag">切换</span>
+          </button>
           <button class="comp-btn" data-id="radio">
             <span>Radio 单选按钮</span>
             <span class="comp-subtag">单选</span>
@@ -1069,9 +1280,17 @@
             <span>Slider 滑动条</span>
             <span class="comp-subtag">数值</span>
           </button>
+          <button class="comp-btn" data-id="drag_value">
+            <span>DragValue 数字微调</span>
+            <span class="comp-subtag">拖动</span>
+          </button>
           <button class="comp-btn" data-id="combo_box">
             <span>ComboBox 下拉框</span>
             <span class="comp-subtag">选项</span>
+          </button>
+          <button class="comp-btn" data-id="color_button">
+            <span>ColorButton 调色板</span>
+            <span class="comp-subtag">色彩</span>
           </button>
         </div>
 
@@ -1085,10 +1304,18 @@
             <span>CollapsingHeader 折叠树</span>
             <span class="comp-subtag">树形</span>
           </button>
+          <button class="comp-btn" data-id="tooltip">
+            <span>Tooltip 悬浮提示</span>
+            <span class="comp-subtag">气泡</span>
+          </button>
         </div>
 
         <div class="category-title">容器与排版</div>
         <div class="comp-menu">
+          <button class="comp-btn" data-id="tab_bar">
+            <span>TabBar 标签导航</span>
+            <span class="comp-subtag">选项卡</span>
+          </button>
           <button class="comp-btn" data-id="scroll_area">
             <span>ScrollArea 滚动区域</span>
             <span class="comp-subtag">裁剪</span>
@@ -1327,6 +1554,62 @@ pub fn draw_checkbox(ui : @core.UIContext, state : AppState) -> Unit {
         }
       },
 
+      toggle: {
+        title: "Toggle 胶囊开关",
+        signature: "ui.toggle(label, is_checked)",
+        code: `///|
+/// 胶囊滑动开关交互范例 (Toggle Switch)
+pub fn draw_toggles(ui : @core.UIContext, state : AppState) -> Unit {
+  // 1. 视口网格几何吸附开关
+  let (snap, res1) = ui.toggle("开启网格端点自动吸附", state.grid_snap)
+  if res1.changed {
+    state.grid_snap = snap
+  }
+
+  // 2. 实时光影法线着色管线
+  let (normals, res2) = ui.toggle("实时光影法线着色管线", state.normals)
+  if res2.changed {
+    state.normals = normals
+  }
+}`,
+        renderUI: (container, state) => {
+          if (state.t1 === undefined) state.t1 = true;
+          if (state.t2 === undefined) state.t2 = false;
+          container.innerHTML = `
+            <div class="sandbox-header">
+              <span>Toggle Switch Sandbox</span>
+            </div>
+            <div class="sandbox-body">
+              <div class="toggle-row ${state.t1 ? 'active' : ''}" id="tog1">
+                <div class="toggle-pill"><div class="toggle-circle"></div></div>
+                <span>开启网格端点自动吸附 (Snap to Grid)</span>
+              </div>
+              <div class="toggle-row ${state.t2 ? 'active' : ''}" id="tog2">
+                <div class="toggle-pill"><div class="toggle-circle"></div></div>
+                <span>实时光影法线着色管线 (Surface Normals)</span>
+              </div>
+            </div>
+            <div class="sandbox-tip">
+              现代胶囊药丸滑块，带平滑水平缓动位移与主题品牌强调色。
+            </div>
+          `;
+          const t1 = container.querySelector('#tog1');
+          const t2 = container.querySelector('#tog2');
+          t1.onclick = () => {
+            state.t1 = !state.t1;
+            t1.classList.toggle('active', state.t1);
+            document.getElementById('statResponse').textContent = `grid_snap: ${state.t1}`;
+            showToast(`网格吸附已${state.t1 ? '开启' : '关闭'}`);
+          };
+          t2.onclick = () => {
+            state.t2 = !state.t2;
+            t2.classList.toggle('active', state.t2);
+            document.getElementById('statResponse').textContent = `normals: ${state.t2}`;
+            showToast(`法线着色已${state.t2 ? '开启' : '关闭'}`);
+          };
+        }
+      },
+
       radio: {
         title: "Radio 单选按钮",
         signature: "ui.radio(label, is_selected)",
@@ -1436,6 +1719,106 @@ pub fn draw_slider(ui : @core.UIContext, state : AppState) -> Unit {
         }
       },
 
+      drag_value: {
+        title: "DragValue 数字微调器",
+        signature: "ui.drag_value(label, val, speed=..., min=..., max=...)",
+        code: `///|
+/// 紧凑型数字拖动调节器 (DragValue)
+pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
+  // 按住鼠标水平拖动即可平滑步进数值，占用面积比 Slider 小 70%
+  let (x, _) = ui.drag_value("坐标 X", state.pos_x, speed=0.5, min=-1000.0, max=1000.0)
+  let (y, _) = ui.drag_value("坐标 Y", state.pos_y, speed=0.5, min=-1000.0, max=1000.0)
+  let (scale, _) = ui.drag_value("几何缩放", state.scale, speed=0.05, min=0.1, max=10.0)
+}`,
+        renderUI: (container, state) => {
+          if (state.dx === undefined) state.dx = 120.0;
+          if (state.dy === undefined) state.dy = 80.0;
+          if (state.dscale === undefined) state.dscale = 1.25;
+
+          container.innerHTML = `
+            <div class="sandbox-header">
+              <span>DragValue Sandbox</span>
+            </div>
+            <div class="sandbox-body">
+              <div class="dragval-row">
+                <span>图元空间世界坐标 X</span>
+                <div class="dragval-box" id="dvX" title="按住左右拖动调节">
+                  <span class="dragval-arrows">◀</span>
+                  <span id="dvXVal">${state.dx.toFixed(1)}</span>
+                  <span class="dragval-arrows">▶</span>
+                </div>
+              </div>
+              <div class="dragval-row">
+                <span>图元空间世界坐标 Y</span>
+                <div class="dragval-box" id="dvY" title="按住左右拖动调节">
+                  <span class="dragval-arrows">◀</span>
+                  <span id="dvYVal">${state.dy.toFixed(1)}</span>
+                  <span class="dragval-arrows">▶</span>
+                </div>
+              </div>
+              <div class="dragval-row">
+                <span>全局拓扑缩放比例</span>
+                <div class="dragval-box" id="dvScale" title="按住左右拖动调节">
+                  <span class="dragval-arrows">◀</span>
+                  <span id="dvScaleVal">${state.dscale.toFixed(2)}x</span>
+                  <span class="dragval-arrows">▶</span>
+                </div>
+              </div>
+            </div>
+            <div class="sandbox-tip">
+              egui 标志性数值微调控件：按住数字方块左右滑动即可无极步进，极其紧凑。
+            </div>
+          `;
+
+          const setupDrag = (el, valEl, key, speed, min, max, suffix = '') => {
+            let isDragging = false;
+            let startX = 0;
+            let startVal = state[key];
+
+            const onDown = (e) => {
+              isDragging = true;
+              startX = e.clientX || (e.touches && e.touches[0].clientX);
+              startVal = state[key];
+              el.classList.add('is-dragging');
+              window.addEventListener('mousemove', onMove);
+              window.addEventListener('mouseup', onUp);
+              window.addEventListener('touchmove', onTouch, { passive: false });
+              window.addEventListener('touchend', onUp);
+              e.preventDefault();
+            };
+
+            const updateDelta = (clientX) => {
+              const dx = clientX - startX;
+              let nv = startVal + dx * speed;
+              if (min !== undefined && nv < min) nv = min;
+              if (max !== undefined && nv > max) nv = max;
+              state[key] = parseFloat(nv.toFixed(2));
+              valEl.textContent = (key === 'dscale' ? state[key].toFixed(2) : state[key].toFixed(1)) + suffix;
+              document.getElementById('statResponse').textContent = `${key}: ${state[key]}`;
+            };
+
+            const onMove = (e) => { if (isDragging) updateDelta(e.clientX); };
+            const onTouch = (e) => { if (isDragging && e.touches && e.touches[0]) updateDelta(e.touches[0].clientX); };
+            const onUp = () => {
+              if (!isDragging) return;
+              isDragging = false;
+              el.classList.remove('is-dragging');
+              window.removeEventListener('mousemove', onMove);
+              window.removeEventListener('mouseup', onUp);
+              window.removeEventListener('touchmove', onTouch);
+              window.removeEventListener('touchend', onUp);
+            };
+
+            el.addEventListener('mousedown', onDown);
+            el.addEventListener('touchstart', onDown, { passive: false });
+          };
+
+          setupDrag(container.querySelector('#dvX'), container.querySelector('#dvXVal'), 'dx', 0.5, -1000, 1000);
+          setupDrag(container.querySelector('#dvY'), container.querySelector('#dvYVal'), 'dy', 0.5, -1000, 1000);
+          setupDrag(container.querySelector('#dvScale'), container.querySelector('#dvScaleVal'), 'dscale', 0.02, 0.1, 10.0, 'x');
+        }
+      },
+
       combo_box: {
         title: "ComboBox 下拉选择框",
         signature: "ui.combo_box(id, label, idx, opts)",
@@ -1474,6 +1857,76 @@ pub fn draw_combo_box(ui : @core.UIContext, state : AppState) -> Unit {
             state.comboIdx = parseInt(sel.value);
             document.getElementById('statResponse').textContent = `selected: ${opts[state.comboIdx]}`;
           };
+        }
+      },
+
+      color_button: {
+        title: "ColorButton 调色板",
+        signature: "ui.color_button(id, color)",
+        code: `///|
+/// 颜色选择与色块预览按钮 (ColorButton)
+pub fn draw_colors(ui : @core.UIContext, state : AppState) -> Unit {
+  // 1. 图元描边色
+  let (clicked_stroke, _) = ui.color_button("stroke_col", state.stroke_color)
+
+  // 2. 图元内部填充色
+  let (clicked_fill, _) = ui.color_button("fill_col", state.fill_color)
+}`,
+        renderUI: (container, state) => {
+          if (state.strokeCol === undefined) state.strokeCol = '#2563eb';
+          if (state.fillCol === undefined) state.fillCol = '#eff6ff';
+
+          const palette = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#0f172a'];
+
+          container.innerHTML = `
+            <div class="sandbox-header">
+              <span>Color Swatch Sandbox</span>
+            </div>
+            <div class="sandbox-body">
+              <div class="color-picker-row">
+                <div class="color-swatch-btn" id="strokeSwatch" style="background: ${state.strokeCol};" title="点击选择描边色"></div>
+                <div style="flex: 1;">
+                  <div style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">图元描边颜色 (Stroke)</div>
+                  <div class="color-palette-grid" id="strokePalette">
+                    ${palette.map(c => `<div class="palette-item" style="background: ${c};" data-col="${c}"></div>`).join('')}
+                  </div>
+                </div>
+              </div>
+              <div class="color-picker-row" style="margin-top: 16px;">
+                <div class="color-swatch-btn" id="fillSwatch" style="background: ${state.fillCol};" title="点击选择填充色"></div>
+                <div style="flex: 1;">
+                  <div style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">图元几何填充 (Fill)</div>
+                  <div class="color-palette-grid" id="fillPalette">
+                    ${['#eff6ff', '#ecfdf5', '#fffbeb', '#fef2f2', '#faf5ff', '#ffffff'].map(c => `<div class="palette-item" style="background: ${c};" data-col="${c}"></div>`).join('')}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sandbox-tip">
+              CAD 图元色彩选择核心控件，支持色块即时响应与快速调色板拾取。
+            </div>
+          `;
+
+          const strokeSwatch = container.querySelector('#strokeSwatch');
+          const fillSwatch = container.querySelector('#fillSwatch');
+
+          container.querySelectorAll('#strokePalette .palette-item').forEach(item => {
+            item.onclick = () => {
+              state.strokeCol = item.getAttribute('data-col');
+              strokeSwatch.style.background = state.strokeCol;
+              document.getElementById('statResponse').textContent = `stroke: ${state.strokeCol}`;
+              showToast(`已更换描边颜色: ${state.strokeCol}`);
+            };
+          });
+
+          container.querySelectorAll('#fillPalette .palette-item').forEach(item => {
+            item.onclick = () => {
+              state.fillCol = item.getAttribute('data-col');
+              fillSwatch.style.background = state.fillCol;
+              document.getElementById('statResponse').textContent = `fill: ${state.fillCol}`;
+              showToast(`已更换填充颜色: ${state.fillCol}`);
+            };
+          });
         }
       },
 
@@ -1575,6 +2028,112 @@ pub fn draw_collapsing(ui : @core.UIContext, state : AppState) -> Unit {
             content.style.display = state.open ? 'block' : 'none';
             document.getElementById('statResponse').textContent = `tree_open: ${state.open}`;
           };
+        }
+      },
+
+      tooltip: {
+        title: "Tooltip 悬浮提示",
+        signature: "ui.tooltip(text) / response.hovered",
+        code: `///|
+/// 悬停气泡提示 (Tooltip)
+pub fn draw_tooltips(ui : @core.UIContext, state : AppState) -> Unit {
+  let res_export = ui.button("导出 CAD 实体")
+  if res_export.hovered {
+    ui.tooltip("支持导出 DXF、STEP 及高精度无损 SVG 矢量路径")
+  }
+
+  let res_mesh = ui.button("重构曲面网格")
+  if res_mesh.hovered {
+    ui.tooltip("基于四边形 Delaunay 剖分重新生成三角面片")
+  }
+}`,
+        renderUI: (container, state) => {
+          container.innerHTML = `
+            <div class="sandbox-header">
+              <span>Tooltip Bubble Sandbox</span>
+            </div>
+            <div class="sandbox-body">
+              <div class="widget-row" style="gap: 16px; padding: 20px 0;">
+                <div class="tooltip-target-card">
+                  <button class="btn-primary">导出 CAD 实体</button>
+                  <div class="tooltip-bubble">支持导出 DXF、STEP 及高精度无损 SVG 矢量路径</div>
+                </div>
+                <div class="tooltip-target-card">
+                  <button class="btn-secondary">重构曲面网格</button>
+                  <div class="tooltip-bubble">基于四边形 Delaunay 剖分重新生成三角面片</div>
+                </div>
+              </div>
+            </div>
+            <div class="sandbox-tip">
+              把鼠标移到上方按钮上：悬停即刻浮现顶层深色气泡提示，带指引小三角。
+            </div>
+          `;
+          container.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+            btn.onmouseenter = () => {
+              document.getElementById('statResponse').textContent = `tooltip: active [${btn.textContent}]`;
+            };
+            btn.onmouseleave = () => {
+              document.getElementById('statResponse').textContent = `tooltip: inactive`;
+            };
+          });
+        }
+      },
+
+      tab_bar: {
+        title: "TabBar 标签导航",
+        signature: "ui.tab_bar(id, tabs, selected_idx)",
+        code: `///|
+/// 多标签页分段切换 (TabBar)
+pub fn draw_tabs(ui : @core.UIContext, state : AppState) -> Unit {
+  let tabs = ["图元属性", "视口光照", "图层拓扑", "渲染输出"]
+  let (active_tab, res) = ui.tab_bar("panel_tabs", tabs, state.tab_idx)
+  if res.changed {
+    state.tab_idx = active_tab
+  }
+}`,
+        renderUI: (container, state) => {
+          if (state.tabIdx === undefined) state.tabIdx = 0;
+          const tabs = ["图元属性", "视口光照", "图层拓扑", "渲染输出"];
+          const panels = [
+            "【图元属性】CAD 贝塞尔曲线 (阶数: 3, 控制点: 16, 封闭: 是)",
+            "【视口光照】环境光遮蔽 AO: 85%, 方向光源: (0.5, 1.0, 0.2), 阴影级别: 4K",
+            "【图层拓扑】Layer_0 (基础图元), Layer_1 (尺寸标注), Layer_2 (约束辅助线)",
+            "【渲染输出】视口格式: 32-bit HDR, 抗锯齿: 8x MSAA, 输出分辨率: 3840x2160"
+          ];
+
+          container.innerHTML = `
+            <div class="sandbox-header">
+              <span>TabBar Sandbox</span>
+            </div>
+            <div class="sandbox-body">
+              <div class="tabbar-container">
+                ${tabs.map((t, i) => `
+                  <button class="tabbar-item ${state.tabIdx === i ? 'active' : ''}" data-idx="${i}">
+                    ${t}
+                  </button>
+                `).join('')}
+              </div>
+              <div style="background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 6px; padding: 14px; font-size: 13px; color: var(--text-main); font-family: 'JetBrains Mono', monospace;" id="tabContent">
+                ${panels[state.tabIdx]}
+              </div>
+            </div>
+            <div class="sandbox-tip">
+              水平紧凑分段标签导航，单帧返回当前激活索引与即时内容联动。
+            </div>
+          `;
+
+          const content = container.querySelector('#tabContent');
+          container.querySelectorAll('.tabbar-item').forEach(btn => {
+            btn.onclick = () => {
+              const idx = parseInt(btn.getAttribute('data-idx'));
+              state.tabIdx = idx;
+              container.querySelectorAll('.tabbar-item').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              content.textContent = panels[idx];
+              document.getElementById('statResponse').textContent = `active_tab: [${idx}] ${tabs[idx]}`;
+              showToast(`已切换至「${tabs[idx]}」标签`);
+            };
+          });
         }
       },
 
