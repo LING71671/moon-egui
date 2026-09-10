@@ -664,9 +664,279 @@ function _M0MP49LING7167111moon_2degui3src4core9UIContext10horizontal(self, cont
   }
   self.cursor = _M0MP49LING7167111moon_2degui3src4math4Vec23new(start_x, start_y + max_h + self.item_spacing.y);
 }
-function _M0FP49LING7167111moon_2degui8examples6canvas16get__ruler__step(zoom) {
+function _M0FP49LING7167111moon_2degui8examples6canvas28update__studio__window__drag(state, mouse_x, mouse_y, mouse_down, cur_w, win_w) {
+  if (state.win_pos_x < 0) {
+    state.win_pos_x = _M0MPC16double6Double3max(cur_w - win_w - 20, 20);
+    state.win_pos_y = 70;
+  }
+  const win_title_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(state.win_pos_x, state.win_pos_y, win_w, 28);
+  if (mouse_down && _M0MP49LING7167111moon_2degui3src4math4Rect8contains(win_title_rect, _M0MP49LING7167111moon_2degui3src4math4Vec23new(mouse_x, mouse_y))) {
+    state.win_dragging = true;
+  }
+  if (!mouse_down) {
+    state.win_dragging = false;
+    return;
+  } else {
+    return;
+  }
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas22render__studio__window(ctx, state, cur_w, cur_h, win_w, win_h) {
+  const win_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(state.win_pos_x, state.win_pos_y);
+  const win_size = _M0MP49LING7167111moon_2degui3src4math4Vec23new(win_w, win_h);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6window(ctx, "moon-egui Studio", win_pos, win_size, (ui) => {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "Matrix Scale", _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());
+    _M0MP49LING7167111moon_2degui3src4core9UIContext10horizontal(ui, (row) => {
+      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "128", _M0MP49LING7167111moon_2degui3src4math4Vec23new(54, 24)).clicked) {
+        state.grid_dim = 128;
+        state.selected_id = -1;
+      }
+      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "256", _M0MP49LING7167111moon_2degui3src4math4Vec23new(54, 24)).clicked) {
+        state.grid_dim = 256;
+        state.selected_id = -1;
+      }
+      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "512", _M0MP49LING7167111moon_2degui3src4math4Vec23new(54, 24)).clicked) {
+        state.grid_dim = 512;
+        state.selected_id = -1;
+      }
+      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "1024", _M0MP49LING7167111moon_2degui3src4math4Vec23new(54, 24)).clicked) {
+        state.grid_dim = 1024;
+        state.selected_id = -1;
+        return;
+      } else {
+        return;
+      }
+    });
+    _M0MP49LING7167111moon_2degui3src4core9UIContext9separator(ui);
+    const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext6slider(ui, "Zoom", state.zoom, 0.02, 2);
+    const _new_zoom = _bind._0;
+    state.zoom = _new_zoom;
+    _M0MP49LING7167111moon_2degui3src4core9UIContext9separator(ui);
+    const _bind$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext8checkbox(ui, "Wave Pulse Dynamics", state.wave_pulse);
+    const _new_pulse = _bind$2._0;
+    const _pulse_resp = _bind$2._1;
+    if (_pulse_resp.clicked) {
+      state.wave_pulse = _new_pulse;
+    }
+    const _bind$3 = _M0MP49LING7167111moon_2degui3src4core9UIContext8checkbox(ui, "Magnetic Repel Field", state.magnetic_repel);
+    const _new_repel = _bind$3._0;
+    const _repel_resp = _bind$3._1;
+    if (_repel_resp.clicked) {
+      state.magnetic_repel = _new_repel;
+    }
+    _M0MP49LING7167111moon_2degui3src4core9UIContext9separator(ui);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext10horizontal(ui, (row) => {
+      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "Fit All", _M0MP49LING7167111moon_2degui3src4math4Vec23new(74, 24)).clicked) {
+        const min_dim = cur_w < cur_h ? cur_w : cur_h;
+        const fit_z = (min_dim - 60) / 10500;
+        state.zoom = fit_z > 0.01 ? fit_z : 0.075;
+        state.cam_x = 5000;
+        state.cam_y = 5000;
+      }
+      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "Center", _M0MP49LING7167111moon_2degui3src4math4Vec23new(74, 24)).clicked) {
+        state.cam_x = 5000;
+        state.cam_y = 5000;
+      }
+      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "100%", _M0MP49LING7167111moon_2degui3src4math4Vec23new(74, 24)).clicked) {
+        state.zoom = 1;
+        return;
+      } else {
+        return;
+      }
+    });
+    _M0MP49LING7167111moon_2degui3src4core9UIContext9separator(ui);
+    if (state.selected_id >= 0) {
+      const sel_col = state.selected_id % state.grid_dim | 0;
+      const sel_row = state.selected_id / state.grid_dim | 0;
+      const info = `Node #${_M0MPC13int3Int18to__string_2einner(state.selected_id, 10)} [${_M0MPC13int3Int18to__string_2einner(sel_col, 10)},${_M0MPC13int3Int18to__string_2einner(sel_row, 10)}]`;
+      _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, info, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(244, 63, 94));
+      return;
+    } else {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "Click grid node to inspect", _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary());
+      return;
+    }
+  });
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas17calc__ruler__step(zoom) {
   const target = 80 / zoom;
   return target > 20000 ? 50000 : target > 10000 ? 20000 : target > 5000 ? 10000 : target > 2000 ? 5000 : target > 1000 ? 2000 : target > 500 ? 1000 : target > 200 ? 500 : target > 100 ? 200 : target > 50 ? 100 : target > 20 ? 50 : 20;
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas20render__grid__aisles(dl, state, cv_x, cv_y, cv_w, cv_h, sc_x, sc_y) {
+  const aisle_col = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240);
+  let _tmp = 0;
+  while (true) {
+    const bi = _tmp;
+    if (bi <= 10) {
+      const aisle_wx = (bi + 0) * 1000;
+      const aisle_sx = sc_x + (aisle_wx - state.cam_x) * state.zoom;
+      if (aisle_sx >= cv_x && aisle_sx <= cv_x + cv_w) {
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(aisle_sx, cv_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(aisle_sx, cv_y + cv_h), aisle_col, 1);
+      }
+      const aisle_wy = (bi + 0) * 1000;
+      const aisle_sy = sc_y + (aisle_wy - state.cam_y) * state.zoom;
+      if (aisle_sy >= cv_y && aisle_sy <= cv_y + cv_h) {
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(cv_x, aisle_sy), _M0MP49LING7167111moon_2degui3src4math4Vec23new(cv_x + cv_w, aisle_sy), aisle_col, 1);
+      }
+      _tmp = bi + 1 | 0;
+      continue;
+    } else {
+      return;
+    }
+  }
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas19render__cad__rulers(dl, state, cv_x, cv_y, cv_w, cv_h, vp_x, vp_y, ruler_w, ruler_h, min_wx, max_wx, min_wy, max_wy, sc_x, sc_y) {
+  const ruler_bg = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 255, 255);
+  const ruler_border = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240);
+  const ruler_tick_col = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(148, 163, 184);
+  const ruler_text_col = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(71, 85, 105);
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(cv_x, vp_y, cv_w, ruler_h), ruler_bg, 0);
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(cv_x, vp_y + ruler_h), _M0MP49LING7167111moon_2degui3src4math4Vec23new(cv_x + cv_w, vp_y + ruler_h), ruler_border, 1);
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, cv_y, ruler_w, cv_h), ruler_bg, 0);
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + ruler_w, cv_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + ruler_w, cv_y + cv_h), ruler_border, 1);
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, vp_y, ruler_w, ruler_h), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(248, 250, 252), 0);
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + 16, vp_y + 4), "px", 10, ruler_text_col);
+  const step_x = _M0FP49LING7167111moon_2degui8examples6canvas17calc__ruler__step(state.zoom);
+  const first_tick_x = (_M0MPC16double6Double7to__int(min_wx / step_x) + 0) * step_x;
+  let cur_wx = first_tick_x;
+  while (true) {
+    if (cur_wx <= max_wx) {
+      const sx = sc_x + (cur_wx - state.cam_x) * state.zoom;
+      if (sx >= cv_x && sx <= cv_x + cv_w) {
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(sx, vp_y + ruler_h - 8), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sx, vp_y + ruler_h), ruler_tick_col, 1);
+        const label_txt = _M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(cur_wx), 10);
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(sx + 3, vp_y + 3), label_txt, 9, ruler_text_col);
+      }
+      cur_wx = cur_wx + step_x;
+      continue;
+    } else {
+      break;
+    }
+  }
+  const step_y = _M0FP49LING7167111moon_2degui8examples6canvas17calc__ruler__step(state.zoom);
+  const first_tick_y = (_M0MPC16double6Double7to__int(min_wy / step_y) + 0) * step_y;
+  let cur_wy = first_tick_y;
+  while (true) {
+    if (cur_wy <= max_wy) {
+      const sy = sc_y + (cur_wy - state.cam_y) * state.zoom;
+      if (sy >= cv_y && sy <= cv_y + cv_h) {
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + ruler_w - 8, sy), _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + ruler_w, sy), ruler_tick_col, 1);
+        const label_txt = _M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(cur_wy), 10);
+        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + 2, sy - 5), label_txt, 9, ruler_text_col);
+      }
+      cur_wy = cur_wy + step_y;
+      continue;
+    } else {
+      return;
+    }
+  }
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas26render__ruler__projections(dl, state, cv_x, cv_y, cv_w, cv_h, vp_x, vp_y, ruler_w, ruler_h, sc_x, sc_y, pitch, cell_size, grid_dim) {
+  if (state.selected_id >= 0) {
+    const sel_id = state.selected_id;
+    const r = sel_id / grid_dim | 0;
+    const c = sel_id % grid_dim | 0;
+    const is_dragged = state.item_drag_dx !== 0 || (state.item_drag_dy !== 0 || state.is_dragging_item);
+    const sel_orig_wx = (c + 0) * pitch;
+    const sel_orig_wy = (r + 0) * pitch;
+    const sel_wx = is_dragged ? sel_orig_wx + state.item_drag_dx : sel_orig_wx;
+    const sel_wy = is_dragged ? sel_orig_wy + state.item_drag_dy : sel_orig_wy;
+    const sel_sx = sc_x + (sel_wx - state.cam_x) * state.zoom;
+    const sel_sy = sc_y + (sel_wy - state.cam_y) * state.zoom;
+    const sel_sw = _M0MPC16double6Double3max(cell_size * state.zoom, 8);
+    const sel_sh = _M0MPC16double6Double3max(cell_size * state.zoom, 8);
+    if (sel_sx + sel_sw >= cv_x && sel_sx <= cv_x + cv_w) {
+      const proj_x = _M0MPC16double6Double3max(sel_sx, cv_x);
+      const proj_w = _M0MPC16double6Double3max(sel_sw, 16);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(proj_x, vp_y, proj_w, ruler_h), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(139, 92, 246, 40), 0);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(proj_x, vp_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(proj_x, vp_y + ruler_h), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(139, 92, 246), 1.5);
+      const coord_txt = _M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(sel_wx), 10);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(proj_x + 2, vp_y + 2), coord_txt, 9, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(109, 40, 217));
+    }
+    if (sel_sy + sel_sh >= cv_y && sel_sy <= cv_y + cv_h) {
+      const proj_y = _M0MPC16double6Double3max(sel_sy, cv_y);
+      const proj_h = _M0MPC16double6Double3max(sel_sh, 16);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(vp_x, proj_y, ruler_w, proj_h), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(139, 92, 246, 40), 0);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x, proj_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + ruler_w, proj_y), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(139, 92, 246), 1.5);
+      const coord_txt = _M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(sel_wy), 10);
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_x + 2, proj_y), coord_txt, 9, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(109, 40, 217));
+      return;
+    } else {
+      return;
+    }
+  } else {
+    return;
+  }
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas23handle__node__hit__test(state, ctx, mouse_down, in_canvas, mwx, mwy, pitch, grid_dim, matrix_world_size) {
+  const can_hit_nodes = in_canvas && (!(ctx.prev_wants_capture_mouse || ctx.wants_capture_mouse) && (mwx >= 0 && (mwx < matrix_world_size && (mwy >= 0 && mwy < matrix_world_size))));
+  if (can_hit_nodes) {
+    const col = _M0MPC16double6Double7to__int(mwx / pitch);
+    const row = _M0MPC16double6Double7to__int(mwy / pitch);
+    if (col >= 0 && (col < grid_dim && (row >= 0 && row < grid_dim))) {
+      const node_id = (Math.imul(row, grid_dim) | 0) + col | 0;
+      if (mouse_down) {
+        state.click_count = state.click_count + 1 | 0;
+        if (state.selected_id !== node_id) {
+          state.selected_id = node_id;
+          state.selected_col = col;
+          state.selected_row = row;
+          state.item_drag_dx = 0;
+          state.item_drag_dy = 0;
+        }
+        state.ripple_active = true;
+        state.ripple_cx = (col + 0) * pitch + pitch * 0.5;
+        state.ripple_cy = (row + 0) * pitch + pitch * 0.5;
+        state.ripple_progress = 0;
+        return;
+      } else {
+        return;
+      }
+    } else {
+      return;
+    }
+  } else {
+    return;
+  }
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas23update__ripple__physics(state, matrix_world_size, pitch) {
+  if (state.ripple_active) {
+    state.ripple_progress = state.ripple_progress + pitch * 1.6;
+    if (state.ripple_progress > matrix_world_size * 0.6) {
+      state.ripple_active = false;
+      state.ripple_progress = 0;
+      return;
+    } else {
+      return;
+    }
+  } else {
+    return;
+  }
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas21calc__culling__bounds(state, cv_w, cv_h, pitch, grid_dim) {
+  const half_vw = cv_w * 0.5 / state.zoom;
+  const half_vh = cv_h * 0.5 / state.zoom;
+  const min_wx = state.cam_x - half_vw;
+  const max_wx = state.cam_x + half_vw;
+  const min_wy = state.cam_y - half_vh;
+  const max_wy = state.cam_y + half_vh;
+  let c_start = _M0MPC16double6Double7to__int(min_wx / pitch);
+  if (c_start < 0) {
+    c_start = 0;
+  }
+  let c_end = _M0MPC16double6Double7to__int(max_wx / pitch) + 1 | 0;
+  if (c_end > grid_dim) {
+    c_end = grid_dim;
+  }
+  let r_start = _M0MPC16double6Double7to__int(min_wy / pitch);
+  if (r_start < 0) {
+    r_start = 0;
+  }
+  let r_end = _M0MPC16double6Double7to__int(max_wy / pitch) + 1 | 0;
+  if (r_end > grid_dim) {
+    r_end = grid_dim;
+  }
+  const total_vis = c_end > c_start && r_end > r_start ? Math.imul(c_end - c_start | 0, r_end - r_start | 0) | 0 : 0;
+  state.visible_cells = total_vis;
+  return { _0: c_start, _1: c_end, _2: r_start, _3: r_end, _4: total_vis, _5: min_wx, _6: max_wx, _7: min_wy, _8: max_wy };
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas16get__logo__color(dim, col, row) {
   if (col < 0 || (col >= dim || (row < 0 || row >= dim))) {
@@ -688,246 +958,31 @@ function _M0FP49LING7167111moon_2degui8examples6canvas16get__logo__color(dim, co
     return _M0MP49LING7167111moon_2degui3src5color5Color3rgb(r, g, b);
   }
 }
-function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mouse_down, pan_dx, pan_dy, zoom_delta, switch_mode, vp_w, vp_h) {
-  _M0FP49LING7167111moon_2degui8examples6canvas5state.frame_tick = _M0FP49LING7167111moon_2degui8examples6canvas5state.frame_tick + 1;
-  if (switch_mode >= 0) {
-    if (switch_mode === 128) {
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 128;
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id = -1;
-    } else {
-      if (switch_mode === 256) {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 256;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id = -1;
-      } else {
-        if (switch_mode === 512) {
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 512;
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id = -1;
-        } else {
-          if (switch_mode === 1024) {
-            _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 1024;
-            _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id = -1;
-          } else {
-            if (switch_mode === 1) {
-              _M0FP49LING7167111moon_2degui8examples6canvas5state.wave_pulse = !_M0FP49LING7167111moon_2degui8examples6canvas5state.wave_pulse;
-            } else {
-              if (switch_mode === 2) {
-                _M0FP49LING7167111moon_2degui8examples6canvas5state.magnetic_repel = !_M0FP49LING7167111moon_2degui8examples6canvas5state.magnetic_repel;
-              } else {
-                if (switch_mode === 3) {
-                  const min_dim = vp_w < vp_h ? vp_w : vp_h;
-                  const fit_z = (min_dim - 60) / 10500;
-                  _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = fit_z > 0.01 ? fit_z : 0.075;
-                  _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 5000;
-                  _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 5000;
-                } else {
-                  if (switch_mode === 4) {
-                    _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 1;
-                  } else {
-                    if (switch_mode === 5) {
-                      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 5000;
-                      _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 5000;
-                    } else {
-                      if (switch_mode === 6) {
-                        _M0FP49LING7167111moon_2degui8examples6canvas5state.drag_mode = 1;
-                      } else {
-                        if (switch_mode === 7) {
-                          _M0FP49LING7167111moon_2degui8examples6canvas5state.drag_mode = 0;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  const cur_w = vp_w > 100 ? vp_w : 920;
-  const cur_h = vp_h > 100 ? vp_h : 540;
-  if (_M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_x < 0) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_x = _M0MPC16double6Double3max(cur_w - 264 - 20, 20);
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_y = 70;
-  }
-  const win_title_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_x, _M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_y, 264, 28);
-  if (mouse_down && _M0MP49LING7167111moon_2degui3src4math4Rect8contains(win_title_rect, _M0MP49LING7167111moon_2degui3src4math4Vec23new(mouse_x, mouse_y))) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.win_dragging = true;
-  }
-  if (!mouse_down) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.win_dragging = false;
-  }
-  if (pan_dx !== 0 || pan_dy !== 0) {
-    if (_M0FP49LING7167111moon_2degui8examples6canvas5state.win_dragging) {
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_x = _M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_x + pan_dx;
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_y = _M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_y + pan_dy;
-      if (_M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_x < 0) {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_x = 0;
-      } else {
-        if (_M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_x > cur_w - 264) {
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_x = cur_w - 264;
-        }
-      }
-      if (_M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_y < 0) {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_y = 0;
-      } else {
-        if (_M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_y > cur_h - 340) {
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_y = cur_h - 340;
-        }
-      }
-    } else {
-      if (_M0FP49LING7167111moon_2degui8examples6canvas3ctx.prev_wants_capture_mouse || _M0FP49LING7167111moon_2degui8examples6canvas3ctx.wants_capture_mouse) {
-      } else {
-        if (_M0FP49LING7167111moon_2degui8examples6canvas5state.drag_mode === 1 && _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id >= 0) {
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.is_dragging_item = true;
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dx = _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dx + pan_dx / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dy = _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dy + pan_dy / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-        } else {
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x - pan_dx / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y - pan_dy / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-          if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x < -2000) {
-            _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = -2000;
-          } else {
-            if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x > 12000) {
-              _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 12000;
-            }
-          }
-          if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y < -2000) {
-            _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = -2000;
-          } else {
-            if (_M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y > 12000) {
-              _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 12000;
-            }
-          }
-        }
-      }
-    }
-  }
-  if (!mouse_down) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.is_dragging_item = false;
-  }
-  if (zoom_delta !== 1 && (zoom_delta > 0 && !(_M0FP49LING7167111moon_2degui8examples6canvas3ctx.prev_wants_capture_mouse || _M0FP49LING7167111moon_2degui8examples6canvas3ctx.wants_capture_mouse))) {
-    const new_zoom = _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom * zoom_delta;
-    if (new_zoom < 0.01) {
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 0.01;
-    } else {
-      if (new_zoom > 25) {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 25;
-      } else {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = new_zoom;
-      }
-    }
-  }
-  const raw = _M0MP49LING7167111moon_2degui3src4core8RawInput11from__mouse(_M0MP49LING7167111moon_2degui3src4math4Vec23new(mouse_x, mouse_y), mouse_down);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext12begin__frame(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, raw);
-  const dl = _M0FP49LING7167111moon_2degui8examples6canvas3ctx.draw_list;
-  const cv_w = cur_w - 48;
-  const cv_h = cur_h - 22;
-  const sc_x = 48 + cv_w * 0.5;
-  const sc_y = 22 + cv_h * 0.5;
-  const grid_dim = _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim;
-  const pitch = 10000 / (grid_dim + 0);
-  const in_canvas = mouse_x >= 48 && (mouse_x <= 48 + cv_w && (mouse_y >= 22 && mouse_y <= 22 + cv_h));
-  const mwx = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x + (mouse_x - sc_x) / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-  const mwy = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y + (mouse_y - sc_y) / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-  const can_hit_nodes = in_canvas && (!(_M0FP49LING7167111moon_2degui8examples6canvas3ctx.prev_wants_capture_mouse || _M0FP49LING7167111moon_2degui8examples6canvas3ctx.wants_capture_mouse) && (mwx >= 0 && (mwx < 10000 && (mwy >= 0 && mwy < 10000))));
-  if (can_hit_nodes) {
-    const col = _M0MPC16double6Double7to__int(mwx / pitch);
-    const row = _M0MPC16double6Double7to__int(mwy / pitch);
-    if (col >= 0 && (col < grid_dim && (row >= 0 && row < grid_dim))) {
-      const node_id = (Math.imul(row, grid_dim) | 0) + col | 0;
-      if (mouse_down) {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count = _M0FP49LING7167111moon_2degui8examples6canvas5state.click_count + 1 | 0;
-        if (_M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id !== node_id) {
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id = node_id;
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_col = col;
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_row = row;
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dx = 0;
-          _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dy = 0;
-        }
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active = true;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cx = (col + 0) * pitch + pitch * 0.5;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cy = (row + 0) * pitch + pitch * 0.5;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress = 0;
-      }
-    }
-  }
-  if (_M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active) {
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress = _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress + pitch * 1.6;
-    if (_M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress > 6000) {
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active = false;
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress = 0;
-    }
-  }
-  const half_vw = cv_w * 0.5 / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-  const half_vh = cv_h * 0.5 / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-  const min_wx = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x - half_vw;
-  const max_wx = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x + half_vw;
-  const min_wy = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y - half_vh;
-  const max_wy = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y + half_vh;
-  let c_start = _M0MPC16double6Double7to__int(min_wx / pitch);
-  if (c_start < 0) {
-    c_start = 0;
-  }
-  let c_end = _M0MPC16double6Double7to__int(max_wx / pitch) + 1 | 0;
-  if (c_end > grid_dim) {
-    c_end = grid_dim;
-  }
-  let r_start = _M0MPC16double6Double7to__int(min_wy / pitch);
-  if (r_start < 0) {
-    r_start = 0;
-  }
-  let r_end = _M0MPC16double6Double7to__int(max_wy / pitch) + 1 | 0;
-  if (r_end > grid_dim) {
-    r_end = grid_dim;
-  }
-  const total_vis = c_end > c_start && r_end > r_start ? Math.imul(c_end - c_start | 0, r_end - r_start | 0) | 0 : 0;
-  _M0FP49LING7167111moon_2degui8examples6canvas5state.visible_cells = total_vis;
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList10push__clip(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(48, 22, cv_w, cv_h));
-  const aisle_col = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240);
-  let _tmp = 0;
-  while (true) {
-    const bi = _tmp;
-    if (bi <= 10) {
-      const aisle_wx = (bi + 0) * 1000;
-      const aisle_sx = sc_x + (aisle_wx - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-      if (aisle_sx >= 48 && aisle_sx <= 48 + cv_w) {
-        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(aisle_sx, 22), _M0MP49LING7167111moon_2degui3src4math4Vec23new(aisle_sx, 22 + cv_h), aisle_col, 1);
-      }
-      const aisle_wy = (bi + 0) * 1000;
-      const aisle_sy = sc_y + (aisle_wy - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-      if (aisle_sy >= 22 && aisle_sy <= 22 + cv_h) {
-        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(48, aisle_sy), _M0MP49LING7167111moon_2degui3src4math4Vec23new(48 + cv_w, aisle_sy), aisle_col, 1);
-      }
-      _tmp = bi + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  const unit_px = pitch * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+function _M0FP49LING7167111moon_2degui8examples6canvas21render__matrix__nodes(dl, state, in_canvas, mouse_x, mouse_y, cv_x, cv_y, cv_w, cv_h, sc_x, sc_y, grid_dim, pitch, cell_size, mwx, mwy, c_start, c_end, r_start, r_end, total_vis, matrix_world_size) {
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList10push__clip(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(cv_x, cv_y, cv_w, cv_h));
+  const unit_px = pitch * state.zoom;
   const repel_radius = pitch * 4.5;
   const repel_radius_sq = repel_radius * repel_radius;
   const is_micro_vector = unit_px >= 12 && total_vis <= 2500;
   if (is_micro_vector) {
-    const on_screen_cell_w = pitch * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-    const on_screen_cell_h = pitch * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-    let _tmp$2 = r_start;
+    const on_screen_cell_w = cell_size * state.zoom;
+    const on_screen_cell_h = cell_size * state.zoom;
+    let _tmp = r_start;
     while (true) {
-      const r = _tmp$2;
+      const r = _tmp;
       if (r < r_end) {
         const base_wy = (r + 0) * pitch;
-        let _tmp$3 = c_start;
+        let _tmp$2 = c_start;
         while (true) {
-          const c = _tmp$3;
+          const c = _tmp$2;
           if (c < c_end) {
             const base_wx = (c + 0) * pitch;
             const node_id = (Math.imul(r, grid_dim) | 0) + c | 0;
-            const is_selected = node_id === _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id;
-            const is_dragged = is_selected && (_M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dx !== 0 || (_M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dy !== 0 || _M0FP49LING7167111moon_2degui8examples6canvas5state.is_dragging_item));
+            const is_selected = node_id === state.selected_id;
+            const is_dragged = is_selected && (state.item_drag_dx !== 0 || (state.item_drag_dy !== 0 || state.is_dragging_item));
             let pdx = 0;
             let pdy = 0;
-            if (_M0FP49LING7167111moon_2degui8examples6canvas5state.magnetic_repel && in_canvas) {
+            if (state.magnetic_repel && in_canvas) {
               const c_center_x = base_wx + pitch * 0.5;
               const c_center_y = base_wy + pitch * 0.5;
               const dist_sq = (c_center_x - mwx) * (c_center_x - mwx) + (c_center_y - mwy) * (c_center_y - mwy);
@@ -938,18 +993,18 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
                 pdy = (c_center_y - mwy) / repel_radius * push;
               }
             }
-            if (_M0FP49LING7167111moon_2degui8examples6canvas5state.wave_pulse) {
-              const wave_val = _M0FP49LING7167111moon_2degui8examples6canvas5state.frame_tick * 0.07 + ((c + r | 0) + 0) * 0.25;
+            if (state.wave_pulse) {
+              const wave_val = state.frame_tick * 0.07 + ((c + r | 0) + 0) * 0.25;
               const phase = wave_val - (_M0MPC16double6Double7to__int(wave_val / 6.283) + 0) * 6.283;
               const wave_dy = phase < 3.14159 ? (phase / 3.14159 * 2 - 1) * pitch * 0.12 : (1 - (phase - 3.14159) / 3.14159 * 2) * pitch * 0.12;
               pdy = pdy + wave_dy;
             }
             let ripple_bright = false;
-            if (_M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active) {
-              const rx = base_wx - _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cx;
-              const ry = base_wy - _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cy;
+            if (state.ripple_active) {
+              const rx = base_wx - state.ripple_cx;
+              const ry = base_wy - state.ripple_cy;
               const r_dist = rx * rx + ry * ry;
-              const target_dist = _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress * _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress;
+              const target_dist = state.ripple_progress * state.ripple_progress;
               const _p = r_dist - target_dist;
               const diff = _p < 0 ? -_p : _p;
               if (diff < pitch * pitch * 36) {
@@ -957,10 +1012,10 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
                 pdy = pdy - pitch * 0.3;
               }
             }
-            const cur_wx = is_dragged ? base_wx + _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dx + pdx : base_wx + pdx;
-            const cur_wy = is_dragged ? base_wy + _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dy + pdy : base_wy + pdy;
-            const sx = sc_x + (cur_wx - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-            const sy = sc_y + (cur_wy - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+            const cur_wx = is_dragged ? base_wx + state.item_drag_dx + pdx : base_wx + pdx;
+            const cur_wy = is_dragged ? base_wy + state.item_drag_dy + pdy : base_wy + pdy;
+            const sx = sc_x + (cur_wx - state.cam_x) * state.zoom;
+            const sy = sc_y + (cur_wy - state.cam_y) * state.zoom;
             const is_hovered = in_canvas && (mwx >= base_wx && (mwx < base_wx + pitch && (mwy >= base_wy && mwy < base_wy + pitch)));
             let cell_color;
             if (is_selected) {
@@ -986,59 +1041,61 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
             if (is_hovered) {
               _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sx, sy, on_screen_cell_w, on_screen_cell_h), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(37, 99, 235), 1.5, 0);
             }
-            _tmp$3 = c + 1 | 0;
+            _tmp$2 = c + 1 | 0;
             continue;
           } else {
             break;
           }
         }
-        _tmp$2 = r + 1 | 0;
+        _tmp = r + 1 | 0;
         continue;
       } else {
         break;
       }
     }
   } else {
-    if (in_canvas && (mwx >= 0 && (mwx < 10000 && (mwy >= 0 && mwy < 10000)))) {
+    if (in_canvas && (mwx >= 0 && (mwx < matrix_world_size && (mwy >= 0 && mwy < matrix_world_size)))) {
       const h_col = _M0MPC16double6Double7to__int(mwx / pitch);
       const h_row = _M0MPC16double6Double7to__int(mwy / pitch);
       if (h_col >= 0 && (h_col < grid_dim && (h_row >= 0 && h_row < grid_dim))) {
         const h_base_wx = (h_col + 0) * pitch;
         const h_base_wy = (h_row + 0) * pitch;
-        const hs_x = sc_x + (h_base_wx - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-        const hs_y = sc_y + (h_base_wy - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-        const hs_w = _M0MPC16double6Double3max(pitch * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom, 4);
-        const hs_h = _M0MPC16double6Double3max(pitch * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom, 4);
+        const hs_x = sc_x + (h_base_wx - state.cam_x) * state.zoom;
+        const hs_y = sc_y + (h_base_wy - state.cam_y) * state.zoom;
+        const hs_w = _M0MPC16double6Double3max(cell_size * state.zoom, 4);
+        const hs_h = _M0MPC16double6Double3max(cell_size * state.zoom, 4);
         _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(hs_x, hs_y, hs_w, hs_h), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(56, 189, 248), 0);
       }
     }
-    if (_M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_active) {
-      const rip_sx = sc_x + (_M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cx - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-      const rip_sy = sc_y + (_M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_cy - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-      const rip_r = _M0FP49LING7167111moon_2degui8examples6canvas5state.ripple_progress * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+    if (state.ripple_active) {
+      const rip_sx = sc_x + (state.ripple_cx - state.cam_x) * state.zoom;
+      const rip_sy = sc_y + (state.ripple_cy - state.cam_y) * state.zoom;
+      const rip_r = state.ripple_progress * state.zoom;
       if (rip_r > 1) {
         _M0MP49LING7167111moon_2degui3src4draw8DrawList19add__circle__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(rip_sx, rip_sy), rip_r, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(251, 146, 60), 2);
       }
     }
-    if (_M0FP49LING7167111moon_2degui8examples6canvas5state.magnetic_repel && in_canvas) {
-      _M0MP49LING7167111moon_2degui3src4draw8DrawList19add__circle__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(mouse_x, mouse_y), repel_radius * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom, _M0MP49LING7167111moon_2degui3src5color5Color4rgba(249, 115, 22, 180), 1.5);
+    if (state.magnetic_repel && in_canvas) {
+      _M0MP49LING7167111moon_2degui3src4draw8DrawList19add__circle__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(mouse_x, mouse_y), repel_radius * state.zoom, _M0MP49LING7167111moon_2degui3src5color5Color4rgba(249, 115, 22, 180), 1.5);
     }
   }
   _M0MP49LING7167111moon_2degui3src4draw8DrawList9pop__clip(dl);
-  if (_M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id >= 0) {
-    _M0MP49LING7167111moon_2degui3src4draw8DrawList10push__clip(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(48, 22, cv_w, cv_h));
-    const sel_id = _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id;
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas34render__selected__transform__frame(dl, state, cv_x, cv_y, cv_w, cv_h, sc_x, sc_y, pitch, cell_size, grid_dim) {
+  if (state.selected_id >= 0) {
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList10push__clip(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(cv_x, cv_y, cv_w, cv_h));
+    const sel_id = state.selected_id;
     const r = sel_id / grid_dim | 0;
     const c = sel_id % grid_dim | 0;
-    const is_dragged = _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dx !== 0 || (_M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dy !== 0 || _M0FP49LING7167111moon_2degui8examples6canvas5state.is_dragging_item);
+    const is_dragged = state.item_drag_dx !== 0 || (state.item_drag_dy !== 0 || state.is_dragging_item);
     const sel_orig_wx = (c + 0) * pitch;
     const sel_orig_wy = (r + 0) * pitch;
-    const sel_wx = is_dragged ? sel_orig_wx + _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dx : sel_orig_wx;
-    const sel_wy = is_dragged ? sel_orig_wy + _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dy : sel_orig_wy;
-    const sel_sx = sc_x + (sel_wx - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-    const sel_sy = sc_y + (sel_wy - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-    const sel_w = _M0MPC16double6Double3max(pitch * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom, 8);
-    const sel_h = _M0MPC16double6Double3max(pitch * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom, 8);
+    const sel_wx = is_dragged ? sel_orig_wx + state.item_drag_dx : sel_orig_wx;
+    const sel_wy = is_dragged ? sel_orig_wy + state.item_drag_dy : sel_orig_wy;
+    const sel_sx = sc_x + (sel_wx - state.cam_x) * state.zoom;
+    const sel_sy = sc_y + (sel_wy - state.cam_y) * state.zoom;
+    const sel_w = _M0MPC16double6Double3max(cell_size * state.zoom, 8);
+    const sel_h = _M0MPC16double6Double3max(cell_size * state.zoom, 8);
     _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sel_sx - 3, sel_sy - 3, sel_w + 6, sel_h + 6), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(139, 92, 246), 1.5, 2);
     const h_purple = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(139, 92, 246);
     const h_white = _M0MP49LING7167111moon_2degui3src5color5Color5whiteN6recordS36;
@@ -1081,155 +1138,204 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
     _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(sel_sx + (sel_w - tag_w) * 0.5, sel_sy - 24, tag_w, 18), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(203, 213, 225), 1, 4);
     _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(sel_sx + (sel_w - tag_w) * 0.5 + 8, sel_sy - 22), tag_txt, 10, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(15, 23, 42));
     _M0MP49LING7167111moon_2degui3src4draw8DrawList9pop__clip(dl);
+    return;
+  } else {
+    return;
   }
-  const ruler_bg = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 255, 255);
-  const ruler_border = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240);
-  const ruler_tick_col = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(148, 163, 184);
-  const ruler_text_col = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(71, 85, 105);
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(48, 0, cv_w, 22), ruler_bg, 0);
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(48, 22), _M0MP49LING7167111moon_2degui3src4math4Vec23new(48 + cv_w, 22), ruler_border, 1);
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(0, 22, 48, cv_h), ruler_bg, 0);
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(48, 22), _M0MP49LING7167111moon_2degui3src4math4Vec23new(48, 22 + cv_h), ruler_border, 1);
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(0, 0, 48, 22), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(248, 250, 252), 0);
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(16, 4), "px", 10, ruler_text_col);
-  const step_x = _M0FP49LING7167111moon_2degui8examples6canvas16get__ruler__step(_M0FP49LING7167111moon_2degui8examples6canvas5state.zoom);
-  const first_tick_x = (_M0MPC16double6Double7to__int(min_wx / step_x) + 0) * step_x;
-  let cur_wx = first_tick_x;
-  while (true) {
-    if (cur_wx <= max_wx) {
-      const sx = sc_x + (cur_wx - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-      if (sx >= 48 && sx <= 48 + cv_w) {
-        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(sx, 14), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sx, 22), ruler_tick_col, 1);
-        const label_txt = _M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(cur_wx), 10);
-        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(sx + 3, 3), label_txt, 9, ruler_text_col);
-      }
-      cur_wx = cur_wx + step_x;
-      continue;
-    } else {
-      break;
-    }
-  }
-  const step_y = _M0FP49LING7167111moon_2degui8examples6canvas16get__ruler__step(_M0FP49LING7167111moon_2degui8examples6canvas5state.zoom);
-  const first_tick_y = (_M0MPC16double6Double7to__int(min_wy / step_y) + 0) * step_y;
-  let cur_wy = first_tick_y;
-  while (true) {
-    if (cur_wy <= max_wy) {
-      const sy = sc_y + (cur_wy - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-      if (sy >= 22 && sy <= 22 + cv_h) {
-        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(40, sy), _M0MP49LING7167111moon_2degui3src4math4Vec23new(48, sy), ruler_tick_col, 1);
-        const label_txt = _M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(cur_wy), 10);
-        _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(2, sy - 5), label_txt, 9, ruler_text_col);
-      }
-      cur_wy = cur_wy + step_y;
-      continue;
-    } else {
-      break;
-    }
-  }
-  if (_M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id >= 0) {
-    const sel_id = _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id;
-    const r = sel_id / grid_dim | 0;
-    const c = sel_id % grid_dim | 0;
-    const is_dragged = _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dx !== 0 || (_M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dy !== 0 || _M0FP49LING7167111moon_2degui8examples6canvas5state.is_dragging_item);
-    const sel_orig_wx = (c + 0) * pitch;
-    const sel_orig_wy = (r + 0) * pitch;
-    const sel_wx = is_dragged ? sel_orig_wx + _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dx : sel_orig_wx;
-    const sel_wy = is_dragged ? sel_orig_wy + _M0FP49LING7167111moon_2degui8examples6canvas5state.item_drag_dy : sel_orig_wy;
-    const sel_sx = sc_x + (sel_wx - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-    const sel_sy = sc_y + (sel_wy - _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y) * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
-    const sel_sw = _M0MPC16double6Double3max(pitch * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom, 8);
-    const sel_sh = _M0MPC16double6Double3max(pitch * _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom, 8);
-    if (sel_sx + sel_sw >= 48 && sel_sx <= 48 + cv_w) {
-      const proj_x = _M0MPC16double6Double3max(sel_sx, 48);
-      const proj_w = _M0MPC16double6Double3max(sel_sw, 16);
-      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(proj_x, 0, proj_w, 22), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(139, 92, 246, 40), 0);
-      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(proj_x, 0), _M0MP49LING7167111moon_2degui3src4math4Vec23new(proj_x, 22), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(139, 92, 246), 1.5);
-      const coord_txt = _M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(sel_wx), 10);
-      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(proj_x + 2, 2), coord_txt, 9, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(109, 40, 217));
-    }
-    if (sel_sy + sel_sh >= 22 && sel_sy <= 22 + cv_h) {
-      const proj_y = _M0MPC16double6Double3max(sel_sy, 22);
-      const proj_h = _M0MPC16double6Double3max(sel_sh, 16);
-      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(0, proj_y, 48, proj_h), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(139, 92, 246, 40), 0);
-      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(0, proj_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(48, proj_y), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(139, 92, 246), 1.5);
-      const coord_txt = _M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(sel_wy), 10);
-      _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(dl, _M0MP49LING7167111moon_2degui3src4math4Vec23new(2, proj_y), coord_txt, 9, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(109, 40, 217));
-    }
-  }
-  const win_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(_M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_x, _M0FP49LING7167111moon_2degui8examples6canvas5state.win_pos_y);
-  const win_size = _M0MP49LING7167111moon_2degui3src4math4Vec23new(264, 340);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext6window(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, "moon-egui Studio", win_pos, win_size, (ui) => {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "Matrix Scale", _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());
-    _M0MP49LING7167111moon_2degui3src4core9UIContext10horizontal(ui, (row) => {
-      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "128", _M0MP49LING7167111moon_2degui3src4math4Vec23new(54, 24)).clicked) {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 128;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id = -1;
-      }
-      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "256", _M0MP49LING7167111moon_2degui3src4math4Vec23new(54, 24)).clicked) {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 256;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id = -1;
-      }
-      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "512", _M0MP49LING7167111moon_2degui3src4math4Vec23new(54, 24)).clicked) {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 512;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id = -1;
-      }
-      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "1024", _M0MP49LING7167111moon_2degui3src4math4Vec23new(54, 24)).clicked) {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim = 1024;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id = -1;
-        return;
-      } else {
-        return;
-      }
-    });
-    _M0MP49LING7167111moon_2degui3src4core9UIContext9separator(ui);
-    const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext6slider(ui, "Zoom", _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom, 0.02, 2);
-    const _new_zoom = _bind._0;
-    _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = _new_zoom;
-    _M0MP49LING7167111moon_2degui3src4core9UIContext9separator(ui);
-    const _bind$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext8checkbox(ui, "Wave Pulse Dynamics", _M0FP49LING7167111moon_2degui8examples6canvas5state.wave_pulse);
-    const _new_pulse = _bind$2._0;
-    const _pulse_resp = _bind$2._1;
-    if (_pulse_resp.clicked) {
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.wave_pulse = _new_pulse;
-    }
-    const _bind$3 = _M0MP49LING7167111moon_2degui3src4core9UIContext8checkbox(ui, "Magnetic Repel Field", _M0FP49LING7167111moon_2degui8examples6canvas5state.magnetic_repel);
-    const _new_repel = _bind$3._0;
-    const _repel_resp = _bind$3._1;
-    if (_repel_resp.clicked) {
-      _M0FP49LING7167111moon_2degui8examples6canvas5state.magnetic_repel = _new_repel;
-    }
-    _M0MP49LING7167111moon_2degui3src4core9UIContext9separator(ui);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext10horizontal(ui, (row) => {
-      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "Fit All", _M0MP49LING7167111moon_2degui3src4math4Vec23new(74, 24)).clicked) {
-        const min_dim = cur_w < cur_h ? cur_w : cur_h;
-        const fit_z = (min_dim - 60) / 10500;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = fit_z > 0.01 ? fit_z : 0.075;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 5000;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 5000;
-      }
-      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "Center", _M0MP49LING7167111moon_2degui3src4math4Vec23new(74, 24)).clicked) {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x = 5000;
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y = 5000;
-      }
-      if (_M0MP49LING7167111moon_2degui3src4core9UIContext13button__sized(row, "100%", _M0MP49LING7167111moon_2degui3src4math4Vec23new(74, 24)).clicked) {
-        _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom = 1;
-        return;
-      } else {
-        return;
-      }
-    });
-    _M0MP49LING7167111moon_2degui3src4core9UIContext9separator(ui);
-    if (_M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id >= 0) {
-      const sel_col = _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id % _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim | 0;
-      const sel_row = _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id / _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim | 0;
-      const info = `Node #${_M0MPC13int3Int18to__string_2einner(_M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id, 10)} [${_M0MPC13int3Int18to__string_2einner(sel_col, 10)},${_M0MPC13int3Int18to__string_2einner(sel_row, 10)}]`;
-      _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, info, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(244, 63, 94));
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas19apply__switch__mode(state, switch_mode, vp_w, vp_h) {
+  if (switch_mode >= 0) {
+    if (switch_mode === 128) {
+      state.grid_dim = 128;
+      state.selected_id = -1;
       return;
     } else {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "Click grid node to inspect", _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary());
-      return;
+      if (switch_mode === 256) {
+        state.grid_dim = 256;
+        state.selected_id = -1;
+        return;
+      } else {
+        if (switch_mode === 512) {
+          state.grid_dim = 512;
+          state.selected_id = -1;
+          return;
+        } else {
+          if (switch_mode === 1024) {
+            state.grid_dim = 1024;
+            state.selected_id = -1;
+            return;
+          } else {
+            if (switch_mode === 1) {
+              state.wave_pulse = !state.wave_pulse;
+              return;
+            } else {
+              if (switch_mode === 2) {
+                state.magnetic_repel = !state.magnetic_repel;
+                return;
+              } else {
+                if (switch_mode === 3) {
+                  const min_dim = vp_w < vp_h ? vp_w : vp_h;
+                  const fit_z = (min_dim - 60) / 10500;
+                  state.zoom = fit_z > 0.01 ? fit_z : 0.075;
+                  state.cam_x = 5000;
+                  state.cam_y = 5000;
+                  return;
+                } else {
+                  if (switch_mode === 4) {
+                    state.zoom = 1;
+                    return;
+                  } else {
+                    if (switch_mode === 5) {
+                      state.cam_x = 5000;
+                      state.cam_y = 5000;
+                      return;
+                    } else {
+                      if (switch_mode === 6) {
+                        state.drag_mode = 1;
+                        return;
+                      } else {
+                        if (switch_mode === 7) {
+                          state.drag_mode = 0;
+                          return;
+                        } else {
+                          return;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
-  });
+  } else {
+    return;
+  }
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas19update__camera__pan(state, ctx, pan_dx, pan_dy, cur_w, cur_h, win_w, win_h) {
+  if (pan_dx !== 0 || pan_dy !== 0) {
+    if (state.win_dragging) {
+      state.win_pos_x = state.win_pos_x + pan_dx;
+      state.win_pos_y = state.win_pos_y + pan_dy;
+      if (state.win_pos_x < 0) {
+        state.win_pos_x = 0;
+      } else {
+        if (state.win_pos_x > cur_w - win_w) {
+          state.win_pos_x = cur_w - win_w;
+        }
+      }
+      if (state.win_pos_y < 0) {
+        state.win_pos_y = 0;
+        return;
+      } else {
+        if (state.win_pos_y > cur_h - win_h) {
+          state.win_pos_y = cur_h - win_h;
+          return;
+        } else {
+          return;
+        }
+      }
+    } else {
+      if (ctx.prev_wants_capture_mouse || ctx.wants_capture_mouse) {
+        return;
+      } else {
+        if (state.drag_mode === 1 && state.selected_id >= 0) {
+          state.is_dragging_item = true;
+          state.item_drag_dx = state.item_drag_dx + pan_dx / state.zoom;
+          state.item_drag_dy = state.item_drag_dy + pan_dy / state.zoom;
+          return;
+        } else {
+          state.cam_x = state.cam_x - pan_dx / state.zoom;
+          state.cam_y = state.cam_y - pan_dy / state.zoom;
+          if (state.cam_x < -2000) {
+            state.cam_x = -2000;
+          } else {
+            if (state.cam_x > 12000) {
+              state.cam_x = 12000;
+            }
+          }
+          if (state.cam_y < -2000) {
+            state.cam_y = -2000;
+            return;
+          } else {
+            if (state.cam_y > 12000) {
+              state.cam_y = 12000;
+              return;
+            } else {
+              return;
+            }
+          }
+        }
+      }
+    }
+  } else {
+    return;
+  }
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas20update__camera__zoom(state, ctx, zoom_delta) {
+  if (zoom_delta !== 1 && (zoom_delta > 0 && !(ctx.prev_wants_capture_mouse || ctx.wants_capture_mouse))) {
+    const new_zoom = state.zoom * zoom_delta;
+    if (new_zoom < 0.01) {
+      state.zoom = 0.01;
+      return;
+    } else {
+      if (new_zoom > 25) {
+        state.zoom = 25;
+        return;
+      } else {
+        state.zoom = new_zoom;
+        return;
+      }
+    }
+  } else {
+    return;
+  }
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mouse_down, pan_dx, pan_dy, zoom_delta, switch_mode, vp_w, vp_h) {
+  _M0FP49LING7167111moon_2degui8examples6canvas5state.frame_tick = _M0FP49LING7167111moon_2degui8examples6canvas5state.frame_tick + 1;
+  _M0FP49LING7167111moon_2degui8examples6canvas19apply__switch__mode(_M0FP49LING7167111moon_2degui8examples6canvas5state, switch_mode, vp_w, vp_h);
+  const cur_w = vp_w > 100 ? vp_w : 920;
+  const cur_h = vp_h > 100 ? vp_h : 540;
+  _M0FP49LING7167111moon_2degui8examples6canvas28update__studio__window__drag(_M0FP49LING7167111moon_2degui8examples6canvas5state, mouse_x, mouse_y, mouse_down, cur_w, 264);
+  _M0FP49LING7167111moon_2degui8examples6canvas19update__camera__pan(_M0FP49LING7167111moon_2degui8examples6canvas5state, _M0FP49LING7167111moon_2degui8examples6canvas3ctx, pan_dx, pan_dy, cur_w, cur_h, 264, 340);
+  if (!mouse_down) {
+    _M0FP49LING7167111moon_2degui8examples6canvas5state.is_dragging_item = false;
+  }
+  _M0FP49LING7167111moon_2degui8examples6canvas20update__camera__zoom(_M0FP49LING7167111moon_2degui8examples6canvas5state, _M0FP49LING7167111moon_2degui8examples6canvas3ctx, zoom_delta);
+  const raw = _M0MP49LING7167111moon_2degui3src4core8RawInput11from__mouse(_M0MP49LING7167111moon_2degui3src4math4Vec23new(mouse_x, mouse_y), mouse_down);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext12begin__frame(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, raw);
+  const dl = _M0FP49LING7167111moon_2degui8examples6canvas3ctx.draw_list;
+  const cv_w = cur_w - 48;
+  const cv_h = cur_h - 22;
+  const sc_x = 48 + cv_w * 0.5;
+  const sc_y = 22 + cv_h * 0.5;
+  const grid_dim = _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim;
+  const pitch = 10000 / (grid_dim + 0);
+  const in_canvas = mouse_x >= 48 && (mouse_x <= 48 + cv_w && (mouse_y >= 22 && mouse_y <= 22 + cv_h));
+  const mwx = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x + (mouse_x - sc_x) / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+  const mwy = _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y + (mouse_y - sc_y) / _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom;
+  _M0FP49LING7167111moon_2degui8examples6canvas23handle__node__hit__test(_M0FP49LING7167111moon_2degui8examples6canvas5state, _M0FP49LING7167111moon_2degui8examples6canvas3ctx, mouse_down, in_canvas, mwx, mwy, pitch, grid_dim, 10000);
+  _M0FP49LING7167111moon_2degui8examples6canvas23update__ripple__physics(_M0FP49LING7167111moon_2degui8examples6canvas5state, 10000, pitch);
+  const _bind = _M0FP49LING7167111moon_2degui8examples6canvas21calc__culling__bounds(_M0FP49LING7167111moon_2degui8examples6canvas5state, cv_w, cv_h, pitch, grid_dim);
+  const _c_start = _bind._0;
+  const _c_end = _bind._1;
+  const _r_start = _bind._2;
+  const _r_end = _bind._3;
+  const _total_vis = _bind._4;
+  const _min_wx = _bind._5;
+  const _max_wx = _bind._6;
+  const _min_wy = _bind._7;
+  const _max_wy = _bind._8;
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList10push__clip(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(48, 22, cv_w, cv_h));
+  _M0FP49LING7167111moon_2degui8examples6canvas20render__grid__aisles(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, 48, 22, cv_w, cv_h, sc_x, sc_y);
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList9pop__clip(dl);
+  _M0FP49LING7167111moon_2degui8examples6canvas21render__matrix__nodes(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, in_canvas, mouse_x, mouse_y, 48, 22, cv_w, cv_h, sc_x, sc_y, grid_dim, pitch, pitch, mwx, mwy, _c_start, _c_end, _r_start, _r_end, _total_vis, 10000);
+  _M0FP49LING7167111moon_2degui8examples6canvas34render__selected__transform__frame(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, 48, 22, cv_w, cv_h, sc_x, sc_y, pitch, pitch, grid_dim);
+  _M0FP49LING7167111moon_2degui8examples6canvas19render__cad__rulers(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, 48, 22, cv_w, cv_h, 0, 0, 48, 22, _min_wx, _max_wx, _min_wy, _max_wy, sc_x, sc_y);
+  _M0FP49LING7167111moon_2degui8examples6canvas26render__ruler__projections(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, 48, 22, cv_w, cv_h, 0, 0, 48, 22, sc_x, sc_y, pitch, pitch, grid_dim);
+  _M0FP49LING7167111moon_2degui8examples6canvas22render__studio__window(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, _M0FP49LING7167111moon_2degui8examples6canvas5state, cur_w, cur_h, 264, 340);
   return _M0MP49LING7167111moon_2degui3src4core9UIContext10end__frame(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
 }
 (() => {

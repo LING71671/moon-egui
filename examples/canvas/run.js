@@ -129,7 +129,17 @@
     if (typeof window.moon_step === 'function') return window.moon_step;
     if (typeof globalThis.moon_step === 'function') return globalThis.moon_step;
     for (const key of Object.getOwnPropertyNames(window)) {
-      if (key.includes('canvas4step') || (key.includes('moon_2degui') && key.includes('step'))) {
+      if (key.endsWith('4step') || key.includes('canvas4step')) {
+        const fn = window[key];
+        if (typeof fn === 'function') {
+          window.moon_step = fn;
+          return fn;
+        }
+      }
+    }
+    for (const key of Object.getOwnPropertyNames(window)) {
+      if (key.includes('step') && !key.includes('ruler') && typeof window[key] === 'function') {
+        window.moon_step = window[key];
         return window[key];
       }
     }
@@ -140,9 +150,11 @@
   function getMoonState() {
     if (window.moon_state) return window.moon_state;
     for (const key of Object.getOwnPropertyNames(window)) {
-      if (key.includes('canvas5state') || (key.includes('moon_2degui') && key.includes('state'))) {
-        window.moon_state = window[key];
-        return window[key];
+      if (key.includes('get__state')) {
+        try {
+          window.moon_state = window[key]();
+          return window.moon_state;
+        } catch (e) {}
       }
     }
     return null;
@@ -348,7 +360,11 @@
   }
 
   function renderDrawList(dl) {
-    if (!dl || !dl.commands) return;
+    if (!dl || !dl.commands) {
+      setFill('#f8fafc');
+      ctx.fillRect(0, 0, width, height);
+      return;
+    }
 
     // Fast clear with clean studio light background
     setFill('#f8fafc');

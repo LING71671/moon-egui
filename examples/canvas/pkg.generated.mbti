@@ -17,6 +17,8 @@ pub fn get_logo_color(Int, Int, Int) -> @color.Color?
 
 pub fn get_selected_id() -> Int
 
+pub fn get_state() -> BenchmarkState
+
 pub fn get_visible_cells() -> Int
 
 pub fn get_zoom() -> Double
