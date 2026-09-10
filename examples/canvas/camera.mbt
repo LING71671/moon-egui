@@ -125,10 +125,10 @@ fn update_camera_zoom(
   if zoom_delta != 1.0 && zoom_delta > 0.0 && !ctx.wants_capture_mouse() {
     let old_zoom = state.zoom
     let mut new_zoom = old_zoom * zoom_delta
-    if new_zoom < 0.02 {
-      new_zoom = 0.02
-    } else if new_zoom > 8.0 {
-      new_zoom = 8.0
+    if new_zoom < 0.005 {
+      new_zoom = 0.005
+    } else if new_zoom > 30.0 {
+      new_zoom = 30.0
     }
     if new_zoom != old_zoom {
       // Pin world coordinate under mouse cursor

@@ -163,6 +163,16 @@ function _M0TP49LING7167111moon_2degui3src4core11LayoutScope(param0, param1, par
   this.start_y = param2;
   this.max_cross_size = param3;
 }
+function _M0TP49LING7167111moon_2degui8examples6canvas11FrameOutput(param0, param1, param2, param3, param4, param5, param6, param7) {
+  this.draw_list = param0;
+  this.cam_x = param1;
+  this.cam_y = param2;
+  this.zoom = param3;
+  this.grid_dim = param4;
+  this.visible_cells = param5;
+  this.selected_id = param6;
+  this.show_studio = param7;
+}
 const _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger = { method_0: _M0IPB13StringBuilderPB6Logger13write__string, method_1: _M0IP016_24default__implPB6Logger16write__substringGRPB13StringBuilderE, method_2: _M0IPB13StringBuilderPB6Logger11write__view, method_3: _M0IPB13StringBuilderPB6Logger11write__char, method_4: _M0IP016_24default__implPB6Logger28write__string__interpolationGRPB13StringBuilderE, method_5: _M0IP016_24default__implPB6Logger5writeGRPB13StringBuilderE };
 const _M0MP49LING7167111moon_2degui3src5color5Color5whiteN6recordS36 = new _M0TP49LING7167111moon_2degui3src5color5Color(255, 255, 255, 255);
 const _M0MP49LING7167111moon_2degui3src4math4Vec24zeroN6recordS75 = new _M0TP49LING7167111moon_2degui3src4math4Vec2(0, 0);
@@ -173,6 +183,9 @@ const _M0FP49LING7167111moon_2degui8examples6canvas15logo__grid__128 = [0, 0, 0,
 const _M0FP49LING7167111moon_2degui8examples6canvas3ctx = _M0MP49LING7167111moon_2degui3src4core9UIContext3new();
 function _M0MPB13StringBuilder13write__objectGiE(self, obj) {
   _M0IP016_24default__implPB4Show6outputGiE(obj, { self: self, method_table: _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger });
+}
+function _M0MPB13StringBuilder13write__objectGdE(self, obj) {
+  _M0IP016_24default__implPB4Show6outputGdE(obj, { self: self, method_table: _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger });
 }
 function _M0MPB13StringBuilder21StringBuilder_2einner(size_hint) {
   return new _M0TPB13StringBuilder("");
@@ -225,6 +238,9 @@ function _M0IP016_24default__implPB6Logger16write__substringGRPB13StringBuilderE
 function _M0IP016_24default__implPB4Show6outputGiE(self, logger) {
   logger.method_table.method_0(logger.self, _M0IPC13int3IntPB4Show10to__string(self));
 }
+function _M0IP016_24default__implPB4Show6outputGdE(self, logger) {
+  logger.method_table.method_0(logger.self, _M0IPC16double6DoublePB4Show10to__string(self));
+}
 function _M0MPC13int3Int18to__string_2einner(self, radix) {
   return _M0FPB19int__to__string__js(self, radix);
 }
@@ -245,6 +261,9 @@ function _M0MPC16double6Double7to__int(self) {
 }
 function _M0MPC16double6Double3max(self, other) {
   return self !== self ? other : other !== other ? self : self > other ? self : other;
+}
+function _M0IPC16double6DoublePB4Show10to__string(self) {
+  return String(self);
 }
 function _M0FPB7printlnGsE(input) {
   console.log(input);
@@ -1319,11 +1338,11 @@ function _M0FP49LING7167111moon_2degui8examples6canvas20update__camera__zoom(sta
   if (zoom_delta !== 1 && (zoom_delta > 0 && !(ctx.prev_wants_capture_mouse || ctx.wants_capture_mouse))) {
     const old_zoom = state.zoom;
     let new_zoom = old_zoom * zoom_delta;
-    if (new_zoom < 0.02) {
-      new_zoom = 0.02;
+    if (new_zoom < 0.005) {
+      new_zoom = 0.005;
     } else {
-      if (new_zoom > 8) {
-        new_zoom = 8;
+      if (new_zoom > 30) {
+        new_zoom = 30;
       }
     }
     if (new_zoom !== old_zoom) {
@@ -1383,12 +1402,24 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
   _M0FP49LING7167111moon_2degui8examples6canvas19render__cad__rulers(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, 48, 22, cv_w, cv_h, 0, 0, 48, 22, _min_wx, _max_wx, _min_wy, _max_wy, sc_x, sc_y);
   _M0FP49LING7167111moon_2degui8examples6canvas26render__ruler__projections(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, 48, 22, cv_w, cv_h, 0, 0, 48, 22, sc_x, sc_y, pitch, pitch, grid_dim);
   _M0FP49LING7167111moon_2degui8examples6canvas22render__studio__window(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, _M0FP49LING7167111moon_2degui8examples6canvas5state, cur_w, cur_h, 264, 340);
-  return _M0MP49LING7167111moon_2degui3src4core9UIContext10end__frame(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
+  const final_dl = _M0MP49LING7167111moon_2degui3src4core9UIContext10end__frame(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
+  return new _M0TP49LING7167111moon_2degui8examples6canvas11FrameOutput(final_dl, _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x, _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y, _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom, _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim, _M0FP49LING7167111moon_2degui8examples6canvas5state.visible_cells, _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id, _M0FP49LING7167111moon_2degui8examples6canvas5state.show_studio);
 }
 (() => {
-  const dl = _M0FP49LING7167111moon_2degui8examples6canvas4step(580, 270, false, 0, 0, 1, -1, 920, 540);
-  const _string_builder = _M0MPB13StringBuilder21StringBuilder_2einner(39);
+  const frame = _M0FP49LING7167111moon_2degui8examples6canvas4step(580, 270, false, 0, 0, 1, -1, 920, 540);
+  const _string_builder = _M0MPB13StringBuilder21StringBuilder_2einner(47);
   _M0IPB13StringBuilderPB6Logger13write__string(_string_builder, "Benchmark initialized, total commands: ");
-  _M0MPB13StringBuilder13write__objectGiE(_string_builder, dl.commands.length);
+  const _p = frame.draw_list;
+  _M0MPB13StringBuilder13write__objectGiE(_string_builder, _p.commands.length);
+  _M0IPB13StringBuilderPB6Logger13write__string(_string_builder, ", zoom: ");
+  _M0MPB13StringBuilder13write__objectGdE(_string_builder, frame.zoom);
   _M0FPB7printlnGsE(_string_builder.val);
 })();
+
+
+if (typeof window !== 'undefined') {
+  window.moon_step = _M0FP49LING7167111moon_2degui8examples6canvas4step;
+}
+if (typeof globalThis !== 'undefined') {
+  globalThis.moon_step = _M0FP49LING7167111moon_2degui8examples6canvas4step;
+}

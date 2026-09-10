@@ -29,7 +29,7 @@ pub fn is_show_studio() -> Bool
 
 pub fn is_wave_pulse() -> Bool
 
-pub fn step(Double, Double, Bool, Double, Double, Double, Int, Double, Double) -> @draw.DrawList
+pub fn step(Double, Double, Bool, Double, Double, Double, Int, Double, Double) -> FrameOutput
 
 // Errors
 
@@ -59,6 +59,17 @@ pub struct BenchmarkState {
   mut win_pos_y : Double
   mut win_dragging : Bool
   mut show_studio : Bool
+}
+
+pub struct FrameOutput {
+  draw_list : @draw.DrawList
+  cam_x : Double
+  cam_y : Double
+  zoom : Double
+  grid_dim : Int
+  visible_cells : Int
+  selected_id : Int
+  show_studio : Bool
 }
 
 // Type aliases

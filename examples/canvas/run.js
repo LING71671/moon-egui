@@ -360,7 +360,7 @@
     ctx.restore();
   }
 
-  function renderDrawList(dl) {
+  function renderDrawList(dl, frameOut) {
     if (!dl || !dl.commands) {
       setFill('#f8fafc');
       ctx.fillRect(0, 0, width, height);
@@ -373,12 +373,11 @@
 
     ctx.imageSmoothingEnabled = false;
 
-    const mState = window.moon_state;
-    const gridDim = mState ? mState.grid_dim : 256;
+    const gridDim = (frameOut && frameOut.grid_dim) ? frameOut.grid_dim : (window.moon_state ? window.moon_state.grid_dim : 256);
+    const zoom = (frameOut && frameOut.zoom !== undefined) ? frameOut.zoom : (window.moon_state ? window.moon_state.zoom : 0.075);
+    const camX = (frameOut && frameOut.cam_x !== undefined) ? frameOut.cam_x : (window.moon_state ? window.moon_state.cam_x : 5000);
+    const camY = (frameOut && frameOut.cam_y !== undefined) ? frameOut.cam_y : (window.moon_state ? window.moon_state.cam_y : 5000);
     const pitch = 10000.0 / gridDim;
-    const zoom = mState ? mState.zoom : 0.075;
-    const camX = mState ? mState.cam_x : 5000;
-    const camY = mState ? mState.cam_y : 5000;
     const unitPx = pitch * zoom;
 
     const cvX = 48.0;
@@ -570,16 +569,14 @@
   let kernelTimeRolling = 0.25;
   let renderTimeRolling = 0.40;
 
-  function syncHtmlControls() {
-    const mState = window.moon_state || getMoonState();
-    if (!mState) return;
+  function syncHtmlControls(frameOut) {
+    const gridDim = (frameOut && frameOut.grid_dim) ? frameOut.grid_dim : (window.moon_state ? window.moon_state.grid_dim : 256);
 
     // Sync Dimension buttons
-    const dim = mState.grid_dim;
     ['128', '256', '512', '1024'].forEach(d => {
       const btn = document.getElementById(`btn-dim-${d}`);
       if (btn) {
-        if (parseInt(d, 10) === dim) {
+        if (parseInt(d, 10) === gridDim) {
           btn.classList.add('active');
         } else {
           btn.classList.remove('active');
@@ -587,22 +584,15 @@
       }
     });
 
-    // Sync Physics buttons
-    const pulseBtn = document.getElementById('btn-pulse');
-    if (pulseBtn) {
-      if (mState.wave_pulse) pulseBtn.classList.add('active');
-      else pulseBtn.classList.remove('active');
-    }
-    const repelBtn = document.getElementById('btn-repel');
-    if (repelBtn) {
-      if (mState.magnetic_repel) repelBtn.classList.add('active');
-      else repelBtn.classList.remove('active');
+    const panelBtn = document.getElementById('btn-panel-toggle');
+    if (panelBtn && frameOut) {
+      if (frameOut.show_studio) panelBtn.classList.add('active');
+      else panelBtn.classList.remove('active');
     }
   }
 
-  function updateNodesTelemetry() {
-    const mState = window.moon_state || getMoonState();
-    const gridDim = mState ? mState.grid_dim : 256;
+  function updateNodesTelemetry(frameOut) {
+    const gridDim = (frameOut && frameOut.grid_dim) ? frameOut.grid_dim : (window.moon_state ? window.moon_state.grid_dim : 256);
     const totalNodes = gridDim * gridDim;
     const nodesEl = document.getElementById('txt-nodes');
     if (nodesEl) {
@@ -645,12 +635,18 @@
       requestedMode = -1;
 
       const t0 = performance.now();
-      const dl = stepFn(mouseX, mouseY, isMouseDown, curPanX, curPanY, curZoom, curMode, width, height);
+      const res = stepFn(mouseX, mouseY, isMouseDown, curPanX, curPanY, curZoom, curMode, width, height);
       const dt = performance.now() - t0;
       kernelTimeRolling = kernelTimeRolling * 0.85 + dt * 0.15;
 
+      const frameOut = res;
+      if (frameOut) {
+        window.moon_state = frameOut;
+      }
+      const dl = frameOut ? (frameOut.draw_list || frameOut) : null;
+
       const t1 = performance.now();
-      renderDrawList(dl);
+      renderDrawList(dl, frameOut);
       const dtRender = performance.now() - t1;
       renderTimeRolling = renderTimeRolling * 0.85 + dtRender * 0.15;
 
@@ -677,8 +673,8 @@
         budgetBar.style.width = `${budgetPct}%`;
       }
 
-      updateNodesTelemetry();
-      syncHtmlControls();
+      updateNodesTelemetry(frameOut);
+      syncHtmlControls(frameOut);
     }
 
     requestAnimationFrame(loop);

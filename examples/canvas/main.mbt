@@ -13,6 +13,18 @@
 // limitations under the License.
 
 ///|
+pub struct FrameOutput {
+  draw_list : @draw.DrawList
+  cam_x : Double
+  cam_y : Double
+  zoom : Double
+  grid_dim : Int
+  visible_cells : Int
+  selected_id : Int
+  show_studio : Bool
+}
+
+///|
 /// Core benchmark frame update function supporting 128x128, 256x256, 512x512, 1024x1024.
 pub fn step(
   mouse_x : Double,
@@ -24,7 +36,7 @@ pub fn step(
   switch_mode : Int,
   vp_w : Double,
   vp_h : Double,
-) -> @draw.DrawList {
+) -> FrameOutput {
   state.frame_tick = state.frame_tick + 1.0
 
   // 1. External UI buttons & Mode Switcher
@@ -117,11 +129,23 @@ pub fn step(
   render_studio_window(ctx, state, cur_w, cur_h, win_w, win_h)
 
   // 13. End Frame & Output DrawList
-  ctx.end_frame()
+  let final_dl = ctx.end_frame()
+  {
+    draw_list: final_dl,
+    cam_x: state.cam_x,
+    cam_y: state.cam_y,
+    zoom: state.zoom,
+    grid_dim: state.grid_dim,
+    visible_cells: state.visible_cells,
+    selected_id: state.selected_id,
+    show_studio: state.show_studio,
+  }
 }
 
 ///|
 fn main {
-  let dl = step(580.0, 270.0, false, 0.0, 0.0, 1.0, -1, 920.0, 540.0)
-  println("Benchmark initialized, total commands: \{dl.len()}")
+  let frame = step(580.0, 270.0, false, 0.0, 0.0, 1.0, -1, 920.0, 540.0)
+  println(
+    "Benchmark initialized, total commands: \{frame.draw_list.len()}, zoom: \{frame.zoom}",
+  )
 }
