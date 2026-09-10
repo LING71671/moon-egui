@@ -51,3 +51,8 @@ You can browse and install extra skills here:
   scientific computations), prefer assertion tests. You can use
   `moon coverage analyze > uncovered.log` to see which parts of your code are
   not covered by tests.
+
+## UI/UX Design & Presentation Standard
+
+All UI/UX design, visual styling, web layouts, and showcase presentation interfaces in this project **MUST** invoke and follow the `impeccable` skill (`C:/Users/www17/.gemini/config/skills/impeccable/SKILL.md`). Deliver out-of-distribution craft, production-grade aesthetics, intentional visual hierarchy, and refined interactive details.
+
