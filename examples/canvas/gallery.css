@@ -489,14 +489,14 @@
       line-height: 1.5;
     }
 
-    /* Vertical Curtain Divider Bar (帘幕长条) */
+    /* Draggable Vertical Curtain Handle (帘幕把手) */
     .curtain-divider {
       position: absolute;
       top: 0;
       bottom: 0;
       left: 0%;
-      width: 36px;
-      margin-left: -18px;
+      width: 40px;
+      margin-left: -20px;
       z-index: 50;
       cursor: ew-resize;
       display: flex;
@@ -505,25 +505,10 @@
       touch-action: none;
     }
 
-    .curtain-vertical-line {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: var(--border-strong);
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
-    }
-
-    .curtain-divider:hover .curtain-vertical-line,
-    .curtain-divider.dragging .curtain-vertical-line {
-      background: var(--brand);
-      box-shadow: 0 0 8px rgba(37, 99, 235, 0.3);
-    }
-
     .curtain-handle-pill {
       position: relative;
       z-index: 2;
-      width: 30px;
+      width: 28px;
       height: 48px;
       background: #ffffff;
       border: 1px solid var(--border-strong);
@@ -533,15 +518,16 @@
       align-items: center;
       justify-content: center;
       gap: 3px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      transition: transform 0.1s ease, border-color 0.15s ease;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
+      transition: transform 0.1s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      cursor: ew-resize;
     }
 
     .curtain-divider:hover .curtain-handle-pill,
     .curtain-divider.dragging .curtain-handle-pill {
       transform: scale(1.08);
       border-color: var(--brand);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
     }
 
     .curtain-arrows {

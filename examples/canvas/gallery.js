@@ -27,8 +27,8 @@ const appState = {
       pct = Math.max(0, Math.min(100, pct));
       appState.curtainPct = pct;
 
-      // Clamp divider position so handle pill is never clipped at 0% or 100%
-      curtainDivider.style.left = `clamp(18px, ${pct}%, calc(100% - 18px))`;
+      // 100% exact mathematical lockstep synchronization
+      curtainDivider.style.left = `${pct}%`;
       uiCurtainLayer.style.clipPath = `inset(0 0 0 ${pct}%)`;
 
       const codePct = Math.round(pct);
