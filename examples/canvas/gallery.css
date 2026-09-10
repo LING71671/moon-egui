@@ -1340,19 +1340,36 @@
       transform: scale(1);
     }
 
-    /* TabBar widget */
+    /* TabBar widget with physical sliding pill */
     .tabbar-container {
+      position: relative;
       display: flex;
       align-items: center;
       background: #f1f5f9;
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 3px;
-      gap: 3px;
       margin-bottom: 16px;
+      user-select: none;
+    }
+
+    .tabbar-indicator {
+      position: absolute;
+      top: 3px;
+      bottom: 3px;
+      left: 0;
+      background: #ffffff;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+      transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+                  width 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      z-index: 1;
     }
 
     .tabbar-item {
+      position: relative;
+      z-index: 2;
       flex: 1;
       text-align: center;
       padding: 7px 12px;
@@ -1363,9 +1380,8 @@
       border: none;
       background: transparent;
       cursor: pointer;
-      transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: color 0.18s ease, transform 0.12s ease;
       font-family: inherit;
-      user-select: none;
     }
 
     .tabbar-item:hover {
@@ -1377,35 +1393,125 @@
     }
 
     .tabbar-item.active {
-      background: #ffffff;
       color: var(--brand);
       font-weight: 600;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+      background: transparent;
+      box-shadow: none;
     }
 
     .tab-pane-card {
       background: var(--bg-subtle);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 14px 16px;
+      padding: 16px;
       font-size: 13px;
       color: var(--text-main);
-      animation: tabContentFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .tab-pane-card.animate {
-      animation: tabContentFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: tabContentFadeIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     @keyframes tabContentFadeIn {
       from {
         opacity: 0;
-        transform: translateY(4px);
+        transform: translateY(5px);
       }
       to {
         opacity: 1;
         transform: translateY(0);
       }
+    }
+
+    /* CollapsingHeader Accordion with CSS Grid 0fr <-> 1fr */
+    .collapsing-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .collapsing-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .collapsing-trigger {
+      width: 100%;
+      background: var(--bg-subtle);
+      padding: 10px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      outline: none;
+      transition: background 0.15s ease;
+    }
+
+    .collapsing-trigger:hover {
+      background: #f1f5f9;
+    }
+
+    .collapsing-trigger:focus-visible {
+      box-shadow: inset 0 0 0 2px var(--brand);
+    }
+
+    .collapsing-chevron {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.15s ease;
+    }
+
+    .collapsing-trigger.is-open .collapsing-chevron {
+      transform: rotate(90deg);
+      color: var(--brand);
+    }
+
+    .collapsing-status-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .collapsing-trigger.is-open .collapsing-status-badge {
+      color: var(--brand);
+      background: #eff6ff;
+      border-color: rgba(37, 99, 235, 0.25);
+    }
+
+    .collapsing-wrapper {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .collapsing-wrapper.is-open {
+      grid-template-rows: 1fr;
+    }
+
+    .collapsing-inner {
+      overflow: hidden;
+    }
+
+    .collapsing-content {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .collapsing-wrapper.is-open .collapsing-content {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* ScrollArea widget */

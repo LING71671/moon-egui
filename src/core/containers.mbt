@@ -26,22 +26,36 @@ pub fn UIContext::collapsing_header(
   } else {
     @color.Color::rgb(248, 250, 252)
   }
-  self.draw_list.add_rect(rect, bg_color, 4.0)
+  let border_color = if resp.hovered() {
+    @color.Color::rgb(203, 213, 225)
+  } else {
+    @color.Color::rgb(226, 232, 240)
+  }
+  self.draw_list.add_rect(rect, bg_color, 5.0)
+  self.draw_list.add_rect_stroke(rect, border_color, 1.0, 5.0)
 
   let arrow_color = if resp.hovered() {
-    @color.Color::rgb(15, 23, 42)
+    @color.Color::rgb(37, 99, 235)
   } else {
     @color.Color::rgb(100, 116, 139)
   }
-  let arrow_char = if is_open { "▼" } else { "▶" }
-  let arrow_x = rect.x + 8.0
-  let arrow_y = rect.y + (h - 10.0) * 0.5
-  self.draw_list.add_text(
-    @math.Vec2::new(arrow_x, arrow_y),
-    arrow_char,
-    10.0,
-    arrow_color,
-  )
+
+  // Draw crisp vector chevron
+  let arrow_cx = rect.x + 12.0
+  let arrow_cy = rect.y + h * 0.5
+  if is_open {
+    let p1 = @math.Vec2::new(arrow_cx - 3.5, arrow_cy - 1.5)
+    let p2 = @math.Vec2::new(arrow_cx, arrow_cy + 2.0)
+    let p3 = @math.Vec2::new(arrow_cx + 3.5, arrow_cy - 1.5)
+    self.draw_list.add_line(p1, p2, arrow_color, 1.5)
+    self.draw_list.add_line(p2, p3, arrow_color, 1.5)
+  } else {
+    let p1 = @math.Vec2::new(arrow_cx - 1.5, arrow_cy - 3.5)
+    let p2 = @math.Vec2::new(arrow_cx + 2.0, arrow_cy)
+    let p3 = @math.Vec2::new(arrow_cx - 1.5, arrow_cy + 3.5)
+    self.draw_list.add_line(p1, p2, arrow_color, 1.5)
+    self.draw_list.add_line(p2, p3, arrow_color, 1.5)
+  }
 
   let title_x = rect.x + 24.0
   let title_y = rect.y + (h - 13.0) * 0.5
@@ -134,8 +148,8 @@ pub fn UIContext::combo_box(
     @color.Color::rgb(203, 213, 225)
   }
 
-  self.draw_list.add_rect(box_rect, bg_color, 4.0)
-  self.draw_list.add_rect_stroke(box_rect, border_color, 1.0, 4.0)
+  self.draw_list.add_rect(box_rect, bg_color, 5.0)
+  self.draw_list.add_rect_stroke(box_rect, border_color, 1.0, 5.0)
 
   let selected_str = if current_idx >= 0 && current_idx < options.length() {
     options[current_idx]
@@ -150,14 +164,29 @@ pub fn UIContext::combo_box(
     @color.Color::rgb(15, 23, 42),
   )
 
-  let arrow_x = box_rect.x + box_w - 18.0
-  let arrow_y = box_rect.y + (h - 10.0) * 0.5
-  self.draw_list.add_text(
-    @math.Vec2::new(arrow_x, arrow_y),
-    "▼",
-    10.0,
-    @color.Color::rgb(100, 116, 139),
-  )
+  // Draw vector chevron on trigger
+  let chevron_cx = box_rect.x + box_w - 14.0
+  let chevron_cy = box_rect.y + h * 0.5
+  let chevron_col = if is_open {
+    @color.Color::rgb(37, 99, 235)
+  } else if box_hovered {
+    @color.Color::rgb(15, 23, 42)
+  } else {
+    @color.Color::rgb(100, 116, 139)
+  }
+  if is_open {
+    let p1 = @math.Vec2::new(chevron_cx - 3.5, chevron_cy + 1.5)
+    let p2 = @math.Vec2::new(chevron_cx, chevron_cy - 2.0)
+    let p3 = @math.Vec2::new(chevron_cx + 3.5, chevron_cy + 1.5)
+    self.draw_list.add_line(p1, p2, chevron_col, 1.5)
+    self.draw_list.add_line(p2, p3, chevron_col, 1.5)
+  } else {
+    let p1 = @math.Vec2::new(chevron_cx - 3.5, chevron_cy - 1.5)
+    let p2 = @math.Vec2::new(chevron_cx, chevron_cy + 2.0)
+    let p3 = @math.Vec2::new(chevron_cx + 3.5, chevron_cy - 1.5)
+    self.draw_list.add_line(p1, p2, chevron_col, 1.5)
+    self.draw_list.add_line(p2, p3, chevron_col, 1.5)
+  }
 
   if is_open {
     let item_h = 24.0
@@ -169,12 +198,24 @@ pub fn UIContext::combo_box(
       menu_h,
     )
 
-    self.draw_list.add_rect(menu_rect, @color.Color::white(), 4.0)
+    // Elevation shadow & border
+    let shadow_rect = @math.Rect::new(
+      menu_rect.x,
+      menu_rect.y + 2.0,
+      menu_rect.w,
+      menu_rect.h,
+    )
+    self.draw_list.add_rect(
+      shadow_rect,
+      @color.Color::rgba(15, 23, 42, 18),
+      6.0,
+    )
+    self.draw_list.add_rect(menu_rect, @color.Color::white(), 5.0)
     self.draw_list.add_rect_stroke(
       menu_rect,
       @color.Color::rgb(203, 213, 225),
       1.0,
-      4.0,
+      5.0,
     )
 
     for i = 0; i < options.length(); i = i + 1 {
@@ -189,7 +230,7 @@ pub fn UIContext::combo_box(
         self.draw_list.add_rect(
           item_rect,
           @color.Color::rgb(241, 245, 249),
-          2.0,
+          3.0,
         )
         if self.input.mouse_pressed() {
           current_idx = i
@@ -209,6 +250,17 @@ pub fn UIContext::combo_box(
         12.0,
         item_text_col,
       )
+
+      // Vector checkmark for active item
+      if i == current_idx {
+        let chk_x = item_rect.x + box_w - 14.0
+        let chk_y = item_rect.y + item_h * 0.5
+        let p1 = @math.Vec2::new(chk_x - 4.0, chk_y)
+        let p2 = @math.Vec2::new(chk_x - 1.5, chk_y + 2.5)
+        let p3 = @math.Vec2::new(chk_x + 3.5, chk_y - 2.5)
+        self.draw_list.add_line(p1, p2, @color.Color::rgb(37, 99, 235), 1.5)
+        self.draw_list.add_line(p2, p3, @color.Color::rgb(37, 99, 235), 1.5)
+      }
     }
   }
 
@@ -250,7 +302,7 @@ pub fn UIContext::tab_bar(
     let is_hovered = tab_rect.contains(self.input.mouse_pos)
     let is_selected = i == current_selected
 
-    if is_hovered && self.input.mouse_pressed {
+    if is_hovered && self.input.mouse_pressed() {
       current_selected = i
     }
 

@@ -748,38 +748,89 @@ pub fn draw_collapsing(ui : @core.UIContext, state : AppState) -> Unit {
 }`,
         renderUI: (container, state) => {
           if (state.open === undefined) state.open = true;
+          if (state.msaa === undefined) state.msaa = true;
+          if (state.shadows === undefined) state.shadows = false;
+
           container.innerHTML = `
             <div class="sandbox-header">
               <span>CollapsingHeader</span>
             </div>
-            <div class="sandbox-body" style="border: 1px solid var(--border); border-radius: 6px; overflow: hidden;">
-              <div style="background: var(--bg-subtle); padding: 8px 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600;" id="treeToggle">
-                <span id="treeArrow">${state.open ? '▼' : '▶'}</span>
-                <span>高级图形设置</span>
-              </div>
-              <div id="treeContent" style="padding: 12px; display: ${state.open ? 'block' : 'none'};">
-                <div class="checkbox-row checked">
-                  <div class="checkbox-sq"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-                  <span>四倍抗锯齿 (4x MSAA)</span>
+            <div class="sandbox-body">
+              <div class="collapsing-card">
+                <div class="collapsing-trigger ${state.open ? 'is-open' : ''}" id="treeToggle" tabindex="0">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="collapsing-chevron">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                      </svg>
+                    </span>
+                    <span style="font-weight: 600; font-size: 13.5px; color: var(--text-main);">高级图形设置</span>
+                  </div>
+                  <span class="collapsing-status-badge">${state.open ? '已展开' : '已折叠'}</span>
                 </div>
-                <div class="checkbox-row">
-                  <div class="checkbox-sq"></div>
-                  <span>各向异性过滤 (16x)</span>
+                <div class="collapsing-wrapper ${state.open ? 'is-open' : ''}" id="treeWrapper">
+                  <div class="collapsing-inner">
+                    <div class="collapsing-content">
+                      <div class="checkbox-row ${state.msaa ? 'checked' : ''}" id="colMsaa">
+                        <div class="checkbox-sq">
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div style="display: flex; flex-direction: column;">
+                          <span style="font-weight: 500;">四倍抗锯齿 (4x MSAA)</span>
+                          <span style="font-size: 11px; color: var(--text-muted);">平滑曲线与图元边缘</span>
+                        </div>
+                      </div>
+                      <div class="checkbox-row ${state.shadows ? 'checked' : ''}" id="colShadows" style="margin-top: 10px;">
+                        <div class="checkbox-sq">
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div style="display: flex; flex-direction: column;">
+                          <span style="font-weight: 500;">动态图元阴影</span>
+                          <span style="font-size: 11px; color: var(--text-muted);">启用实时高斯软阴影滤波</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="sandbox-tip" style="margin-top: 12px;">
-              点击标题展开或折叠。
+            <div class="sandbox-tip">
+              点击标题栏平滑展开与收起，支持键盘回车/空格触发。
             </div>
           `;
+
           const toggle = container.querySelector('#treeToggle');
-          const arrow = container.querySelector('#treeArrow');
-          const content = container.querySelector('#treeContent');
-          toggle.onclick = () => {
-            state.open = !state.open;
-            arrow.textContent = state.open ? '▼' : '▶';
-            content.style.display = state.open ? 'block' : 'none';
+          const wrapper = container.querySelector('#treeWrapper');
+          const badge = container.querySelector('.collapsing-status-badge');
+
+          const updateOpen = (open) => {
+            state.open = open;
+            toggle.classList.toggle('is-open', state.open);
+            wrapper.classList.toggle('is-open', state.open);
+            badge.textContent = state.open ? '已展开' : '已折叠';
             document.getElementById('statResponse').textContent = `tree_open: ${state.open}`;
+          };
+
+          toggle.onclick = () => updateOpen(!state.open);
+          toggle.onkeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              updateOpen(!state.open);
+            }
+          };
+
+          const msaaRow = container.querySelector('#colMsaa');
+          msaaRow.onclick = () => {
+            state.msaa = !state.msaa;
+            msaaRow.classList.toggle('checked', state.msaa);
+            document.getElementById('statResponse').textContent = `msaa: ${state.msaa}`;
+          };
+
+          const shadowsRow = container.querySelector('#colShadows');
+          shadowsRow.onclick = () => {
+            state.shadows = !state.shadows;
+            shadowsRow.classList.toggle('checked', state.shadows);
+            document.getElementById('statResponse').textContent = `shadows: ${state.shadows}`;
           };
         }
       },
@@ -898,7 +949,8 @@ pub fn draw_tabs(ui : @core.UIContext, state : AppState) -> Unit {
               <span style="color: var(--brand); font-weight: 600;">${tabs[state.tabIdx]}</span>
             </div>
             <div class="sandbox-body">
-              <div class="tabbar-container">
+              <div class="tabbar-container" id="demoTabContainer">
+                <div class="tabbar-indicator" id="demoTabIndicator"></div>
                 ${tabs.map((t, i) => `
                   <button class="tabbar-item ${state.tabIdx === i ? 'active' : ''}" data-idx="${i}">
                     ${t}
@@ -910,19 +962,39 @@ pub fn draw_tabs(ui : @core.UIContext, state : AppState) -> Unit {
               </div>
             </div>
             <div class="sandbox-tip">
-              点击选项卡平滑切换内容面板。
+              点击选项卡，观察物理滑块平滑滑动至对应位置。
             </div>
           `;
 
+          const tabContainer = container.querySelector('#demoTabContainer');
+          const indicator = container.querySelector('#demoTabIndicator');
+          const tabButtons = container.querySelectorAll('.tabbar-item');
           const content = container.querySelector('#tabContent');
-          container.querySelectorAll('.tabbar-item').forEach(btn => {
+
+          const updateIndicator = (activeBtn) => {
+            if (!activeBtn || !tabContainer || !indicator) return;
+            const containerRect = tabContainer.getBoundingClientRect();
+            const btnRect = activeBtn.getBoundingClientRect();
+            const left = btnRect.left - containerRect.left;
+            indicator.style.transform = `translateX(${left}px)`;
+            indicator.style.width = `${btnRect.width}px`;
+          };
+
+          // Position indicator after paint
+          requestAnimationFrame(() => {
+            const activeBtn = tabButtons[state.tabIdx] || tabButtons[0];
+            updateIndicator(activeBtn);
+          });
+
+          tabButtons.forEach(btn => {
             btn.onclick = () => {
               const idx = parseInt(btn.getAttribute('data-idx'));
               if (state.tabIdx === idx) return;
               state.tabIdx = idx;
-              container.querySelectorAll('.tabbar-item').forEach(b => b.classList.remove('active'));
+              tabButtons.forEach(b => b.classList.remove('active'));
               btn.classList.add('active');
               container.querySelector('.sandbox-header span:last-child').textContent = tabs[idx];
+              updateIndicator(btn);
 
               // Smooth transition keyframe
               content.style.animation = 'none';

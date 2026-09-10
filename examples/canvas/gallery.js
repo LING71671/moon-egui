@@ -109,7 +109,7 @@ const appState = {
         .replace(/\b([a-zA-Z_]\w*)(?=\()/g, '<span class="code-fn">$1</span>');
     }
 
-    // Switch Component
+    // Switch Component with smooth stage animation
     function switchComponent(id) {
       const comp = COMPONENTS[id];
       if (!comp) return;
@@ -120,10 +120,14 @@ const appState = {
       codeSnippetTarget.innerHTML = highlightMoonBit(comp.code);
 
       if (id === 'window') {
-        sandboxBox.className = 'sandbox-box-window';
+        sandboxBox.className = 'sandbox-box-window is-animating';
       } else {
-        sandboxBox.className = 'sandbox-box';
+        sandboxBox.className = 'sandbox-box is-animating';
       }
+
+      codeSnippetTarget.classList.remove('is-animating');
+      void codeSnippetTarget.offsetWidth; // trigger reflow
+      codeSnippetTarget.classList.add('is-animating');
 
       if (!appState.compStates[id]) appState.compStates[id] = {};
       comp.renderUI(sandboxBox, appState.compStates[id]);
