@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>moon-egui | 组件展厅 (Component Gallery) - 帘幕代码对比</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070a12;
+      --bg-card: #0d1322;
+      --bg-elevated: #131b2e;
+      --border: #1e293b;
+      --border-strong: #334155;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --text-muted: #64748b;
+      --brand: #3b82f6;
+      --brand-hover: #2563eb;
+      --brand-glow: rgba(59, 130, 246, 0.35);
+      --accent-emerald: #10b981;
+      --accent-purple: #8b5cf6;
+      --accent-amber: #f59e0b;
+      --curtain-color: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Top Sticky Header */
+    .gallery-nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(7, 10, 18, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+    }
+
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-logo {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .brand-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--brand);
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      padding: 2px 8px;
+      border-radius: 9999px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Curtain Split Presets in Nav */
+    .preset-group {
+      display: flex;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .preset-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-sub);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .preset-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .preset-btn.active {
+      color: #ffffff;
+      background: var(--brand);
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(59, 130, 246, 0.4);
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .nav-btn:hover {
+      border-color: var(--border-strong);
+      background: var(--bg-elevated);
+    }
+
+    .nav-btn-primary {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #ffffff;
+    }
+
+    .nav-btn-primary:hover {
+      background: var(--brand-hover);
+      border-color: var(--brand-hover);
+    }
+
+    /* Main Container Layout */
+    .main-layout {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      position: sticky;
+      top: 84px;
+      max-height: calc(100vh - 108px);
+      overflow-y: auto;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 5px;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 4px;
+    }
+
+    .search-box {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px 8px 34px;
+      font-size: 13px;
+      color: var(--text-main);
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 2px var(--brand-glow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .category-group {
+      margin-bottom: 20px;
+    }
+
+    .category-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      padding-left: 8px;
+    }
+
+    .comp-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .comp-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: 7px;
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .comp-item:hover {
+      background: var(--bg-elevated);
+      color: var(--text-main);
+    }
+
+    .comp-item.active {
+      background: rgba(59, 130, 246, 0.14);
+      color: #ffffff;
+      font-weight: 600;
+      border-left: 3px solid var(--brand);
+    }
+
+    .comp-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+    }
+
+    .comp-item.active .comp-tag {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+    }
+
+    /* Content Area */
+    .content-area {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Component Header Bar */
+    .comp-header-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .comp-title-area h1 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .comp-desc {
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    .comp-meta-tags {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .meta-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-sub);
+    }
+
+    .meta-chip.green {
+      color: var(--accent-emerald);
+      border-color: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    /* Interactive Curtain Split Stage */
+    .curtain-container {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      min-height: 520px;
+      user-select: none;
+    }
+
+    /* Top Hint Strip */
+    .curtain-hint-bar {
+      height: 36px;
+      background: #090e1a;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .hint-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hint-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--brand);
+      box-shadow: 0 0 8px var(--brand);
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .hint-right {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Stage Area containing Layers */
+    .stage-wrapper {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      overflow: hidden;
+    }
+
+    /* Layer 1: MoonBit Code Underlay (Bottom Layer) */
+    .code-underlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #060913;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .code-header-bar {
+      height: 40px;
+      background: #090e1a;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+
+    .code-filename {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--border-strong);
+    }
+
+    .code-scrollable {
+      flex: 1;
+      padding: 20px;
+      overflow: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.65;
+      color: #e2e8f0;
+      tab-size: 2;
+    }
+
+    .code-scrollable pre {
+      margin: 0;
+      white-space: pre;
+    }
+
+    /* Syntax Highlighting Tokens */
+    .token-kw { color: #f43f5e; font-weight: 600; }
+    .token-fn { color: #38bdf8; font-weight: 600; }
+    .token-type { color: #a855f7; font-weight: 600; }
+    .token-str { color: #34d399; }
+    .token-num { color: #fbbf24; }
+    .token-comment { color: #64748b; font-style: italic; }
+    .token-prop { color: #cbd5e1; }
+    .token-op { color: #94a3b8; }
+
+    /* Layer 2: Live Component UI (Foreground Curtain Layer) */
+    .ui-curtain-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top right, #111a30 0%, #0c1222 100%);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      /* clip-path will be manipulated dynamically: inset(0 0 0 X%) */
+      clip-path: inset(0 0 0 0%);
+      will-change: clip-path;
+      box-shadow: -6px 0 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .ui-viewport {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      position: relative;
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    /* Bottom Inspector Bar inside UI Layer */
+    .ui-inspector-bar {
+      height: 48px;
+      background: rgba(13, 19, 34, 0.95);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .state-stream {
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .state-pill {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--text-main);
+      font-size: 11px;
+    }
+
+    .state-pill b {
+      color: var(--accent-emerald);
+    }
+
+    /* Draggable Vertical Curtain Bar */
+    .curtain-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0%;
+      width: 24px;
+      margin-left: -12px;
+      z-index: 50;
+      cursor: ew-resize;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: none;
+    }
+
+    .curtain-vertical-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, rgba(59, 130, 246, 0.2) 0%, #3b82f6 50%, rgba(59, 130, 246, 0.2) 100%);
+      box-shadow: 0 0 12px var(--brand-glow);
+    }
+
+    .curtain-handle-pill {
+      position: relative;
+      z-index: 2;
+      width: 34px;
+      height: 56px;
+      background: #1e293b;
+      border: 2px solid #3b82f6;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 16px rgba(59, 130, 246, 0.5);
+      transition: transform 0.1s ease, border-color 0.15s ease;
+    }
+
+    .curtain-divider:hover .curtain-handle-pill,
+    .curtain-divider.dragging .curtain-handle-pill {
+      transform: scale(1.08);
+      border-color: #60a5fa;
+      background: #25334d;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.7), 0 0 24px rgba(96, 165, 250, 0.7);
+    }
+
+    .handle-grip-dots {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .handle-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #93c5fd;
+    }
+
+    .curtain-arrow-group {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      color: #93c5fd;
+      font-size: 9px;
+    }
+
+    /* Floating Tooltip Attached to Handle */
+    .curtain-floating-tooltip {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid var(--border-strong);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #e2e8f0;
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      z-index: 60;
+    }
+
+    /* Component Live Preview Widgets (Craft & Aesthetics) */
+    .preview-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      max-width: 520px;
+      width: 100%;
+    }
+
+    .preview-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .preview-widget-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    /* Custom Impeccable Simulated Widgets */
+    /* Button */
+    .mbt-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 7px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+      user-select: none;
+      outline: none;
+    }
+
+    .mbt-btn:focus-visible {
+      box-shadow: 0 0 0 3px var(--brand-glow);
+    }
+
+    .mbt-btn-primary {
+      background: var(--brand);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+    .mbt-btn-primary:hover {
+      background: var(--brand-hover);
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.45);
+      transform: translateY(-1px);
+    }
+    .mbt-btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .mbt-btn-default {
+      background: #1e293b;
+      border-color: #334155;
+      color: #e2e8f0;
+    }
+    .mbt-btn-default:hover {
+      background: #27354f;
+      border-color: #475569;
+    }
+
+    .mbt-btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.35);
+      color: #f87171;
+    }
+    .mbt-btn-danger:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    /* TextEdit */
+    .mbt-textedit-container {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .mbt-textedit {
+      width: 100%;
+      background: #090e1a;
+      border: 1px solid #334155;
+      border-radius: 7px;
+      padding: 10px 14px;
+      color: #f8fafc;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.15s ease;
+    }
+
+    .mbt-textedit:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+      background: #0d1424;
+    }
+
+    /* Checkbox */
+    .mbt-checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 10px;
+    }
+
+    .mbt-checkbox-box {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 1.5px solid #475569;
+      background: #090e1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .mbt-checkbox-row.checked .mbt-checkbox-box {
+      background: #3b82f6;
+      border-color: #3b82f6;
+    }
+
+    .mbt-checkbox-label {
+      font-size: 14px;
+      color: #e2e8f0;
+    }
+
+    /* Radio */
+    .mbt-radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mbt-radio-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .mbt-radio-circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid #475569;
+      background: #090e1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .mbt-radio-row.active .mbt-radio-circle {
+      border-color: #3b82f6;
+    }
+
+    .mbt-radio-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #3b82f6;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.15s ease;
+    }
+
+    .mbt-radio-row.active .mbt-radio-dot {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Slider */
+    .mbt-slider-container {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .slider-track {
+      position: relative;
+      width: 100%;
+      height: 6px;
+      background: #1e293b;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .slider-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background: #3b82f6;
+      border-radius: 3px;
+      width: 50%;
+    }
+
+    .slider-thumb {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid #3b82f6;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+      cursor: grab;
+      transition: transform 0.1s ease;
+    }
+
+    .slider-thumb:hover {
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    /* Progress Bar */
+    .mbt-progress-wrap {
+      width: 100%;
+      margin-bottom: 14px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 14px;
+      background: #090e1a;
+      border: 1px solid #1e293b;
+      border-radius: 7px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
+      border-radius: 6px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 10px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+    }
+
+    /* CollapsingHeader */
+    .mbt-collapsing-header {
+      background: #090e1a;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .collapsing-trigger {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #e2e8f0;
+      cursor: pointer;
+      user-select: none;
+      background: #0e1526;
+      transition: background 0.15s ease;
+    }
+
+    .collapsing-trigger:hover {
+      background: #141d33;
+    }
+
+    .collapsing-arrow {
+      transition: transform 0.2s ease;
+      display: inline-block;
+      font-size: 10px;
+      color: #94a3b8;
+    }
+
+    .mbt-collapsing-header.open .collapsing-arrow {
+      transform: rotate(9deg);
+    }
+
+    .collapsing-content {
+      padding: 14px;
+      border-top: 1px solid #1e293b;
+      display: none;
+      background: #070b14;
+    }
+
+    .mbt-collapsing-header.open .collapsing-content {
+      display: block;
+    }
+
+    /* ComboBox */
+    .mbt-combobox {
+      position: relative;
+      width: 100%;
+      margin-bottom: 14px;
+    }
+
+    .combobox-trigger {
+      width: 100%;
+      background: #090e1a;
+      border: 1px solid #334155;
+      border-radius: 7px;
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #f8fafc;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .combobox-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      margin-top: 4px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 7px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      display: none;
+      overflow: hidden;
+    }
+
+    .mbt-combobox.open .combobox-menu {
+      display: block;
+    }
+
+    .combobox-item {
+      padding: 8px 12px;
+      font-size: 13px;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .combobox-item:hover, .combobox-item.active {
+      background: #3b82f6;
+      color: #ffffff;
+    }
+
+    /* Toast Notification */
+    .toast-msg {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      border: 1px solid #3b82f6;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast-msg.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: relative;
+        top: 0;
+        max-height: none;
+      }
+      .preset-group {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Navigation Bar -->
+  <nav class="gallery-nav">
+    <div class="nav-inner">
+      <div class="brand-group">
+        <a href="index.html" class="brand-link">
+          <img src="logo.png" alt="moon-egui logo" class="brand-logo" />
+          <span>moon-egui</span>
+        </a>
+        <span class="brand-badge">展厅画廊</span>
+      </div>
+
+      <!-- Curtain View Presets -->
+      <div class="preset-group">
+        <button class="preset-btn active" id="btnPresetUI" title="展示纯净 UI 视图">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>
+          纯 UI (0%)
+        </button>
+        <button class="preset-btn" id="btnPresetSplit" title="左右对半对比代码与 UI">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+          50/50 对比
+        </button>
+        <button class="preset-btn" id="btnPresetCode" title="拉开帘幕查看完整 MoonBit 源码">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          源码 (100%)
+        </button>
+      </div>
+
+      <div class="nav-actions">
+        <a href="index.html" class="nav-btn">← 返回首页</a>
+        <a href="benchmark.html" class="nav-btn nav-btn-primary">进入矩阵画板 →</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Showcase Container -->
+  <main class="main-layout">
+    <!-- Sidebar: Component Directory -->
+    <aside class="sidebar">
+      <div class="search-box">
+        <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="filterInput" class="search-input" placeholder="搜索组件 (如 Button, TextEdit)..." />
+      </div>
+
+      <!-- Categories -->
+      <div class="category-group">
+        <div class="category-title">基础输入 (Input & Actions)</div>
+        <ul class="comp-list">
+          <li class="comp-item active" data-id="button">
+            <span>Button (按钮)</span>
+            <span class="comp-tag">交互响应</span>
+          </li>
+          <li class="comp-item" data-id="text_edit">
+            <span>TextEdit (文本输入框)</span>
+            <span class="comp-tag">光标导航</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="category-group">
+        <div class="category-title">选择与数值 (Selection & Values)</div>
+        <ul class="comp-list">
+          <li class="comp-item" data-id="checkbox">
+            <span>Checkbox (复选框)</span>
+            <span class="comp-tag">开关状态</span>
+          </li>
+          <li class="comp-item" data-id="radio">
+            <span>Radio (单选按钮)</span>
+            <span class="comp-tag">互斥分组</span>
+          </li>
+          <li class="comp-item" data-id="slider">
+            <span>Slider (数值滑动条)</span>
+            <span class="comp-tag">连续/离散</span>
+          </li>
+          <li class="comp-item" data-id="combo_box">
+            <span>ComboBox (下拉菜单)</span>
+            <span class="comp-tag">弹出列表</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="category-group">
+        <div class="category-title">反馈与展示 (Feedback & Hierarchy)</div>
+        <ul class="comp-list">
+          <li class="comp-item" data-id="progress_bar">
+            <span>ProgressBar (进度条)</span>
+            <span class="comp-tag">状态填充</span>
+          </li>
+          <li class="comp-item" data-id="collapsing_header">
+            <span>CollapsingHeader (折叠树)</span>
+            <span class="comp-tag">层级排版</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="category-group">
+        <div class="category-title">容器与布局 (Containers & Panels)</div>
+        <ul class="comp-list">
+          <li class="comp-item" data-id="scroll_area">
+            <span>ScrollArea (滚动区域)</span>
+            <span class="comp-tag">Scissor 裁剪</span>
+          </li>
+          <li class="comp-item" data-id="window">
+            <span>Window (浮动面板)</span>
+            <span class="comp-tag">自由拖拽</span>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Component Stage -->
+    <section class="content-area">
+      <!-- Component Header Card -->
+      <div class="comp-header-card">
+        <div class="comp-title-area">
+          <h1 id="activeCompTitle">Button 按钮</h1>
+          <p id="activeCompDesc" class="comp-desc">即时模式核心触发交互控件，支持 Primary / Default 状态、悬浮高亮、点击反馈与自定义尺寸度量。</p>
+        </div>
+        <div class="comp-meta-tags">
+          <span class="meta-chip green">● 生产级 Ready</span>
+          <span class="meta-chip" id="activeCompSignature">UIContext::button</span>
+        </div>
+      </div>
+
+      <!-- Interactive Curtain Split Stage -->
+      <div class="curtain-container" id="curtainContainer">
+        <!-- Top Hint Bar -->
+        <div class="curtain-hint-bar">
+          <div class="hint-left">
+            <span class="hint-pulse"></span>
+            <span>帘幕代码对比：按住中央竖向长条向右拖拽，即可揭开底层 MoonBit 源码</span>
+          </div>
+          <div class="hint-right">
+            <span id="curtainRatioText">代码: 0% | UI: 100%</span>
+          </div>
+        </div>
+
+        <!-- Stage Area with Two Overlaid Layers -->
+        <div class="stage-wrapper" id="stageWrapper">
+          <!-- Layer 1: MoonBit Code Underlay (Bottom Layer) -->
+          <div class="code-underlay" id="codeUnderlay">
+            <div class="code-header-bar">
+              <div class="code-filename">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span id="codeFileName">button_example.mbt</span>
+              </div>
+              <button class="copy-btn" id="copyCodeBtn" title="复制代码到剪贴板">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>复制代码</span>
+              </button>
+            </div>
+            <div class="code-scrollable">
+              <pre><code id="codeSnippetTarget"></code></pre>
+            </div>
+          </div>
+
+          <!-- Layer 2: Live Component UI (Foreground Curtain Layer) -->
+          <div class="ui-curtain-layer" id="uiCurtainLayer">
+            <div class="ui-viewport" id="uiViewport">
+              <!-- Render active component playground here -->
+              <div class="preview-card" id="activeCompPlayground">
+                <!-- Injected via JavaScript -->
+              </div>
+            </div>
+            <!-- Bottom Inspector Stream -->
+            <div class="ui-inspector-bar">
+              <div class="state-stream" id="stateStreamText">
+                <span>实时状态监控：</span>
+                <span class="state-pill">clicked: <b id="statClicked">false</b></span>
+                <span class="state-pill">hovered: <b id="statHovered">false</b></span>
+                <span class="state-pill">count: <b id="statCount">0</b></span>
+              </div>
+              <div style="font-size: 11px; color: var(--text-muted);">
+                moon-egui IMGUI 帧率: <b>60 FPS</b>
+              </div>
+            </div>
+          </div>
+
+          <!-- Draggable Vertical Curtain Bar (帘幕竖向长条) -->
+          <div class="curtain-divider" id="curtainDivider">
+            <div class="curtain-vertical-line"></div>
+            <div class="curtain-handle-pill" id="curtainHandle">
+              <div class="curtain-arrow-group">◀ ▶</div>
+              <div class="handle-grip-dots">
+                <div class="handle-dot"></div>
+                <div class="handle-dot"></div>
+                <div class="handle-dot"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toastMsg">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+    <span id="toastText">已成功复制代码到剪贴板！</span>
+  </div>
+
+  <script>
+    // Component Registry & Data
+    const COMPONENTS = {
+      button: {
+        title: "Button 按钮",
+        desc: "即时模式核心触发交互控件，支持 Primary / Default 状态、悬浮高亮、点击反馈与自定义尺寸度量。",
+        signature: "UIContext::button / button_primary",
+        fileName: "button_usage.mbt",
+        code: `///|
+/// MoonBit 原生即时模式按钮交互范例
+pub fn draw_button_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  // 1. 主要强调按钮 (Primary)
+  let res_primary = ui.button_primary("立即提交 (Submit)")
+  if res_primary.clicked {
+    state.click_count += 1
+    ui.toast("已成功触发主要操作！")
+  }
+
+  // 2. 次要常规按钮 (Default)
+  let res_default = ui.button("重置计数 (Reset)")
+  if res_default.clicked {
+    state.click_count = 0
+  }
+
+  // 3. 自定义尺寸按钮 (Sized)
+  let res_sized = ui.button_sized("自定义大按钮", 160.0, 40.0)
+  if res_sized.clicked {
+    state.click_count += 5
+  }
+}`,
+        renderUI: (container, state) => {
+          container.innerHTML = `
+            <div class="preview-title">
+              <span>Interactive Button Sandbox</span>
+              <span style="font-family: monospace; font-size: 11px;">State: count = ${state.btnCount || 0}</span>
+            </div>
+            <div class="preview-widget-row">
+              <button class="mbt-btn mbt-btn-primary" id="demoPrimaryBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                <span>主要按钮 (Primary)</span>
+              </button>
+              <button class="mbt-btn mbt-btn-default" id="demoDefaultBtn">
+                <span>重置计数</span>
+              </button>
+              <button class="mbt-btn mbt-btn-danger" id="demoDangerBtn">
+                <span>+5 增量</span>
+              </button>
+            </div>
+            <p style="font-size: 12px; color: var(--text-sub); line-height: 1.6;">
+              试着点击按钮：每按一下都会在底层即时模式循环中更新状态并同步触发微动画。
+            </p>
+          `;
+          const pBtn = container.querySelector('#demoPrimaryBtn');
+          const dBtn = container.querySelector('#demoDefaultBtn');
+          const dangerBtn = container.querySelector('#demoDangerBtn');
+
+          pBtn.onclick = () => {
+            state.btnCount = (state.btnCount || 0) + 1;
+            updateInspector({ clicked: true, hovered: true, count: state.btnCount });
+            container.querySelector('.preview-title span:last-child').textContent = `State: count = ${state.btnCount}`;
+            showToast(`点击了主要按钮！当前总计数: ${state.btnCount}`);
+          };
+          dBtn.onclick = () => {
+            state.btnCount = 0;
+            updateInspector({ clicked: true, hovered: false, count: 0 });
+            container.querySelector('.preview-title span:last-child').textContent = `State: count = 0`;
+            showToast("计数已清零");
+          };
+          dangerBtn.onclick = () => {
+            state.btnCount = (state.btnCount || 0) + 5;
+            updateInspector({ clicked: true, hovered: false, count: state.btnCount });
+            container.querySelector('.preview-title span:last-child').textContent = `State: count = ${state.btnCount}`;
+          };
+        }
+      },
+
+      text_edit: {
+        title: "TextEdit 文本输入框",
+        desc: "支持光标 (Caret) 闪烁、方向键光标导航 (Home/End/Arrow)、字符流键入、退格回删、外光圈聚焦环 (Focus Ring) 与 CJK 宽字符排版度量。",
+        signature: "UIContext::text_edit",
+        fileName: "text_edit_usage.mbt",
+        code: `///|
+/// 单行文本输入框与焦点状态机
+pub fn draw_text_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  // 带有占位符与焦点发光外圈 (Focus Ring)
+  let (new_text, res) = ui.text_edit(
+    state.username,
+    placeholder="请输入 MoonBit 开发者名称...",
+  )
+  
+  if res.changed {
+    state.username = new_text
+    println("文本已更新为: \{new_text}")
+  }
+
+  if res.has_focus {
+    // 处理 Tab / Shift+Tab 焦点轮转与光标左右移动
+  }
+}`,
+        renderUI: (container, state) => {
+          const val = state.inputText || "MoonBit 极速 GUI";
+          container.innerHTML = `
+            <div class="preview-title">
+              <span>TextEdit Input Sandbox</span>
+              <span style="font-family: monospace; font-size: 11px;">Focus Ring Active</span>
+            </div>
+            <div class="mbt-textedit-container">
+              <input type="text" class="mbt-textedit" id="demoTextInput" value="${val}" placeholder="输入任意文本、中英文或代码..." />
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sub); margin-top: 8px;">
+              <span>字符长度: <b id="textCharLen">${val.length}</b></span>
+              <span>Scissor 裁剪: <b>已开启</b></span>
+            </div>
+          `;
+          const input = container.querySelector('#demoTextInput');
+          input.oninput = (e) => {
+            state.inputText = e.target.value;
+            container.querySelector('#textCharLen').textContent = state.inputText.length;
+            updateInspector({ clicked: false, hovered: true, count: state.inputText.length });
+          };
+          input.onfocus = () => updateInspector({ clicked: true, hovered: true, count: input.value.length });
+        }
+      },
+
+      checkbox: {
+        title: "Checkbox 复选框",
+        desc: "提供二值布尔状态切换，带有平滑勾选缩放动画、外圈聚焦态以及文字标签对齐。",
+        signature: "UIContext::checkbox",
+        fileName: "checkbox_usage.mbt",
+        code: `///|
+/// 复选框状态切换
+pub fn draw_checkbox_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  let (checked, res) = ui.checkbox("启用 GPU 硬件加速渲染", state.enable_gpu)
+  if res.changed {
+    state.enable_gpu = checked
+  }
+
+  let (vsync, res2) = ui.checkbox("开启垂直同步 (VSync)", state.enable_vsync)
+  if res2.changed {
+    state.enable_vsync = vsync
+  }
+}`,
+        renderUI: (container, state) => {
+          if (state.chk1 === undefined) state.chk1 = true;
+          if (state.chk2 === undefined) state.chk2 = false;
+          container.innerHTML = `
+            <div class="preview-title">
+              <span>Checkbox Toggle Sandbox</span>
+            </div>
+            <div class="mbt-checkbox-row ${state.chk1 ? 'checked' : ''}" id="chk1Row">
+              <div class="mbt-checkbox-box">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <span class="mbt-checkbox-label">启用 GPU 硬件加速管线</span>
+            </div>
+            <div class="mbt-checkbox-row ${state.chk2 ? 'checked' : ''}" id="chk2Row">
+              <div class="mbt-checkbox-box">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <span class="mbt-checkbox-label">开启实时网格标尺与对齐吸附</span>
+            </div>
+          `;
+          const row1 = container.querySelector('#chk1Row');
+          const row2 = container.querySelector('#chk2Row');
+          row1.onclick = () => {
+            state.chk1 = !state.chk1;
+            row1.classList.toggle('checked', state.chk1);
+            updateInspector({ clicked: true, hovered: false, count: state.chk1 ? 1 : 0 });
+          };
+          row2.onclick = () => {
+            state.chk2 = !state.chk2;
+            row2.classList.toggle('checked', state.chk2);
+            updateInspector({ clicked: true, hovered: false, count: state.chk2 ? 1 : 0 });
+          };
+        }
+      },
+
+      radio: {
+        title: "Radio 单选按钮",
+        desc: "互斥选项分组控件，支持同组单项选中、内部同心圆缩放动效与键盘轮转聚焦。",
+        signature: "UIContext::radio",
+        fileName: "radio_usage.mbt",
+        code: `///|
+/// 单选按钮互斥交互
+pub fn draw_radio_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  let (s1, r1) = ui.radio("极简暗夜模式 (Dark)", state.theme == 0)
+  if r1.clicked { state.theme = 0 }
+
+  let (s2, r2) = ui.radio("太空银灰 (Slate)", state.theme == 1)
+  if r2.clicked { state.theme = 1 }
+
+  let (s3, r3) = ui.radio("高对比黑白 (Contrast)", state.theme == 2)
+  if r3.clicked { state.theme = 2 }
+}`,
+        renderUI: (container, state) => {
+          if (state.radioVal === undefined) state.radioVal = 0;
+          const labels = ["极简暗夜模式 (Obsidian Dark)", "太空银灰 (Slate Gray)", "高对比度 (High Contrast)"];
+          container.innerHTML = `
+            <div class="preview-title">
+              <span>Radio Group Sandbox</span>
+            </div>
+            <div class="mbt-radio-group">
+              ${labels.map((lbl, idx) => `
+                <div class="mbt-radio-row ${state.radioVal === idx ? 'active' : ''}" data-idx="${idx}">
+                  <div class="mbt-radio-circle">
+                    <div class="mbt-radio-dot"></div>
+                  </div>
+                  <span class="mbt-checkbox-label">${lbl}</span>
+                </div>
+              `).join('')}
+            </div>
+          `;
+          container.querySelectorAll('.mbt-radio-row').forEach(row => {
+            row.onclick = () => {
+              const idx = parseInt(row.getAttribute('data-idx'));
+              state.radioVal = idx;
+              container.querySelectorAll('.mbt-radio-row').forEach(r => r.classList.remove('active'));
+              row.classList.add('active');
+              updateInspector({ clicked: true, hovered: true, count: idx });
+            };
+          });
+        }
+      },
+
+      slider: {
+        title: "Slider 滑动条",
+        desc: "支持连续浮点数调节 (`slider`) 与离散整型步进 (`slider_int`)，轨道填充与滑块拖拽跟随。",
+        signature: "UIContext::slider / slider_int",
+        fileName: "slider_usage.mbt",
+        code: `///|
+/// 连续浮点与离散整型滑动条
+pub fn draw_slider_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  // 1. 浮点缩放比例
+  let (scale, res1) = ui.slider(state.scale, min=0.1, max=5.0)
+  if res1.changed { state.scale = scale }
+
+  // 2. 整型帧率限制 (15 ~ 120 FPS)
+  let (fps, res2) = ui.slider_int(state.fps, min=15, max=120)
+  if res2.changed { state.fps = fps }
+}`,
+        renderUI: (container, state) => {
+          if (state.sliderVal === undefined) state.sliderVal = 65;
+          container.innerHTML = `
+            <div class="preview-title">
+              <span>Continuous & Integer Slider</span>
+              <span id="sliderValDisplay" style="font-family: monospace; color: var(--brand); font-weight: 700;">${state.sliderVal}%</span>
+            </div>
+            <div class="mbt-slider-container">
+              <div class="slider-header">
+                <span>视图缩放比例 (Zoom Scale)</span>
+                <span>0% ~ 100%</span>
+              </div>
+              <div class="slider-track" id="demoSliderTrack">
+                <div class="slider-fill" id="demoSliderFill" style="width: ${state.sliderVal}%;"></div>
+                <div class="slider-thumb" id="demoSliderThumb" style="left: ${state.sliderVal}%;"></div>
+              </div>
+            </div>
+          `;
+          const track = container.querySelector('#demoSliderTrack');
+          const fill = container.querySelector('#demoSliderFill');
+          const thumb = container.querySelector('#demoSliderThumb');
+          const display = container.querySelector('#sliderValDisplay');
+
+          const updateFromX = (e) => {
+            const rect = track.getBoundingClientRect();
+            let pct = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+            pct = Math.max(0, Math.min(100, pct));
+            state.sliderVal = pct;
+            fill.style.width = pct + '%';
+            thumb.style.left = pct + '%';
+            display.textContent = pct + '%';
+            updateInspector({ clicked: true, hovered: true, count: pct });
+          };
+
+          let isDragging = false;
+          track.onmousedown = (e) => {
+            isDragging = true;
+            updateFromX(e);
+            window.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('mouseup', onMouseUp);
+          };
+          function onMouseMove(e) {
+            if (isDragging) updateFromX(e);
+          }
+          function onMouseUp() {
+            isDragging = false;
+            window.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('mouseup', onMouseUp);
+          }
+        }
+      },
+
+      progress_bar: {
+        title: "ProgressBar 进度条",
+        desc: "直观展示后台计算或渲染进度的指示条，支持百分比填充动画与居中文字说明。",
+        signature: "UIContext::progress_bar",
+        fileName: "progress_bar_usage.mbt",
+        code: `///|
+/// 进度指示条展示
+pub fn draw_progress_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  // 渲染完成百分比 (0.0 ~ 1.0)
+  ui.progress_bar(
+    fraction=state.progress,
+    text="渲染管线就绪: \{state.progress * 100}%",
+  )
+}`,
+        renderUI: (container, state) => {
+          if (state.prog === undefined) state.prog = 68;
+          container.innerHTML = `
+            <div class="preview-title">
+              <span>ProgressBar Simulation</span>
+              <button class="copy-btn" id="simulateProgBtn">开始模拟加载 ▶</button>
+            </div>
+            <div class="mbt-progress-wrap">
+              <div class="progress-track">
+                <div class="progress-bar-fill" id="progFill" style="width: ${state.prog}%;"></div>
+                <div class="progress-label" id="progLabel">数据加载中: ${state.prog}%</div>
+              </div>
+            </div>
+            <p style="font-size: 12px; color: var(--text-sub);">内置数值 Clamp 保护，保证超出 0.0 ~ 1.0 范围时边界绝不破裂。</p>
+          `;
+          const btn = container.querySelector('#simulateProgBtn');
+          const fill = container.querySelector('#progFill');
+          const label = container.querySelector('#progLabel');
+
+          let interval = null;
+          btn.onclick = () => {
+            if (interval) clearInterval(interval);
+            state.prog = 0;
+            interval = setInterval(() => {
+              state.prog += 2;
+              if (state.prog > 100) {
+                state.prog = 100;
+                clearInterval(interval);
+                showToast("模拟任务已圆满完成！");
+              }
+              fill.style.width = state.prog + '%';
+              label.textContent = `数据加载中: ${state.prog}%`;
+              updateInspector({ clicked: false, hovered: true, count: state.prog });
+            }, 30);
+          };
+        }
+      },
+
+      collapsing_header: {
+        title: "CollapsingHeader 可折叠树",
+        desc: "带折叠箭头的即时模式树节点与层级分组，支持默认展开状态和子控件嵌套缩进排版。",
+        signature: "UIContext::collapsing_header",
+        fileName: "collapsing_usage.mbt",
+        code: `///|
+/// 可折叠分组与树节点
+pub fn draw_collapsing_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  ui.collapsing_header("render_advanced", "高级渲染参数", default_open=true, fn(ui) {
+    let (msaa, _) = ui.checkbox("开启 4x MSAA 抗锯齿", state.msaa)
+    let (shadows, _) = ui.checkbox("启用高精度阴影映射", state.shadows)
+    let (lod, _) = ui.slider(state.lod_bias, min=0.0, max=2.0)
+  })
+}`,
+        renderUI: (container, state) => {
+          container.innerHTML = `
+            <div class="preview-title">
+              <span>Collapsing Tree Hierarchy</span>
+            </div>
+            <div class="mbt-collapsing-header open" id="colHeader">
+              <div class="collapsing-trigger" id="colTrigger">
+                <span class="collapsing-arrow">▶</span>
+                <span>高级图形光栅化设置 (Advanced)</span>
+              </div>
+              <div class="collapsing-content">
+                <div class="mbt-checkbox-row checked">
+                  <div class="mbt-checkbox-box"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                  <span class="mbt-checkbox-label">四倍超采样抗锯齿 (4x MSAA)</span>
+                </div>
+                <div class="mbt-checkbox-row">
+                  <div class="mbt-checkbox-box"></div>
+                  <span class="mbt-checkbox-label">各向异性过滤 (Anisotropic 16x)</span>
+                </div>
+              </div>
+            </div>
+          `;
+          const header = container.querySelector('#colHeader');
+          const trigger = container.querySelector('#colTrigger');
+          trigger.onclick = () => {
+            header.classList.toggle('open');
+            const isOpen = header.classList.contains('open');
+            updateInspector({ clicked: true, hovered: true, count: isOpen ? 1 : 0 });
+          };
+        }
+      },
+
+      combo_box: {
+        title: "ComboBox 下拉选择菜单",
+        desc: "紧凑型选项弹出菜单，支持当前选项展示、选项悬浮反色与点击切换确认。",
+        signature: "UIContext::combo_box",
+        fileName: "combo_box_usage.mbt",
+        code: `///|
+/// 下拉选择菜单
+pub fn draw_combo_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  let options = ["Canvas 2D 极速渲染", "WebGL 硬件加速", "WebGPU 现代计算管线"]
+  let (selected_idx, res) = ui.combo_box(
+    "render_backend",
+    "图形后端",
+    state.backend_idx,
+    options,
+  )
+  if res.changed {
+    state.backend_idx = selected_idx
+  }
+}`,
+        renderUI: (container, state) => {
+          if (state.comboIdx === undefined) state.comboIdx = 0;
+          const opts = ["Canvas 2D 极速引擎 (Default)", "WebGL 2.0 硬件加速", "WebGPU 现代计算架构"];
+          container.innerHTML = `
+            <div class="preview-title">
+              <span>ComboBox Dropdown Menu</span>
+            </div>
+            <div class="mbt-combobox" id="demoCombo">
+              <div class="combobox-trigger" id="comboTrigger">
+                <span id="comboSelectedText">${opts[state.comboIdx]}</span>
+                <span style="font-size: 10px; color: var(--text-muted);">▼</span>
+              </div>
+              <div class="combobox-menu" id="comboMenu">
+                ${opts.map((opt, i) => `
+                  <div class="combobox-item ${i === state.comboIdx ? 'active' : ''}" data-idx="${i}">
+                    ${opt}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+          const combo = container.querySelector('#demoCombo');
+          const trigger = container.querySelector('#comboTrigger');
+          const label = container.querySelector('#comboSelectedText');
+
+          trigger.onclick = () => combo.classList.toggle('open');
+          combo.querySelectorAll('.combobox-item').forEach(item => {
+            item.onclick = (e) => {
+              e.stopPropagation();
+              const idx = parseInt(item.getAttribute('data-idx'));
+              state.comboIdx = idx;
+              label.textContent = opts[idx];
+              combo.querySelectorAll('.combobox-item').forEach(i => i.classList.remove('active'));
+              item.classList.add('active');
+              combo.classList.remove('open');
+              updateInspector({ clicked: true, hovered: false, count: idx });
+            };
+          });
+        }
+      },
+
+      scroll_area: {
+        title: "ScrollArea 视口滚动容器",
+        desc: "通用纵向滚动视口容器，内置 Scissor 嵌套几何相交剪裁、滚轮位移累积与现代极简滚动条。",
+        signature: "UIContext::scroll_area",
+        fileName: "scroll_area_usage.mbt",
+        code: `///|
+/// 视口滚动容器与 Scissor 剪裁
+pub fn draw_scroll_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  ui.scroll_area("terminal_logs", width=360.0, height=200.0, fn(ui) {
+    for i = 0; i < 30; i = i + 1 {
+      ui.label("Frame [\{i}]: 渲染指令已压入 GPU 缓冲区")
+    }
+  })
+}`,
+        renderUI: (container, state) => {
+          container.innerHTML = `
+            <div class="preview-title">
+              <span>ScrollArea with Scissor Clip</span>
+            </div>
+            <div style="width: 100%; height: 160px; background: #070b14; border: 1px solid #1e293b; border-radius: 8px; overflow-y: auto; padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.7; color: #94a3b8;" id="scrollBox">
+              ${Array.from({length: 25}, (_, i) => `<div style="padding: 2px 0;">[Render_Pass_${i + 1}] Push clip rect (${i * 2}, 0, 800, 600) -> Scissor OK</div>`).join('')}
+            </div>
+            <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">
+              在上方窗口内滚动鼠标滚轮，视口内内容顺畅滑动，视口外部完全被相交矩阵剪切。
+            </p>
+          `;
+          const box = container.querySelector('#scrollBox');
+          box.onscroll = () => {
+            updateInspector({ clicked: false, hovered: true, count: Math.round(box.scrollTop) });
+          };
+        }
+      },
+
+      window: {
+        title: "Window 浮动面板",
+        desc: "可拖拽移动的独立浮动面板容器，包含窗口标题栏、关闭最小化操作与嵌套排版。",
+        signature: "UIContext::window",
+        fileName: "window_usage.mbt",
+        code: `///|
+/// 浮动窗口面板容器
+pub fn draw_window_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  ui.window("debug_inspector", "图元属性检查器", fn(ui) {
+    ui.label("当前选中对象: CAD 贝塞尔曲线")
+    let (w, _) = ui.slider(state.curve_width, min=1.0, max=10.0)
+    let (closed, _) = ui.checkbox("闭合路径", state.curve_closed)
+  })
+}`,
+        renderUI: (container, state) => {
+          container.innerHTML = `
+            <div class="preview-title">
+              <span>Floating Window Sandbox</span>
+            </div>
+            <div style="background: #0d1424; border: 1px solid #334155; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.5);">
+              <div style="background: #162036; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #22304d;">
+                <span style="font-size: 12px; font-weight: 700; color: #f8fafc;">图元属性检查器 (Inspector)</span>
+                <div style="display: flex; gap: 6px;">
+                  <span style="width: 8px; height: 8px; border-radius: 50%; background: #f59e0b;"></span>
+                  <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span>
+                </div>
+              </div>
+              <div style="padding: 14px; font-size: 13px;">
+                <div style="margin-bottom: 8px; color: var(--text-sub);">几何类型: <b>贝塞尔网格</b></div>
+                <div style="margin-bottom: 8px; color: var(--text-sub);">层级深度: <b>Z-Index 100</b></div>
+                <button class="mbt-btn mbt-btn-primary" style="padding: 5px 12px; font-size: 12px;">聚焦窗口</button>
+              </div>
+            </div>
+          `;
+        }
+      }
+    };
+
+    // App State
+    const appState = {
+      activeCompId: 'button',
+      curtainPct: 0, // 0 = 100% UI (curtain resting on left); 50 = 50/50 split; 100 = 100% code
+      compStates: {}
+    };
+
+    // DOM Elements
+    const curtainDivider = document.getElementById('curtainDivider');
+    const uiCurtainLayer = document.getElementById('uiCurtainLayer');
+    const stageWrapper = document.getElementById('stageWrapper');
+    const curtainRatioText = document.getElementById('curtainRatioText');
+    const activeCompTitle = document.getElementById('activeCompTitle');
+    const activeCompDesc = document.getElementById('activeCompDesc');
+    const activeCompSignature = document.getElementById('activeCompSignature');
+    const codeFileName = document.getElementById('codeFileName');
+    const codeSnippetTarget = document.getElementById('codeSnippetTarget');
+    const activeCompPlayground = document.getElementById('activeCompPlayground');
+    const copyCodeBtn = document.getElementById('copyCodeBtn');
+    const toastMsg = document.getElementById('toastMsg');
+    const toastText = document.getElementById('toastText');
+
+    // Inspector Status Elements
+    const statClicked = document.getElementById('statClicked');
+    const statHovered = document.getElementById('statHovered');
+    const statCount = document.getElementById('statCount');
+
+    function updateInspector({ clicked, hovered, count }) {
+      if (statClicked) statClicked.textContent = clicked !== undefined ? clicked : 'false';
+      if (statHovered) statHovered.textContent = hovered !== undefined ? hovered : 'false';
+      if (statCount) statCount.textContent = count !== undefined ? count : '0';
+    }
+
+    function showToast(text) {
+      toastText.textContent = text;
+      toastMsg.classList.add('show');
+      setTimeout(() => toastMsg.classList.remove('show'), 2500);
+    }
+
+    // Set Curtain Position (0 ~ 100)
+    function setCurtain(pct) {
+      pct = Math.max(0, Math.min(100, pct));
+      appState.curtainPct = pct;
+
+      // Divider Position
+      curtainDivider.style.left = `${pct}%`;
+
+      // Clip Path: cuts away the left pct% of the UI layer
+      // inset(top right bottom left) -> inset(0 0 0 pct%)
+      uiCurtainLayer.style.clipPath = `inset(0 0 0 ${pct}%)`;
+
+      // Update Ratio Text
+      const codePct = Math.round(pct);
+      const uiPct = 100 - codePct;
+      curtainRatioText.textContent = `代码: ${codePct}% | UI: ${uiPct}%`;
+
+      // Update Presets buttons
+      document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      if (pct < 10) {
+        document.getElementById('btnPresetUI').classList.add('active');
+      } else if (pct > 40 && pct < 60) {
+        document.getElementById('btnPresetSplit').classList.add('active');
+      } else if (pct > 90) {
+        document.getElementById('btnPresetCode').classList.add('active');
+      }
+    }
+
+    // Dragging Logic
+    let isDraggingCurtain = false;
+
+    function startCurtainDrag(e) {
+      isDraggingCurtain = true;
+      curtainDivider.classList.add('dragging');
+      window.addEventListener('mousemove', onCurtainDrag);
+      window.addEventListener('mouseup', stopCurtainDrag);
+      window.addEventListener('touchmove', onCurtainTouch);
+      window.addEventListener('touchend', stopCurtainDrag);
+      e.preventDefault();
+    }
+
+    function onCurtainDrag(e) {
+      if (!isDraggingCurtain) return;
+      const rect = stageWrapper.getBoundingClientRect();
+      const clientX = e.clientX;
+      const pct = ((clientX - rect.left) / rect.width) * 100;
+      setCurtain(pct);
+    }
+
+    function onCurtainTouch(e) {
+      if (!isDraggingCurtain || !e.touches || !e.touches[0]) return;
+      const rect = stageWrapper.getBoundingClientRect();
+      const clientX = e.touches[0].clientX;
+      const pct = ((clientX - rect.left) / rect.width) * 100;
+      setCurtain(pct);
+    }
+
+    function stopCurtainDrag() {
+      if (!isDraggingCurtain) return;
+      isDraggingCurtain = false;
+      curtainDivider.classList.remove('dragging');
+      window.removeEventListener('mousemove', onCurtainDrag);
+      window.removeEventListener('mouseup', stopCurtainDrag);
+      window.removeEventListener('touchmove', onCurtainTouch);
+      window.removeEventListener('touchend', stopCurtainDrag);
+    }
+
+    curtainDivider.addEventListener('mousedown', startCurtainDrag);
+    curtainDivider.addEventListener('touchstart', startCurtainDrag, { passive: false });
+
+    // Preset Buttons
+    document.getElementById('btnPresetUI').onclick = () => setCurtain(0);
+    document.getElementById('btnPresetSplit').onclick = () => setCurtain(50);
+    document.getElementById('btnPresetCode').onclick = () => setCurtain(100);
+
+    // Double click curtain divider to toggle between 0, 50, 100
+    curtainDivider.ondblclick = () => {
+      if (appState.curtainPct < 25) setCurtain(50);
+      else if (appState.curtainPct < 75) setCurtain(100);
+      else setCurtain(0);
+    };
+
+    // Syntax Highlighter Helper for MoonBit
+    function highlightMoonBit(rawCode) {
+      return rawCode
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/(\/\/\/.*|\/\/.*)/g, '<span class="token-comment">$1</span>')
+        .replace(/\b(pub|fn|let|mut|match|struct|type|if|else|return|for|in|while|true|false)\b/g, '<span class="token-kw">$1</span>')
+        .replace(/\b(Unit|Int|Double|String|Bool|UIContext|Response|AppState|Rect|Vec2)\b/g, '<span class="token-type">$1</span>')
+        .replace(/(".*?")/g, '<span class="token-str">$1</span>')
+        .replace(/\b(\d+\.?\d*)\b/g, '<span class="token-num">$1</span>');
+    }
+
+    // Switch Active Component
+    function switchComponent(id) {
+      const comp = COMPONENTS[id];
+      if (!comp) return;
+
+      appState.activeCompId = id;
+      activeCompTitle.textContent = comp.title;
+      activeCompDesc.textContent = comp.desc;
+      activeCompSignature.textContent = comp.signature;
+      codeFileName.textContent = comp.fileName;
+
+      // Highlight & Render Code
+      codeSnippetTarget.innerHTML = highlightMoonBit(comp.code);
+
+      // Render UI Playground
+      if (!appState.compStates[id]) appState.compStates[id] = {};
+      comp.renderUI(activeCompPlayground, appState.compStates[id]);
+
+      // Update Active Sidebar Item
+      document.querySelectorAll('.comp-item').forEach(item => {
+        if (item.getAttribute('data-id') === id) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    }
+
+    // Bind Sidebar Click Events
+    document.querySelectorAll('.comp-item').forEach(item => {
+      item.onclick = () => {
+        const id = item.getAttribute('data-id');
+        switchComponent(id);
+      };
+    });
+
+    // Copy Code Button
+    copyCodeBtn.onclick = () => {
+      const comp = COMPONENTS[appState.activeCompId];
+      if (!comp) return;
+      navigator.clipboard.writeText(comp.code).then(() => {
+        showToast("已复制代码到剪贴板！可以直接粘贴到项目中。");
+      }).catch(() => {
+        showToast("复制失败，请手动选取复制");
+      });
+    };
+
+    // Filter Search
+    const filterInput = document.getElementById('filterInput');
+    filterInput.oninput = (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.comp-item').forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const id = item.getAttribute('data-id').toLowerCase();
+        if (!q || text.includes(q) || id.includes(q)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    };
+
+    // Keyboard Arrow Shortcuts for Curtain
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT') return;
+      if (e.key === 'ArrowRight') {
+        setCurtain(appState.curtainPct + 5);
+      } else if (e.key === 'ArrowLeft') {
+        setCurtain(appState.curtainPct - 5);
+      }
+    });
+
+    // Initial Setup
+    switchComponent('button');
+    setCurtain(0); // Default 0% curtain: "不动就是我们组件的UI", "往右拉就可以查看后面的代码"
+  </script>
+</body>
+</html>
