@@ -26,6 +26,8 @@ pub struct UIContext {
   clip_stack : Array[@math.Rect]
   mut auto_id_counter : Int
   layout_stack : Array[LayoutScope]
+  mut wants_capture_mouse : Bool
+  mut prev_wants_capture_mouse : Bool
 } derive(Eq, Debug)
 
 ///|
@@ -45,6 +47,8 @@ pub fn UIContext::new() -> UIContext {
     layout_stack: [
       { dir: TopDown, start_x: 0.0, start_y: 0.0, max_cross_size: 0.0, },
     ],
+    wants_capture_mouse: false,
+    prev_wants_capture_mouse: false,
   }
 }
 
@@ -56,6 +60,7 @@ pub fn UIContext::begin_frame(self : UIContext, raw_input : RawInput) -> Unit {
   self.clip_stack.clear()
   self.auto_id_counter = 0
   self.hot_id = Id::zero()
+  self.wants_capture_mouse = false
   self.layout_stack.clear()
   self.layout_stack.push({
     dir: TopDown,
@@ -67,6 +72,7 @@ pub fn UIContext::begin_frame(self : UIContext, raw_input : RawInput) -> Unit {
 
 ///|
 pub fn UIContext::end_frame(self : UIContext) -> @draw.DrawList {
+  self.prev_wants_capture_mouse = self.wants_capture_mouse
   self.draw_list
 }
 
@@ -199,6 +205,7 @@ pub fn UIContext::allocate_space(
   let hovered = rect.contains(self.input.mouse_pos)
   if hovered {
     self.hot_id = id
+    self.wants_capture_mouse = true
   }
 
   // Pointer interaction state machine
@@ -207,6 +214,9 @@ pub fn UIContext::allocate_space(
   }
 
   let is_active = self.active_id == id
+  if is_active {
+    self.wants_capture_mouse = true
+  }
   let pressed = is_active && self.input.mouse_down
   let clicked = is_active && self.input.mouse_released && hovered
   let dragged = is_active &&
@@ -224,6 +234,21 @@ pub fn UIContext::allocate_space(
 ///|
 pub fn UIContext::set_active_id(self : UIContext, id : Id) -> Unit {
   self.active_id = id
+}
+
+///|
+/// Returns true if the pointer is currently hovering over or interacting with any UI widget or window.
+pub fn UIContext::wants_capture_mouse(self : UIContext) -> Bool {
+  self.prev_wants_capture_mouse || self.wants_capture_mouse
+}
+
+///|
+/// Explicitly declare that the UI context is capturing pointer input this frame.
+pub fn UIContext::set_wants_capture_mouse(
+  self : UIContext,
+  capture : Bool,
+) -> Unit {
+  self.wants_capture_mouse = capture
 }
 
 ///|

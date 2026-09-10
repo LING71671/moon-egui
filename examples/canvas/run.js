@@ -136,6 +136,18 @@
     return null;
   }
 
+  // Retrieve MoonBit internal BenchmarkState instance
+  function getMoonState() {
+    if (window.moon_state) return window.moon_state;
+    for (const key of Object.getOwnPropertyNames(window)) {
+      if (key.includes('canvas5state') || (key.includes('moon_2degui') && key.includes('state'))) {
+        window.moon_state = window[key];
+        return window[key];
+      }
+    }
+    return null;
+  }
+
   // Pre-cached canvas state to prevent browser string recalculations
   let cachedFillStyle = '';
   let cachedStrokeStyle = '';
@@ -543,8 +555,38 @@
   let kernelTimeRolling = 0.25;
   let renderTimeRolling = 0.40;
 
+  function syncHtmlControls() {
+    const mState = window.moon_state || getMoonState();
+    if (!mState) return;
+
+    // Sync Dimension buttons
+    const dim = mState.grid_dim;
+    ['128', '256', '512', '1024'].forEach(d => {
+      const btn = document.getElementById(`btn-dim-${d}`);
+      if (btn) {
+        if (parseInt(d, 10) === dim) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      }
+    });
+
+    // Sync Physics buttons
+    const pulseBtn = document.getElementById('btn-pulse');
+    if (pulseBtn) {
+      if (mState.wave_pulse) pulseBtn.classList.add('active');
+      else pulseBtn.classList.remove('active');
+    }
+    const repelBtn = document.getElementById('btn-repel');
+    if (repelBtn) {
+      if (mState.magnetic_repel) repelBtn.classList.add('active');
+      else repelBtn.classList.remove('active');
+    }
+  }
+
   function updateNodesTelemetry() {
-    const mState = window.moon_state || globalThis.moon_state;
+    const mState = window.moon_state || getMoonState();
     const gridDim = mState ? mState.grid_dim : 256;
     const totalNodes = gridDim * gridDim;
     const nodesEl = document.getElementById('txt-nodes');
@@ -623,6 +665,7 @@
       }
 
       updateNodesTelemetry();
+      syncHtmlControls();
     }
 
     requestAnimationFrame(loop);

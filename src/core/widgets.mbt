@@ -22,14 +22,15 @@ pub fn UIContext::label_colored(
 }
 
 ///|
-/// Render an interactive button.
-/// Automatically handles hover, press, and click interactions with modern dark-mode styling.
-pub fn UIContext::button(self : UIContext, text : String) -> Response {
+/// Render an interactive button with an explicitly specified size.
+pub fn UIContext::button_sized(
+  self : UIContext,
+  text : String,
+  size : @math.Vec2,
+) -> Response {
   let char_w = 8.0
   let text_w = text.length().to_double() * char_w
-  let w = if text_w + 28.0 > 64.0 { text_w + 28.0 } else { 64.0 }
-  let h = 32.0
-  let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
+  let (_id, rect, resp) = self.allocate_space(size)
 
   let bg_color = if resp.pressed {
     @color.Color::accent_primary()
@@ -61,20 +62,33 @@ pub fn UIContext::button(self : UIContext, text : String) -> Response {
   self.draw_list.add_text(
     @math.Vec2::new(text_x, text_y),
     text,
-    14.0,
+    13.0,
     text_color,
   )
   resp
 }
 
 ///|
-/// Render an emphasized call-to-action primary button using accent colors.
-pub fn UIContext::button_primary(self : UIContext, text : String) -> Response {
+/// Render an interactive button.
+/// Automatically handles hover, press, and click interactions with modern dark-mode styling.
+pub fn UIContext::button(self : UIContext, text : String) -> Response {
   let char_w = 8.0
   let text_w = text.length().to_double() * char_w
   let w = if text_w + 28.0 > 64.0 { text_w + 28.0 } else { 64.0 }
   let h = 32.0
-  let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
+  self.button_sized(text, @math.Vec2::new(w, h))
+}
+
+///|
+/// Render an emphasized primary button with an explicitly specified size.
+pub fn UIContext::button_primary_sized(
+  self : UIContext,
+  text : String,
+  size : @math.Vec2,
+) -> Response {
+  let char_w = 8.0
+  let text_w = text.length().to_double() * char_w
+  let (_id, rect, resp) = self.allocate_space(size)
 
   let bg_color = if resp.pressed {
     @color.Color::bg_active()
@@ -98,10 +112,20 @@ pub fn UIContext::button_primary(self : UIContext, text : String) -> Response {
   self.draw_list.add_text(
     @math.Vec2::new(text_x, text_y),
     text,
-    14.0,
+    13.0,
     @color.Color::white(),
   )
   resp
+}
+
+///|
+/// Render an emphasized call-to-action primary button using accent colors.
+pub fn UIContext::button_primary(self : UIContext, text : String) -> Response {
+  let char_w = 8.0
+  let text_w = text.length().to_double() * char_w
+  let w = if text_w + 28.0 > 64.0 { text_w + 28.0 } else { 64.0 }
+  let h = 32.0
+  self.button_primary_sized(text, @math.Vec2::new(w, h))
 }
 
 ///|

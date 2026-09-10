@@ -119,3 +119,27 @@ test "widgets: slider continuous dragging calculation" {
   let (int_val, _) = ctx.slider_int("Volume", 50, 0, 100)
   assert_eq(int_val, 50)
 }
+
+///|
+test "widgets: button_sized and mouse capture integration" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Mouse at (20, 10) hovering over button
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(20.0, 10.0), false)
+  ctx.begin_frame(raw1)
+  let resp = ctx.button_sized("Compact", @math.Vec2::new(80.0, 24.0))
+  assert_eq(resp.rect.w, 80.0)
+  assert_eq(resp.rect.h, 24.0)
+  assert_true(resp.hovered())
+  assert_true(ctx.wants_capture_mouse())
+
+  let _ = ctx.end_frame()
+
+  // Frame 2: Mouse at (500, 500) far away -> no capture
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(500.0, 500.0), false)
+  ctx.begin_frame(raw2)
+  let resp2 = ctx.button_sized("Compact", @math.Vec2::new(80.0, 24.0))
+  assert_true(!resp2.hovered())
+  let _ = ctx.end_frame()
+  assert_true(!ctx.wants_capture_mouse())
+}

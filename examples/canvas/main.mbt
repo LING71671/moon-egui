@@ -26,6 +26,11 @@ pub struct BenchmarkState {
   mut item_drag_dy : Double
   mut is_dragging_item : Bool
   mut visible_cells : Int
+
+  // In-Canvas Floating IMGUI Window State
+  mut win_pos_x : Double
+  mut win_pos_y : Double
+  mut win_dragging : Bool
 }
 
 ///|
@@ -50,6 +55,9 @@ let state : BenchmarkState = {
   item_drag_dy: 0.0,
   is_dragging_item: false,
   visible_cells: 0,
+  win_pos_x: -1.0,
+  win_pos_y: -1.0,
+  win_dragging: false,
 }
 
 ///|
@@ -146,9 +154,47 @@ pub fn step(
     }
   }
 
+  let cur_w = if vp_w > 100.0 { vp_w } else { 920.0 }
+  let cur_h = if vp_h > 100.0 { vp_h } else { 540.0 }
+  let win_w = 264.0
+  let win_h = 340.0
+
+  if state.win_pos_x < 0.0 {
+    state.win_pos_x = (cur_w - win_w - 20.0).max(20.0)
+    state.win_pos_y = 70.0
+  }
+
+  let win_title_rect = @math.Rect::new(
+    state.win_pos_x,
+    state.win_pos_y,
+    win_w,
+    28.0,
+  )
+  if mouse_down && win_title_rect.contains(@math.Vec2::new(mouse_x, mouse_y)) {
+    state.win_dragging = true
+  }
+  if !mouse_down {
+    state.win_dragging = false
+  }
+
   // Camera Pan
   if pan_dx != 0.0 || pan_dy != 0.0 {
-    if state.drag_mode == 1 && state.selected_id >= 0 {
+    if state.win_dragging {
+      state.win_pos_x = state.win_pos_x + pan_dx
+      state.win_pos_y = state.win_pos_y + pan_dy
+      if state.win_pos_x < 0.0 {
+        state.win_pos_x = 0.0
+      } else if state.win_pos_x > cur_w - win_w {
+        state.win_pos_x = cur_w - win_w
+      }
+      if state.win_pos_y < 0.0 {
+        state.win_pos_y = 0.0
+      } else if state.win_pos_y > cur_h - win_h {
+        state.win_pos_y = cur_h - win_h
+      }
+    } else if ctx.wants_capture_mouse() {
+      // Pointer captured by in-canvas GUI window / widgets
+    } else if state.drag_mode == 1 && state.selected_id >= 0 {
       state.is_dragging_item = true
       state.item_drag_dx = state.item_drag_dx + pan_dx / state.zoom
       state.item_drag_dy = state.item_drag_dy + pan_dy / state.zoom
@@ -173,7 +219,7 @@ pub fn step(
   }
 
   // Camera Zoom
-  if zoom_delta != 1.0 && zoom_delta > 0.0 {
+  if zoom_delta != 1.0 && zoom_delta > 0.0 && !ctx.wants_capture_mouse() {
     let new_zoom = state.zoom * zoom_delta
     if new_zoom < 0.01 {
       state.zoom = 0.01
@@ -193,8 +239,6 @@ pub fn step(
   let dl = ctx.draw_list()
   let vp_x = 0.0
   let vp_y = 0.0
-  let cur_w = if vp_w > 100.0 { vp_w } else { 920.0 }
-  let cur_h = if vp_h > 100.0 { vp_h } else { 540.0 }
 
   let ruler_h = 22.0
   let ruler_w = 48.0
@@ -221,11 +265,14 @@ pub fn step(
   let mwx = state.cam_x + (mouse_x - sc_x) / state.zoom
   let mwy = state.cam_y + (mouse_y - sc_y) / state.zoom
 
-  if in_canvas &&
+  let can_hit_nodes = in_canvas &&
+    !ctx.wants_capture_mouse() &&
     mwx >= 0.0 &&
     mwx < matrix_world_size &&
     mwy >= 0.0 &&
-    mwy < matrix_world_size {
+    mwy < matrix_world_size
+
+  if can_hit_nodes {
     let col = (mwx / pitch).to_int()
     let row = (mwy / pitch).to_int()
     if col >= 0 && col < grid_dim && row >= 0 && row < grid_dim {
@@ -746,6 +793,93 @@ pub fn step(
       )
     }
   }
+
+  // Draw Floating In-Canvas IMGUI Controls Window
+  let win_pos = @math.Vec2::new(state.win_pos_x, state.win_pos_y)
+  let win_size = @math.Vec2::new(win_w, win_h)
+
+  ctx.window("moon-egui Studio", win_pos, win_size, fn(ui) {
+    let _ = ui.label_colored("Matrix Scale", @color.Color::accent_primary())
+    ui.horizontal(fn(row) {
+      if row.button_sized("128", @math.Vec2::new(54.0, 24.0)).clicked {
+        state.grid_dim = 128
+        state.selected_id = -1
+      }
+      if row.button_sized("256", @math.Vec2::new(54.0, 24.0)).clicked {
+        state.grid_dim = 256
+        state.selected_id = -1
+      }
+      if row.button_sized("512", @math.Vec2::new(54.0, 24.0)).clicked {
+        state.grid_dim = 512
+        state.selected_id = -1
+      }
+      if row.button_sized("1024", @math.Vec2::new(54.0, 24.0)).clicked {
+        state.grid_dim = 1024
+        state.selected_id = -1
+      }
+    })
+
+    ui.separator()
+
+    let (new_zoom, _) = ui.slider("Zoom", state.zoom, 0.02, 2.0)
+    state.zoom = new_zoom
+
+    ui.separator()
+
+    let (new_pulse, pulse_resp) = ui.checkbox(
+      "Wave Pulse Dynamics",
+      state.wave_pulse,
+    )
+    if pulse_resp.clicked {
+      state.wave_pulse = new_pulse
+    }
+    let (new_repel, repel_resp) = ui.checkbox(
+      "Magnetic Repel Field",
+      state.magnetic_repel,
+    )
+    if repel_resp.clicked {
+      state.magnetic_repel = new_repel
+    }
+
+    ui.separator()
+
+    ui.horizontal(fn(row) {
+      if row.button_sized("Fit All", @math.Vec2::new(74.0, 24.0)).clicked {
+        let min_dim = if cur_w < cur_h { cur_w } else { cur_h }
+        let fit_z = (min_dim - 60.0) / 10500.0
+        state.zoom = if fit_z > 0.01 { fit_z } else { 0.075 }
+        state.cam_x = 5000.0
+        state.cam_y = 5000.0
+      }
+      if row.button_sized("Center", @math.Vec2::new(74.0, 24.0)).clicked {
+        state.cam_x = 5000.0
+        state.cam_y = 5000.0
+      }
+      if row.button_sized("100%", @math.Vec2::new(74.0, 24.0)).clicked {
+        state.zoom = 1.0
+      }
+    })
+
+    ui.separator()
+
+    if state.selected_id >= 0 {
+      let sel_col = state.selected_id % state.grid_dim
+      let sel_row = state.selected_id / state.grid_dim
+      let info = "Node #" +
+        state.selected_id.to_string() +
+        " [" +
+        sel_col.to_string() +
+        "," +
+        sel_row.to_string() +
+        "]"
+      let _ = ui.label_colored(info, @color.Color::rgb(244, 63, 94))
+    } else {
+      let _ = ui.label_colored(
+        "Click grid node to inspect",
+        @color.Color::text_secondary(),
+      )
+    }
+  })
 
   ctx.end_frame()
 }
