@@ -556,16 +556,18 @@ pub fn draw_combo_box(ui : @core.UIContext, state : AppState) -> Unit {
                   </span>
                 </div>
                 <div class="combobox-menu" id="comboMenu">
-                  ${opts.map((o, i) => `
-                    <div class="combobox-option ${i === state.comboIdx ? 'is-selected' : ''}" data-idx="${i}">
-                      <span>${o}</span>
-                      <span class="combobox-check">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                          <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                      </span>
-                    </div>
-                  `).join('')}
+                  <div class="combobox-menu-inner">
+                    ${opts.map((o, i) => `
+                      <div class="combobox-option ${i === state.comboIdx ? 'is-selected' : ''}" data-idx="${i}">
+                        <span>${o}</span>
+                        <span class="combobox-check">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </span>
+                      </div>
+                    `).join('')}
+                  </div>
                 </div>
               </div>
             </div>
