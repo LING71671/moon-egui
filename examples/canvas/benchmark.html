@@ -8,6 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    if (window.self !== window.top || window.location.search.includes('embedded=1')) {
+      document.documentElement.classList.add('is-embedded');
+    }
+  </script>
   <style>
     :root {
       --bg: #f8fafc;
@@ -100,6 +105,10 @@
     .back-btn:hover {
       color: var(--text-main);
       background: #f1f5f9;
+    }
+
+    .is-embedded .back-btn {
+      display: none !important;
     }
 
     .studio-title {
@@ -233,7 +242,7 @@
   <header class="studio-header">
     <!-- Left: Brand & Home Link -->
     <div class="studio-left">
-      <a href="index.html" class="back-btn" title="返回官网">
+      <a href="index.html" target="_top" class="back-btn" title="返回官网">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         <span>返回</span>
       </a>
