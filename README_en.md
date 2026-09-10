@@ -26,14 +26,22 @@
 
 ---
 
-## Live Demos
+## Overview
 
-Experience the interactive capabilities and rendering performance of `moon-egui` in any modern browser:
+`moon-egui` is a lightweight **immediate-mode GUI (IMGUI) library** designed for the [MoonBit](https://www.moonbitlang.com/) programming language, targeting WebAssembly and HTML5 Canvas 2D graphics environments.
 
-- **[Interactive Demo Homepage](https://ling71671.github.io/moon-egui/)**
-  Immediate-mode widgets showcase, application menu bar, floating inspector window, and lightweight canvas playground.
-- **[Canvas & Multi-Scale Matrix Benchmark](https://ling71671.github.io/moon-egui/benchmark.html)**
-  128² to 1024² (16,384 to 1,048,576 nodes) multi-scale pixel matrix, CAD dual-axis rulers, viewport pan & zoom navigation, and CAD pixel grid lines.
+Inspired by Rust's `egui` and C++'s `Dear ImGui`, `moon-egui` follows the immediate-mode paradigm: **code is UI, and UI is state**. By evaluating the interface frame-by-frame declaratively, it delivers a direct developer experience, modest runtime footprint, and stable rendering.
+
+### Specifications at a Glance
+
+| Dimension | Specification | Description |
+| :--- | :--- | :--- |
+| **Paradigm** | Immediate-Mode (IMGUI) | Declarative frame evaluation, stateless lifecycle |
+| **Language** | MoonBit (100% Pure Logic) | Headless design, decoupled from host environment |
+| **Target Runtime** | WebAssembly / JS | Clean architecture for native extensions (Raylib / SDL) |
+| **Rendering Backend** | HTML5 Canvas 2D (Default) | Outputs compact primitive command stream (`DrawCmd`) |
+| **Binary Footprint** | < 50 KB (Target) | Zero external runtime dependencies |
+| **Framerate Target** | 60 FPS (16.6ms frame budget) | Controlled dynamic memory allocations per frame |
 
 ---
 
@@ -58,22 +66,14 @@ Then import the packages in your `moon.pkg`:
 
 ---
 
-## Overview
+## Live Demos
 
-`moon-egui` is a lightweight **immediate-mode GUI (IMGUI) library** designed for the [MoonBit](https://www.moonbitlang.com/) programming language, targeting WebAssembly and HTML5 Canvas 2D graphics environments.
+Experience the interactive capabilities and rendering performance of `moon-egui` in any modern browser:
 
-Inspired by Rust's `egui` and C++'s `Dear ImGui`, `moon-egui` follows the immediate-mode paradigm: **code is UI, and UI is state**. By evaluating the interface frame-by-frame declaratively, it delivers a direct developer experience, modest runtime footprint, and stable rendering.
-
-### Specifications at a Glance
-
-| Dimension | Specification | Description |
-| :--- | :--- | :--- |
-| **Paradigm** | Immediate-Mode (IMGUI) | Declarative frame evaluation, stateless lifecycle |
-| **Language** | MoonBit (100% Pure Logic) | Headless design, decoupled from host environment |
-| **Target Runtime** | WebAssembly / JS | Clean architecture for native extensions (Raylib / SDL) |
-| **Rendering Backend** | HTML5 Canvas 2D (Default) | Outputs compact primitive command stream (`DrawCmd`) |
-| **Binary Footprint** | < 50 KB (Target) | Zero external runtime dependencies |
-| **Framerate Target** | 60 FPS (16.6ms frame budget) | Controlled dynamic memory allocations per frame |
+- **[Interactive Demo Homepage](https://ling71671.github.io/moon-egui/)**
+  Immediate-mode widgets showcase, application menu bar, floating inspector window, and lightweight canvas playground.
+- **[Canvas & Multi-Scale Matrix Benchmark](https://ling71671.github.io/moon-egui/benchmark.html)**
+  128² to 1024² (16,384 to 1,048,576 nodes) multi-scale pixel matrix, CAD dual-axis rulers, viewport pan & zoom navigation, and CAD pixel grid lines.
 
 ---
 

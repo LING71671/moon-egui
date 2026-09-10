@@ -26,14 +26,22 @@
 
 ---
 
-## 在线演示 (Live Demos)
+## 概述
 
-您可以通过现代浏览器直接体验 `moon-egui` 的交互功能与图形渲染效果：
+`moon-egui` 是面向 [MoonBit](https://www.moonbitlang.com/) 编程语言的轻量级**即时模式图形界面库（Immediate-Mode GUI）**，面向 WebAssembly 与 HTML5 Canvas 2D 等图形交互场景设计。
 
-- **[在线交互主页 (Interactive Demo)](https://ling71671.github.io/moon-egui/)**
-  包含即时模式基础控件展示、菜单栏、浮动窗口与轻量画板交互预览。
-- **[画板与多尺度矩阵测试 (Canvas & Multi-Scale Benchmark)](https://ling71671.github.io/moon-egui/benchmark.html)**
-  包含 128² 至 1024²（16,384 ~ 1,048,576 节点）多尺度像素晶格阵列、CAD 双轴标尺、视口平移/缩放漫游、以及像素晶格分界线渲染。
+设计灵感源自 Rust 社区的 `egui` 与 C++ `Dear ImGui`。`moon-egui` 采用即时模式范式：**代码即界面，界面即状态**。通过逐帧声明式构建，提供直观的 UI 开发体验、轻量级的运行时占用与平稳的渲染表现。
+
+### 核心规格一览
+
+| 维度 | 规格指标 | 说明 |
+| :--- | :--- | :--- |
+| **交互范式** | 即时模式（IMGUI） | 逐帧声明式求值，无状态生命周期困扰 |
+| **编程语言** | MoonBit（100% 纯逻辑） | 内核无头设计，解耦宿主环境 |
+| **运行目标** | WebAssembly / JS | 后续可无缝扩展至原生端（Raylib / SDL） |
+| **渲染后端** | HTML5 Canvas 2D（默认） | 输出紧凑图元指令流（`DrawCmd`） |
+| **产物体积** | < 50 KB（目标） | 零外部运行时依赖 |
+| **帧率目标** | 60 FPS（16.6ms 帧预算） | 严格控制每帧动态内存分配 |
 
 ---
 
@@ -58,22 +66,14 @@ moon add ling71671/moon-egui
 
 ---
 
-## 概述
+## 在线演示 (Live Demos)
 
-`moon-egui` 是面向 [MoonBit](https://www.moonbitlang.com/) 编程语言的轻量级**即时模式图形界面库（Immediate-Mode GUI）**，面向 WebAssembly 与 HTML5 Canvas 2D 等图形交互场景设计。
+您可以通过现代浏览器直接体验 `moon-egui` 的交互功能与图形渲染效果：
 
-设计灵感源自 Rust 社区的 `egui` 与 C++ `Dear ImGui`。`moon-egui` 采用即时模式范式：**代码即界面，界面即状态**。通过逐帧声明式构建，提供直观的 UI 开发体验、轻量级的运行时占用与平稳的渲染表现。
-
-### 核心规格一览
-
-| 维度 | 规格指标 | 说明 |
-| :--- | :--- | :--- |
-| **交互范式** | 即时模式（IMGUI） | 逐帧声明式求值，无状态生命周期困扰 |
-| **编程语言** | MoonBit（100% 纯逻辑） | 内核无头设计，解耦宿主环境 |
-| **运行目标** | WebAssembly / JS | 后续可无缝扩展至原生端（Raylib / SDL） |
-| **渲染后端** | HTML5 Canvas 2D（默认） | 输出紧凑图元指令流（`DrawCmd`） |
-| **产物体积** | < 50 KB（目标） | 零外部运行时依赖 |
-| **帧率目标** | 60 FPS（16.6ms 帧预算） | 严格控制每帧动态内存分配 |
+- **[在线交互主页 (Interactive Demo)](https://ling71671.github.io/moon-egui/)**
+  包含即时模式基础控件展示、菜单栏、浮动窗口与轻量画板交互预览。
+- **[画板与多尺度矩阵测试 (Canvas & Multi-Scale Benchmark)](https://ling71671.github.io/moon-egui/benchmark.html)**
+  包含 128² 至 1024²（16,384 ~ 1,048,576 节点）多尺度像素晶格阵列、CAD 双轴标尺、视口平移/缩放漫游、以及像素晶格分界线渲染。
 
 ---
 
