@@ -58,15 +58,21 @@ pub fn UIContext::slider(
       @math.Vec2::new(rect.x, rect.y + 4.0),
       label,
       13.0,
-      @color.Color::text_primary(),
+      @color.Color::rgb(15, 23, 42),
     )
   }
 
-  // Draw Track Background
-  self.draw_list.add_rect(track_rect, @color.Color::bg_hover(), 3.0)
+  // Draw Recessed Track Background
+  self.draw_list.add_rect(track_rect, @color.Color::rgb(241, 245, 249), 3.0)
+  self.draw_list.add_rect_stroke(
+    track_rect,
+    @color.Color::rgb(226, 232, 240),
+    1.0,
+    3.0,
+  )
 
-  // Draw Subtle Discrete Ticks (25%, 50%, 75%)
-  let tick_col = @color.Color::border_muted()
+  // Draw Discrete Ticks (25%, 50%, 75%)
+  let tick_col = @color.Color::rgb(203, 213, 225)
   for t in [0.25, 0.5, 0.75] {
     let tick_x = track_rect.x + track_rect.w * t
     let tick_y = track_rect.y + track_rect.h * 0.5
@@ -88,7 +94,7 @@ pub fn UIContext::slider(
       active_w,
       track_rect.h,
     )
-    self.draw_list.add_rect(fill_rect, @color.Color::accent_primary(), 3.0)
+    self.draw_list.add_rect(fill_rect, @color.Color::rgb(37, 99, 235), 3.0)
   }
 
   // Compute Value Text
@@ -107,43 +113,42 @@ pub fn UIContext::slider(
     int_part.to_string() + "." + frac_str
   }
 
-  // Draw Thumb Handle
+  // Draw White Ceramic Thumb Handle with Cobalt Border
   let thumb_cx = track_rect.x + active_w
   let thumb_cy = track_rect.y + track_rect.h * 0.5
-  let thumb_r = if is_active { 7.0 } else if is_hovered { 6.0 } else { 5.0 }
-  let thumb_col = if is_active {
-    @color.Color::accent_hover()
-  } else if is_hovered {
-    @color.Color::white()
-  } else {
-    @color.Color::accent_primary()
-  }
+  let thumb_r = if is_active { 7.0 } else if is_hovered { 6.5 } else { 5.5 }
   self.draw_list.add_circle(
     @math.Vec2::new(thumb_cx, thumb_cy),
     thumb_r,
-    thumb_col,
+    @color.Color::white(),
   )
   self.draw_list.add_circle_stroke(
     @math.Vec2::new(thumb_cx, thumb_cy),
     thumb_r,
-    @color.Color::white(),
+    @color.Color::rgb(37, 99, 235),
     1.5,
   )
 
-  // Draw Floating Value Bubble above Thumb when active (Desktop-Grade Interaction)
+  // Draw Floating HUD Bubble above Thumb when active
   if is_active {
-    let bubble_w = val_text.length().to_double() * 7.5 + 12.0
-    let bubble_h = 18.0
+    let bubble_w = val_text.length().to_double() * 7.5 + 14.0
+    let bubble_h = 20.0
     let bubble_x = thumb_cx - bubble_w * 0.5
     let bubble_y = thumb_cy - thumb_r - bubble_h - 4.0
     let bubble_rect = @math.Rect::new(bubble_x, bubble_y, bubble_w, bubble_h)
-    self.draw_list.add_rect(bubble_rect, @color.Color::rgb(15, 23, 42), 4.0)
-    let bubble_text_pos = @math.Vec2::new(bubble_x + 6.0, bubble_y + 3.0)
+    self.draw_list.add_rect(bubble_rect, @color.Color::white(), 5.0)
+    self.draw_list.add_rect_stroke(
+      bubble_rect,
+      @color.Color::rgb(203, 213, 225),
+      1.0,
+      5.0,
+    )
+    let bubble_text_pos = @math.Vec2::new(bubble_x + 7.0, bubble_y + 3.5)
     self.draw_list.add_text(
       bubble_text_pos,
       val_text,
       11.0,
-      @color.Color::white(),
+      @color.Color::rgb(15, 23, 42),
     )
   }
 
@@ -152,7 +157,7 @@ pub fn UIContext::slider(
     @math.Vec2::new(track_rect.x + track_w + 10.0, rect.y + 4.0),
     val_text,
     12.0,
-    @color.Color::text_secondary(),
+    @color.Color::rgb(71, 85, 105),
   )
 
   (new_val, resp)
@@ -241,25 +246,23 @@ pub fn UIContext::drag_value(
       @math.Vec2::new(rect.x, rect.y + 4.0),
       label,
       13.0,
-      @color.Color::text_primary(),
+      @color.Color::rgb(15, 23, 42),
     )
   }
 
   // Draw Box Background & Mercury Progress Fill
   let bg_color = if is_active {
-    @color.Color::bg_hover()
+    @color.Color::rgb(241, 245, 249)
   } else if is_hovered {
-    @color.Color::bg_surface()
+    @color.Color::rgb(255, 255, 255)
   } else {
-    @color.Color::bg_window()
+    @color.Color::rgb(248, 250, 252)
   }
 
-  let border_color = if is_active {
-    @color.Color::accent_primary()
-  } else if is_hovered {
-    @color.Color::accent_hover()
+  let border_color = if is_active || is_hovered {
+    @color.Color::rgb(37, 99, 235)
   } else {
-    @color.Color::border_muted()
+    @color.Color::rgb(203, 213, 225)
   }
 
   self.draw_list.add_rect(box_rect, bg_color, 4.0)
@@ -279,7 +282,7 @@ pub fn UIContext::drag_value(
       )
       self.draw_list.add_rect(
         mercury_rect,
-        @color.Color::rgba(37, 99, 235, 36),
+        @color.Color::rgba(37, 99, 235, 45),
         4.0,
       )
     }
@@ -300,9 +303,9 @@ pub fn UIContext::drag_value(
     val_str,
     12.0,
     if is_active {
-      @color.Color::accent_primary()
+      @color.Color::rgb(37, 99, 235)
     } else {
-      @color.Color::text_primary()
+      @color.Color::rgb(15, 23, 42)
     },
   )
 

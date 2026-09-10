@@ -210,7 +210,7 @@ pub fn UIContext::advance_cursor(Self, @math.Vec2) -> Unit
 pub fn UIContext::allocate_space(Self, @math.Vec2) -> (Id, @math.Rect, Response)
 pub fn UIContext::available_width(Self) -> Double
 pub fn UIContext::begin_frame(Self, RawInput) -> Unit
-pub fn UIContext::button(Self, String) -> Response
+pub fn UIContext::button(Self, String, shortcut? : String, primary? : Bool, size? : @math.Vec2) -> Response
 pub fn UIContext::button_primary(Self, String) -> Response
 pub fn UIContext::button_primary_sized(Self, String, @math.Vec2) -> Response
 pub fn UIContext::button_sized(Self, String, @math.Vec2) -> Response

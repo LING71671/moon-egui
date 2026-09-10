@@ -39,17 +39,29 @@ pub fn draw_buttons(ui : @core.UIContext, state : AppState) -> Unit {
           `;
           const pBtn = container.querySelector('#demoPrimaryBtn');
           const dBtn = container.querySelector('#demoDefaultBtn');
-          pBtn.onclick = () => {
-            state.count = (state.count || 0) + 1;
-            container.querySelector('.sandbox-header span:last-child').textContent = `Count: ${state.count}`;
-            document.getElementById('statResponse').textContent = `clicked: true, count: ${state.count}`;
-            showToast(`点击了主要按钮！计数: ${state.count}`);
+
+          const triggerPress = (btn, callback) => {
+            btn.classList.add('is-pressed');
+            setTimeout(() => btn.classList.remove('is-pressed'), 120);
+            callback();
           };
+
+          pBtn.onclick = () => {
+            triggerPress(pBtn, () => {
+              state.count = (state.count || 0) + 1;
+              container.querySelector('.sandbox-header span:last-child').textContent = `Count: ${state.count}`;
+              document.getElementById('statResponse').textContent = `clicked: true, count: ${state.count}`;
+              showToast(`点击了主要按钮！计数: ${state.count}`);
+            });
+          };
+
           dBtn.onclick = () => {
-            state.count = 0;
-            container.querySelector('.sandbox-header span:last-child').textContent = `Count: 0`;
-            document.getElementById('statResponse').textContent = `clicked: true, count: 0`;
-            showToast('计数已清零');
+            triggerPress(dBtn, () => {
+              state.count = 0;
+              container.querySelector('.sandbox-header span:last-child').textContent = `Count: 0`;
+              document.getElementById('statResponse').textContent = `clicked: true, count: 0`;
+              showToast('计数已清零');
+            });
           };
 
           const keyHandler = (e) => {
@@ -197,20 +209,19 @@ pub fn draw_toggles(ui : @core.UIContext, state : AppState) -> Unit {
               现代胶囊药丸滑块，带平滑水平缓动位移与主题品牌强调色。
             </div>
           `;
-          const t1 = container.querySelector('#tog1');
-          const t2 = container.querySelector('#tog2');
-          t1.onclick = () => {
-            state.t1 = !state.t1;
-            t1.classList.toggle('active', state.t1);
-            document.getElementById('statResponse').textContent = `grid_snap: ${state.t1}`;
-            showToast(`网格吸附已${state.t1 ? '开启' : '关闭'}`);
+          const triggerToggle = (row, pill, stateKey, name) => {
+            pill.classList.add('is-stretching');
+            state[stateKey] = !state[stateKey];
+            setTimeout(() => {
+              row.classList.toggle('active', state[stateKey]);
+              setTimeout(() => pill.classList.remove('is-stretching'), 100);
+              document.getElementById('statResponse').textContent = `${stateKey}: ${state[stateKey]}`;
+              showToast(`${name}已${state[stateKey] ? '开启' : '关闭'}`);
+            }, 50);
           };
-          t2.onclick = () => {
-            state.t2 = !state.t2;
-            t2.classList.toggle('active', state.t2);
-            document.getElementById('statResponse').textContent = `normals: ${state.t2}`;
-            showToast(`法线着色已${state.t2 ? '开启' : '关闭'}`);
-          };
+
+          t1.onclick = () => triggerToggle(t1, t1.querySelector('.toggle-pill'), 't1', '网格吸附');
+          t2.onclick = () => triggerToggle(t2, t2.querySelector('.toggle-pill'), 't2', '法线着色');
         }
       },
 
@@ -303,11 +314,32 @@ pub fn draw_slider(ui : @core.UIContext, state : AppState) -> Unit {
           const thumb = container.querySelector('#sThumb');
           const display = container.querySelector('#sliderDisplay');
           const bubble = container.querySelector('#sBubble');
+          const ticks = container.querySelectorAll('.slider-tick');
+          const detents = [25, 50, 75];
 
           const update = (e) => {
             const rect = track.getBoundingClientRect();
-            let p = Math.round(((e.clientX - rect.left) / rect.width) * 100);
-            p = Math.max(0, Math.min(100, p));
+            let rawP = ((e.clientX - rect.left) / rect.width) * 100;
+            let p = Math.round(Math.max(0, Math.min(100, rawP)));
+
+            // Lunar Precision Magnetic Detent within ±2.2%
+            for (let d of detents) {
+              if (Math.abs(rawP - d) <= 2.2) {
+                p = d;
+                break;
+              }
+            }
+
+            // Highlight ticks when thumb is aligned
+            ticks.forEach((tick, idx) => {
+              const d = detents[idx];
+              if (Math.abs(p - d) <= 1) {
+                tick.classList.add('active');
+              } else {
+                tick.classList.remove('active');
+              }
+            });
+
             state.sliderVal = p;
             fill.style.width = p + '%';
             thumb.style.left = p + '%';
@@ -365,9 +397,9 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
                 <div class="dragval-box" id="dvX" title="按住左右拖动，按住Shift精细/Ctrl快速">
                   <div class="dragval-mercury" id="dvXMerk" style="width: ${getPct(state.dx, -1000, 1000)}%;"></div>
                   <div class="dragval-content">
-                    <span class="dragval-arrows">◀</span>
+                    <span class="dragval-arrows arrow-left">◀</span>
                     <span id="dvXVal">${state.dx.toFixed(1)}</span>
-                    <span class="dragval-arrows">▶</span>
+                    <span class="dragval-arrows arrow-right">▶</span>
                   </div>
                 </div>
               </div>
@@ -376,9 +408,9 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
                 <div class="dragval-box" id="dvY" title="按住左右拖动，按住Shift精细/Ctrl快速">
                   <div class="dragval-mercury" id="dvYMerk" style="width: ${getPct(state.dy, -1000, 1000)}%;"></div>
                   <div class="dragval-content">
-                    <span class="dragval-arrows">◀</span>
+                    <span class="dragval-arrows arrow-left">◀</span>
                     <span id="dvYVal">${state.dy.toFixed(1)}</span>
-                    <span class="dragval-arrows">▶</span>
+                    <span class="dragval-arrows arrow-right">▶</span>
                   </div>
                 </div>
               </div>
@@ -387,9 +419,9 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
                 <div class="dragval-box" id="dvScale" title="按住左右拖动，按住Shift精细/Ctrl快速">
                   <div class="dragval-mercury" id="dvScaleMerk" style="width: ${getPct(state.dscale, 0.1, 10.0)}%;"></div>
                   <div class="dragval-content">
-                    <span class="dragval-arrows">◀</span>
+                    <span class="dragval-arrows arrow-left">◀</span>
                     <span id="dvScaleVal">${state.dscale.toFixed(2)}x</span>
-                    <span class="dragval-arrows">▶</span>
+                    <span class="dragval-arrows arrow-right">▶</span>
                   </div>
                 </div>
               </div>
@@ -457,6 +489,16 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
               else if (ctrl) mult = 10.0;
               updateModStatus(shift, ctrl);
 
+              if (dx > 2) {
+                el.classList.add('push-right');
+                el.classList.remove('push-left');
+              } else if (dx < -2) {
+                el.classList.add('push-left');
+                el.classList.remove('push-right');
+              } else {
+                el.classList.remove('push-left', 'push-right');
+              }
+
               let nv = startVal + dx * speed * mult;
               if (min !== undefined && nv < min) nv = min;
               if (max !== undefined && nv > max) nv = max;
@@ -471,7 +513,7 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
             const onUp = () => {
               if (!isDragging) return;
               isDragging = false;
-              el.classList.remove('is-dragging');
+              el.classList.remove('is-dragging', 'push-left', 'push-right');
               updateModStatus(false, false);
               window.removeEventListener('mousemove', onMove);
               window.removeEventListener('mouseup', onUp);

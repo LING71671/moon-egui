@@ -22,16 +22,16 @@ pub fn UIContext::collapsing_header(
   }
 
   let bg_color = if resp.hovered() {
-    @color.Color::bg_hover()
+    @color.Color::rgb(241, 245, 249)
   } else {
-    @color.Color::bg_surface()
+    @color.Color::rgb(248, 250, 252)
   }
   self.draw_list.add_rect(rect, bg_color, 4.0)
 
   let arrow_color = if resp.hovered() {
-    @color.Color::white()
+    @color.Color::rgb(15, 23, 42)
   } else {
-    @color.Color::text_secondary()
+    @color.Color::rgb(100, 116, 139)
   }
   let arrow_char = if is_open { "▼" } else { "▶" }
   let arrow_x = rect.x + 8.0
@@ -46,9 +46,9 @@ pub fn UIContext::collapsing_header(
   let title_x = rect.x + 24.0
   let title_y = rect.y + (h - 13.0) * 0.5
   let text_color = if resp.hovered() {
-    @color.Color::white()
+    @color.Color::rgb(15, 23, 42)
   } else {
-    @color.Color::text_primary()
+    @color.Color::rgb(51, 65, 85)
   }
   self.draw_list.add_text(
     @math.Vec2::new(title_x, title_y),
@@ -76,7 +76,7 @@ pub fn UIContext::collapsing_header(
 }
 
 ///|
-/// Render a dropdown selection menu.
+/// Render a dropdown selection menu in Studio Light.
 /// Returns a tuple of (new_selected_index, response).
 pub fn UIContext::combo_box(
   self : UIContext,
@@ -119,21 +119,19 @@ pub fn UIContext::combo_box(
       @math.Vec2::new(rect.x, label_y),
       label,
       13.0,
-      @color.Color::text_primary(),
+      @color.Color::rgb(15, 23, 42),
     )
   }
 
   let bg_color = if box_hovered || is_open {
-    @color.Color::bg_hover()
+    @color.Color::rgb(248, 250, 252)
   } else {
-    @color.Color::bg_surface()
+    @color.Color::white()
   }
-  let border_color = if is_open {
-    @color.Color::accent_primary()
-  } else if box_hovered {
-    @color.Color::accent_hover()
+  let border_color = if is_open || box_hovered {
+    @color.Color::rgb(37, 99, 235)
   } else {
-    @color.Color::border_muted()
+    @color.Color::rgb(203, 213, 225)
   }
 
   self.draw_list.add_rect(box_rect, bg_color, 4.0)
@@ -149,7 +147,7 @@ pub fn UIContext::combo_box(
     @math.Vec2::new(box_rect.x + 8.0, text_y),
     selected_str,
     13.0,
-    @color.Color::text_primary(),
+    @color.Color::rgb(15, 23, 42),
   )
 
   let arrow_x = box_rect.x + box_w - 18.0
@@ -158,7 +156,7 @@ pub fn UIContext::combo_box(
     @math.Vec2::new(arrow_x, arrow_y),
     "▼",
     10.0,
-    @color.Color::text_secondary(),
+    @color.Color::rgb(100, 116, 139),
   )
 
   if is_open {
@@ -171,10 +169,10 @@ pub fn UIContext::combo_box(
       menu_h,
     )
 
-    self.draw_list.add_rect(menu_rect, @color.Color::bg_window(), 4.0)
+    self.draw_list.add_rect(menu_rect, @color.Color::white(), 4.0)
     self.draw_list.add_rect_stroke(
       menu_rect,
-      @color.Color::border_muted(),
+      @color.Color::rgb(203, 213, 225),
       1.0,
       4.0,
     )
@@ -188,18 +186,22 @@ pub fn UIContext::combo_box(
       )
       let item_hovered = item_rect.contains(self.input.mouse_pos)
       if item_hovered {
-        self.draw_list.add_rect(item_rect, @color.Color::accent_primary(), 2.0)
+        self.draw_list.add_rect(
+          item_rect,
+          @color.Color::rgb(241, 245, 249),
+          2.0,
+        )
         if self.input.mouse_pressed() {
           current_idx = i
           self.set_open_combo_id(Id::zero())
         }
       }
       let item_text_col = if item_hovered {
-        @color.Color::white()
+        @color.Color::rgb(37, 99, 235)
       } else if i == current_idx {
-        @color.Color::accent_primary()
+        @color.Color::rgb(37, 99, 235)
       } else {
-        @color.Color::text_primary()
+        @color.Color::rgb(51, 65, 85)
       }
       self.draw_list.add_text(
         @math.Vec2::new(item_rect.x + 8.0, item_rect.y + (item_h - 12.0) * 0.5),
@@ -214,7 +216,7 @@ pub fn UIContext::combo_box(
 }
 
 ///|
-/// Render a segmented horizontal tab bar.
+/// Render a segmented horizontal tab bar in Studio Light.
 /// Returns a tuple of (new_selected_index, response).
 pub fn UIContext::tab_bar(
   self : UIContext,
@@ -231,9 +233,14 @@ pub fn UIContext::tab_bar(
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
   let mut current_selected = selected_idx
 
-  // Draw background container
-  self.draw_list.add_rect(rect, @color.Color::bg_window(), 6.0)
-  self.draw_list.add_rect_stroke(rect, @color.Color::border_muted(), 1.0, 6.0)
+  // Draw recessed groove container
+  self.draw_list.add_rect(rect, @color.Color::rgb(241, 245, 249), 6.0)
+  self.draw_list.add_rect_stroke(
+    rect,
+    @color.Color::rgb(226, 232, 240),
+    1.0,
+    6.0,
+  )
 
   let mut cur_x = rect.x
   for i = 0; i < tabs.length(); i = i + 1 {
@@ -249,18 +256,24 @@ pub fn UIContext::tab_bar(
 
     if is_selected {
       let active_rect = tab_rect.shrink(2.0)
-      self.draw_list.add_rect(active_rect, @color.Color::accent_primary(), 4.0)
+      self.draw_list.add_rect(active_rect, @color.Color::white(), 5.0)
+      self.draw_list.add_rect_stroke(
+        active_rect,
+        @color.Color::rgb(203, 213, 225),
+        1.0,
+        5.0,
+      )
     } else if is_hovered {
       let hover_rect = tab_rect.shrink(2.0)
-      self.draw_list.add_rect(hover_rect, @color.Color::bg_hover(), 4.0)
+      self.draw_list.add_rect(hover_rect, @color.Color::rgb(248, 250, 252), 4.0)
     }
 
     let text_col = if is_selected {
-      @color.Color::white()
+      @color.Color::rgb(15, 23, 42)
     } else if is_hovered {
-      @color.Color::white()
+      @color.Color::rgb(15, 23, 42)
     } else {
-      @color.Color::text_secondary()
+      @color.Color::rgb(100, 116, 139)
     }
 
     let text_x = tab_rect.x +

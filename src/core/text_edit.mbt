@@ -107,28 +107,22 @@ pub fn UIContext::text_edit_sized(
 
   self.set_text_cursor_pos(id, cursor_pos)
 
-  // Rendering
-  let bg_color = if is_focused {
-    @color.Color::bg_surface()
-  } else if resp.hovered() {
-    @color.Color::bg_hover()
-  } else {
-    @color.Color::bg_surface()
-  }
+  // Rendering in Studio Light
+  let bg_color = @color.Color::white()
 
   let border_color = if is_focused {
-    @color.Color::accent_primary()
+    @color.Color::rgb(37, 99, 235)
   } else if resp.hovered() {
-    @color.Color::accent_hover()
+    @color.Color::rgb(148, 163, 184)
   } else {
-    @color.Color::border_muted()
+    @color.Color::rgb(203, 213, 225)
   }
 
   let border_width = if is_focused { 1.5 } else { 1.0 }
 
   // Draw background and border
-  self.draw_list.add_rect(rect, bg_color, 4.0)
-  self.draw_list.add_rect_stroke(rect, border_color, border_width, 4.0)
+  self.draw_list.add_rect(rect, bg_color, 5.0)
+  self.draw_list.add_rect_stroke(rect, border_color, border_width, 5.0)
 
   // Scissor clip for text inside input box
   let padding_x = 8.0
@@ -149,7 +143,7 @@ pub fn UIContext::text_edit_sized(
         @math.Vec2::new(rect.x + padding_x, text_y),
         placeholder,
         font_size,
-        @color.Color::text_muted(),
+        @color.Color::rgb(148, 163, 184),
       )
     }
   } else {
@@ -157,11 +151,11 @@ pub fn UIContext::text_edit_sized(
       @math.Vec2::new(rect.x + padding_x, text_y),
       current_text,
       font_size,
-      @color.Color::text_primary(),
+      @color.Color::rgb(15, 23, 42),
     )
   }
 
-  // Draw blinking/solid cursor caret when focused
+  // Draw blinking/solid cursor caret when focused (Cobalt blue in Studio Light)
   if is_focused {
     let sub = string_slice(current_text, 0, cursor_pos)
     let measured_prefix = measure_text_size(sub, font_size)
@@ -171,7 +165,7 @@ pub fn UIContext::text_edit_sized(
     self.draw_list.add_line(
       @math.Vec2::new(caret_x, caret_top),
       @math.Vec2::new(caret_x, caret_bottom),
-      @color.Color::white(),
+      @color.Color::rgb(37, 99, 235),
       1.5,
     )
   }

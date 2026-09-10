@@ -23,30 +23,36 @@ pub fn UIContext::checkbox(
   )
 
   if checked {
-    self.draw_list.add_rect(box_rect, @color.Color::accent_primary(), 3.0)
+    self.draw_list.add_rect(box_rect, @color.Color::rgb(37, 99, 235), 4.0)
+    self.draw_list.add_rect_stroke(
+      box_rect,
+      @color.Color::rgb(29, 78, 216),
+      1.0,
+      4.0,
+    )
     let inner = box_rect.shrink(4.0)
     self.draw_list.add_rect(inner, @color.Color::white(), 2.0)
   } else {
     let box_bg = if resp.hovered {
-      @color.Color::bg_hover()
+      @color.Color::rgb(248, 250, 252)
     } else {
-      @color.Color::bg_window()
+      @color.Color::white()
     }
     let box_border = if resp.hovered {
-      @color.Color::accent_primary()
+      @color.Color::rgb(37, 99, 235)
     } else {
-      @color.Color::border_muted()
+      @color.Color::rgb(203, 213, 225)
     }
-    self.draw_list.add_rect(box_rect, box_bg, 3.0)
-    self.draw_list.add_rect_stroke(box_rect, box_border, 1.0, 3.0)
+    self.draw_list.add_rect(box_rect, box_bg, 4.0)
+    self.draw_list.add_rect_stroke(box_rect, box_border, 1.0, 4.0)
   }
 
   let text_x = rect.x + box_size + gap
   let text_y = rect.y + (h - 14.0) * 0.5
   let text_color = if resp.hovered {
-    @color.Color::white()
+    @color.Color::rgb(15, 23, 42)
   } else {
-    @color.Color::text_primary()
+    @color.Color::rgb(51, 65, 85)
   }
   self.draw_list.add_text(
     @math.Vec2::new(text_x, text_y),
@@ -78,27 +84,25 @@ pub fn UIContext::radio(
 
   let center = @math.Vec2::new(rect.x + circle_r + 1.0, rect.y + total_h * 0.5)
 
-  let outer_color = if resp.has_focus() {
-    @color.Color::accent_primary()
+  let outer_color = if resp.has_focus() || selected {
+    @color.Color::rgb(37, 99, 235)
   } else if resp.hovered() {
-    @color.Color::accent_hover()
-  } else if selected {
-    @color.Color::accent_primary()
+    @color.Color::rgb(37, 99, 235)
   } else {
-    @color.Color::border_muted()
+    @color.Color::rgb(203, 213, 225)
   }
 
   let bg_circle_color = if resp.hovered() {
-    @color.Color::bg_hover()
+    @color.Color::rgb(248, 250, 252)
   } else {
-    @color.Color::bg_surface()
+    @color.Color::white()
   }
 
   self.draw_list.add_circle(center, circle_r, bg_circle_color)
   self.draw_list.add_circle_stroke(center, circle_r, outer_color, 1.5)
 
   if selected {
-    self.draw_list.add_circle(center, 3.5, @color.Color::accent_primary())
+    self.draw_list.add_circle(center, 3.5, @color.Color::rgb(37, 99, 235))
   }
 
   let text_pos = @math.Vec2::new(
@@ -106,9 +110,9 @@ pub fn UIContext::radio(
     rect.y + (total_h - 13.0) * 0.5,
   )
   let text_color = if resp.hovered() {
-    @color.Color::white()
+    @color.Color::rgb(15, 23, 42)
   } else {
-    @color.Color::text_primary()
+    @color.Color::rgb(51, 65, 85)
   }
   self.draw_list.add_text(text_pos, label, 13.0, text_color)
 
@@ -123,13 +127,13 @@ pub fn UIContext::toggle(
   text : String,
   checked : Bool,
 ) -> (Bool, Response) {
-  let switch_w = 34.0
-  let switch_h = 18.0
+  let switch_w = 36.0
+  let switch_h = 20.0
   let gap = 8.0
   let char_w = 8.0
   let text_w = text.length().to_double() * char_w
   let total_w = switch_w + gap + text_w
-  let h = 22.0
+  let h = 24.0
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
   let new_state = if resp.clicked { !checked } else { checked }
 
@@ -142,17 +146,17 @@ pub fn UIContext::toggle(
 
   let bg_color = if checked {
     if resp.hovered {
-      @color.Color::accent_hover()
+      @color.Color::rgb(29, 78, 216)
     } else {
-      @color.Color::accent_primary()
+      @color.Color::rgb(37, 99, 235)
     }
   } else if resp.hovered {
-    @color.Color::bg_hover()
+    @color.Color::rgb(203, 213, 225)
   } else {
-    @color.Color::border_muted()
+    @color.Color::rgb(226, 232, 240)
   }
 
-  // Draw pill background
+  // Draw pill background with subtle shadow
   self.draw_list.add_rect(switch_rect, bg_color, switch_h * 0.5)
 
   // Draw sliding thumb circle
@@ -175,9 +179,9 @@ pub fn UIContext::toggle(
   let text_x = rect.x + switch_w + gap
   let text_y = rect.y + (h - 14.0) * 0.5
   let text_color = if resp.hovered {
-    @color.Color::white()
+    @color.Color::rgb(15, 23, 42)
   } else {
-    @color.Color::text_primary()
+    @color.Color::rgb(51, 65, 85)
   }
   self.draw_list.add_text(
     @math.Vec2::new(text_x, text_y),
