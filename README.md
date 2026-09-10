@@ -5,7 +5,7 @@
 **面向 MoonBit 与 WebAssembly 的轻量级即时模式图形界面库**
 
 <p>
-  <a href="README.md">简体中文</a>
+  <a href="README.md">简体中文</a> · <a href="README_en.md">English</a>
 </p>
 
 <p>
