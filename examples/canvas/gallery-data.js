@@ -2,24 +2,24 @@
     const COMPONENTS = {
       button: {
         title: "Button 按钮",
-        signature: "ui.button / ui.button_primary",
+        signature: "ui.button / ui.button_with_shortcut / ui.button_primary",
         code: `///|
-/// 基础按钮交互范例 (Button)
+/// 基础按钮交互范例 (Button with Shortcut Badges)
 pub fn draw_buttons(ui : @core.UIContext, state : AppState) -> Unit {
-  // 1. 主要强调按钮 (Primary)
-  let res_primary = ui.button_primary("立即提交 (Submit)")
+  // 1. 带桌面端快捷键徽标的强调按钮 (Primary + Shortcut Badge)
+  let res_primary = ui.button_with_shortcut("立即提交 (Submit)", "⌘S")
   if res_primary.clicked {
     state.count += 1
   }
 
-  // 2. 次要常规按钮 (Default)
-  let res_default = ui.button("重置计数 (Reset)")
+  // 2. 次要常规按钮 (Default + Shortcut Badge)
+  let res_default = ui.button_with_shortcut("重置计数 (Reset)", "Esc")
   if res_default.clicked {
     state.count = 0
   }
 
   // 3. 自定义尺寸大按钮 (Sized)
-  let res_sized = ui.button_sized("自定义大按钮", 160.0, 40.0)
+  let res_sized = ui.button_sized("自定义大按钮", @math.Vec2::new(160.0, 40.0))
 }`,
         renderUI: (container, state) => {
           container.innerHTML = `
@@ -29,12 +29,12 @@ pub fn draw_buttons(ui : @core.UIContext, state : AppState) -> Unit {
             </div>
             <div class="sandbox-body">
               <div class="widget-row">
-                <button class="btn-primary" id="demoPrimaryBtn">主要按钮</button>
-                <button class="btn-secondary" id="demoDefaultBtn">重置计数</button>
+                <button class="btn-primary" id="demoPrimaryBtn">主要按钮 <kbd class="kbd-badge">⌘S</kbd></button>
+                <button class="btn-secondary" id="demoDefaultBtn">重置计数 <kbd class="kbd-badge">Esc</kbd></button>
               </div>
             </div>
             <div class="sandbox-tip">
-              试着点击按钮：每次交互都在即时模式单帧循环中驱动状态变更与重绘。
+              支持桌面级快捷键徽标与键盘物理按键响应（尝试直接在页面按下 <kbd>⌘S / Ctrl+S</kbd> 或 <kbd>Esc</kbd>）。
             </div>
           `;
           const pBtn = container.querySelector('#demoPrimaryBtn');
@@ -51,6 +51,16 @@ pub fn draw_buttons(ui : @core.UIContext, state : AppState) -> Unit {
             document.getElementById('statResponse').textContent = `clicked: true, count: 0`;
             showToast('计数已清零');
           };
+
+          const keyHandler = (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+              e.preventDefault();
+              pBtn.click();
+            } else if (e.key === 'Escape') {
+              dBtn.click();
+            }
+          };
+          window.addEventListener('keydown', keyHandler);
         }
       },
 
@@ -252,15 +262,15 @@ pub fn draw_radio(ui : @core.UIContext, state : AppState) -> Unit {
 
       slider: {
         title: "Slider 滑动条",
-        signature: "ui.slider / ui.slider_int",
+        signature: "ui.slider / ui.slider_int (Floating Bubble & Ticks)",
         code: `///|
-/// 连续浮点与离散整型滑动条
+/// 连续浮点与离散整型滑动条 (带刻度吸附与动态气泡指示)
 pub fn draw_slider(ui : @core.UIContext, state : AppState) -> Unit {
-  // 1. 浮点连续缩放 (0.1 ~ 5.0)
+  // 1. 浮点连续缩放 (0.1 ~ 5.0)，拖拽时在手柄上方浮起动态数值气泡 (Bubble Tooltip)
   let (scale, res1) = ui.slider(state.scale, min=0.1, max=5.0)
   if res1.changed { state.scale = scale }
 
-  // 2. 离散整型步进 (15 ~ 120 FPS)
+  // 2. 离散整型步进 (15 ~ 120 FPS)，轨内渲染 25% / 50% / 75% 离散刻度标尺线
   let (fps, res2) = ui.slider_int(state.fps, min=15, max=120)
   if res2.changed { state.fps = fps }
 }`,
@@ -273,18 +283,26 @@ pub fn draw_slider(ui : @core.UIContext, state : AppState) -> Unit {
             </div>
             <div class="sandbox-body">
               <div class="slider-track" id="sTrack">
+                <div class="slider-ticks">
+                  <div class="slider-tick" style="left: 25%;"></div>
+                  <div class="slider-tick" style="left: 50%;"></div>
+                  <div class="slider-tick" style="left: 75%;"></div>
+                </div>
                 <div class="slider-fill" id="sFill" style="width: ${state.sliderVal}%;"></div>
-                <div class="slider-thumb" id="sThumb" style="left: ${state.sliderVal}%;"></div>
+                <div class="slider-thumb" id="sThumb" style="left: ${state.sliderVal}%;">
+                  <div class="slider-value-bubble" id="sBubble">${state.sliderVal}%</div>
+                </div>
               </div>
             </div>
             <div class="sandbox-tip">
-              支持连续浮点数拖拽或离散整数吸附步进。
+              桌面级微交互：拖动手柄时自动浮现实时数值微气泡，轨道内置 25%/50%/75% 刻度标记。
             </div>
           `;
           const track = container.querySelector('#sTrack');
           const fill = container.querySelector('#sFill');
           const thumb = container.querySelector('#sThumb');
           const display = container.querySelector('#sliderDisplay');
+          const bubble = container.querySelector('#sBubble');
 
           const update = (e) => {
             const rect = track.getBoundingClientRect();
@@ -294,12 +312,14 @@ pub fn draw_slider(ui : @core.UIContext, state : AppState) -> Unit {
             fill.style.width = p + '%';
             thumb.style.left = p + '%';
             display.textContent = p + '%';
+            if (bubble) bubble.textContent = p + '%';
             document.getElementById('statResponse').textContent = `value: ${p}%`;
           };
 
           let dragging = false;
           track.onmousedown = (e) => {
             dragging = true;
+            track.classList.add('is-active');
             update(e);
             window.addEventListener('mousemove', onMove);
             window.addEventListener('mouseup', onUp);
@@ -307,6 +327,7 @@ pub fn draw_slider(ui : @core.UIContext, state : AppState) -> Unit {
           function onMove(e) { if (dragging) update(e); }
           function onUp() {
             dragging = false;
+            track.classList.remove('is-active');
             window.removeEventListener('mousemove', onMove);
             window.removeEventListener('mouseup', onUp);
           }
@@ -315,11 +336,12 @@ pub fn draw_slider(ui : @core.UIContext, state : AppState) -> Unit {
 
       drag_value: {
         title: "DragValue 数字微调器",
-        signature: "ui.drag_value(label, val, speed=..., min=..., max=...)",
+        signature: "ui.drag_value (Shift: 0.1x / Ctrl: 10x / Mercury Fill)",
         code: `///|
-/// 紧凑型数字拖动调节器 (DragValue)
+/// DCC 级数字微调器 (DragValue with Precision Modifiers & Mercury Fill)
 pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
-  // 按住鼠标水平拖动即可平滑步进数值，占用面积比 Slider 小 70%
+  // 水平拖拽连续步进数值，内嵌半透明水银进度槽 (Mercury Fill)
+  // [Shift]: 0.1x 精细微调 | [Ctrl/⌘]: 10x 快速步进
   let (x, _) = ui.drag_value("坐标 X", state.pos_x, speed=0.5, min=-1000.0, max=1000.0)
   let (y, _) = ui.drag_value("坐标 Y", state.pos_y, speed=0.5, min=-1000.0, max=1000.0)
   let (scale, _) = ui.drag_value("几何缩放", state.scale, speed=0.05, min=0.1, max=10.0)
@@ -329,6 +351,10 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
           if (state.dy === undefined) state.dy = 80.0;
           if (state.dscale === undefined) state.dscale = 1.25;
 
+          const getPct = (val, min, max) => {
+            return Math.max(0, Math.min(100, ((val - min) / (max - min)) * 100)).toFixed(1);
+          };
+
           container.innerHTML = `
             <div class="sandbox-header">
               <span>DragValue Sandbox</span>
@@ -336,35 +362,77 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
             <div class="sandbox-body">
               <div class="dragval-row">
                 <span>图元空间世界坐标 X</span>
-                <div class="dragval-box" id="dvX" title="按住左右拖动调节">
-                  <span class="dragval-arrows">◀</span>
-                  <span id="dvXVal">${state.dx.toFixed(1)}</span>
-                  <span class="dragval-arrows">▶</span>
+                <div class="dragval-box" id="dvX" title="按住左右拖动，按住Shift精细/Ctrl快速">
+                  <div class="dragval-mercury" id="dvXMerk" style="width: ${getPct(state.dx, -1000, 1000)}%;"></div>
+                  <div class="dragval-content">
+                    <span class="dragval-arrows">◀</span>
+                    <span id="dvXVal">${state.dx.toFixed(1)}</span>
+                    <span class="dragval-arrows">▶</span>
+                  </div>
                 </div>
               </div>
               <div class="dragval-row">
                 <span>图元空间世界坐标 Y</span>
-                <div class="dragval-box" id="dvY" title="按住左右拖动调节">
-                  <span class="dragval-arrows">◀</span>
-                  <span id="dvYVal">${state.dy.toFixed(1)}</span>
-                  <span class="dragval-arrows">▶</span>
+                <div class="dragval-box" id="dvY" title="按住左右拖动，按住Shift精细/Ctrl快速">
+                  <div class="dragval-mercury" id="dvYMerk" style="width: ${getPct(state.dy, -1000, 1000)}%;"></div>
+                  <div class="dragval-content">
+                    <span class="dragval-arrows">◀</span>
+                    <span id="dvYVal">${state.dy.toFixed(1)}</span>
+                    <span class="dragval-arrows">▶</span>
+                  </div>
                 </div>
               </div>
               <div class="dragval-row">
                 <span>全局拓扑缩放比例</span>
-                <div class="dragval-box" id="dvScale" title="按住左右拖动调节">
-                  <span class="dragval-arrows">◀</span>
-                  <span id="dvScaleVal">${state.dscale.toFixed(2)}x</span>
-                  <span class="dragval-arrows">▶</span>
+                <div class="dragval-box" id="dvScale" title="按住左右拖动，按住Shift精细/Ctrl快速">
+                  <div class="dragval-mercury" id="dvScaleMerk" style="width: ${getPct(state.dscale, 0.1, 10.0)}%;"></div>
+                  <div class="dragval-content">
+                    <span class="dragval-arrows">◀</span>
+                    <span id="dvScaleVal">${state.dscale.toFixed(2)}x</span>
+                    <span class="dragval-arrows">▶</span>
+                  </div>
                 </div>
+              </div>
+
+              <div class="dragval-modifier-bar">
+                <span>修饰键状态:</span>
+                <span class="dragval-modifier-tag active" id="modNormal">常规 1.0x</span>
+                <span class="dragval-modifier-tag" id="modShift">Shift 0.1x 精细</span>
+                <span class="dragval-modifier-tag" id="modCtrl">Ctrl/⌘ 10x 快速</span>
               </div>
             </div>
             <div class="sandbox-tip">
-              egui 标志性数值微调控件：按住数字方块左右滑动即可无极步进，极其紧凑。
+              Blender/Figma 级别桌面微交互：内部具有微水银进度槽，按住 <kbd>Shift</kbd> 进入 0.1x 精细微调，按住 <kbd>Ctrl/⌘</kbd> 进行 10x 粗调步进。
             </div>
           `;
 
-          const setupDrag = (el, valEl, key, speed, min, max, suffix = '') => {
+          const tagNormal = container.querySelector('#modNormal');
+          const tagShift = container.querySelector('#modShift');
+          const tagCtrl = container.querySelector('#modCtrl');
+
+          const updateModStatus = (shift, ctrl) => {
+            if (shift) {
+              tagNormal.classList.remove('active');
+              tagShift.classList.add('active');
+              tagCtrl.classList.remove('active');
+            } else if (ctrl) {
+              tagNormal.classList.remove('active');
+              tagShift.classList.remove('active');
+              tagCtrl.classList.add('active');
+            } else {
+              tagNormal.classList.add('active');
+              tagShift.classList.remove('active');
+              tagCtrl.classList.remove('active');
+            }
+          };
+
+          const keyHandler = (e) => {
+            updateModStatus(e.shiftKey, e.ctrlKey || e.metaKey);
+          };
+          window.addEventListener('keydown', keyHandler);
+          window.addEventListener('keyup', keyHandler);
+
+          const setupDrag = (el, valEl, merkEl, key, speed, min, max, suffix = '') => {
             let isDragging = false;
             let startX = 0;
             let startVal = state[key];
@@ -374,6 +442,7 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
               startX = e.clientX || (e.touches && e.touches[0].clientX);
               startVal = state[key];
               el.classList.add('is-dragging');
+              updateModStatus(e.shiftKey, e.ctrlKey || e.metaKey);
               window.addEventListener('mousemove', onMove);
               window.addEventListener('mouseup', onUp);
               window.addEventListener('touchmove', onTouch, { passive: false });
@@ -381,22 +450,29 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
               e.preventDefault();
             };
 
-            const updateDelta = (clientX) => {
+            const updateDelta = (clientX, shift, ctrl) => {
               const dx = clientX - startX;
-              let nv = startVal + dx * speed;
+              let mult = 1.0;
+              if (shift) mult = 0.1;
+              else if (ctrl) mult = 10.0;
+              updateModStatus(shift, ctrl);
+
+              let nv = startVal + dx * speed * mult;
               if (min !== undefined && nv < min) nv = min;
               if (max !== undefined && nv > max) nv = max;
               state[key] = parseFloat(nv.toFixed(2));
               valEl.textContent = (key === 'dscale' ? state[key].toFixed(2) : state[key].toFixed(1)) + suffix;
-              document.getElementById('statResponse').textContent = `${key}: ${state[key]}`;
+              if (merkEl) merkEl.style.width = getPct(state[key], min, max) + '%';
+              document.getElementById('statResponse').textContent = `${key}: ${state[key]} (mult: ${mult}x)`;
             };
 
-            const onMove = (e) => { if (isDragging) updateDelta(e.clientX); };
-            const onTouch = (e) => { if (isDragging && e.touches && e.touches[0]) updateDelta(e.touches[0].clientX); };
+            const onMove = (e) => { if (isDragging) updateDelta(e.clientX, e.shiftKey, e.ctrlKey || e.metaKey); };
+            const onTouch = (e) => { if (isDragging && e.touches && e.touches[0]) updateDelta(e.touches[0].clientX, false, false); };
             const onUp = () => {
               if (!isDragging) return;
               isDragging = false;
               el.classList.remove('is-dragging');
+              updateModStatus(false, false);
               window.removeEventListener('mousemove', onMove);
               window.removeEventListener('mouseup', onUp);
               window.removeEventListener('touchmove', onTouch);
@@ -407,9 +483,9 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
             el.addEventListener('touchstart', onDown, { passive: false });
           };
 
-          setupDrag(container.querySelector('#dvX'), container.querySelector('#dvXVal'), 'dx', 0.5, -1000, 1000);
-          setupDrag(container.querySelector('#dvY'), container.querySelector('#dvYVal'), 'dy', 0.5, -1000, 1000);
-          setupDrag(container.querySelector('#dvScale'), container.querySelector('#dvScaleVal'), 'dscale', 0.02, 0.1, 10.0, 'x');
+          setupDrag(container.querySelector('#dvX'), container.querySelector('#dvXVal'), container.querySelector('#dvXMerk'), 'dx', 0.5, -1000, 1000);
+          setupDrag(container.querySelector('#dvY'), container.querySelector('#dvYVal'), container.querySelector('#dvYMerk'), 'dy', 0.5, -1000, 1000);
+          setupDrag(container.querySelector('#dvScale'), container.querySelector('#dvScaleVal'), container.querySelector('#dvScaleMerk'), 'dscale', 0.02, 0.1, 10.0, 'x');
         }
       },
 

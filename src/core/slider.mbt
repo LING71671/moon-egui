@@ -65,6 +65,14 @@ pub fn UIContext::slider(
   // Draw Track Background
   self.draw_list.add_rect(track_rect, @color.Color::bg_hover(), 3.0)
 
+  // Draw Subtle Discrete Ticks (25%, 50%, 75%)
+  let tick_col = @color.Color::border_muted()
+  for t in [0.25, 0.5, 0.75] {
+    let tick_x = track_rect.x + track_rect.w * t
+    let tick_y = track_rect.y + track_rect.h * 0.5
+    self.draw_list.add_circle(@math.Vec2::new(tick_x, tick_y), 1.5, tick_col)
+  }
+
   // Draw Active Progress Fill
   let mut current_pct = (new_val - clamped_min) / safe_range
   if current_pct < 0.0 {
@@ -81,6 +89,22 @@ pub fn UIContext::slider(
       track_rect.h,
     )
     self.draw_list.add_rect(fill_rect, @color.Color::accent_primary(), 3.0)
+  }
+
+  // Compute Value Text
+  let val_text = if safe_range >= 10.0 {
+    new_val.to_int().to_string()
+  } else {
+    let int_part = new_val.to_int()
+    let diff = new_val - int_part.to_double()
+    let abs_diff = if diff < 0.0 { -diff } else { diff }
+    let frac_part = (abs_diff * 100.0).to_int()
+    let frac_str = if frac_part < 10 {
+      "0" + frac_part.to_string()
+    } else {
+      frac_part.to_string()
+    }
+    int_part.to_string() + "." + frac_str
   }
 
   // Draw Thumb Handle
@@ -106,21 +130,24 @@ pub fn UIContext::slider(
     1.5,
   )
 
-  // Draw Value Text
-  let val_text = if safe_range >= 10.0 {
-    new_val.to_int().to_string()
-  } else {
-    let int_part = new_val.to_int()
-    let diff = new_val - int_part.to_double()
-    let abs_diff = if diff < 0.0 { -diff } else { diff }
-    let frac_part = (abs_diff * 100.0).to_int()
-    let frac_str = if frac_part < 10 {
-      "0" + frac_part.to_string()
-    } else {
-      frac_part.to_string()
-    }
-    int_part.to_string() + "." + frac_str
+  // Draw Floating Value Bubble above Thumb when active (Desktop-Grade Interaction)
+  if is_active {
+    let bubble_w = val_text.length().to_double() * 7.5 + 12.0
+    let bubble_h = 18.0
+    let bubble_x = thumb_cx - bubble_w * 0.5
+    let bubble_y = thumb_cy - thumb_r - bubble_h - 4.0
+    let bubble_rect = @math.Rect::new(bubble_x, bubble_y, bubble_w, bubble_h)
+    self.draw_list.add_rect(bubble_rect, @color.Color::rgb(15, 23, 42), 4.0)
+    let bubble_text_pos = @math.Vec2::new(bubble_x + 6.0, bubble_y + 3.0)
+    self.draw_list.add_text(
+      bubble_text_pos,
+      val_text,
+      11.0,
+      @color.Color::white(),
+    )
   }
+
+  // Draw Value Text in row
   self.draw_list.add_text(
     @math.Vec2::new(track_rect.x + track_w + 10.0, rect.y + 4.0),
     val_text,
@@ -189,7 +216,15 @@ pub fn UIContext::drag_value(
 
   if is_active && self.input.mouse_down {
     let delta_x = self.input.mouse_delta.x
-    let step = if speed > 0.0001 { speed } else { 1.0 }
+    let base_speed = if speed > 0.0001 { speed } else { 1.0 }
+    let multiplier = if self.input.modifiers.shift {
+      0.1
+    } else if self.input.modifiers.ctrl {
+      10.0
+    } else {
+      1.0
+    }
+    let step = base_speed * multiplier
     new_val = new_val + delta_x * step
     if min < max {
       if new_val < min {
@@ -210,7 +245,7 @@ pub fn UIContext::drag_value(
     )
   }
 
-  // Draw Box Background & Stroke
+  // Draw Box Background & Mercury Progress Fill
   let bg_color = if is_active {
     @color.Color::bg_hover()
   } else if is_hovered {
@@ -228,6 +263,28 @@ pub fn UIContext::drag_value(
   }
 
   self.draw_list.add_rect(box_rect, bg_color, 4.0)
+
+  // Blender-style Mercury Progress Fill inside box
+  if min < max {
+    let range = max - min
+    let pct = (new_val - min) / range
+    let safe_pct = if pct < 0.0 { 0.0 } else if pct > 1.0 { 1.0 } else { pct }
+    let fill_w = box_rect.w * safe_pct
+    if fill_w > 0.0 {
+      let mercury_rect = @math.Rect::new(
+        box_rect.x,
+        box_rect.y,
+        fill_w,
+        box_rect.h,
+      )
+      self.draw_list.add_rect(
+        mercury_rect,
+        @color.Color::rgba(37, 99, 235, 36),
+        4.0,
+      )
+    }
+  }
+
   self.draw_list.add_rect_stroke(box_rect, border_color, 1.0, 4.0)
 
   // Format value to 1 decimal place or integer

@@ -483,3 +483,54 @@ test "widgets: tooltip rendering" {
   // Tooltip adds rect, stroke, text (at least 3 draw commands)
   assert_true(dl.len() >= 3)
 }
+
+///|
+test "widgets: button_with_shortcut rendering" {
+  let ctx = UIContext::new()
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), false))
+  let resp = ctx.button_with_shortcut("保存", "Ctrl+S")
+  let dl = ctx.end_frame()
+  assert_true(resp.rect.w >= 80.0)
+  assert_true(resp.hovered())
+  // Button background, stroke, main text, badge rect, badge text
+  assert_true(dl.len() >= 5)
+}
+
+///|
+test "widgets: drag_value speed modifiers shift and ctrl" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Initial state
+  ctx.begin_frame(RawInput::new())
+  let (v1, _) = ctx.drag_value("", 100.0, 1.0, 0.0, 200.0)
+  let _ = ctx.end_frame()
+  assert_eq(v1, 100.0)
+
+  // Frame 2: Mouse press on box
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(20.0, 10.0), true)
+  ctx.begin_frame(raw2)
+  let _ = ctx.drag_value("", 100.0, 1.0, 0.0, 200.0)
+  let _ = ctx.end_frame()
+
+  // Frame 3: Mouse moved +10px with Shift (0.1x micro-precision mode)
+  let raw3 = {
+    ..RawInput::from_mouse(@math.Vec2::new(30.0, 10.0), true),
+    modifiers: Modifiers::new(false, true, false, false),
+  }
+  ctx.begin_frame(raw3)
+  let (v3, _) = ctx.drag_value("", 100.0, 1.0, 0.0, 200.0)
+  let _ = ctx.end_frame()
+  // Delta is 10.0 * 1.0 * 0.1 = 1.0
+  assert_eq(v3, 101.0)
+
+  // Frame 4: Mouse moved +10px with Ctrl (10x coarse mode)
+  let raw4 = {
+    ..RawInput::from_mouse(@math.Vec2::new(40.0, 10.0), true),
+    modifiers: Modifiers::new(true, false, false, false),
+  }
+  ctx.begin_frame(raw4)
+  let (v4, _) = ctx.drag_value("", 100.0, 1.0, 0.0, 200.0)
+  let _ = ctx.end_frame()
+  // Delta is 10.0 * 1.0 * 10.0 = 100.0
+  assert_eq(v4, 200.0)
+}

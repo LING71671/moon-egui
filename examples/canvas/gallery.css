@@ -726,6 +726,30 @@
       border-color: var(--border-strong);
     }
 
+    /* Keyboard Shortcut Badge */
+    .kbd-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1px 6px;
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.06);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 4px;
+      margin-left: 6px;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-primary .kbd-badge {
+      color: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
     .widget-row {
       display: flex;
       align-items: center;
@@ -814,7 +838,24 @@
       border-radius: 3px;
       position: relative;
       cursor: pointer;
-      margin: 10px 0;
+      margin: 16px 0 12px 0;
+    }
+
+    .slider-ticks {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .slider-tick {
+      position: absolute;
+      top: 1px;
+      width: 1px;
+      height: 4px;
+      background: rgba(148, 163, 184, 0.7);
     }
 
     .slider-fill {
@@ -836,6 +877,51 @@
       position: absolute;
       top: 50%;
       transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    .slider-track:hover .slider-thumb,
+    .slider-track.is-active .slider-thumb {
+      transform: translate(-50%, -50%) scale(1.15);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+    }
+
+    /* Floating Value Tooltip Bubble */
+    .slider-value-bubble {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(4px) scale(0.88);
+      background: #0f172a;
+      color: #ffffff;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+      z-index: 10;
+    }
+
+    .slider-value-bubble::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 4px 4px 0;
+      border-style: solid;
+      border-color: #0f172a transparent transparent transparent;
+    }
+
+    .slider-track:hover .slider-value-bubble,
+    .slider-track.is-active .slider-value-bubble {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0) scale(1);
     }
 
     /* Progress bar widget */
@@ -903,11 +989,20 @@
       top: 2px;
       left: 2px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1), width 0.15s ease;
+    }
+
+    .toggle-row:active .toggle-circle {
+      width: 19px;
+      border-radius: 8px;
     }
 
     .toggle-row.active .toggle-circle {
       transform: translateX(16px);
+    }
+
+    .toggle-row.active:active .toggle-circle {
+      transform: translateX(13px);
     }
 
     /* DragValue widget */
@@ -920,6 +1015,8 @@
     }
 
     .dragval-box {
+      position: relative;
+      overflow: hidden;
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -932,14 +1029,31 @@
       color: var(--text-main);
       cursor: ew-resize;
       user-select: none;
-      transition: all 0.15s ease;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .dragval-box:hover, .dragval-box.is-dragging {
       border-color: var(--brand);
-      background: #eff6ff;
       color: var(--brand);
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+
+    .dragval-mercury {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background: rgba(37, 99, 235, 0.12);
+      pointer-events: none;
+      transition: width 0.05s ease;
+    }
+
+    .dragval-content {
+      position: relative;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .dragval-arrows {
@@ -950,6 +1064,32 @@
     .dragval-box:hover .dragval-arrows,
     .dragval-box.is-dragging .dragval-arrows {
       color: var(--brand);
+    }
+
+    .dragval-modifier-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .dragval-modifier-tag {
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-sub);
+      transition: all 0.15s ease;
+    }
+
+    .dragval-modifier-tag.active {
+      background: rgba(37, 99, 235, 0.12);
+      border-color: var(--brand);
+      color: var(--brand);
+      font-weight: 600;
     }
 
     /* TabBar widget */
