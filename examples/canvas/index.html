@@ -234,20 +234,20 @@
       align-items: center;
       gap: 10px;
       padding: 13px 26px;
-      background: #2563eb;
+      background: #0f172a;
       color: #ffffff;
       font-size: 15px;
       font-weight: 600;
       text-decoration: none;
       border-radius: 10px;
-      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
       transition: all 0.15s ease;
     }
 
     .btn-hero-benchmark:hover {
-      background: #1d4ed8;
+      background: #1e293b;
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
     }
 
     .btn-hero-secondary {
@@ -271,14 +271,15 @@
       border-color: var(--border-subtle);
     }
 
-    /* Benchmark Spotlight Card */
+    /* Benchmark Spotlight Card - Studio Light CAD */
     .benchmark-spotlight {
       margin: 40px 0;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      background: #ffffff;
+      border: 1px solid var(--border-light);
       border-radius: 20px;
       padding: 36px 40px;
-      color: #ffffff;
-      box-shadow: 0 12px 36px -4px rgba(15, 23, 42, 0.2);
+      color: var(--text-main);
+      box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -295,10 +296,11 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.12);
+      color: #0284c7;
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
       padding: 4px 10px;
       border-radius: 6px;
       margin-bottom: 12px;
@@ -311,11 +313,12 @@
       letter-spacing: -0.02em;
       margin-bottom: 10px;
       line-height: 1.25;
+      color: var(--text-main);
     }
 
     .spotlight-desc {
       font-size: 14px;
-      color: #94a3b8;
+      color: var(--text-muted);
       line-height: 1.6;
       margin-bottom: 24px;
     }
@@ -328,8 +331,8 @@
     }
 
     .spotlight-metric-item {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #f8fafc;
+      border: 1px solid var(--border-light);
       border-radius: 10px;
       padding: 12px 14px;
     }
@@ -338,12 +341,12 @@
       font-size: 20px;
       font-weight: 800;
       font-family: 'JetBrains Mono', monospace;
-      color: #38bdf8;
+      color: #0284c7;
     }
 
     .spotlight-metric-lbl {
       font-size: 12px;
-      color: #94a3b8;
+      color: var(--text-muted);
       margin-top: 2px;
     }
 
@@ -352,19 +355,20 @@
       align-items: center;
       gap: 8px;
       padding: 12px 24px;
-      background: #ffffff;
-      color: #0f172a;
+      background: #0f172a;
+      color: #ffffff;
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 600;
       text-decoration: none;
       border-radius: 8px;
       transition: all 0.15s ease;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
     }
 
     .spotlight-btn:hover {
-      background: #f1f5f9;
+      background: #1e293b;
       transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
     }
 
     /* Live Interactive Canvas Section */
@@ -480,36 +484,37 @@
       line-height: 1.6;
     }
 
-    /* Code Snippet Section */
+    /* Code Snippet Section - Studio Light CAD */
     .quickstart-section {
       padding: 48px 0 64px;
     }
 
     .quickstart-card {
-      background: #0f172a;
+      background: #ffffff;
+      border: 1px solid var(--border-light);
       border-radius: 16px;
       padding: 32px;
-      color: #ffffff;
-      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.15);
+      color: var(--text-main);
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
     }
 
     .code-block {
-      background: #090d16;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #f8fafc;
+      border: 1px solid var(--border-light);
       border-radius: 10px;
       padding: 20px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
       line-height: 1.7;
       overflow-x: auto;
-      color: #e2e8f0;
+      color: #0f172a;
       margin-top: 16px;
     }
 
-    .code-keyword { color: #f43f5e; font-weight: 600; }
-    .code-func { color: #38bdf8; }
-    .code-str { color: #a7f3d0; }
-    .code-comment { color: #64748b; font-style: italic; }
+    .code-keyword { color: #db2777; font-weight: 600; }
+    .code-func { color: #0284c7; }
+    .code-str { color: #059669; }
+    .code-comment { color: #94a3b8; font-style: italic; }
 
     /* Footer */
     .site-footer {
@@ -555,7 +560,7 @@
       <a href="index.html" class="brand">
         <div class="brand-logo-icon">M</div>
         <span class="brand-title">moon-egui</span>
-        <span class="brand-tag">v0.2.0 • MoonBit Native</span>
+        <span class="brand-tag">v0.1.0 • MoonBit Native</span>
       </a>
 
       <ul class="nav-links">
@@ -575,7 +580,7 @@
 
         <!-- Direct Jump to Dedicated Benchmark Page -->
         <a href="benchmark.html" class="cta-btn-primary" id="i18n-btn-bench">
-          <span>🚀 百万节点性能压测</span>
+          <span>百万节点性能实验室</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </a>
       </div>
@@ -586,7 +591,7 @@
   <section class="hero-section">
     <div class="container">
       <div class="hero-badge">
-        <span>⚡ MoonBit 官方即时模式 GUI 引擎</span>
+        <span>MoonBit 官方即时模式 GUI 引擎</span>
         <span>•</span>
         <span>微秒级调度 & 零 GC 内存停顿</span>
       </div>
@@ -601,11 +606,11 @@
 
       <div class="hero-actions">
         <a href="benchmark.html" class="btn-hero-benchmark" id="i18n-hero-bench-btn">
-          <span>🔥 进入 1,000,000 空间节点性能测试实验室</span>
+          <span>进入 1,000,000 空间节点性能测试实验室</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </a>
         <a href="https://github.com/LING71671/moon-egui" target="_blank" class="btn-hero-secondary" id="i18n-hero-docs-btn">
-          <span>📖 GitHub 源码与文档</span>
+          <span>GitHub 源码与文档</span>
         </a>
       </div>
     </div>
@@ -616,7 +621,7 @@
     <div class="benchmark-spotlight">
       <div class="spotlight-text">
         <div class="spotlight-badge">STRESS TEST BENCHMARK</div>
-        <h2 class="spotlight-title" id="i18n-spot-title">🔥 1,000,000 空间节点极限压测实验室</h2>
+        <h2 class="spotlight-title" id="i18n-spot-title">1,000,000 空间节点极限压测实验室</h2>
         <p class="spotlight-desc" id="i18n-spot-desc">
           基于真实的 CAD 无垠坐标系，生成 MoonBit 官方 Logo 空间多尺度矩阵（128² ~ 1024²，包含 1,048,576 个独立空间节点）。验证视口局部性剔除、双轴自适应标尺投影、光波脉冲、磁力排斥与单体精准探针。
         </p>
@@ -663,7 +668,7 @@
         </div>
 
         <div class="canvas-notice">
-          <span>💡 <span id="i18n-canvas-notice">当前为首页轻量级即时模式交互预览（144 ~ 1,600 节点）。</span></span>
+          <span><span id="i18n-canvas-notice">当前为首页轻量级即时模式交互预览（144 ~ 1,600 节点）。</span></span>
           <a href="benchmark.html" id="i18n-canvas-jump">点击前往 1,000,000 节点独立极限压测页面 →</a>
         </div>
       </div>
@@ -680,37 +685,49 @@
 
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon">⚡</div>
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
           <h3 class="feature-title" id="i18n-f1-title">纯粹即时模式 (Immediate Mode)</h3>
           <p class="feature-desc" id="i18n-f1-desc">无多层虚拟 DOM 树，无状态同步漂移。一帧即是一切，代码直观声明，状态与渲染完全解耦统一。</p>
         </div>
 
         <div class="feature-card">
-          <div class="feature-icon">🛡️</div>
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
           <h3 class="feature-title" id="i18n-f2-title">零 GC 内存损耗 (Zero GC Overhead)</h3>
           <p class="feature-desc" id="i18n-f2-desc">MoonBit 编译为原生紧凑 WebAssembly，内存常驻仅 ~18MB，彻底杜绝复杂高频场景下的 JavaScript GC 停顿与卡顿。</p>
         </div>
 
         <div class="feature-card">
-          <div class="feature-icon">📐</div>
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3l-6.6-6.6a2 2 0 0 0-2.8 0L2.7 17.9a2 2 0 0 0 0 2.8l.6.6a2 2 0 0 0 2.8 0l2.3-2.3 2.1 2.1 1.4-1.4-2.1-2.1 2.1-2.1 1.4 1.4 2.1-2.1 2.1 2.1 1.4-1.4-2.1-2.1 2.5-2.5a2 2 0 0 0 0-2.8z"/></svg>
+          </div>
           <h3 class="feature-title" id="i18n-f3-title">CAD 双轴标尺与微米投影</h3>
           <p class="feature-desc" id="i18n-f3-desc">内置 50px 到 100,000px 的自适应双轴刻度标尺，支持被选中物体的空间坐标动态投影高亮。</p>
         </div>
 
         <div class="feature-card">
-          <div class="feature-icon">🌌</div>
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
           <h3 class="feature-title" id="i18n-f4-title">O(1) 空间局部性与视口剔除</h3>
           <p class="feature-desc" id="i18n-f4-desc">内置高效空间索引与自适应 LOD 采样算法，百万空间实体仅绘制视口可见区域，内核耗时低于 0.25ms。</p>
         </div>
 
         <div class="feature-card">
-          <div class="feature-icon">🎨</div>
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#db2777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          </div>
           <h3 class="feature-title" id="i18n-f5-title">统一 DrawCmd 指令流抽象</h3>
           <p class="feature-desc" id="i18n-f5-desc">渲染管线与宿主环境解耦，无缝对接 HTML Canvas2D、WebGL、WebGPU 以及桌面端原生渲染后端。</p>
         </div>
 
         <div class="feature-card">
-          <div class="feature-icon">🔒</div>
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
           <h3 class="feature-title" id="i18n-f6-title">强类型安全与高可靠性</h3>
           <p class="feature-desc" id="i18n-f6-desc">充分发挥 MoonBit 现代类型系统优势，编译期排查一切空指针与内存隐患，构建稳如磐石的工业级图形应用。</p>
         </div>
@@ -771,12 +788,12 @@
         navBenchmark: '性能压测',
         navPlayground: '在线体验',
         navQuickstart: '快速上手',
-        btnBench: '🚀 百万节点性能压测',
+        btnBench: '百万节点性能压测',
         heroTitle: '面向下一代工业级性能的 MoonBit 原生即时模式 GUI 引擎',
         heroDesc: '专为 CAD、无限画板、EDA 电子设计自动化与高并发工业交互打造。依托 WebAssembly 与 MoonBit 强类型底层，带来微秒级的极低延迟响应与纯粹的零垃圾回收（Zero GC）体验。',
-        heroBenchBtn: '🔥 进入 1,000,000 空间节点性能测试实验室',
-        heroDocsBtn: '📖 GitHub 源码与文档',
-        spotTitle: '🔥 1,000,000 空间节点极限压测实验室',
+        heroBenchBtn: '进入 1,000,000 空间节点性能测试实验室',
+        heroDocsBtn: 'GitHub 源码与文档',
+        spotTitle: '1,000,000 空间节点极限压测实验室',
         spotDesc: '基于真实的 CAD 无垠坐标系，生成 1,000,000 个独立物体矩阵。验证空间视口局部性剔除、双轴自适应标尺投影、单体精准拖拽与全景 100% 可视能力。',
         spotM1: '极速冷启动',
         spotM2: '常驻内存占用',
@@ -810,12 +827,12 @@
         navBenchmark: 'Benchmark',
         navPlayground: 'Playground',
         navQuickstart: 'Quickstart',
-        btnBench: '🚀 1M Nodes Benchmark',
+        btnBench: '1M Nodes Benchmark',
         heroTitle: 'Next-Generation High-Performance Immediate Mode GUI for MoonBit',
         heroDesc: 'Engineered for CAD, infinite whiteboards, EDA electronics design, and high-frequency industrial interfaces. Powered by MoonBit and native WebAssembly for microsecond latency and zero GC pauses.',
-        heroBenchBtn: '🔥 Launch 1,000,000 Nodes Benchmark Suite',
-        heroDocsBtn: '📖 GitHub Docs & Source',
-        spotTitle: '🔥 1,000,000 Spatial Nodes Extreme Stress Lab',
+        heroBenchBtn: 'Launch 1,000,000 Nodes Benchmark Suite',
+        heroDocsBtn: 'GitHub Docs & Source',
+        spotTitle: '1,000,000 Spatial Nodes Extreme Stress Lab',
         spotDesc: 'Stress-test 1,000,000 spatial entities with O(1) viewport culling, dual-axis CAD rulers with live selection projection, 60 FPS single-item dragging, and 100% full-canvas fit.',
         spotM1: 'Instant Cold Start',
         spotM2: 'Resident Memory',

@@ -290,8 +290,12 @@
     ctx.fillRect(dstX, dstY, dstW, dstH);
     ctx.shadowColor = 'transparent';
 
-    // If unitPx < 4.0, render the crisp multi-scale baked logo texture
-    if (unitPx < 4.0) {
+    // Strict LOD Threshold:
+    // If unitPx < 12.0 || visible_cells > 2500, render the crisp multi-scale baked logo texture (0.02ms).
+    // Only when unitPx >= 12.0 && visible_cells <= 2500 does MoonBit stream full interactive vector cells.
+    const isMicroVector = (unitPx >= 12.0) && (!mState || (mState.visible_cells !== undefined && mState.visible_cells <= 2500));
+
+    if (!isMicroVector) {
       const baked = getLogoCanvas(gridDim);
       if (baked) {
         ctx.imageSmoothingEnabled = false;
@@ -442,11 +446,13 @@
   function loop(now) {
     frameCounter++;
     if (now - lastFpsTime >= 500) {
-      fps = Math.round((frameCounter * 1000) / (now - lastFpsTime));
+      if (!document.hidden && now - lastFpsTime < 2000) {
+        fps = Math.round((frameCounter * 1000) / (now - lastFpsTime));
+        const fpsEl = document.getElementById('telemetry-fps');
+        if (fpsEl) fpsEl.textContent = (Math.max(1, fps)).toFixed(1);
+      }
       frameCounter = 0;
       lastFpsTime = now;
-      const fpsEl = document.getElementById('telemetry-fps');
-      if (fpsEl) fpsEl.textContent = fps.toFixed(1);
     }
 
     if (!stepFn) {

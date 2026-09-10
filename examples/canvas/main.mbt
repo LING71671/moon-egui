@@ -25,6 +25,7 @@ pub struct BenchmarkState {
   mut item_drag_dx : Double
   mut item_drag_dy : Double
   mut is_dragging_item : Bool
+  mut visible_cells : Int
 }
 
 ///|
@@ -48,6 +49,7 @@ let state : BenchmarkState = {
   item_drag_dx: 0.0,
   item_drag_dy: 0.0,
   is_dragging_item: false,
+  visible_cells: 0,
 }
 
 ///|
@@ -290,6 +292,13 @@ pub fn step(
     r_end = grid_dim
   }
 
+  let total_vis = if c_end > c_start && r_end > r_start {
+    (c_end - c_start) * (r_end - r_start)
+  } else {
+    0
+  }
+  state.visible_cells = total_vis
+
   // 1. Clip workspace content
   dl.push_clip(@math.Rect::new(cv_x, cv_y, cv_w, cv_h))
 
@@ -320,14 +329,18 @@ pub fn step(
 
   // =========================================================================
   // MULTI-LOD LOGO RENDERING PIPELINE:
-  // When unit_px < 4.0: High-Res GPU Offscreen Baked Texture is rendered by run.js
-  // When unit_px >= 4.0: MoonBit native interactive vector cells rendered directly
+  // Strict Industrial Performance Ceiling:
+  // When unit_px >= 12.0 && total_vis <= 2500: MoonBit native interactive vector cells rendered directly
+  // When unit_px < 12.0 || total_vis > 2500: High-Res GPU Offscreen Baked Texture is rendered by run.js (0.02ms)
+  // and MoonBit renders interactive highlights/probe overlays on top.
   // =========================================================================
   let unit_px = pitch * state.zoom
   let repel_radius = pitch * 4.5
   let repel_radius_sq = repel_radius * repel_radius
 
-  if unit_px >= 4.0 {
+  let is_micro_vector = unit_px >= 12.0 && total_vis <= 2500
+
+  if is_micro_vector {
     let on_screen_cell_w = cell_size * state.zoom
     let on_screen_cell_h = cell_size * state.zoom
     let rect_radius = if on_screen_cell_w > 12.0 {
@@ -450,6 +463,51 @@ pub fn step(
           )
         }
       }
+    }
+  } else {
+    // Macro / Texture LOD Mode:
+    // Render dynamic hover indicator, ripple wavefront & magnetic indicator on top of texture
+    if in_canvas &&
+      mwx >= 0.0 &&
+      mwx < matrix_world_size &&
+      mwy >= 0.0 &&
+      mwy < matrix_world_size {
+      let h_col = (mwx / pitch).to_int()
+      let h_row = (mwy / pitch).to_int()
+      if h_col >= 0 && h_col < grid_dim && h_row >= 0 && h_row < grid_dim {
+        let h_base_wx = h_col.to_double() * pitch
+        let h_base_wy = h_row.to_double() * pitch
+        let hs_x = sc_x + (h_base_wx - state.cam_x) * state.zoom
+        let hs_y = sc_y + (h_base_wy - state.cam_y) * state.zoom
+        let hs_w = (cell_size * state.zoom).max(4.0)
+        let hs_h = (cell_size * state.zoom).max(4.0)
+        dl.add_rect(
+          @math.Rect::new(hs_x, hs_y, hs_w, hs_h),
+          @color.Color::rgb(56, 189, 248),
+          0.0,
+        )
+      }
+    }
+    if state.ripple_active {
+      let rip_sx = sc_x + (state.ripple_cx - state.cam_x) * state.zoom
+      let rip_sy = sc_y + (state.ripple_cy - state.cam_y) * state.zoom
+      let rip_r = state.ripple_progress * state.zoom
+      if rip_r > 1.0 {
+        dl.add_circle_stroke(
+          @math.Vec2::new(rip_sx, rip_sy),
+          rip_r,
+          @color.Color::rgb(251, 146, 60),
+          2.0,
+        )
+      }
+    }
+    if state.magnetic_repel && in_canvas {
+      dl.add_circle_stroke(
+        @math.Vec2::new(mouse_x, mouse_y),
+        repel_radius * state.zoom,
+        @color.Color::rgba(249, 115, 22, 180),
+        1.5,
+      )
     }
   }
 
@@ -743,6 +801,11 @@ pub fn is_wave_pulse() -> Bool {
 ///|
 pub fn is_magnetic_repel() -> Bool {
   state.magnetic_repel
+}
+
+///|
+pub fn get_visible_cells() -> Int {
+  state.visible_cells
 }
 
 ///|
