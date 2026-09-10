@@ -531,10 +531,10 @@
   ctx.begin_frame(input)
 
   ctx.window(<span class="code-str">"属性面板"</span>, <span class="code-kw">fn</span>(ui) {
-    ui.label(<span class="code-str">"MoonBit 即时模式 GUI"</span>)
-    <span class="code-kw">let</span> (val, _) = ui.slider(<span class="code-str">"缩放比例"</span>, zoom, 0.1, 5.0)
+    ui.label(<span class="code-str">"控制参数"</span>)
+    <span class="code-kw">let</span> (val, _) = ui.slider(zoom, min=0.1, max=5.0)
 
-    <span class="code-kw">if</span> ui.button(<span class="code-str">"重置视图"</span>).clicked {
+    <span class="code-kw">if</span> ui.button(<span class="code-str">"重置视图"</span>, shortcut=<span class="code-str">"⌘R"</span>, primary=<span class="code-kw">true</span>).clicked {
       reset_camera()
     }
   })
