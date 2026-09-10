@@ -33,7 +33,7 @@ const appState = {
 
       const codePct = Math.round(pct);
       const uiPct = 100 - codePct;
-      curtainRatioText.textContent = `代码 ${codePct}% | UI ${uiPct}%`;
+      curtainRatioText.textContent = T(`代码 ${codePct}% | UI ${uiPct}%`, `Code ${codePct}% | UI ${uiPct}%`);
 
 
       document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
@@ -115,9 +115,9 @@ const appState = {
       if (!comp) return;
 
       appState.activeId = id;
-      activeCompTitle.textContent = comp.title;
+      activeCompTitle.textContent = t(comp.titleKey, comp.titleKey);
       activeCompSignature.textContent = comp.signature;
-      codeSnippetTarget.innerHTML = highlightMoonBit(comp.code);
+      codeSnippetTarget.innerHTML = highlightMoonBit(L(comp.code));
 
       if (id === 'window') {
         sandboxBox.className = 'sandbox-box-window is-animating';
@@ -148,8 +148,8 @@ const appState = {
     copyCodeBtn.onclick = () => {
       const comp = COMPONENTS[appState.activeId];
       if (!comp) return;
-      navigator.clipboard.writeText(comp.code).then(() => {
-        showToast("已复制代码到剪贴板！");
+      navigator.clipboard.writeText(L(comp.code)).then(() => {
+        showToast(t('toast.copied'));
       });
     };
 
@@ -173,3 +173,12 @@ const appState = {
     // Initial State
     switchComponent('button');
     setCurtain(0);
+
+    // Language swap: repaint the static chrome, then rebuild the stage
+    // (component titles, code sample, demo labels and status text all
+    // resolve through T() at render time).
+    document.addEventListener('langchange', (e) => {
+      if (e.detail && e.detail.initial) return;
+      switchComponent(appState.activeId);
+      setCurtain(appState.curtainPct);
+    });

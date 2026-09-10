@@ -232,8 +232,10 @@
       font-weight: 600;
     }
   </style>
+  <link rel="stylesheet" href="lang.css">
+  <script src="i18n.js"></script>
 </head>
-<body>
+<body data-i18n-title="benchmark.title">
 
   <!-- Fullscreen Canvas -->
   <canvas id="moon-canvas" data-initial-mode="256"></canvas>
@@ -242,16 +244,16 @@
   <header class="studio-header">
     <!-- Left: Brand & Home Link -->
     <div class="studio-left">
-      <a href="index.html" target="_top" class="back-btn" title="返回官网">
+      <a href="index.html" target="_top" class="back-btn" title="返回官网" data-i18n-attrs="title:bm.backTitle">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-        <span>返回</span>
+        <span data-i18n="bm.back">返回</span>
       </a>
-      <a href="gallery.html" target="_top" class="back-btn" style="color: var(--brand-cyan); font-weight: 600;" title="查看组件展厅与源码帘幕">
-        <span>组件展厅</span>
+      <a href="gallery.html" target="_top" class="back-btn" style="color: var(--brand-cyan); font-weight: 600;" title="查看组件展厅与源码帘幕" data-i18n-attrs="title:bm.componentsTitle">
+        <span data-i18n="bm.components">组件展厅</span>
       </a>
       <div class="studio-title">
         <img src="logo.png" alt="moon-egui logo" class="studio-logo-img" />
-        <span>画板</span>
+        <span data-i18n="bm.canvas">画板</span>
       </div>
     </div>
 
@@ -267,48 +269,49 @@
 
       <!-- Physics Dynamics -->
       <div class="segmented-control" id="seg-physics">
-        <button class="seg-btn active" id="btn-pulse" onclick="togglePhysics('pulse')">水波</button>
-        <button class="seg-btn active" id="btn-repel" onclick="togglePhysics('repel')">斥力</button>
+        <button class="seg-btn active" id="btn-pulse" onclick="togglePhysics('pulse')" data-i18n="bm.wave">水波</button>
+        <button class="seg-btn active" id="btn-repel" onclick="togglePhysics('repel')" data-i18n="bm.repel">斥力</button>
       </div>
 
       <!-- Interaction Mode -->
       <div class="segmented-control" id="seg-interact">
-        <button class="seg-btn active" id="btn-pan" onclick="setInteract('pan')">漫游</button>
-        <button class="seg-btn" id="btn-drag" onclick="setInteract('drag')">拖拽</button>
+        <button class="seg-btn active" id="btn-pan" onclick="setInteract('pan')" data-i18n="bm.pan">漫游</button>
+        <button class="seg-btn" id="btn-drag" onclick="setInteract('drag')" data-i18n="bm.dragMode">拖拽</button>
       </div>
 
       <!-- Camera View -->
       <div class="segmented-control" id="seg-view">
-        <button class="seg-btn" id="btn-center" onclick="setView('center')">居中</button>
-        <button class="seg-btn" id="btn-fit" onclick="setView('fit')">全屏</button>
+        <button class="seg-btn" id="btn-center" onclick="setView('center')" data-i18n="bm.center">居中</button>
+        <button class="seg-btn" id="btn-fit" onclick="setView('fit')" data-i18n="bm.fit">全屏</button>
       </div>
 
       <!-- Studio Panel Toggle -->
       <div class="segmented-control">
-        <button class="seg-btn" id="btn-panel-toggle" onclick="toggleStudioPanel()">面板</button>
+        <button class="seg-btn" id="btn-panel-toggle" onclick="toggleStudioPanel()" data-i18n="bm.panel">面板</button>
       </div>
     </div>
 
     <!-- Right: Telemetry Metrics -->
     <div class="studio-right">
+      <div data-lang-switch></div>
       <div class="telemetry-capsule">
-        <span class="fps-metric"><span id="telemetry-fps">60.0</span> 帧率</span>
+        <span class="fps-metric"><span id="telemetry-fps">60.0</span> <span data-i18n="bm.fps">帧率</span></span>
         <span>·</span>
-        <span class="kernel-metric">内核 <span id="telemetry-kernel">0.15</span>ms</span>
+        <span class="kernel-metric"><span data-i18n="bm.kernel">内核</span> <span id="telemetry-kernel">0.15</span>ms</span>
         <span>·</span>
-        <span class="render-metric">渲染 <span id="telemetry-render">0.40</span>ms</span>
+        <span class="render-metric"><span data-i18n="bm.render">渲染</span> <span id="telemetry-render">0.40</span>ms</span>
         <span>·</span>
-        <span id="txt-nodes">65,536 逻辑节点</span>
+        <span id="txt-nodes">65,536 <span data-i18n="bm.nodes">逻辑节点</span></span>
       </div>
     </div>
   </header>
 
   <!-- Quiet Floating Bottom Coords HUD -->
   <div class="studio-footer-pill">
-    <span>光标:</span>
+    <span data-i18n="bm.cursor">光标:</span>
     <span class="status-badge" id="telemetry-coords">(0, 0)</span>
-    <span>状态:</span>
-    <span class="status-badge" id="telemetry-down">就绪</span>
+    <span data-i18n="bm.state">状态:</span>
+    <span class="status-badge" id="telemetry-down" data-i18n="bm.ready">就绪</span>
   </div>
 
   <!-- WebAssembly / MoonBit Host -->

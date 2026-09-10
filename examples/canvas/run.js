@@ -120,7 +120,10 @@
     }
     const stateEl = document.getElementById('telemetry-down');
     if (stateEl) {
-      stateEl.textContent = isMouseDown ? '拖拽中' : (mouseX >= 0 && mouseY >= 0 ? '悬停' : '就绪');
+      const mode = isMouseDown
+        ? T('拖拽中', 'Dragging')
+        : (mouseX >= 0 && mouseY >= 0 ? T('悬停', 'Hover') : T('就绪', 'Ready'));
+      stateEl.textContent = mode;
       stateEl.className = isMouseDown ? 'status-val status-pressed' : (mouseX >= 0 && mouseY >= 0 ? 'status-val status-hover' : 'status-val');
     }
   }
@@ -596,13 +599,14 @@
   function updateNodesTelemetry(frameOut) {
     const gridDim = (frameOut && frameOut.grid_dim) ? frameOut.grid_dim : (window.moon_state ? window.moon_state.grid_dim : 256);
     const totalNodes = gridDim * gridDim;
+    const nodesWord = T('逻辑节点', 'nodes');
     const nodesEl = document.getElementById('txt-nodes');
     if (nodesEl) {
-      nodesEl.textContent = `${totalNodes.toLocaleString()} 逻辑节点 (${gridDim}×${gridDim})`;
+      nodesEl.textContent = `${totalNodes.toLocaleString()} ${nodesWord} (${gridDim}×${gridDim})`;
     }
     const throughputEl = document.getElementById('telemetry-throughput');
     if (throughputEl) {
-      throughputEl.textContent = `${totalNodes.toLocaleString()} 逻辑节点`;
+      throughputEl.textContent = `${totalNodes.toLocaleString()} ${nodesWord}`;
     }
   }
   window.updateTelemetryNodes = updateNodesTelemetry;

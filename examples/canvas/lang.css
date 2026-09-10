@@ -1,0 +1,115 @@
+/* moon-egui — language switcher
+ * Shared by index.html, gallery.html and benchmark.html.
+ * Every value reads the host page's tokens with a safe fallback, so the
+ * control inherits whichever design surface it is dropped into.
+ */
+
+/* Wrapper that groups the switcher with the nav CTA. */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.lang-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  background: var(--segment-bg, var(--bg-subtle, #f1f5f9));
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 6px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.18s ease;
+}
+
+.lang-switch:hover {
+  border-color: var(--border-strong, #cbd5e1);
+}
+
+.lang-switch:focus-within {
+  border-color: var(--brand, #2563eb);
+}
+
+.lang-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(50% - 2px);
+  height: calc(100% - 4px);
+  border-radius: 4px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.10);
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  pointer-events: none;
+}
+
+.lang-switch[data-active="1"] .lang-switch-thumb {
+  transform: translateX(100%);
+}
+
+.lang-switch button {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 0;
+  min-width: 44px;
+  padding: 3px 8px;
+  appearance: none;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--text-muted, #64748b);
+  text-align: center;
+  cursor: pointer;
+  transition: color 0.18s ease;
+}
+
+.lang-switch button:hover {
+  color: var(--text-main, #0f172a);
+}
+
+.lang-switch button[aria-pressed="true"] {
+  color: var(--text-main, #0f172a);
+}
+
+.lang-switch button:focus-visible {
+  outline: 2px solid var(--brand, #2563eb);
+  outline-offset: 1px;
+}
+
+/* Re-inked text on every language swap — a single quiet cross-fade. */
+html.i18n-swapping [data-i18n],
+html.i18n-swapping [data-i18n-html] {
+  opacity: 0.25;
+}
+
+[data-i18n],
+[data-i18n-html] {
+  transition: opacity 0.16s ease;
+}
+
+/* Keep the shared navigation bar comfortable now that it carries one more item. */
+@media (max-width: 1000px) {
+  .nav-menu { gap: 18px; }
+  .nav-link { font-size: 13px; }
+}
+
+@media (max-width: 880px) {
+  .nav-menu { gap: 14px; }
+  .nav-actions { gap: 8px; }
+  .lang-switch button { min-width: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lang-switch-thumb { transition: none; }
+  [data-i18n],
+  [data-i18n-html] { transition: none; }
+}

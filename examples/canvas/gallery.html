@@ -9,8 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="gallery.css">
+  <link rel="stylesheet" href="lang.css">
+  <script src="i18n.js"></script>
 </head>
-<body>
+<body data-i18n-title="gallery.title">
 
   <!-- Sticky Navigation Bar (Matching index.html) -->
   <nav class="site-nav">
@@ -21,13 +23,16 @@
         <span class="brand-tag">v0.1.0</span>
       </a>
       <ul class="nav-menu">
-        <li><a href="gallery.html" class="nav-link active" style="color: var(--brand); font-weight: 600;">组件展厅</a></li>
-        <li><a href="index.html#demo" class="nav-link">画板演示</a></li>
-        <li><a href="index.html#features" class="nav-link">设计架构</a></li>
-        <li><a href="index.html#code" class="nav-link">代码范例</a></li>
-        <li><a href="https://github.com/ling71671/moon-egui" target="_blank" rel="noreferrer" class="nav-link">GitHub 源码</a></li>
+        <li><a href="gallery.html" class="nav-link active" style="color: var(--brand); font-weight: 600;" data-i18n="nav.gallery">组件展厅</a></li>
+        <li><a href="index.html#demo" class="nav-link" data-i18n="nav.canvas">画板演示</a></li>
+        <li><a href="index.html#features" class="nav-link" data-i18n="nav.architecture">设计架构</a></li>
+        <li><a href="index.html#code" class="nav-link" data-i18n="nav.code">代码范例</a></li>
+        <li><a href="https://github.com/ling71671/moon-egui" target="_blank" rel="noreferrer" class="nav-link" data-i18n="nav.github">GitHub 源码</a></li>
       </ul>
-      <a href="benchmark.html" class="nav-cta">进入画板 →</a>
+      <div class="nav-actions">
+        <div data-lang-switch></div>
+        <a href="benchmark.html" class="nav-cta" data-i18n="nav.openCanvas">进入画板 →</a>
+      </div>
     </div>
   </nav>
 
@@ -35,8 +40,8 @@
   <header class="gallery-hero">
     <div class="container">
       <span class="pillar-tag">COMPONENTS</span>
-      <h1 class="hero-title">组件展厅</h1>
-      <p class="hero-subtitle">
+      <h1 class="hero-title" data-i18n="gallery.heroTitle">组件展厅</h1>
+      <p class="hero-subtitle" data-i18n="gallery.heroSub">
         探索即时模式基础组件。拖动中央滑块可实时对比 UI 与源码。
       </p>
 
@@ -45,15 +50,15 @@
         <div class="segmented-control">
           <button class="seg-btn active" id="btnPresetUI">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>
-            纯 UI (0%)
+            <span data-i18n="preset.ui">纯 UI (0%)</span>
           </button>
           <button class="seg-btn" id="btnPresetSplit">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
-            50/50 对比
+            <span data-i18n="preset.split">50/50 对比</span>
           </button>
           <button class="seg-btn" id="btnPresetCode">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-            源码 (100%)
+            <span data-i18n="preset.code">源码 (100%)</span>
           </button>
         </div>
       </div>
@@ -65,81 +70,81 @@
     <div class="gallery-grid">
       <!-- Sidebar Navigation -->
       <aside class="sidebar-card">
-        <input type="text" id="filterInput" class="search-input" placeholder="搜索组件..." />
+        <input type="text" id="filterInput" class="search-input" placeholder="搜索组件..." data-i18n-attrs="placeholder:search.ph" />
 
-        <div class="category-title">基础输入</div>
+        <div class="category-title" data-i18n="cat.basic">基础输入</div>
         <div class="comp-menu">
           <button class="comp-btn active" data-id="button">
-            <span>Button 按钮</span>
-            <span class="comp-subtag">交互</span>
+            <span data-i18n="comp.button.title">Button 按钮</span>
+            <span class="comp-subtag" data-i18n="comp.button.tag">交互</span>
           </button>
           <button class="comp-btn" data-id="text_edit">
-            <span>TextEdit 文本输入</span>
-            <span class="comp-subtag">编辑</span>
+            <span data-i18n="comp.text_edit.title">TextEdit 文本输入</span>
+            <span class="comp-subtag" data-i18n="comp.text_edit.tag">编辑</span>
           </button>
         </div>
 
-        <div class="category-title">选择与数值</div>
+        <div class="category-title" data-i18n="cat.values">选择与数值</div>
         <div class="comp-menu">
           <button class="comp-btn" data-id="checkbox">
-            <span>Checkbox 复选框</span>
-            <span class="comp-subtag">开关</span>
+            <span data-i18n="comp.checkbox.title">Checkbox 复选框</span>
+            <span class="comp-subtag" data-i18n="comp.checkbox.tag">开关</span>
           </button>
           <button class="comp-btn" data-id="toggle">
-            <span>Toggle 胶囊开关</span>
-            <span class="comp-subtag">切换</span>
+            <span data-i18n="comp.toggle.title">Toggle 胶囊开关</span>
+            <span class="comp-subtag" data-i18n="comp.toggle.tag">切换</span>
           </button>
           <button class="comp-btn" data-id="radio">
-            <span>Radio 单选按钮</span>
-            <span class="comp-subtag">单选</span>
+            <span data-i18n="comp.radio.title">Radio 单选按钮</span>
+            <span class="comp-subtag" data-i18n="comp.radio.tag">单选</span>
           </button>
           <button class="comp-btn" data-id="slider">
-            <span>Slider 滑动条</span>
-            <span class="comp-subtag">数值</span>
+            <span data-i18n="comp.slider.title">Slider 滑动条</span>
+            <span class="comp-subtag" data-i18n="comp.slider.tag">数值</span>
           </button>
           <button class="comp-btn" data-id="drag_value">
-            <span>DragValue 数字微调</span>
-            <span class="comp-subtag">拖动</span>
+            <span data-i18n="comp.drag_value.title">DragValue 数字微调</span>
+            <span class="comp-subtag" data-i18n="comp.drag_value.tag">拖动</span>
           </button>
           <button class="comp-btn" data-id="combo_box">
-            <span>ComboBox 下拉框</span>
-            <span class="comp-subtag">选项</span>
+            <span data-i18n="comp.combo_box.title">ComboBox 下拉框</span>
+            <span class="comp-subtag" data-i18n="comp.combo_box.tag">选项</span>
           </button>
           <button class="comp-btn" data-id="color_button">
-            <span>ColorButton 调色板</span>
-            <span class="comp-subtag">色彩</span>
+            <span data-i18n="comp.color_button.title">ColorButton 调色板</span>
+            <span class="comp-subtag" data-i18n="comp.color_button.tag">色彩</span>
           </button>
         </div>
 
-        <div class="category-title">反馈与展示</div>
+        <div class="category-title" data-i18n="cat.feedback">反馈与展示</div>
         <div class="comp-menu">
           <button class="comp-btn" data-id="progress_bar">
-            <span>ProgressBar 进度条</span>
-            <span class="comp-subtag">进度</span>
+            <span data-i18n="comp.progress_bar.title">ProgressBar 进度条</span>
+            <span class="comp-subtag" data-i18n="comp.progress_bar.tag">进度</span>
           </button>
           <button class="comp-btn" data-id="collapsing_header">
-            <span>CollapsingHeader 折叠树</span>
-            <span class="comp-subtag">树形</span>
+            <span data-i18n="comp.collapsing_header.title">CollapsingHeader 折叠树</span>
+            <span class="comp-subtag" data-i18n="comp.collapsing_header.tag">树形</span>
           </button>
           <button class="comp-btn" data-id="tooltip">
-            <span>Tooltip 悬浮提示</span>
-            <span class="comp-subtag">气泡</span>
+            <span data-i18n="comp.tooltip.title">Tooltip 悬浮提示</span>
+            <span class="comp-subtag" data-i18n="comp.tooltip.tag">气泡</span>
           </button>
         </div>
 
-        <div class="category-title">容器与排版</div>
+        <div class="category-title" data-i18n="cat.layout">容器与排版</div>
         <div class="comp-menu">
           <button class="comp-btn" data-id="tab_bar">
-            <span>TabBar 标签导航</span>
-            <span class="comp-subtag">选项卡</span>
+            <span data-i18n="comp.tab_bar.title">TabBar 标签导航</span>
+            <span class="comp-subtag" data-i18n="comp.tab_bar.tag">选项卡</span>
           </button>
           <button class="comp-btn" data-id="scroll_area">
-            <span>ScrollArea 滚动区域</span>
-            <span class="comp-subtag">裁剪</span>
+            <span data-i18n="comp.scroll_area.title">ScrollArea 滚动区域</span>
+            <span class="comp-subtag" data-i18n="comp.scroll_area.tag">裁剪</span>
           </button>
           <button class="comp-btn" data-id="window">
-            <span>Window 浮动窗口</span>
-            <span class="comp-subtag">面板</span>
+            <span data-i18n="comp.window.title">Window 浮动窗口</span>
+            <span class="comp-subtag" data-i18n="comp.window.tag">面板</span>
           </button>
         </div>
       </aside>
@@ -156,7 +161,7 @@
             <span class="header-signature" id="activeCompSignature">UIContext::button</span>
           </div>
           <div class="header-actions">
-            <button class="mini-btn" id="copyCodeBtn" title="复制代码">复制代码</button>
+            <button class="mini-btn" id="copyCodeBtn" title="复制代码" data-i18n="wb.copy" data-i18n-attrs="title:wb.copy">复制代码</button>
           </div>
         </div>
 
@@ -175,7 +180,7 @@
           </div>
 
           <!-- Draggable Vertical Curtain Divider Bar (帘幕长条) -->
-          <div class="curtain-divider" id="curtainDivider" title="左右拖拽对比 UI 与源码">
+          <div class="curtain-divider" id="curtainDivider" title="左右拖拽对比 UI 与源码" data-i18n-attrs="title:curtain.drag">
             <div class="curtain-handle-pill" id="curtainHandle">
               <span class="curtain-arrows">◀ ▶</span>
               <div class="curtain-dots">
@@ -191,8 +196,8 @@
         <div class="workbench-footer">
           <span class="ratio-badge" id="curtainRatioText">代码 0% | UI 100%</span>
           <div class="status-stream">
-            <span class="status-item">状态响应: <b id="statResponse">clicked: false</b></span>
-            <span class="status-item">内核刷新率: <b>60 FPS</b></span>
+            <span class="status-item"><span data-i18n="wb.response">状态响应</span>: <b id="statResponse">clicked: false</b></span>
+            <span class="status-item"><span data-i18n="wb.refresh">内核刷新率</span>: <b>60 FPS</b></span>
           </div>
         </div>
       </section>
@@ -202,11 +207,11 @@
   <!-- Site Footer (Matching index.html) -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div>© 2026 Ling71671. Apache 2.0 协议开源项目。</div>
+      <div data-i18n="footer.copy">© 2026 Ling71671. Apache 2.0 协议开源项目。</div>
       <div class="footer-links">
-        <a href="benchmark.html">画板</a>
+        <a href="benchmark.html" data-i18n="footer.canvas">画板</a>
         <a href="https://github.com/ling71671/moon-egui" target="_blank" rel="noreferrer">GitHub</a>
-        <a href="https://docs.moonbitlang.com" target="_blank" rel="noreferrer">MoonBit 官网</a>
+        <a href="https://docs.moonbitlang.com" target="_blank" rel="noreferrer" data-i18n="footer.moonbit">MoonBit 官网</a>
       </div>
     </div>
   </footer>

@@ -1,9 +1,13 @@
 // Registry of Components with Code & Interactive Demo
+// Language note: user-facing strings go through T(zh, en) so a language switch
+// only needs a re-render; component titles live in the i18n dictionary and are
+// referenced by `titleKey` so the sidebar and the workbench header never drift.
     const COMPONENTS = {
       button: {
-        title: "Button 按钮",
+        titleKey: 'comp.button.title',
         signature: "ui.button(text, shortcut~, primary~, size~) -> Response",
-        code: `///|
+        code: {
+          zh: `///|
 pub fn draw_buttons(ui : @core.UIContext, state : AppState) -> Unit {
   // 主要按钮（支持快捷键）
   let res_primary = ui.button("提交", shortcut="⌘S", primary=true)
@@ -20,20 +24,39 @@ pub fn draw_buttons(ui : @core.UIContext, state : AppState) -> Unit {
   // 自定义尺寸
   let res_sized = ui.button("自定义尺寸", size=Some(@math.Vec2::new(140.0, 36.0)))
 }`,
+          en: `///|
+pub fn draw_buttons(ui : @core.UIContext, state : AppState) -> Unit {
+  // primary button (with a keyboard shortcut)
+  let res_primary = ui.button("Submit", shortcut="⌘S", primary=true)
+  if res_primary.clicked {
+    state.count += 1
+  }
+
+  // secondary button
+  let res_default = ui.button("Reset", shortcut="Esc")
+  if res_default.clicked {
+    state.count = 0
+  }
+
+  // custom size
+  let res_sized = ui.button("Custom size", size=Some(@math.Vec2::new(140.0, 36.0)))
+}`
+        },
         renderUI: (container, state) => {
+          const countLabel = T('点击次数', 'Click count');
           container.innerHTML = `
             <div class="sandbox-header">
               <span>Button</span>
-              <span>点击次数: ${state.count || 0}</span>
+              <span>${countLabel}: ${state.count || 0}</span>
             </div>
             <div class="sandbox-body">
               <div class="widget-row">
-                <button class="btn-primary" id="demoPrimaryBtn">提交 <kbd class="kbd-badge">⌘S</kbd></button>
-                <button class="btn-secondary" id="demoDefaultBtn">重置 <kbd class="kbd-badge">Esc</kbd></button>
+                <button class="btn-primary" id="demoPrimaryBtn">${T('提交', 'Submit')} <kbd class="kbd-badge">⌘S</kbd></button>
+                <button class="btn-secondary" id="demoDefaultBtn">${T('重置', 'Reset')} <kbd class="kbd-badge">Esc</kbd></button>
               </div>
             </div>
             <div class="sandbox-tip">
-              支持快捷键：⌘S 提交，Esc 重置。
+              ${T('支持快捷键：⌘S 提交，Esc 重置。', 'Keyboard shortcuts: ⌘S submits, Esc resets.')}
             </div>
           `;
           const pBtn = container.querySelector('#demoPrimaryBtn');
@@ -48,18 +71,18 @@ pub fn draw_buttons(ui : @core.UIContext, state : AppState) -> Unit {
           pBtn.onclick = () => {
             triggerPress(pBtn, () => {
               state.count = (state.count || 0) + 1;
-              container.querySelector('.sandbox-header span:last-child').textContent = `Count: ${state.count}`;
+              container.querySelector('.sandbox-header span:last-child').textContent = `${countLabel}: ${state.count}`;
               document.getElementById('statResponse').textContent = `clicked: true, count: ${state.count}`;
-              showToast(`点击了主要按钮！计数: ${state.count}`);
+              showToast(T(`点击了主要按钮！计数: ${state.count}`, `Primary button clicked. Count: ${state.count}`));
             });
           };
 
           dBtn.onclick = () => {
             triggerPress(dBtn, () => {
               state.count = 0;
-              container.querySelector('.sandbox-header span:last-child').textContent = `Count: 0`;
+              container.querySelector('.sandbox-header span:last-child').textContent = `${countLabel}: 0`;
               document.getElementById('statResponse').textContent = `clicked: true, count: 0`;
-              showToast('计数已清零');
+              showToast(T('计数已清零', 'Counter reset to zero'));
             });
           };
 
@@ -76,9 +99,10 @@ pub fn draw_buttons(ui : @core.UIContext, state : AppState) -> Unit {
       },
 
       text_edit: {
-        title: "TextEdit 文本输入",
+        titleKey: 'comp.text_edit.title',
         signature: "ui.text_edit(text, placeholder~) -> (String, Response)",
-        code: `///|
+        code: {
+          zh: `///|
 pub fn draw_text_edit(ui : @core.UIContext, state : AppState) -> Unit {
   let (new_text, res) = ui.text_edit(
     state.username,
@@ -88,33 +112,46 @@ pub fn draw_text_edit(ui : @core.UIContext, state : AppState) -> Unit {
     state.username = new_text
   }
 }`,
+          en: `///|
+pub fn draw_text_edit(ui : @core.UIContext, state : AppState) -> Unit {
+  let (new_text, res) = ui.text_edit(
+    state.username,
+    placeholder="Enter a username...",
+  )
+  if res.changed {
+    state.username = new_text
+  }
+}`
+        },
         renderUI: (container, state) => {
           const val = state.inputText || "MoonBit";
+          const lenLabel = T('字数', 'Characters');
           container.innerHTML = `
             <div class="sandbox-header">
               <span>TextEdit</span>
-              <span>字数: ${val.length}</span>
+              <span>${lenLabel}: ${val.length}</span>
             </div>
             <div class="sandbox-body">
-              <input type="text" class="input-box" id="demoTextInput" value="${val}" placeholder="输入文本..." />
+              <input type="text" class="input-box" id="demoTextInput" value="${val}" placeholder="${T('输入文本...', 'Type some text...')}" />
             </div>
             <div class="sandbox-tip">
-              支持光标定位与文本输入。
+              ${T('支持光标定位与文本输入。', 'Caret placement and text entry, exactly as typed.')}
             </div>
           `;
           const input = container.querySelector('#demoTextInput');
           input.oninput = (e) => {
             state.inputText = e.target.value;
-            container.querySelector('.sandbox-header span:last-child').textContent = `字数: ${state.inputText.length}`;
+            container.querySelector('.sandbox-header span:last-child').textContent = `${lenLabel}: ${state.inputText.length}`;
             document.getElementById('statResponse').textContent = `changed: true, len: ${state.inputText.length}`;
           };
         }
       },
 
       checkbox: {
-        title: "Checkbox 复选框",
+        titleKey: 'comp.checkbox.title',
         signature: "ui.checkbox(label, is_checked) -> (Bool, Response)",
-        code: `///|
+        code: {
+          zh: `///|
 pub fn draw_checkbox(ui : @core.UIContext, state : AppState) -> Unit {
   let (checked, res) = ui.checkbox("硬件加速", state.gpu)
   if res.changed {
@@ -126,6 +163,19 @@ pub fn draw_checkbox(ui : @core.UIContext, state : AppState) -> Unit {
     state.vsync = vsync
   }
 }`,
+          en: `///|
+pub fn draw_checkbox(ui : @core.UIContext, state : AppState) -> Unit {
+  let (checked, res) = ui.checkbox("Hardware acceleration", state.gpu)
+  if res.changed {
+    state.gpu = checked
+  }
+
+  let (vsync, res2) = ui.checkbox("Vertical sync", state.vsync)
+  if res2.changed {
+    state.vsync = vsync
+  }
+}`
+        },
         renderUI: (container, state) => {
           if (state.chk1 === undefined) state.chk1 = true;
           if (state.chk2 === undefined) state.chk2 = false;
@@ -138,17 +188,17 @@ pub fn draw_checkbox(ui : @core.UIContext, state : AppState) -> Unit {
                 <div class="checkbox-sq">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
-                <span>硬件加速</span>
+                <span>${T('硬件加速', 'Hardware acceleration')}</span>
               </div>
               <div class="checkbox-row ${state.chk2 ? 'checked' : ''}" id="chk2">
                 <div class="checkbox-sq">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
-                <span>垂直同步</span>
+                <span>${T('垂直同步', 'Vertical sync')}</span>
               </div>
             </div>
             <div class="sandbox-tip">
-              点击切换勾选状态。
+              ${T('点击切换勾选状态。', 'Click a row to toggle its state.')}
             </div>
           `;
           const c1 = container.querySelector('#chk1');
@@ -167,9 +217,10 @@ pub fn draw_checkbox(ui : @core.UIContext, state : AppState) -> Unit {
       },
 
       toggle: {
-        title: "Toggle 开关",
+        titleKey: 'comp.toggle.title',
         signature: "ui.toggle(label, is_checked) -> (Bool, Response)",
-        code: `///|
+        code: {
+          zh: `///|
 pub fn draw_toggles(ui : @core.UIContext, state : AppState) -> Unit {
   let (snap, res1) = ui.toggle("网格对齐", state.grid_snap)
   if res1.changed {
@@ -181,9 +232,24 @@ pub fn draw_toggles(ui : @core.UIContext, state : AppState) -> Unit {
     state.normals = normals
   }
 }`,
+          en: `///|
+pub fn draw_toggles(ui : @core.UIContext, state : AppState) -> Unit {
+  let (snap, res1) = ui.toggle("Snap to grid", state.grid_snap)
+  if res1.changed {
+    state.grid_snap = snap
+  }
+
+  let (normals, res2) = ui.toggle("Show normals", state.normals)
+  if res2.changed {
+    state.normals = normals
+  }
+}`
+        },
         renderUI: (container, state) => {
           if (state.t1 === undefined) state.t1 = true;
           if (state.t2 === undefined) state.t2 = false;
+          const snapLabel = T('网格对齐', 'Snap to grid');
+          const normalsLabel = T('显示法线', 'Show normals');
           container.innerHTML = `
             <div class="sandbox-header">
               <span>Toggle</span>
@@ -191,15 +257,15 @@ pub fn draw_toggles(ui : @core.UIContext, state : AppState) -> Unit {
             <div class="sandbox-body">
               <div class="toggle-row ${state.t1 ? 'active' : ''}" id="tog1">
                 <div class="toggle-pill"><div class="toggle-circle"></div></div>
-                <span>网格对齐</span>
+                <span>${snapLabel}</span>
               </div>
               <div class="toggle-row ${state.t2 ? 'active' : ''}" id="tog2">
                 <div class="toggle-pill"><div class="toggle-circle"></div></div>
-                <span>显示法线</span>
+                <span>${normalsLabel}</span>
               </div>
             </div>
             <div class="sandbox-tip">
-              点击切换开关状态。
+              ${T('点击切换开关状态。', 'Click a row to flip the switch.')}
             </div>
           `;
           const tog1 = container.querySelector('#tog1');
@@ -213,18 +279,20 @@ pub fn draw_toggles(ui : @core.UIContext, state : AppState) -> Unit {
               pill.classList.add('is-stretching');
               setTimeout(() => pill.classList.remove('is-stretching'), 150);
             }
-            document.getElementById('statResponse').textContent = `${label}: ${state[stateKey] ? '开启' : '关闭'}`;
+            const onOff = state[stateKey] ? T('开启', 'on') : T('关闭', 'off');
+            document.getElementById('statResponse').textContent = `${label}: ${onOff}`;
           };
 
-          tog1.onclick = () => triggerToggle(tog1, 't1', '网格对齐');
-          tog2.onclick = () => triggerToggle(tog2, 't2', '显示法线');
+          tog1.onclick = () => triggerToggle(tog1, 't1', snapLabel);
+          tog2.onclick = () => triggerToggle(tog2, 't2', normalsLabel);
         }
       },
 
       radio: {
-        title: "Radio 单选框",
+        titleKey: 'comp.radio.title',
         signature: "ui.radio(label, is_selected) -> (Bool, Response)",
-        code: `///|
+        code: {
+          zh: `///|
 pub fn draw_radio(ui : @core.UIContext, state : AppState) -> Unit {
   let (_, r1) = ui.radio("浅色模式", state.theme == 0)
   if r1.clicked { state.theme = 0 }
@@ -235,9 +303,21 @@ pub fn draw_radio(ui : @core.UIContext, state : AppState) -> Unit {
   let (_, r3) = ui.radio("跟随系统", state.theme == 2)
   if r3.clicked { state.theme = 2 }
 }`,
+          en: `///|
+pub fn draw_radio(ui : @core.UIContext, state : AppState) -> Unit {
+  let (_, r1) = ui.radio("Light", state.theme == 0)
+  if r1.clicked { state.theme = 0 }
+
+  let (_, r2) = ui.radio("Dark", state.theme == 1)
+  if r2.clicked { state.theme = 1 }
+
+  let (_, r3) = ui.radio("Follow the system", state.theme == 2)
+  if r3.clicked { state.theme = 2 }
+}`
+        },
         renderUI: (container, state) => {
           if (state.radioIdx === undefined) state.radioIdx = 0;
-          const opts = ["浅色模式", "深色模式", "跟随系统"];
+          const opts = [T('浅色模式', 'Light'), T('深色模式', 'Dark'), T('跟随系统', 'Follow the system')];
           container.innerHTML = `
             <div class="sandbox-header">
               <span>Radio</span>
@@ -251,7 +331,7 @@ pub fn draw_radio(ui : @core.UIContext, state : AppState) -> Unit {
               `).join('')}
             </div>
             <div class="sandbox-tip">
-              单项互斥选择。
+              ${T('单项互斥选择。', 'One selection at a time.')}
             </div>
           `;
           container.querySelectorAll('.radio-row').forEach(row => {
@@ -267,7 +347,7 @@ pub fn draw_radio(ui : @core.UIContext, state : AppState) -> Unit {
       },
 
       slider: {
-        title: "Slider 滑动条",
+        titleKey: 'comp.slider.title',
         signature: "ui.slider(val, min~, max~) / ui.slider_int(val, min~, max~) -> (T, Response)",
         code: `///|
 pub fn draw_slider(ui : @core.UIContext, state : AppState) -> Unit {
@@ -298,7 +378,7 @@ pub fn draw_slider(ui : @core.UIContext, state : AppState) -> Unit {
               </div>
             </div>
             <div class="sandbox-tip">
-              拖动手柄调节数值。
+              ${T('拖动手柄调节数值。', 'Drag the handle to adjust the value.')}
             </div>
           `;
           const track = container.querySelector('#sTrack');
@@ -359,18 +439,30 @@ pub fn draw_slider(ui : @core.UIContext, state : AppState) -> Unit {
       },
 
       drag_value: {
-        title: "DragValue 数字微调",
+        titleKey: 'comp.drag_value.title',
         signature: "ui.drag_value(label, val, speed~, min~, max~) -> (Double, Response)",
-        code: `///|
+        code: {
+          zh: `///|
 pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
   let (x, _) = ui.drag_value("X 坐标", state.pos_x, speed=0.5, min=-1000.0, max=1000.0)
   let (y, _) = ui.drag_value("Y 坐标", state.pos_y, speed=0.5, min=-1000.0, max=1000.0)
   let (scale, _) = ui.drag_value("缩放", state.scale, speed=0.05, min=0.1, max=10.0)
 }`,
+          en: `///|
+pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
+  let (x, _) = ui.drag_value("X", state.pos_x, speed=0.5, min=-1000.0, max=1000.0)
+  let (y, _) = ui.drag_value("Y", state.pos_y, speed=0.5, min=-1000.0, max=1000.0)
+  let (scale, _) = ui.drag_value("Scale", state.scale, speed=0.05, min=0.1, max=10.0)
+}`
+        },
         renderUI: (container, state) => {
           if (state.dx === undefined) state.dx = 120.0;
           if (state.dy === undefined) state.dy = 80.0;
           if (state.dscale === undefined) state.dscale = 1.25;
+
+          const xLabel = T('X 坐标', 'X');
+          const yLabel = T('Y 坐标', 'Y');
+          const scaleLabel = T('缩放比例', 'Scale');
 
           const getPct = (val, min, max) => {
             return Math.max(0, Math.min(100, ((val - min) / (max - min)) * 100)).toFixed(1);
@@ -382,7 +474,7 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
             </div>
             <div class="sandbox-body">
               <div class="dragval-row">
-                <span>X 坐标</span>
+                <span>${xLabel}</span>
                 <div class="dragval-box" id="dvX">
                   <div class="dragval-mercury" id="dvXMerk" style="width: ${getPct(state.dx, -1000, 1000)}%;"></div>
                   <div class="dragval-content">
@@ -393,7 +485,7 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
                 </div>
               </div>
               <div class="dragval-row">
-                <span>Y 坐标</span>
+                <span>${yLabel}</span>
                 <div class="dragval-box" id="dvY">
                   <div class="dragval-mercury" id="dvYMerk" style="width: ${getPct(state.dy, -1000, 1000)}%;"></div>
                   <div class="dragval-content">
@@ -404,7 +496,7 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
                 </div>
               </div>
               <div class="dragval-row">
-                <span>缩放比例</span>
+                <span>${scaleLabel}</span>
                 <div class="dragval-box" id="dvScale">
                   <div class="dragval-mercury" id="dvScaleMerk" style="width: ${getPct(state.dscale, 0.1, 10.0)}%;"></div>
                   <div class="dragval-content">
@@ -416,14 +508,14 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
               </div>
 
               <div class="dragval-modifier-bar">
-                <span>修饰键:</span>
-                <span class="dragval-modifier-tag active" id="modNormal">常规 1.0x</span>
-                <span class="dragval-modifier-tag" id="modShift">Shift 0.1x 精细</span>
-                <span class="dragval-modifier-tag" id="modCtrl">Ctrl/⌘ 10x 快速</span>
+                <span>${T('修饰键:', 'Modifiers:')}</span>
+                <span class="dragval-modifier-tag active" id="modNormal">${T('常规 1.0x', 'Normal 1.0x')}</span>
+                <span class="dragval-modifier-tag" id="modShift">${T('Shift 0.1x 精细', 'Shift 0.1x fine')}</span>
+                <span class="dragval-modifier-tag" id="modCtrl">${T('Ctrl/⌘ 10x 快速', 'Ctrl/⌘ 10x coarse')}</span>
               </div>
             </div>
             <div class="sandbox-tip">
-              左右拖动调节数值。Shift 精调，Ctrl/⌘ 粗调。
+              ${T('左右拖动调节数值。Shift 精调，Ctrl/⌘ 粗调。', 'Drag left or right to change the value. Hold Shift for fine steps, Ctrl/⌘ for coarse ones.')}
             </div>
           `;
 
@@ -521,9 +613,10 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
       },
 
       combo_box: {
-        title: "ComboBox 下拉框",
+        titleKey: 'comp.combo_box.title',
         signature: "ui.combo_box(id, label, selected_idx, options) -> (Int, Response)",
-        code: `///|
+        code: {
+          zh: `///|
 pub fn draw_combo_box(ui : @core.UIContext, state : AppState) -> Unit {
   let formats = ["PNG", "SVG", "WebP", "PDF"]
   let (selected_idx, res) = ui.combo_box(
@@ -536,9 +629,28 @@ pub fn draw_combo_box(ui : @core.UIContext, state : AppState) -> Unit {
     state.format_idx = selected_idx
   }
 }`,
+          en: `///|
+pub fn draw_combo_box(ui : @core.UIContext, state : AppState) -> Unit {
+  let formats = ["PNG", "SVG", "WebP", "PDF"]
+  let (selected_idx, res) = ui.combo_box(
+    "format",
+    "Format",
+    state.format_idx,
+    formats,
+  )
+  if res.changed {
+    state.format_idx = selected_idx
+  }
+}`
+        },
         renderUI: (container, state) => {
           if (state.comboIdx === undefined) state.comboIdx = 0;
-          const opts = ["PNG (便携位图)", "SVG (矢量标量)", "WebP (现代有损)", "PDF (印刷矢量)"];
+          const opts = [
+            T('PNG (便携位图)', 'PNG (portable bitmap)'),
+            T('SVG (矢量标量)', 'SVG (vector)'),
+            T('WebP (现代有损)', 'WebP (modern lossy)'),
+            T('PDF (印刷矢量)', 'PDF (print vector)')
+          ];
           const shortOpts = ["PNG", "SVG", "WebP", "PDF"];
 
           container.innerHTML = `
@@ -572,7 +684,7 @@ pub fn draw_combo_box(ui : @core.UIContext, state : AppState) -> Unit {
               </div>
             </div>
             <div class="sandbox-tip">
-              点击下拉选择导出格式。
+              ${T('点击下拉选择导出格式。', 'Open the menu to pick an export format.')}
             </div>
           `;
 
@@ -612,7 +724,7 @@ pub fn draw_combo_box(ui : @core.UIContext, state : AppState) -> Unit {
               });
               toggleMenu(false);
               document.getElementById('statResponse').textContent = `format: ${shortOpts[idx]} (idx: ${idx})`;
-              showToast(`已选择「${shortOpts[idx]}」格式`);
+              showToast(T(`已选择「${shortOpts[idx]}」格式`, `Selected the ${shortOpts[idx]} format`));
             };
           });
 
@@ -626,7 +738,7 @@ pub fn draw_combo_box(ui : @core.UIContext, state : AppState) -> Unit {
       },
 
       color_button: {
-        title: "ColorButton 颜色按钮",
+        titleKey: 'comp.color_button.title',
         signature: "ui.color_button(id, color) -> (Bool, Response)",
         code: `///|
 pub fn draw_colors(ui : @core.UIContext, state : AppState) -> Unit {
@@ -647,7 +759,7 @@ pub fn draw_colors(ui : @core.UIContext, state : AppState) -> Unit {
               <div class="color-picker-row">
                 <div class="color-swatch-btn" id="strokeSwatch" style="background: ${state.strokeCol};"></div>
                 <div style="flex: 1;">
-                  <div style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">描边颜色</div>
+                  <div style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">${T('描边颜色', 'Stroke color')}</div>
                   <div class="color-palette-grid" id="strokePalette">
                     ${palette.map(c => `<div class="palette-item" style="background: ${c};" data-col="${c}"></div>`).join('')}
                   </div>
@@ -656,7 +768,7 @@ pub fn draw_colors(ui : @core.UIContext, state : AppState) -> Unit {
               <div class="color-picker-row" style="margin-top: 16px;">
                 <div class="color-swatch-btn" id="fillSwatch" style="background: ${state.fillCol};"></div>
                 <div style="flex: 1;">
-                  <div style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">填充颜色</div>
+                  <div style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">${T('填充颜色', 'Fill color')}</div>
                   <div class="color-palette-grid" id="fillPalette">
                     ${['#eff6ff', '#ecfdf5', '#fffbeb', '#fef2f2', '#faf5ff', '#ffffff'].map(c => `<div class="palette-item" style="background: ${c};" data-col="${c}"></div>`).join('')}
                   </div>
@@ -664,7 +776,7 @@ pub fn draw_colors(ui : @core.UIContext, state : AppState) -> Unit {
               </div>
             </div>
             <div class="sandbox-tip">
-              点击色块选择颜色。
+              ${T('点击色块选择颜色。', 'Click a swatch to apply the color.')}
             </div>
           `;
 
@@ -676,7 +788,7 @@ pub fn draw_colors(ui : @core.UIContext, state : AppState) -> Unit {
               state.strokeCol = item.getAttribute('data-col');
               strokeSwatch.style.background = state.strokeCol;
               document.getElementById('statResponse').textContent = `stroke: ${state.strokeCol}`;
-              showToast(`已更换描边颜色: ${state.strokeCol}`);
+              showToast(T(`已更换描边颜色: ${state.strokeCol}`, `Stroke color set to ${state.strokeCol}`));
             };
           });
 
@@ -685,14 +797,14 @@ pub fn draw_colors(ui : @core.UIContext, state : AppState) -> Unit {
               state.fillCol = item.getAttribute('data-col');
               fillSwatch.style.background = state.fillCol;
               document.getElementById('statResponse').textContent = `fill: ${state.fillCol}`;
-              showToast(`已更换填充颜色: ${state.fillCol}`);
+              showToast(T(`已更换填充颜色: ${state.fillCol}`, `Fill color set to ${state.fillCol}`));
             };
           });
         }
       },
 
       progress_bar: {
-        title: "ProgressBar 进度条",
+        titleKey: 'comp.progress_bar.title',
         signature: "ui.progress_bar(fraction, text~) -> Response",
         code: `///|
 pub fn draw_progress_bar(ui : @core.UIContext, state : AppState) -> Unit {
@@ -703,7 +815,7 @@ pub fn draw_progress_bar(ui : @core.UIContext, state : AppState) -> Unit {
           container.innerHTML = `
             <div class="sandbox-header">
               <span>ProgressBar</span>
-              <button class="mini-btn" id="simProgBtn">模拟进度 ▶</button>
+              <button class="mini-btn" id="simProgBtn">${T('模拟进度 ▶', 'Simulate progress ▶')}</button>
             </div>
             <div class="sandbox-body">
               <div class="prog-track">
@@ -712,7 +824,7 @@ pub fn draw_progress_bar(ui : @core.UIContext, state : AppState) -> Unit {
               </div>
             </div>
             <div class="sandbox-tip">
-              显示执行进度。
+              ${T('显示执行进度。', 'Shows how far the current task has run.')}
             </div>
           `;
           const btn = container.querySelector('#simProgBtn');
@@ -728,7 +840,7 @@ pub fn draw_progress_bar(ui : @core.UIContext, state : AppState) -> Unit {
               if (state.prog > 100) {
                 state.prog = 100;
                 clearInterval(timer);
-                showToast('加载已完成');
+                showToast(T('加载已完成', 'Loading complete'));
               }
               fill.style.width = state.prog + '%';
               text.textContent = `${state.prog}%`;
@@ -739,19 +851,30 @@ pub fn draw_progress_bar(ui : @core.UIContext, state : AppState) -> Unit {
       },
 
       collapsing_header: {
-        title: "CollapsingHeader 折叠面板",
+        titleKey: 'comp.collapsing_header.title',
         signature: "ui.collapsing_header(id, title, default_open~, content)",
-        code: `///|
+        code: {
+          zh: `///|
 pub fn draw_collapsing(ui : @core.UIContext, state : AppState) -> Unit {
   ui.collapsing_header("advanced", "高级设置", default_open=true, fn(ui) {
     let (msaa, _) = ui.checkbox("抗锯齿", state.msaa)
     let (shadows, _) = ui.checkbox("阴影", state.shadows)
   })
 }`,
+          en: `///|
+pub fn draw_collapsing(ui : @core.UIContext, state : AppState) -> Unit {
+  ui.collapsing_header("advanced", "Advanced", default_open=true, fn(ui) {
+    let (msaa, _) = ui.checkbox("Antialiasing", state.msaa)
+    let (shadows, _) = ui.checkbox("Shadows", state.shadows)
+  })
+}`
+        },
         renderUI: (container, state) => {
           if (state.open === undefined) state.open = true;
           if (state.msaa === undefined) state.msaa = true;
           if (state.shadows === undefined) state.shadows = false;
+
+          const openLabel = () => (state.open ? T('已展开', 'Expanded') : T('已折叠', 'Collapsed'));
 
           container.innerHTML = `
             <div class="sandbox-header">
@@ -766,9 +889,9 @@ pub fn draw_collapsing(ui : @core.UIContext, state : AppState) -> Unit {
                         <polyline points="9 18 15 12 9 6"></polyline>
                       </svg>
                     </span>
-                    <span style="font-weight: 600; font-size: 13.5px; color: var(--text-main);">高级图形设置</span>
+                    <span style="font-weight: 600; font-size: 13.5px; color: var(--text-main);">${T('高级图形设置', 'Advanced graphics settings')}</span>
                   </div>
-                  <span class="collapsing-status-badge">${state.open ? '已展开' : '已折叠'}</span>
+                  <span class="collapsing-status-badge">${openLabel()}</span>
                 </div>
                 <div class="collapsing-wrapper ${state.open ? 'is-open' : ''}" id="treeWrapper">
                   <div class="collapsing-inner">
@@ -778,8 +901,8 @@ pub fn draw_collapsing(ui : @core.UIContext, state : AppState) -> Unit {
                           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                         </div>
                         <div style="display: flex; flex-direction: column;">
-                          <span style="font-weight: 500;">四倍抗锯齿 (4x MSAA)</span>
-                          <span style="font-size: 11px; color: var(--text-muted);">平滑曲线与图元边缘</span>
+                          <span style="font-weight: 500;">${T('四倍抗锯齿 (4x MSAA)', '4x antialiasing (MSAA)')}</span>
+                          <span style="font-size: 11px; color: var(--text-muted);">${T('平滑曲线与图元边缘', 'Smooths curve and primitive edges')}</span>
                         </div>
                       </div>
                       <div class="checkbox-row ${state.shadows ? 'checked' : ''}" id="colShadows" style="margin-top: 10px;">
@@ -787,8 +910,8 @@ pub fn draw_collapsing(ui : @core.UIContext, state : AppState) -> Unit {
                           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                         </div>
                         <div style="display: flex; flex-direction: column;">
-                          <span style="font-weight: 500;">动态图元阴影</span>
-                          <span style="font-size: 11px; color: var(--text-muted);">启用实时高斯软阴影滤波</span>
+                          <span style="font-weight: 500;">${T('动态图元阴影', 'Dynamic primitive shadows')}</span>
+                          <span style="font-size: 11px; color: var(--text-muted);">${T('启用实时高斯软阴影滤波', 'Real-time Gaussian soft-shadow filtering')}</span>
                         </div>
                       </div>
                     </div>
@@ -797,7 +920,7 @@ pub fn draw_collapsing(ui : @core.UIContext, state : AppState) -> Unit {
               </div>
             </div>
             <div class="sandbox-tip">
-              点击标题栏平滑展开与收起，支持键盘回车/空格触发。
+              ${T('点击标题栏平滑展开与收起，支持键盘回车/空格触发。', 'Click the header to expand or collapse it; Enter and Space work too.')}
             </div>
           `;
 
@@ -809,7 +932,7 @@ pub fn draw_collapsing(ui : @core.UIContext, state : AppState) -> Unit {
             state.open = open;
             toggle.classList.toggle('is-open', state.open);
             wrapper.classList.toggle('is-open', state.open);
-            badge.textContent = state.open ? '已展开' : '已折叠';
+            badge.textContent = openLabel();
             document.getElementById('statResponse').textContent = `tree_open: ${state.open}`;
           };
 
@@ -838,9 +961,10 @@ pub fn draw_collapsing(ui : @core.UIContext, state : AppState) -> Unit {
       },
 
       tooltip: {
-        title: "Tooltip 悬浮提示",
+        titleKey: 'comp.tooltip.title',
         signature: "ui.tooltip(text)",
-        code: `///|
+        code: {
+          zh: `///|
 pub fn draw_tooltips(ui : @core.UIContext, state : AppState) -> Unit {
   let res_export = ui.button("导出")
   if res_export.hovered {
@@ -852,6 +976,19 @@ pub fn draw_tooltips(ui : @core.UIContext, state : AppState) -> Unit {
     ui.tooltip("重新计算三角网格")
   }
 }`,
+          en: `///|
+pub fn draw_tooltips(ui : @core.UIContext, state : AppState) -> Unit {
+  let res_export = ui.button("Export")
+  if res_export.hovered {
+    ui.tooltip("Export a vector SVG")
+  }
+
+  let res_mesh = ui.button("Mesh")
+  if res_mesh.hovered {
+    ui.tooltip("Recompute the triangle mesh")
+  }
+}`
+        },
         renderUI: (container, state) => {
           container.innerHTML = `
             <div class="sandbox-header">
@@ -860,17 +997,17 @@ pub fn draw_tooltips(ui : @core.UIContext, state : AppState) -> Unit {
             <div class="sandbox-body">
               <div class="widget-row" style="gap: 16px; padding: 20px 0;">
                 <div class="tooltip-target-card">
-                  <button class="btn-primary">导出</button>
-                  <div class="tooltip-bubble">导出 SVG 矢量图</div>
+                  <button class="btn-primary">${T('导出', 'Export')}</button>
+                  <div class="tooltip-bubble">${T('导出 SVG 矢量图', 'Export a vector SVG')}</div>
                 </div>
                 <div class="tooltip-target-card">
-                  <button class="btn-secondary">网格</button>
-                  <div class="tooltip-bubble">重新计算三角网格</div>
+                  <button class="btn-secondary">${T('网格', 'Mesh')}</button>
+                  <div class="tooltip-bubble">${T('重新计算三角网格', 'Recompute the triangle mesh')}</div>
                 </div>
               </div>
             </div>
             <div class="sandbox-tip">
-              鼠标悬停在按钮上查看提示。
+              ${T('鼠标悬停在按钮上查看提示。', 'Hover a button to reveal its tooltip.')}
             </div>
           `;
           container.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
@@ -885,9 +1022,10 @@ pub fn draw_tooltips(ui : @core.UIContext, state : AppState) -> Unit {
       },
 
       tab_bar: {
-        title: "TabBar 标签栏",
+        titleKey: 'comp.tab_bar.title',
         signature: "ui.tab_bar(id, tabs, selected_idx) -> (Int, Response)",
-        code: `///|
+        code: {
+          zh: `///|
 pub fn draw_tabs(ui : @core.UIContext, state : AppState) -> Unit {
   let tabs = ["属性", "视口", "图层", "输出"]
   let (active_tab, res) = ui.tab_bar("tabs", tabs, state.tab_idx)
@@ -895,52 +1033,65 @@ pub fn draw_tabs(ui : @core.UIContext, state : AppState) -> Unit {
     state.tab_idx = active_tab
   }
 }`,
+          en: `///|
+pub fn draw_tabs(ui : @core.UIContext, state : AppState) -> Unit {
+  let tabs = ["Properties", "Viewport", "Layers", "Output"]
+  let (active_tab, res) = ui.tab_bar("tabs", tabs, state.tab_idx)
+  if res.changed {
+    state.tab_idx = active_tab
+  }
+}`
+        },
         renderUI: (container, state) => {
           if (state.tabIdx === undefined) state.tabIdx = 0;
-          const tabs = ["属性", "视口", "图层", "输出"];
+          const tabs = [T('属性', 'Properties'), T('视口', 'Viewport'), T('图层', 'Layers'), T('输出', 'Output')];
+          const grid = "display: grid; grid-template-columns: max-content 1fr; gap: 6px; font-size: 12px; font-family: 'JetBrains Mono', monospace;";
+          const paneTitle = "font-weight: 600; font-size: 13.5px; margin-bottom: 8px; color: var(--text-main); display: flex; align-items: center; justify-content: space-between;";
+          const badge = (bg, fg) => `font-family: 'JetBrains Mono', monospace; font-size: 11px; background: ${bg}; color: ${fg}; padding: 1px 6px; border-radius: 4px;`;
+          const dim = "color: var(--text-muted);";
           const panels = [
             `<div>
-              <div style="font-weight: 600; font-size: 13.5px; margin-bottom: 8px; color: var(--text-main); display: flex; align-items: center; justify-content: space-between;">
-                <span>图元属性</span>
-                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; background: #eff6ff; color: var(--brand); padding: 1px 6px; border-radius: 4px;">Active</span>
+              <div style="${paneTitle}">
+                <span>${T('图元属性', 'Primitive properties')}</span>
+                <span style="${badge('#eff6ff', 'var(--brand)')}">Active</span>
               </div>
-              <div style="display: grid; grid-template-columns: 75px 1fr; gap: 6px; font-size: 12px; font-family: 'JetBrains Mono', monospace;">
-                <span style="color: var(--text-muted);">图元类型:</span><span>Bezier Spline (三次贝塞尔)</span>
-                <span style="color: var(--text-muted);">控制点数:</span><span>16 个控制手柄</span>
-                <span style="color: var(--text-muted);">填充模式:</span><span>Non-Zero (非零环绕)</span>
-              </div>
-            </div>`,
-            `<div>
-              <div style="font-weight: 600; font-size: 13.5px; margin-bottom: 8px; color: var(--text-main); display: flex; align-items: center; justify-content: space-between;">
-                <span>视口参数</span>
-                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; background: #f0fdf4; color: #16a34a; padding: 1px 6px; border-radius: 4px;">60 FPS</span>
-              </div>
-              <div style="display: grid; grid-template-columns: 75px 1fr; gap: 6px; font-size: 12px; font-family: 'JetBrains Mono', monospace;">
-                <span style="color: var(--text-muted);">视口尺寸:</span><span>1920 × 1080 px</span>
-                <span style="color: var(--text-muted);">缩放比例:</span><span>1.00x (100% 原始像素)</span>
-                <span style="color: var(--text-muted);">DPR 缩放:</span><span>2.0x Retina 渲染</span>
+              <div style="${grid}">
+                <span style="${dim}">${T('图元类型:', 'Element:')}</span><span>${T('Bezier Spline (三次贝塞尔)', 'Bezier spline (cubic)')}</span>
+                <span style="${dim}">${T('控制点数:', 'Control points:')}</span><span>${T('16 个控制手柄', '16 handles')}</span>
+                <span style="${dim}">${T('填充模式:', 'Fill rule:')}</span><span>${T('Non-Zero (非零环绕)', 'Non-zero winding')}</span>
               </div>
             </div>`,
             `<div>
-              <div style="font-weight: 600; font-size: 13.5px; margin-bottom: 8px; color: var(--text-main); display: flex; align-items: center; justify-content: space-between;">
-                <span>图层管理</span>
-                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; background: #faf5ff; color: #9333ea; padding: 1px 6px; border-radius: 4px;">3 Layers</span>
+              <div style="${paneTitle}">
+                <span>${T('视口参数', 'Viewport')}</span>
+                <span style="${badge('#f0fdf4', '#16a34a')}">60 FPS</span>
+              </div>
+              <div style="${grid}">
+                <span style="${dim}">${T('视口尺寸:', 'Viewport size:')}</span><span>1920 × 1080 px</span>
+                <span style="${dim}">${T('缩放比例:', 'Zoom:')}</span><span>${T('1.00x (100% 原始像素)', '1.00x (100% native pixels)')}</span>
+                <span style="${dim}">${T('DPR 缩放:', 'DPR scale:')}</span><span>${T('2.0x Retina 渲染', '2.0x Retina rendering')}</span>
+              </div>
+            </div>`,
+            `<div>
+              <div style="${paneTitle}">
+                <span>${T('图层管理', 'Layers')}</span>
+                <span style="${badge('#faf5ff', '#9333ea')}">3 Layers</span>
               </div>
               <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-family: 'JetBrains Mono', monospace;">
-                <div style="display: flex; justify-content: space-between;"><span>Layer 0: 背景网格</span><span style="color: var(--brand); font-weight: 600;">[显示]</span></div>
-                <div style="display: flex; justify-content: space-between;"><span>Layer 1: 贝塞尔轮廓</span><span style="color: var(--brand); font-weight: 600;">[活跃]</span></div>
-                <div style="display: flex; justify-content: space-between;"><span>Layer 2: 辅助对齐线</span><span style="color: var(--text-muted);">[锁定]</span></div>
+                <div style="display: flex; justify-content: space-between;"><span>${T('Layer 0: 背景网格', 'Layer 0: background grid')}</span><span style="color: var(--brand); font-weight: 600;">${T('[显示]', '[Visible]')}</span></div>
+                <div style="display: flex; justify-content: space-between;"><span>${T('Layer 1: 贝塞尔轮廓', 'Layer 1: bezier outline')}</span><span style="color: var(--brand); font-weight: 600;">${T('[活跃]', '[Active]')}</span></div>
+                <div style="display: flex; justify-content: space-between;"><span>${T('Layer 2: 辅助对齐线', 'Layer 2: guide lines')}</span><span style="color: var(--text-muted);">${T('[锁定]', '[Locked]')}</span></div>
               </div>
             </div>`,
             `<div>
-              <div style="font-weight: 600; font-size: 13.5px; margin-bottom: 8px; color: var(--text-main); display: flex; align-items: center; justify-content: space-between;">
-                <span>导出输出</span>
-                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; background: #fffbeb; color: #d97706; padding: 1px 6px; border-radius: 4px;">Vector</span>
+              <div style="${paneTitle}">
+                <span>${T('导出输出', 'Export output')}</span>
+                <span style="${badge('#fffbeb', '#d97706')}">Vector</span>
               </div>
-              <div style="display: grid; grid-template-columns: 75px 1fr; gap: 6px; font-size: 12px; font-family: 'JetBrains Mono', monospace;">
-                <span style="color: var(--text-muted);">导出格式:</span><span>SVG 矢量图形 (.svg)</span>
-                <span style="color: var(--text-muted);">路径优化:</span><span>开启 (精度 2 位小数)</span>
-                <span style="color: var(--text-muted);">嵌入字体:</span><span>JetBrains Mono / Plus Jakarta</span>
+              <div style="${grid}">
+                <span style="${dim}">${T('导出格式:', 'Format:')}</span><span>${T('SVG 矢量图形 (.svg)', 'SVG vector graphics (.svg)')}</span>
+                <span style="${dim}">${T('路径优化:', 'Path optimisation:')}</span><span>${T('开启 (精度 2 位小数)', 'On (2 decimal places)')}</span>
+                <span style="${dim}">${T('嵌入字体:', 'Embedded fonts:')}</span><span>JetBrains Mono / Plus Jakarta</span>
               </div>
             </div>`
           ];
@@ -964,7 +1115,7 @@ pub fn draw_tabs(ui : @core.UIContext, state : AppState) -> Unit {
               </div>
             </div>
             <div class="sandbox-tip">
-              点击选项卡，观察物理滑块平滑滑动至对应位置。
+              ${T('点击选项卡，观察物理滑块平滑滑动至对应位置。', 'Click a tab and watch the indicator glide into place.')}
             </div>
           `;
 
@@ -1005,16 +1156,17 @@ pub fn draw_tabs(ui : @core.UIContext, state : AppState) -> Unit {
               content.innerHTML = panels[idx];
 
               document.getElementById('statResponse').textContent = `active_tab: [${idx}] ${tabs[idx]}`;
-              showToast(`已切换至「${tabs[idx]}」标签`);
+              showToast(T(`已切换至「${tabs[idx]}」标签`, `Switched to the ${tabs[idx]} tab`));
             };
           });
         }
       },
 
       scroll_area: {
-        title: "ScrollArea 滚动区域",
+        titleKey: 'comp.scroll_area.title',
         signature: "ui.scroll_area(id, width~, height~, content)",
-        code: `///|
+        code: {
+          zh: `///|
 pub fn draw_scroll_area(ui : @core.UIContext, state : AppState) -> Unit {
   ui.scroll_area("logs", width=360.0, height=200.0, fn(ui) {
     for i = 0; i < 30; i = i + 1 {
@@ -1022,23 +1174,32 @@ pub fn draw_scroll_area(ui : @core.UIContext, state : AppState) -> Unit {
     }
   })
 }`,
+          en: `///|
+pub fn draw_scroll_area(ui : @core.UIContext, state : AppState) -> Unit {
+  ui.scroll_area("logs", width=360.0, height=200.0, fn(ui) {
+    for i = 0; i < 30; i = i + 1 {
+      ui.label("Log entry [\{i}]")
+    }
+  })
+}`
+        },
         renderUI: (container, state) => {
           const logs = [
-            { tag: 'info', text: '内核初始化成功: @core.UIContext 实例就绪', time: '0.00ms' },
-            { tag: 'render', text: '图形后端挂载: Canvas 2D 上下文已激活', time: '1.20ms' },
-            { tag: 'vram', text: '顶点缓冲分配: 64KB 几何图元缓冲区', time: '2.45ms' },
-            { tag: 'info', text: '字体引擎加载: Plus Jakarta Sans / JetBrains Mono', time: '3.10ms' },
-            { tag: 'render', text: '布局树计算完成: 32 个节点已测量约束', time: '4.80ms' },
-            { tag: 'render', text: '第一帧栅格化生成: 耗时 0.42ms (60 FPS 稳定)', time: '5.22ms' },
-            { tag: 'info', text: '事件系统就绪: 鼠标拖拽、滚轮、按键监听', time: '5.90ms' },
-            { tag: 'vram', text: '纹理合批优化: Draw Call 压制至 1 次批处理', time: '6.50ms' },
-            { tag: 'render', text: '贝塞尔样条细分: 细分精度 ε=0.01 曲线平滑', time: '7.12ms' },
-            { tag: 'info', text: '即时模式刷新周期: 16.6ms 每帧循环', time: '8.00ms' },
-            { tag: 'render', text: '剪裁矩形压栈: push_clip_rect() 视口防溢出', time: '9.30ms' },
-            { tag: 'vram', text: '抗锯齿采样使能: subpixel text rendering 开启', time: '10.15ms' },
-            { tag: 'info', text: '组件树就绪: 所有 11 项核心控件待命', time: '11.00ms' },
-            { tag: 'render', text: '滚动视口建立: scroll_area("logs", h=150.0)', time: '12.40ms' },
-            { tag: 'info', text: '系统待命: 等待用户输入操作', time: '13.00ms' }
+            { tag: 'info', text: T('内核初始化成功: @core.UIContext 实例就绪', 'Kernel booted: @core.UIContext instance ready'), time: '0.00ms' },
+            { tag: 'render', text: T('图形后端挂载: Canvas 2D 上下文已激活', 'Graphics backend attached: Canvas 2D context active'), time: '1.20ms' },
+            { tag: 'vram', text: T('顶点缓冲分配: 64KB 几何图元缓冲区', 'Vertex buffer allocated: 64KB primitive arena'), time: '2.45ms' },
+            { tag: 'info', text: T('字体引擎加载: Plus Jakarta Sans / JetBrains Mono', 'Font engines loaded: Plus Jakarta Sans / JetBrains Mono'), time: '3.10ms' },
+            { tag: 'render', text: T('布局树计算完成: 32 个节点已测量约束', 'Layout tree solved: 32 nodes measured'), time: '4.80ms' },
+            { tag: 'render', text: T('第一帧栅格化生成: 耗时 0.42ms (60 FPS 稳定)', 'First frame rasterised: 0.42 ms, a steady 60 FPS'), time: '5.22ms' },
+            { tag: 'info', text: T('事件系统就绪: 鼠标拖拽、滚轮、按键监听', 'Event system ready: drag, wheel, and key listeners'), time: '5.90ms' },
+            { tag: 'vram', text: T('纹理合批优化: Draw Call 压制至 1 次批处理', 'Batch optimisation: draw calls collapsed into one'), time: '6.50ms' },
+            { tag: 'render', text: T('贝塞尔样条细分: 细分精度 ε=0.01 曲线平滑', 'Bezier subdivision: ε=0.01 keeps curves smooth'), time: '7.12ms' },
+            { tag: 'info', text: T('即时模式刷新周期: 16.6ms 每帧循环', 'Immediate-mode refresh cycle: 16.6 ms per frame'), time: '8.00ms' },
+            { tag: 'render', text: T('剪裁矩形压栈: push_clip_rect() 视口防溢出', 'Clip rect pushed: push_clip_rect() guards the viewport'), time: '9.30ms' },
+            { tag: 'vram', text: T('抗锯齿采样使能: subpixel text rendering 开启', 'Antialiasing enabled: subpixel text rendering on'), time: '10.15ms' },
+            { tag: 'info', text: T('组件树就绪: 所有 11 项核心控件待命', 'Widget tree ready: all 11 core controls standing by'), time: '11.00ms' },
+            { tag: 'render', text: T('滚动视口建立: scroll_area("logs", h=150.0)', 'Scroll viewport created: scroll_area("logs", h=150.0)'), time: '12.40ms' },
+            { tag: 'info', text: T('系统待命: 等待用户输入操作', 'System idle: waiting for user input'), time: '13.00ms' }
           ];
 
           container.innerHTML = `
@@ -1049,10 +1210,10 @@ pub fn draw_scroll_area(ui : @core.UIContext, state : AppState) -> Unit {
             <div class="sandbox-body">
               <div class="scroll-container-wrapper">
                 <div class="scroll-toolbar">
-                  <span>实时渲染事件流 (${logs.length} 项)</span>
+                  <span>${T(`实时渲染事件流 (${logs.length} 项)`, `Live render event stream (${logs.length} entries)`)}</span>
                   <div class="scroll-toolbar-actions">
-                    <button class="scroll-btn-mini" id="btnScrollTop">顶部 ↑</button>
-                    <button class="scroll-btn-mini" id="btnScrollBottom">底部 ↓</button>
+                    <button class="scroll-btn-mini" id="btnScrollTop">${T('顶部 ↑', 'Top ↑')}</button>
+                    <button class="scroll-btn-mini" id="btnScrollBottom">${T('底部 ↓', 'Bottom ↓')}</button>
                   </div>
                 </div>
                 <div class="scroll-viewport" id="sBox">
@@ -1069,7 +1230,7 @@ pub fn draw_scroll_area(ui : @core.UIContext, state : AppState) -> Unit {
               </div>
             </div>
             <div class="sandbox-tip">
-              支持平滑滚动、惯性拖拽以及快速定位。
+              ${T('支持平滑滚动、惯性拖拽以及快速定位。', 'Smooth scrolling, inertial dragging, and quick jumps.')}
             </div>
           `;
 
@@ -1099,9 +1260,10 @@ pub fn draw_scroll_area(ui : @core.UIContext, state : AppState) -> Unit {
       },
 
       window: {
-        title: "Window 浮动窗口",
+        titleKey: 'comp.window.title',
         signature: "ui.window(id, title, content)",
-        code: `///|
+        code: {
+          zh: `///|
 pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
   ui.window("inspector", "属性检查器", fn(ui) {
     ui.label("当前选中: 样条曲线")
@@ -1109,11 +1271,25 @@ pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
     let (closed, _) = ui.checkbox("闭合路径", state.curve_closed)
   })
 }`,
+          en: `///|
+pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
+  ui.window("inspector", "Inspector", fn(ui) {
+    ui.label("Selected: spline curve")
+    let (w, _) = ui.slider(state.curve_width, min=1.0, max=10.0)
+    let (closed, _) = ui.checkbox("Closed path", state.curve_closed)
+  })
+}`
+        },
         renderUI: (container, state) => {
           if (state.winX === undefined) state.winX = 0;
           if (state.winY === undefined) state.winY = 0;
           if (state.curveWidth === undefined) state.curveWidth = 4.5;
           if (state.closedPath === undefined) state.closedPath = true;
+
+          const worldLabel = T('世界坐标', 'World');
+          const dragHint = T('按住标题栏拖拽', 'Drag the title bar');
+          const coordOf = (x, y) => `${worldLabel} (X: ${Math.round(120 + x)}, Y: ${Math.round(80 + y)})`;
+          const dragIcon = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg>';
 
           container.innerHTML = `
             <div class="draggable-window-card" id="winCard" style="transform: translate(${state.winX}px, ${state.winY}px);">
@@ -1125,23 +1301,23 @@ pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
                     <span class="win-dot-mini" style="background: #cbd5e1;"></span>
                     <span class="win-dot-mini" style="background: #cbd5e1;"></span>
                   </div>
-                  <span class="win-title-text">属性检查器</span>
+                  <span class="win-title-text">${T('属性检查器', 'Inspector')}</span>
                 </div>
                 <span class="win-drag-cue" id="winDragCue">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg>
-                  拖拽标题栏
+                  ${dragIcon}
+                  ${T('拖拽标题栏', 'Drag the title bar')}
                 </span>
               </div>
               <div class="win-body">
                 <div class="win-coord-badge">
-                  <b id="winCoordText">位置: X: ${Math.round(120 + state.winX)}, Y: ${Math.round(80 + state.winY)}</b>
+                  <b id="winCoordText">${coordOf(state.winX, state.winY)}</b>
                 </div>
                 <div style="margin-bottom: 12px; font-size: 13px; color: var(--text-main);">
-                  当前图元: <b>样条曲线</b>
+                  ${T('当前图元:', 'Selected:')} <b>${T('样条曲线', 'spline curve')}</b>
                 </div>
                 <div style="margin-bottom: 12px;">
                   <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sub); margin-bottom: 4px;">
-                    <span>线宽</span>
+                    <span>${T('线宽', 'Stroke width')}</span>
                     <b id="winSliderVal">${state.curveWidth} px</b>
                   </div>
                   <div class="slider-track" id="winSliderTrack">
@@ -1153,16 +1329,16 @@ pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
                   <div class="checkbox-sq">
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                   </div>
-                  <span>闭合路径</span>
+                  <span>${T('闭合路径', 'Closed path')}</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                  <button class="mini-btn" id="winResetBtn">重置位置</button>
-                  <button class="btn-primary" style="padding: 6px 14px; font-size: 12px;" id="winFocusBtn">聚焦窗口</button>
+                  <button class="mini-btn" id="winResetBtn">${T('重置位置', 'Reset position')}</button>
+                  <button class="btn-primary" style="padding: 6px 14px; font-size: 12px;" id="winFocusBtn">${T('聚焦窗口', 'Focus window')}</button>
                 </div>
               </div>
             </div>
             <div class="sandbox-tip" style="margin-top: 14px;">
-              按住标题栏可拖拽移动窗口。
+              ${T('按住标题栏可拖拽移动窗口。', 'Hold the title bar to drag the window around.')}
             </div>
           `;
 
@@ -1214,7 +1390,7 @@ pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
           // Focus button
           focusBtn.onclick = () => {
             winCard.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.35), 0 16px 32px rgba(15, 23, 42, 0.12)';
-            showToast('已聚焦图元检查器窗口');
+            showToast(T('已聚焦图元检查器窗口', 'Brought the inspector window into focus'));
             setTimeout(() => {
               winCard.style.boxShadow = '';
             }, 1000);
@@ -1230,7 +1406,7 @@ pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
             winCard.style.transform = `translate(${x}px, ${y}px)`;
             const wx = Math.round(120 + x);
             const wy = Math.round(80 + y);
-            coordText.textContent = `世界坐标 (X: ${wx}, Y: ${wy})`;
+            coordText.textContent = coordOf(x, y);
             document.getElementById('statResponse').textContent = `window_pos: (X: ${wx}, Y: ${wy})`;
           }
 
@@ -1238,8 +1414,8 @@ pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
             if (e.target.closest('button') || e.target.closest('input')) return;
             isWinDragging = true;
             winCard.classList.add('is-dragging');
-            dragCue.textContent = '拖拽中...';
-            statusText.textContent = '● 正在位移';
+            dragCue.textContent = T('拖拽中...', 'Dragging...');
+            statusText.textContent = T('● 正在位移', '● Moving');
             statusText.style.color = 'var(--brand)';
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -1277,14 +1453,16 @@ pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
             if (!isWinDragging) return;
             isWinDragging = false;
             winCard.classList.remove('is-dragging');
-            dragCue.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg> 按住标题栏拖拽';
-            statusText.textContent = '● 自由浮动';
+            dragCue.innerHTML = `${dragIcon} ${dragHint}`;
+            statusText.textContent = T('● 自由浮动', '● Free floating');
             statusText.style.color = '';
             window.removeEventListener('mousemove', onWinMouseMove);
             window.removeEventListener('mouseup', onWinMouseUp);
             window.removeEventListener('touchmove', onWinTouchMove);
             window.removeEventListener('touchend', onWinMouseUp);
-            showToast(`浮动窗口已定位到 X: ${Math.round(120 + state.winX)}, Y: ${Math.round(80 + state.winY)}`);
+            const wx = Math.round(120 + state.winX);
+            const wy = Math.round(80 + state.winY);
+            showToast(T(`浮动窗口已定位到 X: ${wx}, Y: ${wy}`, `Floating window placed at X: ${wx}, Y: ${wy}`));
           }
 
           titleBar.addEventListener('mousedown', onWinMouseDown);
@@ -1297,7 +1475,7 @@ pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
             setTimeout(() => {
               winCard.style.transition = '';
             }, 320);
-            showToast('已重置浮动窗口位置至原点');
+            showToast(T('已重置浮动窗口位置至原点', 'Floating window returned to the origin'));
           };
         }
       }

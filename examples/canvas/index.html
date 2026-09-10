@@ -426,8 +426,10 @@
       .footer-inner { flex-direction: column; gap: 12px; }
     }
   </style>
+  <link rel="stylesheet" href="lang.css">
+  <script src="i18n.js"></script>
 </head>
-<body>
+<body data-i18n-title="index.title">
 
   <!-- Sticky Minimalist Navigation -->
   <nav class="site-nav">
@@ -438,27 +440,30 @@
         <span class="brand-tag">v0.1.0</span>
       </a>
       <ul class="nav-menu">
-        <li><a href="gallery.html" class="nav-link" style="color: var(--brand); font-weight: 600;">组件展厅</a></li>
-        <li><a href="#demo" class="nav-link">画板演示</a></li>
-        <li><a href="#features" class="nav-link">设计架构</a></li>
-        <li><a href="#code" class="nav-link">代码范例</a></li>
-        <li><a href="https://github.com/ling71671/moon-egui" target="_blank" rel="noreferrer" class="nav-link">GitHub 源码</a></li>
+        <li><a href="gallery.html" class="nav-link" style="color: var(--brand); font-weight: 600;" data-i18n="nav.gallery">组件展厅</a></li>
+        <li><a href="#demo" class="nav-link" data-i18n="nav.canvas">画板演示</a></li>
+        <li><a href="#features" class="nav-link" data-i18n="nav.architecture">设计架构</a></li>
+        <li><a href="#code" class="nav-link" data-i18n="nav.code">代码范例</a></li>
+        <li><a href="https://github.com/ling71671/moon-egui" target="_blank" rel="noreferrer" class="nav-link" data-i18n="nav.github">GitHub 源码</a></li>
       </ul>
-      <a href="benchmark.html" class="nav-cta">进入画板 →</a>
+      <div class="nav-actions">
+        <div data-lang-switch></div>
+        <a href="benchmark.html" class="nav-cta" data-i18n="nav.openCanvas">进入画板 →</a>
+      </div>
     </div>
   </nav>
 
   <!-- Hero -->
   <header class="hero">
     <div class="container">
-      <h1 class="hero-title">MoonBit 原生即时模式 GUI 引擎</h1>
-      <p class="hero-subtitle">
+      <h1 class="hero-title" data-i18n="hero.title">MoonBit 原生即时模式 GUI 引擎</h1>
+      <p class="hero-subtitle" data-i18n="hero.subtitle">
         零外部依赖、微秒级帧管线，面向 WebAssembly 与 Canvas 2D 的高性能即时渲染内核。
       </p>
       <div class="hero-actions">
-        <a href="gallery.html" class="btn-primary" style="background: var(--brand);">组件展厅</a>
-        <a href="benchmark.html" class="btn-secondary">CAD 矩阵画板</a>
-        <a href="#code" class="btn-secondary">查看声明式代码</a>
+        <a href="gallery.html" class="btn-primary" style="background: var(--brand);" data-i18n="hero.ctaGallery">组件展厅</a>
+        <a href="benchmark.html" class="btn-secondary" data-i18n="hero.ctaCanvas">CAD 矩阵画板</a>
+        <a href="#code" class="btn-secondary" data-i18n="hero.ctaCode">查看声明式代码</a>
       </div>
 
       <!-- In-Page Live Interactive Canvas Workbench -->
@@ -468,13 +473,13 @@
             <span class="dot"></span>
             <span class="dot"></span>
             <span class="dot"></span>
-            <span style="margin-left: 8px;">CAD 矩阵画板实时运行预览</span>
+            <span style="margin-left: 8px;" data-i18n="wb.caption">CAD 矩阵画板实时运行预览</span>
           </div>
           <div class="workbench-tools">
-            <a href="benchmark.html" target="_blank" class="fullscreen-link">新标签页打开 ↗</a>
+            <a href="benchmark.html" target="_blank" class="fullscreen-link" data-i18n="wb.openNewTab">新标签页打开 ↗</a>
           </div>
         </div>
-        <iframe src="benchmark.html?embedded=1" class="workbench-iframe" title="moon-egui Live Canvas"></iframe>
+        <iframe src="benchmark.html?embedded=1" class="workbench-iframe" title="moon-egui Live Canvas" data-i18n-attrs="title:wb.iframeTitle"></iframe>
       </div>
     </div>
   </header>
@@ -482,31 +487,31 @@
   <!-- Core Engineering Pillars -->
   <section class="container" id="features">
     <div class="section-header">
-      <h2 class="section-title">核心工程特性</h2>
-      <p class="section-desc">抛弃虚拟 DOM 与双向绑定，用纯函数与即时布局构筑现代界面。</p>
+      <h2 class="section-title" data-i18n="features.title">核心工程特性</h2>
+      <p class="section-desc" data-i18n="features.desc">抛弃虚拟 DOM 与双向绑定，用纯函数与即时布局构筑现代界面。</p>
     </div>
 
     <div class="pillars-grid">
       <div class="pillar-card">
         <span class="pillar-tag">IMMEDIATE MODE</span>
-        <h3 class="pillar-title">即时模式架构</h3>
-        <p class="pillar-desc">
+        <h3 class="pillar-title" data-i18n="p1.title">即时模式架构</h3>
+        <p class="pillar-desc" data-i18n="p1.desc">
           每帧重绘、状态就地声明。无虚拟 DOM 树比对与垃圾回收抖动，界面逻辑即业务数据，代码结构极其扁平清爽。
         </p>
       </div>
 
       <div class="pillar-card">
         <span class="pillar-tag">MICROSECOND KERNEL</span>
-        <h3 class="pillar-title">微秒级帧管线</h3>
-        <p class="pillar-desc">
+        <h3 class="pillar-title" data-i18n="p2.title">微秒级帧管线</h3>
+        <p class="pillar-desc" data-i18n="p2.desc">
           视口自适应空间剔除与图元合并，百万级逻辑节点画板下帧内核计算耗时仅 0.1ms，稳定跑满 60 FPS 刷新率。
         </p>
       </div>
 
       <div class="pillar-card">
         <span class="pillar-tag">NATIVE RUNTIME</span>
-        <h3 class="pillar-title">纯粹原生与多后端</h3>
-        <p class="pillar-desc">
+        <h3 class="pillar-title" data-i18n="p3.title">纯粹原生与多后端</h3>
+        <p class="pillar-desc" data-i18n="p3.desc">
           基于 MoonBit 原生代数数据类型构建，不绑定特定浏览器 API，可轻松适配 WebAssembly、Canvas 2D 及跨平台原生桌面。
         </p>
       </div>
@@ -517,11 +522,11 @@
   <section class="container" id="code">
     <div class="code-section">
       <div>
-        <h2 class="code-desc-title">声明式语法，所见即所得</h2>
-        <p class="code-desc-text">
+        <h2 class="code-desc-title" data-i18n="code.title">声明式语法，所见即所得</h2>
+        <p class="code-desc-text" data-i18n="code.p1">
           在即时模式下，界面组件没有复杂的生命周期回调，每一行声明直接对应当帧的绘制与事件命中。
         </p>
-        <p class="code-desc-text">
+        <p class="code-desc-text" data-i18n="code.p2">
           窗口容器、按钮、滑块、网格排列等常见控件均具备统一的布局流，极易嵌入至任何复杂的 CAD 画布与游戏引擎。
         </p>
       </div>
@@ -530,11 +535,11 @@
 <span class="code-kw">fn</span> <span class="code-fn">render_frame</span>() -&gt; @draw.DrawList {
   ctx.begin_frame(input)
 
-  ctx.window(<span class="code-str">"属性面板"</span>, <span class="code-kw">fn</span>(ui) {
-    ui.label(<span class="code-str">"控制参数"</span>)
+  ctx.window(<span class="code-str" data-i18n="code.windowTitle">"属性面板"</span>, <span class="code-kw">fn</span>(ui) {
+    ui.label(<span class="code-str" data-i18n="code.param">"控制参数"</span>)
     <span class="code-kw">let</span> (val, _) = ui.slider(zoom, min=0.1, max=5.0)
 
-    <span class="code-kw">if</span> ui.button(<span class="code-str">"重置视图"</span>, shortcut=<span class="code-str">"⌘R"</span>, primary=<span class="code-kw">true</span>).clicked {
+    <span class="code-kw">if</span> ui.button(<span class="code-str" data-i18n="code.resetBtn">"重置视图"</span>, shortcut=<span class="code-str">"⌘R"</span>, primary=<span class="code-kw">true</span>).clicked {
       reset_camera()
     }
   })
@@ -548,8 +553,8 @@
   <section class="container">
     <div class="quickstart-box">
       <div>
-        <div class="quickstart-text">在 MoonBit 项目中快速引入依赖</div>
-        <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">支持 MoonBit 最新版本包管理规范</div>
+        <div class="quickstart-text" data-i18n="quickstart.title">在 MoonBit 项目中快速引入依赖</div>
+        <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;" data-i18n="quickstart.sub">支持 MoonBit 最新版本包管理规范</div>
       </div>
       <div class="quickstart-cmd">moon add ling71671/moon-egui</div>
     </div>
@@ -558,11 +563,11 @@
   <!-- Footer -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div>© 2026 Ling71671. Apache 2.0 协议开源项目。</div>
+      <div data-i18n="footer.copy">© 2026 Ling71671. Apache 2.0 协议开源项目。</div>
       <div class="footer-links">
-        <a href="benchmark.html">画板</a>
+        <a href="benchmark.html" data-i18n="footer.canvas">画板</a>
         <a href="https://github.com/ling71671/moon-egui" target="_blank" rel="noreferrer">GitHub</a>
-        <a href="https://docs.moonbitlang.com" target="_blank" rel="noreferrer">MoonBit 官网</a>
+        <a href="https://docs.moonbitlang.com" target="_blank" rel="noreferrer" data-i18n="footer.moonbit">MoonBit 官网</a>
       </div>
     </div>
   </footer>
