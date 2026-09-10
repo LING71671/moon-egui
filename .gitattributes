@@ -1,0 +1,12 @@
+# GitHub Linguist language overrides
+# Exclude compiled JavaScript output and HTML host runners from repository language stats
+examples/canvas/canvas.js linguist-generated=true
+examples/canvas/run.js linguist-vendored=true
+*.js linguist-generated=true
+*.html linguist-detectable=false
+
+# Documentation and media
+docs/** linguist-documentation=true
+media/** linguist-vendored=true
+*.png binary
+*.jpg binary
