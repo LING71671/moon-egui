@@ -104,6 +104,11 @@ pub fn Color::text_primary() -> Color {
 }
 
 ///|
+pub fn Color::text_secondary() -> Color {
+  Color::hex(0xC4C7D7)
+}
+
+///|
 pub fn Color::text_muted() -> Color {
   Color::hex(0x9497A8)
 }

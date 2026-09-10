@@ -33,35 +33,34 @@
 
 ---
 
-### 里程碑 2：输入状态机、游标排版与核心控件套件（9月12日 – 9月15日）[推进中]
+### 里程碑 2：输入状态机、游标排版与核心控件套件（9月12日 – 9月15日）[已交付]
 
-* **核心目标**：实现即时模式核心运行循环、分层 ID 哈希系统与首批可交互控件。
+* **核心目标**：实现即时模式核心运行循环、分层 ID 哈希系统与核心控件套件。
 * **交付清单**：
   - [x] **分层 ID 哈希体系** (`src/core/id.mbt`)：`Id` 64 位哈希计算、`push_id` / `pop_id` 作用域命名空间栈；
   - [x] **交互状态机** (`src/core/context.mbt`)：`hot_id`（悬浮）、`active_id`（按住拖拽）生命周期演进与 `allocate_space` 空间分配；
+  - [x] **多向流式排版栈** (`src/core/context.mbt`)：纵向单向推进、横向行内排版流（`horizontal`）、间距与弹性留白（`separator`, `spacer`）；
   - [x] **交互响应对象** (`src/core/response.mbt`)：`Response` 链式状态判断（`clicked`, `hovered`, `pressed`, `dragged`）；
-  - [x] **已交付基础控件** (`src/core/widgets.mbt`)：
+  - [x] **已交付基础控件与调节器** (`src/core/widgets.mbt`)：
     - [x] 文本类：`label`, `label_colored`
     - [x] 按钮类：`button`, `button_primary`
     - [x] 开关类：`checkbox`
+    - [x] 数值类：`slider`（连续浮点滑动）、`slider_int`（步进整型滑动）
     - [x] 排版类：`separator`, `spacer`
-  - [ ] **推进中排版与高级控件**：
-    - [ ] 横向流式排版嵌套（`horizontal`）
-    - [ ] 数值调节类：`slider_float`, `slider_int`, `drag_float`
-    - [ ] 进度与反馈类：`progress_bar`, `sparkline`
 * **验收标准**：
-  - 无头 CI 模拟环境测试通过：断言在指针按下、移动与释放时控件的 `Response` 准确触发。
+  - [x] 无头 CI 模拟环境测试通过：断言在指针按下、移动与释放时控件的 `Response` 与连续拖拽数值准确触发（22 项测试全通）。
 
 ---
 
-### 里程碑 3：视窗管理、高级容器与矩形裁剪栈（9月16日 – 9月18日）[待开始]
+### 里程碑 3：视窗管理、高级容器与矩形裁剪栈（9月16日 – 9月18日）[推进中]
 
 * **核心目标**：支撑桌面级多窗口应用布局，解决复杂场景下的视觉层叠与滚动裁剪。
 * **交付清单**：
-  - [ ] **浮动可拖拽视窗** (`window.mbt`)：
-    - 视窗标题栏 AABB 拖拽命中判定与原点位置持久化更新；
-    - 视窗最小化/展开折叠切换；
-    - 多视窗交互时的动态 Z-Index 焦点置顶提升；
+  - [x] **视窗容器原型** (`src/core/window.mbt`)：
+    - [x] 独立背景绘制、边框、标题栏 Header 与标题文本渲染；
+    - [x] 内容区域局部坐标原点重映射与 Scissor 视口隔离裁剪（`push_clip` / `pop_clip`）；
+    - [ ] 视窗标题栏 AABB 拖拽命中判定与原点位置持久化更新；
+    - [ ] 多视窗交互时的动态 Z-Index 焦点置顶提升；
   - [ ] **全局顶层菜单栏** (`menu_bar.mbt`)：`menu_bar`, `menu`, `menu_item` 下拉弹出机制；
   - [ ] **树形折叠分组** (`collapsing.mbt`)：`collapsing_header` 状态保持与动态收纳；
   - [x] **视口裁剪栈系统** (`src/draw/cmd.mbt`)：`push_clip` / `pop_clip` 嵌套相交计算，超视口图元舍弃；

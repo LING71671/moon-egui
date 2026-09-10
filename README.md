@@ -131,19 +131,21 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 
 ### 已交付可用特性 (Available Now)
 - **底层图形与绘制内核 (Core Draw Engine)**：纯 MoonBit 实现的 `Vec2`, `Rect`, `Color`, `DrawCmd` 平台无关指令流，支持矩形、线段、圆、文本与嵌套矩形裁剪栈（Scissor Clipping）。
-- **交互状态机与空间管理 (Hit-Testing & Space Allocation)**：`UIContext` 维护 `hot_id` / `active_id` 状态机，`allocate_space()` 自动分配几何尺寸并完成鼠标交互命中判定。
-- **基础控件套件 (Available Widgets)**：
+- **交互状态机与多向排版 (Layout & Space Allocation)**：`UIContext` 维护 `hot_id` / `active_id` 状态机与布局作用域栈，支持单向垂直流、水平行内排版流（`horizontal`），`allocate_space()` 自动分配几何尺寸并完成鼠标交互命中判定。
+- **基础控件与调节器 (Available Widgets)**：
   - **文本标签**：`label`（标准文字）、`label_colored`（自定义颜色文本）。
   - **交互按钮**：`button`（基础按钮）、`button_primary`（重点操作按钮），内置 Normal / Hover / Pressed 响应。
   - **复选框**：`checkbox`（交互式开关选框）。
+  - **连续数值滑动条**：`slider`（浮点拖拽调节）、`slider_int`（整型步进滑动），支持持续鼠标拖拽捕获与百分比实时映射。
   - **排版微调**：`separator`（水平分割线）、`spacer`（垂直弹性留白）。
+- **视窗容器原型 (Window Container)**：`window(title, pos, size, content)` 支持独立背景绘制、标题栏 Header、内容局部坐标系与 Scissor 视口隔离裁剪。
 - **无头纯算与高覆盖测试**：核心图元与组件逻辑完全脱离浏览器，支持通过 `moon test` 进行自动化无头测试。
 - **Canvas 2D 宿主驱动器**：轻量 JavaScript 桥接层与 60 FPS 渲染管线，结合 O(1) 视口边界裁剪与多尺度 LOD 架构。
 
 ### 规划与演进中特性 (Planned / In Roadmap)
-- **精准调节器**：连续型滑动条（`Slider`）、Blender 同款数值拖拽调节器（`DragValue`）。
-- **高级视窗体系**：浮动可拖拽视窗（`Window`）、动态 Z-index 置顶管理、折叠分组树形面板（`CollapsingHeader`）。
-- **布局容器**：水平排版流（`horizontal`）、滚动裁剪视口（`ScrollArea`）、全局菜单栏（`MenuBar`）。
+- **高级调节器**：Blender 同款数值拖拽调节器（`DragValue`）。
+- **多窗口调度进阶**：窗口标题栏拖拽位移、动态 Z-index 焦点置顶管理、折叠分组树形面板（`CollapsingHeader`）。
+- **容器与菜单**：滚动裁剪视口（`ScrollArea`）、全局顶层菜单栏（`MenuBar`）。
 - **数据与反馈**：平滑进度条（`ProgressBar`）、实时数据波动折线图（`Sparkline`）、悬浮气泡提示（`Tooltip`）。
 
 ---
@@ -152,13 +154,13 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 
 - [x] **第一阶段：工程骨架与基础类型**（9月9日 – 9月11日）
   - 交付核心数据结构：`Vec2`, `Rect`, `Color`, `InputState`, `DrawCmd`, `DrawList`。
+- [x] **第二阶段：输入状态机与基础排版**（9月12日 – 9月15日）
+  - 交付：AABB 空间命中判定、横纵双向排版（`horizontal`/`vertical`）、`Button`, `Label`, `Checkbox`, `Slider`, `SliderInt`。
 - [x] **第四阶段（提前交付）：Canvas 2D 桥接与在线 Playground**（已上线）
   - 60 FPS HTML5 Canvas 2D 驱动器、LOD 自适应架构、GitHub Pages 自动化持续交付上线。
-- [>] **第二阶段（推进中）：输入状态机与基础排版**（9月12日 – 9月15日）
-  - 已完成：AABB 空间命中判定、`Button`, `Label`, `Checkbox`, `Separator`, `Spacer`。
-  - 进行中：`Slider` 滑动条、水平布局流（`horizontal`）。
-- [ ] **第三阶段：高级视窗与容器交互**（9月16日 – 9月18日）
-  - 浮动可拖拽视窗、动态 Z-index 置顶管理、折叠分组树形面板。
+- [>] **第三阶段（推进中）：高级视窗与容器交互**（9月16日 – 9月18日）
+  - 已完成：基础视窗容器原型（`Window`）、内部局部排版与裁剪隔离。
+  - 进行中：窗口标题栏拖拽位移、动态 Z-index 置顶管理、折叠树形面板。
 - [ ] **第五阶段：全面自动化测试与正式交付**（9月22日 – 9月24日）
   - 达成 150+ 自动化单元测试、完整文档规范与最终版本验收交付。
 

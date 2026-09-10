@@ -143,23 +143,24 @@ fn UIContext::toggle(self : UIContext, text : String, active : Bool) -> (Bool, R
 ```
 
 ### 3.5 Value Selectors & Sliders
-* **[Status: 🚧 Proposed]**
+* `slider` / `slider_int`: **[Status: ✅ Implemented]**
+* `drag_float`: **[Status: 🚧 Proposed]**
 
 ```moonbit
-// [Proposed] Continuous floating-point slider
-fn UIContext::slider_float(
+// [Implemented] Continuous floating-point slider
+fn UIContext::slider(
   self : UIContext, 
   label : String, 
-  val : Double, 
+  value : Double, 
   min : Double, 
   max : Double
 ) -> (Double, Response)
 
-// [Proposed] Integer step slider
+// [Implemented] Integer step slider
 fn UIContext::slider_int(
   self : UIContext, 
   label : String, 
-  val : Int, 
+  value : Int, 
   min : Int, 
   max : Int
 ) -> (Int, Response)
@@ -209,23 +210,24 @@ fn Response::on_hover_text(self : Response, ui : UIContext, tooltip : String) ->
 ---
 
 ## 4. Containers & Windows
-* **[Status: 🚧 Proposed]**
 
-### 4.1 Floating Movable Window
+### 4.1 Floating Window
+* `window`: **[Status: ✅ Implemented]**
+
 ```moonbit
-// [Proposed]
+// [Implemented] Window container with background card, header bar, local scoping, and clipping
 fn UIContext::window(
   self : UIContext, 
   title : String, 
-  default_x : Double, 
-  default_y : Double, 
-  width : Double, 
-  height : Double, 
+  pos : Vec2, 
+  size : Vec2, 
   content : (UIContext) -> Unit
 ) -> Unit
 ```
 
 ### 4.2 Top Application Menu Bar
+* **[Status: 🚧 Proposed]**
+
 ```moonbit
 // [Proposed]
 fn UIContext::menu_bar(self : UIContext, content : (UIContext) -> Unit) -> Unit
@@ -234,11 +236,14 @@ fn UIContext::menu_item(self : UIContext, label : String) -> Bool
 ```
 
 ### 4.3 Layout Flow & Grouping
+* `horizontal` / `vertical`: **[Status: ✅ Implemented]**
+* `collapsing_header`: **[Status: 🚧 Proposed]**
+
 ```moonbit
-// [Proposed] Arrange children horizontally in a row
+// [Implemented] Arrange children horizontally in a row (wraps upon exit)
 fn UIContext::horizontal(self : UIContext, content : (UIContext) -> Unit) -> Unit
 
-// [Proposed] Arrange children vertically in a column (default)
+// [Implemented] Arrange children vertically in a column (default)
 fn UIContext::vertical(self : UIContext, content : (UIContext) -> Unit) -> Unit
 
 // [Proposed] Collapsible tree section
@@ -247,6 +252,7 @@ fn UIContext::collapsing_header(
   title : String, 
   default_open : Bool, 
   content : (UIContext) -> Unit
+) -> Unit
 
 // Visual horizontal separator line
 fn UIContext::separator(self : &mut UIContext)

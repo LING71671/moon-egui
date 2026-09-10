@@ -68,3 +68,73 @@ test "uicontext lifecycle and space allocation interaction" {
   let draw_list = ctx.end_frame()
   assert_eq(draw_list.len(), 0)
 }
+
+///|
+test "horizontal layout flow advances cursor to right and wraps" {
+  let ctx = UIContext::new()
+  ctx.begin_frame(RawInput::new())
+
+  let mut r1_x = 0.0
+  let mut r1_y = 0.0
+  let mut r2_x = 0.0
+  let mut r2_y = 0.0
+
+  ctx.horizontal(fn(ui) {
+    let (_, rect1, _) = ui.allocate_space(@math.Vec2::new(50.0, 30.0))
+    r1_x = rect1.x
+    r1_y = rect1.y
+    // In horizontal mode with 8px item spacing, next item sits at x = 58.0
+    let (_, rect2, _) = ui.allocate_space(@math.Vec2::new(60.0, 40.0))
+    r2_x = rect2.x
+    r2_y = rect2.y
+  })
+
+  assert_eq(r1_x, 0.0)
+  assert_eq(r1_y, 0.0)
+  assert_eq(r2_x, 58.0)
+  assert_eq(r2_y, 0.0)
+
+  // After horizontal block exits, cursor is back at x = 0, y advanced by max_h (40) + 8 = 48.0
+  assert_eq(ctx.cursor().x, 0.0)
+  assert_eq(ctx.cursor().y, 48.0)
+
+  let (_, rect3, _) = ctx.allocate_space(@math.Vec2::new(100.0, 20.0))
+  assert_eq(rect3.x, 0.0)
+  assert_eq(rect3.y, 48.0)
+  assert_eq(ctx.cursor().y, 76.0)
+}
+
+///|
+test "window container sets local origin and clip" {
+  let ctx = UIContext::new()
+  ctx.begin_frame(RawInput::new())
+
+  let win_pos = @math.Vec2::new(50.0, 50.0)
+  let win_size = @math.Vec2::new(200.0, 150.0)
+
+  let mut inside_cur_x = 0.0
+  let mut inside_cur_y = 0.0
+  let mut inside_avail_w = 0.0
+  let mut after_label_y = 0.0
+
+  ctx.window("Test Window", win_pos, win_size, fn(ui) {
+    // Inside window, cursor starts at pos.x + pad(12), pos.y + title_h(28) + pad(12) = (62.0, 90.0)
+    inside_cur_x = ui.cursor().x
+    inside_cur_y = ui.cursor().y
+    inside_avail_w = ui.available_width()
+    let _ = ui.label("Inside Window")
+    after_label_y = ui.cursor().y
+  })
+
+  assert_eq(inside_cur_x, 62.0)
+  assert_eq(inside_cur_y, 90.0)
+  assert_eq(inside_avail_w, 200.0 - 24.0)
+  assert_eq(after_label_y, 90.0 + 18.0 + 8.0)
+
+  // Outside window, cursor returns to previous position (0, 0)
+  assert_eq(ctx.cursor().x, 0.0)
+  assert_eq(ctx.cursor().y, 0.0)
+
+  let dl = ctx.end_frame()
+  assert_true(dl.len() > 5)
+}

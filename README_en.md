@@ -131,19 +131,21 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
  
 ### Available Now
 - **Core Draw Engine**: Pure MoonBit implementation of `Vec2`, `Rect`, `Color`, and platform-agnostic `DrawCmd` stream, supporting rectangles, lines, circles, text, and nested scissor clip stacks.
-- **Hit-Testing & Space Allocation**: `UIContext` manages `hot_id` / `active_id` state machine; `allocate_space()` computes geometry bounds and automatic cursor placement.
+- **Layout & Space Allocation**: `UIContext` manages `hot_id` / `active_id` state machine and layout scope stacks, supporting vertical and horizontal flow layouts (`horizontal`). `allocate_space()` computes geometry bounds and automatic cursor placement.
 - **Available Widget Suite**:
   - **Labels**: `label` (standard text) and `label_colored` (custom tinted text).
   - **Buttons**: `button` (standard button) and `button_primary` (accentuated CTA button) with Normal / Hover / Pressed responses.
   - **Checkbox**: `checkbox` (interactive toggle box).
+  - **Continuous Sliders**: `slider` (floating-point scrub) and `slider_int` (stepped integer slider) with continuous drag tracking and percentage mapping.
   - **Layout Spacing**: `separator` (horizontal divider) and `spacer` (vertical flexible padding).
+- **Window Container**: `window(title, pos, size, content)` provides background cards, header bar, local cursor scoping, and scissor viewport clipping.
 - **Headless & Automated Testing**: Core logic produces pure `DrawCmd` streams without browser bindings, verifiable via `moon test`.
 - **Canvas 2D Host Driver**: Lightweight JavaScript bridge and 60 FPS rendering pipeline, coupled with O(1) viewport spatial culling and multi-scale LOD architecture.
 
 ### Planned & In Roadmap
-- **Precision Inputs**: Continuous float & integer sliders (`Slider`), Blender-style numeric scrubbers (`DragValue`).
-- **Advanced Windowing**: Floating draggable windows (`Window`), dynamic Z-index elevation, and collapsible tree sections (`CollapsingHeader`).
-- **Layout Containers**: Horizontal layout streams (`horizontal`), scrollable scissor viewports (`ScrollArea`), and top-level menus (`MenuBar`).
+- **Advanced Inputs**: Blender-style numeric scrubbers (`DragValue`).
+- **Advanced Windowing**: Window title-bar drag repositioning, dynamic Z-index elevation, and collapsible tree sections (`CollapsingHeader`).
+- **Layout Containers**: Scrollable scissor viewports (`ScrollArea`) and top-level menus (`MenuBar`).
 - **Data & Telemetry**: Smooth progress bars (`ProgressBar`), live sparkline plots (`Sparkline`), and hover tooltips (`Tooltip`).
 
 ---
@@ -152,13 +154,13 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 
 - [x] **Milestone 1: Scaffolding & Mathematical Primitives** (Sep 9 – Sep 11)
   - Core data structures delivered: `Vec2`, `Rect`, `Color`, `InputState`, `DrawCmd`, `DrawList`.
+- [x] **Milestone 2: Input State Machine & Basic Widgets** (Sep 12 – Sep 15)
+  - Delivered: AABB hit-testing, bi-directional layouts (`horizontal`/`vertical`), `Button`, `Label`, `Checkbox`, `Slider`, `SliderInt`.
 - [x] **Milestone 4 (Delivered Ahead): Canvas 2D Backend & Live Playground** (Deployed)
   - 60 FPS HTML5 Canvas 2D bridge, multi-scale LOD architecture, and automated GitHub Pages deployment.
-- [>] **Milestone 2 (In Progress): Input State Machine & Basic Widgets** (Sep 12 – Sep 15)
-  - Completed: AABB hit-testing, `Button`, `Label`, `Checkbox`, `Separator`, `Spacer`.
-  - In Progress: `Slider`, horizontal layout flows (`horizontal`).
-- [ ] **Milestone 3: Windowing & Container Management** (Sep 16 – Sep 18)
-  - Floating draggable windows, dynamic Z-index management, collapsible sections.
+- [>] **Milestone 3 (In Progress): Windowing & Container Management** (Sep 16 – Sep 18)
+  - Delivered: Foundation `Window` container with local scoping and clipping.
+  - In Progress: Window dragging, dynamic Z-index management, collapsible sections.
 - [ ] **Milestone 5: Verification, Benchmarks & Release** (Sep 22 – Sep 24)
   - Comprehensive unit test coverage, documentation specs, and final acceptance.
 

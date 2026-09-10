@@ -51,6 +51,18 @@ pub fn InputState::mouse_released(Self) -> Bool
 pub fn InputState::new() -> Self
 pub fn InputState::update(Self, RawInput) -> Unit
 
+pub enum LayoutDirection {
+  TopDown
+  LeftToRight
+} derive(Eq, @debug.Debug)
+
+pub struct LayoutScope {
+  dir : LayoutDirection
+  start_x : Double
+  start_y : Double
+  mut max_cross_size : Double
+} derive(Eq, @debug.Debug)
+
 pub struct RawInput {
   mouse_pos : @math.Vec2
   mouse_down : Bool
@@ -88,6 +100,7 @@ pub struct UIContext {
   mut item_spacing : @math.Vec2
   clip_stack : Array[@math.Rect]
   mut auto_id_counter : Int
+  layout_stack : Array[LayoutScope]
 } derive(Eq, @debug.Debug)
 pub fn UIContext::active_id(Self) -> Id
 pub fn UIContext::advance_cursor(Self, @math.Vec2) -> Unit
@@ -101,6 +114,7 @@ pub fn UIContext::cursor(Self) -> @math.Vec2
 pub fn UIContext::draw_list(Self) -> @draw.DrawList
 pub fn UIContext::end_frame(Self) -> @draw.DrawList
 pub fn UIContext::focused_id(Self) -> Id
+pub fn UIContext::horizontal(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::hot_id(Self) -> Id
 pub fn UIContext::input(Self) -> InputState
 pub fn UIContext::item_spacing(Self) -> @math.Vec2
@@ -110,11 +124,16 @@ pub fn UIContext::new() -> Self
 pub fn UIContext::pop_id(Self) -> Unit
 pub fn UIContext::push_id(Self, String) -> Unit
 pub fn UIContext::separator(Self) -> Unit
+pub fn UIContext::set_active_id(Self, Id) -> Unit
 pub fn UIContext::set_available_width(Self, Double) -> Unit
 pub fn UIContext::set_cursor(Self, @math.Vec2) -> Unit
 pub fn UIContext::set_focused_id(Self, Id) -> Unit
 pub fn UIContext::set_item_spacing(Self, @math.Vec2) -> Unit
+pub fn UIContext::slider(Self, String, Double, Double, Double) -> (Double, Response)
+pub fn UIContext::slider_int(Self, String, Int, Int, Int) -> (Int, Response)
 pub fn UIContext::spacer(Self, Double) -> Unit
+pub fn UIContext::vertical(Self, (Self) -> Unit) -> Unit
+pub fn UIContext::window(Self, String, @math.Vec2, @math.Vec2, (Self) -> Unit) -> Unit
 
 // Type aliases
 

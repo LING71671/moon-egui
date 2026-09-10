@@ -35,6 +35,7 @@ pub fn Color::rgba(Int, Int, Int, Int) -> Self
 pub fn Color::success() -> Self
 pub fn Color::text_muted() -> Self
 pub fn Color::text_primary() -> Self
+pub fn Color::text_secondary() -> Self
 pub fn Color::transparent() -> Self
 pub fn Color::warning() -> Self
 pub fn Color::white() -> Self

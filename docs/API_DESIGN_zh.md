@@ -146,23 +146,24 @@ fn UIContext::toggle(self : UIContext, text : String, active : Bool) -> (Bool, R
 ```
 
 ### 3.5 数值调节与滑动条 (Value Selectors)
-* **[状态: 🚧 规划中 (Proposed)]**
+* `slider` / `slider_int`：**[状态: ✅ 已实现 (Implemented)]**
+* `drag_float`：**[状态: 🚧 规划中 (Proposed)]**
 
 ```moonbit
-// [规划中] 连续型浮点滑动条
-fn UIContext::slider_float(
+// [已实现] 连续型浮点滑动条
+fn UIContext::slider(
   self : UIContext, 
   label : String, 
-  val : Double, 
+  value : Double, 
   min : Double, 
   max : Double
 ) -> (Double, Response)
 
-// [规划中] 步进整型滑动条
+// [已实现] 步进整型滑动条
 fn UIContext::slider_int(
   self : UIContext, 
   label : String, 
-  val : Int, 
+  value : Int, 
   min : Int, 
   max : Int
 ) -> (Int, Response)
@@ -212,23 +213,24 @@ fn Response::on_hover_text(self : Response, ui : UIContext, tooltip : String) ->
 ---
 
 ## 4. 容器与视窗系统 (Containers & Windows)
-* **[状态: 🚧 规划中 (Proposed)]**
 
-### 4.1 自由浮动可拖拽视窗 (Floating Window)
+### 4.1 自由浮动视窗 (Floating Window)
+* `window`：**[状态: ✅ 已实现 (Implemented)]**
+
 ```moonbit
-// [规划中]
+// [已实现] 视窗容器（带背景、边框、标题栏、局部坐标与视口裁剪）
 fn UIContext::window(
   self : UIContext, 
   title : String, 
-  default_x : Double, 
-  default_y : Double, 
-  width : Double, 
-  height : Double, 
+  pos : Vec2, 
+  size : Vec2, 
   content : (UIContext) -> Unit
 ) -> Unit
 ```
 
 ### 4.2 顶部全局应用程序菜单栏 (Application Menu Bar)
+* **[状态: 🚧 规划中 (Proposed)]**
+
 ```moonbit
 // [规划中]
 fn UIContext::menu_bar(self : UIContext, content : (UIContext) -> Unit) -> Unit
@@ -237,11 +239,14 @@ fn UIContext::menu_item(self : UIContext, label : String) -> Bool
 ```
 
 ### 4.3 流式排版组织与分组 (Layout Flow)
+* `horizontal` / `vertical`：**[状态: ✅ 已实现 (Implemented)]**
+* `collapsing_header`：**[状态: 🚧 规划中 (Proposed)]**
+
 ```moonbit
-// [规划中] 横向排列子元素（水平流式展开）
+// [已实现] 横向排列子元素（水平流式展开，退出时自动换行）
 fn UIContext::horizontal(self : UIContext, content : (UIContext) -> Unit) -> Unit
 
-// [规划中] 纵向排列子元素（默认垂直堆叠）
+// [已实现] 纵向排列子元素（默认垂直堆叠流）
 fn UIContext::vertical(self : UIContext, content : (UIContext) -> Unit) -> Unit
 
 // [规划中] 可折叠树形分组面板
@@ -250,6 +255,7 @@ fn UIContext::collapsing_header(
   title : String, 
   default_open : Bool, 
   content : (UIContext) -> Unit
+) -> Unit
 )
 
 // 视觉水平分割横线

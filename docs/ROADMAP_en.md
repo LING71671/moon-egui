@@ -35,35 +35,34 @@
 
 ---
 
-### Milestone 2: Input State Machine, Layout & Core Widgets (Sep 12 – Sep 15) [In Progress]
+### Milestone 2: Input State Machine, Layout & Core Widgets (Sep 12 – Sep 15) [Delivered]
 
 * **Objective**: Implement immediate-mode frame execution, hierarchical ID hashing, and interactive controls.
 * **Deliverables**:
   - [x] **Hierarchical ID System** (`src/core/id.mbt`): 64-bit ID hashing, `push_id` / `pop_id` namespace stacks;
   - [x] **Input State Machine** (`src/core/context.mbt`): Deterministic transitions for `hot_id` (hover), `active_id` (drag) and `allocate_space`;
+  - [x] **Multi-Directional Layout Stacks** (`src/core/context.mbt`): Vertical and scoped horizontal layout flows (`horizontal`), spacing, and separators;
   - [x] **Response Record** (`src/core/response.mbt`): Chainable interaction inspection (`clicked`, `hovered`, `pressed`, `dragged`);
-  - [x] **Delivered Core Widgets** (`src/core/widgets.mbt`):
+  - [x] **Delivered Core Widgets & Sliders** (`src/core/widgets.mbt`):
     - [x] Text: `label`, `label_colored`
     - [x] Buttons: `button`, `button_primary`
     - [x] Toggles: `checkbox`
+    - [x] Numeric inputs: continuous `slider` and stepped `slider_int`
     - [x] Layout: `separator`, `spacer`
-  - [ ] **In-Progress Layout & Advanced Controls**:
-    - [ ] Horizontal flow layout (`horizontal`)
-    - [ ] Value Inputs: `slider_float`, `slider_int`, Blender-style `drag_float`
-    - [ ] Feedback: `progress_bar`, `sparkline`
 * **Acceptance Criteria**:
-  - Headless CI unit tests confirm that pointer-down, move, and release events trigger correct `Response` states.
+  - [x] Headless CI unit tests confirm that pointer-down, move, and release events trigger correct `Response` states and slider interpolation (22 tests pass).
 
 ---
 
-### Milestone 3: Windowing, Advanced Containers & Scissor Clipping (Sep 16 – Sep 18) [Upcoming]
+### Milestone 3: Windowing, Advanced Containers & Scissor Clipping (Sep 16 – Sep 18) [In Progress]
 
 * **Objective**: Support multi-window layouts with dynamic Z-Index elevation and scissor clipping masks.
 * **Deliverables**:
-  - [ ] **Floating Windows** (`window.mbt`):
-    - Draggable title bar with AABB hit-testing and persistent origin tracking;
-    - Window collapse and close toggles;
-    - Dynamic Z-Index elevation bringing clicked windows to the foreground;
+  - [x] **Window Container Prototype** (`src/core/window.mbt`):
+    - [x] Background card, border, header bar, and title rendering;
+    - [x] Local cursor origin scoping and scissor viewport clipping (`push_clip` / `pop_clip`);
+    - [ ] Title bar draggable AABB hit-testing and persistent position tracking;
+    - [ ] Dynamic Z-Index elevation bringing clicked windows to foreground;
   - [ ] **Global Application Menu Bar** (`menu_bar.mbt`): `menu_bar`, `menu`, `menu_item` dropdown system;
   - [ ] **Collapsible Sections** (`collapsing.mbt`): `collapsing_header` with state memory;
   - [x] **Scissor Clip Stack** (`src/draw/cmd.mbt`): `push_clip` / `pop_clip` intersecting nested bounding boxes and culling out-of-bounds primitives;

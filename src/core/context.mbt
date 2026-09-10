@@ -1,4 +1,18 @@
 ///|
+pub enum LayoutDirection {
+  TopDown
+  LeftToRight
+} derive(Eq, Debug)
+
+///|
+pub struct LayoutScope {
+  dir : LayoutDirection
+  start_x : Double
+  start_y : Double
+  mut max_cross_size : Double
+} derive(Eq, Debug)
+
+///|
 pub struct UIContext {
   input : InputState
   draw_list : @draw.DrawList
@@ -11,6 +25,7 @@ pub struct UIContext {
   mut item_spacing : @math.Vec2
   clip_stack : Array[@math.Rect]
   mut auto_id_counter : Int
+  layout_stack : Array[LayoutScope]
 } derive(Eq, Debug)
 
 ///|
@@ -24,9 +39,12 @@ pub fn UIContext::new() -> UIContext {
     focused_id: Id::zero(),
     cursor: @math.Vec2::zero(),
     available_width: 800.0,
-    item_spacing: @math.Vec2::new(0.0, 8.0),
+    item_spacing: @math.Vec2::new(8.0, 8.0),
     clip_stack: [],
     auto_id_counter: 0,
+    layout_stack: [
+      { dir: TopDown, start_x: 0.0, start_y: 0.0, max_cross_size: 0.0, },
+    ],
   }
 }
 
@@ -38,6 +56,13 @@ pub fn UIContext::begin_frame(self : UIContext, raw_input : RawInput) -> Unit {
   self.clip_stack.clear()
   self.auto_id_counter = 0
   self.hot_id = Id::zero()
+  self.layout_stack.clear()
+  self.layout_stack.push({
+    dir: TopDown,
+    start_x: 0.0,
+    start_y: 0.0,
+    max_cross_size: 0.0,
+  })
 }
 
 ///|
@@ -134,11 +159,41 @@ pub fn UIContext::allocate_space(
   let id = self.id_stack.derive_id(self.auto_id_counter.to_string())
   let rect = @math.Rect::new(self.cursor.x, self.cursor.y, size.x, size.y)
 
-  // Advance linear layout cursor downwards
-  self.cursor = @math.Vec2::new(
-    self.cursor.x,
-    self.cursor.y + size.y + self.item_spacing.y,
-  )
+  // Layout advancement based on current layout direction
+  let current_scope = if self.layout_stack.is_empty() {
+    None
+  } else {
+    Some(self.layout_stack[self.layout_stack.length() - 1])
+  }
+
+  match current_scope {
+    Some(scope) =>
+      match scope.dir {
+        TopDown => {
+          if size.x > scope.max_cross_size {
+            scope.max_cross_size = size.x
+          }
+          self.cursor = @math.Vec2::new(
+            self.cursor.x,
+            self.cursor.y + size.y + self.item_spacing.y,
+          )
+        }
+        LeftToRight => {
+          if size.y > scope.max_cross_size {
+            scope.max_cross_size = size.y
+          }
+          self.cursor = @math.Vec2::new(
+            self.cursor.x + size.x + self.item_spacing.x,
+            self.cursor.y,
+          )
+        }
+      }
+    None =>
+      self.cursor = @math.Vec2::new(
+        self.cursor.x,
+        self.cursor.y + size.y + self.item_spacing.y,
+      )
+  }
 
   // Hit-testing evaluation
   let hovered = rect.contains(self.input.mouse_pos)
@@ -164,4 +219,54 @@ pub fn UIContext::allocate_space(
 
   let response = Response::new(id, rect, hovered, clicked, pressed, dragged)
   (id, rect, response)
+}
+
+///|
+pub fn UIContext::set_active_id(self : UIContext, id : Id) -> Unit {
+  self.active_id = id
+}
+
+///|
+/// Scoped horizontal layout flow (Left-to-Right).
+/// Arranges child widgets side-by-side, tracks the maximum row height,
+/// and returns the cursor to the start X position advanced downwards by row height.
+pub fn UIContext::horizontal(
+  self : UIContext,
+  content : (UIContext) -> Unit,
+) -> Unit {
+  let start_x = self.cursor.x
+  let start_y = self.cursor.y
+  let scope : LayoutScope = {
+    dir: LeftToRight,
+    start_x,
+    start_y,
+    max_cross_size: 0.0,
+  }
+  self.layout_stack.push(scope)
+  content(self)
+  let popped = self.layout_stack.pop()
+  let max_h = match popped {
+    Some(s) => s.max_cross_size
+    None => 0.0
+  }
+  self.cursor = @math.Vec2::new(start_x, start_y + max_h + self.item_spacing.y)
+}
+
+///|
+/// Scoped vertical layout flow (TopDown).
+pub fn UIContext::vertical(
+  self : UIContext,
+  content : (UIContext) -> Unit,
+) -> Unit {
+  let start_x = self.cursor.x
+  let start_y = self.cursor.y
+  let scope : LayoutScope = {
+    dir: TopDown,
+    start_x,
+    start_y,
+    max_cross_size: 0.0,
+  }
+  self.layout_stack.push(scope)
+  content(self)
+  let _ = self.layout_stack.pop()
 }

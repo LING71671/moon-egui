@@ -86,3 +86,36 @@ test "widgets: checkbox toggle interaction" {
   assert_true(resp2.clicked())
   assert_true(state2) // toggled to true!
 }
+
+///|
+test "widgets: slider continuous dragging calculation" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Mouse hovering over slider track (label_w ~ 44, track 120, so track spans ~44 to 164)
+  // Drag at middle of track (x = 104)
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(104.0, 12.0), true)
+  ctx.begin_frame(raw1)
+  let (val1, resp1) = ctx.slider("Zoom", 0.0, 0.0, 100.0)
+  assert_true(resp1.pressed())
+  // 104 is halfway through track (44 to 164) -> ~50.0
+  assert_true(val1 >= 45.0 && val1 <= 55.0)
+
+  // Frame 2: Drag further right to x = 164 (end of track)
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(164.0, 12.0), true)
+  ctx.begin_frame(raw2)
+  let (val2, resp2) = ctx.slider("Zoom", val1, 0.0, 100.0)
+  assert_true(resp2.dragged() || resp2.pressed())
+  assert_true(val2 >= 99.0)
+
+  // Frame 3: Drag beyond left bound (x = 0) while mouse is down
+  let raw3 = RawInput::from_mouse(@math.Vec2::new(0.0, 12.0), true)
+  ctx.begin_frame(raw3)
+  let (val3, _) = ctx.slider("Zoom", val2, 0.0, 100.0)
+  assert_eq(val3, 0.0) // clamped to min
+
+  // Frame 4: slider_int steps
+  let raw4 = RawInput::new()
+  ctx.begin_frame(raw4)
+  let (int_val, _) = ctx.slider_int("Volume", 50, 0, 100)
+  assert_eq(int_val, 50)
+}
