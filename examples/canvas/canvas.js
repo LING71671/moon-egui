@@ -163,7 +163,7 @@ function _M0TP49LING7167111moon_2degui3src4core11LayoutScope(param0, param1, par
   this.start_y = param2;
   this.max_cross_size = param3;
 }
-function _M0TP49LING7167111moon_2degui8examples6canvas11FrameOutput(param0, param1, param2, param3, param4, param5, param6, param7) {
+function _M0TP49LING7167111moon_2degui8examples6canvas11FrameOutput(param0, param1, param2, param3, param4, param5, param6, param7, param8) {
   this.draw_list = param0;
   this.cam_x = param1;
   this.cam_y = param2;
@@ -172,6 +172,7 @@ function _M0TP49LING7167111moon_2degui8examples6canvas11FrameOutput(param0, para
   this.visible_cells = param5;
   this.selected_id = param6;
   this.show_studio = param7;
+  this.is_vector = param8;
 }
 const _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger = { method_0: _M0IPB13StringBuilderPB6Logger13write__string, method_1: _M0IP016_24default__implPB6Logger16write__substringGRPB13StringBuilderE, method_2: _M0IPB13StringBuilderPB6Logger11write__view, method_3: _M0IPB13StringBuilderPB6Logger11write__char, method_4: _M0IP016_24default__implPB6Logger28write__string__interpolationGRPB13StringBuilderE, method_5: _M0IP016_24default__implPB6Logger5writeGRPB13StringBuilderE };
 const _M0MP49LING7167111moon_2degui3src5color5Color5whiteN6recordS36 = new _M0TP49LING7167111moon_2degui3src5color5Color(255, 255, 255, 255);
@@ -1005,10 +1006,9 @@ function _M0FP49LING7167111moon_2degui8examples6canvas16get__logo__color(dim, co
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas21render__matrix__nodes(dl, state, in_canvas, mouse_x, mouse_y, cv_x, cv_y, cv_w, cv_h, sc_x, sc_y, grid_dim, pitch, cell_size, mwx, mwy, c_start, c_end, r_start, r_end, total_vis, matrix_world_size) {
   _M0MP49LING7167111moon_2degui3src4draw8DrawList10push__clip(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(cv_x, cv_y, cv_w, cv_h));
-  const unit_px = pitch * state.zoom;
   const repel_radius = pitch * 4.5;
   const repel_radius_sq = repel_radius * repel_radius;
-  const is_micro_vector = unit_px >= 4 && total_vis <= 4000;
+  const is_micro_vector = total_vis <= 4000;
   if (is_micro_vector) {
     const on_screen_cell_w = cell_size * state.zoom;
     const on_screen_cell_h = cell_size * state.zoom;
@@ -1125,6 +1125,7 @@ function _M0FP49LING7167111moon_2degui8examples6canvas21render__matrix__nodes(dl
     }
   }
   _M0MP49LING7167111moon_2degui3src4draw8DrawList9pop__clip(dl);
+  return is_micro_vector;
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas34render__selected__transform__frame(dl, state, cv_x, cv_y, cv_w, cv_h, sc_x, sc_y, pitch, cell_size, grid_dim) {
   if (state.selected_id >= 0) {
@@ -1397,13 +1398,13 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
   _M0MP49LING7167111moon_2degui3src4draw8DrawList10push__clip(dl, _M0MP49LING7167111moon_2degui3src4math4Rect3new(48, 22, cv_w, cv_h));
   _M0FP49LING7167111moon_2degui8examples6canvas20render__grid__aisles(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, 48, 22, cv_w, cv_h, sc_x, sc_y);
   _M0MP49LING7167111moon_2degui3src4draw8DrawList9pop__clip(dl);
-  _M0FP49LING7167111moon_2degui8examples6canvas21render__matrix__nodes(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, in_canvas, mouse_x, mouse_y, 48, 22, cv_w, cv_h, sc_x, sc_y, grid_dim, pitch, pitch, mwx, mwy, _c_start, _c_end, _r_start, _r_end, _total_vis, 10000);
+  const is_vector = _M0FP49LING7167111moon_2degui8examples6canvas21render__matrix__nodes(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, in_canvas, mouse_x, mouse_y, 48, 22, cv_w, cv_h, sc_x, sc_y, grid_dim, pitch, pitch, mwx, mwy, _c_start, _c_end, _r_start, _r_end, _total_vis, 10000);
   _M0FP49LING7167111moon_2degui8examples6canvas34render__selected__transform__frame(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, 48, 22, cv_w, cv_h, sc_x, sc_y, pitch, pitch, grid_dim);
   _M0FP49LING7167111moon_2degui8examples6canvas19render__cad__rulers(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, 48, 22, cv_w, cv_h, 0, 0, 48, 22, _min_wx, _max_wx, _min_wy, _max_wy, sc_x, sc_y);
   _M0FP49LING7167111moon_2degui8examples6canvas26render__ruler__projections(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, 48, 22, cv_w, cv_h, 0, 0, 48, 22, sc_x, sc_y, pitch, pitch, grid_dim);
   _M0FP49LING7167111moon_2degui8examples6canvas22render__studio__window(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, _M0FP49LING7167111moon_2degui8examples6canvas5state, cur_w, cur_h, 264, 340);
   const final_dl = _M0MP49LING7167111moon_2degui3src4core9UIContext10end__frame(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
-  return new _M0TP49LING7167111moon_2degui8examples6canvas11FrameOutput(final_dl, _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x, _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y, _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom, _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim, _M0FP49LING7167111moon_2degui8examples6canvas5state.visible_cells, _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id, _M0FP49LING7167111moon_2degui8examples6canvas5state.show_studio);
+  return new _M0TP49LING7167111moon_2degui8examples6canvas11FrameOutput(final_dl, _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x, _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y, _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom, _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim, _M0FP49LING7167111moon_2degui8examples6canvas5state.visible_cells, _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id, _M0FP49LING7167111moon_2degui8examples6canvas5state.show_studio, is_vector);
 }
 (() => {
   const frame = _M0FP49LING7167111moon_2degui8examples6canvas4step(580, 270, false, 0, 0, 1, -1, 920, 540);
@@ -1416,10 +1417,5 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
   _M0FPB7printlnGsE(_string_builder.val);
 })();
 
-
-if (typeof window !== 'undefined') {
-  window.moon_step = _M0FP49LING7167111moon_2degui8examples6canvas4step;
-}
-if (typeof globalThis !== 'undefined') {
-  globalThis.moon_step = _M0FP49LING7167111moon_2degui8examples6canvas4step;
-}
+if (typeof window !== 'undefined') window.moon_step = _M0FP49LING7167111moon_2degui8examples6canvas4step;
+if (typeof globalThis !== 'undefined') globalThis.moon_step = _M0FP49LING7167111moon_2degui8examples6canvas4step;

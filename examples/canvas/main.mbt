@@ -22,6 +22,7 @@ pub struct FrameOutput {
   visible_cells : Int
   selected_id : Int
   show_studio : Bool
+  is_vector : Bool
 }
 
 ///|
@@ -105,7 +106,7 @@ pub fn step(
   dl.pop_clip()
 
   // 9. Matrix Nodes (LOD Vector streaming or Background probe)
-  render_matrix_nodes(
+  let is_vector = render_matrix_nodes(
     dl, state, in_canvas, mouse_x, mouse_y, cv_x, cv_y, cv_w, cv_h, sc_x, sc_y, grid_dim,
     pitch, cell_size, mwx, mwy, c_start, c_end, r_start, r_end, total_vis, matrix_world_size,
   )
@@ -139,6 +140,7 @@ pub fn step(
     visible_cells: state.visible_cells,
     selected_id: state.selected_id,
     show_studio: state.show_studio,
+    is_vector,
   }
 }
 

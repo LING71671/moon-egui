@@ -405,10 +405,12 @@
     ctx.fillRect(dstX, dstY, dstW, dstH);
     ctx.shadowColor = 'transparent';
 
-    // 严格 LOD 判定：
-    // 仅在远景全貌 (unitPx < 4.0) 时渲染烘焙位图以获得微秒级帧率；
-    // 一旦 unitPx >= 4.0，进入中近景，MoonBit 实时输出纯矢量节点与 CAD 网格，绝对不绘制背景位图，从根源杜绝拉伸 Logo Bug。
-    if (unitPx < 4.0) {
+    // 严格 LOD 互斥对齐：
+    // 当 is_vector 为 false（宏观全景）时，渲染烘焙位图以保证微秒级帧率；
+    // 当 is_vector 为 true（进入局部高精视距）时，MoonBit 实时输出纯矢量节点与 CAD 网格，宿主层绝不绘制底层烘焙位图。
+    // 两者状态在每一帧 100% 互斥互补，彻底杜绝空白死区与贴图穿透！
+    const isVector = frameOut ? !!frameOut.is_vector : false;
+    if (!isVector) {
       const baked = getLogoCanvas(gridDim);
       if (baked) {
         ctx.imageSmoothingEnabled = false;

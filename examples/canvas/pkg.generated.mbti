@@ -70,6 +70,7 @@ pub struct FrameOutput {
   visible_cells : Int
   selected_id : Int
   show_studio : Bool
+  is_vector : Bool
 }
 
 // Type aliases

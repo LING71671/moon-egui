@@ -137,14 +137,13 @@ fn render_matrix_nodes(
   r_end : Int,
   total_vis : Int,
   matrix_world_size : Double,
-) -> Unit {
+) -> Bool {
   dl.push_clip(@math.Rect::new(cv_x, cv_y, cv_w, cv_h))
 
-  let unit_px = pitch * state.zoom
   let repel_radius = pitch * 4.5
   let repel_radius_sq = repel_radius * repel_radius
 
-  let is_micro_vector = unit_px >= 4.0 && total_vis <= 4000
+  let is_micro_vector = total_vis <= 4000
 
   if is_micro_vector {
     let on_screen_cell_w = cell_size * state.zoom
@@ -308,6 +307,7 @@ fn render_matrix_nodes(
 
   // End matrix cell clipping
   dl.pop_clip()
+  is_micro_vector
 }
 
 ///|
