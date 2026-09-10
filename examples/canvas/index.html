@@ -319,31 +319,29 @@
       margin-bottom: 24px;
     }
 
-    .spotlight-metrics {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+    .spotlight-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
       margin-bottom: 24px;
     }
 
-    .spotlight-metric-item {
+    .spotlight-feat-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 14px;
       background: #f8fafc;
       border: 1px solid var(--border-light);
-      border-radius: 10px;
-      padding: 12px 14px;
+      border-radius: 7px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
     }
 
-    .spotlight-metric-val {
-      font-size: 20px;
-      font-weight: 800;
-      font-family: 'JetBrains Mono', monospace;
-      color: #0284c7;
-    }
-
-    .spotlight-metric-lbl {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 2px;
+    .spotlight-feat-tag svg {
+      color: var(--brand-sapphire);
+      flex-shrink: 0;
     }
 
     .spotlight-btn {
@@ -627,22 +625,22 @@
           在无限画板中支持 128² 至 1024² 规模的像素方块阵列，测试视口裁剪、双轴标尺、像素晶格叠加以及即时模式交互响应。
         </p>
 
-        <div class="spotlight-metrics">
-          <div class="spotlight-metric-item">
-            <div class="spotlight-metric-val">0.02 s</div>
-            <div class="spotlight-metric-lbl" id="i18n-spot-m1">快速加载</div>
+        <div class="spotlight-features">
+          <div class="spotlight-feat-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="i18n-spot-f1">128² ~ 1024² 多尺度矩阵切换</span>
           </div>
-          <div class="spotlight-metric-item">
-            <div class="spotlight-metric-val">~18 MB</div>
-            <div class="spotlight-metric-lbl" id="i18n-spot-m2">轻量内存</div>
+          <div class="spotlight-feat-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="i18n-spot-f2">视口空间局部性裁剪与绘制调度</span>
           </div>
-          <div class="spotlight-metric-item">
-            <div class="spotlight-metric-val">1024²</div>
-            <div class="spotlight-metric-lbl" id="i18n-spot-m3">多尺度网格</div>
+          <div class="spotlight-feat-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="i18n-spot-f3">CAD 双轴刻度标尺与坐标读数</span>
           </div>
-          <div class="spotlight-metric-item">
-            <div class="spotlight-metric-val">60.0 FPS</div>
-            <div class="spotlight-metric-lbl" id="i18n-spot-m4">交互响应</div>
+          <div class="spotlight-feat-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="i18n-spot-f4">平移、缩放与单体方块拖拽交互</span>
           </div>
         </div>
 
@@ -796,10 +794,10 @@
         heroDocsBtn: 'GitHub 源码与文档',
         spotTitle: '多尺度矩阵与大画布节点测试',
         spotDesc: '在无限画板中支持 128² 至 1024² 规模的像素方块阵列，测试视口裁剪、双轴标尺、像素晶格叠加以及即时模式交互响应。',
-        spotM1: '快速加载',
-        spotM2: '轻量内存',
-        spotM3: '多尺度网格',
-        spotM4: '交互响应',
+        spotF1: '128² ~ 1024² 多尺度矩阵切换',
+        spotF2: '视口空间局部性裁剪与绘制调度',
+        spotF3: 'CAD 双轴刻度标尺与坐标读数',
+        spotF4: '平移、缩放与单体方块拖拽交互',
         spotBtn: '查看画板测试页 (benchmark.html)',
         playTitle: '在线画板交互示例',
         playDesc: '在下方画布中悬停或拖拽方块，体验即时模式的基础交互',
@@ -835,10 +833,10 @@
         heroDocsBtn: 'GitHub Docs & Source',
         spotTitle: 'Multi-Scale Matrix & Canvas Benchmark',
         spotDesc: 'Supports 128² to 1024² pixel block arrays on an infinite canvas, benchmarking viewport culling, dual-axis rulers, pixel grid overlay, and responsive interactions.',
-        spotM1: 'Fast Startup',
-        spotM2: 'Low Memory',
-        spotM3: 'Multi-Scale Grid',
-        spotM4: 'Responsive',
+        spotF1: '128² to 1024² Grid Scale Switching',
+        spotF2: 'Viewport Spatial Culling & Dispatch',
+        spotF3: 'CAD Dual-Axis Rulers & Readouts',
+        spotF4: 'Pan, Zoom & Single-Block Dragging',
         spotBtn: 'Open Benchmark Page (benchmark.html)',
         playTitle: 'Interactive Canvas Demo',
         playDesc: 'Hover or drag pixel blocks below to explore basic immediate-mode interactions',
@@ -879,10 +877,10 @@
 
       document.getElementById('i18n-spot-title').textContent = d.spotTitle;
       document.getElementById('i18n-spot-desc').textContent = d.spotDesc;
-      document.getElementById('i18n-spot-m1').textContent = d.spotM1;
-      document.getElementById('i18n-spot-m2').textContent = d.spotM2;
-      document.getElementById('i18n-spot-m3').textContent = d.spotM3;
-      document.getElementById('i18n-spot-m4').textContent = d.spotM4;
+      document.getElementById('i18n-spot-f1').textContent = d.spotF1;
+      document.getElementById('i18n-spot-f2').textContent = d.spotF2;
+      document.getElementById('i18n-spot-f3').textContent = d.spotF3;
+      document.getElementById('i18n-spot-f4').textContent = d.spotF4;
       document.getElementById('i18n-spot-btn').querySelector('span').textContent = d.spotBtn;
 
       document.getElementById('i18n-play-title').textContent = d.playTitle;
