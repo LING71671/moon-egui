@@ -51,6 +51,21 @@ pub struct GalleryState {
   mut ctx_menu_pos : @math.Vec2
   mut status_text : String
   mut active_comp_id : String
+  mut splitter_ratio : Double
+  mut table_sort_col : String
+  mut table_sort_dir : @core.TableSortDirection
+  table_columns : Array[@core.TableColumn]
+  mut table_selected_row : Int
+  mut dialog_open : Bool
+  mut dialog_last_result : String
+  mut segmented_sel : Int
+  mut tag1_open : Bool
+  mut tag2_open : Bool
+  mut tag3_open : Bool
+  sparkline_data : Array[Double]
+  mut color_picker_val : @color.Color
+  mut breadcrumb_last_clicked : String
+  mut rich_text_last_url : String
 }
 
 ///|
@@ -92,6 +107,28 @@ let gallery_state : GalleryState = {
   ctx_menu_pos: @math.Vec2::new(180.0, 140.0),
   status_text: "Ready",
   active_comp_id: "",
+  splitter_ratio: 0.45,
+  table_sort_col: "id",
+  table_sort_dir: @core.TableSortDirection::Ascending,
+  table_columns: [
+    @core.TableColumn::new("id", "ID", 60.0, min_width=50.0),
+    @core.TableColumn::new("name", "Name", 140.0, min_width=80.0),
+    @core.TableColumn::new("role", "Role", 110.0, min_width=70.0),
+    @core.TableColumn::new("score", "Score", 80.0, min_width=60.0),
+  ],
+  table_selected_row: 1,
+  dialog_open: false,
+  dialog_last_result: "None",
+  segmented_sel: 0,
+  tag1_open: true,
+  tag2_open: true,
+  tag3_open: true,
+  sparkline_data: [
+    12.0, 28.0, 19.0, 35.0, 22.0, 48.0, 38.0, 55.0, 42.0, 68.0, 60.0, 85.0,
+  ],
+  color_picker_val: @color.Color::rgb(79, 70, 229),
+  breadcrumb_last_clicked: "None",
+  rich_text_last_url: "None",
 }
 
 ///|
@@ -1227,6 +1264,478 @@ fn draw_toast_showcase(
 }
 
 // ----------------------------------------------------------------------
+// 5. Extended Core Components (10 New Professional Widgets)
+// ----------------------------------------------------------------------
+
+///|
+fn draw_splitter_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
+  let _ = ui.label_colored(
+    "双向可拖拽分栏容器 (Splitter Panes)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "鼠标拖拽中央把手调节比例，内置 >= 60px 物理防挤压防护与 Scissor 裁剪盒。",
+  )
+  ui.spacer(10.0)
+
+  let split_size = @math.Vec2::new(card_w - 40.0, 220.0)
+  let new_ratio = ui.split_horizontal(
+    "gal_split_h",
+    gallery_state.splitter_ratio,
+    split_size,
+    fn(pane_ui, rect) {
+      pane_ui.draw_list().add_rect(rect, @color.Color::rgb(241, 245, 249), 4.0)
+      pane_ui.set_cursor(@math.Vec2::new(rect.x + 12.0, rect.y + 12.0))
+      let _ = pane_ui.label_colored(
+        "左侧主导航栏",
+        @color.Color::accent_primary(),
+      )
+      pane_ui.spacer(6.0)
+      let _ = pane_ui.label("项目文件 (src/)")
+      let _ = pane_ui.label("资源目录 (assets/)")
+    },
+    fn(pane_ui, rect) {
+      pane_ui.draw_list().add_rect(rect, @color.Color::rgb(248, 250, 252), 4.0)
+      pane_ui.set_cursor(@math.Vec2::new(rect.x + 12.0, rect.y + 12.0))
+      let _ = pane_ui.label_colored(
+        "右侧工作区画布",
+        @color.Color::text_strong(),
+      )
+      pane_ui.spacer(6.0)
+      let _ = pane_ui.label(
+        "实时分栏比例: " +
+        (gallery_state.splitter_ratio * 100.0).to_int().to_string() +
+        "%",
+      )
+    },
+  )
+  gallery_state.splitter_ratio = new_ratio
+}
+
+///|
+fn draw_table_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
+  let _ = ui.label_colored(
+    "海量数据虚拟化表格 (Virtual Table)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "支持 10,000 行极速虚拟滚动（只渲染视口行），支持列宽拖拽与表头排序。",
+  )
+  ui.spacer(10.0)
+
+  let resp = ui.table(
+    "gal_table",
+    @math.Vec2::new(card_w - 40.0, 220.0),
+    gallery_state.table_columns,
+    10000,
+    fn(cell_ui, r, c, rect) {
+      let cell_text = match c {
+        0 => "#" + r.to_string()
+        1 => "User_" + r.to_string()
+        2 =>
+          if r % 3 == 0 {
+            "Admin"
+          } else if r % 3 == 1 {
+            "Developer"
+          } else {
+            "Viewer"
+          }
+        3 => (80 + r * 7 % 20).to_string() + " pts"
+        _ => ""
+      }
+      cell_ui.set_cursor(@math.Vec2::new(rect.x + 8.0, rect.y + 7.0))
+      let _ = cell_ui.label(cell_text)
+    },
+    selected_row=gallery_state.table_selected_row,
+    sort_column=gallery_state.table_sort_col,
+    sort_direction=gallery_state.table_sort_dir,
+  )
+
+  if resp.sort_changed {
+    gallery_state.table_sort_col = resp.sort_column
+    gallery_state.table_sort_dir = resp.sort_direction
+    gallery_state.status_text = "Table Sorted: " + resp.sort_column
+  }
+  match resp.clicked_row {
+    Some(r) => {
+      gallery_state.table_selected_row = r
+      gallery_state.status_text = "Row Selected: " + r.to_string()
+    }
+    None => ()
+  }
+}
+
+///|
+fn draw_dialog_showcase(
+  ui : @core.UIContext,
+  cur_w : Double,
+  cur_h : Double,
+) -> Unit {
+  let _ = ui.label_colored(
+    "模态二次确认对话框 (Dialog System)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "全屏暗色半透明遮罩与物理事件阻断，支持 Esc 快捷取消与 Enter 快速确认。",
+  )
+  ui.spacer(12.0)
+
+  if ui.button_primary("触发警示对话框 (Open Dialog)").clicked {
+    gallery_state.dialog_open = true
+    gallery_state.status_text = "Dialog Opened"
+  }
+
+  ui.spacer(8.0)
+  let _ = ui.label("最后交互状态: " + gallery_state.dialog_last_result)
+
+  if gallery_state.dialog_open {
+    let res = ui.dialog(
+      "gal_confirm_dlg",
+      "重置工程配置文件？",
+      "此操作将清除所有自定义键位绑定并恢复出厂默认值。",
+      kind=@core.DialogKind::Warning,
+      viewport_size=@math.Vec2::new(cur_w, cur_h),
+    )
+    match res {
+      Confirmed => {
+        gallery_state.dialog_open = false
+        gallery_state.dialog_last_result = "Confirmed (已确认)"
+        gallery_state.status_text = "Action Confirmed"
+      }
+      Cancelled => {
+        gallery_state.dialog_open = false
+        gallery_state.dialog_last_result = "Cancelled (已取消)"
+        gallery_state.status_text = "Action Cancelled"
+      }
+      Open => ()
+    }
+  }
+}
+
+///|
+fn draw_spinner_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "时间驱动呼吸微加载动画 (Spinner Animation)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "纯时间物理驱动的非对称伸缩公转弧线，60 FPS 平滑无卡顿，无额外定时器开销。",
+  )
+  ui.spacer(14.0)
+
+  ui.horizontal(fn(row) {
+    let _ = row.spinner(size=18.0)
+    row.spacer(16.0)
+    let _ = row.spinner(size=24.0, color=@color.Color::success())
+    row.spacer(16.0)
+    let _ = row.spinner(
+      size=32.0,
+      color=@color.Color::danger(),
+      stroke_width=3.0,
+    )
+  })
+
+  ui.spacer(16.0)
+  let _ = ui.spinner_with_label(
+    "正在同步远程 MoonBit 模块索引...",
+    size=18.0,
+  )
+}
+
+///|
+fn draw_sparkline_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "实时微型折线走势图 (Sparkline Metrics)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "归一化极值自适应映射，浅晕投影，内置零差值防崩溃与鼠标就近吸附准心。",
+  )
+  ui.spacer(12.0)
+
+  ui.horizontal(fn(row) {
+    let (h1, _) = row.sparkline(
+      "spk_cpu",
+      gallery_state.sparkline_data,
+      size=@math.Vec2::new(140.0, 42.0),
+    )
+    row.spacer(16.0)
+    let (h2, _) = row.sparkline(
+      "spk_fps",
+      [58.0, 59.0, 60.0, 60.0, 59.0, 60.0, 60.0, 60.0, 59.0, 60.0],
+      size=@math.Vec2::new(140.0, 42.0),
+      color=@color.Color::success(),
+    )
+    row.spacer(16.0)
+    let (h3, _) = row.sparkline(
+      "spk_mem",
+      [120.0, 125.0, 130.0, 140.0, 142.0, 138.0, 145.0, 150.0],
+      size=@math.Vec2::new(140.0, 42.0),
+      color=@color.Color::warning(),
+    )
+
+    match h1 {
+      Some(idx) =>
+        gallery_state.status_text = "CPU Sparkline Node: #" + idx.to_string()
+      None =>
+        match h2 {
+          Some(idx) =>
+            gallery_state.status_text = "FPS Sparkline Node: #" +
+              idx.to_string()
+          None =>
+            match h3 {
+              Some(idx) =>
+                gallery_state.status_text = "Memory Sparkline Node: #" +
+                  idx.to_string()
+              None => ()
+            }
+        }
+    }
+  })
+}
+
+///|
+fn draw_segmented_control_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "分段控制器 (SegmentedControl)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "微凹浅灰底槽 + 悬浮纯白瓷药丸，支持鼠标点击与左右方向键轮转选项。",
+  )
+  ui.spacer(12.0)
+
+  let views = [
+    "日视图 (Day)", "周视图 (Week)", "月视图 (Month)", "年趋势 (Year)",
+  ]
+  let (sel, _) = ui.segmented_control(
+    "gal_seg",
+    views,
+    gallery_state.segmented_sel,
+    width=360.0,
+  )
+  if sel != gallery_state.segmented_sel {
+    gallery_state.segmented_sel = sel
+    gallery_state.status_text = "Segment Selected: " + views[sel]
+  }
+}
+
+///|
+fn draw_badge_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "状态胶囊与交互标签 (Badge & Tag)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "5 种低饱和专业双色阶调色板，支持前置呼吸状态圆点与右侧小叉号关闭移除。",
+  )
+  ui.spacer(12.0)
+
+  // Badges row
+  ui.horizontal(fn(row) {
+    let _ = row.badge("Default", kind=@core.BadgeKind::default())
+    row.spacer(8.0)
+    let _ = row.badge("Success", kind=@core.BadgeKind::success(), dot=true)
+    row.spacer(8.0)
+    let _ = row.badge("Warning", kind=@core.BadgeKind::warning(), dot=true)
+    row.spacer(8.0)
+    let _ = row.badge("Danger", kind=@core.BadgeKind::danger(), pill=true)
+    row.spacer(8.0)
+    let _ = row.badge(
+      "Beta v0.2.0",
+      kind=@core.BadgeKind::info(),
+      dot=true,
+      pill=true,
+    )
+  })
+
+  ui.spacer(14.0)
+
+  // Tags row
+  ui.horizontal(fn(row) {
+    if gallery_state.tag1_open {
+      let (c1, _) = row.tag(
+        "tag1",
+        "Wasm 32",
+        kind=@core.BadgeKind::info(),
+        closable=true,
+      )
+      if c1 {
+        gallery_state.tag1_open = false
+        gallery_state.status_text = "Tag 1 Closed"
+      }
+      row.spacer(8.0)
+    }
+    if gallery_state.tag2_open {
+      let (c2, _) = row.tag(
+        "tag2",
+        "Production",
+        kind=@core.BadgeKind::success(),
+        closable=true,
+      )
+      if c2 {
+        gallery_state.tag2_open = false
+        gallery_state.status_text = "Tag 2 Closed"
+      }
+      row.spacer(8.0)
+    }
+    if gallery_state.tag3_open {
+      let (c3, _) = row.tag(
+        "tag3",
+        "Deprecated",
+        kind=@core.BadgeKind::warning(),
+        closable=true,
+      )
+      if c3 {
+        gallery_state.tag3_open = false
+        gallery_state.status_text = "Tag 3 Closed"
+      }
+      row.spacer(8.0)
+    }
+    if !gallery_state.tag1_open ||
+      !gallery_state.tag2_open ||
+      !gallery_state.tag3_open {
+      if row.button_sized("恢复所有标签", @math.Vec2::new(96.0, 24.0)).clicked {
+        gallery_state.tag1_open = true
+        gallery_state.tag2_open = true
+        gallery_state.tag3_open = true
+      }
+    }
+  })
+}
+
+///|
+fn draw_breadcrumb_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "层级路径面包屑 (Breadcrumb)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "横向单行层级导航条，祖先项悬停底色微光与快速回退，超长路径自动折叠。",
+  )
+  ui.spacer(12.0)
+
+  let path1 = ["工作区", "moon-egui", "src", "core", "table.mbt"]
+  let (c1, _) = ui.breadcrumb("gal_bc1", path1)
+  match c1 {
+    Some(idx) => {
+      gallery_state.breadcrumb_last_clicked = path1[idx]
+      gallery_state.status_text = "Navigated to: " + path1[idx]
+    }
+    None => ()
+  }
+
+  ui.spacer(14.0)
+
+  let long_path = [
+    "Root", "Volumes", "ling71671", "Projects", "moon-egui", "examples", "canvas",
+    "gallery.html",
+  ]
+  let (c2, _) = ui.breadcrumb(
+    "gal_bc2",
+    long_path,
+    separator=">",
+    max_visible=4,
+  )
+  match c2 {
+    Some(idx) => {
+      gallery_state.breadcrumb_last_clicked = long_path[idx]
+      gallery_state.status_text = "Navigated to: " + long_path[idx]
+    }
+    None => ()
+  }
+
+  ui.spacer(8.0)
+  let _ = ui.label(
+    "最后点击节点: " + gallery_state.breadcrumb_last_clicked,
+  )
+}
+
+///|
+fn draw_color_picker_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "专业级 2D HSV 拾色器 (ColorPicker)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "2D 饱和度-明度渐变方盘，彩虹色相槽，Alpha 棋盘格，双环高对比取色游标。",
+  )
+  ui.spacer(12.0)
+
+  ui.horizontal(fn(row) {
+    let (c1, _) = row.color_picker(
+      "gal_cp",
+      gallery_state.color_picker_val,
+      show_alpha=true,
+    )
+    gallery_state.color_picker_val = c1
+    row.spacer(24.0)
+    let (c2, _) = row.color_picker_button(
+      "gal_cp_btn",
+      gallery_state.color_picker_val,
+      show_alpha=true,
+    )
+    gallery_state.color_picker_val = c2
+  })
+}
+
+///|
+fn draw_rich_text_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
+  let _ = ui.label_colored(
+    "流式排版富文本与超链接 (RichText & Hyperlink)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "支持单词自适应折行、行内代码块质感与悬停柔和下划线超链接。",
+  )
+  ui.spacer(12.0)
+
+  let spans = [
+    @core.TextSpan::normal("当前运行环境为"),
+    @core.TextSpan::code("MoonBit Wasm"),
+    @core.TextSpan::bold("即时模式渲染管线。"),
+    @core.TextSpan::normal(
+      "它直接向原生 HTML5 Canvas 提交绘制指令。欲了解更多细节，请访问",
+    ),
+    @core.TextSpan::link("MoonBit 官方主页", "https://www.moonbitlang.cn"),
+    @core.TextSpan::normal("或查看"),
+    @core.TextSpan::link("API 手册", "https://docs.moonbitlang.com"),
+    @core.TextSpan::normal("。"),
+  ]
+
+  let resp = ui.rich_text("gal_rt", spans, wrap_width=card_w - 60.0)
+  match resp.clicked_url {
+    Some(url) => {
+      gallery_state.rich_text_last_url = url
+      gallery_state.status_text = "Clicked URL: " + url
+    }
+    None => ()
+  }
+
+  ui.spacer(16.0)
+  let (clicked, _) = ui.hyperlink(
+    "独立超链接组件: moon-egui GitHub Repository", "https://github.com/LING71671/moon-egui",
+  )
+  if clicked {
+    gallery_state.rich_text_last_url = "https://github.com/LING71671/moon-egui"
+    gallery_state.status_text = "Clicked GitHub Link"
+  }
+
+  ui.spacer(8.0)
+  let _ = ui.label("最后激活链接: " + gallery_state.rich_text_last_url)
+}
+
+// ----------------------------------------------------------------------
 // Frame Step Dispatcher
 // ----------------------------------------------------------------------
 
@@ -1330,6 +1839,16 @@ pub fn gallery_step(
     "command_palette" => draw_command_palette_showcase(gallery_ctx)
     "context_menu" => draw_context_menu_showcase(gallery_ctx, cur_w, cur_h)
     "toast" => draw_toast_showcase(gallery_ctx, cur_w, cur_h)
+    "splitter" => draw_splitter_showcase(gallery_ctx, card_w)
+    "table" => draw_table_showcase(gallery_ctx, card_w)
+    "dialog" => draw_dialog_showcase(gallery_ctx, cur_w, cur_h)
+    "spinner" => draw_spinner_showcase(gallery_ctx)
+    "sparkline" => draw_sparkline_showcase(gallery_ctx)
+    "segmented_control" => draw_segmented_control_showcase(gallery_ctx)
+    "badge" => draw_badge_showcase(gallery_ctx)
+    "breadcrumb" => draw_breadcrumb_showcase(gallery_ctx)
+    "color_picker" => draw_color_picker_showcase(gallery_ctx)
+    "rich_text" => draw_rich_text_showcase(gallery_ctx, card_w)
     _ => {
       let _ = gallery_ctx.label_colored(
         "MoonBit 原生组件: " + comp_id,

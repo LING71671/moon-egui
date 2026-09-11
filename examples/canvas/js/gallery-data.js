@@ -846,4 +846,342 @@ pub fn draw_notifications(ui : @core.UIContext, state : AppState) -> Unit {
 }`
     }
   },
+  splitter: {
+    titleKey: 'comp.splitter.title',
+    signature: "ui.split_horizontal(id, ratio, size, left, right, min_ratio?~, max_ratio?~, min_px?~) -> Double",
+    code: {
+      zh: `///|
+pub fn draw_splitters(ui : @core.UIContext, state : AppState) -> Unit {
+  // 水平双栏可拖拽分栏容器，具有物理防挤压底线保护与视口裁剪
+  let new_ratio = ui.split_horizontal(
+    "main_split",
+    state.ratio,
+    @math.Vec2::new(600.0, 300.0),
+    fn(pane_ui, rect) {
+      pane_ui.label("左侧工作区")
+    },
+    fn(pane_ui, rect) {
+      pane_ui.label("右侧属性区")
+    },
+  )
+  state.ratio = new_ratio
+}`,
+      en: `///|
+pub fn draw_splitters(ui : @core.UIContext, state : AppState) -> Unit {
+  // Horizontal resizable split panes with physical pixel clamping and viewport clipping
+  let new_ratio = ui.split_horizontal(
+    "main_split",
+    state.ratio,
+    @math.Vec2::new(600.0, 300.0),
+    fn(pane_ui, rect) {
+      pane_ui.label("Left Workspace")
+    },
+    fn(pane_ui, rect) {
+      pane_ui.label("Right Inspector")
+    },
+  )
+  state.ratio = new_ratio
+}`
+    }
+  },
+  table: {
+    titleKey: 'comp.table.title',
+    signature: "ui.table(id, size, columns, row_count, render_cell, ...) -> TableResponse",
+    code: {
+      zh: `///|
+pub fn draw_data_table(ui : @core.UIContext, state : AppState) -> Unit {
+  let cols = [
+    @core.TableColumn::new("id", "ID", 60.0),
+    @core.TableColumn::new("name", "用户名", 140.0),
+    @core.TableColumn::new("role", "权限角色", 100.0),
+  ]
+
+  // 10,000 行虚拟滚动表格，仅按需计算视口行
+  let resp = ui.table(
+    "user_table",
+    @math.Vec2::new(500.0, 260.0),
+    cols,
+    10000,
+    fn(cell_ui, row, col, rect) {
+      cell_ui.label("R\{row} C\{col}")
+    },
+    selected_row=state.selected_row,
+  )
+  if resp.clicked_row is Some(r) {
+    state.selected_row = r
+  }
+}`,
+      en: `///|
+pub fn draw_data_table(ui : @core.UIContext, state : AppState) -> Unit {
+  let cols = [
+    @core.TableColumn::new("id", "ID", 60.0),
+    @core.TableColumn::new("name", "Username", 140.0),
+    @core.TableColumn::new("role", "Role", 100.0),
+  ]
+
+  // 10,000 items virtual data table with on-demand viewport clipping
+  let resp = ui.table(
+    "user_table",
+    @math.Vec2::new(500.0, 260.0),
+    cols,
+    10000,
+    fn(cell_ui, row, col, rect) {
+      cell_ui.label("R\{row} C\{col}")
+    },
+    selected_row=state.selected_row,
+  )
+  if resp.clicked_row is Some(r) {
+    state.selected_row = r
+  }
+}`
+    }
+  },
+  dialog: {
+    titleKey: 'comp.dialog.title',
+    signature: "ui.dialog(id, title, message, kind?~, confirm_label?~, cancel_label?~) -> DialogResult",
+    code: {
+      zh: `///|
+pub fn draw_modal(ui : @core.UIContext, state : AppState) -> Unit {
+  if state.show_confirm {
+    // 模态对话框：全屏暗色遮罩、物理事件阻断、Esc/Enter 键盘快速操作
+    let res = ui.dialog(
+      "delete_confirm",
+      "确认删除文件？",
+      "该操作不可撤销，文件将从云端永久移除。",
+      kind=@core.DialogKind::Danger,
+    )
+    match res {
+      Confirmed => { state.show_confirm = false; delete_target(state) }
+      Cancelled => { state.show_confirm = false }
+      Open => ()
+    }
+  }
+}`,
+      en: `///|
+pub fn draw_modal(ui : @core.UIContext, state : AppState) -> Unit {
+  if state.show_confirm {
+    // Modal dialog: backdrop scrim, interaction blocking, Esc/Enter shortcuts
+    let res = ui.dialog(
+      "delete_confirm",
+      "Delete file?",
+      "This action cannot be undone. The file will be permanently removed.",
+      kind=@core.DialogKind::Danger,
+    )
+    match res {
+      Confirmed => { state.show_confirm = false; delete_target(state) }
+      Cancelled => { state.show_confirm = false }
+      Open => ()
+    }
+  }
+}`
+    }
+  },
+  spinner: {
+    titleKey: 'comp.spinner.title',
+    signature: "ui.spinner(size?~, color?~, stroke_width?~) -> Response",
+    code: {
+      zh: `///|
+pub fn draw_spinners(ui : @core.UIContext) -> Unit {
+  // 纯时间驱动的平滑非对称呼吸伸缩公转圆环
+  let _ = ui.spinner(size=24.0)
+
+  // 附带说明文案的水平内联加载指示器
+  let _ = ui.spinner_with_label("正在同步远程数据...", size=18.0)
+}`,
+      en: `///|
+pub fn draw_spinners(ui : @core.UIContext) -> Unit {
+  // Time-driven smooth non-linear breathing sweep loading animation
+  let _ = ui.spinner(size=24.0)
+
+  // Inline spinner with adjacent label text
+  let _ = ui.spinner_with_label("Syncing remote repository...", size=18.0)
+}`
+    }
+  },
+  sparkline: {
+    titleKey: 'comp.sparkline.title',
+    signature: "ui.sparkline(id, values, size?~, color?~, fill?~, show_hover?~) -> (Int?, Response)",
+    code: {
+      zh: `///|
+pub fn draw_sparklines(ui : @core.UIContext, state : AppState) -> Unit {
+  // 实时微型折线图：极值归一化映射、零差值防崩溃、鼠标十字吸附
+  let (hovered, resp) = ui.sparkline(
+    "cpu_monitor",
+    state.cpu_history,
+    size=@math.Vec2::new(160.0, 42.0),
+    fill=true,
+  )
+  if hovered is Some(idx) {
+    println("当前准心节点: \{idx}")
+  }
+}`,
+      en: `///|
+pub fn draw_sparklines(ui : @core.UIContext, state : AppState) -> Unit {
+  // Real-time micro sparkline: normalized scaling, flat protection, hover snapping
+  let (hovered, resp) = ui.sparkline(
+    "cpu_monitor",
+    state.cpu_history,
+    size=@math.Vec2::new(160.0, 42.0),
+    fill=true,
+  )
+  if hovered is Some(idx) {
+    println("Hovered node index: \{idx}")
+  }
+}`
+    }
+  },
+  segmented_control: {
+    titleKey: 'comp.segmented_control.title',
+    signature: "ui.segmented_control(id, options, selected_index, height?~, width?~) -> (Int, Response)",
+    code: {
+      zh: `///|
+pub fn draw_segments(ui : @core.UIContext, state : AppState) -> Unit {
+  let views = ["日", "周", "月", "年"]
+  // 凹槽底座 + 悬浮白瓷药丸，支持键盘左右方向键轮转
+  let (new_sel, resp) = ui.segmented_control(
+    "time_range",
+    views,
+    state.selected_view,
+    width=280.0,
+  )
+  state.selected_view = new_sel
+}`,
+      en: `///|
+pub fn draw_segments(ui : @core.UIContext, state : AppState) -> Unit {
+  let views = ["Day", "Week", "Month", "Year"]
+  // Recessed track with floating porcelain pill and arrow key rotation
+  let (new_sel, resp) = ui.segmented_control(
+    "time_range",
+    views,
+    state.selected_view,
+    width=280.0,
+  )
+  state.selected_view = new_sel
+}`
+    }
+  },
+  badge: {
+    titleKey: 'comp.badge.title',
+    signature: "ui.badge(text, kind?~, dot?~, pill?~) -> Response",
+    code: {
+      zh: `///|
+pub fn draw_badges(ui : @core.UIContext, state : AppState) -> Unit {
+  // 5 类低饱和语义状态胶囊，前置呼吸圆点
+  let _ = ui.badge("活跃", kind=@core.BadgeKind::Success, dot=true, pill=true)
+
+  // 支持关闭移除的交互标签
+  let (closed, _) = ui.tag("pkg_tag", "Wasm 32", closable=true)
+  if closed {
+    state.tag_visible = false
+  }
+}`,
+      en: `///|
+pub fn draw_badges(ui : @core.UIContext, state : AppState) -> Unit {
+  // 5 soft semantic palettes with status dot and pill radius
+  let _ = ui.badge("Active", kind=@core.BadgeKind::Success, dot=true, pill=true)
+
+  // Interactive tag chip with click-to-close button
+  let (closed, _) = ui.tag("pkg_tag", "Wasm 32", closable=true)
+  if closed {
+    state.tag_visible = false
+  }
+}`
+    }
+  },
+  breadcrumb: {
+    titleKey: 'comp.breadcrumb.title',
+    signature: "ui.breadcrumb(id, items, separator?~, max_visible?~) -> (Int?, Response)",
+    code: {
+      zh: `///|
+pub fn draw_breadcrumbs(ui : @core.UIContext, state : AppState) -> Unit {
+  let path = ["工作区", "moon-egui", "src", "core", "table.mbt"]
+  // 单行层级路径，悬停底色高光，超长路径自动折叠为 "..."
+  let (clicked, resp) = ui.breadcrumb("nav_bc", path, separator="/")
+  if clicked is Some(idx) {
+    navigate_to(path[idx])
+  }
+}`,
+      en: `///|
+pub fn draw_breadcrumbs(ui : @core.UIContext, state : AppState) -> Unit {
+  let path = ["Workspace", "moon-egui", "src", "core", "table.mbt"]
+  // Horizontal path strip with ancestor hover highlight and middle ellipsis folding
+  let (clicked, resp) = ui.breadcrumb("nav_bc", path, separator="/")
+  if clicked is Some(idx) {
+    navigate_to(path[idx])
+  }
+}`
+    }
+  },
+  color_picker: {
+    titleKey: 'comp.color_picker.title',
+    signature: "ui.color_picker(id, color, show_alpha?~) -> (Color, Response)",
+    code: {
+      zh: `///|
+pub fn draw_color_picker(ui : @core.UIContext, state : AppState) -> Unit {
+  // 2D HSV 饱和度-明度渐变盘、彩虹色相槽、Alpha 棋盘格与双环取色游标
+  let (new_color, resp) = ui.color_picker(
+    "main_picker",
+    state.current_color,
+    show_alpha=true,
+  )
+  state.current_color = new_color
+
+  // 弹窗按钮模式
+  let (btn_color, _) = ui.color_picker_button("picker_btn", state.current_color)
+}`,
+      en: `///|
+pub fn draw_color_picker(ui : @core.UIContext, state : AppState) -> Unit {
+  // 2D HSV Sat/Val square, hue rainbow slider, alpha checkerboard, and dual-ring grip
+  let (new_color, resp) = ui.color_picker(
+    "main_picker",
+    state.current_color,
+    show_alpha=true,
+  )
+  state.current_color = new_color
+
+  // Popup button variant
+  let (btn_color, _) = ui.color_picker_button("picker_btn", state.current_color)
+}`
+    }
+  },
+  rich_text: {
+    titleKey: 'comp.rich_text.title',
+    signature: "ui.rich_text(id, spans, wrap_width?~) -> RichTextResponse",
+    code: {
+      zh: `///|
+pub fn draw_rich_text(ui : @core.UIContext) -> Unit {
+  let spans = [
+    @core.TextSpan::normal("当前渲染管线为"),
+    @core.TextSpan::code("moon-egui"),
+    @core.TextSpan::bold("即时模式引擎。"),
+    @core.TextSpan::normal("点击"),
+    @core.TextSpan::link("官方网站", "https://moonbitlang.com"),
+    @core.TextSpan::normal("查阅更多细节。"),
+  ]
+
+  // 流式自适应折行混排富文本
+  let resp = ui.rich_text("article_rt", spans)
+  if resp.clicked_url is Some(url) {
+    println("点击超链接: \{url}")
+  }
+}`,
+      en: `///|
+pub fn draw_rich_text(ui : @core.UIContext) -> Unit {
+  let spans = [
+    @core.TextSpan::normal("Running on"),
+    @core.TextSpan::code("moon-egui"),
+    @core.TextSpan::bold("Immediate-Mode engine."),
+    @core.TextSpan::normal("Visit"),
+    @core.TextSpan::link("Official Website", "https://moonbitlang.com"),
+    @core.TextSpan::normal("for more details."),
+  ]
+
+  // Inline word-wrapped rich text with inline code blocks and hyperlinks
+  let resp = ui.rich_text("article_rt", spans)
+  if resp.clicked_url is Some(url) {
+    println("Clicked URL: \{url}")
+  }
+}`
+    }
+  },
 };

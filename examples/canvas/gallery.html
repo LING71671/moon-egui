@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>moon-egui | 组件展厅</title>
-  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="gallery.css?v=0.1.4">
-  <link rel="stylesheet" href="lang.css?v=0.1.4">
-  <script src="i18n.js?v=0.1.4"></script>
+  <link rel="stylesheet" href="css/gallery.css?v=0.1.5">
+  <link rel="stylesheet" href="css/lang.css?v=0.1.5">
+  <script src="js/i18n.js?v=0.1.5"></script>
 </head>
 <body data-i18n-title="gallery.title">
 
@@ -18,7 +18,7 @@
   <nav class="site-nav">
     <div class="container nav-inner">
       <a href="index.html" class="brand-link">
-        <img src="logo.png" alt="moon-egui logo" class="brand-logo" />
+        <img src="assets/logo.png" alt="moon-egui logo" class="brand-logo" />
         <span>moon-egui</span>
         <span class="brand-tag">v0.1.1</span>
       </a>
@@ -93,6 +93,10 @@
               <span data-i18n="comp.code_editor.title">CodeEditor 代码编辑器</span>
               <span class="comp-subtag" data-i18n="comp.code_editor.tag">代码</span>
             </button>
+            <button class="comp-btn" data-id="rich_text">
+              <span data-i18n="comp.rich_text.title">RichText 流式富文本</span>
+              <span class="comp-subtag" data-i18n="comp.rich_text.tag">排版</span>
+            </button>
           </div>
 
           <div class="category-title" data-i18n="cat.values">选择与数值</div>
@@ -108,6 +112,10 @@
             <button class="comp-btn" data-id="radio">
               <span data-i18n="comp.radio.title">Radio 单选按钮</span>
               <span class="comp-subtag" data-i18n="comp.radio.tag">单选</span>
+            </button>
+            <button class="comp-btn" data-id="segmented_control">
+              <span data-i18n="comp.segmented_control.title">SegmentedControl 分段单选</span>
+              <span class="comp-subtag" data-i18n="comp.segmented_control.tag">分段</span>
             </button>
             <button class="comp-btn" data-id="slider">
               <span data-i18n="comp.slider.title">Slider 滑动条</span>
@@ -129,6 +137,10 @@
               <span data-i18n="comp.color_button.title">ColorButton 调色板</span>
               <span class="comp-subtag" data-i18n="comp.color_button.tag">色彩</span>
             </button>
+            <button class="comp-btn" data-id="color_picker">
+              <span data-i18n="comp.color_picker.title">ColorPicker 专业拾色器</span>
+              <span class="comp-subtag" data-i18n="comp.color_picker.tag">色彩</span>
+            </button>
           </div>
 
           <div class="category-title" data-i18n="cat.feedback">反馈与展示</div>
@@ -136,6 +148,18 @@
             <button class="comp-btn" data-id="progress_bar">
               <span data-i18n="comp.progress_bar.title">ProgressBar 进度条</span>
               <span class="comp-subtag" data-i18n="comp.progress_bar.tag">进度</span>
+            </button>
+            <button class="comp-btn" data-id="spinner">
+              <span data-i18n="comp.spinner.title">Spinner 微加载</span>
+              <span class="comp-subtag" data-i18n="comp.spinner.tag">动画</span>
+            </button>
+            <button class="comp-btn" data-id="badge">
+              <span data-i18n="comp.badge.title">Badge / Tag 徽章标签</span>
+              <span class="comp-subtag" data-i18n="comp.badge.tag">状态</span>
+            </button>
+            <button class="comp-btn" data-id="sparkline">
+              <span data-i18n="comp.sparkline.title">Sparkline 迷你走势</span>
+              <span class="comp-subtag" data-i18n="comp.sparkline.tag">图表</span>
             </button>
             <button class="comp-btn" data-id="collapsing_header">
               <span data-i18n="comp.collapsing_header.title">CollapsingHeader 折叠树</span>
@@ -153,6 +177,14 @@
 
           <div class="category-title" data-i18n="cat.layout">容器与排版</div>
           <div class="comp-menu">
+            <button class="comp-btn" data-id="splitter">
+              <span data-i18n="comp.splitter.title">Splitter 分割面板</span>
+              <span class="comp-subtag" data-i18n="comp.splitter.tag">分栏</span>
+            </button>
+            <button class="comp-btn" data-id="table">
+              <span data-i18n="comp.table.title">Table 虚拟化表格</span>
+              <span class="comp-subtag" data-i18n="comp.table.tag">数据</span>
+            </button>
             <button class="comp-btn" data-id="tab_bar">
               <span data-i18n="comp.tab_bar.title">TabBar 标签导航</span>
               <span class="comp-subtag" data-i18n="comp.tab_bar.tag">选项卡</span>
@@ -165,9 +197,17 @@
               <span data-i18n="comp.scroll_area.title">ScrollArea 滚动区域</span>
               <span class="comp-subtag" data-i18n="comp.scroll_area.tag">裁剪</span>
             </button>
+            <button class="comp-btn" data-id="breadcrumb">
+              <span data-i18n="comp.breadcrumb.title">Breadcrumb 面包屑</span>
+              <span class="comp-subtag" data-i18n="comp.breadcrumb.tag">导航</span>
+            </button>
             <button class="comp-btn" data-id="window">
               <span data-i18n="comp.window.title">Window 浮动窗口</span>
               <span class="comp-subtag" data-i18n="comp.window.tag">面板</span>
+            </button>
+            <button class="comp-btn" data-id="dialog">
+              <span data-i18n="comp.dialog.title">Dialog 模态对话框</span>
+              <span class="comp-subtag" data-i18n="comp.dialog.tag">弹窗</span>
             </button>
             <button class="comp-btn" data-id="command_palette">
               <span data-i18n="comp.command_palette.title">CommandPalette 命令面板</span>
@@ -259,8 +299,8 @@
 
   <!-- MoonBit Native Wasm Host & Gallery Runner -->
   <script src="canvas.js?v=0.1.5"></script>
-  <script src="gallery-data.js?v=0.1.5"></script>
-  <script src="gallery_runner.js?v=0.1.5"></script>
-  <script src="gallery.js?v=0.1.5"></script>
+  <script src="js/gallery-data.js?v=0.1.5"></script>
+  <script src="js/gallery_runner.js?v=0.1.5"></script>
+  <script src="js/gallery.js?v=0.1.5"></script>
 </body>
 </html>

@@ -120,6 +120,21 @@ pub struct GalleryState {
   mut ctx_menu_pos : @math.Vec2
   mut status_text : String
   mut active_comp_id : String
+  mut splitter_ratio : Double
+  mut table_sort_col : String
+  mut table_sort_dir : @core.TableSortDirection
+  table_columns : Array[@core.TableColumn]
+  mut table_selected_row : Int
+  mut dialog_open : Bool
+  mut dialog_last_result : String
+  mut segmented_sel : Int
+  mut tag1_open : Bool
+  mut tag2_open : Bool
+  mut tag3_open : Bool
+  sparkline_data : Array[Double]
+  mut color_picker_val : @color.Color
+  mut breadcrumb_last_clicked : String
+  mut rich_text_last_url : String
 }
 
 // Type aliases

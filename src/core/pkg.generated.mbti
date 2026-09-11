@@ -9,11 +9,28 @@ import {
 }
 
 // Values
+pub fn hsv_to_rgb(Double, Double, Double) -> (Int, Int, Int)
+
 pub fn measure_text_size(String, Double) -> @math.Vec2
+
+pub fn rgb_to_hsv(Int, Int, Int) -> (Double, Double, Double)
 
 // Errors
 
 // Types and methods
+pub(all) enum BadgeKind {
+  Default
+  Success
+  Warning
+  Danger
+  Info
+} derive(Eq, @debug.Debug)
+pub fn BadgeKind::danger() -> Self
+pub fn BadgeKind::default() -> Self
+pub fn BadgeKind::info() -> Self
+pub fn BadgeKind::success() -> Self
+pub fn BadgeKind::warning() -> Self
+
 pub struct CommandItem {
   id : String
   title : String
@@ -44,6 +61,23 @@ pub struct ContextMenuResponse {
   selected_id : String?
   pos : @math.Vec2
   size : @math.Vec2
+} derive(Eq, @debug.Debug)
+
+pub(all) enum DialogKind {
+  Info
+  Warning
+  Danger
+  Confirm
+} derive(Eq, @debug.Debug)
+pub fn DialogKind::confirm() -> Self
+pub fn DialogKind::danger() -> Self
+pub fn DialogKind::info() -> Self
+pub fn DialogKind::warning() -> Self
+
+pub(all) enum DialogResult {
+  Confirmed
+  Cancelled
+  Open
 } derive(Eq, @debug.Debug)
 
 pub(all) enum Event {
@@ -213,6 +247,50 @@ pub fn Response::pressed(Self) -> Bool
 pub fn Response::rect(Self) -> @math.Rect
 pub fn Response::with_focus(Id, @math.Rect, Bool, Bool, Bool, Bool, Bool, Bool, Bool) -> Self
 
+pub struct RichTextResponse {
+  clicked_url : String?
+  resp : Response
+} derive(Eq, @debug.Debug)
+
+pub struct TableColumn {
+  id : String
+  title : String
+  mut width : Double
+  min_width : Double
+  sortable : Bool
+} derive(Eq, @debug.Debug)
+pub fn TableColumn::new(String, String, Double, min_width? : Double, sortable? : Bool) -> Self
+
+pub struct TableResponse {
+  sort_changed : Bool
+  sort_column : String
+  sort_direction : TableSortDirection
+  hovered_row : Int?
+  clicked_row : Int?
+} derive(Eq, @debug.Debug)
+
+pub(all) enum TableSortDirection {
+  Ascending
+  Descending
+  NoSort
+} derive(Eq, @debug.Debug)
+
+pub struct TextSpan {
+  text : String
+  kind : TextSpanKind
+} derive(Eq, @debug.Debug)
+pub fn TextSpan::bold(String) -> Self
+pub fn TextSpan::code(String) -> Self
+pub fn TextSpan::link(String, String) -> Self
+pub fn TextSpan::normal(String) -> Self
+
+pub(all) enum TextSpanKind {
+  Normal
+  Bold
+  Code
+  Link(String)
+} derive(Eq, @debug.Debug)
+
 pub struct Toast {
   id : String
   title : String
@@ -310,9 +388,11 @@ pub fn UIContext::active_id(Self) -> Id
 pub fn UIContext::advance_cursor(Self, @math.Vec2) -> Unit
 pub fn UIContext::allocate_space(Self, @math.Vec2) -> (Id, @math.Rect, Response)
 pub fn UIContext::available_width(Self) -> Double
+pub fn UIContext::badge(Self, String, kind? : BadgeKind, dot? : Bool, pill? : Bool) -> Response
 pub fn UIContext::begin_foreground(Self) -> Unit
 pub fn UIContext::begin_frame(Self, RawInput) -> Unit
 pub fn UIContext::block_hover(Self, @math.Rect) -> Unit
+pub fn UIContext::breadcrumb(Self, String, Array[String], separator? : String, max_visible? : Int) -> (Int?, Response)
 pub fn UIContext::button(Self, String, shortcut? : String, primary? : Bool, size? : @math.Vec2) -> Response
 pub fn UIContext::button_primary(Self, String) -> Response
 pub fn UIContext::button_primary_sized(Self, String, @math.Vec2) -> Response
@@ -322,6 +402,8 @@ pub fn UIContext::checkbox(Self, String, Bool) -> (Bool, Response)
 pub fn UIContext::code_editor(Self, String, String, size? : @math.Vec2, show_line_numbers? : Bool, read_only? : Bool) -> (String, Response)
 pub fn UIContext::collapsing_header(Self, String, String, Bool, (Self) -> Unit) -> Response
 pub fn UIContext::color_button(Self, String, @color.Color) -> (Bool, Response)
+pub fn UIContext::color_picker(Self, String, @color.Color, show_alpha? : Bool) -> (@color.Color, Response)
+pub fn UIContext::color_picker_button(Self, String, @color.Color, show_alpha? : Bool) -> (@color.Color, Response)
 pub fn UIContext::combo_box(Self, String, String, Int, Array[String]) -> (Int, Response)
 pub fn UIContext::command_palette(Self, Bool, String, Array[CommandItem], selected_index? : Int) -> CommandPaletteResponse
 pub fn UIContext::context_menu(Self, String, Bool, @math.Vec2, (Self) -> Unit, menu_width? : Double, viewport_size? : @math.Vec2) -> ContextMenuResponse
@@ -329,6 +411,7 @@ pub fn UIContext::context_menu_items(Self, String, Bool, @math.Vec2, Array[Conte
 pub fn UIContext::current_clip(Self) -> @math.Rect?
 pub fn UIContext::cursor(Self) -> @math.Vec2
 pub fn UIContext::cursor_icon(Self) -> String
+pub fn UIContext::dialog(Self, String, String, String, kind? : DialogKind, confirm_label? : String, cancel_label? : String, width? : Double, viewport_size? : @math.Vec2) -> DialogResult
 pub fn UIContext::drag_value(Self, String, Double, Double, Double, Double) -> (Double, Response)
 pub fn UIContext::draw_list(Self) -> @draw.DrawList
 pub fn UIContext::end_foreground(Self) -> Unit
@@ -341,6 +424,7 @@ pub fn UIContext::get_window_pos(Self, Id, @math.Vec2) -> @math.Vec2
 pub fn UIContext::has_focus(Self, Id) -> Bool
 pub fn UIContext::horizontal(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::hot_id(Self) -> Id
+pub fn UIContext::hyperlink(Self, String, String) -> (Bool, Response)
 pub fn UIContext::input(Self) -> InputState
 pub fn UIContext::is_caret_visible(Self) -> Bool
 pub fn UIContext::is_collapsing_open(Self, Id, Bool) -> Bool
@@ -367,7 +451,9 @@ pub fn UIContext::raise_window(Self, Id) -> Unit
 pub fn UIContext::register_focusable(Self, Id) -> Unit
 pub fn UIContext::request_focus(Self, Id) -> Unit
 pub fn UIContext::reset_caret_blink(Self) -> Unit
+pub fn UIContext::rich_text(Self, String, Array[TextSpan], wrap_width? : Double) -> RichTextResponse
 pub fn UIContext::scroll_area(Self, String, @math.Vec2, (Self) -> Unit) -> Unit
+pub fn UIContext::segmented_control(Self, String, Array[String], Int, height? : Double, width? : Double) -> (Int, Response)
 pub fn UIContext::separator(Self) -> Unit
 pub fn UIContext::set_active_id(Self, Id) -> Unit
 pub fn UIContext::set_available_width(Self, Double) -> Unit
@@ -388,9 +474,16 @@ pub fn UIContext::set_window_pos(Self, Id, @math.Vec2) -> Unit
 pub fn UIContext::slider(Self, String, Double, Double, Double) -> (Double, Response)
 pub fn UIContext::slider_int(Self, String, Int, Int, Int) -> (Int, Response)
 pub fn UIContext::spacer(Self, Double) -> Unit
+pub fn UIContext::sparkline(Self, String, Array[Double], size? : @math.Vec2, color? : @color.Color, fill? : Bool, show_hover? : Bool) -> (Int?, Response)
+pub fn UIContext::spinner(Self, size? : Double, color? : @color.Color, stroke_width? : Double) -> Response
+pub fn UIContext::spinner_with_label(Self, String, size? : Double, color? : @color.Color, stroke_width? : Double) -> Response
+pub fn UIContext::split_horizontal(Self, String, Double, @math.Vec2, (Self, @math.Rect) -> Unit, (Self, @math.Rect) -> Unit, min_ratio? : Double, max_ratio? : Double, min_px? : Double) -> Double
+pub fn UIContext::split_vertical(Self, String, Double, @math.Vec2, (Self, @math.Rect) -> Unit, (Self, @math.Rect) -> Unit, min_ratio? : Double, max_ratio? : Double, min_px? : Double) -> Double
 pub fn UIContext::style(Self) -> WidgetStyle
 pub fn UIContext::surrender_focus(Self, Id) -> Unit
 pub fn UIContext::tab_bar(Self, String, Array[String], Int) -> (Int, Response)
+pub fn UIContext::table(Self, String, @math.Vec2, Array[TableColumn], Int, (Self, Int, Int, @math.Rect) -> Unit, row_height? : Double, header_height? : Double, selected_row? : Int, sort_column? : String, sort_direction? : TableSortDirection) -> TableResponse
+pub fn UIContext::tag(Self, String, String, kind? : BadgeKind, closable? : Bool) -> (Bool, Response)
 pub fn UIContext::text_edit(Self, String, String, String) -> (String, Response)
 pub fn UIContext::text_edit_sized(Self, String, String, String, @math.Vec2) -> (String, Response)
 pub fn UIContext::time(Self) -> Double
