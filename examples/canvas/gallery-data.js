@@ -147,6 +147,189 @@ pub fn draw_text_edit(ui : @core.UIContext, state : AppState) -> Unit {
         }
       },
 
+      code_editor: {
+        titleKey: 'comp.code_editor.title',
+        signature: "ui.code_editor(id_salt, text, size?~, show_line_numbers?~, read_only?~) -> (String, Response)",
+        code: {
+          zh: `///|
+pub fn draw_script_workbench(ui : @core.UIContext, state : AppState) -> Unit {
+  // 头部状态提示
+  ui.label("CAD 脚本控制台 (MoonBit 0.1.0)")
+
+  // 多行带行号代码编辑器
+  let (updated_code, resp) = ui.code_editor(
+    "cad_script",
+    state.script_source,
+    size=Some(@math.Vec2::new(ui.available_width(), 240.0)),
+    show_line_numbers=true,
+    read_only=false,
+  )
+
+  // 状态同步
+  if resp.changed() {
+    state.script_source = updated_code
+    state.dirty = true
+  }
+
+  // 编译并执行按钮
+  let btn = ui.button("编译并运行 (⌘R)", primary=true)
+  if btn.clicked {
+    execute_wasm_script(state.script_source)
+  }
+}`,
+          en: `///|
+pub fn draw_script_workbench(ui : @core.UIContext, state : AppState) -> Unit {
+  // Header status prompt
+  ui.label("CAD Script Console (MoonBit 0.1.0)")
+
+  // Multi-line code editor with gutter and line numbers
+  let (updated_code, resp) = ui.code_editor(
+    "cad_script",
+    state.script_source,
+    size=Some(@math.Vec2::new(ui.available_width(), 240.0)),
+    show_line_numbers=true,
+    read_only=false,
+  )
+
+  // State synchronization
+  if resp.changed() {
+    state.script_source = updated_code
+    state.dirty = true
+  }
+
+  // Compile and run button
+  let btn = ui.button("Compile & Run (⌘R)", primary=true)
+  if btn.clicked {
+    execute_wasm_script(state.script_source)
+  }
+}`
+        },
+        renderUI: (container, state) => {
+          const presets = {
+            cad: `/// CAD 变换矩阵运算内核\nfn transform_point(p : Vec2, angle : Double) -> Vec2 {\n  let cos_a = @math.cos(angle)\n  let sin_a = @math.sin(angle)\n  Vec2::new(\n    p.x * cos_a - p.y * sin_a,\n    p.x * sin_a + p.y * cos_a\n  )\n}`,
+            bezier: `/// 贝塞尔样条插值\nfn cubic_bezier(p0 : Double, p1 : Double, p2 : Double, p3 : Double, t : Double) -> Double {\n  let u = 1.0 - t\n  let tt = t * t\n  let uu = u * u\n  uu * u * p0 + 3.0 * uu * t * p1 + 3.0 * u * tt * p2 + tt * t * p3\n}`,
+            pipeline: `/// 微秒级图元提交管线\npub fn render_frame(ctx : @core.UIContext) -> Unit {\n  ctx.begin_frame(raw_input)\n  // 执行百万节点视口剔除\n  let visible = cull_spatial_bounds(viewport)\n  ctx.draw_list().append(visible)\n  ctx.end_frame()\n}`
+          };
+
+          state.currentPreset = state.currentPreset || 'cad';
+          state.editorCode = state.editorCode !== undefined ? state.editorCode : presets.cad;
+
+          container.innerHTML = `
+            <div class="editor-sandbox-wrap">
+              <div class="editor-toolbar">
+                <div class="editor-preset-group">
+                  <button class="editor-pill-btn ${state.currentPreset === 'cad' ? 'is-active' : ''}" data-preset="cad">
+                    ${T('CAD 矩阵变换', 'CAD Transform')}
+                  </button>
+                  <button class="editor-pill-btn ${state.currentPreset === 'bezier' ? 'is-active' : ''}" data-preset="bezier">
+                    ${T('贝塞尔样条', 'Bezier Spline')}
+                  </button>
+                  <button class="editor-pill-btn ${state.currentPreset === 'pipeline' ? 'is-active' : ''}" data-preset="pipeline">
+                    ${T('微秒图元管线', 'Frame Pipeline')}
+                  </button>
+                </div>
+                <div class="editor-stats-badge" id="editorStats">
+                  <span id="statLines">Lines: 10</span>
+                  <span>·</span>
+                  <span id="statChars">Chars: 180</span>
+                </div>
+              </div>
+
+              <div class="editor-frame" id="editorFrame">
+                <div class="editor-gutter" id="editorGutter"></div>
+                <textarea class="editor-textarea" id="editorTextarea" spellcheck="false" autocomplete="off">${state.editorCode}</textarea>
+              </div>
+
+              <div class="editor-statusbar">
+                <span>MoonBit 0.1.0 · UTF-8</span>
+                <span id="cursorPosLabel">Ln 1, Col 1 · Spaces: 2</span>
+              </div>
+            </div>
+          `;
+
+          const textarea = container.querySelector('#editorTextarea');
+          const gutter = container.querySelector('#editorGutter');
+          const statLines = container.querySelector('#statLines');
+          const statChars = container.querySelector('#statChars');
+          const cursorPosLabel = container.querySelector('#cursorPosLabel');
+          const presetBtns = container.querySelectorAll('.editor-pill-btn');
+
+          function updateGutterAndStats() {
+            const code = textarea.value;
+            state.editorCode = code;
+            const lines = code.split('\n');
+            const lineCount = lines.length;
+
+            // Update stats
+            statLines.textContent = `${T('行数', 'Lines')}: ${lineCount}`;
+            statChars.textContent = `${T('字符数', 'Chars')}: ${code.length}`;
+
+            // Cursor position
+            const selStart = textarea.selectionStart;
+            let currentLine = 0;
+            let currentCol = 0;
+            let acc = 0;
+            for (let i = 0; i < lineCount; i++) {
+              const len = lines[i].length + 1; // +1 for newline
+              if (acc + len > selStart || i === lineCount - 1) {
+                currentLine = i + 1;
+                currentCol = selStart - acc + 1;
+                break;
+              }
+              acc += len;
+            }
+            cursorPosLabel.textContent = `Ln ${currentLine}, Col ${currentCol} · Spaces: 2`;
+
+            // Render gutter
+            let gutterHtml = '';
+            for (let i = 1; i <= lineCount; i++) {
+              const isActive = i === currentLine;
+              gutterHtml += `<div class="editor-gutter-num ${isActive ? 'is-active' : ''}">${i}</div>`;
+            }
+            gutter.innerHTML = gutterHtml;
+
+            document.getElementById('statResponse').textContent = `code_editor: lines ${lineCount}, pos (Ln ${currentLine}, Col ${currentCol})`;
+          }
+
+          textarea.addEventListener('input', updateGutterAndStats);
+          textarea.addEventListener('click', updateGutterAndStats);
+          textarea.addEventListener('keyup', updateGutterAndStats);
+
+          // Tab key support (soft 2-spaces indentation)
+          textarea.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+              e.preventDefault();
+              const start = textarea.selectionStart;
+              const end = textarea.selectionEnd;
+              const val = textarea.value;
+              textarea.value = val.substring(0, start) + '  ' + val.substring(end);
+              textarea.selectionStart = textarea.selectionEnd = start + 2;
+              updateGutterAndStats();
+            }
+          });
+
+          // Preset switching
+          presetBtns.forEach(btn => {
+            btn.onclick = () => {
+              const p = btn.getAttribute('data-preset');
+              state.currentPreset = p;
+              state.editorCode = presets[p];
+              textarea.value = presets[p];
+              presetBtns.forEach(b => b.classList.toggle('is-active', b === btn));
+              updateGutterAndStats();
+              showToast(T(`已切换至示例: ${btn.textContent.trim()}`, `Loaded template: ${btn.textContent.trim()}`));
+            };
+          });
+
+          // Sync gutter scroll with textarea scroll
+          textarea.addEventListener('scroll', () => {
+            gutter.scrollTop = textarea.scrollTop;
+          });
+
+          updateGutterAndStats();
+        }
+      },
+
       checkbox: {
         titleKey: 'comp.checkbox.title',
         signature: "ui.checkbox(label, is_checked) -> (Bool, Response)",

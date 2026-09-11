@@ -265,6 +265,7 @@ pub fn UIContext::button_primary_sized(Self, String, @math.Vec2) -> Response
 pub fn UIContext::button_sized(Self, String, @math.Vec2) -> Response
 pub fn UIContext::button_with_shortcut(Self, String, String) -> Response
 pub fn UIContext::checkbox(Self, String, Bool) -> (Bool, Response)
+pub fn UIContext::code_editor(Self, String, String, size? : @math.Vec2, show_line_numbers? : Bool, read_only? : Bool) -> (String, Response)
 pub fn UIContext::collapsing_header(Self, String, String, Bool, (Self) -> Unit) -> Response
 pub fn UIContext::color_button(Self, String, @color.Color) -> (Bool, Response)
 pub fn UIContext::combo_box(Self, String, String, Int, Array[String]) -> (Int, Response)
