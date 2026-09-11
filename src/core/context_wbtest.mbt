@@ -117,7 +117,7 @@ test "window container sets local origin and clip" {
   let mut inside_avail_w = 0.0
   let mut after_label_y = 0.0
 
-  ctx.window("Test Window", win_pos, win_size, fn(ui) {
+  let win_resp = ctx.window("Test Window", win_pos, win_size, fn(ui) {
     // Inside window, cursor starts at pos.x + pad(12), pos.y + title_h(28) + pad(12) = (62.0, 90.0)
     inside_cur_x = ui.cursor().x
     inside_cur_y = ui.cursor().y
@@ -125,6 +125,11 @@ test "window container sets local origin and clip" {
     let _ = ui.label("Inside Window")
     after_label_y = ui.cursor().y
   })
+
+  // Pointer sits at (0, 0), the window at (50, 50)
+  assert_true(!win_resp.hovered())
+  assert_eq(win_resp.rect.x, 50.0)
+  assert_eq(win_resp.rect.y, 50.0)
 
   assert_eq(inside_cur_x, 62.0)
   assert_eq(inside_cur_y, 90.0)
@@ -398,4 +403,68 @@ test "foreground blocking region suppresses hover on the main layer" {
   ctx.end_foreground()
   assert_true(frect.contains(@math.Vec2::new(10.0, 10.0)))
   assert_true(fresp.hovered())
+}
+
+///|
+test "window title bar drag moves and persists the position" {
+  let ctx = UIContext::new()
+  let size = @math.Vec2::new(200.0, 150.0)
+  let start = @math.Vec2::new(100.0, 100.0)
+
+  // Frame 1: press on the title bar (spans y..y+28)
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(150.0, 110.0), true))
+  let resp1 = ctx.window("Panel", start, size, fn(_ui) {  })
+  assert_true(resp1.hovered())
+  let _ = ctx.end_frame()
+
+  // Frame 2: pointer moves while held -> the window follows the delta
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(180.0, 130.0), true))
+  let resp2 = ctx.window("Panel", start, size, fn(_ui) {  })
+  assert_true(resp2.dragged())
+  assert_eq(resp2.rect.x, 130.0)
+  assert_eq(resp2.rect.y, 120.0)
+  let _ = ctx.end_frame()
+
+  // Frame 3: release, the window stays where it was dropped
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(180.0, 130.0), false))
+  let resp3 = ctx.window("Panel", start, size, fn(_ui) {  })
+  assert_true(!resp3.dragged())
+  assert_eq(resp3.rect.x, 130.0)
+  assert_eq(resp3.rect.y, 120.0)
+  let _ = ctx.end_frame()
+
+  // The moved position survives: `start` is only the initial position
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(0.0, 0.0), false))
+  let resp4 = ctx.window("Panel", start, size, fn(_ui) {  })
+  assert_eq(resp4.rect.x, 130.0)
+  assert_eq(resp4.rect.y, 120.0)
+  let _ = ctx.end_frame()
+}
+
+///|
+test "window content is not draggable and separate salts keep separate positions" {
+  let ctx = UIContext::new()
+  let size = @math.Vec2::new(200.0, 150.0)
+  let start = @math.Vec2::new(0.0, 0.0)
+
+  // Press inside the content region: not a drag
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(100.0, 100.0), true))
+  let resp = ctx.window("Panel", start, size, fn(_ui) {  })
+  assert_true(resp.hovered())
+  assert_true(!resp.dragged())
+  let _ = ctx.end_frame()
+
+  // Two windows sharing a title keep independent positions when salted
+  ctx.begin_frame(RawInput::new())
+  let a = ctx.window("Panel", start, size, fn(_ui) {  }, id_salt="a")
+  let b = ctx.window(
+    "Panel",
+    @math.Vec2::new(400.0, 300.0),
+    size,
+    fn(_ui) {  },
+    id_salt="b",
+  )
+  assert_eq(a.rect.x, 0.0)
+  assert_eq(b.rect.x, 400.0)
+  let _ = ctx.end_frame()
 }

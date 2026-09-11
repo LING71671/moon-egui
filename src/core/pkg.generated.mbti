@@ -199,6 +199,7 @@ pub struct UIContext {
   layout_stack : Array[LayoutScope]
   scroll_offsets : Array[(Id, Double)]
   scroll_content_heights : Array[(Id, Double)]
+  window_positions : Array[(Id, @math.Vec2)]
   text_cursor_positions : Array[(Id, Int)]
   open_collapsing_ids : Array[(Id, Bool)]
   mut open_combo_id : Id
@@ -237,6 +238,7 @@ pub fn UIContext::focused_id(Self) -> Id
 pub fn UIContext::get_scroll_content_height(Self, Id) -> Double
 pub fn UIContext::get_scroll_offset(Self, Id) -> Double
 pub fn UIContext::get_text_cursor_pos(Self, Id, Int) -> Int
+pub fn UIContext::get_window_pos(Self, Id, @math.Vec2) -> @math.Vec2
 pub fn UIContext::has_focus(Self, Id) -> Bool
 pub fn UIContext::horizontal(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::hot_id(Self) -> Id
@@ -270,6 +272,7 @@ pub fn UIContext::set_scroll_content_height(Self, Id, Double) -> Unit
 pub fn UIContext::set_scroll_offset(Self, Id, Double) -> Unit
 pub fn UIContext::set_text_cursor_pos(Self, Id, Int) -> Unit
 pub fn UIContext::set_wants_capture_mouse(Self, Bool) -> Unit
+pub fn UIContext::set_window_pos(Self, Id, @math.Vec2) -> Unit
 pub fn UIContext::slider(Self, String, Double, Double, Double) -> (Double, Response)
 pub fn UIContext::slider_int(Self, String, Int, Int, Int) -> (Int, Response)
 pub fn UIContext::spacer(Self, Double) -> Unit
@@ -281,7 +284,7 @@ pub fn UIContext::toggle(Self, String, Bool) -> (Bool, Response)
 pub fn UIContext::tooltip(Self, String) -> Unit
 pub fn UIContext::vertical(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::wants_capture_mouse(Self) -> Bool
-pub fn UIContext::window(Self, String, @math.Vec2, @math.Vec2, (Self) -> Unit) -> Unit
+pub fn UIContext::window(Self, String, @math.Vec2, @math.Vec2, (Self) -> Unit, id_salt? : String) -> Response
 
 // Type aliases
 

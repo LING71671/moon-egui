@@ -34,6 +34,7 @@ pub struct UIContext {
   layout_stack : Array[LayoutScope]
   scroll_offsets : Array[(Id, Double)]
   scroll_content_heights : Array[(Id, Double)]
+  window_positions : Array[(Id, @math.Vec2)]
   text_cursor_positions : Array[(Id, Int)]
   open_collapsing_ids : Array[(Id, Bool)]
   mut open_combo_id : Id
@@ -70,6 +71,7 @@ pub fn UIContext::new() -> UIContext {
     ],
     scroll_offsets: [],
     scroll_content_heights: [],
+    window_positions: [],
     text_cursor_positions: [],
     open_collapsing_ids: [],
     open_combo_id: Id::zero(),
@@ -544,6 +546,38 @@ pub fn UIContext::measure_text(
 ) -> @math.Vec2 {
   let _ = self
   measure_text_size(text, font_size)
+}
+
+///|
+/// Position of a window, falling back to `fallback` until the window has been
+/// moved for the first time. Windows are dragged by their title bar, so the
+/// position is owned by the context rather than passed in by the caller.
+pub fn UIContext::get_window_pos(
+  self : UIContext,
+  id : Id,
+  fallback : @math.Vec2,
+) -> @math.Vec2 {
+  for item in self.window_positions {
+    if item.0 == id {
+      return item.1
+    }
+  }
+  fallback
+}
+
+///|
+pub fn UIContext::set_window_pos(
+  self : UIContext,
+  id : Id,
+  pos : @math.Vec2,
+) -> Unit {
+  for i = 0; i < self.window_positions.length(); i = i + 1 {
+    if self.window_positions[i].0 == id {
+      self.window_positions[i] = (id, pos)
+      return
+    }
+  }
+  self.window_positions.push((id, pos))
 }
 
 ///|
