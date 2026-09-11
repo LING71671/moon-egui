@@ -24,7 +24,7 @@ pub fn UIContext::scroll_area(
   let container_id = self.id_stack.derive_id(id_salt)
   let (_id, container_rect, _resp) = self.allocate_space(size)
 
-  if container_rect.contains(self.input.mouse_pos) {
+  if self.is_hovered(container_rect) {
     self.wants_capture_mouse = true
   }
 
@@ -37,8 +37,7 @@ pub fn UIContext::scroll_area(
   }
 
   // Handle pointer wheel scrolling inside container
-  if container_rect.contains(self.input.mouse_pos) &&
-    self.input.scroll_delta.y != 0.0 {
+  if self.is_hovered(container_rect) && self.input.scroll_delta.y != 0.0 {
     scroll_y = scroll_y - self.input.scroll_delta.y
   }
 
@@ -103,7 +102,7 @@ pub fn UIContext::scroll_area(
     let thumb_y = bar_track_y + scroll_pct * (bar_track_h - thumb_h)
     let thumb_rect = @math.Rect::new(bar_x, thumb_y, scrollbar_w, thumb_h)
 
-    let is_bar_hovered = thumb_rect.contains(self.input.mouse_pos)
+    let is_bar_hovered = self.is_hovered(thumb_rect)
     let thumb_color = if is_bar_hovered {
       @color.Color::accent_primary()
     } else {

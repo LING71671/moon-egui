@@ -117,6 +117,15 @@ pub fn DrawList::pop_clip(self : DrawList) -> Unit {
 }
 
 ///|
+/// Append every command of `other` into this list, preserving order.
+/// Used to composite the deferred foreground layer onto the main layer.
+pub fn DrawList::append(self : DrawList, other : DrawList) -> Unit {
+  for cmd in other.commands {
+    self.commands.push(cmd)
+  }
+}
+
+///|
 pub fn DrawList::get_command(self : DrawList, index : Int) -> DrawCmd? {
   if index >= 0 && index < self.commands.length() {
     Some(self.commands[index])

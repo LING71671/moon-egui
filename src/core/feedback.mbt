@@ -47,16 +47,20 @@ pub fn UIContext::progress_bar(
 
 ///|
 /// Render an on-hover floating tooltip bubble at cursor position.
+/// Drawn on the foreground layer so it is never clipped away by the container
+/// that owns the hovered widget.
 pub fn UIContext::tooltip(self : UIContext, text : String) -> Unit {
-  let char_w = 7.0
-  let text_w = text.length().to_double() * char_w
+  let font_size = 12.0
   let pad_x = 8.0
   let pad_y = 4.0
-  let tip_w = text_w + pad_x * 2.0
-  let tip_h = 22.0
+  let text_size = self.measure_text(text, font_size)
+  let tip_w = text_size.x + pad_x * 2.0
+  let tip_h = text_size.y + pad_y * 2.0
 
   let mouse = self.input.mouse_pos
   let tip_rect = @math.Rect::new(mouse.x + 12.0, mouse.y + 12.0, tip_w, tip_h)
+
+  self.begin_foreground()
 
   // Floating bubble with dark background & subtle border
   self.draw_list.add_rect(tip_rect, @color.Color::bg_window(), 4.0)
@@ -69,7 +73,9 @@ pub fn UIContext::tooltip(self : UIContext, text : String) -> Unit {
   self.draw_list.add_text(
     @math.Vec2::new(tip_rect.x + pad_x, tip_rect.y + pad_y),
     text,
-    12.0,
+    font_size,
     @color.Color::white(),
   )
+
+  self.end_foreground()
 }

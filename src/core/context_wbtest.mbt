@@ -333,3 +333,69 @@ test "text measurement distinguishes cjk and ascii characters" {
   // 1 * 5.8 + 1 * 10.5 = 16.3
   assert_eq(mixed_size.x, 16.3)
 }
+
+///|
+test "hit testing respects the scissor clip" {
+  let ctx = UIContext::new()
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(60.0, 60.0), false))
+
+  // The clip excludes the pointer even though the allocated rect covers it
+  ctx.push_clip(@math.Rect::new(0.0, 0.0, 40.0, 40.0))
+  let (_id, rect, resp) = ctx.allocate_space(@math.Vec2::new(200.0, 200.0))
+  ctx.pop_clip()
+
+  assert_true(rect.contains(@math.Vec2::new(60.0, 60.0)))
+  assert_true(!resp.hovered())
+
+  // With the clip popped the very same geometry becomes hoverable
+  ctx.set_cursor(@math.Vec2::zero())
+  let (_id2, _rect2, resp2) = ctx.allocate_space(@math.Vec2::new(200.0, 200.0))
+  assert_true(resp2.hovered())
+}
+
+///|
+test "foreground layer composites after the main layer and escapes clipping" {
+  let ctx = UIContext::new()
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(50.0, 50.0), false))
+
+  ctx.push_clip(@math.Rect::new(0.0, 0.0, 10.0, 10.0))
+  ctx.tooltip("tip")
+  ctx.pop_clip()
+  let dl = ctx.end_frame()
+
+  // 0..1 are the main layer clip pair, 2..4 the deferred tooltip bubble
+  assert_eq(dl.len(), 5)
+  assert_true(dl.get_command(0) is Some(@draw.DrawCmd::Clip(_)))
+  assert_true(dl.get_command(1) is Some(@draw.DrawCmd::ResetClip))
+  assert_true(dl.get_command(2) is Some(@draw.DrawCmd::Rect(_, _, _)))
+  assert_true(dl.get_command(3) is Some(@draw.DrawCmd::RectStroke(_, _, _, _)))
+  assert_true(dl.get_command(4) is Some(@draw.DrawCmd::Text(_, _, _, _)))
+
+  // The main layer's clip stack is restored after the foreground pass
+  assert_true(ctx.current_clip() is None)
+}
+
+///|
+test "foreground blocking region suppresses hover on the main layer" {
+  let ctx = UIContext::new()
+  let blocker = @math.Rect::new(0.0, 0.0, 100.0, 100.0)
+
+  // Frame 1: an open popup registers its blocking region
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), false))
+  ctx.block_hover(blocker)
+  let _ = ctx.end_frame()
+
+  // Frame 2: the widget underneath the popup no longer receives hover
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), false))
+  let (_id, rect, resp) = ctx.allocate_space(@math.Vec2::new(100.0, 100.0))
+  assert_true(rect.contains(@math.Vec2::new(10.0, 10.0)))
+  assert_true(!resp.hovered())
+
+  // The popup itself sits on the foreground layer and stays interactive
+  ctx.set_cursor(@math.Vec2::zero())
+  ctx.begin_foreground()
+  let (_fid, frect, fresp) = ctx.allocate_space(@math.Vec2::new(100.0, 100.0))
+  ctx.end_foreground()
+  assert_true(frect.contains(@math.Vec2::new(10.0, 10.0)))
+  assert_true(fresp.hovered())
+}

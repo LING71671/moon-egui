@@ -182,7 +182,7 @@ pub fn Response::with_focus(Id, @math.Rect, Bool, Bool, Bool, Bool, Bool, Bool, 
 
 pub struct UIContext {
   input : InputState
-  draw_list : @draw.DrawList
+  mut draw_list : @draw.DrawList
   id_stack : IdStack
   mut hot_id : Id
   mut active_id : Id
@@ -204,12 +204,20 @@ pub struct UIContext {
   mut open_combo_id : Id
   mut wants_capture_mouse : Bool
   mut prev_wants_capture_mouse : Bool
+  fg_draw_list : @draw.DrawList
+  mut fg_saved_draw_list : @draw.DrawList
+  fg_saved_clip_stack : Array[@math.Rect]
+  mut foreground : Bool
+  blocking_rects : Array[@math.Rect]
+  prev_blocking_rects : Array[@math.Rect]
 } derive(Eq, @debug.Debug)
 pub fn UIContext::active_id(Self) -> Id
 pub fn UIContext::advance_cursor(Self, @math.Vec2) -> Unit
 pub fn UIContext::allocate_space(Self, @math.Vec2) -> (Id, @math.Rect, Response)
 pub fn UIContext::available_width(Self) -> Double
+pub fn UIContext::begin_foreground(Self) -> Unit
 pub fn UIContext::begin_frame(Self, RawInput) -> Unit
+pub fn UIContext::block_hover(Self, @math.Rect) -> Unit
 pub fn UIContext::button(Self, String, shortcut? : String, primary? : Bool, size? : @math.Vec2) -> Response
 pub fn UIContext::button_primary(Self, String) -> Response
 pub fn UIContext::button_primary_sized(Self, String, @math.Vec2) -> Response
@@ -223,6 +231,7 @@ pub fn UIContext::current_clip(Self) -> @math.Rect?
 pub fn UIContext::cursor(Self) -> @math.Vec2
 pub fn UIContext::drag_value(Self, String, Double, Double, Double, Double) -> (Double, Response)
 pub fn UIContext::draw_list(Self) -> @draw.DrawList
+pub fn UIContext::end_foreground(Self) -> Unit
 pub fn UIContext::end_frame(Self) -> @draw.DrawList
 pub fn UIContext::focused_id(Self) -> Id
 pub fn UIContext::get_scroll_content_height(Self, Id) -> Double
@@ -233,6 +242,7 @@ pub fn UIContext::horizontal(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::hot_id(Self) -> Id
 pub fn UIContext::input(Self) -> InputState
 pub fn UIContext::is_collapsing_open(Self, Id, Bool) -> Bool
+pub fn UIContext::is_hovered(Self, @math.Rect) -> Bool
 pub fn UIContext::item_spacing(Self) -> @math.Vec2
 pub fn UIContext::label(Self, String) -> Response
 pub fn UIContext::label_colored(Self, String, @color.Color) -> Response

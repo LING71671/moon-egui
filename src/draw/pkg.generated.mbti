@@ -32,6 +32,7 @@ pub fn DrawList::add_line(Self, @math.Vec2, @math.Vec2, @color.Color, Double) ->
 pub fn DrawList::add_rect(Self, @math.Rect, @color.Color, Double) -> Unit
 pub fn DrawList::add_rect_stroke(Self, @math.Rect, @color.Color, Double, Double) -> Unit
 pub fn DrawList::add_text(Self, @math.Vec2, String, Double, @color.Color) -> Unit
+pub fn DrawList::append(Self, Self) -> Unit
 pub fn DrawList::clear(Self) -> Unit
 pub fn DrawList::get_command(Self, Int) -> DrawCmd?
 pub fn DrawList::is_empty(Self) -> Bool

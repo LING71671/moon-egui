@@ -17,7 +17,7 @@ pub struct LayoutScope {
 ///|
 pub struct UIContext {
   input : InputState
-  draw_list : @draw.DrawList
+  mut draw_list : @draw.DrawList
   id_stack : IdStack
   mut hot_id : Id
   mut active_id : Id
@@ -39,6 +39,12 @@ pub struct UIContext {
   mut open_combo_id : Id
   mut wants_capture_mouse : Bool
   mut prev_wants_capture_mouse : Bool
+  fg_draw_list : @draw.DrawList
+  mut fg_saved_draw_list : @draw.DrawList
+  fg_saved_clip_stack : Array[@math.Rect]
+  mut foreground : Bool
+  blocking_rects : Array[@math.Rect]
+  prev_blocking_rects : Array[@math.Rect]
 } derive(Eq, Debug)
 
 ///|
@@ -69,6 +75,12 @@ pub fn UIContext::new() -> UIContext {
     open_combo_id: Id::zero(),
     wants_capture_mouse: false,
     prev_wants_capture_mouse: false,
+    fg_draw_list: @draw.DrawList::new(),
+    fg_saved_draw_list: @draw.DrawList::new(),
+    fg_saved_clip_stack: [],
+    foreground: false,
+    blocking_rects: [],
+    prev_blocking_rects: [],
   }
 }
 
@@ -76,6 +88,18 @@ pub fn UIContext::new() -> UIContext {
 pub fn UIContext::begin_frame(self : UIContext, raw_input : RawInput) -> Unit {
   self.input.update(raw_input)
   self.draw_list.clear()
+  self.fg_draw_list.clear()
+  self.foreground = false
+
+  // Snapshot last frame's blocking regions, then reopen collection for this
+  // frame. Blocking regions apply with one frame of latency so that widgets
+  // drawn before a popup still see the suppression.
+  self.prev_blocking_rects.clear()
+  for rect in self.blocking_rects {
+    self.prev_blocking_rects.push(rect)
+  }
+  self.blocking_rects.clear()
+
   self.cursor = @math.Vec2::zero()
   self.clip_stack.clear()
   self.auto_id_counter = 0
@@ -122,6 +146,8 @@ pub fn UIContext::end_frame(self : UIContext) -> @draw.DrawList {
   }
 
   self.prev_wants_capture_mouse = self.wants_capture_mouse
+  // Composite the deferred foreground layer on top of the main layer.
+  self.draw_list.append(self.fg_draw_list)
   self.draw_list
 }
 
@@ -251,7 +277,7 @@ pub fn UIContext::allocate_space(
   }
 
   // Hit-testing evaluation
-  let hovered = rect.contains(self.input.mouse_pos)
+  let hovered = self.is_hovered(rect)
   if hovered {
     self.hot_id = id
     self.wants_capture_mouse = true
@@ -413,6 +439,84 @@ pub fn UIContext::current_clip(self : UIContext) -> @math.Rect? {
   } else {
     Some(self.clip_stack[self.clip_stack.length() - 1])
   }
+}
+
+///|
+/// Clip-aware hover test. The pointer hovers `rect` only when it is inside the
+/// rect, inside the active scissor clip, and not covered by a foreground
+/// blocking region. Widgets that scroll out of a container or spill outside a
+/// window therefore stop responding to the pointer.
+pub fn UIContext::is_hovered(self : UIContext, rect : @math.Rect) -> Bool {
+  let visible = match self.current_clip() {
+    Some(clip) => rect.intersect(clip)
+    None => rect
+  }
+  let in_visible_rect = visible.w > 0.0 &&
+    visible.h > 0.0 &&
+    visible.contains(self.input.mouse_pos)
+  in_visible_rect &&
+  (self.foreground || !self.is_blocked_by_foreground(self.input.mouse_pos))
+}
+
+///|
+/// True when `pt` falls inside a blocking region registered by a popup on the
+/// previous frame. Regions of the current frame are not consulted yet, because
+/// widgets drawn earlier in the frame cannot retroactively lose hover.
+fn UIContext::is_blocked_by_foreground(
+  self : UIContext,
+  pt : @math.Vec2,
+) -> Bool {
+  let mut blocked = false
+  for rect in self.prev_blocking_rects {
+    if rect.contains(pt) {
+      blocked = true
+    }
+  }
+  blocked
+}
+
+///|
+/// Declare `rect` as a foreground blocking region: while it is registered,
+/// pointer hover inside it is suppressed for every widget drawn on the main
+/// layer. Popups call this so the widgets underneath stop responding.
+/// The region takes effect from the next frame.
+pub fn UIContext::block_hover(self : UIContext, rect : @math.Rect) -> Unit {
+  self.blocking_rects.push(rect)
+}
+
+///|
+/// Redirect subsequent draw commands to the foreground layer, which is
+/// composited on top of the main layer at `end_frame`. The scissor clip stack
+/// is suspended for the duration so a popup is never clipped away by the
+/// container that spawned it.
+pub fn UIContext::begin_foreground(self : UIContext) -> Unit {
+  if self.foreground {
+    return
+  }
+  self.fg_saved_draw_list = self.draw_list
+  self.fg_saved_clip_stack.clear()
+  for rect in self.clip_stack {
+    self.fg_saved_clip_stack.push(rect)
+  }
+  self.clip_stack.clear()
+  self.draw_list = self.fg_draw_list
+  self.foreground = true
+}
+
+///|
+/// Leave the foreground layer and restore the draw target and scissor clip
+/// stack that were active before the matching `begin_foreground`.
+pub fn UIContext::end_foreground(self : UIContext) -> Unit {
+  if !self.foreground {
+    return
+  }
+  self.draw_list = self.fg_saved_draw_list
+  self.clip_stack.clear()
+  for rect in self.fg_saved_clip_stack {
+    self.clip_stack.push(rect)
+  }
+  self.fg_saved_clip_stack.clear()
+  self.foreground = false
 }
 
 ///|

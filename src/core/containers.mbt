@@ -114,7 +114,7 @@ pub fn UIContext::combo_box(
   self.pop_id()
 
   let box_rect = @math.Rect::new(rect.x + label_size, rect.y, box_w, h)
-  let box_hovered = box_rect.contains(self.input.mouse_pos)
+  let box_hovered = self.is_hovered(box_rect)
 
   let mut current_idx = selected_index
   let is_open = self.open_combo_id() == combo_id
@@ -198,6 +198,12 @@ pub fn UIContext::combo_box(
       menu_h,
     )
 
+    // The popup lives on the foreground layer: it must not be clipped by the
+    // container that hosts the combo box, and it must swallow pointer input
+    // for the widgets drawn underneath it.
+    self.begin_foreground()
+    self.block_hover(menu_rect)
+
     // Elevation shadow & border
     let shadow_rect = @math.Rect::new(
       menu_rect.x,
@@ -225,7 +231,7 @@ pub fn UIContext::combo_box(
         box_w,
         item_h,
       )
-      let item_hovered = item_rect.contains(self.input.mouse_pos)
+      let item_hovered = self.is_hovered(item_rect)
       if item_hovered {
         self.draw_list.add_rect(
           item_rect,
@@ -262,6 +268,8 @@ pub fn UIContext::combo_box(
         self.draw_list.add_line(p2, p3, @color.Color::rgb(37, 99, 235), 1.5)
       }
     }
+
+    self.end_foreground()
   }
 
   (current_idx, resp)
@@ -299,7 +307,7 @@ pub fn UIContext::tab_bar(
     let tab_text = tabs[i]
     let tab_w = tab_text.length().to_double() * char_w + 24.0
     let tab_rect = @math.Rect::new(cur_x, rect.y, tab_w, h)
-    let is_hovered = tab_rect.contains(self.input.mouse_pos)
+    let is_hovered = self.is_hovered(tab_rect)
     let is_selected = i == current_selected
 
     if is_hovered && self.input.mouse_pressed() {

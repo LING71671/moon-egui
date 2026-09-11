@@ -12,7 +12,7 @@ pub fn UIContext::window(
   let window_rect = @math.Rect::new(pos.x, pos.y, size.x, size.y)
   let title_bar_rect = @math.Rect::new(pos.x, pos.y, size.x, title_bar_h)
 
-  if window_rect.contains(self.input.mouse_pos) {
+  if self.is_hovered(window_rect) {
     self.wants_capture_mouse = true
   }
 

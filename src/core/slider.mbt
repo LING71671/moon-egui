@@ -29,7 +29,7 @@ pub fn UIContext::slider(
 
   // Hit-testing on interactive track zone
   let touch_rect = @math.Rect::new(track_rect.x - 4.0, rect.y, track_w + 8.0, h)
-  let is_hovered = touch_rect.contains(self.input.mouse_pos)
+  let is_hovered = self.is_hovered(touch_rect)
   if is_hovered && self.input.mouse_pressed {
     self.set_active_id(id)
   }
@@ -211,7 +211,7 @@ pub fn UIContext::drag_value(
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
 
   let box_rect = @math.Rect::new(rect.x + label_w, rect.y, box_w, h)
-  let is_hovered = box_rect.contains(self.input.mouse_pos)
+  let is_hovered = self.is_hovered(box_rect)
   if is_hovered && self.input.mouse_pressed {
     self.set_active_id(id)
   }
