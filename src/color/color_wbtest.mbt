@@ -79,4 +79,16 @@ test "theme design tokens" {
   assert_eq(inverse.r, 0x1A)
   assert_eq(inverse.g, 0x1B)
   assert_eq(inverse.b, 0x23)
+
+  // Semantic layer tokens
+  let scrim = Color::bg_scrim()
+  assert_eq(scrim.r, 15)
+  assert_eq(scrim.g, 23)
+  assert_eq(scrim.b, 42)
+  assert_eq(scrim.a, 115)
+
+  let pill = Color::pill_active_bg()
+  assert_eq(pill.r, 255)
+  assert_eq(pill.g, 255)
+  assert_eq(pill.b, 255)
 }

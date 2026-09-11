@@ -38,6 +38,19 @@ pub struct WidgetStyle {
   font_small : Double
   font_large : Double
   item_spacing : @math.Vec2
+  radius_sm : Double
+  radius_md : Double
+  radius_lg : Double
+  radius_xl : Double
+  segmented_h : Double
+  segmented_pad : Double
+  segmented_radius : Double
+  segmented_pill_radius : Double
+  segmented_item_pad_x : Double
+  dialog_w : Double
+  dialog_min_h : Double
+  dialog_radius : Double
+  dialog_btn_w : Double
 } derive(Eq, Debug)
 
 ///|
@@ -67,5 +80,18 @@ pub fn WidgetStyle::default() -> WidgetStyle {
     font_small: 11.0,
     font_large: 15.0,
     item_spacing: @math.Vec2::new(8.0, 8.0),
+    radius_sm: 4.0,
+    radius_md: 6.0,
+    radius_lg: 10.0,
+    radius_xl: 12.0,
+    segmented_h: 34.0,
+    segmented_pad: 3.0,
+    segmented_radius: 7.0,
+    segmented_pill_radius: 5.0,
+    segmented_item_pad_x: 12.0,
+    dialog_w: 380.0,
+    dialog_min_h: 160.0,
+    dialog_radius: 12.0,
+    dialog_btn_w: 80.0,
   }
 }

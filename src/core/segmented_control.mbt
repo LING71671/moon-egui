@@ -20,7 +20,7 @@ pub fn UIContext::segmented_control(
   id_salt : String,
   options : Array[String],
   selected_index : Int,
-  height? : Double = 34.0,
+  height? : Double = 0.0,
   width? : Double = 0.0,
 ) -> (Int, Response) {
   let count = options.length()
@@ -29,8 +29,13 @@ pub fn UIContext::segmented_control(
     return (selected_index, resp)
   }
 
-  let font_sz = self.style.font_normal
-  let pad = 3.0
+  let scale = self.style.scale
+  let eff_h = if height > 0.0 { height } else { self.style.segmented_h * scale }
+  let font_sz = self.style.font_normal * scale
+  let pad = self.style.segmented_pad * scale
+  let item_pad_x = self.style.segmented_item_pad_x * scale
+  let track_radius = self.style.segmented_radius * scale
+  let pill_radius = self.style.segmented_pill_radius * scale
 
   // Calculate item width
   let item_w = if width > 0.0 {
@@ -43,7 +48,7 @@ pub fn UIContext::segmented_control(
         max_txt_w = sz.x
       }
     }
-    max_txt_w + 24.0
+    max_txt_w + item_pad_x * 2.0
   }
 
   let total_w = if width > 0.0 {
@@ -54,7 +59,7 @@ pub fn UIContext::segmented_control(
 
   self.push_id(id_salt)
   let (id, track_rect, resp) = self.allocate_space(
-    @math.Vec2::new(total_w, height),
+    @math.Vec2::new(total_w, eff_h),
   )
   self.pop_id()
   self.register_focusable(id)
@@ -77,12 +82,12 @@ pub fn UIContext::segmented_control(
   }
 
   // 2. Track Background
-  self.draw_list.add_rect(track_rect, @color.Color::bg_subtle(), 7.0)
+  self.draw_list.add_rect(track_rect, @color.Color::bg_subtle(), track_radius)
   self.draw_list.add_rect_stroke(
     track_rect,
-    @color.Color::border_muted().with_alpha(90),
+    @color.Color::border_muted(),
     1.0,
-    7.0,
+    track_radius,
   )
 
   // 3. Floating Active Porcelain Pill
@@ -93,18 +98,22 @@ pub fn UIContext::segmented_control(
 
   // Pill subtle ambient shadow
   self.draw_list.add_rect(
-    @math.Rect::new(pill_x, pill_y + 1.5, item_w, pill_h),
-    @color.Color::shadow().with_alpha(35),
-    5.0,
+    @math.Rect::new(pill_x, pill_y + 1.0 * scale, item_w, pill_h),
+    @color.Color::pill_ambient_shadow(),
+    pill_radius,
   )
   // Pill surface fill
-  self.draw_list.add_rect(pill_rect, @color.Color::white(), 5.0)
+  self.draw_list.add_rect(
+    pill_rect,
+    @color.Color::pill_active_bg(),
+    pill_radius,
+  )
   // Pill outline
   self.draw_list.add_rect_stroke(
     pill_rect,
-    @color.Color::border_default().with_alpha(120),
+    @color.Color::pill_active_border(),
     1.0,
-    5.0,
+    pill_radius,
   )
 
   // 4. Options Text & Hit-Testing
@@ -118,8 +127,8 @@ pub fn UIContext::segmented_control(
       if i != current_sel {
         self.draw_list.add_rect(
           opt_rect,
-          @color.Color::bg_hover().with_alpha(60),
-          5.0,
+          @color.Color::wash_hover(),
+          pill_radius,
         )
       }
       if self.input.mouse_pressed {

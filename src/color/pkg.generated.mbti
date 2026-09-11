@@ -22,10 +22,14 @@ pub fn Color::accent_hover() -> Self
 pub fn Color::accent_pressed() -> Self
 pub fn Color::accent_primary() -> Self
 pub fn Color::accent_soft() -> Self
+pub fn Color::badge_danger_bg() -> Self
+pub fn Color::badge_info_bg() -> Self
+pub fn Color::badge_warning_bg() -> Self
 pub fn Color::bg_active() -> Self
 pub fn Color::bg_app() -> Self
 pub fn Color::bg_hover() -> Self
 pub fn Color::bg_inverse() -> Self
+pub fn Color::bg_scrim() -> Self
 pub fn Color::bg_subtle() -> Self
 pub fn Color::bg_surface() -> Self
 pub fn Color::bg_window() -> Self
@@ -35,12 +39,18 @@ pub fn Color::border_focus() -> Self
 pub fn Color::border_muted() -> Self
 pub fn Color::border_strong() -> Self
 pub fn Color::danger() -> Self
+pub fn Color::danger_hover() -> Self
 pub fn Color::hex(Int) -> Self
 pub fn Color::hex_alpha(Int) -> Self
 pub fn Color::lerp(Self, Self, Double) -> Self
+pub fn Color::pill_active_bg() -> Self
+pub fn Color::pill_active_border() -> Self
+pub fn Color::pill_ambient_shadow() -> Self
 pub fn Color::rgb(Int, Int, Int) -> Self
 pub fn Color::rgba(Int, Int, Int, Int) -> Self
 pub fn Color::shadow() -> Self
+pub fn Color::shadow_ambient() -> Self
+pub fn Color::shadow_key() -> Self
 pub fn Color::success() -> Self
 pub fn Color::text_body() -> Self
 pub fn Color::text_disabled() -> Self
@@ -51,6 +61,7 @@ pub fn Color::text_secondary() -> Self
 pub fn Color::text_strong() -> Self
 pub fn Color::transparent() -> Self
 pub fn Color::warning() -> Self
+pub fn Color::wash_hover() -> Self
 pub fn Color::white() -> Self
 pub fn Color::with_alpha(Self, Int) -> Self
 

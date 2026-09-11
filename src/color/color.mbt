@@ -222,3 +222,67 @@ pub fn Color::warning() -> Color {
 pub fn Color::danger() -> Color {
   Color::hex(0xEF4444)
 }
+
+///|
+/// Destructive action button hover fill.
+pub fn Color::danger_hover() -> Color {
+  Color::rgba(239, 68, 68, 220)
+}
+
+///|
+/// Modal backdrop blocking layer.
+pub fn Color::bg_scrim() -> Color {
+  Color::rgba(15, 23, 42, 115)
+}
+
+///|
+/// Ambient soft elevation shadow.
+pub fn Color::shadow_ambient() -> Color {
+  Color::rgba(15, 23, 42, 30)
+}
+
+///|
+/// Key directional elevation shadow.
+pub fn Color::shadow_key() -> Color {
+  Color::rgba(15, 23, 42, 45)
+}
+
+///|
+/// Surface fill for active segmented control pill.
+pub fn Color::pill_active_bg() -> Color {
+  Color::hex(0xFFFFFF)
+}
+
+///|
+/// Subtle border outline for active segmented control pill.
+pub fn Color::pill_active_border() -> Color {
+  Color::rgba(203, 213, 225, 120)
+}
+
+///|
+/// Ambient micro-shadow under active segmented pill.
+pub fn Color::pill_ambient_shadow() -> Color {
+  Color::rgba(15, 23, 42, 35)
+}
+
+///|
+/// Subtle wash overlay for item hover.
+pub fn Color::wash_hover() -> Color {
+  Color::rgba(248, 250, 252, 60)
+}
+
+///|
+/// Semantic badge wash backgrounds.
+pub fn Color::badge_info_bg() -> Color {
+  Color::rgba(37, 99, 235, 150)
+}
+
+///|
+pub fn Color::badge_warning_bg() -> Color {
+  Color::rgba(245, 158, 11, 40)
+}
+
+///|
+pub fn Color::badge_danger_bg() -> Color {
+  Color::rgba(239, 68, 68, 40)
+}

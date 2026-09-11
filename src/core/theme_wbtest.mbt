@@ -26,6 +26,9 @@ test "theme: default WidgetStyle values" {
   assert_eq(style.toggle_w, 36.0)
   assert_eq(style.font_normal, 13.0)
   assert_eq(style.item_spacing, @math.Vec2::new(8.0, 8.0))
+  assert_eq(style.radius_md, 6.0)
+  assert_eq(style.segmented_h, 34.0)
+  assert_eq(style.dialog_w, 380.0)
 }
 
 ///|
