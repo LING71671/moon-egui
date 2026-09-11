@@ -188,6 +188,10 @@
 
   function renderDrawList(dl) {
     if (!dl || !dl.commands) return;
+    cachedFont = '';
+    cachedFillStyle = '';
+    cachedStrokeStyle = '';
+    cachedLineWidth = -1;
     const cmds = dl.commands;
     const len = cmds.length;
 
@@ -281,6 +285,10 @@
         }
         case 7: { // ResetClip
           ctx.restore();
+          cachedFont = '';
+          cachedFillStyle = '';
+          cachedStrokeStyle = '';
+          cachedLineWidth = -1;
           break;
         }
       }

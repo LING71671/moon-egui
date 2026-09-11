@@ -21,6 +21,9 @@ pub fn UIContext::collapsing_header(
     self.set_collapsing_open(header_id, is_open)
   }
 
+  if resp.hovered() {
+    self.set_cursor_icon("pointer")
+  }
   let bg_color = if resp.hovered() {
     @color.Color::bg_surface()
   } else {
@@ -115,6 +118,9 @@ pub fn UIContext::combo_box(
 
   let box_rect = @math.Rect::new(rect.x + label_size, rect.y, box_w, h)
   let box_hovered = self.is_hovered(box_rect)
+  if box_hovered {
+    self.set_cursor_icon("pointer")
+  }
 
   let mut current_idx = selected_index
   let is_open = self.open_combo_id() == combo_id
@@ -239,6 +245,7 @@ pub fn UIContext::combo_box(
       )
       let item_hovered = self.is_hovered(item_rect)
       if item_hovered {
+        self.set_cursor_icon("pointer")
         self.draw_list.add_rect(item_rect, @color.Color::bg_surface(), 3.0)
         if self.input.mouse_pressed() {
           current_idx = i
@@ -312,6 +319,9 @@ pub fn UIContext::tab_bar(
     let is_hovered = self.is_hovered(tab_rect)
     let is_selected = i == current_selected
 
+    if is_hovered {
+      self.set_cursor_icon("pointer")
+    }
     if is_hovered && self.input.mouse_pressed() {
       current_selected = i
     }

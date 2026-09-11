@@ -12,6 +12,9 @@ pub fn UIContext::checkbox(
   let w = box_size + gap + text_size.x
   let h = 22.0
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
+  if resp.hovered {
+    self.set_cursor_icon("pointer")
+  }
   let new_state = if resp.clicked { !checked } else { checked }
 
   let box_rect = @math.Rect::new(
@@ -77,6 +80,9 @@ pub fn UIContext::radio(
   let total_w = circle_r * 2.0 + gap + text_size.x
   let total_h = 22.0
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, total_h))
+  if resp.hovered {
+    self.set_cursor_icon("pointer")
+  }
   self.register_focusable(id)
 
   let new_selected = if resp.clicked() { true } else { selected }
@@ -133,6 +139,9 @@ pub fn UIContext::toggle(
   let total_w = switch_w + gap + text_size.x
   let h = 24.0
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
+  if resp.hovered {
+    self.set_cursor_icon("pointer")
+  }
   let new_state = if resp.clicked { !checked } else { checked }
 
   let switch_rect = @math.Rect::new(

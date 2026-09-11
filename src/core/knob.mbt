@@ -78,6 +78,9 @@ pub fn UIContext::knob(
   if response.pressed() || response.clicked() {
     self.request_focus(id)
   }
+  if response.hovered() || response.dragged() || response.pressed() {
+    self.set_cursor_icon("ns-resize")
+  }
   let is_focused = self.has_focus(id)
 
   let mut current_val = clamped_initial

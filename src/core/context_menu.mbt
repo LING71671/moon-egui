@@ -160,6 +160,9 @@ pub fn UIContext::context_menu_items(
         item_h,
       )
       let hovered = row_rect.contains(self.input.mouse_pos) && !item.disabled
+      if hovered {
+        self.set_cursor_icon("pointer")
+      }
       if hovered && self.input.mouse_pressed {
         selected_id = Some(item.id)
       }

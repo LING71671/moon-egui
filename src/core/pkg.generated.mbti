@@ -301,6 +301,8 @@ pub struct UIContext {
   mut foreground : Bool
   blocking_rects : Array[@math.Rect]
   prev_blocking_rects : Array[@math.Rect]
+  mut style : WidgetStyle
+  mut cursor_icon : String
 } derive(Eq, @debug.Debug)
 pub fn UIContext::active_id(Self) -> Id
 pub fn UIContext::advance_cursor(Self, @math.Vec2) -> Unit
@@ -324,6 +326,7 @@ pub fn UIContext::context_menu(Self, String, Bool, @math.Vec2, (Self) -> Unit, m
 pub fn UIContext::context_menu_items(Self, String, Bool, @math.Vec2, Array[ContextMenuItem], menu_width? : Double, viewport_size? : @math.Vec2) -> ContextMenuResponse
 pub fn UIContext::current_clip(Self) -> @math.Rect?
 pub fn UIContext::cursor(Self) -> @math.Vec2
+pub fn UIContext::cursor_icon(Self) -> String
 pub fn UIContext::drag_value(Self, String, Double, Double, Double, Double) -> (Double, Response)
 pub fn UIContext::draw_list(Self) -> @draw.DrawList
 pub fn UIContext::end_foreground(Self) -> Unit
@@ -366,18 +369,21 @@ pub fn UIContext::set_active_id(Self, Id) -> Unit
 pub fn UIContext::set_available_width(Self, Double) -> Unit
 pub fn UIContext::set_collapsing_open(Self, Id, Bool) -> Unit
 pub fn UIContext::set_cursor(Self, @math.Vec2) -> Unit
+pub fn UIContext::set_cursor_icon(Self, String) -> Unit
 pub fn UIContext::set_focused_id(Self, Id) -> Unit
 pub fn UIContext::set_item_spacing(Self, @math.Vec2) -> Unit
 pub fn UIContext::set_open_combo_id(Self, Id) -> Unit
 pub fn UIContext::set_open_menu_id(Self, Id) -> Unit
 pub fn UIContext::set_scroll_content_height(Self, Id, Double) -> Unit
 pub fn UIContext::set_scroll_offset(Self, Id, Double) -> Unit
+pub fn UIContext::set_style(Self, WidgetStyle) -> Unit
 pub fn UIContext::set_text_cursor_pos(Self, Id, Int) -> Unit
 pub fn UIContext::set_wants_capture_mouse(Self, Bool) -> Unit
 pub fn UIContext::set_window_pos(Self, Id, @math.Vec2) -> Unit
 pub fn UIContext::slider(Self, String, Double, Double, Double) -> (Double, Response)
 pub fn UIContext::slider_int(Self, String, Int, Int, Int) -> (Int, Response)
 pub fn UIContext::spacer(Self, Double) -> Unit
+pub fn UIContext::style(Self) -> WidgetStyle
 pub fn UIContext::surrender_focus(Self, Id) -> Unit
 pub fn UIContext::tab_bar(Self, String, Array[String], Int) -> (Int, Response)
 pub fn UIContext::text_edit(Self, String, String, String) -> (String, Response)
@@ -390,6 +396,33 @@ pub fn UIContext::vertical(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::wants_capture_mouse(Self) -> Bool
 pub fn UIContext::window(Self, String, @math.Vec2, @math.Vec2, (Self) -> Unit, id_salt? : String, constrain_to? : @math.Rect) -> Response
 pub fn UIContext::window_z(Self, Id) -> Int
+
+pub struct WidgetStyle {
+  scale : Double
+  button_h : Double
+  button_pad_x : Double
+  button_radius : Double
+  button_min_w : Double
+  text_edit_h : Double
+  text_edit_pad_x : Double
+  text_edit_radius : Double
+  caret_h : Double
+  slider_h : Double
+  slider_track_w : Double
+  slider_track_h : Double
+  slider_thumb_r : Double
+  toggle_w : Double
+  toggle_h : Double
+  toggle_thumb_r : Double
+  knob_r : Double
+  code_editor_line_h : Double
+  code_editor_gutter_w : Double
+  font_normal : Double
+  font_small : Double
+  font_large : Double
+  item_spacing : @math.Vec2
+} derive(Eq, @debug.Debug)
+pub fn WidgetStyle::default() -> Self
 
 // Type aliases
 

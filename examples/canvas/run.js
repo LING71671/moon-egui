@@ -407,6 +407,10 @@
     // Fast clear with clean studio light background
     setFill('#f8fafc');
     ctx.fillRect(0, 0, width, height);
+    cachedFont = '';
+    cachedFillStyle = '';
+    cachedStrokeStyle = '';
+    cachedLineWidth = -1;
 
     ctx.imageSmoothingEnabled = false;
 
@@ -585,6 +589,10 @@
             gridLinesRendered = true;
           }
           ctx.restore();
+          cachedFont = '';
+          cachedFillStyle = '';
+          cachedStrokeStyle = '';
+          cachedLineWidth = -1;
           break;
         }
       }

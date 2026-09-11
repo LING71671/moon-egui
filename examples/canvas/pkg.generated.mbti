@@ -119,6 +119,7 @@ pub struct GalleryState {
   mut ctx_menu_open : Bool
   mut ctx_menu_pos : @math.Vec2
   mut status_text : String
+  mut active_comp_id : String
 }
 
 // Type aliases

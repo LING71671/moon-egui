@@ -50,6 +50,7 @@ pub struct GalleryState {
   mut ctx_menu_open : Bool
   mut ctx_menu_pos : @math.Vec2
   mut status_text : String
+  mut active_comp_id : String
 }
 
 ///|
@@ -90,6 +91,7 @@ let gallery_state : GalleryState = {
   ctx_menu_open: false,
   ctx_menu_pos: @math.Vec2::new(180.0, 140.0),
   status_text: "Ready",
+  active_comp_id: "",
 }
 
 ///|
@@ -107,8 +109,9 @@ pub fn get_gallery_status() -> String {
 
 ///|
 pub fn get_gallery_cursor() -> String {
-  if gallery_ctx.focused_id() != @core.Id::zero() {
-    "text"
+  let icon = gallery_ctx.cursor_icon()
+  if icon != "default" {
+    icon
   } else if gallery_ctx.hot_id() != @core.Id::zero() ||
     gallery_ctx.active_id() != @core.Id::zero() {
     "pointer"
@@ -1259,6 +1262,13 @@ pub fn gallery_step(
   )
 
   // 2. Begin Frame
+  if comp_id != gallery_state.active_comp_id {
+    gallery_state.active_comp_id = comp_id
+    gallery_state.cmd_open = false
+    gallery_state.ctx_menu_open = false
+    gallery_ctx.set_open_combo_id(@core.Id::zero())
+    gallery_ctx.set_open_menu_id(@core.Id::zero())
+  }
   gallery_ctx.begin_frame(raw)
 
   // 3. Render Subtle Studio Light Grid Background

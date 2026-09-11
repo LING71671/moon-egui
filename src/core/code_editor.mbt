@@ -117,6 +117,9 @@ pub fn UIContext::code_editor(
 
   let id = self.id_stack.derive_id("code_editor::" + id_salt)
   let (_anon_id, rect, resp) = self.allocate_space(editor_size)
+  if resp.hovered {
+    self.set_cursor_icon("text")
+  }
 
   self.register_focusable(id)
   if resp.pressed() || resp.clicked() {

@@ -231,6 +231,7 @@ pub fn UIContext::command_palette(
       row_h,
     )
     if row_rect.contains(self.input.mouse_pos) {
+      self.set_cursor_icon("pointer")
       new_selected_index = idx
       if self.input.mouse_pressed {
         clicked_id = Some(item.id)

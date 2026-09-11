@@ -70,6 +70,9 @@ pub fn UIContext::menu(
 
   let is_open = self.open_menu_id == menu_id
   let hovered = self.is_hovered(btn_rect)
+  if hovered {
+    self.set_cursor_icon("pointer")
+  }
 
   // Desktop Hover-to-Switch interaction:
   // If a menu is ALREADY open, moving the pointer over another menu trigger automatically
@@ -207,6 +210,7 @@ pub fn UIContext::menu_item(
   let is_hovered = self.is_hovered(rect) && !disabled
 
   if is_hovered {
+    self.set_cursor_icon("pointer")
     self.draw_list.add_rect(rect, @color.Color::bg_surface(), 4.0)
   }
 

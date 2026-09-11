@@ -53,6 +53,8 @@ pub struct UIContext {
   mut foreground : Bool
   blocking_rects : Array[@math.Rect]
   prev_blocking_rects : Array[@math.Rect]
+  mut style : WidgetStyle
+  mut cursor_icon : String
 } derive(Eq, Debug)
 
 ///|
@@ -97,11 +99,14 @@ pub fn UIContext::new() -> UIContext {
     foreground: false,
     blocking_rects: [],
     prev_blocking_rects: [],
+    style: WidgetStyle::default(),
+    cursor_icon: "default",
   }
 }
 
 ///|
 pub fn UIContext::begin_frame(self : UIContext, raw_input : RawInput) -> Unit {
+  self.cursor_icon = "default"
   self.input.update(raw_input)
   self.draw_list.clear()
   self.fg_draw_list.clear()
@@ -224,6 +229,27 @@ pub fn UIContext::set_item_spacing(
   spacing : @math.Vec2,
 ) -> Unit {
   self.item_spacing = spacing
+}
+
+///|
+pub fn UIContext::style(self : UIContext) -> WidgetStyle {
+  self.style
+}
+
+///|
+pub fn UIContext::set_style(self : UIContext, style : WidgetStyle) -> Unit {
+  self.style = style
+  self.item_spacing = style.item_spacing
+}
+
+///|
+pub fn UIContext::cursor_icon(self : UIContext) -> String {
+  self.cursor_icon
+}
+
+///|
+pub fn UIContext::set_cursor_icon(self : UIContext, icon : String) -> Unit {
+  self.cursor_icon = icon
 }
 
 ///|

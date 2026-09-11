@@ -233,6 +233,9 @@ pub fn UIContext::tree_view(
     let chevron_x = row_rect.x + 4.0 + flat.depth.to_double() * indent_step
     let chevron_rect = @math.Rect::new(chevron_x, row_y, 16.0, item_height)
     let is_chevron_hovered = flat.has_children && self.is_hovered(chevron_rect)
+    if is_row_hovered || is_chevron_hovered {
+      self.set_cursor_icon("pointer")
+    }
 
     // Handle clicks
     if self.input.mouse_pressed {

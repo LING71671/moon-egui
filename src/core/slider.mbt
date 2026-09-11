@@ -8,29 +8,44 @@ pub fn UIContext::slider(
   min : Double,
   max : Double,
 ) -> (Double, Response) {
-  let label_size = self.measure_text(label, 13.0)
-  let label_w = if label.length() > 0 { label_size.x + 12.0 } else { 0.0 }
-  let track_w = 120.0
-  let val_w = 42.0
-  let total_w = label_w + track_w + val_w + 8.0
-  let h = 24.0
+  let scale = self.style.scale
+  let font_size = self.style.font_normal * scale
+  let label_size = self.measure_text(label, font_size)
+  let label_w = if label.length() > 0 {
+    label_size.x + 12.0 * scale
+  } else {
+    0.0
+  }
+  let track_w = self.style.slider_track_w * scale
+  let val_w = 42.0 * scale
+  let total_w = label_w + track_w + val_w + 8.0 * scale
+  let h = self.style.slider_h * scale
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
 
+  let track_h = 6.0 * scale
   let track_rect = @math.Rect::new(
     rect.x + label_w,
-    rect.y + (h - 6.0) * 0.5,
+    rect.y + (h - track_h) * 0.5,
     track_w,
-    6.0,
+    track_h,
   )
 
   // Hit-testing on interactive track zone
-  let touch_rect = @math.Rect::new(track_rect.x - 4.0, rect.y, track_w + 8.0, h)
+  let touch_rect = @math.Rect::new(
+    track_rect.x - 4.0 * scale,
+    rect.y,
+    track_w + 8.0 * scale,
+    h,
+  )
   let is_hovered = self.is_hovered(touch_rect)
   if is_hovered && self.input.mouse_pressed {
     self.set_active_id(id)
   }
 
   let is_active = self.active_id() == id
+  if is_hovered || is_active {
+    self.set_cursor_icon("ew-resize")
+  }
   let clamped_min = if min < max { min } else { max }
   let clamped_max = if max > min { max } else { min }
   let range = clamped_max - clamped_min
@@ -213,6 +228,9 @@ pub fn UIContext::drag_value(
   }
 
   let is_active = self.active_id() == id
+  if is_hovered || is_active {
+    self.set_cursor_icon("ew-resize")
+  }
   let mut new_val = value
 
   if is_active && self.input.mouse_down {

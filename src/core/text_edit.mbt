@@ -39,8 +39,14 @@ pub fn UIContext::text_edit_sized(
   self.pop_id()
 
   self.register_focusable(id)
-  let padding_x = 10.0
-  let font_size = 13.0
+  if resp.hovered {
+    self.set_cursor_icon("text")
+  }
+  let scale = self.style.scale
+  let padding_x = self.style.text_edit_pad_x * scale
+  let font_size = self.style.font_normal * scale
+  let caret_h = self.style.caret_h * scale
+  let radius = self.style.text_edit_radius * scale
 
   // Manage cursor position stored in UIContext
   let mut cursor_pos = self.get_text_cursor_pos(id, text.length())
@@ -145,8 +151,8 @@ pub fn UIContext::text_edit_sized(
   let border_width = if is_focused { 1.5 } else { 1.0 }
 
   // Draw background and border
-  self.draw_list.add_rect(rect, bg_color, 5.0)
-  self.draw_list.add_rect_stroke(rect, border_color, border_width, 5.0)
+  self.draw_list.add_rect(rect, bg_color, radius)
+  self.draw_list.add_rect_stroke(rect, border_color, border_width, radius)
 
   // Scissor clip for text inside input box
   let inner_clip = @math.Rect::new(
@@ -182,7 +188,6 @@ pub fn UIContext::text_edit_sized(
     let sub = string_slice(current_text, 0, cursor_pos)
     let measured_prefix = measure_text_size(sub, font_size)
     let caret_x = rect.x + padding_x + measured_prefix.x
-    let caret_h = 16.0
     let caret_top = rect.y + (rect.h - caret_h) * 0.5
     let caret_bottom = caret_top + caret_h
     self.draw_list.add_line(
@@ -205,11 +210,12 @@ pub fn UIContext::text_edit(
   text : String,
   placeholder : String,
 ) -> (String, Response) {
-  let w = if self.available_width > 200.0 {
-    200.0
+  let default_w = 200.0 * self.style.scale
+  let w = if self.available_width > default_w {
+    default_w
   } else {
     self.available_width
   }
-  let h = 32.0
+  let h = self.style.text_edit_h * self.style.scale
   self.text_edit_sized(id_salt, text, placeholder, @math.Vec2::new(w, h))
 }

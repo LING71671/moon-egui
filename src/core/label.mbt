@@ -26,7 +26,7 @@ pub fn UIContext::separator(self : UIContext) -> Unit {
   let w = self.available_width
   let h = 9.0
   let (_id, rect, _resp) = self.allocate_space(@math.Vec2::new(w, h))
-  let y = rect.y + 4.0
+  let y = rect.y + 4.5
   self.draw_list.add_line(
     @math.Vec2::new(rect.x, y),
     @math.Vec2::new(rect.x + rect.w, y),

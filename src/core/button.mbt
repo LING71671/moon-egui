@@ -11,17 +11,28 @@ pub fn UIContext::button(
   primary? : Bool = false,
   size? : @math.Vec2 = @math.Vec2::zero(),
 ) -> Response {
-  let text_size = self.measure_text(text, 13.0)
+  let scale = self.style.scale
+  let font_size = self.style.font_normal * scale
+  let text_size = self.measure_text(text, font_size)
   let text_w = text_size.x
   let has_shortcut = shortcut.length() > 0
+  let kbd_font_size = self.style.font_small * scale
   let kbd_w = if has_shortcut {
-    self.measure_text(shortcut, 11.0).x + 14.0
+    self.measure_text(shortcut, kbd_font_size).x + 14.0 * scale
   } else {
     0.0
   }
 
-  let min_w = if has_shortcut { 88.0 } else { 68.0 }
-  let pad_w = if has_shortcut { 36.0 } else { 28.0 }
+  let min_w = if has_shortcut {
+    (self.style.button_min_w + 20.0) * scale
+  } else {
+    self.style.button_min_w * scale
+  }
+  let pad_w = if has_shortcut {
+    36.0 * scale
+  } else {
+    self.style.button_pad_x * 2.0 * scale
+  }
   let content_w = if has_shortcut {
     text_w + kbd_w + pad_w
   } else {
@@ -29,12 +40,15 @@ pub fn UIContext::button(
   }
   let auto_w = if content_w > min_w { content_w } else { min_w }
   let w = if size.x > 0.0 { size.x } else { auto_w }
-  let h = if size.y > 0.0 { size.y } else { 32.0 }
+  let h = if size.y > 0.0 { size.y } else { self.style.button_h * scale }
 
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
+  if resp.hovered {
+    self.set_cursor_icon("pointer")
+  }
 
   // 1.5px Mechanical Press Travel & Tactile Actuation Displacement
-  let press_offset = if resp.pressed { 1.5 } else { 0.0 }
+  let press_offset = if resp.pressed { 1.5 * scale } else { 0.0 }
   let draw_rect = @math.Rect::new(
     rect.x,
     rect.y + press_offset,
@@ -83,26 +97,28 @@ pub fn UIContext::button(
     @color.Color::text_body()
   }
 
-  self.draw_list.add_rect(draw_rect, bg_color, 6.0)
-  self.draw_list.add_rect_stroke(draw_rect, border_color, 1.0, 6.0)
+  let radius = self.style.button_radius * scale
+  self.draw_list.add_rect(draw_rect, bg_color, radius)
+  self.draw_list.add_rect_stroke(draw_rect, border_color, 1.0, radius)
 
   if has_shortcut {
     // Left-align text when shortcut badge exists
-    let text_x = draw_rect.x + 12.0
-    let text_y = draw_rect.y + (draw_rect.h - 13.0) * 0.5
+    let text_x = draw_rect.x + 12.0 * scale
+    let text_y = draw_rect.y + (draw_rect.h - font_size) * 0.5
     self.draw_list.add_text(
       @math.Vec2::new(text_x, text_y),
       text,
-      13.0,
+      font_size,
       text_color,
     )
 
     // Chiclet Shortcut Badge (synchronously moves down on press)
+    let kbd_h = 18.0 * scale
     let kbd_rect = @math.Rect::new(
-      draw_rect.x + draw_rect.w - kbd_w - 10.0,
-      draw_rect.y + (draw_rect.h - 18.0) * 0.5,
+      draw_rect.x + draw_rect.w - kbd_w - 10.0 * scale,
+      draw_rect.y + (draw_rect.h - kbd_h) * 0.5,
       kbd_w,
-      18.0,
+      kbd_h,
     )
     let (kbd_bg, kbd_col) = if primary {
       (@color.Color::accent_highlight(), @color.Color::white())
@@ -122,24 +138,24 @@ pub fn UIContext::button(
         },
       )
     }
-    self.draw_list.add_rect(kbd_rect, kbd_bg, 4.0)
-    let sc_w = self.measure_text(shortcut, 11.0).x
+    self.draw_list.add_rect(kbd_rect, kbd_bg, 4.0 * scale)
+    let sc_w = self.measure_text(shortcut, kbd_font_size).x
     let kbd_text_x = kbd_rect.x + (kbd_rect.w - sc_w) * 0.5
-    let kbd_text_y = kbd_rect.y + (kbd_rect.h - 11.0) * 0.5
+    let kbd_text_y = kbd_rect.y + (kbd_rect.h - kbd_font_size) * 0.5
     self.draw_list.add_text(
       @math.Vec2::new(kbd_text_x, kbd_text_y),
       shortcut,
-      11.0,
+      kbd_font_size,
       kbd_col,
     )
   } else {
     // Center-align text in standard button
     let text_x = draw_rect.x + (draw_rect.w - text_w) * 0.5
-    let text_y = draw_rect.y + (draw_rect.h - 13.0) * 0.5
+    let text_y = draw_rect.y + (draw_rect.h - font_size) * 0.5
     self.draw_list.add_text(
       @math.Vec2::new(text_x, text_y),
       text,
-      13.0,
+      font_size,
       text_color,
     )
   }
@@ -193,6 +209,9 @@ pub fn UIContext::color_button(
 ) -> (Bool, Response) {
   let size = 22.0
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(size, size))
+  if resp.hovered {
+    self.set_cursor_icon("pointer")
+  }
 
   let press_offset = if resp.pressed { 1.0 } else { 0.0 }
   let btn_rect = @math.Rect::new(

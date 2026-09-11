@@ -35,11 +35,16 @@ pub fn UIContext::progress_bar(
   let text_size = self.measure_text(display_text, 11.0)
   let text_x = rect.x + (rect.w - text_size.x) * 0.5
   let text_y = rect.y + (rect.h - 11.0) * 0.5
+  let text_color = if clamped_pct >= 0.5 {
+    @color.Color::white()
+  } else {
+    @color.Color::text_primary()
+  }
   self.draw_list.add_text(
     @math.Vec2::new(text_x, text_y),
     display_text,
     11.0,
-    @color.Color::white(),
+    text_color,
   )
 
   resp

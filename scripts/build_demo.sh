@@ -42,6 +42,14 @@ if [ -z "$GALLERY_STEP" ]; then
   exit 1
 fi
 
+STATUS=$(grep -oE 'function (_M0[A-Za-z0-9_]*get__gallery__status)\(' "$BUILD" |
+  head -n 1 |
+  sed -e 's/^function //' -e 's/($//' || true)
+
+CURSOR=$(grep -oE 'function (_M0[A-Za-z0-9_]*get__gallery__cursor)\(' "$BUILD" |
+  head -n 1 |
+  sed -e 's/^function //' -e 's/($//' || true)
+
 cp "$BUILD" "$OUT"
 {
   echo
@@ -49,6 +57,14 @@ cp "$BUILD" "$OUT"
   echo "if (typeof globalThis !== 'undefined') globalThis.moon_step = $STEP;"
   echo "if (typeof window !== 'undefined') window.moon_gallery_step = $GALLERY_STEP;"
   echo "if (typeof globalThis !== 'undefined') globalThis.moon_gallery_step = $GALLERY_STEP;"
+  if [ -n "$STATUS" ]; then
+    echo "if (typeof window !== 'undefined') window.moon_gallery_status = $STATUS;"
+    echo "if (typeof globalThis !== 'undefined') globalThis.moon_gallery_status = $STATUS;"
+  fi
+  if [ -n "$CURSOR" ]; then
+    echo "if (typeof window !== 'undefined') window.moon_gallery_cursor = $CURSOR;"
+    echo "if (typeof globalThis !== 'undefined') globalThis.moon_gallery_cursor = $CURSOR;"
+  fi
 } >> "$OUT"
 
-echo "wrote $OUT (entry points: $STEP, $GALLERY_STEP)"
+echo "wrote $OUT (entry points: $STEP, $GALLERY_STEP, status, cursor)"
