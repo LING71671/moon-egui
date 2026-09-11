@@ -2069,6 +2069,127 @@
       color: var(--text-sub, #64748B);
     }
 
+    /* ContextMenu Interactive CAD Board Showcase */
+    .ctx-sandbox-wrap {
+      width: 100%;
+      height: 100%;
+      min-height: 480px;
+      position: relative;
+      background: radial-gradient(#CBD5E1 1px, transparent 1px);
+      background-size: 20px 20px;
+      background-color: #F8FAFC;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    .ctx-topbar {
+      height: 38px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-muted, #E2E8F0);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 12px;
+      color: var(--text-sub, #64748B);
+      z-index: 10;
+    }
+
+    .ctx-cad-node {
+      position: absolute;
+      width: 170px;
+      padding: 12px 14px;
+      background: #FFFFFF;
+      border: 1px solid var(--border, #CBD5E1);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      z-index: 5;
+    }
+
+    .ctx-cad-node:hover,
+    .ctx-cad-node.is-selected {
+      border-color: var(--brand, #2563EB);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.12);
+    }
+
+    .ctx-cad-node-title {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-main, #0F172A);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ctx-cad-node-desc {
+      font-size: 11px;
+      color: var(--text-sub, #64748B);
+      margin-top: 4px;
+    }
+
+    .ctx-menu-card {
+      position: absolute;
+      width: 180px;
+      background: #FFFFFF;
+      border: 1px solid var(--border, #CBD5E1);
+      border-radius: 6px;
+      padding: 4px;
+      box-shadow: 0 12px 32px -4px rgba(15, 23, 42, 0.18), 0 2px 6px -1px rgba(15, 23, 42, 0.06);
+      z-index: 100;
+      animation: ctxMenuPop 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes ctxMenuPop {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .ctx-item-row {
+      height: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--text-main, #0F172A);
+      cursor: pointer;
+      transition: background 0.1s ease;
+    }
+
+    .ctx-item-row:hover {
+      background: var(--bg-subtle, #F1F5F9);
+      color: var(--brand, #2563EB);
+    }
+
+    .ctx-item-row.is-disabled {
+      color: var(--text-disabled, #94A3B8);
+      cursor: not-allowed;
+    }
+
+    .ctx-item-row.is-disabled:hover {
+      background: transparent;
+      color: var(--text-disabled, #94A3B8);
+    }
+
+    .ctx-item-shortcut {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      color: var(--text-sub, #64748B);
+    }
+
+    .ctx-separator {
+      height: 1px;
+      background: var(--border-muted, #E2E8F0);
+      margin: 4px 6px;
+    }
+
     /* Footer - Exactly matching index.html */
     .site-footer {
       border-top: 1px solid var(--border);

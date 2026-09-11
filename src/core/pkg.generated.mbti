@@ -29,6 +29,23 @@ pub struct CommandPaletteResponse {
   selected_index : Int
 } derive(Eq, @debug.Debug)
 
+pub struct ContextMenuItem {
+  id : String
+  label : String
+  shortcut : String
+  disabled : Bool
+  is_separator : Bool
+} derive(Eq, @debug.Debug)
+pub fn ContextMenuItem::new(String, String, shortcut? : String, disabled? : Bool) -> Self
+pub fn ContextMenuItem::separator() -> Self
+
+pub struct ContextMenuResponse {
+  open : Bool
+  selected_id : String?
+  pos : @math.Vec2
+  size : @math.Vec2
+} derive(Eq, @debug.Debug)
+
 pub(all) enum Event {
   Key(Key, Bool, Modifiers)
   TextInput(String)
@@ -252,6 +269,8 @@ pub fn UIContext::collapsing_header(Self, String, String, Bool, (Self) -> Unit) 
 pub fn UIContext::color_button(Self, String, @color.Color) -> (Bool, Response)
 pub fn UIContext::combo_box(Self, String, String, Int, Array[String]) -> (Int, Response)
 pub fn UIContext::command_palette(Self, Bool, String, Array[CommandItem], selected_index? : Int) -> CommandPaletteResponse
+pub fn UIContext::context_menu(Self, String, Bool, @math.Vec2, (Self) -> Unit, menu_width? : Double, viewport_size? : @math.Vec2) -> ContextMenuResponse
+pub fn UIContext::context_menu_items(Self, String, Bool, @math.Vec2, Array[ContextMenuItem], menu_width? : Double, viewport_size? : @math.Vec2) -> ContextMenuResponse
 pub fn UIContext::current_clip(Self) -> @math.Rect?
 pub fn UIContext::cursor(Self) -> @math.Vec2
 pub fn UIContext::drag_value(Self, String, Double, Double, Double, Double) -> (Double, Response)

@@ -1992,6 +1992,238 @@ pub fn draw_command_palette(ui : @core.UIContext, state : AppState) -> Unit {
           };
           window.addEventListener('keydown', globalShortcutHandler);
         }
+      },
+      context_menu: {
+        titleKey: 'comp.context_menu.title',
+        signature: "ui.context_menu_items(id_salt, open, pos, items, menu_width?~) -> ContextMenuResponse",
+        code: {
+          zh: `///|
+pub fn draw_cad_nodes(ui : @core.UIContext, state : AppState) -> Unit {
+  // 渲染画板节点
+  let node_resp = ui.window("变换矩阵", @math.Vec2::new(120.0, 80.0), @math.Vec2::new(200.0, 120.0), fn(w) {
+    w.label("平移: (10.0, 20.0)")
+    w.label("缩放: 1.0x")
+  })
+
+  // 右键命中检测
+  if node_resp.clicked && ui.input().mouse_down() {
+    state.menu_open = true
+    state.menu_pos = ui.input().mouse_pos()
+  }
+
+  // 定义上下文菜单项
+  let items = [
+    @core.ContextMenuItem::new("copy", "复制节点", shortcut="⌘C"),
+    @core.ContextMenuItem::new("clone", "克隆分支", shortcut="⌘D"),
+    @core.ContextMenuItem::separator(),
+    @core.ContextMenuItem::new("reset", "重置参数", shortcut="⌥R"),
+    @core.ContextMenuItem::new("delete", "删除图元", shortcut="⌫"),
+  ]
+
+  // 调用自适应边界翻转上下文菜单
+  let res = ui.context_menu_items("node_ctx", state.menu_open, state.menu_pos, items)
+  state.menu_open = res.open
+
+  if res.selected_id is Some(action) {
+    handle_node_action(state, action)
+  }
+}`,
+          en: `///|
+pub fn draw_cad_nodes(ui : @core.UIContext, state : AppState) -> Unit {
+  // Render canvas node
+  let node_resp = ui.window("Matrix Transform", @math.Vec2::new(120.0, 80.0), @math.Vec2::new(200.0, 120.0), fn(w) {
+    w.label("Translation: (10.0, 20.0)")
+    w.label("Scale: 1.0x")
+  })
+
+  // Right click trigger
+  if node_resp.clicked && ui.input().mouse_down() {
+    state.menu_open = true
+    state.menu_pos = ui.input().mouse_pos()
+  }
+
+  // Context menu item catalog
+  let items = [
+    @core.ContextMenuItem::new("copy", "Copy Node", shortcut="⌘C"),
+    @core.ContextMenuItem::new("clone", "Duplicate", shortcut="⌘D"),
+    @core.ContextMenuItem::separator(),
+    @core.ContextMenuItem::new("reset", "Reset Parameters", shortcut="⌥R"),
+    @core.ContextMenuItem::new("delete", "Delete Element", shortcut="⌫"),
+  ]
+
+  // Context menu with automatic collision boundary flipping
+  let res = ui.context_menu_items("node_ctx", state.menu_open, state.menu_pos, items)
+  state.menu_open = res.open
+
+  if res.selected_id is Some(action) {
+    handle_node_action(state, action)
+  }
+}`
+        },
+        renderUI: (container, state) => {
+          state.ctxMenuOpen = false;
+          state.ctxMenuPos = { x: 0, y: 0 };
+          state.selectedNode = null;
+
+          const menuItems = [
+            { id: 'copy', label: T('复制节点', 'Copy Node'), shortcut: '⌘C' },
+            { id: 'clone', label: T('克隆分支', 'Duplicate Branch'), shortcut: '⌘D' },
+            { is_separator: true },
+            { id: 'align', label: T('对齐至网格', 'Snap to Grid'), shortcut: '⇧⌘A' },
+            { id: 'reset', label: T('重置矩阵参数', 'Reset Matrix'), shortcut: '⌥R' },
+            { is_separator: true },
+            { id: 'delete', label: T('删除元素', 'Delete Element'), shortcut: '⌫' }
+          ];
+
+          container.innerHTML = `
+            <div class="ctx-sandbox-wrap" id="ctxSandbox">
+              <div class="ctx-topbar">
+                <span>${T('CAD 交互节点画板 (在此区域或节点上右键单击)', 'CAD Node Stage (Right-click anywhere or on nodes)')}</span>
+                <span style="font-family: 'JetBrains Mono', monospace;" id="ctxCoordHint">${T('坐标: (0, 0)', 'Coords: (0, 0)')}</span>
+              </div>
+
+              <!-- Node 1 -->
+              <div class="ctx-cad-node" id="node1" style="left: 60px; top: 70px;">
+                <div class="ctx-cad-node-title">
+                  <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background: var(--brand, #2563EB);"></span>
+                  ${T('矩阵变换节点', 'Matrix Transform')}
+                </div>
+                <div class="ctx-cad-node-desc">
+                  ${T('平移: (120, 80) · 缩放: 1.0x', 'Trans: (120, 80) · Scale: 1.0x')}
+                </div>
+              </div>
+
+              <!-- Node 2 -->
+              <div class="ctx-cad-node" id="node2" style="left: 280px; top: 180px;">
+                <div class="ctx-cad-node-title">
+                  <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background: #22C55E;"></span>
+                  ${T('几何渲染拓扑', 'Geometry Topology')}
+                </div>
+                <div class="ctx-cad-node-desc">
+                  ${T('图元: 12,400 · 拓扑: 贝塞尔', 'Primitives: 12,400 · Bezier')}
+                </div>
+              </div>
+
+              <!-- Context Menu Floating Card -->
+              <div class="ctx-menu-card" id="ctxMenuCard" style="display: none;"></div>
+            </div>
+          `;
+
+          const sandbox = container.querySelector('#ctxSandbox');
+          const menuCard = container.querySelector('#ctxMenuCard');
+          const coordHint = container.querySelector('#ctxCoordHint');
+          const node1 = container.querySelector('#node1');
+          const node2 = container.querySelector('#node2');
+
+          function renderMenuItems() {
+            let html = '';
+            menuItems.forEach((it) => {
+              if (it.is_separator) {
+                html += `<div class="ctx-separator"></div>`;
+              } else {
+                html += `
+                  <div class="ctx-item-row" data-id="${it.id}">
+                    <span>${it.label}</span>
+                    <span class="ctx-item-shortcut">${it.shortcut}</span>
+                  </div>
+                `;
+              }
+            });
+            menuCard.innerHTML = html;
+
+            menuCard.querySelectorAll('.ctx-item-row').forEach(row => {
+              row.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const act = row.getAttribute('data-id');
+                const label = row.querySelector('span').textContent;
+                closeMenu();
+                showToast(T(`已触发动作: ${label}`, `Action triggered: ${label}`));
+                document.getElementById('statResponse').textContent = `context_menu: selected "${act}"`;
+              });
+            });
+          }
+
+          renderMenuItems();
+
+          function openMenuAt(clientX, clientY) {
+            const rect = sandbox.getBoundingClientRect();
+            let x = clientX - rect.left;
+            let y = clientY - rect.top;
+
+            coordHint.textContent = `${T('坐标', 'Coords')}: (${Math.round(x)}, ${Math.round(y)})`;
+
+            // Collision flip calculation matching MoonBit core
+            const menuW = 180;
+            const menuH = 185;
+            const vw = rect.width;
+            const vh = rect.height;
+
+            let placedX = x + 2;
+            let placedY = y + 2;
+
+            if (placedX + menuW > vw) {
+              placedX = x - menuW - 2;
+              if (placedX < 4) placedX = vw - menuW - 4;
+            }
+            if (placedX < 4) placedX = 4;
+
+            if (placedY + menuH > vh) {
+              placedY = y - menuH - 2;
+              if (placedY < 4) placedY = vh - menuH - 4;
+            }
+            if (placedY < 4) placedY = 4;
+
+            menuCard.style.left = `${placedX}px`;
+            menuCard.style.top = `${placedY}px`;
+            menuCard.style.display = 'block';
+            state.ctxMenuOpen = true;
+            document.getElementById('statResponse').textContent = `context_menu: open at (${Math.round(placedX)}, ${Math.round(placedY)})`;
+          }
+
+          function closeMenu() {
+            menuCard.style.display = 'none';
+            state.ctxMenuOpen = false;
+            node1.classList.remove('is-selected');
+            node2.classList.remove('is-selected');
+          }
+
+          // Right click on sandbox
+          sandbox.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            openMenuAt(e.clientX, e.clientY);
+          });
+
+          // Left click on nodes to select & show context menu option
+          node1.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            node1.classList.add('is-selected');
+            node2.classList.remove('is-selected');
+            openMenuAt(e.clientX, e.clientY);
+          });
+
+          node2.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            node2.classList.add('is-selected');
+            node1.classList.remove('is-selected');
+            openMenuAt(e.clientX, e.clientY);
+          });
+
+          // Outside click dismissal
+          window.addEventListener('click', (e) => {
+            if (state.ctxMenuOpen && !menuCard.contains(e.target)) {
+              closeMenu();
+            }
+          });
+
+          // Escape dismissal
+          window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && state.ctxMenuOpen) {
+              closeMenu();
+            }
+          });
+        }
       }
     };
 
