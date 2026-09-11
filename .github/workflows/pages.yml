@@ -24,6 +24,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install MoonBit Toolchain
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          echo "$HOME/.moon/bin" >> $GITHUB_PATH
+
+      # The published site must be built from src/, not from the copy of
+      # canvas.js committed to the repository, so the demo can never ship a
+      # stale engine.
+      - name: Build demo bundle
+        run: sh scripts/build_demo.sh
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
