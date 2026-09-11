@@ -41,6 +41,17 @@ pub fn UIContext::window(
   let title_bar_h = 28.0
   let id = self.id_stack.derive_id("window::" + id_salt.unwrap_or(title))
 
+  // A floating window is not subject to the scissor clip of whatever container
+  // declared it - neither when it draws nor when it tests the pointer. The
+  // caller's clip stack is suspended for this whole body and restored at the
+  // end, so the window's own content clip is the only one that applies.
+  let saved_draw_list = self.draw_list
+  let saved_clip : Array[@math.Rect] = []
+  for clip in self.clip_stack {
+    saved_clip.push(clip)
+  }
+  self.clip_stack.clear()
+
   let mut win_pos = self.get_window_pos(id, pos)
   let mut window_rect = @math.Rect::new(win_pos.x, win_pos.y, size.x, size.y)
   let mut title_bar_rect = @math.Rect::new(
@@ -100,13 +111,6 @@ pub fn UIContext::window(
   let batch = self.window_batch(id)
   batch.clear()
   self.window_drawn.push(id)
-
-  let saved_draw_list = self.draw_list
-  let saved_clip : Array[@math.Rect] = []
-  for clip in self.clip_stack {
-    saved_clip.push(clip)
-  }
-  self.clip_stack.clear()
   self.draw_list = batch
 
   let x = win_pos.x

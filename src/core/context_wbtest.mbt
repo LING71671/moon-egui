@@ -566,3 +566,44 @@ test "window drag is clamped to the constrain_to bounds" {
   assert_eq(resp.rect.x, 200.0)
   assert_eq(resp.rect.y, 200.0)
 }
+
+///|
+test "a drag that stays inside the bounds passes through the clamp untouched" {
+  let ctx = UIContext::new()
+  let size = @math.Vec2::new(100.0, 100.0)
+  let start = @math.Vec2::new(40.0, 40.0)
+  let bounds = @math.Rect::new(0.0, 0.0, 600.0, 600.0)
+
+  // Frame 1: grab the title bar
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(80.0, 50.0), true))
+  let _ = ctx.window("Panel", start, size, fn(_ui) {  }, constrain_to=bounds)
+  let _ = ctx.end_frame()
+
+  // Frame 2: a small move well inside the bounds
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(100.0, 70.0), true))
+  let resp = ctx.window("Panel", start, size, fn(_ui) {  }, constrain_to=bounds)
+  let _ = ctx.end_frame()
+
+  // 40 + (100 - 80) and 40 + (70 - 50): the clamp must not nudge either axis
+  assert_eq(resp.rect.x, 60.0)
+  assert_eq(resp.rect.y, 60.0)
+}
+
+///|
+test "a window declared inside a clip stack ignores that clip" {
+  let ctx = UIContext::new()
+  let size = @math.Vec2::new(100.0, 100.0)
+  let win_pos = @math.Vec2::new(200.0, 200.0)
+
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(250.0, 210.0), false))
+
+  // A tiny clip that excludes the window entirely
+  ctx.push_clip(@math.Rect::new(0.0, 0.0, 50.0, 50.0))
+  let resp = ctx.window("Panel", win_pos, size, fn(_ui) {  })
+  ctx.pop_clip()
+
+  // Floating windows are composited unclipped, so their pointer test has to
+  // ignore the clip too, and the caller's clip stack must come back intact.
+  assert_true(resp.hovered())
+  assert_true(ctx.current_clip() is None)
+}

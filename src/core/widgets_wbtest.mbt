@@ -534,3 +534,48 @@ test "widgets: drag_value speed modifiers shift and ctrl" {
   // Delta is 10.0 * 1.0 * 10.0 = 100.0
   assert_eq(v4, 200.0)
 }
+
+///|
+test "widgets: combo_box dismisses on a press outside the box and popup" {
+  let ctx = UIContext::new()
+  let options = ["Dark", "Light", "Solarized"]
+
+  // Frame 1: press the box to open the dropdown
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(100.0, 14.0), true))
+  let _ = ctx.combo_box("combo_theme", "Theme", 0, options)
+  assert_true(ctx.open_combo_id() != Id::zero())
+  let _ = ctx.end_frame()
+
+  // Frame 2: releasing over the box keeps it open
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(100.0, 14.0), false))
+  let _ = ctx.combo_box("combo_theme", "Theme", 0, options)
+  assert_true(ctx.open_combo_id() != Id::zero())
+  let _ = ctx.end_frame()
+
+  // Frame 3: pressing well away from both closes it
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(600.0, 400.0), true))
+  let _ = ctx.combo_box("combo_theme", "Theme", 0, options)
+  assert_eq(ctx.open_combo_id(), Id::zero())
+}
+
+///|
+test "widgets: tab_bar sizes each tab by its measured text width" {
+  let ctx = UIContext::new()
+  ctx.begin_frame(RawInput::new())
+
+  // Latin: 1 * 13 * 0.58 = 7.54 plus 24 of padding
+  let ascii_w = measure_text_size("A", 13.0).x + 24.0
+  let (_, resp_ascii) = ctx.tab_bar("tabs_ascii", ["A"], 0)
+  assert_eq(resp_ascii.rect.w, ascii_w)
+
+  // CJK: 2 * 13 * 1.05 = 27.3 plus 24 of padding. A fixed 8px-per-character
+  // estimate gave 2 * 8 + 24 = 40 and let the label overflow its tab.
+  let cjk_w = measure_text_size("月兔", 13.0).x + 24.0
+  let (_, resp_cjk) = ctx.tab_bar("tabs_cjk", ["月兔"], 0)
+  assert_eq(resp_cjk.rect.w, cjk_w)
+  assert_true(resp_cjk.rect.w > 40.0)
+
+  // The groove spans the sum of the individual tabs
+  let (_, resp_mixed) = ctx.tab_bar("tabs_mixed", ["A", "月兔"], 0)
+  assert_eq(resp_mixed.rect.w, ascii_w + cjk_w)
+}

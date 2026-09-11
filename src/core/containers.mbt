@@ -204,6 +204,16 @@ pub fn UIContext::combo_box(
     self.begin_foreground()
     self.block_hover(menu_rect)
 
+    // A press outside both the box and the popup dismisses the dropdown. The
+    // popup itself is already on the foreground layer, so its rect is tested
+    // against the pointer without the scissor clip of the hosting container -
+    // a popup that extends past its container is still dismissed correctly.
+    if self.input.mouse_pressed() && !self.is_hovered(menu_rect) && !box_hovered {
+      self.set_open_combo_id(Id::zero())
+      self.end_foreground()
+      return (current_idx, resp)
+    }
+
     // Elevation shadow & border
     let shadow_rect = @math.Rect::new(
       menu_rect.x,
@@ -270,16 +280,20 @@ pub fn UIContext::combo_box(
 ///|
 /// Render a segmented horizontal tab bar in Studio Light.
 /// Returns a tuple of (new_selected_index, response).
+///
+/// Tab widths come from `measure_text`, which accounts for CJK glyphs being
+/// roughly twice as wide as Latin ones. A fixed per-character estimate used to
+/// make non-Latin labels overflow their tab and break the centring.
 pub fn UIContext::tab_bar(
   self : UIContext,
   _id_str : String,
   tabs : Array[String],
   selected_idx : Int,
 ) -> (Int, Response) {
-  let char_w = 8.0
+  let font_size = 13.0
   let mut total_w = 0.0
   for tab in tabs {
-    total_w = total_w + tab.length().to_double() * char_w + 24.0
+    total_w = total_w + self.measure_text(tab, font_size).x + 24.0
   }
   let h = 28.0
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
@@ -292,7 +306,8 @@ pub fn UIContext::tab_bar(
   let mut cur_x = rect.x
   for i = 0; i < tabs.length(); i = i + 1 {
     let tab_text = tabs[i]
-    let tab_w = tab_text.length().to_double() * char_w + 24.0
+    let text_w = self.measure_text(tab_text, font_size).x
+    let tab_w = text_w + 24.0
     let tab_rect = @math.Rect::new(cur_x, rect.y, tab_w, h)
     let is_hovered = self.is_hovered(tab_rect)
     let is_selected = i == current_selected
@@ -323,13 +338,12 @@ pub fn UIContext::tab_bar(
       @color.Color::text_muted()
     }
 
-    let text_x = tab_rect.x +
-      (tab_w - tab_text.length().to_double() * char_w) * 0.5
-    let text_y = tab_rect.y + (h - 13.0) * 0.5
+    let text_x = tab_rect.x + (tab_w - text_w) * 0.5
+    let text_y = tab_rect.y + (h - font_size) * 0.5
     self.draw_list.add_text(
       @math.Vec2::new(text_x, text_y),
       tab_text,
-      13.0,
+      font_size,
       text_col,
     )
 
