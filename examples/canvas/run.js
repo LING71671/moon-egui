@@ -83,6 +83,40 @@
     updateCursorHud();
   });
 
+  // Keyboard / Text Input -> forwarded to the engine as primitives. Named keys
+  // become key events, printable characters become text input; the engine side
+  // (host_input.mbt) decides how to interpret them.
+  let pendingText = '';
+  let keysPressed = [];
+  let keysReleased = [];
+  let modFlags = 0; // bit0 shift, bit1 ctrl, bit2 alt, bit3 meta
+
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey) modFlags |= 8;
+    if (e.ctrlKey) modFlags |= 1;
+    if (e.altKey) modFlags |= 4;
+    if (e.shiftKey) modFlags |= 2;
+
+    if (e.key.length > 1) {
+      keysPressed.push(e.key);
+      // Keys the UI consumes: keep them from scrolling the page or re-triggering
+      // the toolbar buttons.
+      if (['Tab', ' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter'].indexOf(e.key) >= 0) {
+        e.preventDefault();
+      }
+    } else if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+      // Printable character, delivered through the text channel
+      pendingText += e.key;
+      if (e.key === ' ') e.preventDefault();
+    }
+  }, { passive: false });
+
+  window.addEventListener('keyup', (e) => {
+    if (e.key.length > 1) {
+      keysReleased.push(e.key);
+    }
+  });
+
   // Wheel Zoom Listener
   canvas.addEventListener('wheel', (e) => {
     e.preventDefault();
@@ -640,8 +674,21 @@
       zoomFactor = 1.0;
       requestedMode = -1;
 
+      // Consume the input events collected since the last frame
+      const curText = pendingText;
+      const curKeysPressed = keysPressed;
+      const curKeysReleased = keysReleased;
+      const curMods = modFlags;
+      pendingText = '';
+      keysPressed = [];
+      keysReleased = [];
+      modFlags = 0;
+
       const t0 = performance.now();
-      const res = stepFn(mouseX, mouseY, isMouseDown, curPanX, curPanY, curZoom, curMode, width, height);
+      const res = stepFn(
+        mouseX, mouseY, isMouseDown, curPanX, curPanY, curZoom, curMode,
+        width, height, curText, curKeysPressed, curKeysReleased, curMods
+      );
       const dt = performance.now() - t0;
       kernelTimeRolling = kernelTimeRolling * 0.85 + dt * 0.15;
 

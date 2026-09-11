@@ -44,6 +44,13 @@ pub struct BenchmarkState {
   // In-Canvas Floating IMGUI Window State. The panel position and drag state
   // are owned by the UI context (UIContext::window), not by the app.
   mut show_studio : Bool
+
+  // Control panel contents: the open tab, the node-jump field and what happens
+  // after a jump.
+  mut panel_tab : Int
+  mut jump_text : String
+  mut jump_after : Int
+  mut show_grid : Bool
 }
 
 ///|
@@ -69,6 +76,10 @@ let state : BenchmarkState = {
   is_dragging_item: false,
   visible_cells: 0,
   show_studio: false,
+  panel_tab: 0,
+  jump_text: "",
+  jump_after: 1,
+  show_grid: true,
 }
 
 ///|

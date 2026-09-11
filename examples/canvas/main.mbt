@@ -27,6 +27,10 @@ pub struct FrameOutput {
 
 ///|
 /// Core benchmark frame update function supporting 128x128, 256x256, 512x512, 1024x1024.
+///
+/// Input crosses the JS boundary as primitives - pointer, the text typed this
+/// frame, the named keys pressed and released this frame, and a modifier
+/// bitmask - and `host_input.mbt` turns them into the library's events.
 pub fn step(
   mouse_x : Double,
   mouse_y : Double,
@@ -37,6 +41,10 @@ pub fn step(
   switch_mode : Int,
   vp_w : Double,
   vp_h : Double,
+  text_input : String,
+  keys_pressed : Array[String],
+  keys_released : Array[String],
+  mod_flags : Int,
 ) -> FrameOutput {
   state.frame_tick = state.frame_tick + 1.0
 
@@ -68,9 +76,8 @@ pub fn step(
   update_camera_zoom(state, ctx, zoom_delta, mouse_x, mouse_y, sc_x, sc_y)
 
   // 4. Begin GUI Frame
-  let raw = @core.RawInput::from_mouse(
-    @math.Vec2::new(mouse_x, mouse_y),
-    mouse_down,
+  let raw = host_raw_input(
+    mouse_x, mouse_y, mouse_down, text_input, keys_pressed, keys_released, mod_flags,
   )
   ctx.begin_frame(raw)
   let dl = ctx.draw_list()
@@ -100,7 +107,9 @@ pub fn step(
 
   // 8. Background Major Coordinate Aisles
   dl.push_clip(@math.Rect::new(cv_x, cv_y, cv_w, cv_h))
-  render_grid_aisles(dl, state, cv_x, cv_y, cv_w, cv_h, sc_x, sc_y)
+  if state.show_grid {
+    render_grid_aisles(dl, state, cv_x, cv_y, cv_w, cv_h, sc_x, sc_y)
+  }
   dl.pop_clip()
 
   // 9. Matrix Nodes (LOD Vector streaming or Background probe)
@@ -144,7 +153,21 @@ pub fn step(
 
 ///|
 fn main {
-  let frame = step(580.0, 270.0, false, 0.0, 0.0, 1.0, -1, 920.0, 540.0)
+  let frame = step(
+    580.0,
+    270.0,
+    false,
+    0.0,
+    0.0,
+    1.0,
+    -1,
+    920.0,
+    540.0,
+    "",
+    [],
+    [],
+    0,
+  )
   println(
     "Benchmark initialized, total commands: \{frame.draw_list.len()}, zoom: \{frame.zoom}",
   )
