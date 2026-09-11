@@ -291,7 +291,7 @@ pub fn UIContext::toggle(Self, String, Bool) -> (Bool, Response)
 pub fn UIContext::tooltip(Self, String) -> Unit
 pub fn UIContext::vertical(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::wants_capture_mouse(Self) -> Bool
-pub fn UIContext::window(Self, String, @math.Vec2, @math.Vec2, (Self) -> Unit, id_salt? : String) -> Response
+pub fn UIContext::window(Self, String, @math.Vec2, @math.Vec2, (Self) -> Unit, id_salt? : String, constrain_to? : @math.Rect) -> Response
 pub fn UIContext::window_z(Self, Id) -> Int
 
 // Type aliases

@@ -544,3 +544,25 @@ test "a raised window hides the window and the widgets underneath it" {
   assert_true(!resp.hovered())
   let _ = ctx.end_frame()
 }
+
+///|
+test "window drag is clamped to the constrain_to bounds" {
+  let ctx = UIContext::new()
+  let size = @math.Vec2::new(100.0, 100.0)
+  let start = @math.Vec2::zero()
+  let bounds = @math.Rect::new(0.0, 0.0, 300.0, 300.0)
+
+  // Frame 1: grab the title bar
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(50.0, 10.0), true))
+  let _ = ctx.window("Panel", start, size, fn(_ui) {  }, constrain_to=bounds)
+  let _ = ctx.end_frame()
+
+  // Frame 2: drag well past the bottom-right corner of the bounds
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(900.0, 900.0), true))
+  let resp = ctx.window("Panel", start, size, fn(_ui) {  }, constrain_to=bounds)
+  let _ = ctx.end_frame()
+
+  // Pinned to 300 - 100 on both axes
+  assert_eq(resp.rect.x, 200.0)
+  assert_eq(resp.rect.y, 200.0)
+}

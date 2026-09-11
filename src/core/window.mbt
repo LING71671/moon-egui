@@ -21,6 +21,9 @@
 /// the position and `pos` is ignored. The window is identified by `id_salt`,
 /// falling back to `title`, so two windows sharing a title need explicit salts.
 ///
+/// `constrain_to` clamps the window while it is dragged, so a panel cannot be
+/// dragged out of the viewport it belongs to.
+///
 /// Windows are composited in stacking order rather than call order: pressing
 /// anywhere inside a window raises it above its siblings, and the content is
 /// drawn into a batch that is flushed at `end_frame`. A window is therefore
@@ -33,6 +36,7 @@ pub fn UIContext::window(
   size : @math.Vec2,
   content : (UIContext) -> Unit,
   id_salt? : String,
+  constrain_to? : @math.Rect,
 ) -> Response {
   let title_bar_h = 28.0
   let id = self.id_stack.derive_id("window::" + id_salt.unwrap_or(title))
@@ -73,6 +77,9 @@ pub fn UIContext::window(
 
   if is_dragging {
     win_pos = win_pos.add(self.input.mouse_delta)
+    if constrain_to is Some(bounds) {
+      win_pos = clamp_window_pos(win_pos, size, bounds)
+    }
     self.set_window_pos(id, win_pos)
     window_rect = @math.Rect::new(win_pos.x, win_pos.y, size.x, size.y)
     title_bar_rect = @math.Rect::new(win_pos.x, win_pos.y, size.x, title_bar_h)
@@ -167,4 +174,31 @@ pub fn UIContext::window(
     id, window_rect, window_hovered, clicked, is_dragging, is_dragging, false, false,
     false,
   )
+}
+
+///|
+/// Keep a window fully inside `bounds`. When the bounds are smaller than the
+/// window the left/top edge wins, so the title bar always stays reachable.
+fn clamp_window_pos(
+  pos : @math.Vec2,
+  size : @math.Vec2,
+  bounds : @math.Rect,
+) -> @math.Vec2 {
+  let max_x = bounds.x + bounds.w - size.x
+  let max_y = bounds.y + bounds.h - size.y
+  let x = if pos.x < bounds.x {
+    bounds.x
+  } else if pos.x > max_x {
+    max_x
+  } else {
+    pos.x
+  }
+  let y = if pos.y < bounds.y {
+    bounds.y
+  } else if pos.y > max_y {
+    max_y
+  } else {
+    pos.y
+  }
+  @math.Vec2::new(x, y)
 }
