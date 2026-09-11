@@ -41,10 +41,8 @@ pub struct BenchmarkState {
   mut is_dragging_item : Bool
   mut visible_cells : Int
 
-  // In-Canvas Floating IMGUI Window State
-  mut win_pos_x : Double
-  mut win_pos_y : Double
-  mut win_dragging : Bool
+  // In-Canvas Floating IMGUI Window State. The panel position and drag state
+  // are owned by the UI context (UIContext::window), not by the app.
   mut show_studio : Bool
 }
 
@@ -70,9 +68,6 @@ let state : BenchmarkState = {
   item_drag_dy: 0.0,
   is_dragging_item: false,
   visible_cells: 0,
-  win_pos_x: -1.0,
-  win_pos_y: -1.0,
-  win_dragging: false,
   show_studio: false,
 }
 

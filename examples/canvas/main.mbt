@@ -59,11 +59,9 @@ pub fn step(
   let sc_x = cv_x + cv_w * 0.5
   let sc_y = cv_y + cv_h * 0.5
 
-  // 2. Window Drag Hit-test
-  update_studio_window_drag(state, mouse_x, mouse_y, mouse_down, cur_w, win_w)
-
-  // 3. Camera Pan & Zoom updates (pinning world point under mouse cursor)
-  update_camera_pan(state, ctx, pan_dx, pan_dy, cur_w, cur_h, win_w, win_h)
+  // 2. Camera Pan & Zoom updates (pinning world point under mouse cursor).
+  // The floating panel now owns its own drag and viewport clamping.
+  update_camera_pan(state, ctx, pan_dx, pan_dy)
   if !mouse_down {
     state.is_dragging_item = false
   }

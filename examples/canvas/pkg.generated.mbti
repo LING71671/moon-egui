@@ -55,9 +55,6 @@ pub struct BenchmarkState {
   mut item_drag_dy : Double
   mut is_dragging_item : Bool
   mut visible_cells : Int
-  mut win_pos_x : Double
-  mut win_pos_y : Double
-  mut win_dragging : Bool
   mut show_studio : Bool
 }
 

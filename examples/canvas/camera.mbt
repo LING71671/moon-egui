@@ -70,27 +70,11 @@ fn update_camera_pan(
   ctx : @core.UIContext,
   pan_dx : Double,
   pan_dy : Double,
-  cur_w : Double,
-  cur_h : Double,
-  win_w : Double,
-  win_h : Double,
 ) -> Unit {
   if pan_dx != 0.0 || pan_dy != 0.0 {
-    if state.win_dragging && state.show_studio {
-      state.win_pos_x = state.win_pos_x + pan_dx
-      state.win_pos_y = state.win_pos_y + pan_dy
-      if state.win_pos_x < 0.0 {
-        state.win_pos_x = 0.0
-      } else if state.win_pos_x > cur_w - win_w {
-        state.win_pos_x = cur_w - win_w
-      }
-      if state.win_pos_y < 0.0 {
-        state.win_pos_y = 0.0
-      } else if state.win_pos_y > cur_h - win_h {
-        state.win_pos_y = cur_h - win_h
-      }
-    } else if ctx.wants_capture_mouse() {
-      // Pointer captured by in-canvas GUI window / widgets
+    if ctx.wants_capture_mouse() {
+      // Pointer captured by the floating panel or an in-canvas widget; window
+      // dragging and clamping are handled by UIContext::window itself.
     } else if state.drag_mode == 1 && state.selected_id >= 0 {
       state.is_dragging_item = true
       state.item_drag_dx = state.item_drag_dx + pan_dx / state.zoom
