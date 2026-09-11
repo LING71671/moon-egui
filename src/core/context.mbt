@@ -634,16 +634,41 @@ pub fn UIContext::end_foreground(self : UIContext) -> Unit {
 }
 
 ///|
+fn ascii_char_ratio(code : Int) -> Double {
+  match code {
+    32 => 0.24 // space
+    33 | 39 | 44 | 46 | 58 | 59 | 105 | 108 | 124 => 0.28 // ! ' , . : ; i l |
+    106 | 114 | 116 | 102 | 73 => 0.38 // j r t f I
+    40 | 41 | 91 | 93 | 123 | 125 | 49 | 45 | 96 => 0.40 // ( ) [ ] { } 1 - `
+    47 | 92 | 42 | 122 => 0.48 // / \ * z
+    115 | 118 | 120 | 121 | 63 => 0.53 // s v x y ?
+    107 | 117 | 97 | 101 => 0.58 // k u a e
+    98 | 99 | 100 | 103 | 104 | 110 | 111 | 112 | 113 => 0.64 // b c d g h n o p q
+    48 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 => 0.60 // 0-9
+    43 | 60 | 61 | 62 | 94 | 95 | 126 => 0.62 // + < = > ^ _ ~
+    69 | 70 | 76 | 84 | 90 => 0.58 // E F L T Z
+    65 | 66 | 75 | 80 | 82 | 83 | 86 | 88 | 89 => 0.66 // A B K P R S V X Y
+    67 | 68 | 71 | 72 | 78 | 85 => 0.74 // C D G H N U
+    79 | 81 => 0.82 // O Q
+    77 | 87 | 119 => 0.88 // M W w
+    109 => 0.92 // m
+    64 | 37 => 0.94 // @ %
+    35 | 36 | 38 => 0.78 // # $ &
+    _ => 0.58
+  }
+}
+
+///|
 pub fn measure_text_size(text : String, font_size : Double) -> @math.Vec2 {
   let mut total_w = 0.0
-  let ascii_w = font_size * 0.58
   let cjk_w = font_size * 1.05
   for i = 0; i < text.length(); i = i + 1 {
     let ch = text[i]
-    if ch.to_int() > 255 {
+    let code = ch.to_int()
+    if code > 255 {
       total_w = total_w + cjk_w
     } else {
-      total_w = total_w + ascii_w
+      total_w = total_w + ascii_char_ratio(code) * font_size
     }
   }
   let h = font_size * 1.25

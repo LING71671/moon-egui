@@ -39,15 +39,39 @@ pub fn UIContext::text_edit_sized(
   self.pop_id()
 
   self.register_focusable(id)
-  if resp.pressed() || resp.clicked() {
-    self.request_focus(id)
-  }
-  let is_focused = self.has_focus(id)
+  let padding_x = 10.0
+  let font_size = 13.0
 
   // Manage cursor position stored in UIContext
   let mut cursor_pos = self.get_text_cursor_pos(id, text.length())
-
   let mut current_text = text
+
+  if resp.pressed() || resp.clicked() {
+    self.request_focus(id)
+  }
+  if self.input.mouse_pressed && (resp.hovered() || resp.pressed()) {
+    let click_x = self.input.mouse_pos.x - (rect.x + padding_x)
+    let total_text_w = measure_text_size(current_text, font_size).x
+    if click_x <= 0.0 {
+      cursor_pos = 0
+    } else if click_x >= total_text_w {
+      cursor_pos = current_text.length()
+    } else {
+      let mut best_i = 0
+      let mut best_dist = click_x
+      for i = 1; i <= current_text.length(); i = i + 1 {
+        let sub = string_slice(current_text, 0, i)
+        let w = measure_text_size(sub, font_size).x
+        let dist = if click_x > w { click_x - w } else { w - click_x }
+        if dist < best_dist {
+          best_dist = dist
+          best_i = i
+        }
+      }
+      cursor_pos = best_i
+    }
+  }
+  let is_focused = self.has_focus(id)
 
   if is_focused {
     // Navigation keys
@@ -125,7 +149,6 @@ pub fn UIContext::text_edit_sized(
   self.draw_list.add_rect_stroke(rect, border_color, border_width, 5.0)
 
   // Scissor clip for text inside input box
-  let padding_x = 8.0
   let inner_clip = @math.Rect::new(
     rect.x + padding_x - 2.0,
     rect.y,
@@ -134,8 +157,7 @@ pub fn UIContext::text_edit_sized(
   )
   self.push_clip(inner_clip)
 
-  let font_size = 13.0
-  let text_y = rect.y + (rect.h - font_size * 1.25) * 0.5
+  let text_y = rect.y + (rect.h - font_size) * 0.5
 
   if current_text.is_empty() {
     if !placeholder.is_empty() {
@@ -160,8 +182,9 @@ pub fn UIContext::text_edit_sized(
     let sub = string_slice(current_text, 0, cursor_pos)
     let measured_prefix = measure_text_size(sub, font_size)
     let caret_x = rect.x + padding_x + measured_prefix.x
-    let caret_top = rect.y + 6.0
-    let caret_bottom = rect.y + rect.h - 6.0
+    let caret_h = 16.0
+    let caret_top = rect.y + (rect.h - caret_h) * 0.5
+    let caret_bottom = caret_top + caret_h
     self.draw_list.add_line(
       @math.Vec2::new(caret_x, caret_top),
       @math.Vec2::new(caret_x, caret_bottom),

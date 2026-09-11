@@ -100,8 +100,8 @@ test "widgets: slider continuous dragging calculation" {
   // 104 is halfway through track (44 to 164) -> ~50.0
   assert_true(val1 >= 45.0 && val1 <= 55.0)
 
-  // Frame 2: Drag further right to x = 164 (end of track)
-  let raw2 = RawInput::from_mouse(@math.Vec2::new(164.0, 12.0), true)
+  // Frame 2: Drag further right to x = 180 (end of track)
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(180.0, 12.0), true)
   ctx.begin_frame(raw2)
   let (val2, resp2) = ctx.slider("Zoom", val1, 0.0, 100.0)
   assert_true(resp2.dragged() || resp2.pressed())
@@ -186,8 +186,8 @@ test "widgets: scroll_area content measurement, wheel scrolling and clamping" {
 test "widgets: text_edit typing, backspace, and cursor navigation" {
   let ctx = UIContext::new()
 
-  // Frame 1: Click at (20, 10) to focus text_edit
-  let raw1 = RawInput::from_mouse(@math.Vec2::new(20.0, 10.0), true)
+  // Frame 1: Click at (100, 10) to focus text_edit and position cursor at end
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(100.0, 10.0), true)
   ctx.begin_frame(raw1)
   let (t1, resp1) = ctx.text_edit("input_name", "Hello", "Enter name...")
   let _ = ctx.end_frame()

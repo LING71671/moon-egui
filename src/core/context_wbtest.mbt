@@ -325,8 +325,8 @@ test "nested scissor clipping calculates proper intersection" {
 ///|
 test "text measurement distinguishes cjk and ascii characters" {
   let ascii_size = measure_text_size("abc", 10.0)
-  // 3 * 10.0 * 0.58 = 17.4
-  assert_eq(ascii_size.x, 17.4)
+  // (0.58 + 0.64 + 0.64) * 10.0 = 18.6
+  assert_eq(ascii_size.x, 18.6)
   assert_eq(ascii_size.y, 12.5)
 
   let cjk_size = measure_text_size("月兔", 10.0)
