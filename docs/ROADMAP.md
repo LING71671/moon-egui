@@ -28,7 +28,8 @@
   - [x] **颜色与图元系统** (`src/color/`, `src/draw/`)：RGBA `Color` 模型、十六进制色值解析、`DrawCmd` 平台无关指令枚举与 `DrawList` 队列；
   - [x] **输入原始流结构** (`src/core/input.mbt`)：归一化 `RawInput` 与按键/鼠标指针抽象。
 * **验收标准**：
-  - [x] `moon check` 与 `moon fmt --check` 零告警通过；
+  - [x] `moon fmt --check` 通过、`moon check` 0 error（输入协议里预留的按键变体尚未被宿主驱动使用，
+        会产生 `unused_constructor` 警告，收敛计划见里程碑 5 的接口冻结项）；
   - [x] `src/math/` 与 `src/core/` 基础数学单测 100% 覆盖。
 
 ---
