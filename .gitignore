@@ -9,6 +9,9 @@ node_modules/
 .vite/
 *.wasm
 
+# Local agent workspace: session memory and per-project notes
+.workbuddy/
+
 # Private hackathon application forms & drafts
 .private*
 *PROPOSAL*.md
