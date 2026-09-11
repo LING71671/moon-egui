@@ -1729,6 +1729,269 @@ pub fn draw_window(ui : @core.UIContext, state : AppState) -> Unit {
             showToast(T('已重置浮动窗口位置至原点', 'Floating window returned to the origin'));
           };
         }
+      },
+      command_palette: {
+        titleKey: 'comp.command_palette.title',
+        signature: "ui.command_palette(open, query, commands, selected_index~) -> CommandPaletteResponse",
+        code: {
+          zh: `///|
+pub fn draw_command_palette(ui : @core.UIContext, state : AppState) -> Unit {
+  // 定义可用命令集合
+  let commands = [
+    @core.CommandItem::new("new_file", "新建画板文件", category="文件", shortcut="⌘N"),
+    @core.CommandItem::new("save_file", "保存当前工程", category="文件", shortcut="⌘S"),
+    @core.CommandItem::new("export_svg", "导出矢量图元", category="文件", shortcut="⇧⌘E"),
+    @core.CommandItem::new("zoom_fit", "缩放至全屏画板", category="视图", shortcut="⌘0"),
+    @core.CommandItem::new("toggle_fps", "切换微秒级帧监视器", category="视图", shortcut="⌥F"),
+    @core.CommandItem::new("moon_fmt", "格式化 MoonBit 源码", category="工具", shortcut="⌥⇧F"),
+  ]
+
+  // 即时模式调用全局命令面板
+  let res = ui.command_palette(
+    state.palette_open,
+    state.palette_query,
+    commands,
+    selected_index=state.palette_index,
+  )
+
+  // 状态同步
+  state.palette_open = res.open
+  state.palette_query = res.query
+  state.palette_index = res.selected_index
+
+  // 处理选中命令
+  if res.selected_id is Some(cmd_id) {
+    execute_command(state, cmd_id)
+  }
+}`,
+          en: `///|
+pub fn draw_command_palette(ui : @core.UIContext, state : AppState) -> Unit {
+  // Define available command catalog
+  let commands = [
+    @core.CommandItem::new("new_file", "New Canvas File", category="File", shortcut="⌘N"),
+    @core.CommandItem::new("save_file", "Save Project", category="File", shortcut="⌘S"),
+    @core.CommandItem::new("export_svg", "Export SVG Vectors", category="File", shortcut="⇧⌘E"),
+    @core.CommandItem::new("zoom_fit", "Fit View to Canvas", category="View", shortcut="⌘0"),
+    @core.CommandItem::new("toggle_fps", "Toggle Frame Monitor", category="View", shortcut="⌥F"),
+    @core.CommandItem::new("moon_fmt", "Format MoonBit Code", category="Tools", shortcut="⌥⇧F"),
+  ]
+
+  // Immediate mode invocation
+  let res = ui.command_palette(
+    state.palette_open,
+    state.palette_query,
+    commands,
+    selected_index=state.palette_index,
+  )
+
+  // State synchronization
+  state.palette_open = res.open
+  state.palette_query = res.query
+  state.palette_index = res.selected_index
+
+  // Dispatch executed command
+  if res.selected_id is Some(cmd_id) {
+    execute_command(state, cmd_id)
+  }
+}`
+        },
+        renderUI: (container, state) => {
+          state.paletteOpen = state.paletteOpen || false;
+          state.paletteQuery = state.paletteQuery || '';
+          state.paletteIndex = state.paletteIndex || 0;
+          state.lastCommand = state.lastCommand || T('无', 'None');
+
+          const rawCommands = [
+            { id: 'new_file', title: T('新建画板文件', 'New Canvas File'), category: T('文件', 'FILE'), shortcut: '⌘N' },
+            { id: 'save_file', title: T('保存工程结构', 'Save Project Structure'), category: T('文件', 'FILE'), shortcut: '⌘S' },
+            { id: 'export_svg', title: T('导出矢量图元', 'Export SVG Vectors'), category: T('文件', 'FILE'), shortcut: '⇧⌘E' },
+            { id: 'zoom_fit', title: T('缩放至画板全景', 'Fit View to Canvas'), category: T('视图', 'VIEW'), shortcut: '⌘0' },
+            { id: 'toggle_fps', title: T('切换微秒级帧监视器', 'Toggle Frame Monitor'), category: T('视图', 'VIEW'), shortcut: '⌥F' },
+            { id: 'moon_fmt', title: T('格式化 MoonBit 源码', 'Format MoonBit Code'), category: T('工具', 'TOOLS'), shortcut: '⌥⇧F' },
+            { id: 'inspect_nodes', title: T('检查百万节点拓扑', 'Inspect Million-Node Graph'), category: T('工具', 'TOOLS'), shortcut: '⌥⌘I' }
+          ];
+
+          container.innerHTML = `
+            <div class="palette-sandbox-wrap">
+              <div class="palette-trigger-card">
+                <div style="font-size: 14px; font-weight: 600; color: var(--text-main);">
+                  ${T('全局命令面板 (Command Palette)', 'Global Command Palette')}
+                </div>
+                <div style="font-size: 12px; color: var(--text-sub); line-height: 1.5;">
+                  ${T('专业桌面工作站控制中枢，支持模糊检索、键盘上下方向键导航、回车分发与无感关闭。',
+                      'Professional workstation command center with fuzzy filtering, keyboard navigation, and instant execution.')}
+                </div>
+                <button class="palette-trigger-btn" id="openPaletteBtn">
+                  <span>${T('打开命令控制台', 'Open Command Palette')}</span>
+                  <kbd class="palette-kbd-badge">⌘K</kbd>
+                </button>
+                <div style="font-size: 11px; color: var(--text-sub); font-family: 'JetBrains Mono', monospace;">
+                  ${T('最近执行命令:', 'Last executed:')} <b style="color: var(--brand);" id="lastCmdLabel">${state.lastCommand}</b>
+                </div>
+              </div>
+
+              <!-- Spotlight Scrim & Card Layer -->
+              <div class="palette-scrim" id="paletteScrim" style="display: none;">
+                <div class="palette-card" id="paletteCard">
+                  <div class="palette-search-header">
+                    <span class="palette-search-prompt">&gt;</span>
+                    <input type="text" class="palette-search-input" id="paletteInput" placeholder="${T('键入命令或搜索动作...', 'Type a command or search action...')}" autocomplete="off" />
+                    <kbd class="palette-kbd-badge" style="font-size: 10px;">Esc</kbd>
+                  </div>
+                  <div class="palette-list" id="paletteList"></div>
+                  <div class="palette-footer-bar">
+                    <span>${T('↑↓ 导航', '↑↓ Navigate')}</span>
+                    <span>${T('↵ 选择', '↵ Execute')}</span>
+                    <span>${T('Esc 关闭', 'Esc Close')}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+
+          const scrim = container.querySelector('#paletteScrim');
+          const card = container.querySelector('#paletteCard');
+          const input = container.querySelector('#paletteInput');
+          const list = container.querySelector('#paletteList');
+          const openBtn = container.querySelector('#openPaletteBtn');
+          const lastCmdLabel = container.querySelector('#lastCmdLabel');
+
+          let filtered = [...rawCommands];
+
+          function filterCommands(q) {
+            const query = (q || '').trim().toLowerCase();
+            if (!query) return [...rawCommands];
+            return rawCommands.filter(c =>
+              c.title.toLowerCase().includes(query) ||
+              c.category.toLowerCase().includes(query) ||
+              c.id.toLowerCase().includes(query)
+            );
+          }
+
+          function renderList() {
+            filtered = filterCommands(state.paletteQuery);
+            if (state.paletteIndex >= filtered.length) {
+              state.paletteIndex = Math.max(0, filtered.length - 1);
+            }
+            if (filtered.length === 0) {
+              list.innerHTML = `<div class="palette-empty">${T('未找到匹配命令', 'No matching commands found')}</div>`;
+              return;
+            }
+
+            let html = '';
+            let prevCat = '';
+            filtered.forEach((cmd, idx) => {
+              if (cmd.category && cmd.category !== prevCat) {
+                html += `<div class="palette-cat-header">${cmd.category}</div>`;
+                prevCat = cmd.category;
+              }
+              const isActive = idx === state.paletteIndex;
+              html += `
+                <div class="palette-item-row ${isActive ? 'is-active' : ''}" data-idx="${idx}" data-id="${cmd.id}">
+                  <span class="palette-item-title">${cmd.title}</span>
+                  <span class="palette-item-shortcut">${cmd.shortcut}</span>
+                </div>
+              `;
+            });
+            list.innerHTML = html;
+
+            // Row click and hover listeners
+            list.querySelectorAll('.palette-item-row').forEach(row => {
+              row.addEventListener('mouseenter', () => {
+                const idx = parseInt(row.getAttribute('data-idx'), 10);
+                state.paletteIndex = idx;
+                list.querySelectorAll('.palette-item-row').forEach((r, i) => {
+                  r.classList.toggle('is-active', i === idx);
+                });
+              });
+              row.addEventListener('click', () => {
+                const cmdId = row.getAttribute('data-id');
+                executeCommand(cmdId);
+              });
+            });
+          }
+
+          function openPalette() {
+            state.paletteOpen = true;
+            state.paletteQuery = '';
+            state.paletteIndex = 0;
+            input.value = '';
+            scrim.style.display = 'flex';
+            renderList();
+            setTimeout(() => input.focus(), 20);
+            document.getElementById('statResponse').textContent = 'command_palette: open (spotlight active)';
+          }
+
+          function closePalette() {
+            state.paletteOpen = false;
+            scrim.style.display = 'none';
+            document.getElementById('statResponse').textContent = 'command_palette: closed';
+          }
+
+          function executeCommand(cmdId) {
+            const found = rawCommands.find(c => c.id === cmdId);
+            const title = found ? found.title : cmdId;
+            state.lastCommand = title;
+            lastCmdLabel.textContent = title;
+            closePalette();
+            showToast(T(`已执行命令: ${title}`, `Executed command: ${title}`));
+            document.getElementById('statResponse').textContent = `command_palette: executed "${cmdId}"`;
+          }
+
+          openBtn.onclick = openPalette;
+
+          // Outside click dismissal
+          scrim.onclick = (e) => {
+            if (!card.contains(e.target)) {
+              closePalette();
+            }
+          };
+
+          // Search input typing
+          input.addEventListener('input', (e) => {
+            state.paletteQuery = e.target.value;
+            state.paletteIndex = 0;
+            renderList();
+          });
+
+          // Keyboard navigation inside palette
+          input.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              if (filtered.length > 0) {
+                state.paletteIndex = (state.paletteIndex + 1) % filtered.length;
+                renderList();
+              }
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              if (filtered.length > 0) {
+                state.paletteIndex = state.paletteIndex <= 0 ? filtered.length - 1 : state.paletteIndex - 1;
+                renderList();
+              }
+            } else if (e.key === 'Enter') {
+              e.preventDefault();
+              if (filtered.length > 0 && filtered[state.paletteIndex]) {
+                executeCommand(filtered[state.paletteIndex].id);
+              }
+            } else if (e.key === 'Escape') {
+              e.preventDefault();
+              closePalette();
+            }
+          });
+
+          // Global shortcut ⌘K / Ctrl+K
+          const globalShortcutHandler = (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+              e.preventDefault();
+              if (state.paletteOpen) {
+                closePalette();
+              } else {
+                openPalette();
+              }
+            }
+          };
+          window.addEventListener('keydown', globalShortcutHandler);
+        }
       }
     };
 

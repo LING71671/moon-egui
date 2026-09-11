@@ -14,6 +14,21 @@ pub fn measure_text_size(String, Double) -> @math.Vec2
 // Errors
 
 // Types and methods
+pub struct CommandItem {
+  id : String
+  title : String
+  category : String
+  shortcut : String
+} derive(Eq, @debug.Debug)
+pub fn CommandItem::new(String, String, category? : String, shortcut? : String) -> Self
+
+pub struct CommandPaletteResponse {
+  open : Bool
+  selected_id : String?
+  query : String
+  selected_index : Int
+} derive(Eq, @debug.Debug)
+
 pub(all) enum Event {
   Key(Key, Bool, Modifiers)
   TextInput(String)
@@ -236,6 +251,7 @@ pub fn UIContext::checkbox(Self, String, Bool) -> (Bool, Response)
 pub fn UIContext::collapsing_header(Self, String, String, Bool, (Self) -> Unit) -> Response
 pub fn UIContext::color_button(Self, String, @color.Color) -> (Bool, Response)
 pub fn UIContext::combo_box(Self, String, String, Int, Array[String]) -> (Int, Response)
+pub fn UIContext::command_palette(Self, Bool, String, Array[CommandItem], selected_index? : Int) -> CommandPaletteResponse
 pub fn UIContext::current_clip(Self) -> @math.Rect?
 pub fn UIContext::cursor(Self) -> @math.Vec2
 pub fn UIContext::drag_value(Self, String, Double, Double, Double, Double) -> (Double, Response)
