@@ -406,6 +406,60 @@ function _M0MP49LING7167111moon_2degui3src5color5Color3rgb(r, g, b) {
 function _M0MP49LING7167111moon_2degui3src5color5Color4rgba(r, g, b, a) {
   return new _M0TP49LING7167111moon_2degui3src5color5Color(r, g, b, a);
 }
+function _M0MP49LING7167111moon_2degui3src5color5Color3hex(code) {
+  const r = code >> 16 & 255;
+  const g = code >> 8 & 255;
+  const b = code & 255;
+  return new _M0TP49LING7167111moon_2degui3src5color5Color(r, g, b, 255);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(15857145);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(16317180);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color10bg__active() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(14870768);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color13border__muted() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(14870768);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color15border__default() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(13358561);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color14border__strong() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(9741240);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color13text__primary() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(988970);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color12text__strong() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(1976635);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color10text__body() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(3359061);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(4674921);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color11text__muted() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(6583435);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(2450411);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(3900150);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color15accent__pressed() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(1920728);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color12accent__deep() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(1981066);
+}
+function _M0MP49LING7167111moon_2degui3src5color5Color17accent__highlight() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color4rgba(255, 255, 255, 60);
+}
 function _M0MP49LING7167111moon_2degui3src4math4Vec23new(x, y) {
   return new _M0TP49LING7167111moon_2degui3src4math4Vec2(x, y);
 }
@@ -1037,19 +1091,19 @@ function _M0MP49LING7167111moon_2degui3src4core9UIContext8checkbox(self, text, c
   const new_state = _resp.clicked ? !checked : checked;
   const box_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x, _rect.y + 2, 18, 18);
   if (checked) {
-    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(self.draw_list, box_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(37, 99, 235), 4);
-    _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(self.draw_list, box_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(29, 78, 216), 1, 4);
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(self.draw_list, box_rect, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 4);
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(self.draw_list, box_rect, _M0MP49LING7167111moon_2degui3src5color5Color15accent__pressed(), 1, 4);
     const inner = _M0MP49LING7167111moon_2degui3src4math4Rect6shrink(box_rect, 4);
     _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(self.draw_list, inner, _M0MP49LING7167111moon_2degui3src5color5Color5whiteN6recordS36, 2);
   } else {
-    const box_bg = _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(248, 250, 252) : _M0MP49LING7167111moon_2degui3src5color5Color5whiteN6recordS36;
-    const box_border = _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(37, 99, 235) : _M0MP49LING7167111moon_2degui3src5color5Color3rgb(203, 213, 225);
+    const box_bg = _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle() : _M0MP49LING7167111moon_2degui3src5color5Color5whiteN6recordS36;
+    const box_border = _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
     _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(self.draw_list, box_rect, box_bg, 4);
     _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(self.draw_list, box_rect, box_border, 1, 4);
   }
   const text_x = _rect.x + 18 + 8;
   const text_y = _rect.y + 4;
-  const text_color = _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(15, 23, 42) : _M0MP49LING7167111moon_2degui3src5color5Color3rgb(51, 65, 85);
+  const text_color = _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13text__primary() : _M0MP49LING7167111moon_2degui3src5color5Color10text__body();
   _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(self.draw_list, _M0MP49LING7167111moon_2degui3src4math4Vec23new(text_x, text_y), text, 14, text_color);
   return { _0: new_state, _1: _resp };
 }
@@ -1089,11 +1143,11 @@ function _M0MP49LING7167111moon_2degui3src4core9UIContext6slider(self, label, va
     new_val = clamped_min + pct * safe_range;
   }
   if (label.length > 0) {
-    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(self.draw_list, _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x, _rect.y + 4), label, 13, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(15, 23, 42));
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(self.draw_list, _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x, _rect.y + 4), label, 13, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary());
   }
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(self.draw_list, track_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(241, 245, 249), 3);
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(self.draw_list, track_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240), 1, 3);
-  const tick_col = _M0MP49LING7167111moon_2degui3src5color5Color3rgb(203, 213, 225);
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(self.draw_list, track_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), 3);
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(self.draw_list, track_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1, 3);
+  const tick_col = _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
   const _bind$2 = [0.25, 0.5, 0.75];
   const _bind$3 = _bind$2.length;
   let _tmp = 0;
@@ -1121,7 +1175,7 @@ function _M0MP49LING7167111moon_2degui3src4core9UIContext6slider(self, label, va
   const active_w = track_rect.w * current_pct;
   if (active_w > 0) {
     const fill_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(track_rect.x, track_rect.y, active_w, track_rect.h);
-    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(self.draw_list, fill_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(37, 99, 235), 3);
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(self.draw_list, fill_rect, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 3);
   }
   let val_text;
   if (safe_range >= 10) {
@@ -1138,18 +1192,18 @@ function _M0MP49LING7167111moon_2degui3src4core9UIContext6slider(self, label, va
   const thumb_cy = track_rect.y + track_rect.h * 0.5;
   const thumb_r = is_active ? 7 : is_hovered ? 6.5 : 5.5;
   _M0MP49LING7167111moon_2degui3src4draw8DrawList11add__circle(self.draw_list, _M0MP49LING7167111moon_2degui3src4math4Vec23new(thumb_cx, thumb_cy), thumb_r, _M0MP49LING7167111moon_2degui3src5color5Color5whiteN6recordS36);
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList19add__circle__stroke(self.draw_list, _M0MP49LING7167111moon_2degui3src4math4Vec23new(thumb_cx, thumb_cy), thumb_r, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(37, 99, 235), 1.5);
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList19add__circle__stroke(self.draw_list, _M0MP49LING7167111moon_2degui3src4math4Vec23new(thumb_cx, thumb_cy), thumb_r, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 1.5);
   if (is_active) {
     const bubble_w = (val_text.length + 0) * 7.5 + 14;
     const bubble_x = thumb_cx - bubble_w * 0.5;
     const bubble_y = thumb_cy - thumb_r - 20 - 4;
     const bubble_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(bubble_x, bubble_y, bubble_w, 20);
     _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(self.draw_list, bubble_rect, _M0MP49LING7167111moon_2degui3src5color5Color5whiteN6recordS36, 5);
-    _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(self.draw_list, bubble_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(203, 213, 225), 1, 5);
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(self.draw_list, bubble_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, 5);
     const bubble_text_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(bubble_x + 7, bubble_y + 3.5);
-    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(self.draw_list, bubble_text_pos, val_text, 11, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(15, 23, 42));
+    _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(self.draw_list, bubble_text_pos, val_text, 11, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary());
   }
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(self.draw_list, _M0MP49LING7167111moon_2degui3src4math4Vec23new(track_rect.x + 120 + 10, _rect.y + 4), val_text, 12, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(71, 85, 105));
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__text(self.draw_list, _M0MP49LING7167111moon_2degui3src4math4Vec23new(track_rect.x + 120 + 10, _rect.y + 4), val_text, 12, _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary());
   return { _0: new_val, _1: _resp };
 }
 function _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(self, text, color) {
@@ -1167,7 +1221,7 @@ function _M0MP49LING7167111moon_2degui3src4core9UIContext9separator(self) {
   const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(self, _M0MP49LING7167111moon_2degui3src4math4Vec23new(w, 9));
   const _rect = _bind._1;
   const y = _rect.y + 4;
-  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(self.draw_list, _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x, y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + _rect.w, y), _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240), 1);
+  _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__line(self.draw_list, _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x, y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + _rect.w, y), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
 }
 function _M0MP49LING7167111moon_2degui3src4core8RawInput11from__mouse(mouse_pos, mouse_down) {
   return new _M0TP49LING7167111moon_2degui3src4core8RawInput(mouse_pos, mouse_down, _M0MP49LING7167111moon_2degui3src4math4Vec24zeroN6recordS75, 0.0166, [], "", _M0MP49LING7167111moon_2degui3src4core9Modifiers4noneN6recordS1275);
@@ -1427,9 +1481,9 @@ function _M0MP49LING7167111moon_2degui3src4core9UIContext14button_2einner(self, 
   const _resp = _bind._2;
   const press_offset = _resp.pressed ? 1.5 : 0;
   const draw_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x, _rect.y + press_offset, _rect.w, _rect.h - press_offset);
-  const bg_color = primary ? (_resp.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(29, 78, 216) : _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(59, 130, 246) : _M0MP49LING7167111moon_2degui3src5color5Color3rgb(37, 99, 235)) : _resp.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(241, 245, 249) : _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(248, 250, 252) : _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 255, 255);
-  const border_color = primary ? (_resp.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(30, 58, 138) : _M0MP49LING7167111moon_2degui3src5color5Color3rgb(29, 78, 216)) : _resp.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(148, 163, 184) : _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(37, 99, 235) : _M0MP49LING7167111moon_2degui3src5color5Color3rgb(203, 213, 225);
-  const text_color = primary ? _M0MP49LING7167111moon_2degui3src5color5Color5whiteN6recordS36 : _resp.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(30, 41, 59) : _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(15, 23, 42) : _M0MP49LING7167111moon_2degui3src5color5Color3rgb(51, 65, 85);
+  const bg_color = primary ? (_resp.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__pressed() : _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover() : _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary()) : _resp.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface() : _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle() : _M0MP49LING7167111moon_2degui3src5color5Color5whiteN6recordS36;
+  const border_color = primary ? (_resp.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color12accent__deep() : _M0MP49LING7167111moon_2degui3src5color5Color15accent__pressed()) : _resp.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color14border__strong() : _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
+  const text_color = primary ? _M0MP49LING7167111moon_2degui3src5color5Color5whiteN6recordS36 : _resp.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color12text__strong() : _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13text__primary() : _M0MP49LING7167111moon_2degui3src5color5Color10text__body();
   _M0MP49LING7167111moon_2degui3src4draw8DrawList9add__rect(self.draw_list, draw_rect, bg_color, 6);
   _M0MP49LING7167111moon_2degui3src4draw8DrawList17add__rect__stroke(self.draw_list, draw_rect, border_color, 1, 6);
   if (has_shortcut) {
@@ -1441,12 +1495,12 @@ function _M0MP49LING7167111moon_2degui3src4core9UIContext14button_2einner(self, 
     let kbd_col;
     _L: {
       if (primary) {
-        kbd_bg = _M0MP49LING7167111moon_2degui3src5color5Color4rgba(255, 255, 255, 60);
+        kbd_bg = _M0MP49LING7167111moon_2degui3src5color5Color17accent__highlight();
         kbd_col = _M0MP49LING7167111moon_2degui3src5color5Color5whiteN6recordS36;
         break _L;
       } else {
-        kbd_bg = _resp.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(226, 232, 240) : _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(238, 242, 246) : _M0MP49LING7167111moon_2degui3src5color5Color3rgb(241, 245, 249);
-        kbd_col = _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color3rgb(15, 23, 42) : _M0MP49LING7167111moon_2degui3src5color5Color3rgb(100, 116, 139);
+        kbd_bg = _resp.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color13border__muted() : _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__active() : _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface();
+        kbd_col = _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13text__primary() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
         break _L;
       }
     }

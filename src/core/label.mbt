@@ -1,7 +1,7 @@
 ///|
 /// Render a read-only text label using Studio Light slate text color.
 pub fn UIContext::label(self : UIContext, text : String) -> Response {
-  self.label_colored(text, @color.Color::rgb(15, 23, 42))
+  self.label_colored(text, @color.Color::text_primary())
 }
 
 ///|
@@ -31,7 +31,7 @@ pub fn UIContext::separator(self : UIContext) -> Unit {
   self.draw_list.add_line(
     @math.Vec2::new(rect.x, y),
     @math.Vec2::new(rect.x + rect.w, y),
-    @color.Color::rgb(226, 232, 240),
+    @color.Color::border_muted(),
     1.0,
   )
 }

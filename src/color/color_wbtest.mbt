@@ -50,13 +50,33 @@ test "color linear interpolation (lerp)" {
 
 ///|
 test "theme design tokens" {
+  // Studio Light porcelain: the token set is light, and color.mbt is the only
+  // place in the library where the palette is defined.
   let bg = Color::bg_app()
-  assert_eq(bg.r, 0x11)
-  assert_eq(bg.g, 0x11)
-  assert_eq(bg.b, 0x16)
+  assert_eq(bg.r, 0xF8)
+  assert_eq(bg.g, 0xFA)
+  assert_eq(bg.b, 0xFC)
 
   let accent = Color::accent_primary()
-  assert_eq(accent.r, 0x4E)
-  assert_eq(accent.g, 0x75)
-  assert_eq(accent.b, 0xFF)
+  assert_eq(accent.r, 0x25)
+  assert_eq(accent.g, 0x63)
+  assert_eq(accent.b, 0xEB)
+
+  // The window chrome must match the widgets it hosts, otherwise a window on a
+  // light canvas renders dark.
+  let surface = Color::bg_window()
+  assert_eq(surface.r, 0xFF)
+  assert_eq(surface.g, 0xFF)
+  assert_eq(surface.b, 0xFF)
+
+  let text = Color::text_primary()
+  assert_eq(text.r, 0x0F)
+  assert_eq(text.g, 0x17)
+  assert_eq(text.b, 0x2A)
+
+  // Overlays stay dark so they keep contrast against light content.
+  let inverse = Color::bg_inverse()
+  assert_eq(inverse.r, 0x1A)
+  assert_eq(inverse.g, 0x1B)
+  assert_eq(inverse.b, 0x23)
 }

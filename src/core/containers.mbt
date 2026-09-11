@@ -22,22 +22,22 @@ pub fn UIContext::collapsing_header(
   }
 
   let bg_color = if resp.hovered() {
-    @color.Color::rgb(241, 245, 249)
+    @color.Color::bg_surface()
   } else {
-    @color.Color::rgb(248, 250, 252)
+    @color.Color::bg_subtle()
   }
   let border_color = if resp.hovered() {
-    @color.Color::rgb(203, 213, 225)
+    @color.Color::border_default()
   } else {
-    @color.Color::rgb(226, 232, 240)
+    @color.Color::border_muted()
   }
   self.draw_list.add_rect(rect, bg_color, 5.0)
   self.draw_list.add_rect_stroke(rect, border_color, 1.0, 5.0)
 
   let arrow_color = if resp.hovered() {
-    @color.Color::rgb(37, 99, 235)
+    @color.Color::accent_primary()
   } else {
-    @color.Color::rgb(100, 116, 139)
+    @color.Color::text_muted()
   }
 
   // Draw crisp vector chevron
@@ -60,9 +60,9 @@ pub fn UIContext::collapsing_header(
   let title_x = rect.x + 24.0
   let title_y = rect.y + (h - 13.0) * 0.5
   let text_color = if resp.hovered() {
-    @color.Color::rgb(15, 23, 42)
+    @color.Color::text_primary()
   } else {
-    @color.Color::rgb(51, 65, 85)
+    @color.Color::text_body()
   }
   self.draw_list.add_text(
     @math.Vec2::new(title_x, title_y),
@@ -133,19 +133,19 @@ pub fn UIContext::combo_box(
       @math.Vec2::new(rect.x, label_y),
       label,
       13.0,
-      @color.Color::rgb(15, 23, 42),
+      @color.Color::text_primary(),
     )
   }
 
   let bg_color = if box_hovered || is_open {
-    @color.Color::rgb(248, 250, 252)
+    @color.Color::bg_subtle()
   } else {
     @color.Color::white()
   }
   let border_color = if is_open || box_hovered {
-    @color.Color::rgb(37, 99, 235)
+    @color.Color::accent_primary()
   } else {
-    @color.Color::rgb(203, 213, 225)
+    @color.Color::border_default()
   }
 
   self.draw_list.add_rect(box_rect, bg_color, 5.0)
@@ -161,18 +161,18 @@ pub fn UIContext::combo_box(
     @math.Vec2::new(box_rect.x + 8.0, text_y),
     selected_str,
     13.0,
-    @color.Color::rgb(15, 23, 42),
+    @color.Color::text_primary(),
   )
 
   // Draw vector chevron on trigger
   let chevron_cx = box_rect.x + box_w - 14.0
   let chevron_cy = box_rect.y + h * 0.5
   let chevron_col = if is_open {
-    @color.Color::rgb(37, 99, 235)
+    @color.Color::accent_primary()
   } else if box_hovered {
-    @color.Color::rgb(15, 23, 42)
+    @color.Color::text_primary()
   } else {
-    @color.Color::rgb(100, 116, 139)
+    @color.Color::text_muted()
   }
   if is_open {
     let p1 = @math.Vec2::new(chevron_cx - 3.5, chevron_cy + 1.5)
@@ -211,15 +211,11 @@ pub fn UIContext::combo_box(
       menu_rect.w,
       menu_rect.h,
     )
-    self.draw_list.add_rect(
-      shadow_rect,
-      @color.Color::rgba(15, 23, 42, 18),
-      6.0,
-    )
+    self.draw_list.add_rect(shadow_rect, @color.Color::shadow(), 6.0)
     self.draw_list.add_rect(menu_rect, @color.Color::white(), 5.0)
     self.draw_list.add_rect_stroke(
       menu_rect,
-      @color.Color::rgb(203, 213, 225),
+      @color.Color::border_default(),
       1.0,
       5.0,
     )
@@ -233,22 +229,18 @@ pub fn UIContext::combo_box(
       )
       let item_hovered = self.is_hovered(item_rect)
       if item_hovered {
-        self.draw_list.add_rect(
-          item_rect,
-          @color.Color::rgb(241, 245, 249),
-          3.0,
-        )
+        self.draw_list.add_rect(item_rect, @color.Color::bg_surface(), 3.0)
         if self.input.mouse_pressed() {
           current_idx = i
           self.set_open_combo_id(Id::zero())
         }
       }
       let item_text_col = if item_hovered {
-        @color.Color::rgb(37, 99, 235)
+        @color.Color::accent_primary()
       } else if i == current_idx {
-        @color.Color::rgb(37, 99, 235)
+        @color.Color::accent_primary()
       } else {
-        @color.Color::rgb(51, 65, 85)
+        @color.Color::text_body()
       }
       self.draw_list.add_text(
         @math.Vec2::new(item_rect.x + 8.0, item_rect.y + (item_h - 12.0) * 0.5),
@@ -264,8 +256,8 @@ pub fn UIContext::combo_box(
         let p1 = @math.Vec2::new(chk_x - 4.0, chk_y)
         let p2 = @math.Vec2::new(chk_x - 1.5, chk_y + 2.5)
         let p3 = @math.Vec2::new(chk_x + 3.5, chk_y - 2.5)
-        self.draw_list.add_line(p1, p2, @color.Color::rgb(37, 99, 235), 1.5)
-        self.draw_list.add_line(p2, p3, @color.Color::rgb(37, 99, 235), 1.5)
+        self.draw_list.add_line(p1, p2, @color.Color::accent_primary(), 1.5)
+        self.draw_list.add_line(p2, p3, @color.Color::accent_primary(), 1.5)
       }
     }
 
@@ -294,13 +286,8 @@ pub fn UIContext::tab_bar(
   let mut current_selected = selected_idx
 
   // Draw recessed groove container
-  self.draw_list.add_rect(rect, @color.Color::rgb(241, 245, 249), 6.0)
-  self.draw_list.add_rect_stroke(
-    rect,
-    @color.Color::rgb(226, 232, 240),
-    1.0,
-    6.0,
-  )
+  self.draw_list.add_rect(rect, @color.Color::bg_surface(), 6.0)
+  self.draw_list.add_rect_stroke(rect, @color.Color::border_muted(), 1.0, 6.0)
 
   let mut cur_x = rect.x
   for i = 0; i < tabs.length(); i = i + 1 {
@@ -319,21 +306,21 @@ pub fn UIContext::tab_bar(
       self.draw_list.add_rect(active_rect, @color.Color::white(), 5.0)
       self.draw_list.add_rect_stroke(
         active_rect,
-        @color.Color::rgb(203, 213, 225),
+        @color.Color::border_default(),
         1.0,
         5.0,
       )
     } else if is_hovered {
       let hover_rect = tab_rect.shrink(2.0)
-      self.draw_list.add_rect(hover_rect, @color.Color::rgb(248, 250, 252), 4.0)
+      self.draw_list.add_rect(hover_rect, @color.Color::bg_subtle(), 4.0)
     }
 
     let text_col = if is_selected {
-      @color.Color::rgb(15, 23, 42)
+      @color.Color::text_primary()
     } else if is_hovered {
-      @color.Color::rgb(15, 23, 42)
+      @color.Color::text_primary()
     } else {
-      @color.Color::rgb(100, 116, 139)
+      @color.Color::text_muted()
     }
 
     let text_x = tab_rect.x +

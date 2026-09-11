@@ -111,11 +111,11 @@ pub fn UIContext::text_edit_sized(
   let bg_color = @color.Color::white()
 
   let border_color = if is_focused {
-    @color.Color::rgb(37, 99, 235)
+    @color.Color::accent_primary()
   } else if resp.hovered() {
-    @color.Color::rgb(148, 163, 184)
+    @color.Color::border_strong()
   } else {
-    @color.Color::rgb(203, 213, 225)
+    @color.Color::border_default()
   }
 
   let border_width = if is_focused { 1.5 } else { 1.0 }
@@ -143,7 +143,7 @@ pub fn UIContext::text_edit_sized(
         @math.Vec2::new(rect.x + padding_x, text_y),
         placeholder,
         font_size,
-        @color.Color::rgb(148, 163, 184),
+        @color.Color::text_disabled(),
       )
     }
   } else {
@@ -151,7 +151,7 @@ pub fn UIContext::text_edit_sized(
       @math.Vec2::new(rect.x + padding_x, text_y),
       current_text,
       font_size,
-      @color.Color::rgb(15, 23, 42),
+      @color.Color::text_primary(),
     )
   }
 
@@ -165,7 +165,7 @@ pub fn UIContext::text_edit_sized(
     self.draw_list.add_line(
       @math.Vec2::new(caret_x, caret_top),
       @math.Vec2::new(caret_x, caret_bottom),
-      @color.Color::rgb(37, 99, 235),
+      @color.Color::accent_primary(),
       1.5,
     )
   }

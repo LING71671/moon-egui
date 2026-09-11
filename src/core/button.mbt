@@ -53,42 +53,42 @@ pub fn UIContext::button(
   // Studio Light Lunar Porcelain Palette
   let bg_color = if primary {
     if resp.pressed {
-      @color.Color::rgb(29, 78, 216) // Deep cobalt under load
+      @color.Color::accent_pressed() // Deep cobalt under load
     } else if resp.hovered {
-      @color.Color::rgb(59, 130, 246) // Vibrant azure excitation
+      @color.Color::accent_hover() // Vibrant azure excitation
     } else {
-      @color.Color::rgb(37, 99, 235) // Precision cold cobalt base
+      @color.Color::accent_primary() // Precision cold cobalt base
     }
   } else if resp.pressed {
-    @color.Color::rgb(241, 245, 249) // Sunken active porcelain
+    @color.Color::bg_surface() // Sunken active porcelain
   } else if resp.hovered {
-    @color.Color::rgb(248, 250, 252) // Floating porcelain highlight
+    @color.Color::bg_subtle() // Floating porcelain highlight
   } else {
-    @color.Color::rgb(255, 255, 255) // Pure bone porcelain surface
+    @color.Color::white() // Pure bone porcelain surface
   }
 
   let border_color = if primary {
     if resp.pressed {
-      @color.Color::rgb(30, 58, 138)
+      @color.Color::accent_deep()
     } else {
-      @color.Color::rgb(29, 78, 216)
+      @color.Color::accent_pressed()
     }
   } else if resp.pressed {
-    @color.Color::rgb(148, 163, 184) // Compressed border
+    @color.Color::border_strong() // Compressed border
   } else if resp.hovered {
-    @color.Color::rgb(37, 99, 235) // Precision cobalt halo
+    @color.Color::accent_primary() // Precision cobalt halo
   } else {
-    @color.Color::rgb(203, 213, 225) // Milled cold-slate hairline
+    @color.Color::border_default() // Milled cold-slate hairline
   }
 
   let text_color = if primary {
     @color.Color::white()
   } else if resp.pressed {
-    @color.Color::rgb(30, 41, 59)
+    @color.Color::text_strong()
   } else if resp.hovered {
-    @color.Color::rgb(15, 23, 42)
+    @color.Color::text_primary()
   } else {
-    @color.Color::rgb(51, 65, 85)
+    @color.Color::text_body()
   }
 
   self.draw_list.add_rect(draw_rect, bg_color, 6.0)
@@ -113,20 +113,20 @@ pub fn UIContext::button(
       18.0,
     )
     let (kbd_bg, kbd_col) = if primary {
-      (@color.Color::rgba(255, 255, 255, 60), @color.Color::white())
+      (@color.Color::accent_highlight(), @color.Color::white())
     } else {
       (
         if resp.pressed {
-          @color.Color::rgb(226, 232, 240)
+          @color.Color::border_muted()
         } else if resp.hovered {
-          @color.Color::rgb(238, 242, 246)
+          @color.Color::bg_active()
         } else {
-          @color.Color::rgb(241, 245, 249)
+          @color.Color::bg_surface()
         },
         if resp.hovered {
-          @color.Color::rgb(15, 23, 42)
+          @color.Color::text_primary()
         } else {
-          @color.Color::rgb(100, 116, 139)
+          @color.Color::text_muted()
         },
       )
     }
@@ -207,11 +207,11 @@ pub fn UIContext::color_button(
     size - press_offset,
   )
   let border_color = if resp.pressed {
-    @color.Color::rgb(37, 99, 235)
+    @color.Color::accent_primary()
   } else if resp.hovered {
-    @color.Color::rgb(37, 99, 235)
+    @color.Color::accent_primary()
   } else {
-    @color.Color::rgb(203, 213, 225)
+    @color.Color::border_default()
   }
 
   // Draw color swatch with clean white rim

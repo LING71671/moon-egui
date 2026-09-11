@@ -20,39 +20,55 @@
 
 ## 2. Color Palettes & Design Tokens
 
-### 2.1 Dark Mode Palette (Default)
+The library ships a single palette (Studio Light porcelain), defined in
+`src/color/color.mbt`. **Widgets must not hard-code colour values** - they read
+tokens; the `theme design tokens` case in `color_wbtest.mbt` pins the key values
+so the palette cannot drift.
 
-| Token Name | Hex Code | RGB | Role / Usage |
-| :--- | :--- | :--- | :--- |
-| `BG_APP` | `#111116` | `(17, 17, 22)` | Canvas main application background |
-| `BG_WINDOW` | `#1A1B23` | `(26, 27, 35)` | Floating window background |
-| `BG_SURFACE` | `#232530` | `(35, 37, 48)` | Panel, card, and input field background |
-| `BG_HOVER` | `#2D303E` | `(45, 48, 62)` | Hover state on widgets and list items |
-| `BG_ACTIVE` | `#393D4F` | `(57, 61, 79)` | Pressed / active state on buttons and sliders |
-| `BORDER_MUTED` | `#2E303D` | `(46, 48, 61)` | Subtle inner dividers, window borders |
-| `BORDER_FOCUS` | `#5C617B` | `(92, 97, 123)` | Focused / active window outline |
-| `TEXT_PRIMARY` | `#EEEEF2` | `(238, 238, 242)` | Main titles, labels, button text |
-| `TEXT_MUTED` | `#9497A8` | `(148, 151, 168)` | Descriptions, placeholders, inactive states |
-| `ACCENT_PRIMARY` | `#4E75FF` | `(78, 117, 255)` | Primary call-to-actions, active toggle fill |
-| `ACCENT_HOVER` | `#6689FF` | `(102, 137, 255)` | Hover state on primary interactive elements |
-| `SUCCESS` | `#22C55E` | `(34, 197, 94)` | Green telemetry indicator, positive toggles |
-| `WARNING` | `#F59E0B` | `(245, 158, 11)` | Cautions, high frame-time warnings |
-| `DANGER` | `#EF4444` | `(239, 68, 68)` | Errors, close buttons, destructive actions |
+> Two palettes used to coexist: a dark token set in `color.mbt` read only by
+> `window()` / `tooltip()` / `progress_bar()`, and light values written inline
+> across the widgets. On 2026-09-11 they were merged into one light token set:
+> widget rendering is unchanged (every token is value-identical to the literal it
+> replaced), while windows and progress bars became light. A dark theme is not
+> implemented; it would need a second token set.
 
----
+### 2.1 Token Reference
 
-### 2.2 Light Mode Palette
-
-| Token Name | Hex Code | RGB | Role / Usage |
-| :--- | :--- | :--- | :--- |
-| `BG_APP` | `#F4F5F8` | `(244, 245, 248)` | Canvas light backdrop |
-| `BG_WINDOW` | `#FFFFFF` | `(255, 255, 255)` | Floating window background |
-| `BG_SURFACE` | `#EBEDF2` | `(235, 237, 242)` | Input fields, card backgrounds |
-| `BG_HOVER` | `#DFE2E8` | `(223, 226, 232)` | Hover state |
-| `BORDER_MUTED` | `#D1D5DF` | `(209, 213, 223)` | Borders and dividers |
-| `TEXT_PRIMARY` | `#1A1D24` | `(26, 29, 36)` | Main dark text |
-| `TEXT_MUTED` | `#646B7A` | `(100, 107, 122)` | Secondary labels |
-| `ACCENT_PRIMARY` | `#335CFF` | `(51, 92, 255)` | Primary button and slider track fill |
+| Token Name | Hex / RGBA | Role / Usage |
+| :--- | :--- | :--- |
+| **Surfaces** | | |
+| `BG_APP` | `#F8FAFC` | Canvas / page backdrop |
+| `BG_WINDOW` | `#FFFFFF` | Floating window, card, and popup background |
+| `BG_SURFACE` | `#F1F5F9` | Window headers, recessed grooves, badge rest state |
+| `BG_SUBTLE` | `#F8FAFC` | Hover wash and row highlight |
+| `BG_HOVER` | `#F8FAFC` | Semantic alias for hover (same value as `BG_SUBTLE`) |
+| `BG_ACTIVE` | `#E2E8F0` | Pressed state, deeper recess |
+| `BG_INVERSE` | `#1A1B23` | Inverted overlays: tooltips (pair with `TEXT_INVERSE`) |
+| **Borders** | | |
+| `BORDER_MUTED` | `#E2E8F0` | Inner hairline dividers and control grooves |
+| `BORDER_DEFAULT` | `#CBD5E1` | Default control outline |
+| `BORDER_STRONG` | `#94A3B8` | Pressed / disabled outline |
+| `BORDER_FOCUS` | `#2563EB` | Keyboard focus ring |
+| **Text** | | |
+| `TEXT_PRIMARY` | `#0F172A` | Main titles, labels, button text |
+| `TEXT_STRONG` | `#1E293B` | Emphasised text in pressed states |
+| `TEXT_BODY` | `#334155` | Body copy |
+| `TEXT_SECONDARY` | `#475569` | Secondary descriptions |
+| `TEXT_MUTED` | `#64748B` | Helper text and badge labels |
+| `TEXT_DISABLED` | `#94A3B8` | Placeholders and inactive states |
+| `TEXT_INVERSE` | `#FFFFFF` | Text on inverted overlays and accent fills |
+| **Accent** | | |
+| `ACCENT_PRIMARY` | `#2563EB` | Primary blue: main buttons, active fills, slider progress |
+| `ACCENT_HOVER` | `#3B82F6` | Hover state on accent elements |
+| `ACCENT_PRESSED` | `#1D4ED8` | Pressed state on accent elements |
+| `ACCENT_DEEP` | `#1E3A8A` | Accent outline under load |
+| `ACCENT_SOFT` | `rgba(37,99,235,45)` | Translucent accent wash: focus rings, selection glow |
+| `ACCENT_HIGHLIGHT` | `rgba(255,255,255,60)` | Translucent highlight over accent fills |
+| `SHADOW` | `rgba(15,23,42,18)` | Elevation shadow under floating surfaces |
+| **Semantic** | | |
+| `SUCCESS` | `#22C55E` | Green telemetry indicator, positive toggles |
+| `WARNING` | `#F59E0B` | Cautions, high frame-time warnings |
+| `DANGER` | `#EF4444` | Errors, close actions, destructive operations |
 
 ---
 

@@ -16,26 +16,39 @@ pub struct Color {
   b : Int
   a : Int
 } derive(Default, Eq, @debug.Debug)
+pub fn Color::accent_deep() -> Self
+pub fn Color::accent_highlight() -> Self
 pub fn Color::accent_hover() -> Self
+pub fn Color::accent_pressed() -> Self
 pub fn Color::accent_primary() -> Self
+pub fn Color::accent_soft() -> Self
 pub fn Color::bg_active() -> Self
 pub fn Color::bg_app() -> Self
 pub fn Color::bg_hover() -> Self
+pub fn Color::bg_inverse() -> Self
+pub fn Color::bg_subtle() -> Self
 pub fn Color::bg_surface() -> Self
 pub fn Color::bg_window() -> Self
 pub fn Color::black() -> Self
+pub fn Color::border_default() -> Self
 pub fn Color::border_focus() -> Self
 pub fn Color::border_muted() -> Self
+pub fn Color::border_strong() -> Self
 pub fn Color::danger() -> Self
 pub fn Color::hex(Int) -> Self
 pub fn Color::hex_alpha(Int) -> Self
 pub fn Color::lerp(Self, Self, Double) -> Self
 pub fn Color::rgb(Int, Int, Int) -> Self
 pub fn Color::rgba(Int, Int, Int, Int) -> Self
+pub fn Color::shadow() -> Self
 pub fn Color::success() -> Self
+pub fn Color::text_body() -> Self
+pub fn Color::text_disabled() -> Self
+pub fn Color::text_inverse() -> Self
 pub fn Color::text_muted() -> Self
 pub fn Color::text_primary() -> Self
 pub fn Color::text_secondary() -> Self
+pub fn Color::text_strong() -> Self
 pub fn Color::transparent() -> Self
 pub fn Color::warning() -> Self
 pub fn Color::white() -> Self

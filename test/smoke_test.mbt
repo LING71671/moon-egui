@@ -117,9 +117,9 @@ test "integration: color palette and hex parsing" {
   assert_eq(c1.a, 255)
 
   let c2 = @color.Color::accent_primary()
-  assert_eq(c2.r, 78)
-  assert_eq(c2.g, 117)
-  assert_eq(c2.b, 255)
+  assert_eq(c2.r, 37)
+  assert_eq(c2.g, 99)
+  assert_eq(c2.b, 235)
 
   let blended = c1.lerp(@color.Color::white(), 0.5)
   assert_eq(blended.r, 157)

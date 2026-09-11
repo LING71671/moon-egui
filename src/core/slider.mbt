@@ -58,21 +58,21 @@ pub fn UIContext::slider(
       @math.Vec2::new(rect.x, rect.y + 4.0),
       label,
       13.0,
-      @color.Color::rgb(15, 23, 42),
+      @color.Color::text_primary(),
     )
   }
 
   // Draw Recessed Track Background
-  self.draw_list.add_rect(track_rect, @color.Color::rgb(241, 245, 249), 3.0)
+  self.draw_list.add_rect(track_rect, @color.Color::bg_surface(), 3.0)
   self.draw_list.add_rect_stroke(
     track_rect,
-    @color.Color::rgb(226, 232, 240),
+    @color.Color::border_muted(),
     1.0,
     3.0,
   )
 
   // Draw Discrete Ticks (25%, 50%, 75%)
-  let tick_col = @color.Color::rgb(203, 213, 225)
+  let tick_col = @color.Color::border_default()
   for t in [0.25, 0.5, 0.75] {
     let tick_x = track_rect.x + track_rect.w * t
     let tick_y = track_rect.y + track_rect.h * 0.5
@@ -94,7 +94,7 @@ pub fn UIContext::slider(
       active_w,
       track_rect.h,
     )
-    self.draw_list.add_rect(fill_rect, @color.Color::rgb(37, 99, 235), 3.0)
+    self.draw_list.add_rect(fill_rect, @color.Color::accent_primary(), 3.0)
   }
 
   // Compute Value Text
@@ -125,7 +125,7 @@ pub fn UIContext::slider(
   self.draw_list.add_circle_stroke(
     @math.Vec2::new(thumb_cx, thumb_cy),
     thumb_r,
-    @color.Color::rgb(37, 99, 235),
+    @color.Color::accent_primary(),
     1.5,
   )
 
@@ -139,7 +139,7 @@ pub fn UIContext::slider(
     self.draw_list.add_rect(bubble_rect, @color.Color::white(), 5.0)
     self.draw_list.add_rect_stroke(
       bubble_rect,
-      @color.Color::rgb(203, 213, 225),
+      @color.Color::border_default(),
       1.0,
       5.0,
     )
@@ -148,7 +148,7 @@ pub fn UIContext::slider(
       bubble_text_pos,
       val_text,
       11.0,
-      @color.Color::rgb(15, 23, 42),
+      @color.Color::text_primary(),
     )
   }
 
@@ -157,7 +157,7 @@ pub fn UIContext::slider(
     @math.Vec2::new(track_rect.x + track_w + 10.0, rect.y + 4.0),
     val_text,
     12.0,
-    @color.Color::rgb(71, 85, 105),
+    @color.Color::text_secondary(),
   )
 
   (new_val, resp)
@@ -246,23 +246,23 @@ pub fn UIContext::drag_value(
       @math.Vec2::new(rect.x, rect.y + 4.0),
       label,
       13.0,
-      @color.Color::rgb(15, 23, 42),
+      @color.Color::text_primary(),
     )
   }
 
   // Draw Box Background & Mercury Progress Fill
   let bg_color = if is_active {
-    @color.Color::rgb(241, 245, 249)
+    @color.Color::bg_surface()
   } else if is_hovered {
-    @color.Color::rgb(255, 255, 255)
+    @color.Color::white()
   } else {
-    @color.Color::rgb(248, 250, 252)
+    @color.Color::bg_subtle()
   }
 
   let border_color = if is_active || is_hovered {
-    @color.Color::rgb(37, 99, 235)
+    @color.Color::accent_primary()
   } else {
-    @color.Color::rgb(203, 213, 225)
+    @color.Color::border_default()
   }
 
   self.draw_list.add_rect(box_rect, bg_color, 4.0)
@@ -280,11 +280,7 @@ pub fn UIContext::drag_value(
         fill_w,
         box_rect.h,
       )
-      self.draw_list.add_rect(
-        mercury_rect,
-        @color.Color::rgba(37, 99, 235, 45),
-        4.0,
-      )
+      self.draw_list.add_rect(mercury_rect, @color.Color::accent_soft(), 4.0)
     }
   }
 
@@ -303,9 +299,9 @@ pub fn UIContext::drag_value(
     val_str,
     12.0,
     if is_active {
-      @color.Color::rgb(37, 99, 235)
+      @color.Color::accent_primary()
     } else {
-      @color.Color::rgb(15, 23, 42)
+      @color.Color::text_primary()
     },
   )
 
