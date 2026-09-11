@@ -121,11 +121,13 @@ pub fn UIContext::window(
   let border_color = @color.Color::border_muted()
   let header_color = @color.Color::bg_surface()
 
-  self.draw_list.add_rect(window_rect, bg_color, 8.0)
-  self.draw_list.add_rect_stroke(window_rect, border_color, 1.0, 8.0)
+  let win_radius = self.style.radius_md
+  let font_sz = self.style.font_normal
+  self.draw_list.add_rect(window_rect, bg_color, win_radius)
+  self.draw_list.add_rect_stroke(window_rect, border_color, 1.0, win_radius)
 
   // 4. Draw Title Bar Header
-  self.draw_list.add_rect(title_bar_rect, header_color, 8.0)
+  self.draw_list.add_rect(title_bar_rect, header_color, win_radius)
   let filler_rect = @math.Rect::new(x, y + title_bar_h - 4.0, size.x, 4.0)
   self.draw_list.add_rect(filler_rect, header_color, 0.0)
   self.draw_list.add_line(
@@ -139,7 +141,7 @@ pub fn UIContext::window(
   self.draw_list.add_text(
     @math.Vec2::new(x + 12.0, y + 7.0),
     title,
-    13.0,
+    font_sz,
     @color.Color::text_primary(),
   )
 

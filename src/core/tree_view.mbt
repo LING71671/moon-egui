@@ -97,18 +97,25 @@ pub fn UIContext::tree_view(
   selected_id? : String? = None,
   expanded_ids? : Array[String] = [],
   indent_step? : Double = 16.0,
-  item_height? : Double = 26.0,
+  item_height? : Double = 0.0,
   size? : @math.Vec2,
 ) -> TreeViewResponse {
+  let scale = self.style.scale
+  let eff_row_h = if item_height > 0.0 {
+    item_height
+  } else {
+    self.style.tree_view_row_h * scale
+  }
+
   // 1. Flatten visible hierarchy based on expanded set
   let flat_nodes : Array[FlatTreeNode] = []
   flatten_tree_nodes(nodes, expanded_ids, 0, None, flat_nodes)
 
   let node_count = flat_nodes.length()
   let content_height = if node_count > 0 {
-    node_count.to_double() * item_height + 4.0
+    node_count.to_double() * eff_row_h + 4.0 * scale
   } else {
-    item_height + 4.0
+    eff_row_h + 4.0 * scale
   }
 
   let total_w = match size {
@@ -117,7 +124,7 @@ pub fn UIContext::tree_view(
       if self.available_width > 0.0 {
         self.available_width
       } else {
-        240.0
+        240.0 * scale
       }
   }
   let total_h = match size {
@@ -131,20 +138,26 @@ pub fn UIContext::tree_view(
     @math.Vec2::new(total_w, total_h),
   )
 
+  if response.hovered {
+    self.set_cursor_icon("pointer")
+  }
+
   self.register_focusable(id)
   if response.pressed() || response.clicked() {
     self.request_focus(id)
   }
   let is_focused = self.has_focus(id)
 
+  let tree_radius = self.style.tree_view_radius * scale
+
   // Surface and outer border
-  self.draw_list.add_rect(rect, @color.Color::white(), 6.0)
+  self.draw_list.add_rect(rect, @color.Color::bg_window(), tree_radius)
   let border_color = if is_focused {
     @color.Color::border_focus()
   } else {
     @color.Color::border_muted()
   }
-  self.draw_list.add_rect_stroke(rect, border_color, 1.0, 6.0)
+  self.draw_list.add_rect_stroke(rect, border_color, 1.0, tree_radius)
 
   let mut cur_selected = selected_id
   let next_expanded = expanded_ids.copy()
@@ -221,22 +234,29 @@ pub fn UIContext::tree_view(
   for i = 0; i < node_count; i = i + 1 {
     let flat = flat_nodes[i]
     let node = flat.node
-    let row_y = rect.y + 2.0 + i.to_double() * item_height
-    let is_in_view = row_y + item_height <= rect.y + rect.h + 2.0 &&
+    let row_y = rect.y + 2.0 * scale + i.to_double() * eff_row_h
+    let is_in_view = row_y + eff_row_h <= rect.y + rect.h + 2.0 * scale &&
       row_y >= rect.y
     let row_rect = @math.Rect::new(
-      rect.x + 2.0,
+      rect.x + 2.0 * scale,
       row_y,
-      rect.w - 4.0,
-      item_height,
+      rect.w - 4.0 * scale,
+      eff_row_h,
     )
 
     let is_row_hovered = is_in_view && self.is_hovered(row_rect)
     let is_row_selected = Some(node.id) == cur_selected
 
     // Chevron hit box
-    let chevron_x = row_rect.x + 4.0 + flat.depth.to_double() * indent_step
-    let chevron_rect = @math.Rect::new(chevron_x, row_y, 16.0, item_height)
+    let chevron_x = row_rect.x +
+      4.0 * scale +
+      flat.depth.to_double() * indent_step
+    let chevron_rect = @math.Rect::new(
+      chevron_x,
+      row_y,
+      16.0 * scale,
+      eff_row_h,
+    )
     let is_chevron_hovered = flat.has_children && self.is_hovered(chevron_rect)
     if is_row_hovered || is_chevron_hovered {
       self.set_cursor_icon("pointer")
@@ -268,22 +288,38 @@ pub fn UIContext::tree_view(
       }
     }
 
+    let row_radius = self.style.radius_sm * scale
+    let font_sm = self.style.font_small * scale
+    let font_nm = self.style.font_normal * scale
+
     // Row background wash
     if is_row_selected {
-      self.draw_list.add_rect(row_rect, @color.Color::hex(0xEFF6FF), 4.0)
+      self.draw_list.add_rect(
+        row_rect,
+        @color.Color::tree_row_selected(),
+        row_radius,
+      )
       // Left cobalt accent bar (2.5px)
       self.draw_list.add_rect(
-        @math.Rect::new(row_rect.x, row_rect.y + 2.0, 2.5, row_rect.h - 4.0),
+        @math.Rect::new(
+          row_rect.x,
+          row_rect.y + 2.0 * scale,
+          2.5 * scale,
+          row_rect.h - 4.0 * scale,
+        ),
         @color.Color::accent_primary(),
         1.0,
       )
     } else if is_row_hovered {
-      self.draw_list.add_rect(row_rect, @color.Color::bg_hover(), 4.0)
+      self.draw_list.add_rect(row_rect, @color.Color::bg_hover(), row_radius)
     }
 
     // Hierarchy guide lines (for depths > 0)
     for d = 0; d < flat.depth; d = d + 1 {
-      let guide_x = row_rect.x + 4.0 + d.to_double() * indent_step + 7.5
+      let guide_x = row_rect.x +
+        4.0 * scale +
+        d.to_double() * indent_step +
+        7.5 * scale
       self.draw_list.add_line(
         @math.Vec2::new(guide_x, row_rect.y),
         @math.Vec2::new(guide_x, row_rect.y + row_rect.h),
@@ -301,34 +337,39 @@ pub fn UIContext::tree_view(
         @color.Color::text_muted()
       }
       self.draw_list.add_text(
-        @math.Vec2::new(chevron_x + 3.0, row_y + 5.0),
+        @math.Vec2::new(chevron_x + 3.0 * scale, row_y + 5.0 * scale),
         chevron_glyph,
-        11.0,
+        font_sm,
         chevron_col,
       )
     }
 
     // Icon chiclet badge (if provided)
-    let content_x = chevron_x + 18.0
+    let content_x = chevron_x + 18.0 * scale
     let mut text_x = content_x
     if !node.icon.is_empty() {
-      let icon_size = self.measure_text(node.icon, 10.0)
-      let badge_w = icon_size.x + 8.0
-      let badge_h = 16.0
-      let badge_rect = @math.Rect::new(content_x, row_y + 4.0, badge_w, badge_h)
+      let icon_size = self.measure_text(node.icon, font_sm)
+      let badge_w = icon_size.x + 8.0 * scale
+      let badge_h = 16.0 * scale
+      let badge_rect = @math.Rect::new(
+        content_x,
+        row_y + 4.0 * scale,
+        badge_w,
+        badge_h,
+      )
       let (badge_bg, badge_col) = if is_row_selected {
         (@color.Color::accent_soft(), @color.Color::accent_primary())
       } else {
         (@color.Color::bg_subtle(), @color.Color::text_secondary())
       }
-      self.draw_list.add_rect(badge_rect, badge_bg, 3.0)
+      self.draw_list.add_rect(badge_rect, badge_bg, 3.0 * scale)
       self.draw_list.add_text(
-        @math.Vec2::new(content_x + 4.0, row_y + 6.0),
+        @math.Vec2::new(content_x + 4.0 * scale, row_y + 6.0 * scale),
         node.icon,
-        10.0,
+        font_sm,
         badge_col,
       )
-      text_x = content_x + badge_w + 6.0
+      text_x = content_x + badge_w + 6.0 * scale
     }
 
     // Label text
@@ -340,9 +381,9 @@ pub fn UIContext::tree_view(
       @color.Color::text_body()
     }
     self.draw_list.add_text(
-      @math.Vec2::new(text_x, row_y + 5.5),
+      @math.Vec2::new(text_x, row_y + 5.5 * scale),
       node.label,
-      12.0,
+      font_nm,
       label_col,
     )
   }

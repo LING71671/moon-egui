@@ -34,8 +34,9 @@ pub fn UIContext::collapsing_header(
   } else {
     @color.Color::border_muted()
   }
-  self.draw_list.add_rect(rect, bg_color, 5.0)
-  self.draw_list.add_rect_stroke(rect, border_color, 1.0, 5.0)
+  let header_radius = self.style.radius_sm
+  self.draw_list.add_rect(rect, bg_color, header_radius)
+  self.draw_list.add_rect_stroke(rect, border_color, 1.0, header_radius)
 
   let arrow_color = if resp.hovered() {
     @color.Color::accent_primary()
@@ -60,8 +61,9 @@ pub fn UIContext::collapsing_header(
     self.draw_list.add_line(p2, p3, arrow_color, 1.5)
   }
 
+  let font_sz = self.style.font_normal
   let title_x = rect.x + 24.0
-  let title_y = rect.y + (h - 13.0) * 0.5
+  let title_y = rect.y + (h - font_sz) * 0.5
   let text_color = if resp.hovered() {
     @color.Color::text_primary()
   } else {
@@ -70,7 +72,7 @@ pub fn UIContext::collapsing_header(
   self.draw_list.add_text(
     @math.Vec2::new(title_x, title_y),
     title,
-    13.0,
+    font_sz,
     text_color,
   )
 
@@ -103,8 +105,9 @@ pub fn UIContext::combo_box(
   options : Array[String],
 ) -> (Int, Response) {
   let combo_id = self.id_stack.derive_id(id_salt)
+  let combo_font_sz = self.style.font_normal
   let label_size = if !label.is_empty() {
-    self.measure_text(label, 13.0).x + 8.0
+    self.measure_text(label, combo_font_sz).x + 8.0
   } else {
     0.0
   }
@@ -134,11 +137,11 @@ pub fn UIContext::combo_box(
   }
 
   if !label.is_empty() {
-    let label_y = rect.y + (h - 13.0) * 0.5
+    let label_y = rect.y + (h - combo_font_sz) * 0.5
     self.draw_list.add_text(
       @math.Vec2::new(rect.x, label_y),
       label,
-      13.0,
+      combo_font_sz,
       @color.Color::text_primary(),
     )
   }
@@ -146,7 +149,7 @@ pub fn UIContext::combo_box(
   let bg_color = if box_hovered || is_open {
     @color.Color::bg_subtle()
   } else {
-    @color.Color::white()
+    @color.Color::bg_window()
   }
   let border_color = if is_open || box_hovered {
     @color.Color::accent_primary()
@@ -154,19 +157,20 @@ pub fn UIContext::combo_box(
     @color.Color::border_default()
   }
 
-  self.draw_list.add_rect(box_rect, bg_color, 5.0)
-  self.draw_list.add_rect_stroke(box_rect, border_color, 1.0, 5.0)
+  let box_radius = self.style.radius_sm
+  self.draw_list.add_rect(box_rect, bg_color, box_radius)
+  self.draw_list.add_rect_stroke(box_rect, border_color, 1.0, box_radius)
 
   let selected_str = if current_idx >= 0 && current_idx < options.length() {
     options[current_idx]
   } else {
     ""
   }
-  let text_y = box_rect.y + (h - 13.0) * 0.5
+  let text_y = box_rect.y + (h - combo_font_sz) * 0.5
   self.draw_list.add_text(
     @math.Vec2::new(box_rect.x + 8.0, text_y),
     selected_str,
-    13.0,
+    combo_font_sz,
     @color.Color::text_primary(),
   )
 
@@ -227,13 +231,20 @@ pub fn UIContext::combo_box(
       menu_rect.w,
       menu_rect.h,
     )
-    self.draw_list.add_rect(shadow_rect, @color.Color::shadow(), 6.0)
-    self.draw_list.add_rect(menu_rect, @color.Color::white(), 5.0)
+    let menu_radius = self.style.radius_md
+    let item_radius = self.style.radius_sm
+    let item_font_sz = self.style.font_small
+    self.draw_list.add_rect(
+      shadow_rect,
+      @color.Color::shadow_ambient(),
+      menu_radius,
+    )
+    self.draw_list.add_rect(menu_rect, @color.Color::bg_window(), item_radius)
     self.draw_list.add_rect_stroke(
       menu_rect,
       @color.Color::border_default(),
       1.0,
-      5.0,
+      item_radius,
     )
 
     for i = 0; i < options.length(); i = i + 1 {
@@ -246,7 +257,11 @@ pub fn UIContext::combo_box(
       let item_hovered = self.is_hovered(item_rect)
       if item_hovered {
         self.set_cursor_icon("pointer")
-        self.draw_list.add_rect(item_rect, @color.Color::bg_surface(), 3.0)
+        self.draw_list.add_rect(
+          item_rect,
+          @color.Color::bg_surface(),
+          item_radius,
+        )
         if self.input.mouse_pressed() {
           current_idx = i
           self.set_open_combo_id(Id::zero())
@@ -260,9 +275,12 @@ pub fn UIContext::combo_box(
         @color.Color::text_body()
       }
       self.draw_list.add_text(
-        @math.Vec2::new(item_rect.x + 8.0, item_rect.y + (item_h - 12.0) * 0.5),
+        @math.Vec2::new(
+          item_rect.x + 8.0,
+          item_rect.y + (item_h - item_font_sz) * 0.5,
+        ),
         options[i],
-        12.0,
+        item_font_sz,
         item_text_col,
       )
 
@@ -297,7 +315,7 @@ pub fn UIContext::tab_bar(
   tabs : Array[String],
   selected_idx : Int,
 ) -> (Int, Response) {
-  let font_size = 13.0
+  let font_size = self.style.font_normal
   let mut total_w = 0.0
   for tab in tabs {
     total_w = total_w + self.measure_text(tab, font_size).x + 24.0
@@ -306,9 +324,16 @@ pub fn UIContext::tab_bar(
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
   let mut current_selected = selected_idx
 
+  let container_radius = self.style.radius_md
+  let tab_radius = self.style.radius_sm
   // Draw recessed groove container
-  self.draw_list.add_rect(rect, @color.Color::bg_surface(), 6.0)
-  self.draw_list.add_rect_stroke(rect, @color.Color::border_muted(), 1.0, 6.0)
+  self.draw_list.add_rect(rect, @color.Color::bg_surface(), container_radius)
+  self.draw_list.add_rect_stroke(
+    rect,
+    @color.Color::border_muted(),
+    1.0,
+    container_radius,
+  )
 
   let mut cur_x = rect.x
   for i = 0; i < tabs.length(); i = i + 1 {
@@ -328,16 +353,20 @@ pub fn UIContext::tab_bar(
 
     if is_selected {
       let active_rect = tab_rect.shrink(2.0)
-      self.draw_list.add_rect(active_rect, @color.Color::white(), 5.0)
+      self.draw_list.add_rect(
+        active_rect,
+        @color.Color::bg_window(),
+        tab_radius,
+      )
       self.draw_list.add_rect_stroke(
         active_rect,
         @color.Color::border_default(),
         1.0,
-        5.0,
+        tab_radius,
       )
     } else if is_hovered {
       let hover_rect = tab_rect.shrink(2.0)
-      self.draw_list.add_rect(hover_rect, @color.Color::bg_subtle(), 4.0)
+      self.draw_list.add_rect(hover_rect, @color.Color::bg_subtle(), tab_radius)
     }
 
     let text_col = if is_selected {

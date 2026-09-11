@@ -125,8 +125,15 @@ pub fn UIContext::color_picker(
   self.pop_id()
 
   // Panel background card
-  self.draw_list.add_rect(rect, @color.Color::bg_surface(), 8.0)
-  self.draw_list.add_rect_stroke(rect, @color.Color::border_default(), 1.0, 8.0)
+  let card_radius = self.style.radius_md
+  let inner_radius = self.style.radius_sm
+  self.draw_list.add_rect(rect, @color.Color::bg_surface(), card_radius)
+  self.draw_list.add_rect_stroke(
+    rect,
+    @color.Color::border_default(),
+    1.0,
+    card_radius,
+  )
 
   let pad = 10.0
   let sq_x = rect.x + pad
@@ -187,15 +194,25 @@ pub fn UIContext::color_picker(
     sq_rect,
     @color.Color::border_muted(),
     1.0,
-    4.0,
+    inner_radius,
   )
 
   // Dual-ring cursor on SV area
   let cur_x = sq_x + s * sq_w
   let cur_y = sq_y + (1.0 - v) * sq_h
   let cur_center = @math.Vec2::new(cur_x, cur_y)
-  self.draw_list.add_circle_stroke(cur_center, 5.0, @color.Color::white(), 1.6)
-  self.draw_list.add_circle_stroke(cur_center, 3.5, @color.Color::black(), 1.2)
+  self.draw_list.add_circle_stroke(
+    cur_center,
+    5.0,
+    @color.Color::bg_window(),
+    1.6,
+  )
+  self.draw_list.add_circle_stroke(
+    cur_center,
+    3.5,
+    @color.Color::text_primary(),
+    1.2,
+  )
 
   // 2. Hue Rainbow Slider
   let hue_y = sq_y + sq_h + 8.0
@@ -237,13 +254,13 @@ pub fn UIContext::color_picker(
     hue_rect,
     @color.Color::border_muted(),
     1.0,
-    3.0,
+    inner_radius,
   )
 
   // Hue Slider Thumb
   let hue_thumb_x = sq_x + h / 360.0 * sq_w
   let hue_thumb_center = @math.Vec2::new(hue_thumb_x, hue_y + hue_h * 0.5)
-  self.draw_list.add_circle(hue_thumb_center, 6.0, @color.Color::white())
+  self.draw_list.add_circle(hue_thumb_center, 6.0, @color.Color::bg_window())
   self.draw_list.add_circle_stroke(
     hue_thumb_center,
     6.0,
@@ -276,7 +293,7 @@ pub fn UIContext::color_picker(
     }
 
     // Alpha Bar Background & Gradient
-    self.draw_list.add_rect(alpha_rect, @color.Color::bg_subtle(), 3.0)
+    self.draw_list.add_rect(alpha_rect, @color.Color::bg_subtle(), inner_radius)
     let alpha_steps = 16
     let alpha_step_w = sq_w / alpha_steps.to_double()
     let (cur_r, cur_g, cur_b) = hsv_to_rgb(h, s, v)
@@ -299,7 +316,7 @@ pub fn UIContext::color_picker(
       alpha_rect,
       @color.Color::border_muted(),
       1.0,
-      3.0,
+      inner_radius,
     )
 
     // Alpha Slider Thumb
@@ -308,7 +325,11 @@ pub fn UIContext::color_picker(
       alpha_thumb_x,
       alpha_y + alpha_h * 0.5,
     )
-    self.draw_list.add_circle(alpha_thumb_center, 6.0, @color.Color::white())
+    self.draw_list.add_circle(
+      alpha_thumb_center,
+      6.0,
+      @color.Color::bg_window(),
+    )
     self.draw_list.add_circle_stroke(
       alpha_thumb_center,
       6.0,
@@ -327,12 +348,12 @@ pub fn UIContext::color_picker(
     hue_y + hue_h + 8.0
   }
   let swatch_rect = @math.Rect::new(sq_x, footer_y, 22.0, 22.0)
-  self.draw_list.add_rect(swatch_rect, updated_color, 4.0)
+  self.draw_list.add_rect(swatch_rect, updated_color, inner_radius)
   self.draw_list.add_rect_stroke(
     swatch_rect,
     @color.Color::border_default(),
     1.0,
-    4.0,
+    inner_radius,
   )
 
   let hex_text = if show_alpha {
@@ -390,17 +411,23 @@ pub fn UIContext::color_picker_button(
   } else {
     @color.Color::bg_surface()
   }
-  self.draw_list.add_rect(rect, btn_bg, 5.0)
-  self.draw_list.add_rect_stroke(rect, @color.Color::border_default(), 1.0, 5.0)
+  let btn_radius = self.style.radius_sm
+  self.draw_list.add_rect(rect, btn_bg, btn_radius)
+  self.draw_list.add_rect_stroke(
+    rect,
+    @color.Color::border_default(),
+    1.0,
+    btn_radius,
+  )
 
   // Color Swatch Pill
   let swatch_rect = @math.Rect::new(rect.x + 6.0, rect.y + 6.0, 16.0, 16.0)
-  self.draw_list.add_rect(swatch_rect, color, 3.0)
+  self.draw_list.add_rect(swatch_rect, color, btn_radius)
   self.draw_list.add_rect_stroke(
     swatch_rect,
     @color.Color::border_muted(),
     1.0,
-    3.0,
+    btn_radius,
   )
 
   // Hex Text

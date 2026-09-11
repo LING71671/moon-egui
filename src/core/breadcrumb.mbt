@@ -81,7 +81,11 @@ pub fn UIContext::breadcrumb(
     if !is_last && orig_idx >= 0 {
       if is_hovered {
         self.set_cursor_icon("pointer")
-        self.draw_list.add_rect(item_rect, @color.Color::bg_hover(), 4.0)
+        self.draw_list.add_rect(
+          item_rect,
+          @color.Color::bg_hover(),
+          self.style.radius_sm,
+        )
         if self.input.mouse_pressed {
           clicked_idx = Some(orig_idx)
         }

@@ -33,12 +33,12 @@ pub fn UIContext::checkbox(
       4.0,
     )
     let inner = box_rect.shrink(4.0)
-    self.draw_list.add_rect(inner, @color.Color::white(), 2.0)
+    self.draw_list.add_rect(inner, @color.Color::text_inverse(), 2.0)
   } else {
     let box_bg = if resp.hovered {
       @color.Color::bg_subtle()
     } else {
-      @color.Color::white()
+      @color.Color::bg_window()
     }
     let box_border = if resp.hovered {
       @color.Color::accent_primary()
@@ -49,8 +49,11 @@ pub fn UIContext::checkbox(
     self.draw_list.add_rect_stroke(box_rect, box_border, 1.0, 4.0)
   }
 
+  let scale = self.style.scale
+  let font_nm = self.style.font_normal * scale
+
   let text_x = rect.x + box_size + gap
-  let text_y = rect.y + (h - 14.0) * 0.5
+  let text_y = rect.y + (h - font_nm) * 0.5
   let text_color = if resp.hovered {
     @color.Color::text_primary()
   } else {
@@ -59,7 +62,7 @@ pub fn UIContext::checkbox(
   self.draw_list.add_text(
     @math.Vec2::new(text_x, text_y),
     text,
-    14.0,
+    font_nm,
     text_color,
   )
 
@@ -91,16 +94,16 @@ pub fn UIContext::radio(
 
   let outer_color = if resp.has_focus() || selected {
     @color.Color::accent_primary()
-  } else if resp.hovered() {
+  } else if resp.hovered {
     @color.Color::accent_primary()
   } else {
     @color.Color::border_default()
   }
 
-  let bg_circle_color = if resp.hovered() {
+  let bg_circle_color = if resp.hovered {
     @color.Color::bg_subtle()
   } else {
-    @color.Color::white()
+    @color.Color::bg_window()
   }
 
   self.draw_list.add_circle(center, circle_r, bg_circle_color)
@@ -110,16 +113,19 @@ pub fn UIContext::radio(
     self.draw_list.add_circle(center, 3.5, @color.Color::accent_primary())
   }
 
+  let scale = self.style.scale
+  let font_nm = self.style.font_normal * scale
+
   let text_pos = @math.Vec2::new(
     rect.x + circle_r * 2.0 + gap + 1.0,
-    rect.y + (total_h - 13.0) * 0.5,
+    rect.y + (total_h - font_nm) * 0.5,
   )
-  let text_color = if resp.hovered() {
+  let text_color = if resp.hovered {
     @color.Color::text_primary()
   } else {
     @color.Color::text_body()
   }
-  self.draw_list.add_text(text_pos, label, 13.0, text_color)
+  self.draw_list.add_text(text_pos, label, font_nm, text_color)
 
   (new_selected, resp)
 }
@@ -132,12 +138,14 @@ pub fn UIContext::toggle(
   text : String,
   checked : Bool,
 ) -> (Bool, Response) {
-  let switch_w = 36.0
-  let switch_h = 20.0
-  let gap = 8.0
-  let text_size = self.measure_text(text, 14.0)
+  let scale = self.style.scale
+  let font_nm = self.style.font_normal * scale
+  let switch_w = self.style.toggle_w * scale
+  let switch_h = self.style.toggle_h * scale
+  let gap = 8.0 * scale
+  let text_size = self.measure_text(text, font_nm)
   let total_w = switch_w + gap + text_size.x
-  let h = 24.0
+  let h = 24.0 * scale
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
   if resp.hovered {
     self.set_cursor_icon("pointer")
@@ -167,11 +175,11 @@ pub fn UIContext::toggle(
   self.draw_list.add_rect(switch_rect, bg_color, switch_h * 0.5)
 
   // Draw sliding thumb circle
-  let thumb_radius = (switch_h - 4.0) * 0.5
+  let thumb_radius = (switch_h - 4.0 * scale) * 0.5
   let thumb_cx = if checked {
-    switch_rect.x + switch_w - 2.0 - thumb_radius
+    switch_rect.x + switch_w - 2.0 * scale - thumb_radius
   } else {
-    switch_rect.x + 2.0 + thumb_radius
+    switch_rect.x + 2.0 * scale + thumb_radius
   }
   let thumb_cy = switch_rect.y + switch_h * 0.5
   let thumb_rect = @math.Rect::new(
@@ -180,11 +188,11 @@ pub fn UIContext::toggle(
     thumb_radius * 2.0,
     thumb_radius * 2.0,
   )
-  self.draw_list.add_rect(thumb_rect, @color.Color::white(), thumb_radius)
+  self.draw_list.add_rect(thumb_rect, @color.Color::bg_window(), thumb_radius)
 
   // Draw label text
   let text_x = rect.x + switch_w + gap
-  let text_y = rect.y + (h - 14.0) * 0.5
+  let text_y = rect.y + (h - font_nm) * 0.5
   let text_color = if resp.hovered {
     @color.Color::text_primary()
   } else {
@@ -193,7 +201,7 @@ pub fn UIContext::toggle(
   self.draw_list.add_text(
     @math.Vec2::new(text_x, text_y),
     text,
-    14.0,
+    font_nm,
     text_color,
   )
 

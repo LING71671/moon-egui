@@ -62,12 +62,25 @@ pub fn UIContext::table(
   columns : Array[TableColumn],
   row_count : Int,
   render_cell : (UIContext, Int, Int, @math.Rect) -> Unit,
-  row_height? : Double = 28.0,
-  header_height? : Double = 32.0,
+  row_height? : Double = 0.0,
+  header_height? : Double = 0.0,
   selected_row? : Int = -1,
   sort_column? : String = "",
   sort_direction? : TableSortDirection = NoSort,
 ) -> TableResponse {
+  let scale = self.style.scale
+  let eff_row_h = if row_height > 0.0 {
+    row_height
+  } else {
+    self.style.table_row_h * scale
+  }
+  let eff_header_h = if header_height > 0.0 {
+    header_height
+  } else {
+    self.style.table_header_h * scale
+  }
+  let table_radius = self.style.table_radius * scale
+
   self.push_id(id_salt)
   let (table_id, table_rect, _resp) = self.allocate_space(size)
   self.pop_id()
@@ -77,36 +90,36 @@ pub fn UIContext::table(
   let mut sort_changed = false
 
   // 1. Render Table Background Card
-  self.draw_list.add_rect(table_rect, @color.Color::bg_surface(), 6.0)
+  self.draw_list.add_rect(table_rect, @color.Color::bg_surface(), table_radius)
   self.draw_list.add_rect_stroke(
     table_rect,
     @color.Color::border_default(),
     1.0,
-    6.0,
+    table_radius,
   )
 
   let header_rect = @math.Rect::new(
     table_rect.x,
     table_rect.y,
     table_rect.w,
-    header_height,
+    eff_header_h,
   )
 
   // Header background fill
-  self.draw_list.add_rect(header_rect, @color.Color::bg_subtle(), 6.0)
+  self.draw_list.add_rect(header_rect, @color.Color::bg_subtle(), table_radius)
   // Square off bottom corners of header
   let header_bottom_fill = @math.Rect::new(
     table_rect.x,
-    table_rect.y + header_height - 6.0,
+    table_rect.y + eff_header_h - table_radius,
     table_rect.w,
-    6.0,
+    table_radius,
   )
   self.draw_list.add_rect(header_bottom_fill, @color.Color::bg_subtle(), 0.0)
 
   // Bottom border line for header
   self.draw_list.add_line(
-    @math.Vec2::new(table_rect.x, table_rect.y + header_height),
-    @math.Vec2::new(table_rect.x + table_rect.w, table_rect.y + header_height),
+    @math.Vec2::new(table_rect.x, table_rect.y + eff_header_h),
+    @math.Vec2::new(table_rect.x + table_rect.w, table_rect.y + eff_header_h),
     @color.Color::border_default(),
     1.0,
   )
@@ -122,16 +135,16 @@ pub fn UIContext::table(
       current_x,
       table_rect.y,
       col_w,
-      header_height,
+      eff_header_h,
     )
 
     // Resize divider handle at right edge
-    let handle_w = 8.0
+    let handle_w = 8.0 * scale
     let handle_rect = @math.Rect::new(
       current_x + col_w - handle_w * 0.5,
       table_rect.y,
       handle_w,
-      header_height,
+      eff_header_h,
     )
     let handle_id = self.id_stack.derive_id(
       "table_col_handle::" + id_salt + "::" + col.id,
@@ -185,10 +198,10 @@ pub fn UIContext::table(
     }
 
     // Header title text
-    let font_sz = self.style.font_small
+    let font_sz = self.style.font_small * scale
     let title_pos = @math.Vec2::new(
-      current_x + 10.0,
-      table_rect.y + (header_height - font_sz) * 0.5,
+      current_x + 10.0 * scale,
+      table_rect.y + (eff_header_h - font_sz) * 0.5,
     )
     let title_color = if active_sort_col == col.id {
       @color.Color::accent_primary()
@@ -207,7 +220,7 @@ pub fn UIContext::table(
         NoSort => ""
       }
       if arrow_str != "" {
-        let arrow_x = current_x + col.width - 16.0
+        let arrow_x = current_x + col.width - 16.0 * scale
         let arrow_pos = @math.Vec2::new(arrow_x, title_pos.y)
         self.draw_list.add_text(
           arrow_pos,
@@ -222,8 +235,8 @@ pub fn UIContext::table(
     if c < total_cols - 1 {
       let divider_x = current_x + col.width
       self.draw_list.add_line(
-        @math.Vec2::new(divider_x, table_rect.y + 6.0),
-        @math.Vec2::new(divider_x, table_rect.y + header_height - 6.0),
+        @math.Vec2::new(divider_x, table_rect.y + 6.0 * scale),
+        @math.Vec2::new(divider_x, table_rect.y + eff_header_h - 6.0 * scale),
         @color.Color::border_muted(),
         1.0,
       )
@@ -233,13 +246,13 @@ pub fn UIContext::table(
   }
 
   // 3. Virtual Data Body
-  let body_y = table_rect.y + header_height
-  let body_h = table_rect.h - header_height
+  let body_y = table_rect.y + eff_header_h
+  let body_h = table_rect.h - eff_header_h
   let body_rect = @math.Rect::new(table_rect.x, body_y, table_rect.w, body_h)
 
   let body_container_id = self.id_stack.derive_id(id_salt + "::table_body")
   let mut scroll_y = self.get_scroll_offset(body_container_id)
-  let total_content_h = row_count.to_double() * row_height
+  let total_content_h = row_count.to_double() * eff_row_h
   let max_scroll = if total_content_h > body_h {
     total_content_h - body_h
   } else {
@@ -262,7 +275,7 @@ pub fn UIContext::table(
   self.set_scroll_content_height(body_container_id, total_content_h)
 
   // Calculate virtual row window
-  let start_row_raw = (scroll_y / row_height).to_int()
+  let start_row_raw = (scroll_y / eff_row_h).to_int()
   let start_row = if start_row_raw < 0 {
     0
   } else if start_row_raw >= row_count {
@@ -271,7 +284,7 @@ pub fn UIContext::table(
     start_row_raw
   }
 
-  let visible_count = (body_h / row_height).to_int() + 2
+  let visible_count = (body_h / eff_row_h).to_int() + 2
   let end_row = if start_row + visible_count > row_count {
     row_count
   } else {
@@ -284,11 +297,10 @@ pub fn UIContext::table(
   self.push_clip(body_rect)
 
   for r = start_row; r < end_row; r = r + 1 {
-    let row_y = body_y - scroll_y + r.to_double() * row_height
-    let row_rect = @math.Rect::new(body_rect.x, row_y, body_rect.w, row_height)
+    let row_y = body_y - scroll_y + r.to_double() * eff_row_h
+    let row_rect = @math.Rect::new(body_rect.x, row_y, body_rect.w, eff_row_h)
 
-    let is_row_hovered = self.is_hovered(body_rect) &&
-      row_rect.contains(self.input.mouse_pos)
+    let is_row_hovered = self.is_hovered(body_rect) && self.is_hovered(row_rect)
     if is_row_hovered {
       hovered_row = Some(r)
       if self.input.mouse_pressed &&
@@ -299,11 +311,7 @@ pub fn UIContext::table(
 
     // Row background styling
     if r == selected_row {
-      self.draw_list.add_rect(
-        row_rect,
-        @color.Color::accent_soft().with_alpha(100),
-        0.0,
-      )
+      self.draw_list.add_rect(row_rect, @color.Color::table_row_selected(), 0.0)
     } else if is_row_hovered {
       self.draw_list.add_rect(row_rect, @color.Color::bg_hover(), 0.0)
     } else if r % 2 == 1 {
@@ -312,9 +320,9 @@ pub fn UIContext::table(
 
     // Row bottom separator line
     self.draw_list.add_line(
-      @math.Vec2::new(row_rect.x, row_rect.y + row_height),
-      @math.Vec2::new(row_rect.x + row_rect.w, row_rect.y + row_height),
-      @color.Color::border_muted().with_alpha(90),
+      @math.Vec2::new(row_rect.x, row_rect.y + eff_row_h),
+      @math.Vec2::new(row_rect.x + row_rect.w, row_rect.y + eff_row_h),
+      @color.Color::border_muted(),
       1.0,
     )
 
@@ -322,7 +330,7 @@ pub fn UIContext::table(
     let mut cell_x = body_rect.x
     for c = 0; c < total_cols; c = c + 1 {
       let col = columns[c]
-      let cell_rect = @math.Rect::new(cell_x, row_y, col.width, row_height)
+      let cell_rect = @math.Rect::new(cell_x, row_y, col.width, eff_row_h)
 
       self.push_clip(cell_rect)
       let prev_cursor = self.cursor

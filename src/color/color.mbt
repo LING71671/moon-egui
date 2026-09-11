@@ -286,3 +286,80 @@ pub fn Color::badge_warning_bg() -> Color {
 pub fn Color::badge_danger_bg() -> Color {
   Color::rgba(239, 68, 68, 40)
 }
+
+///|
+/// Selection wash for active tree view node.
+pub fn Color::tree_row_selected() -> Color {
+  Color::hex(0xEFF6FF)
+}
+
+///|
+/// Selection fill for active table row.
+pub fn Color::table_row_selected() -> Color {
+  Color::rgba(37, 99, 235, 100)
+}
+
+///|
+/// Low-contrast border for recessed grooves and spinner tracks.
+pub fn Color::border_track() -> Color {
+  Color::rgba(226, 232, 240, 150)
+}
+
+///|
+/// Subtle background wash for sparkline graphs.
+pub fn Color::sparkline_wash() -> Color {
+  Color::rgba(248, 250, 252, 80)
+}
+
+///|
+pub fn Color::badge_success_bg() -> Color {
+  Color::hex(0xF0FDF4)
+}
+
+///|
+pub fn Color::badge_success_border() -> Color {
+  Color::hex(0xBBF7D0)
+}
+
+///|
+pub fn Color::badge_success_text() -> Color {
+  Color::hex(0x166534)
+}
+
+///|
+pub fn Color::badge_warning_border() -> Color {
+  Color::hex(0xFEF08A)
+}
+
+///|
+pub fn Color::badge_warning_text() -> Color {
+  Color::hex(0x854D0E)
+}
+
+///|
+pub fn Color::badge_danger_border() -> Color {
+  Color::hex(0xFECACA)
+}
+
+///|
+pub fn Color::badge_danger_text() -> Color {
+  Color::hex(0x991B1B)
+}
+
+///|
+pub fn Color::badge_info_border() -> Color {
+  Color::hex(0xBFDBFE)
+}
+
+///|
+
+///|
+pub fn Color::badge_info_text() -> Color {
+  Color::hex(0x1E40AF)
+}
+
+///|
+/// Subtle wash for tag and badge close button hover.
+pub fn Color::tag_close_hover() -> Color {
+  Color::rgba(15, 23, 42, 25)
+}

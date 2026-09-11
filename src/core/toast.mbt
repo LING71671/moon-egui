@@ -199,25 +199,28 @@ pub fn UIContext::toast_stack(
     let toast = final_active[i]
     let rect = placed_rects[i]
 
+    let scale = self.style.scale
+    let toast_radius = self.style.toast_radius * scale
+
     // Shadows
     self.draw_list.add_rect(
-      @math.Rect::new(rect.x, rect.y + 4.0, rect.w, rect.h),
-      @color.Color::rgba(15, 23, 42, 28),
-      7.0,
+      @math.Rect::new(rect.x, rect.y + 4.0 * scale, rect.w, rect.h),
+      @color.Color::shadow_ambient(),
+      toast_radius,
     )
     self.draw_list.add_rect(
-      @math.Rect::new(rect.x, rect.y + 1.0, rect.w, rect.h),
-      @color.Color::shadow(),
-      7.0,
+      @math.Rect::new(rect.x, rect.y + 1.0 * scale, rect.w, rect.h),
+      @color.Color::shadow_key(),
+      toast_radius,
     )
 
     // Porcelain Capsule & Stroke
-    self.draw_list.add_rect(rect, @color.Color::white(), 7.0)
+    self.draw_list.add_rect(rect, @color.Color::bg_window(), toast_radius)
     self.draw_list.add_rect_stroke(
       rect,
       @color.Color::border_default(),
       1.0,
-      7.0,
+      toast_radius,
     )
 
     // Status Indicator Bar

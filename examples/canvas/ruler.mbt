@@ -51,7 +51,7 @@ fn render_grid_aisles(
   sc_x : Double,
   sc_y : Double,
 ) -> Unit {
-  let aisle_col = @color.Color::rgb(226, 232, 240)
+  let aisle_col = @color.Color::border_muted()
   for bi = 0; bi <= 10; bi = bi + 1 {
     let aisle_wx = bi.to_double() * 1000.0
     let aisle_sx = sc_x + (aisle_wx - state.cam_x) * state.zoom
@@ -95,10 +95,10 @@ fn render_cad_rulers(
   sc_x : Double,
   sc_y : Double,
 ) -> Unit {
-  let ruler_bg = @color.Color::rgb(255, 255, 255)
-  let ruler_border = @color.Color::rgb(226, 232, 240)
-  let ruler_tick_col = @color.Color::rgb(148, 163, 184)
-  let ruler_text_col = @color.Color::rgb(71, 85, 105)
+  let ruler_bg = @color.Color::bg_window()
+  let ruler_border = @color.Color::border_muted()
+  let ruler_tick_col = @color.Color::border_strong()
+  let ruler_text_col = @color.Color::text_secondary()
 
   // Top Ruler Background & Border
   dl.add_rect(@math.Rect::new(cv_x, vp_y, cv_w, ruler_h), ruler_bg, 0.0)
@@ -121,7 +121,7 @@ fn render_cad_rulers(
   // Top-Left Corner Box
   dl.add_rect(
     @math.Rect::new(vp_x, vp_y, ruler_w, ruler_h),
-    @color.Color::rgb(248, 250, 252),
+    @color.Color::bg_surface(),
     0.0,
   )
   dl.add_text(

@@ -108,6 +108,6 @@ pub fn UIContext::scroll_area(
     } else {
       @color.Color::border_muted()
     }
-    self.draw_list.add_rect(thumb_rect, thumb_color, 3.0)
+    self.draw_list.add_rect(thumb_rect, thumb_color, self.style.radius_sm)
   }
 }

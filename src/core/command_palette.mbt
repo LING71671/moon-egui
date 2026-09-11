@@ -169,6 +169,13 @@ pub fn UIContext::command_palette(
   }
 
   // 5. Layout & geometry
+  let scale = self.style.scale
+  let font_sm = self.style.font_small * scale
+  let font_nm = self.style.font_normal * scale
+  let font_lg = self.style.font_large * scale
+  let card_radius = self.style.command_palette_radius * scale
+  let row_radius = self.style.radius_sm * scale
+
   let viewport_w = if self.available_width > 0.0 {
     self.available_width
   } else {
@@ -177,18 +184,23 @@ pub fn UIContext::command_palette(
   let viewport_h = 800.0
   let scrim_rect = @math.Rect::new(0.0, 0.0, viewport_w, viewport_h)
 
-  let card_w = if viewport_w < 560.0 { viewport_w - 32.0 } else { 540.0 }
+  let default_palette_w = self.style.command_palette_w * scale
+  let card_w = if viewport_w < default_palette_w + 20.0 * scale {
+    viewport_w - 32.0 * scale
+  } else {
+    default_palette_w
+  }
   let card_x = (viewport_w - card_w) * 0.5
-  let card_y = 64.0
-  let header_h = 46.0
-  let footer_h = 28.0
-  let row_h = 32.0
-  let cat_h = 24.0
+  let card_y = 64.0 * scale
+  let header_h = self.style.command_palette_header_h * scale
+  let footer_h = self.style.command_palette_footer_h * scale
+  let row_h = self.style.command_palette_row_h * scale
+  let cat_h = 24.0 * scale
 
   let mut content_h = 0.0
   let mut prev_cat = ""
   if filtered_count == 0 {
-    content_h = 48.0
+    content_h = 48.0 * scale
   } else {
     for item in filtered {
       if !item.category.is_empty() && item.category != prev_cat {
@@ -199,7 +211,7 @@ pub fn UIContext::command_palette(
     }
   }
 
-  let card_h = header_h + content_h + footer_h + 12.0
+  let card_h = header_h + content_h + footer_h + 12.0 * scale
   let card_rect = @math.Rect::new(card_x, card_y, card_w, card_h)
 
   // Block hover on underlying canvas
@@ -216,7 +228,7 @@ pub fn UIContext::command_palette(
   }
 
   // Mouse hover & click on item rows
-  let mut cur_row_y = card_y + header_h + 6.0
+  let mut cur_row_y = card_y + header_h + 6.0 * scale
   let mut prev_row_cat = ""
   let mut clicked_id : String? = None
 
@@ -227,9 +239,9 @@ pub fn UIContext::command_palette(
       prev_row_cat = item.category
     }
     let row_rect = @math.Rect::new(
-      card_x + 6.0,
+      card_x + 6.0 * scale,
       cur_row_y,
-      card_w - 12.0,
+      card_w - 12.0 * scale,
       row_h,
     )
     if row_rect.contains(self.input.mouse_pos) {
@@ -255,58 +267,58 @@ pub fn UIContext::command_palette(
   self.begin_foreground()
 
   // Semi-transparent backdrop scrim
-  self.draw_list.add_rect(scrim_rect, @color.Color::rgba(15, 23, 42, 71), 0.0)
+  self.draw_list.add_rect(scrim_rect, @color.Color::bg_scrim(), 0.0)
 
   // Drop shadows
   self.draw_list.add_rect(
-    @math.Rect::new(card_x, card_y + 8.0, card_w, card_h),
-    @color.Color::rgba(15, 23, 42, 35),
-    8.0,
+    @math.Rect::new(card_x, card_y + 8.0 * scale, card_w, card_h),
+    @color.Color::shadow_key(),
+    card_radius,
   )
   self.draw_list.add_rect(
-    @math.Rect::new(card_x, card_y + 2.0, card_w, card_h),
-    @color.Color::shadow(),
-    8.0,
+    @math.Rect::new(card_x, card_y + 2.0 * scale, card_w, card_h),
+    @color.Color::shadow_ambient(),
+    card_radius,
   )
 
   // Porcelain card surface and border
-  self.draw_list.add_rect(card_rect, @color.Color::white(), 8.0)
+  self.draw_list.add_rect(card_rect, @color.Color::bg_window(), card_radius)
   self.draw_list.add_rect_stroke(
     card_rect,
     @color.Color::border_default(),
     1.0,
-    8.0,
+    card_radius,
   )
 
   // Search prompt icon '>'
   self.draw_list.add_text(
-    @math.Vec2::new(card_x + 16.0, card_y + 14.0),
+    @math.Vec2::new(card_x + 16.0 * scale, card_y + 14.0 * scale),
     ">",
-    16.0,
+    font_lg,
     @color.Color::accent_primary(),
   )
 
   // Search input text or placeholder
   if new_query.is_empty() {
     self.draw_list.add_text(
-      @math.Vec2::new(card_x + 36.0, card_y + 16.0),
+      @math.Vec2::new(card_x + 36.0 * scale, card_y + 16.0 * scale),
       "键入命令或搜索动作...",
-      13.5,
+      font_nm,
       @color.Color::text_muted(),
     )
   } else {
     self.draw_list.add_text(
-      @math.Vec2::new(card_x + 36.0, card_y + 16.0),
+      @math.Vec2::new(card_x + 36.0 * scale, card_y + 16.0 * scale),
       new_query,
-      13.5,
+      font_nm,
       @color.Color::text_primary(),
     )
-    let q_size = self.measure_text(new_query, 13.5)
-    let caret_x = card_x + 36.0 + q_size.x + 2.0
+    let q_size = self.measure_text(new_query, font_nm)
+    let caret_x = card_x + 36.0 * scale + q_size.x + 2.0 * scale
     if self.is_caret_visible() {
       self.draw_list.add_line(
-        @math.Vec2::new(caret_x, card_y + 16.0),
-        @math.Vec2::new(caret_x, card_y + 31.0),
+        @math.Vec2::new(caret_x, card_y + 16.0 * scale),
+        @math.Vec2::new(caret_x, card_y + 31.0 * scale),
         @color.Color::accent_primary(),
         1.5,
       )
@@ -314,22 +326,22 @@ pub fn UIContext::command_palette(
   }
 
   // Right Esc badge
-  let esc_w = 32.0
-  let esc_h = 18.0
-  let esc_x = card_x + card_w - esc_w - 14.0
-  let esc_y = card_y + 14.0
+  let esc_w = 32.0 * scale
+  let esc_h = 18.0 * scale
+  let esc_x = card_x + card_w - esc_w - 14.0 * scale
+  let esc_y = card_y + 14.0 * scale
   let esc_rect = @math.Rect::new(esc_x, esc_y, esc_w, esc_h)
-  self.draw_list.add_rect(esc_rect, @color.Color::bg_surface(), 4.0)
+  self.draw_list.add_rect(esc_rect, @color.Color::bg_surface(), row_radius)
   self.draw_list.add_rect_stroke(
     esc_rect,
     @color.Color::border_muted(),
     1.0,
-    4.0,
+    row_radius,
   )
   self.draw_list.add_text(
-    @math.Vec2::new(esc_x + 6.0, esc_y + 3.0),
+    @math.Vec2::new(esc_x + 6.0 * scale, esc_y + 3.0 * scale),
     "Esc",
-    10.5,
+    font_sm,
     @color.Color::text_muted(),
   )
 
@@ -342,14 +354,14 @@ pub fn UIContext::command_palette(
   )
 
   // Results Stream
-  let mut draw_y = card_y + header_h + 6.0
+  let mut draw_y = card_y + header_h + 6.0 * scale
   let mut prev_draw_cat = ""
 
   if filtered_count == 0 {
     self.draw_list.add_text(
-      @math.Vec2::new(card_x + 20.0, draw_y + 16.0),
+      @math.Vec2::new(card_x + 20.0 * scale, draw_y + 16.0 * scale),
       "未找到匹配命令",
-      13.0,
+      font_nm,
       @color.Color::text_muted(),
     )
   } else {
@@ -357,47 +369,61 @@ pub fn UIContext::command_palette(
       let item = filtered[idx]
       if !item.category.is_empty() && item.category != prev_draw_cat {
         self.draw_list.add_text(
-          @math.Vec2::new(card_x + 16.0, draw_y + 5.0),
+          @math.Vec2::new(card_x + 16.0 * scale, draw_y + 5.0 * scale),
           item.category,
-          10.5,
+          font_sm,
           @color.Color::text_muted(),
         )
         draw_y = draw_y + cat_h
         prev_draw_cat = item.category
       }
 
-      let row_rect = @math.Rect::new(card_x + 6.0, draw_y, card_w - 12.0, row_h)
+      let row_rect = @math.Rect::new(
+        card_x + 6.0 * scale,
+        draw_y,
+        card_w - 12.0 * scale,
+        row_h,
+      )
       let is_selected = idx == new_selected_index
 
       if is_selected {
-        self.draw_list.add_rect(row_rect, @color.Color::hex(0xEFF6FF), 5.0)
         self.draw_list.add_rect(
-          @math.Rect::new(card_x + 6.0, draw_y + 6.0, 3.0, 20.0),
+          row_rect,
+          @color.Color::tree_row_selected(),
+          row_radius,
+        )
+        self.draw_list.add_rect(
+          @math.Rect::new(
+            card_x + 6.0 * scale,
+            draw_y + 6.0 * scale,
+            3.0 * scale,
+            20.0 * scale,
+          ),
           @color.Color::accent_primary(),
           1.5,
         )
         self.draw_list.add_text(
-          @math.Vec2::new(card_x + 18.0, draw_y + 9.0),
+          @math.Vec2::new(card_x + 18.0 * scale, draw_y + 9.0 * scale),
           item.title,
-          13.0,
+          font_nm,
           @color.Color::text_primary(),
         )
       } else {
         self.draw_list.add_text(
-          @math.Vec2::new(card_x + 18.0, draw_y + 9.0),
+          @math.Vec2::new(card_x + 18.0 * scale, draw_y + 9.0 * scale),
           item.title,
-          13.0,
+          font_nm,
           @color.Color::text_body(),
         )
       }
 
       if !item.shortcut.is_empty() {
-        let sc_size = self.measure_text(item.shortcut, 11.5)
-        let sc_x = card_x + card_w - sc_size.x - 20.0
+        let sc_size = self.measure_text(item.shortcut, font_sm)
+        let sc_x = card_x + card_w - sc_size.x - 20.0 * scale
         self.draw_list.add_text(
-          @math.Vec2::new(sc_x, draw_y + 9.5),
+          @math.Vec2::new(sc_x, draw_y + 9.5 * scale),
           item.shortcut,
-          11.5,
+          font_sm,
           @color.Color::text_muted(),
         )
       }
@@ -409,7 +435,7 @@ pub fn UIContext::command_palette(
   // Footer bar
   let footer_y = card_y + card_h - footer_h
   let footer_rect = @math.Rect::new(card_x, footer_y, card_w, footer_h)
-  self.draw_list.add_rect(footer_rect, @color.Color::bg_surface(), 7.0)
+  self.draw_list.add_rect(footer_rect, @color.Color::bg_surface(), card_radius)
   self.draw_list.add_line(
     @math.Vec2::new(card_x, footer_y),
     @math.Vec2::new(card_x + card_w, footer_y),
@@ -417,9 +443,9 @@ pub fn UIContext::command_palette(
     1.0,
   )
   self.draw_list.add_text(
-    @math.Vec2::new(card_x + 16.0, footer_y + 8.0),
+    @math.Vec2::new(card_x + 16.0 * scale, footer_y + 8.0 * scale),
     "↑↓ 导航   ↵ 选择   Esc 退出",
-    11.0,
+    font_sm,
     @color.Color::text_muted(),
   )
 

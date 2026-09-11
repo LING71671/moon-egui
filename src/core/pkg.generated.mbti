@@ -533,6 +533,20 @@ pub struct WidgetStyle {
   dialog_min_h : Double
   dialog_radius : Double
   dialog_btn_w : Double
+  code_editor_font_size : Double
+  code_editor_gutter_font_size : Double
+  code_editor_radius : Double
+  command_palette_w : Double
+  command_palette_radius : Double
+  command_palette_row_h : Double
+  command_palette_header_h : Double
+  command_palette_footer_h : Double
+  toast_radius : Double
+  table_header_h : Double
+  table_row_h : Double
+  table_radius : Double
+  tree_view_row_h : Double
+  tree_view_radius : Double
 } derive(Eq, @debug.Debug)
 pub fn WidgetStyle::default() -> Self
 

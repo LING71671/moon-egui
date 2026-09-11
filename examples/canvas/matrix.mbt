@@ -235,9 +235,9 @@ fn render_matrix_nodes(
             Some(lc) => lc
             None =>
               if (c + r) % 2 == 0 {
-                @color.Color::rgb(255, 255, 255) // Pure White
+                @color.Color::bg_window() // Pure White
               } else {
-                @color.Color::rgb(241, 245, 249) // Slate-100 Light Gray
+                @color.Color::bg_hover() // Slate-100 Light Gray
               }
           }
         }
@@ -360,7 +360,7 @@ fn render_selected_transform_frame(
     // 2. 4 Circular Corner Handles
     let handle_r = 3.0
     let h_purple = @color.Color::rgb(139, 92, 246)
-    let h_white = @color.Color::white()
+    let h_white = @color.Color::bg_window()
 
     let tl_pos = @math.Vec2::new(sel_sx - 3.0, sel_sy - 3.0)
     dl.add_circle(tl_pos, handle_r, h_white)
@@ -392,7 +392,7 @@ fn render_selected_transform_frame(
         tag_w,
         18.0,
       ),
-      @color.Color::rgb(255, 255, 255),
+      @color.Color::bg_window(),
       4.0,
     )
     dl.add_rect_stroke(
@@ -402,7 +402,7 @@ fn render_selected_transform_frame(
         tag_w,
         18.0,
       ),
-      @color.Color::rgb(203, 213, 225),
+      @color.Color::border_default(),
       1.0,
       4.0,
     )
@@ -410,7 +410,7 @@ fn render_selected_transform_frame(
       @math.Vec2::new(sel_sx + (sel_w - tag_w) * 0.5 + 8.0, sel_sy - 22.0),
       tag_txt,
       10.0,
-      @color.Color::rgb(15, 23, 42),
+      @color.Color::text_primary(),
     )
     dl.pop_clip()
   }

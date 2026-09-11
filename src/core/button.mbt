@@ -70,7 +70,7 @@ pub fn UIContext::button(
   } else if resp.hovered {
     @color.Color::bg_subtle() // Floating porcelain highlight
   } else {
-    @color.Color::white() // Pure bone porcelain surface
+    @color.Color::bg_window() // Pure bone porcelain surface
   }
 
   let border_color = if primary {
@@ -88,7 +88,7 @@ pub fn UIContext::button(
   }
 
   let text_color = if primary {
-    @color.Color::white()
+    @color.Color::text_inverse()
   } else if resp.pressed {
     @color.Color::text_strong()
   } else if resp.hovered {
@@ -121,7 +121,7 @@ pub fn UIContext::button(
       kbd_h,
     )
     let (kbd_bg, kbd_col) = if primary {
-      (@color.Color::accent_highlight(), @color.Color::white())
+      (@color.Color::accent_highlight(), @color.Color::text_inverse())
     } else {
       (
         if resp.pressed {
@@ -138,7 +138,7 @@ pub fn UIContext::button(
         },
       )
     }
-    self.draw_list.add_rect(kbd_rect, kbd_bg, 4.0 * scale)
+    self.draw_list.add_rect(kbd_rect, kbd_bg, self.style.radius_sm * scale)
     let sc_w = self.measure_text(shortcut, kbd_font_size).x
     let kbd_text_x = kbd_rect.x + (kbd_rect.w - sc_w) * 0.5
     let kbd_text_y = kbd_rect.y + (kbd_rect.h - kbd_font_size) * 0.5
@@ -229,8 +229,9 @@ pub fn UIContext::color_button(
   }
 
   // Draw color swatch with clean white rim
-  self.draw_list.add_rect(btn_rect, color, 5.0)
-  self.draw_list.add_rect_stroke(btn_rect, border_color, 1.5, 5.0)
+  let swatch_radius = self.style.text_edit_radius
+  self.draw_list.add_rect(btn_rect, color, swatch_radius)
+  self.draw_list.add_rect_stroke(btn_rect, border_color, 1.5, swatch_radius)
 
   (resp.clicked, resp)
 }

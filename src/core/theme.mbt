@@ -51,6 +51,20 @@ pub struct WidgetStyle {
   dialog_min_h : Double
   dialog_radius : Double
   dialog_btn_w : Double
+  code_editor_font_size : Double
+  code_editor_gutter_font_size : Double
+  code_editor_radius : Double
+  command_palette_w : Double
+  command_palette_radius : Double
+  command_palette_row_h : Double
+  command_palette_header_h : Double
+  command_palette_footer_h : Double
+  toast_radius : Double
+  table_header_h : Double
+  table_row_h : Double
+  table_radius : Double
+  tree_view_row_h : Double
+  tree_view_radius : Double
 } derive(Eq, Debug)
 
 ///|
@@ -93,5 +107,19 @@ pub fn WidgetStyle::default() -> WidgetStyle {
     dialog_min_h: 160.0,
     dialog_radius: 12.0,
     dialog_btn_w: 80.0,
+    code_editor_font_size: 12.5,
+    code_editor_gutter_font_size: 11.0,
+    code_editor_radius: 6.0,
+    command_palette_w: 540.0,
+    command_palette_radius: 8.0,
+    command_palette_row_h: 32.0,
+    command_palette_header_h: 46.0,
+    command_palette_footer_h: 28.0,
+    toast_radius: 7.0,
+    table_header_h: 32.0,
+    table_row_h: 30.0,
+    table_radius: 6.0,
+    tree_view_row_h: 26.0,
+    tree_view_radius: 6.0,
   }
 }

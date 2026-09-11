@@ -132,10 +132,17 @@ pub fn UIContext::code_editor(
   let mut current_text = text
   let lines = split_lines(current_text)
 
-  let gutter_w = if show_line_numbers { 38.0 } else { 0.0 }
-  let line_h = 20.0
-  let pad_top = 8.0
-  let pad_code_x = 10.0
+  let scale = self.style.scale
+  let code_font_sz = self.style.code_editor_font_size * scale
+  let gutter_font_sz = self.style.code_editor_gutter_font_size * scale
+  let gutter_w = if show_line_numbers {
+    self.style.code_editor_gutter_w * scale
+  } else {
+    0.0
+  }
+  let line_h = self.style.code_editor_line_h * scale
+  let pad_top = 8.0 * scale
+  let pad_code_x = 10.0 * scale
 
   // Click to position cursor on specific line and column (or line end)
   if self.input.mouse_pressed && (resp.hovered() || resp.pressed()) {
@@ -167,7 +174,7 @@ pub fn UIContext::code_editor(
       let mut best_dist = click_x
       for c = 1; c <= line_str.length(); c = c + 1 {
         let sub = string_slice(line_str, 0, c)
-        let w = self.measure_text(sub, 12.5).x
+        let w = self.measure_text(sub, code_font_sz).x
         let dist = if click_x > w { click_x - w } else { w - click_x }
         if dist < best_dist {
           best_dist = dist
@@ -309,9 +316,11 @@ pub fn UIContext::code_editor(
     @color.Color::border_default()
   }
 
+  let editor_radius = self.style.code_editor_radius * scale
+
   // Editor frame background & border
-  self.draw_list.add_rect(rect, @color.Color::white(), 6.0)
-  self.draw_list.add_rect_stroke(rect, border_col, 1.0, 6.0)
+  self.draw_list.add_rect(rect, @color.Color::bg_window(), editor_radius)
+  self.draw_list.add_rect_stroke(rect, border_col, 1.0, editor_radius)
 
   // Scissor clip for editor interior
   let clip_rect = @math.Rect::new(
@@ -328,7 +337,7 @@ pub fn UIContext::code_editor(
   // Draw Gutter
   if show_line_numbers {
     let gutter_rect = @math.Rect::new(rect.x, rect.y, gutter_w, rect.h)
-    self.draw_list.add_rect(gutter_rect, @color.Color::hex(0xF8FAFC), 0.0)
+    self.draw_list.add_rect(gutter_rect, @color.Color::bg_subtle(), 0.0)
     self.draw_list.add_line(
       @math.Vec2::new(rect.x + gutter_w, rect.y),
       @math.Vec2::new(rect.x + gutter_w, rect.y + rect.h),
@@ -346,7 +355,7 @@ pub fn UIContext::code_editor(
       rect.w - gutter_w - 2.0,
       line_h,
     )
-    self.draw_list.add_rect(wash_rect, @color.Color::hex(0xF1F5F9), 0.0)
+    self.draw_list.add_rect(wash_rect, @color.Color::bg_surface(), 0.0)
   }
 
   // Render each line
@@ -362,17 +371,17 @@ pub fn UIContext::code_editor(
     // Line number in gutter
     if show_line_numbers {
       let num_str = (idx + 1).to_string()
-      let num_size = self.measure_text(num_str, 11.0)
-      let num_x = rect.x + gutter_w - num_size.x - 8.0
+      let num_size = self.measure_text(num_str, gutter_font_sz)
+      let num_x = rect.x + gutter_w - num_size.x - 8.0 * scale
       let num_col = if idx == active_line && is_focused {
         @color.Color::accent_primary()
       } else {
         @color.Color::text_disabled()
       }
       self.draw_list.add_text(
-        @math.Vec2::new(num_x, line_y + 3.0),
+        @math.Vec2::new(num_x, line_y + 3.0 * scale),
         num_str,
-        11.0,
+        gutter_font_sz,
         num_col,
       )
     }
@@ -386,9 +395,9 @@ pub fn UIContext::code_editor(
     }
 
     self.draw_list.add_text(
-      @math.Vec2::new(code_x, line_y + 3.0),
+      @math.Vec2::new(code_x, line_y + 3.0 * scale),
       line_text,
-      12.5,
+      code_font_sz,
       text_col,
     )
   }
@@ -399,13 +408,16 @@ pub fn UIContext::code_editor(
     active_line < render_lines.length() {
     let active_str = render_lines[active_line]
     let prefix = string_slice(active_str, 0, active_col)
-    let prefix_w = self.measure_text(prefix, 12.5).x
+    let prefix_w = self.measure_text(prefix, code_font_sz).x
     let caret_x = rect.x + gutter_w + pad_code_x + prefix_w
-    let caret_y = rect.y + pad_top + active_line.to_double() * line_h + 3.0
+    let caret_y = rect.y +
+      pad_top +
+      active_line.to_double() * line_h +
+      3.0 * scale
 
     self.draw_list.add_line(
       @math.Vec2::new(caret_x, caret_y),
-      @math.Vec2::new(caret_x, caret_y + 14.0),
+      @math.Vec2::new(caret_x, caret_y + self.style.caret_h * scale),
       @color.Color::accent_primary(),
       1.5,
     )

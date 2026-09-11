@@ -53,32 +53,32 @@ fn badge_colors(kind : BadgeKind) -> (@color.Color, @color.Color, @color.Color) 
     Default =>
       (
         @color.Color::bg_subtle(),
-        @color.Color::border_default().with_alpha(140),
+        @color.Color::border_default(),
         @color.Color::text_secondary(),
       )
     Success =>
       (
-        @color.Color::rgb(240, 253, 244),
-        @color.Color::rgb(187, 247, 208),
-        @color.Color::rgb(22, 101, 52),
+        @color.Color::badge_success_bg(),
+        @color.Color::badge_success_border(),
+        @color.Color::badge_success_text(),
       )
     Warning =>
       (
-        @color.Color::rgb(255, 251, 235),
-        @color.Color::rgb(254, 240, 138),
-        @color.Color::rgb(133, 77, 14),
+        @color.Color::badge_warning_bg(),
+        @color.Color::badge_warning_border(),
+        @color.Color::badge_warning_text(),
       )
     Danger =>
       (
-        @color.Color::rgb(254, 242, 242),
-        @color.Color::rgb(254, 202, 202),
-        @color.Color::rgb(153, 27, 27),
+        @color.Color::badge_danger_bg(),
+        @color.Color::badge_danger_border(),
+        @color.Color::badge_danger_text(),
       )
     Info =>
       (
-        @color.Color::rgb(239, 246, 255),
-        @color.Color::rgb(191, 219, 254),
-        @color.Color::rgb(30, 64, 175),
+        @color.Color::badge_info_bg(),
+        @color.Color::badge_info_border(),
+        @color.Color::badge_info_text(),
       )
   }
 }
@@ -148,8 +148,9 @@ pub fn UIContext::tag(
 
   let (bg, border, fg) = badge_colors(kind)
 
-  self.draw_list.add_rect(rect, bg, 5.0)
-  self.draw_list.add_rect_stroke(rect, border, 1.0, 5.0)
+  let tag_radius = self.style.radius_sm
+  self.draw_list.add_rect(rect, bg, tag_radius)
+  self.draw_list.add_rect_stroke(rect, border, 1.0, tag_radius)
 
   // Label text
   let text_y = rect.y + (h - font_sz) * 0.5
@@ -173,7 +174,11 @@ pub fn UIContext::tag(
     let is_close_hovered = close_box.contains(self.input.mouse_pos)
     if is_close_hovered {
       self.set_cursor_icon("pointer")
-      self.draw_list.add_rect(close_box, @color.Color::rgba(0, 0, 0, 25), 3.0)
+      self.draw_list.add_rect(
+        close_box,
+        @color.Color::tag_close_hover(),
+        tag_radius,
+      )
       if self.input.mouse_pressed {
         closed = true
       }

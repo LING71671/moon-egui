@@ -91,4 +91,12 @@ test "theme design tokens" {
   assert_eq(pill.r, 255)
   assert_eq(pill.g, 255)
   assert_eq(pill.b, 255)
+
+  let tree_sel = Color::tree_row_selected()
+  assert_eq(tree_sel.r, 0xEF)
+  assert_eq(tree_sel.g, 0xF6)
+  assert_eq(tree_sel.b, 0xFF)
+
+  let tag_hover = Color::tag_close_hover()
+  assert_eq(tag_hover.a, 25)
 }

@@ -17,13 +17,23 @@ pub fn UIContext::progress_bar(
     fraction
   }
 
-  self.draw_list.add_rect(rect, @color.Color::bg_surface(), 4.0)
-  self.draw_list.add_rect_stroke(rect, @color.Color::border_muted(), 1.0, 4.0)
+  let bar_radius = self.style.radius_sm
+  self.draw_list.add_rect(rect, @color.Color::bg_surface(), bar_radius)
+  self.draw_list.add_rect_stroke(
+    rect,
+    @color.Color::border_muted(),
+    1.0,
+    bar_radius,
+  )
 
   let fill_w = rect.w * clamped_pct
   if fill_w > 0.0 {
     let fill_rect = @math.Rect::new(rect.x, rect.y, fill_w, rect.h)
-    self.draw_list.add_rect(fill_rect, @color.Color::accent_primary(), 4.0)
+    self.draw_list.add_rect(
+      fill_rect,
+      @color.Color::accent_primary(),
+      bar_radius,
+    )
   }
 
   let display_text = if text.is_empty() {
@@ -32,18 +42,19 @@ pub fn UIContext::progress_bar(
     text
   }
 
-  let text_size = self.measure_text(display_text, 11.0)
+  let font_sz = self.style.font_small
+  let text_size = self.measure_text(display_text, font_sz)
   let text_x = rect.x + (rect.w - text_size.x) * 0.5
-  let text_y = rect.y + (rect.h - 11.0) * 0.5
+  let text_y = rect.y + (rect.h - font_sz) * 0.5
   let text_color = if clamped_pct >= 0.5 {
-    @color.Color::white()
+    @color.Color::text_inverse()
   } else {
     @color.Color::text_primary()
   }
   self.draw_list.add_text(
     @math.Vec2::new(text_x, text_y),
     display_text,
-    11.0,
+    font_sz,
     text_color,
   )
 
@@ -55,7 +66,7 @@ pub fn UIContext::progress_bar(
 /// Drawn on the foreground layer so it is never clipped away by the container
 /// that owns the hovered widget.
 pub fn UIContext::tooltip(self : UIContext, text : String) -> Unit {
-  let font_size = 12.0
+  let font_size = self.style.font_small
   let pad_x = 8.0
   let pad_y = 4.0
   let text_size = self.measure_text(text, font_size)
@@ -67,19 +78,20 @@ pub fn UIContext::tooltip(self : UIContext, text : String) -> Unit {
 
   self.begin_foreground()
 
+  let tip_radius = self.style.radius_sm
   // Floating bubble with dark background & subtle border
-  self.draw_list.add_rect(tip_rect, @color.Color::bg_window(), 4.0)
+  self.draw_list.add_rect(tip_rect, @color.Color::bg_inverse(), tip_radius)
   self.draw_list.add_rect_stroke(
     tip_rect,
     @color.Color::border_muted(),
     1.0,
-    4.0,
+    tip_radius,
   )
   self.draw_list.add_text(
     @math.Vec2::new(tip_rect.x + pad_x, tip_rect.y + pad_y),
     text,
     font_size,
-    @color.Color::white(),
+    @color.Color::text_inverse(),
   )
 
   self.end_foreground()

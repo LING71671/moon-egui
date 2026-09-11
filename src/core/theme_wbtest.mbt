@@ -29,6 +29,9 @@ test "theme: default WidgetStyle values" {
   assert_eq(style.radius_md, 6.0)
   assert_eq(style.segmented_h, 34.0)
   assert_eq(style.dialog_w, 380.0)
+  assert_eq(style.code_editor_font_size, 12.5)
+  assert_eq(style.command_palette_w, 540.0)
+  assert_eq(style.table_header_h, 32.0)
 }
 
 ///|

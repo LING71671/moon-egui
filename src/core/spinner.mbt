@@ -29,7 +29,7 @@ pub fn UIContext::spinner(
   self.draw_list.add_circle_stroke(
     center,
     radius,
-    @color.Color::border_muted().with_alpha(60),
+    @color.Color::border_track(),
     stroke_width,
   )
 
@@ -82,7 +82,7 @@ pub fn UIContext::spinner_with_label(
   self.draw_list.add_circle_stroke(
     center,
     radius,
-    @color.Color::border_muted().with_alpha(60),
+    @color.Color::border_track(),
     stroke_width,
   )
 

@@ -150,7 +150,7 @@ pub fn UIContext::text_edit_sized(
   self.set_text_cursor_pos(id, cursor_pos)
 
   // Rendering in Studio Light
-  let bg_color = @color.Color::white()
+  let bg_color = @color.Color::bg_window()
 
   let border_color = if is_focused {
     @color.Color::accent_primary()

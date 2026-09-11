@@ -227,7 +227,7 @@ fn draw_text_edit_showcase(ui : @core.UIContext) -> Unit {
 }
 
 ///|
-fn draw_code_editor_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
+fn draw_code_editor_showcase(ui : @core.UIContext) -> Unit {
   let _ = ui.label_colored(
     "多行代码与行号标尺编辑器 (CodeEditor)",
     @color.Color::accent_primary(),
@@ -237,7 +237,7 @@ fn draw_code_editor_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
   let (new_code, resp) = ui.code_editor(
     "gallery_code",
     gallery_state.code_buffer,
-    size=@math.Vec2::new(card_w - 32.0, 210.0),
+    size=@math.Vec2::new(ui.available_width, 210.0),
     show_line_numbers=true,
   )
   gallery_state.code_buffer = new_code
@@ -777,7 +777,7 @@ fn draw_collapsing_header_showcase(ui : @core.UIContext) -> Unit {
 }
 
 ///|
-fn draw_tree_view_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
+fn draw_tree_view_showcase(ui : @core.UIContext) -> Unit {
   let _ = ui.label_colored(
     "分层引导线资产树 (Hierarchy TreeView)",
     @color.Color::accent_primary(),
@@ -785,38 +785,7 @@ fn draw_tree_view_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
   ui.spacer(6.0)
 
   let tree_data = [
-    @core.TreeNode::new(
-      "src",
-      "src",
-      children=[
-        @core.TreeNode::new(
-          "core",
-          "core",
-          children=[
-            @core.TreeNode::leaf("button_mbt", "button.mbt", icon="mbt"),
-            @core.TreeNode::leaf("knob_mbt", "knob.mbt", icon="mbt"),
-            @core.TreeNode::leaf("tree_view_mbt", "tree_view.mbt", icon="mbt"),
-            @core.TreeNode::leaf(
-              "code_editor_mbt",
-              "code_editor.mbt",
-              icon="mbt",
-            ),
-          ],
-          icon="folder",
-        ),
-        @core.TreeNode::new(
-          "draw",
-          "draw",
-          children=[
-            @core.TreeNode::leaf("draw_list_mbt", "draw_list.mbt", icon="mbt"),
-            @core.TreeNode::leaf("command_mbt", "command.mbt", icon="mbt"),
-          ],
-          icon="folder",
-        ),
-        @core.TreeNode::leaf("main_mbt", "main.mbt", icon="mbt"),
-      ],
-      icon="folder",
-    ),
+    @core.TreeNode::new("src", "src", children=[], icon="folder"),
     @core.TreeNode::new(
       "assets",
       "assets",
@@ -836,7 +805,7 @@ fn draw_tree_view_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
     tree_data,
     selected_id=gallery_state.tree_selected,
     expanded_ids=gallery_state.tree_expanded,
-    size=@math.Vec2::new(card_w - 32.0, 290.0),
+    size=@math.Vec2::new(ui.available_width, 290.0),
   )
 
   gallery_state.tree_expanded = tree_resp.expanded_ids
@@ -1015,14 +984,14 @@ fn draw_menu_bar_showcase(ui : @core.UIContext) -> Unit {
 }
 
 ///|
-fn draw_scroll_area_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
+fn draw_scroll_area_showcase(ui : @core.UIContext) -> Unit {
   let _ = ui.label_colored(
     "带视口裁剪与滑块的滚动区域 (ScrollArea)",
     @color.Color::accent_primary(),
   )
   ui.spacer(6.0)
 
-  ui.scroll_area("gallery_scroll", @math.Vec2::new(card_w - 32.0, 200.0), fn(
+  ui.scroll_area("gallery_scroll", @math.Vec2::new(ui.available_width, 200.0), fn(
     sa,
   ) {
     for i = 1; i <= 20; i = i + 1 {
@@ -1260,7 +1229,7 @@ fn draw_toast_showcase(
 // ----------------------------------------------------------------------
 
 ///|
-fn draw_splitter_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
+fn draw_splitter_showcase(ui : @core.UIContext) -> Unit {
   let _ = ui.label_colored(
     "双向可拖拽分栏容器 (Splitter Panes)",
     @color.Color::accent_primary(),
@@ -1271,13 +1240,13 @@ fn draw_splitter_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
   )
   ui.spacer(10.0)
 
-  let split_size = @math.Vec2::new(card_w - 40.0, 220.0)
+  let split_size = @math.Vec2::new(ui.available_width, 220.0)
   let new_ratio = ui.split_horizontal(
     "gal_split_h",
     gallery_state.splitter_ratio,
     split_size,
     fn(pane_ui, rect) {
-      pane_ui.draw_list().add_rect(rect, @color.Color::rgb(241, 245, 249), 4.0)
+      pane_ui.draw_list().add_rect(rect, @color.Color::bg_hover(), 4.0)
       pane_ui.set_cursor(@math.Vec2::new(rect.x + 12.0, rect.y + 12.0))
       let _ = pane_ui.label_colored(
         "左侧主导航栏",
@@ -1288,7 +1257,7 @@ fn draw_splitter_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
       let _ = pane_ui.label("资源目录 (assets/)")
     },
     fn(pane_ui, rect) {
-      pane_ui.draw_list().add_rect(rect, @color.Color::rgb(248, 250, 252), 4.0)
+      pane_ui.draw_list().add_rect(rect, @color.Color::bg_surface(), 4.0)
       pane_ui.set_cursor(@math.Vec2::new(rect.x + 12.0, rect.y + 12.0))
       let _ = pane_ui.label_colored(
         "右侧工作区画布",
@@ -1306,7 +1275,7 @@ fn draw_splitter_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
 }
 
 ///|
-fn draw_table_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
+fn draw_table_showcase(ui : @core.UIContext) -> Unit {
   let _ = ui.label_colored(
     "虚拟化数据表格 (Virtual Table)",
     @color.Color::accent_primary(),
@@ -1319,7 +1288,7 @@ fn draw_table_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
 
   let resp = ui.table(
     "gal_table",
-    @math.Vec2::new(card_w - 40.0, 220.0),
+    @math.Vec2::new(ui.available_width, 220.0),
     gallery_state.table_columns,
     10000,
     fn(cell_ui, r, c, rect) {
@@ -1682,7 +1651,7 @@ fn draw_color_picker_showcase(ui : @core.UIContext) -> Unit {
 }
 
 ///|
-fn draw_rich_text_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
+fn draw_rich_text_showcase(ui : @core.UIContext) -> Unit {
   let _ = ui.label_colored(
     "流式排版富文本与超链接 (RichText & Hyperlink)",
     @color.Color::accent_primary(),
@@ -1706,7 +1675,7 @@ fn draw_rich_text_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
     @core.TextSpan::normal("。"),
   ]
 
-  let resp = ui.rich_text("gal_rt", spans, wrap_width=card_w - 60.0)
+  let resp = ui.rich_text("gal_rt", spans, wrap_width=ui.available_width)
   match resp.clicked_url {
     Some(url) => {
       gallery_state.rich_text_last_url = url
@@ -1794,7 +1763,7 @@ pub fn gallery_step(
     @color.Color::shadow(),
     8.0,
   )
-  dl.add_rect(card_rect, @color.Color::white(), 8.0)
+  dl.add_rect(card_rect, @color.Color::bg_window(), 8.0)
   dl.add_rect_stroke(card_rect, @color.Color::border_default(), 1.0, 8.0)
 
   // Layout Cursor within Porcelain Card
@@ -1806,7 +1775,7 @@ pub fn gallery_step(
     // Basic Input
     "button" => draw_button_showcase(gallery_ctx)
     "text_edit" => draw_text_edit_showcase(gallery_ctx)
-    "code_editor" => draw_code_editor_showcase(gallery_ctx, card_w)
+    "code_editor" => draw_code_editor_showcase(gallery_ctx)
 
     // Values & Selection
     "checkbox" => draw_checkbox_showcase(gallery_ctx)
@@ -1821,19 +1790,19 @@ pub fn gallery_step(
     // Feedback & Presentation
     "progress_bar" => draw_progress_bar_showcase(gallery_ctx)
     "collapsing_header" => draw_collapsing_header_showcase(gallery_ctx)
-    "tree_view" => draw_tree_view_showcase(gallery_ctx, card_w)
+    "tree_view" => draw_tree_view_showcase(gallery_ctx)
     "tooltip" => draw_tooltip_showcase(gallery_ctx)
 
     // Containers & Layout
     "tab_bar" => draw_tab_bar_showcase(gallery_ctx)
     "menu_bar" => draw_menu_bar_showcase(gallery_ctx)
-    "scroll_area" => draw_scroll_area_showcase(gallery_ctx, card_w)
+    "scroll_area" => draw_scroll_area_showcase(gallery_ctx)
     "window" => draw_window_showcase(gallery_ctx, cur_w, cur_h)
     "command_palette" => draw_command_palette_showcase(gallery_ctx)
     "context_menu" => draw_context_menu_showcase(gallery_ctx, cur_w, cur_h)
     "toast" => draw_toast_showcase(gallery_ctx, cur_w, cur_h)
-    "splitter" => draw_splitter_showcase(gallery_ctx, card_w)
-    "table" => draw_table_showcase(gallery_ctx, card_w)
+    "splitter" => draw_splitter_showcase(gallery_ctx)
+    "table" => draw_table_showcase(gallery_ctx)
     "dialog" => draw_dialog_showcase(gallery_ctx, cur_w, cur_h)
     "spinner" => draw_spinner_showcase(gallery_ctx)
     "sparkline" => draw_sparkline_showcase(gallery_ctx)
@@ -1841,7 +1810,7 @@ pub fn gallery_step(
     "badge" => draw_badge_showcase(gallery_ctx)
     "breadcrumb" => draw_breadcrumb_showcase(gallery_ctx)
     "color_picker" => draw_color_picker_showcase(gallery_ctx)
-    "rich_text" => draw_rich_text_showcase(gallery_ctx, card_w)
+    "rich_text" => draw_rich_text_showcase(gallery_ctx)
     _ => {
       let _ = gallery_ctx.label_colored(
         "MoonBit 原生组件: " + comp_id,

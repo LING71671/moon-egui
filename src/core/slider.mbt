@@ -127,11 +127,21 @@ pub fn UIContext::slider(
   // Draw White Ceramic Thumb Handle with Cobalt Border
   let thumb_cx = track_rect.x + active_w
   let thumb_cy = track_rect.y + track_rect.h * 0.5
-  let thumb_r = if is_active { 7.0 } else if is_hovered { 6.5 } else { 5.5 }
+  let scale = self.style.scale
+  let font_sm = self.style.font_small * scale
+  let radius_sm = self.style.radius_sm * scale
+
+  let thumb_r = if is_active {
+    7.0 * scale
+  } else if is_hovered {
+    6.5 * scale
+  } else {
+    5.5 * scale
+  }
   self.draw_list.add_circle(
     @math.Vec2::new(thumb_cx, thumb_cy),
     thumb_r,
-    @color.Color::white(),
+    @color.Color::bg_window(),
   )
   self.draw_list.add_circle_stroke(
     @math.Vec2::new(thumb_cx, thumb_cy),
@@ -142,27 +152,27 @@ pub fn UIContext::slider(
 
   // Draw Floating HUD Bubble above Thumb when active
   if is_active {
-    let bubble_size = self.measure_text(val_text, 11.0)
-    let bubble_w = bubble_size.x + 14.0
-    let bubble_h = 20.0
+    let bubble_size = self.measure_text(val_text, font_sm)
+    let bubble_w = bubble_size.x + 14.0 * scale
+    let bubble_h = 20.0 * scale
     let bubble_x = thumb_cx - bubble_w * 0.5
-    let bubble_y = thumb_cy - thumb_r - bubble_h - 4.0
+    let bubble_y = thumb_cy - thumb_r - bubble_h - 4.0 * scale
     let bubble_rect = @math.Rect::new(bubble_x, bubble_y, bubble_w, bubble_h)
-    self.draw_list.add_rect(bubble_rect, @color.Color::white(), 5.0)
+    self.draw_list.add_rect(bubble_rect, @color.Color::bg_window(), radius_sm)
     self.draw_list.add_rect_stroke(
       bubble_rect,
       @color.Color::border_default(),
       1.0,
-      5.0,
+      radius_sm,
     )
     let bubble_text_pos = @math.Vec2::new(
-      bubble_x + 7.0,
-      bubble_y + (bubble_h - 11.0) * 0.5,
+      bubble_x + 7.0 * scale,
+      bubble_y + (bubble_h - font_sm) * 0.5,
     )
     self.draw_list.add_text(
       bubble_text_pos,
       val_text,
-      11.0,
+      font_sm,
       @color.Color::text_primary(),
     )
   }
@@ -268,7 +278,7 @@ pub fn UIContext::drag_value(
   let bg_color = if is_active {
     @color.Color::bg_surface()
   } else if is_hovered {
-    @color.Color::white()
+    @color.Color::bg_window()
   } else {
     @color.Color::bg_subtle()
   }
@@ -279,7 +289,11 @@ pub fn UIContext::drag_value(
     @color.Color::border_default()
   }
 
-  self.draw_list.add_rect(box_rect, bg_color, 4.0)
+  let scale = self.style.scale
+  let font_nm = self.style.font_normal * scale
+  let radius_sm = self.style.radius_sm * scale
+
+  self.draw_list.add_rect(box_rect, bg_color, radius_sm)
 
   // Blender-style Mercury Progress Fill inside box
   if min < max {
@@ -294,11 +308,15 @@ pub fn UIContext::drag_value(
         fill_w,
         box_rect.h,
       )
-      self.draw_list.add_rect(mercury_rect, @color.Color::accent_soft(), 4.0)
+      self.draw_list.add_rect(
+        mercury_rect,
+        @color.Color::accent_soft(),
+        radius_sm,
+      )
     }
   }
 
-  self.draw_list.add_rect_stroke(box_rect, border_color, 1.0, 4.0)
+  self.draw_list.add_rect_stroke(box_rect, border_color, 1.0, radius_sm)
 
   // Format value to 1 decimal place or integer
   let rounded_int = (new_val * 10.0).to_int()
@@ -306,13 +324,13 @@ pub fn UIContext::drag_value(
   let frac = (rounded_int % 10).abs()
   let val_str = whole.to_string() + "." + frac.to_string()
 
-  let val_size = self.measure_text(val_str, 12.0)
+  let val_size = self.measure_text(val_str, font_nm)
   let text_x = box_rect.x + (box_w - val_size.x) * 0.5
-  let text_y = box_rect.y + (h - 12.0) * 0.5
+  let text_y = box_rect.y + (h - font_nm) * 0.5
   self.draw_list.add_text(
     @math.Vec2::new(text_x, text_y),
     val_str,
-    12.0,
+    font_nm,
     if is_active {
       @color.Color::accent_primary()
     } else {

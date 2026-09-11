@@ -151,9 +151,8 @@ fn panel_input_tab(ui : @core.UIContext, state : BenchmarkState) -> Unit {
       ", 行 " +
       state.selected_row.to_string() +
       "]"
-    // The demo's own selection accent, matching the rose marker drawn on the
-    // matrix; the library palette has no equivalent step.
-    let _ = ui.label_colored(info, @color.Color::rgb(225, 29, 72))
+    // The demo selection accent using semantic primary accent token.
+    let _ = ui.label_colored(info, @color.Color::accent_primary())
   } else {
     let _ = ui.label_colored(
       "点击网格节点或输入序号",

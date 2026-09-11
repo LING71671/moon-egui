@@ -168,15 +168,20 @@ pub fn UIContext::menu(
       menu_rect.w,
       menu_rect.h,
     )
-    self.draw_list.add_rect(shadow_rect, @color.Color::shadow(), 6.0)
+    let menu_radius = self.style.radius_md
+    self.draw_list.add_rect(
+      shadow_rect,
+      @color.Color::shadow_ambient(),
+      menu_radius,
+    )
 
     // Card background and border
-    self.draw_list.add_rect(menu_rect, @color.Color::white(), 6.0)
+    self.draw_list.add_rect(menu_rect, @color.Color::bg_window(), menu_radius)
     self.draw_list.add_rect_stroke(
       menu_rect,
       @color.Color::border_default(),
       1.0,
-      6.0,
+      menu_radius,
     )
 
     // Append items on top of background
@@ -209,9 +214,12 @@ pub fn UIContext::menu_item(
 
   let is_hovered = self.is_hovered(rect) && !disabled
 
+  let item_radius = self.style.radius_sm
+  let font_nm = self.style.font_normal
+  let font_sm = self.style.font_small
   if is_hovered {
     self.set_cursor_icon("pointer")
-    self.draw_list.add_rect(rect, @color.Color::bg_surface(), 4.0)
+    self.draw_list.add_rect(rect, @color.Color::bg_surface(), item_radius)
   }
 
   let clicked = if disabled {
@@ -232,19 +240,19 @@ pub fn UIContext::menu_item(
   }
 
   // Left-aligned label
-  let text_y = rect.y + (item_h - 13.0) * 0.5
+  let text_y = rect.y + (item_h - font_nm) * 0.5
   self.draw_list.add_text(
     @math.Vec2::new(rect.x + 8.0, text_y),
     label,
-    13.0,
+    font_nm,
     text_col,
   )
 
   // Right-aligned shortcut badge
   if !shortcut.is_empty() {
-    let sc_size = self.measure_text(shortcut, 11.0)
+    let sc_size = self.measure_text(shortcut, font_sm)
     let sc_x = rect.x + item_w - sc_size.x - 8.0
-    let sc_y = rect.y + (item_h - 11.0) * 0.5
+    let sc_y = rect.y + (item_h - font_sm) * 0.5
     let sc_col = if disabled {
       @color.Color::text_disabled()
     } else if is_hovered {
@@ -252,7 +260,12 @@ pub fn UIContext::menu_item(
     } else {
       @color.Color::text_muted()
     }
-    self.draw_list.add_text(@math.Vec2::new(sc_x, sc_y), shortcut, 11.0, sc_col)
+    self.draw_list.add_text(
+      @math.Vec2::new(sc_x, sc_y),
+      shortcut,
+      font_sm,
+      sc_col,
+    )
   }
 
   Response::new(id, rect, is_hovered, clicked, resp.pressed, false)

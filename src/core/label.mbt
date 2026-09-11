@@ -11,12 +11,13 @@ pub fn UIContext::label_colored(
   text : String,
   color : @color.Color,
 ) -> Response {
-  let text_size = self.measure_text(text, 14.0)
+  let font_sz = self.style.font_normal * self.style.scale
+  let text_size = self.measure_text(text, font_sz)
   let w = if text_size.x > 20.0 { text_size.x } else { 20.0 }
   let h = 18.0
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
-  let text_pos = @math.Vec2::new(rect.x, rect.y + (h - 14.0) * 0.5)
-  self.draw_list.add_text(text_pos, text, 14.0, color)
+  let text_pos = @math.Vec2::new(rect.x, rect.y + (h - font_sz) * 0.5)
+  self.draw_list.add_text(text_pos, text, font_sz, color)
   resp
 }
 

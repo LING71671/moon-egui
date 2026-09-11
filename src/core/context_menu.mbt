@@ -183,24 +183,28 @@ pub fn UIContext::context_menu_items(
   self.begin_foreground()
 
   // Dual-layer Elevation Shadow
+  let menu_radius = self.style.radius_md
+  let row_radius = self.style.radius_sm
+  let font_nm = self.style.font_normal
+  let font_sm = self.style.font_small
   self.draw_list.add_rect(
     @math.Rect::new(placed_pos.x, placed_pos.y + 4.0, total_w, total_h),
-    @color.Color::rgba(15, 23, 42, 28),
-    6.0,
+    @color.Color::shadow_ambient(),
+    menu_radius,
   )
   self.draw_list.add_rect(
     @math.Rect::new(placed_pos.x, placed_pos.y + 1.0, total_w, total_h),
-    @color.Color::shadow(),
-    6.0,
+    @color.Color::shadow_key(),
+    menu_radius,
   )
 
   // Porcelain Surface and Crisp Border
-  self.draw_list.add_rect(menu_rect, @color.Color::white(), 6.0)
+  self.draw_list.add_rect(menu_rect, @color.Color::bg_window(), menu_radius)
   self.draw_list.add_rect_stroke(
     menu_rect,
     @color.Color::border_default(),
     1.0,
-    6.0,
+    menu_radius,
   )
 
   // Render Items
@@ -226,7 +230,11 @@ pub fn UIContext::context_menu_items(
       let hovered = row_rect.contains(self.input.mouse_pos) && !item.disabled
 
       if hovered {
-        self.draw_list.add_rect(row_rect, @color.Color::bg_surface(), 4.0)
+        self.draw_list.add_rect(
+          row_rect,
+          @color.Color::bg_surface(),
+          row_radius,
+        )
       }
 
       let text_col = if item.disabled {
@@ -237,16 +245,16 @@ pub fn UIContext::context_menu_items(
         @color.Color::text_primary()
       }
 
-      let text_y = cur_draw_y + (item_h - 13.0) * 0.5
+      let text_y = cur_draw_y + (item_h - font_nm) * 0.5
       self.draw_list.add_text(
         @math.Vec2::new(placed_pos.x + 12.0, text_y),
         item.label,
-        12.5,
+        font_nm,
         text_col,
       )
 
       if !item.shortcut.is_empty() {
-        let sc_size = self.measure_text(item.shortcut, 10.5)
+        let sc_size = self.measure_text(item.shortcut, font_sm)
         let sc_x = placed_pos.x + total_w - sc_size.x - 12.0
         let sc_col = if item.disabled {
           @color.Color::text_disabled()
@@ -258,7 +266,7 @@ pub fn UIContext::context_menu_items(
         self.draw_list.add_text(
           @math.Vec2::new(sc_x, text_y + 1.0),
           item.shortcut,
-          10.5,
+          font_sm,
           sc_col,
         )
       }
@@ -357,24 +365,29 @@ pub fn UIContext::context_menu(
   self.begin_foreground()
 
   // Shadows
+  let custom_menu_radius = self.style.radius_md
   self.draw_list.add_rect(
     @math.Rect::new(placed_pos.x, placed_pos.y + 4.0, total_w, total_h),
-    @color.Color::rgba(15, 23, 42, 28),
-    6.0,
+    @color.Color::shadow_ambient(),
+    custom_menu_radius,
   )
   self.draw_list.add_rect(
     @math.Rect::new(placed_pos.x, placed_pos.y + 1.0, total_w, total_h),
-    @color.Color::shadow(),
-    6.0,
+    @color.Color::shadow_key(),
+    custom_menu_radius,
   )
 
   // Card
-  self.draw_list.add_rect(menu_rect, @color.Color::white(), 6.0)
+  self.draw_list.add_rect(
+    menu_rect,
+    @color.Color::bg_window(),
+    custom_menu_radius,
+  )
   self.draw_list.add_rect_stroke(
     menu_rect,
     @color.Color::border_default(),
     1.0,
-    6.0,
+    custom_menu_radius,
   )
 
   self.cursor = @math.Vec2::new(placed_pos.x + pad, placed_pos.y + pad)

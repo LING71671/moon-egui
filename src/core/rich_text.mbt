@@ -166,12 +166,17 @@ pub fn UIContext::rich_text(
           abs_rect.w,
           line_h - 4.0,
         )
-        self.draw_list.add_rect(code_bg_rect, @color.Color::bg_subtle(), 3.0)
+        let code_radius = self.style.radius_sm
+        self.draw_list.add_rect(
+          code_bg_rect,
+          @color.Color::bg_subtle(),
+          code_radius,
+        )
         self.draw_list.add_rect_stroke(
           code_bg_rect,
           @color.Color::border_muted(),
           1.0,
-          3.0,
+          code_radius,
         )
 
         let text_pos = @math.Vec2::new(

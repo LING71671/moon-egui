@@ -209,7 +209,7 @@ pub fn UIContext::knob(
   } else if response.hovered() {
     @color.Color::bg_hover()
   } else {
-    @color.Color::white()
+    @color.Color::bg_window()
   }
   self.draw_list.add_circle(center, dial_radius, cap_col)
   let border_col = if is_focused {
@@ -234,13 +234,14 @@ pub fn UIContext::knob(
   }
   self.draw_list.add_line(tick_start, tick_end, tick_col, 2.0)
 
+  let font_sm = self.style.font_small
   // E. Uppercase Label (Top)
   if !label.is_empty() {
-    let label_w = self.measure_text(label, 10.5).x
+    let label_w = self.measure_text(label, font_sm).x
     self.draw_list.add_text(
       @math.Vec2::new(center_x - label_w * 0.5, rect.y),
       label,
-      10.5,
+      font_sm,
       @color.Color::text_muted(),
     )
   }
@@ -251,7 +252,7 @@ pub fn UIContext::knob(
   } else {
     final_val.to_string() + " " + unit
   }
-  let val_w = self.measure_text(val_str, 11.0).x
+  let val_w = self.measure_text(val_str, font_sm).x
   let val_col = if is_focused || response.pressed() {
     @color.Color::accent_primary()
   } else {
@@ -260,7 +261,7 @@ pub fn UIContext::knob(
   self.draw_list.add_text(
     @math.Vec2::new(center_x - val_w * 0.5, center_y + radius + 4.0),
     val_str,
-    11.0,
+    font_sm,
     val_col,
   )
 

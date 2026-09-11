@@ -30,13 +30,16 @@ pub fn UIContext::sparkline(
 
   let count = values.length()
 
+  let scale = self.style.scale
+  let radius = self.style.radius_sm * scale
+
   // 1. Container Card
-  self.draw_list.add_rect(rect, @color.Color::bg_subtle().with_alpha(80), 4.0)
+  self.draw_list.add_rect(rect, @color.Color::sparkline_wash(), radius)
   self.draw_list.add_rect_stroke(
     rect,
-    @color.Color::border_muted().with_alpha(90),
+    @color.Color::border_muted(),
     1.0,
-    4.0,
+    radius,
   )
 
   if count == 0 {
@@ -140,8 +143,8 @@ pub fn UIContext::sparkline(
     )
 
     // Snapped target dot with dual-ring highlight
-    self.draw_list.add_circle(pt, 4.0, color)
-    self.draw_list.add_circle(pt, 2.0, @color.Color::white())
+    self.draw_list.add_circle(pt, 4.0 * scale, color)
+    self.draw_list.add_circle(pt, 2.0 * scale, @color.Color::bg_window())
   }
 
   (hovered_idx, resp)
