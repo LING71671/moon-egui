@@ -44,6 +44,7 @@ pub struct UIContext {
   text_cursor_positions : Array[(Id, Int)]
   open_collapsing_ids : Array[(Id, Bool)]
   mut open_combo_id : Id
+  mut open_menu_id : Id
   mut wants_capture_mouse : Bool
   mut prev_wants_capture_mouse : Bool
   fg_draw_list : @draw.DrawList
@@ -87,6 +88,7 @@ pub fn UIContext::new() -> UIContext {
     text_cursor_positions: [],
     open_collapsing_ids: [],
     open_combo_id: Id::zero(),
+    open_menu_id: Id::zero(),
     wants_capture_mouse: false,
     prev_wants_capture_mouse: false,
     fg_draw_list: @draw.DrawList::new(),
@@ -804,4 +806,14 @@ pub fn UIContext::open_combo_id(self : UIContext) -> Id {
 ///|
 pub fn UIContext::set_open_combo_id(self : UIContext, id : Id) -> Unit {
   self.open_combo_id = id
+}
+
+///|
+pub fn UIContext::open_menu_id(self : UIContext) -> Id {
+  self.open_menu_id
+}
+
+///|
+pub fn UIContext::set_open_menu_id(self : UIContext, id : Id) -> Unit {
+  self.open_menu_id = id
 }

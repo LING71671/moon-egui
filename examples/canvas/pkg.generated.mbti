@@ -29,7 +29,7 @@ pub fn is_show_studio() -> Bool
 
 pub fn is_wave_pulse() -> Bool
 
-pub fn step(Double, Double, Bool, Double, Double, Double, Int, Double, Double) -> FrameOutput
+pub fn step(Double, Double, Bool, Double, Double, Double, Int, Double, Double, String, Array[String], Array[String], Int) -> FrameOutput
 
 // Errors
 
@@ -56,6 +56,10 @@ pub struct BenchmarkState {
   mut is_dragging_item : Bool
   mut visible_cells : Int
   mut show_studio : Bool
+  mut panel_tab : Int
+  mut jump_text : String
+  mut jump_after : Int
+  mut show_grid : Bool
 }
 
 pub struct FrameOutput {

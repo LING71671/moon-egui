@@ -1162,6 +1162,257 @@ pub fn draw_tabs(ui : @core.UIContext, state : AppState) -> Unit {
         }
       },
 
+      menu_bar: {
+        titleKey: 'comp.menu_bar.title',
+        signature: "ui.menu_bar(height~, content) -> Response",
+        code: {
+          zh: `///|
+pub fn draw_app_menu(ui : @core.UIContext, state : AppState) -> Unit {
+  ui.menu_bar(fn(ui) {
+    ui.menu("文件", fn(ui) {
+      if ui.menu_item("新建画板", shortcut="⌘N").clicked {
+        state.new_canvas()
+      }
+      if ui.menu_item("打开工程...", shortcut="⌘O").clicked {
+        state.open_project()
+      }
+      ui.menu_separator()
+      if ui.menu_item("保存设计", shortcut="⌘S").clicked {
+        state.save_design()
+      }
+      if ui.menu_item("导出 SVG...", shortcut="⇧⌘E").clicked {
+        state.export_svg()
+      }
+    })
+    ui.menu("编辑", fn(ui) {
+      if ui.menu_item("撤销", shortcut="⌘Z").clicked {
+        state.undo()
+      }
+      if ui.menu_item("重做", shortcut="⇧⌘Z").clicked {
+        state.redo()
+      }
+      ui.menu_separator()
+      if ui.menu_item("复制选中", shortcut="⌘C").clicked {
+        state.copy()
+      }
+    })
+    ui.menu("视图", fn(ui) {
+      if ui.menu_item("重置视口", shortcut="⌘0").clicked {
+        state.reset_viewport()
+      }
+      if ui.menu_item("适应全屏", shortcut="⌘1").clicked {
+        state.fit_all()
+      }
+    })
+    ui.menu("帮助", fn(ui) {
+      if ui.menu_item("快捷键速查", shortcut="?").clicked {
+        state.show_shortcuts()
+      }
+      if ui.menu_item("关于 moon-egui").clicked {
+        state.show_about()
+      }
+    })
+  })
+}`,
+          en: `///|
+pub fn draw_app_menu(ui : @core.UIContext, state : AppState) -> Unit {
+  ui.menu_bar(fn(ui) {
+    ui.menu("File", fn(ui) {
+      if ui.menu_item("New Canvas", shortcut="⌘N").clicked {
+        state.new_canvas()
+      }
+      if ui.menu_item("Open Project...", shortcut="⌘O").clicked {
+        state.open_project()
+      }
+      ui.menu_separator()
+      if ui.menu_item("Save Design", shortcut="⌘S").clicked {
+        state.save_design()
+      }
+      if ui.menu_item("Export SVG...", shortcut="⇧⌘E").clicked {
+        state.export_svg()
+      }
+    })
+    ui.menu("Edit", fn(ui) {
+      if ui.menu_item("Undo", shortcut="⌘Z").clicked {
+        state.undo()
+      }
+      if ui.menu_item("Redo", shortcut="⇧⌘Z").clicked {
+        state.redo()
+      }
+      ui.menu_separator()
+      if ui.menu_item("Copy Selection", shortcut="⌘C").clicked {
+        state.copy()
+      }
+    })
+    ui.menu("View", fn(ui) {
+      if ui.menu_item("Reset Viewport", shortcut="⌘0").clicked {
+        state.reset_viewport()
+      }
+      if ui.menu_item("Fit to Screen", shortcut="⌘1").clicked {
+        state.fit_all()
+      }
+    })
+    ui.menu("Help", fn(ui) {
+      if ui.menu_item("Keyboard Shortcuts", shortcut="?").clicked {
+        state.show_shortcuts()
+      }
+      if ui.menu_item("About moon-egui").clicked {
+        state.show_about()
+      }
+    })
+  })
+}`
+        },
+        renderUI: (container, state) => {
+          container.innerHTML = `
+            <div class="sandbox-header">
+              <span>MenuBar</span>
+              <span id="menuLastAction" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--brand); font-weight: 600;">
+                ${state.lastAction || T('就绪 (点击菜单项体验交互)', 'Ready (Click a menu to interact)')}
+              </span>
+            </div>
+            <div class="sandbox-body" style="padding-top: 8px;">
+              <div class="menubar-wrapper" id="demoMenuBarWrapper">
+                <div class="menubar-bar" id="demoMenuBar">
+                  <div class="menubar-trigger" data-menu="file">
+                    <span>${T('文件', 'File')}</span>
+                    <div class="menubar-dropdown">
+                      <button class="menubar-item" data-action="new" data-title="${T('新建画板', 'New Canvas')}">
+                        <span>${T('新建画板', 'New Canvas')}</span>
+                        <kbd class="shortcut-badge">⌘N</kbd>
+                      </button>
+                      <button class="menubar-item" data-action="open" data-title="${T('打开工程...', 'Open Project...')}">
+                        <span>${T('打开工程...', 'Open Project...')}</span>
+                        <kbd class="shortcut-badge">⌘O</kbd>
+                      </button>
+                      <div class="menubar-separator"></div>
+                      <button class="menubar-item" data-action="save" data-title="${T('保存设计', 'Save Design')}">
+                        <span>${T('保存设计', 'Save Design')}</span>
+                        <kbd class="shortcut-badge">⌘S</kbd>
+                      </button>
+                      <button class="menubar-item" data-action="export" data-title="${T('导出 SVG...', 'Export SVG...')}">
+                        <span>${T('导出 SVG...', 'Export SVG...')}</span>
+                        <kbd class="shortcut-badge">⇧⌘E</kbd>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="menubar-trigger" data-menu="edit">
+                    <span>${T('编辑', 'Edit')}</span>
+                    <div class="menubar-dropdown">
+                      <button class="menubar-item" data-action="undo" data-title="${T('撤销', 'Undo')}">
+                        <span>${T('撤销', 'Undo')}</span>
+                        <kbd class="shortcut-badge">⌘Z</kbd>
+                      </button>
+                      <button class="menubar-item" data-action="redo" data-title="${T('重做', 'Redo')}">
+                        <span>${T('重做', 'Redo')}</span>
+                        <kbd class="shortcut-badge">⇧⌘Z</kbd>
+                      </button>
+                      <div class="menubar-separator"></div>
+                      <button class="menubar-item" data-action="copy" data-title="${T('复制选中', 'Copy Selection')}">
+                        <span>${T('复制选中', 'Copy Selection')}</span>
+                        <kbd class="shortcut-badge">⌘C</kbd>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="menubar-trigger" data-menu="view">
+                    <span>${T('视图', 'View')}</span>
+                    <div class="menubar-dropdown">
+                      <button class="menubar-item" data-action="reset_view" data-title="${T('重置视口', 'Reset Viewport')}">
+                        <span>${T('重置视口', 'Reset Viewport')}</span>
+                        <kbd class="shortcut-badge">⌘0</kbd>
+                      </button>
+                      <button class="menubar-item" data-action="fit" data-title="${T('适应全屏', 'Fit to Screen')}">
+                        <span>${T('适应全屏', 'Fit to Screen')}</span>
+                        <kbd class="shortcut-badge">⌘1</kbd>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="menubar-trigger" data-menu="help">
+                    <span>${T('帮助', 'Help')}</span>
+                    <div class="menubar-dropdown">
+                      <button class="menubar-item" data-action="shortcuts" data-title="${T('快捷键速查', 'Shortcuts')}">
+                        <span>${T('快捷键速查', 'Shortcuts')}</span>
+                        <kbd class="shortcut-badge">?</kbd>
+                      </button>
+                      <button class="menubar-item" data-action="about" data-title="${T('关于 moon-egui', 'About moon-egui')}">
+                        <span>${T('关于 moon-egui', 'About moon-egui')}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="menubar-canvas-area">
+                  <div style="font-weight: 600; font-size: 13px; color: var(--text-main);">
+                    ${T('CAD 向量画布工作区', 'CAD Vector Canvas Viewport')}
+                  </div>
+                  <div>
+                    ${T('菜单弹出时自动进入前台图层，并拦截底层视口的穿透点击', 'Dropdowns automatically lift to foreground with background occlusion')}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sandbox-tip">
+              ${T('桌面级体验：点击任一菜单展开后，鼠标滑动到相邻菜单会自动随动流转 (Hover-to-Switch)。', 'Desktop experience: Click to open a menu, then hover over adjacent menus to switch instantly.')}
+            </div>
+          `;
+
+          const triggers = container.querySelectorAll('.menubar-trigger');
+          const lastActionBadge = container.querySelector('#menuLastAction');
+          let menuActive = false;
+
+          const closeAllMenus = () => {
+            triggers.forEach(t => t.classList.remove('open'));
+            menuActive = false;
+          };
+
+          triggers.forEach(trigger => {
+            trigger.onclick = (e) => {
+              if (e.target.closest('.menubar-item')) return;
+              e.stopPropagation();
+              const isOpen = trigger.classList.contains('open');
+              closeAllMenus();
+              if (!isOpen) {
+                trigger.classList.add('open');
+                menuActive = true;
+              }
+            };
+
+            trigger.onmouseenter = () => {
+              if (menuActive) {
+                triggers.forEach(t => t.classList.remove('open'));
+                trigger.classList.add('open');
+              }
+            };
+          });
+
+          const items = container.querySelectorAll('.menubar-item');
+          items.forEach(item => {
+            item.onclick = (e) => {
+              e.stopPropagation();
+              const action = item.getAttribute('data-action');
+              const title = item.getAttribute('data-title');
+              const actionText = `${T('已执行操作:', 'Action:')} ${title}`;
+              state.lastAction = actionText;
+              lastActionBadge.textContent = actionText;
+              document.getElementById('statResponse').textContent = `menu_item_clicked: "${action}"`;
+              showToast(T(`已触发菜单命令: 「${title}」`, `Triggered menu command: "${title}"`));
+              closeAllMenus();
+            };
+          });
+
+          // Document click listener to dismiss menu
+          const onDocClick = (e) => {
+            if (!e.target.closest('#demoMenuBar')) {
+              closeAllMenus();
+            }
+          };
+          document.addEventListener('click', onDocClick);
+        }
+      },
+
       scroll_area: {
         titleKey: 'comp.scroll_area.title',
         signature: "ui.scroll_area(id, width~, height~, content)",

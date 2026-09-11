@@ -1706,6 +1706,136 @@
       transform: translateX(-50%) translateY(0);
     }
 
+    /* MenuBar Widget (Desktop Application Menu Bar) */
+    .menubar-wrapper {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: visible;
+      position: relative;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .menubar-bar {
+      display: flex;
+      align-items: center;
+      height: 32px;
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--border);
+      padding: 0 6px;
+      gap: 2px;
+      border-top-left-radius: 7px;
+      border-top-right-radius: 7px;
+    }
+
+    .menubar-trigger {
+      padding: 3px 10px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-sub);
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      transition: background-color 0.12s ease, color 0.12s ease;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .menubar-trigger:hover,
+    .menubar-trigger.open {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    .menubar-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      min-width: 196px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.14), 0 8px 10px -6px rgba(15, 23, 42, 0.08);
+      padding: 4px;
+      display: none;
+      flex-direction: column;
+      z-index: 50;
+      animation: menuFadeIn 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes menuFadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .menubar-trigger.open .menubar-dropdown {
+      display: flex;
+    }
+
+    .menubar-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 10px;
+      font-size: 12.5px;
+      color: var(--text-main);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.1s ease;
+      user-select: none;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+    }
+
+    .menubar-item:hover {
+      background: #f1f5f9;
+      color: var(--brand);
+    }
+
+    .menubar-item .shortcut-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    .menubar-item:hover .shortcut-badge {
+      color: var(--brand);
+      border-color: #cbd5e1;
+    }
+
+    .menubar-separator {
+      height: 1px;
+      background: var(--border);
+      margin: 4px 6px;
+    }
+
+    .menubar-canvas-area {
+      height: 130px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #fbfcfe;
+      border-bottom-left-radius: 7px;
+      border-bottom-right-radius: 7px;
+      color: var(--text-muted);
+      font-size: 12px;
+      gap: 6px;
+      position: relative;
+      background-image: radial-gradient(var(--border) 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+
     /* Toast */
     .toast-msg {
       position: fixed;

@@ -14,7 +14,7 @@ pub fn measure_text_size(String, Double) -> @math.Vec2
 // Errors
 
 // Types and methods
-pub enum Event {
+pub(all) enum Event {
   Key(Key, Bool, Modifiers)
   TextInput(String)
   PointerWheel(@math.Vec2)
@@ -71,7 +71,7 @@ pub fn InputState::scroll_delta(Self) -> @math.Vec2
 pub fn InputState::text_input(Self) -> String
 pub fn InputState::update(Self, RawInput) -> Unit
 
-pub enum Key {
+pub(all) enum Key {
   Backspace
   Delete
   Enter
@@ -156,6 +156,7 @@ pub struct RawInput {
 } derive(Eq, @debug.Debug)
 pub fn RawInput::from_mouse(@math.Vec2, Bool) -> Self
 pub fn RawInput::new() -> Self
+pub fn RawInput::with_events(@math.Vec2, Bool, @math.Vec2, Array[Event], String, Modifiers) -> Self
 
 pub struct Response {
   id : Id
@@ -209,6 +210,7 @@ pub struct UIContext {
   text_cursor_positions : Array[(Id, Int)]
   open_collapsing_ids : Array[(Id, Bool)]
   mut open_combo_id : Id
+  mut open_menu_id : Id
   mut wants_capture_mouse : Bool
   mut prev_wants_capture_mouse : Bool
   fg_draw_list : @draw.DrawList
@@ -255,8 +257,13 @@ pub fn UIContext::item_spacing(Self) -> @math.Vec2
 pub fn UIContext::label(Self, String) -> Response
 pub fn UIContext::label_colored(Self, String, @color.Color) -> Response
 pub fn UIContext::measure_text(Self, String, Double) -> @math.Vec2
+pub fn UIContext::menu(Self, String, (Self) -> Unit) -> Unit
+pub fn UIContext::menu_bar(Self, (Self) -> Unit) -> Unit
+pub fn UIContext::menu_item(Self, String, shortcut? : String, disabled? : Bool) -> Response
+pub fn UIContext::menu_separator(Self) -> Unit
 pub fn UIContext::new() -> Self
 pub fn UIContext::open_combo_id(Self) -> Id
+pub fn UIContext::open_menu_id(Self) -> Id
 pub fn UIContext::pop_clip(Self) -> Unit
 pub fn UIContext::pop_id(Self) -> Unit
 pub fn UIContext::progress_bar(Self, Double, String) -> Response
@@ -275,6 +282,7 @@ pub fn UIContext::set_cursor(Self, @math.Vec2) -> Unit
 pub fn UIContext::set_focused_id(Self, Id) -> Unit
 pub fn UIContext::set_item_spacing(Self, @math.Vec2) -> Unit
 pub fn UIContext::set_open_combo_id(Self, Id) -> Unit
+pub fn UIContext::set_open_menu_id(Self, Id) -> Unit
 pub fn UIContext::set_scroll_content_height(Self, Id, Double) -> Unit
 pub fn UIContext::set_scroll_offset(Self, Id, Double) -> Unit
 pub fn UIContext::set_text_cursor_pos(Self, Id, Int) -> Unit
