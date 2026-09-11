@@ -134,10 +134,20 @@ const appState = {
       document.querySelectorAll('.comp-btn').forEach(btn => {
         if (btn.getAttribute('data-id') === id) {
           btn.classList.add('active');
+          btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         } else {
           btn.classList.remove('active');
         }
       });
+
+      // Ensure workbench is comfortably visible in the viewport
+      const wb = document.querySelector('.workbench-window');
+      if (wb) {
+        const r = wb.getBoundingClientRect();
+        if (r.top < 65) {
+          wb.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
     }
 
     document.querySelectorAll('.comp-btn').forEach(btn => {
@@ -152,21 +162,65 @@ const appState = {
       });
     };
 
-    // Filter
-    document.getElementById('filterInput').oninput = (e) => {
+    // Filter with category hiding
+    const filterInput = document.getElementById('filterInput');
+    filterInput.oninput = (e) => {
       const q = e.target.value.toLowerCase().trim();
-      document.querySelectorAll('.comp-btn').forEach(btn => {
-        const text = btn.textContent.toLowerCase();
-        const id = btn.getAttribute('data-id').toLowerCase();
-        btn.style.display = (!q || text.includes(q) || id.includes(q)) ? 'flex' : 'none';
+      const categories = document.querySelectorAll('.sidebar-menu-scroll .category-title');
+      
+      categories.forEach(cat => {
+        const menu = cat.nextElementSibling;
+        if (!menu || !menu.classList.contains('comp-menu')) return;
+        let anyVisible = false;
+        menu.querySelectorAll('.comp-btn').forEach(btn => {
+          const text = btn.textContent.toLowerCase();
+          const id = btn.getAttribute('data-id').toLowerCase();
+          const matches = !q || text.includes(q) || id.includes(q);
+          btn.style.display = matches ? 'flex' : 'none';
+          if (matches) anyVisible = true;
+        });
+        cat.style.display = anyVisible ? 'block' : 'none';
       });
     };
 
-    // Keyboard Arrow Keys
+    // Keyboard Arrow Keys & Shortcuts
     window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== filterInput) {
+        e.preventDefault();
+        filterInput.focus();
+        filterInput.select();
+        return;
+      }
+      if (e.key === 'Escape' && document.activeElement === filterInput) {
+        filterInput.blur();
+        return;
+      }
+      if (document.activeElement === filterInput) {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          const visibleBtns = Array.from(document.querySelectorAll('.comp-btn')).filter(b => b.style.display !== 'none');
+          if (!visibleBtns.length) return;
+          const currentIdx = visibleBtns.findIndex(b => b.classList.contains('active'));
+          let nextIdx = e.key === 'ArrowDown' ? currentIdx + 1 : currentIdx - 1;
+          if (nextIdx < 0) nextIdx = visibleBtns.length - 1;
+          if (nextIdx >= visibleBtns.length) nextIdx = 0;
+          switchComponent(visibleBtns[nextIdx].getAttribute('data-id'));
+        }
+        return;
+      }
       if (e.target.tagName === 'INPUT') return;
       if (e.key === 'ArrowRight') setCurtain(appState.curtainPct + 5);
       if (e.key === 'ArrowLeft') setCurtain(appState.curtainPct - 5);
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const visibleBtns = Array.from(document.querySelectorAll('.comp-btn')).filter(b => b.style.display !== 'none');
+        if (!visibleBtns.length) return;
+        const currentIdx = visibleBtns.findIndex(b => b.classList.contains('active'));
+        let nextIdx = e.key === 'ArrowDown' ? currentIdx + 1 : currentIdx - 1;
+        if (nextIdx < 0) nextIdx = visibleBtns.length - 1;
+        if (nextIdx >= visibleBtns.length) nextIdx = 0;
+        switchComponent(visibleBtns[nextIdx].getAttribute('data-id'));
+      }
     });
 
     // Initial State

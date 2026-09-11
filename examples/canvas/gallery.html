@@ -70,110 +70,114 @@
     <div class="gallery-grid">
       <!-- Sidebar Navigation -->
       <aside class="sidebar-card">
-        <input type="text" id="filterInput" class="search-input" placeholder="搜索组件..." data-i18n-attrs="placeholder:search.ph" />
-
-        <div class="category-title" data-i18n="cat.basic">基础输入</div>
-        <div class="comp-menu">
-          <button class="comp-btn active" data-id="button">
-            <span data-i18n="comp.button.title">Button 按钮</span>
-            <span class="comp-subtag" data-i18n="comp.button.tag">交互</span>
-          </button>
-          <button class="comp-btn" data-id="text_edit">
-            <span data-i18n="comp.text_edit.title">TextEdit 文本输入</span>
-            <span class="comp-subtag" data-i18n="comp.text_edit.tag">编辑</span>
-          </button>
-          <button class="comp-btn" data-id="code_editor">
-            <span data-i18n="comp.code_editor.title">CodeEditor 代码编辑器</span>
-            <span class="comp-subtag" data-i18n="comp.code_editor.tag">代码</span>
-          </button>
+        <div class="sidebar-search-wrapper">
+          <input type="text" id="filterInput" class="search-input" placeholder="搜索组件 (/) ..." data-i18n-attrs="placeholder:search.ph" />
         </div>
 
-        <div class="category-title" data-i18n="cat.values">选择与数值</div>
-        <div class="comp-menu">
-          <button class="comp-btn" data-id="checkbox">
-            <span data-i18n="comp.checkbox.title">Checkbox 复选框</span>
-            <span class="comp-subtag" data-i18n="comp.checkbox.tag">开关</span>
-          </button>
-          <button class="comp-btn" data-id="toggle">
-            <span data-i18n="comp.toggle.title">Toggle 胶囊开关</span>
-            <span class="comp-subtag" data-i18n="comp.toggle.tag">切换</span>
-          </button>
-          <button class="comp-btn" data-id="radio">
-            <span data-i18n="comp.radio.title">Radio 单选按钮</span>
-            <span class="comp-subtag" data-i18n="comp.radio.tag">单选</span>
-          </button>
-          <button class="comp-btn" data-id="slider">
-            <span data-i18n="comp.slider.title">Slider 滑动条</span>
-            <span class="comp-subtag" data-i18n="comp.slider.tag">数值</span>
-          </button>
-          <button class="comp-btn" data-id="drag_value">
-            <span data-i18n="comp.drag_value.title">DragValue 数字微调</span>
-            <span class="comp-subtag" data-i18n="comp.drag_value.tag">拖拽</span>
-          </button>
-          <button class="comp-btn" data-id="knob">
-            <span data-i18n="comp.knob.title">Knob 旋钮调节器</span>
-            <span class="comp-subtag" data-i18n="comp.knob.tag">旋钮</span>
-          </button>
-          <button class="comp-btn" data-id="combo_box">
-            <span data-i18n="comp.combo_box.title">ComboBox 下拉框</span>
-            <span class="comp-subtag" data-i18n="comp.combo_box.tag">选项</span>
-          </button>
-          <button class="comp-btn" data-id="color_button">
-            <span data-i18n="comp.color_button.title">ColorButton 调色板</span>
-            <span class="comp-subtag" data-i18n="comp.color_button.tag">色彩</span>
-          </button>
-        </div>
+        <div class="sidebar-menu-scroll" id="sidebarMenuScroll">
+          <div class="category-title" data-i18n="cat.basic">基础输入</div>
+          <div class="comp-menu">
+            <button class="comp-btn active" data-id="button">
+              <span data-i18n="comp.button.title">Button 按钮</span>
+              <span class="comp-subtag" data-i18n="comp.button.tag">交互</span>
+            </button>
+            <button class="comp-btn" data-id="text_edit">
+              <span data-i18n="comp.text_edit.title">TextEdit 文本输入</span>
+              <span class="comp-subtag" data-i18n="comp.text_edit.tag">编辑</span>
+            </button>
+            <button class="comp-btn" data-id="code_editor">
+              <span data-i18n="comp.code_editor.title">CodeEditor 代码编辑器</span>
+              <span class="comp-subtag" data-i18n="comp.code_editor.tag">代码</span>
+            </button>
+          </div>
 
-        <div class="category-title" data-i18n="cat.feedback">反馈与展示</div>
-        <div class="comp-menu">
-          <button class="comp-btn" data-id="progress_bar">
-            <span data-i18n="comp.progress_bar.title">ProgressBar 进度条</span>
-            <span class="comp-subtag" data-i18n="comp.progress_bar.tag">进度</span>
-          </button>
-          <button class="comp-btn" data-id="collapsing_header">
-            <span data-i18n="comp.collapsing_header.title">CollapsingHeader 折叠树</span>
-            <span class="comp-subtag" data-i18n="comp.collapsing_header.tag">树形</span>
-          </button>
-          <button class="comp-btn" data-id="tree_view">
-            <span data-i18n="comp.tree_view.title">TreeView 资产层级树</span>
-            <span class="comp-subtag" data-i18n="comp.tree_view.tag">层级</span>
-          </button>
-          <button class="comp-btn" data-id="tooltip">
-            <span data-i18n="comp.tooltip.title">Tooltip 悬浮提示</span>
-            <span class="comp-subtag" data-i18n="comp.tooltip.tag">气泡</span>
-          </button>
-        </div>
+          <div class="category-title" data-i18n="cat.values">选择与数值</div>
+          <div class="comp-menu">
+            <button class="comp-btn" data-id="checkbox">
+              <span data-i18n="comp.checkbox.title">Checkbox 复选框</span>
+              <span class="comp-subtag" data-i18n="comp.checkbox.tag">开关</span>
+            </button>
+            <button class="comp-btn" data-id="toggle">
+              <span data-i18n="comp.toggle.title">Toggle 胶囊开关</span>
+              <span class="comp-subtag" data-i18n="comp.toggle.tag">切换</span>
+            </button>
+            <button class="comp-btn" data-id="radio">
+              <span data-i18n="comp.radio.title">Radio 单选按钮</span>
+              <span class="comp-subtag" data-i18n="comp.radio.tag">单选</span>
+            </button>
+            <button class="comp-btn" data-id="slider">
+              <span data-i18n="comp.slider.title">Slider 滑动条</span>
+              <span class="comp-subtag" data-i18n="comp.slider.tag">数值</span>
+            </button>
+            <button class="comp-btn" data-id="drag_value">
+              <span data-i18n="comp.drag_value.title">DragValue 数字微调</span>
+              <span class="comp-subtag" data-i18n="comp.drag_value.tag">拖拽</span>
+            </button>
+            <button class="comp-btn" data-id="knob">
+              <span data-i18n="comp.knob.title">Knob 旋钮调节器</span>
+              <span class="comp-subtag" data-i18n="comp.knob.tag">旋钮</span>
+            </button>
+            <button class="comp-btn" data-id="combo_box">
+              <span data-i18n="comp.combo_box.title">ComboBox 下拉框</span>
+              <span class="comp-subtag" data-i18n="comp.combo_box.tag">选项</span>
+            </button>
+            <button class="comp-btn" data-id="color_button">
+              <span data-i18n="comp.color_button.title">ColorButton 调色板</span>
+              <span class="comp-subtag" data-i18n="comp.color_button.tag">色彩</span>
+            </button>
+          </div>
 
-        <div class="category-title" data-i18n="cat.layout">容器与排版</div>
-        <div class="comp-menu">
-          <button class="comp-btn" data-id="tab_bar">
-            <span data-i18n="comp.tab_bar.title">TabBar 标签导航</span>
-            <span class="comp-subtag" data-i18n="comp.tab_bar.tag">选项卡</span>
-          </button>
-          <button class="comp-btn" data-id="menu_bar">
-            <span data-i18n="comp.menu_bar.title">MenuBar 顶层菜单</span>
-            <span class="comp-subtag" data-i18n="comp.menu_bar.tag">菜单</span>
-          </button>
-          <button class="comp-btn" data-id="scroll_area">
-            <span data-i18n="comp.scroll_area.title">ScrollArea 滚动区域</span>
-            <span class="comp-subtag" data-i18n="comp.scroll_area.tag">裁剪</span>
-          </button>
-          <button class="comp-btn" data-id="window">
-            <span data-i18n="comp.window.title">Window 浮动窗口</span>
-            <span class="comp-subtag" data-i18n="comp.window.tag">面板</span>
-          </button>
-          <button class="comp-btn" data-id="command_palette">
-            <span data-i18n="comp.command_palette.title">CommandPalette 命令面板</span>
-            <span class="comp-subtag" data-i18n="comp.command_palette.tag">快捷</span>
-          </button>
-          <button class="comp-btn" data-id="context_menu">
-            <span data-i18n="comp.context_menu.title">ContextMenu 上下文菜单</span>
-            <span class="comp-subtag" data-i18n="comp.context_menu.tag">右键</span>
-          </button>
-          <button class="comp-btn" data-id="toast">
-            <span data-i18n="comp.toast.title">Toast 全局通知</span>
-            <span class="comp-subtag" data-i18n="comp.toast.tag">浮动</span>
-          </button>
+          <div class="category-title" data-i18n="cat.feedback">反馈与展示</div>
+          <div class="comp-menu">
+            <button class="comp-btn" data-id="progress_bar">
+              <span data-i18n="comp.progress_bar.title">ProgressBar 进度条</span>
+              <span class="comp-subtag" data-i18n="comp.progress_bar.tag">进度</span>
+            </button>
+            <button class="comp-btn" data-id="collapsing_header">
+              <span data-i18n="comp.collapsing_header.title">CollapsingHeader 折叠树</span>
+              <span class="comp-subtag" data-i18n="comp.collapsing_header.tag">树形</span>
+            </button>
+            <button class="comp-btn" data-id="tree_view">
+              <span data-i18n="comp.tree_view.title">TreeView 资产层级树</span>
+              <span class="comp-subtag" data-i18n="comp.tree_view.tag">层级</span>
+            </button>
+            <button class="comp-btn" data-id="tooltip">
+              <span data-i18n="comp.tooltip.title">Tooltip 悬浮提示</span>
+              <span class="comp-subtag" data-i18n="comp.tooltip.tag">气泡</span>
+            </button>
+          </div>
+
+          <div class="category-title" data-i18n="cat.layout">容器与排版</div>
+          <div class="comp-menu">
+            <button class="comp-btn" data-id="tab_bar">
+              <span data-i18n="comp.tab_bar.title">TabBar 标签导航</span>
+              <span class="comp-subtag" data-i18n="comp.tab_bar.tag">选项卡</span>
+            </button>
+            <button class="comp-btn" data-id="menu_bar">
+              <span data-i18n="comp.menu_bar.title">MenuBar 顶层菜单</span>
+              <span class="comp-subtag" data-i18n="comp.menu_bar.tag">菜单</span>
+            </button>
+            <button class="comp-btn" data-id="scroll_area">
+              <span data-i18n="comp.scroll_area.title">ScrollArea 滚动区域</span>
+              <span class="comp-subtag" data-i18n="comp.scroll_area.tag">裁剪</span>
+            </button>
+            <button class="comp-btn" data-id="window">
+              <span data-i18n="comp.window.title">Window 浮动窗口</span>
+              <span class="comp-subtag" data-i18n="comp.window.tag">面板</span>
+            </button>
+            <button class="comp-btn" data-id="command_palette">
+              <span data-i18n="comp.command_palette.title">CommandPalette 命令面板</span>
+              <span class="comp-subtag" data-i18n="comp.command_palette.tag">快捷</span>
+            </button>
+            <button class="comp-btn" data-id="context_menu">
+              <span data-i18n="comp.context_menu.title">ContextMenu 上下文菜单</span>
+              <span class="comp-subtag" data-i18n="comp.context_menu.tag">右键</span>
+            </button>
+            <button class="comp-btn" data-id="toast">
+              <span data-i18n="comp.toast.title">Toast 全局通知</span>
+              <span class="comp-subtag" data-i18n="comp.toast.tag">浮动</span>
+            </button>
+          </div>
         </div>
       </aside>
 

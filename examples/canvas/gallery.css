@@ -147,8 +147,9 @@
     }
 
     /* Hero Header */
+    /* Hero Header - Ergonomically compact to keep workbench above the fold */
     .gallery-hero {
-      padding: 44px 0 28px;
+      padding: 24px 0 16px;
       text-align: center;
     }
 
@@ -158,25 +159,25 @@
       font-size: 11px;
       font-weight: 600;
       color: var(--brand);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       letter-spacing: 0.04em;
     }
 
     .hero-title {
-      font-size: 38px;
+      font-size: 32px;
       font-weight: 800;
       letter-spacing: -0.03em;
       line-height: 1.2;
       color: var(--text-main);
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     .hero-subtitle {
-      font-size: 16px;
+      font-size: 15px;
       color: var(--text-sub);
-      max-width: 680px;
-      margin: 0 auto 24px;
-      line-height: 1.55;
+      max-width: 640px;
+      margin: 0 auto 16px;
+      line-height: 1.5;
     }
 
     /* Segmented Controls - Matching benchmark & index */
@@ -185,7 +186,7 @@
       align-items: center;
       justify-content: center;
       gap: 12px;
-      margin-bottom: 32px;
+      margin-bottom: 20px;
     }
 
     .segmented-control {
@@ -234,14 +235,25 @@
       margin-bottom: 72px;
     }
 
-    /* Sidebar Navigation Card */
+    /* Sidebar Navigation Card - Internally scrollable & sticky */
     .sidebar-card {
       background: #ffffff;
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 16px;
+      padding: 16px 14px 16px 16px;
       position: sticky;
-      top: 80px;
+      top: 76px;
+      max-height: calc(100vh - 96px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .sidebar-search-wrapper {
+      position: relative;
+      margin-bottom: 12px;
+      flex-shrink: 0;
     }
 
     .search-input {
@@ -254,7 +266,7 @@
       color: var(--text-main);
       font-family: inherit;
       outline: none;
-      margin-bottom: 16px;
+      margin-bottom: 0;
       transition: all 0.15s ease;
     }
 
@@ -262,6 +274,15 @@
       background: #ffffff;
       border-color: var(--brand);
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+
+    .sidebar-menu-scroll {
+      overflow-y: auto;
+      flex: 1;
+      padding-right: 6px;
+      margin-right: -2px;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 transparent;
     }
 
     .category-title {
@@ -337,13 +358,15 @@
       color: var(--brand);
     }
 
-    /* Main Showcase Workbench Window - Exactly matching index.html */
+    /* Main Showcase Workbench Window - Sticky alongside sidebar */
     .workbench-window {
       background: #ffffff;
       border: 1px solid var(--border);
       border-radius: 12px;
       box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
       overflow: hidden;
+      position: sticky;
+      top: 76px;
     }
 
     .workbench-header {
@@ -674,7 +697,8 @@
 
     @media (max-width: 840px) {
       .gallery-grid { grid-template-columns: 1fr; }
-      .sidebar-card { position: static; }
+      .sidebar-card { position: static; max-height: 420px; }
+      .workbench-window { position: static; }
       .footer-inner { flex-direction: column; gap: 12px; }
-      .hero-title { font-size: 30px; }
+      .hero-title { font-size: 28px; }
     }
