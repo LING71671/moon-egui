@@ -60,3 +60,30 @@ All UI/UX design, visual styling, web layouts, and showcase presentation interfa
 
 - **Strictly Zero Exaggeration / Factual Tone**: Strictly forbid sensationalism or exaggerated buzzwords such as "工业级", "专业级", "顶级", "极致", "海量数据", "军工级", or similar marketing jargon across all code, documentation, web UI text, showcase component descriptions, and commit messages.
 - **Accurate & Restrained**: Use clean, factual, professional engineering terminology (e.g., "核心交互控件", "数据虚拟化表格", "HSV 拾色器", "开发规范").
+
+## Anti-Hardcoding and Design Tokens Standard (Mandatory)
+
+Hardcoding arbitrary constants (magic numbers, raw color literals, fixed layout offsets) is strictly forbidden across all engine packages (`src/core`, `src/draw`, `src/color`, `src/math`) and example stages (`examples/canvas`). All implementations must strictly adhere to the following rules:
+
+1. **Geometry and Sizing via `WidgetStyle`**:
+   - Forbid raw float literals for widget dimensions (e.g. heights, line heights, inner paddings, corner radii, gutter widths).
+   - Every layout metric must derive from `self.style` (`WidgetStyle` in `src/core/theme.mbt`) and be scalable via `self.style.scale`.
+   - When introducing or updating any UI widget, all associated sizing, spacing, and radius constants must be formally declared as fields in `WidgetStyle` with appropriate defaults, rather than inline magic numbers.
+
+2. **Colors, Translucency, and Elevation via `@color.Color`**:
+   - Forbid inline `Color::rgba(...)`, `Color::rgb(...)`, raw `Color::white()` / `black()`, and ad-hoc integer `.with_alpha(...)` calls within widget drawing logic.
+   - All colors must use semantic palette tokens defined in `src/color/color.mbt` (e.g. `bg_surface()`, `bg_window()`, `border_muted()`, `accent_primary()`, `text_strong()`).
+   - If an interaction state or overlay requires a specific translucent layer (e.g. modal scrim, hover wash, focus ring, ambient shadow), declare a semantic token in `src/color/color.mbt` instead of inlining magic alpha values.
+
+3. **Dynamic Viewport and Container Boundaries**:
+   - Forbid assuming static screen or window resolutions (e.g. default `(800.0, 600.0)` or `(1920.0, 1080.0)`).
+   - Modals, popups, dialogs, and background scrims must compute dimensions dynamically from `self.input.screen_rect` or explicit container bounds passed by the caller.
+
+4. **Typography and Text Measurements**:
+   - Typography sizes must reference tokenized style metrics (`self.style.font_normal`, `self.style.font_small`, `self.style.font_large`).
+   - Forbid arbitrary literal font sizes (e.g. `10.5`, `11.5`, `12.5`, `13.5`) scattered across widget implementations.
+   - Precision-critical text components (such as `CodeEditor`) must compute positions through structured monospace metrics or layout contexts, avoiding manual ad-hoc character offset tables.
+
+5. **Showcase and Demo Layouts**:
+   - Example stages in `examples/canvas/` must use structured container queries and `available_width` instead of arbitrary manual subtractions (e.g. `card_w - 32.0`, `card_w - 40.0`).
+
