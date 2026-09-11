@@ -2407,6 +2407,254 @@ pub fn draw_cad_nodes(ui : @core.UIContext, state : AppState) -> Unit {
             }
           });
         }
+      },
+
+      toast: {
+        titleKey: 'comp.toast.title',
+        signature: "ui.toast_stack(toasts, anchor?~, viewport_size?~) -> ToastResponse",
+        code: {
+          zh: `///|
+pub fn draw_notifications(ui : @core.UIContext, state : AppState) -> Unit {
+  // 业务事件触发通知入栈
+  if state.need_notify {
+    state.toasts.push(@core.Toast::success("保存完成", message="设计已同步至云端工程"))
+    state.need_notify = false
+  }
+
+  // 渲染全局浮动通知栈，支持时间衰减与点击关闭
+  let resp = ui.toast_stack(
+    state.toasts,
+    anchor=@core.ToastAnchor::BottomRight,
+  )
+
+  // 更新活跃通知列表
+  state.toasts = resp.active_toasts
+
+  if resp.dismissed_id is Some(id) {
+    println("通知已手动关闭: \{id}")
+  }
+}`,
+          en: `///|
+pub fn draw_notifications(ui : @core.UIContext, state : AppState) -> Unit {
+  // Trigger notification when event occurs
+  if state.need_notify {
+    state.toasts.push(@core.Toast::success("Save Complete", message="Design synced to cloud repository"))
+    state.need_notify = false
+  }
+
+  // Render floating toast stack with time decay and dismiss handling
+  let resp = ui.toast_stack(
+    state.toasts,
+    anchor=@core.ToastAnchor::BottomRight,
+  )
+
+  // Update active toasts
+  state.toasts = resp.active_toasts
+
+  if resp.dismissed_id is Some(id) {
+    println("Toast dismissed manually: \{id}")
+  }
+}`
+        },
+        renderUI: (container, state) => {
+          state.toastList = state.toastList || [];
+          state.toastAnchor = state.toastAnchor || 'BottomRight';
+          state.toastWithDesc = state.toastWithDesc !== undefined ? state.toastWithDesc : true;
+
+          let toastCounter = 1;
+
+          container.innerHTML = `
+            <div class="toast-stage-wrap">
+              <!-- Control Deck -->
+              <div class="toast-control-deck">
+                <div class="toast-button-row">
+                  <button class="toast-trigger-btn toast-btn-info" id="btnToastInfo">
+                    <span>•</span> ${T('信息通知 (Info)', 'Info Toast')}
+                  </button>
+                  <button class="toast-trigger-btn toast-btn-success" id="btnToastSuccess">
+                    <span>✓</span> ${T('成功通知 (Success)', 'Success Toast')}
+                  </button>
+                  <button class="toast-trigger-btn toast-btn-warning" id="btnToastWarning">
+                    <span>▲</span> ${T('警告通知 (Warning)', 'Warning Toast')}
+                  </button>
+                  <button class="toast-trigger-btn toast-btn-danger" id="btnToastDanger">
+                    <span>✕</span> ${T('错误通知 (Danger)', 'Danger Toast')}
+                  </button>
+                  <button class="toast-trigger-btn toast-btn-clear" id="btnToastClear">
+                    ${T('清空全部', 'Clear All')}
+                  </button>
+                </div>
+
+                <div class="toast-options-row">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span>${T('锚定对齐位置:', 'Anchor position:')}</span>
+                    <div class="toast-anchor-group" id="anchorGroup">
+                      <button class="toast-anchor-pill ${state.toastAnchor === 'TopRight' ? 'is-active' : ''}" data-anchor="TopRight">${T('右上 TopRight', 'TopRight')}</button>
+                      <button class="toast-anchor-pill ${state.toastAnchor === 'BottomRight' ? 'is-active' : ''}" data-anchor="BottomRight">${T('右下 BottomRight', 'BottomRight')}</button>
+                      <button class="toast-anchor-pill ${state.toastAnchor === 'BottomCenter' ? 'is-active' : ''}" data-anchor="BottomCenter">${T('底居中 BottomCenter', 'BottomCenter')}</button>
+                    </div>
+                  </div>
+
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none;">
+                    <input type="checkbox" id="chkToastDesc" ${state.toastWithDesc ? 'checked' : ''}>
+                    <span>${T('附带详细描述信息', 'Include detail description')}</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Viewport Stage -->
+              <div class="toast-viewport-stage" id="toastViewport">
+                <div class="toast-stack-overlay anchor-${state.toastAnchor === 'TopRight' ? 'top-right' : state.toastAnchor === 'BottomCenter' ? 'bottom-center' : 'bottom-right'}" id="toastOverlay"></div>
+              </div>
+            </div>
+          `;
+
+          const overlay = container.querySelector('#toastOverlay');
+          const chkDesc = container.querySelector('#chkToastDesc');
+
+          chkDesc.addEventListener('change', (e) => {
+            state.toastWithDesc = e.target.checked;
+          });
+
+          // Anchor selection
+          container.querySelectorAll('.toast-anchor-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const anc = btn.getAttribute('data-anchor');
+              state.toastAnchor = anc;
+              container.querySelectorAll('.toast-anchor-pill').forEach(b => b.classList.remove('is-active'));
+              btn.classList.add('is-active');
+
+              overlay.className = `toast-stack-overlay anchor-${anc === 'TopRight' ? 'top-right' : anc === 'BottomCenter' ? 'bottom-center' : 'bottom-right'}`;
+              document.getElementById('statResponse').textContent = `toast_stack: anchor set to ${anc}`;
+            });
+          });
+
+          function renderToasts() {
+            if (!overlay) return;
+            let html = '';
+            state.toastList.forEach(t => {
+              html += `
+                <div class="toast-item-card" data-id="${t.id}">
+                  <div class="toast-kind-strip kind-${t.kind}"></div>
+                  <div class="toast-content-col">
+                    <div class="toast-title-text">${t.title}</div>
+                    ${t.message ? `<div class="toast-desc-text">${t.message}</div>` : ''}
+                  </div>
+                  <div class="toast-close-icon" data-close="${t.id}">×</div>
+                  <div class="toast-time-progress" style="width: ${Math.max(0, (1 - t.elapsed / t.duration) * 100)}%;"></div>
+                </div>
+              `;
+            });
+            overlay.innerHTML = html;
+
+            overlay.querySelectorAll('.toast-close-icon').forEach(btn => {
+              btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tid = btn.getAttribute('data-close');
+                dismissToast(tid);
+              });
+            });
+
+            document.getElementById('statResponse').textContent = `toast_stack: ${state.toastList.length} active toasts`;
+          }
+
+          function addToast(kind, title, message) {
+            const id = 'toast_' + (toastCounter++);
+            const duration = 4.0;
+            state.toastList.push({
+              id,
+              kind,
+              title,
+              message: state.toastWithDesc ? message : '',
+              duration,
+              elapsed: 0.0,
+              created: performance.now(),
+            });
+            renderToasts();
+          }
+
+          function dismissToast(id) {
+            const card = overlay.querySelector(`[data-id="${id}"]`);
+            if (card) {
+              card.classList.add('is-removing');
+              setTimeout(() => {
+                state.toastList = state.toastList.filter(t => t.id !== id);
+                renderToasts();
+              }, 180);
+            } else {
+              state.toastList = state.toastList.filter(t => t.id !== id);
+              renderToasts();
+            }
+            document.getElementById('statResponse').textContent = `toast_stack: dismissed "${id}"`;
+          }
+
+          // Triggers
+          container.querySelector('#btnToastInfo').addEventListener('click', () => {
+            addToast('info', T('系统配置已更新', 'Configuration Updated'), T('本地存储偏好设置已同步至即时渲染缓存', 'Preferences synchronized to cache'));
+          });
+
+          container.querySelector('#btnToastSuccess').addEventListener('click', () => {
+            addToast('success', T('CAD 节点保存成功', 'Node Saved Successfully'), T('已构建 12,400 个拓扑图元并更新空间索引', '12,400 primitives indexed'));
+          });
+
+          container.querySelector('#btnToastWarning').addEventListener('click', () => {
+            addToast('warning', T('帧率微幅抖动预警', 'Frame Jitter Notice'), T('当前 GPU 驱动显存带宽已占用 82%', 'VRAM bandwidth at 82%'));
+          });
+
+          container.querySelector('#btnToastDanger').addEventListener('click', () => {
+            addToast('danger', T('矩阵约束解算失效', 'Constraint Solver Failure'), T('贝塞尔曲线控制点坐标出现奇异非线性奇异值', 'Singular value detected in control points'));
+          });
+
+          container.querySelector('#btnToastClear').addEventListener('click', () => {
+            state.toastList = [];
+            renderToasts();
+            document.getElementById('statResponse').textContent = 'toast_stack: cleared all';
+          });
+
+          // Initial demo toast
+          if (state.toastList.length === 0) {
+            addToast('success', T('moon-egui 引擎初始化完成', 'Engine Initialized'), T('微秒级即时模式渲染管线就绪 (60 FPS)', 'Immediate mode pipeline ready'));
+          } else {
+            renderToasts();
+          }
+
+          // Decay ticker
+          let lastTime = performance.now();
+          let animId = null;
+
+          function tick(now) {
+            const dt = (now - lastTime) / 1000;
+            lastTime = now;
+
+            if (state.toastList.length > 0) {
+              let expired = [];
+              for (let t of state.toastList) {
+                t.elapsed += dt;
+                if (t.elapsed >= t.duration) {
+                  expired.push(t.id);
+                }
+              }
+              if (expired.length > 0) {
+                state.toastList = state.toastList.filter(t => !expired.includes(t.id));
+                renderToasts();
+              } else {
+                state.toastList.forEach(t => {
+                  const card = overlay.querySelector(`[data-id="${t.id}"] .toast-time-progress`);
+                  if (card) {
+                    const pct = Math.max(0, (1 - t.elapsed / t.duration) * 100);
+                    card.style.width = `${pct}%`;
+                  }
+                });
+              }
+            }
+
+            if (document.contains(container)) {
+              animId = requestAnimationFrame(tick);
+            }
+          }
+
+          animId = requestAnimationFrame(tick);
+        }
       }
     };
 

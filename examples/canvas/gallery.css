@@ -2321,6 +2321,274 @@
       color: var(--text-sub, #64748B);
     }
 
+    /* Toast Notification Interactive Showcase */
+    .toast-stage-wrap {
+      position: relative;
+      min-height: 380px;
+      background: #FAFAFB;
+      border: 1px solid var(--border, #CBD5E1);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    }
+
+    .toast-control-deck {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border-muted, #E2E8F0);
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .toast-button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .toast-trigger-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      font-family: inherit;
+    }
+
+    .toast-trigger-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .toast-trigger-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .toast-btn-info {
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border-color: #BFDBFE;
+    }
+    .toast-btn-info:hover {
+      background: #DBEAFE;
+    }
+
+    .toast-btn-success {
+      background: #F0FDF4;
+      color: #15803D;
+      border-color: #BBF7D0;
+    }
+    .toast-btn-success:hover {
+      background: #DCFCE7;
+    }
+
+    .toast-btn-warning {
+      background: #FFFBEB;
+      color: #B45309;
+      border-color: #FDE68A;
+    }
+    .toast-btn-warning:hover {
+      background: #FEF3C7;
+    }
+
+    .toast-btn-danger {
+      background: #FEF2F2;
+      color: #B91C1C;
+      border-color: #FECACA;
+    }
+    .toast-btn-danger:hover {
+      background: #FEE2E2;
+    }
+
+    .toast-btn-clear {
+      background: #F8FAFC;
+      color: #64748B;
+      border-color: #E2E8F0;
+      margin-left: auto;
+    }
+    .toast-btn-clear:hover {
+      background: #F1F5F9;
+      color: #0F172A;
+    }
+
+    .toast-options-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .toast-anchor-group {
+      display: inline-flex;
+      background: #F1F5F9;
+      border-radius: 6px;
+      padding: 2px;
+      border: 1px solid #E2E8F0;
+    }
+
+    .toast-anchor-pill {
+      padding: 4px 10px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #64748B;
+      border: none;
+      background: transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.12s ease;
+      font-family: inherit;
+    }
+
+    .toast-anchor-pill.is-active {
+      background: #FFFFFF;
+      color: var(--brand, #2563EB);
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    }
+
+    .toast-viewport-stage {
+      flex: 1;
+      position: relative;
+      min-height: 280px;
+      background-image: radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px);
+      background-size: 20px 20px;
+      overflow: hidden;
+    }
+
+    .toast-stack-overlay {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 50;
+      pointer-events: none;
+      max-width: 320px;
+      width: calc(100% - 40px);
+    }
+
+    .toast-stack-overlay.anchor-bottom-right {
+      right: 20px;
+      bottom: 20px;
+      flex-direction: column;
+    }
+
+    .toast-stack-overlay.anchor-top-right {
+      right: 20px;
+      top: 20px;
+      flex-direction: column;
+    }
+
+    .toast-stack-overlay.anchor-bottom-center {
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 20px;
+      flex-direction: column;
+    }
+
+    .toast-item-card {
+      pointer-events: auto;
+      background: #FFFFFF;
+      border: 1px solid var(--border, #CBD5E1);
+      border-radius: 7px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04);
+      display: flex;
+      align-items: flex-start;
+      position: relative;
+      overflow: hidden;
+      padding: 10px 14px 10px 16px;
+      animation: toastSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toast-item-card.is-removing {
+      opacity: 0;
+      transform: scale(0.94) translateY(6px);
+      pointer-events: none;
+    }
+
+    @keyframes toastSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .toast-kind-strip {
+      position: absolute;
+      left: 0;
+      top: 5px;
+      bottom: 5px;
+      width: 3.5px;
+      border-radius: 0 2px 2px 0;
+    }
+    .toast-kind-strip.kind-info { background: #2563EB; }
+    .toast-kind-strip.kind-success { background: #16A34A; }
+    .toast-kind-strip.kind-warning { background: #D97706; }
+    .toast-kind-strip.kind-danger { background: #DC2626; }
+
+    .toast-content-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-right: 12px;
+    }
+
+    .toast-title-text {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #0F172A;
+      line-height: 18px;
+    }
+
+    .toast-desc-text {
+      font-size: 11px;
+      color: #64748B;
+      line-height: 16px;
+    }
+
+    .toast-close-icon {
+      color: #94A3B8;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 14px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: color 0.12s ease, background 0.12s ease;
+      user-select: none;
+    }
+
+    .toast-close-icon:hover {
+      color: #0F172A;
+      background: #F1F5F9;
+    }
+
+    .toast-time-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: rgba(37, 99, 235, 0.25);
+      width: 100%;
+      transform-origin: left;
+    }
+
     /* Footer - Exactly matching index.html */
     .site-footer {
       border-top: 1px solid var(--border);
