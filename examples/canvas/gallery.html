@@ -8,9 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="gallery.css">
-  <link rel="stylesheet" href="lang.css">
-  <script src="i18n.js"></script>
+  <link rel="stylesheet" href="gallery.css?v=0.1.4">
+  <link rel="stylesheet" href="lang.css?v=0.1.4">
+  <script src="i18n.js?v=0.1.4"></script>
 </head>
 <body data-i18n-title="gallery.title">
 
@@ -36,14 +36,18 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
+  <!-- Studio Header Bar -->
   <header class="gallery-hero">
-    <div class="container">
-      <span class="pillar-tag">COMPONENTS</span>
-      <h1 class="hero-title" data-i18n="gallery.heroTitle">组件展厅</h1>
-      <p class="hero-subtitle" data-i18n="gallery.heroSub">
-        探索即时模式基础组件。拖动中央滑块可实时对比 UI 与源码。
-      </p>
+    <div class="container gallery-hero-inner">
+      <div class="gallery-hero-left">
+        <div class="gallery-hero-title-row">
+          <span class="pillar-tag">COMPONENTS</span>
+          <h1 class="hero-title" data-i18n="gallery.heroTitle">组件展厅</h1>
+        </div>
+        <p class="hero-subtitle" data-i18n="gallery.heroSub">
+          探索即时模式基础组件。拖动中央滑块可实时对比 UI 与源码。
+        </p>
+      </div>
 
       <!-- Curtain View Mode Presets -->
       <div class="controls-center">
@@ -254,9 +258,9 @@
   <div class="toast-msg" id="toastMsg">已成功复制代码到剪贴板！</div>
 
   <!-- MoonBit Native Wasm Host & Gallery Runner -->
-  <script src="canvas.js?v=0.1.2"></script>
-  <script src="gallery-data.js?v=0.1.2"></script>
-  <script src="gallery_runner.js?v=0.1.2"></script>
-  <script src="gallery.js?v=0.1.2"></script>
+  <script src="canvas.js?v=0.1.4"></script>
+  <script src="gallery-data.js?v=0.1.4"></script>
+  <script src="gallery_runner.js?v=0.1.4"></script>
+  <script src="gallery.js?v=0.1.4"></script>
 </body>
 </html>

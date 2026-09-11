@@ -134,20 +134,20 @@ const appState = {
       document.querySelectorAll('.comp-btn').forEach(btn => {
         if (btn.getAttribute('data-id') === id) {
           btn.classList.add('active');
-          btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          const menuScroll = document.querySelector('.sidebar-menu-scroll');
+          if (menuScroll) {
+            const mRect = menuScroll.getBoundingClientRect();
+            const bRect = btn.getBoundingClientRect();
+            if (bRect.top < mRect.top) {
+              menuScroll.scrollTop -= (mRect.top - bRect.top + 8);
+            } else if (bRect.bottom > mRect.bottom) {
+              menuScroll.scrollTop += (bRect.bottom - mRect.bottom + 8);
+            }
+          }
         } else {
           btn.classList.remove('active');
         }
       });
-
-      // Ensure workbench is comfortably visible in the viewport
-      const wb = document.querySelector('.workbench-window');
-      if (wb) {
-        const r = wb.getBoundingClientRect();
-        if (r.top < 65) {
-          wb.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }
     }
 
     document.querySelectorAll('.comp-btn').forEach(btn => {
