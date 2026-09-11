@@ -61,12 +61,12 @@
   - [x] **Window Container Prototype** (`src/core/window.mbt`):
     - [x] Background card, border, header bar, and title rendering;
     - [x] Local cursor origin scoping and scissor viewport clipping (`push_clip` / `pop_clip`);
-    - [ ] Title bar draggable AABB hit-testing and persistent position tracking;
-    - [ ] Dynamic Z-Index elevation bringing clicked windows to foreground;
+    - [x] Title bar draggable AABB hit-testing and persistent position tracking;
+    - [x] Dynamic Z-Index elevation bringing clicked windows to foreground;
   - [ ] **Global Application Menu Bar** (`menu_bar.mbt`): `menu_bar`, `menu`, `menu_item` dropdown system;
-  - [ ] **Collapsible Sections** (`collapsing.mbt`): `collapsing_header` with state memory;
-  - [x] **Scissor Clip Stack** (`src/draw/cmd.mbt`): `push_clip` / `pop_clip` intersecting nested bounding boxes and culling out-of-bounds primitives;
-  - [ ] **Scroll Area** (`scroll_area.mbt`): Smooth mouse-wheel scrolling inside clipped viewports.
+  - [x] **Collapsible Sections** (`containers.mbt`): `collapsing_header` with state memory;
+  - [x] **Scissor Clip Stack** (`src/draw/draw_cmd.mbt`): `push_clip` / `pop_clip` intersecting nested bounding boxes and culling out-of-bounds primitives;
+  - [x] **Scroll Area** (`scroll_area.mbt`): Smooth mouse-wheel scrolling inside clipped viewports.
 * **Acceptance Criteria**:
   - Multi-window tests confirm background windows cannot be clicked through, and clipped content is properly masked.
 

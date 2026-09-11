@@ -59,12 +59,12 @@
   - [x] **视窗容器原型** (`src/core/window.mbt`)：
     - [x] 独立背景绘制、边框、标题栏 Header 与标题文本渲染；
     - [x] 内容区域局部坐标原点重映射与 Scissor 视口隔离裁剪（`push_clip` / `pop_clip`）；
-    - [ ] 视窗标题栏 AABB 拖拽命中判定与原点位置持久化更新；
-    - [ ] 多视窗交互时的动态 Z-Index 焦点置顶提升；
+    - [x] 视窗标题栏 AABB 拖拽命中判定与原点位置持久化更新；
+    - [x] 多视窗交互时的动态 Z-Index 焦点置顶提升；
   - [ ] **全局顶层菜单栏** (`menu_bar.mbt`)：`menu_bar`, `menu`, `menu_item` 下拉弹出机制；
-  - [ ] **树形折叠分组** (`collapsing.mbt`)：`collapsing_header` 状态保持与动态收纳；
-  - [x] **视口裁剪栈系统** (`src/draw/cmd.mbt`)：`push_clip` / `pop_clip` 嵌套相交计算，超视口图元舍弃；
-  - [ ] **滚动区域** (`scroll_area.mbt`)：鼠标滚轮驱动纵向平滑滚动。
+  - [x] **树形折叠分组** (`containers.mbt`)：`collapsing_header` 状态保持与动态收纳；
+  - [x] **视口裁剪栈系统** (`src/draw/draw_cmd.mbt`)：`push_clip` / `pop_clip` 嵌套相交计算，超视口图元舍弃；
+  - [x] **滚动区域** (`scroll_area.mbt`)：鼠标滚轮驱动纵向平滑滚动。
 * **验收标准**：
   - 多窗口层叠拖拽测试通过，下层视窗的控件不发生穿透点击，裁剪边界内外的指令被准确拦截。
 
