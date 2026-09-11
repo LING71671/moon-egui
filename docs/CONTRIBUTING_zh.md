@@ -60,7 +60,7 @@ MoonBit 拥有极其独特且清晰的工程范式，提交代码需严格遵守
 
 ## 4. Git 提交信息规范 (Conventional Commits)
 
-本项目严格遵循 [Conventional Commits](https://www.conventionalcommits.org/) 工业级规范：
+本项目严格遵循 [Conventional Commits](https://www.conventionalcommits.org/) 规范：
 
 格式要求：`<type>(<scope>): <简要描述>`
 

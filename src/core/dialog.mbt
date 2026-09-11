@@ -149,6 +149,10 @@ pub fn UIContext::dialog(
   let confirm_rect = @math.Rect::new(card_x + width - 96.0, btn_y, 80.0, 32.0)
 
   let cancel_hovered = cancel_rect.contains(self.input.mouse_pos)
+  let confirm_hovered = confirm_rect.contains(self.input.mouse_pos)
+  if cancel_hovered || confirm_hovered {
+    self.set_cursor_icon("pointer")
+  }
   let cancel_bg = if cancel_hovered {
     @color.Color::bg_hover()
   } else {
@@ -173,8 +177,6 @@ pub fn UIContext::dialog(
     @color.Color::text_body(),
   )
   let cancel_clicked = cancel_hovered && self.input.mouse_pressed
-
-  let confirm_hovered = confirm_rect.contains(self.input.mouse_pos)
   let confirm_bg = match kind {
     Danger =>
       if confirm_hovered {

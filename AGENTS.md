@@ -56,3 +56,7 @@ You can browse and install extra skills here:
 
 All UI/UX design, visual styling, web layouts, and showcase presentation interfaces in this project **MUST** invoke and follow the `impeccable` skill (`C:/Users/www17/.gemini/config/skills/impeccable/SKILL.md`). Deliver out-of-distribution craft, production-grade aesthetics, intentional visual hierarchy, and refined interactive details.
 
+## Copywriting and Technical Tone Standard (Mandatory)
+
+- **Strictly Zero Exaggeration / Factual Tone**: Strictly forbid sensationalism or exaggerated buzzwords such as "工业级", "专业级", "顶级", "极致", "海量数据", "军工级", or similar marketing jargon across all code, documentation, web UI text, showcase component descriptions, and commit messages.
+- **Accurate & Restrained**: Use clean, factual, professional engineering terminology (e.g., "核心交互控件", "数据虚拟化表格", "HSV 拾色器", "开发规范").

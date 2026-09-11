@@ -126,6 +126,12 @@ pub fn UIContext::rich_text(
       rel.h,
     )
     let is_hovered = abs_rect.contains(self.input.mouse_pos)
+    if is_hovered {
+      match kind {
+        Link(_) => ()
+        _ => self.set_cursor_icon("text")
+      }
+    }
 
     match kind {
       Normal => {

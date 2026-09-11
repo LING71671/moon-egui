@@ -20,7 +20,7 @@ pub fn UIContext::segmented_control(
   id_salt : String,
   options : Array[String],
   selected_index : Int,
-  height? : Double = 32.0,
+  height? : Double = 34.0,
   width? : Double = 0.0,
 ) -> (Int, Response) {
   let count = options.length()

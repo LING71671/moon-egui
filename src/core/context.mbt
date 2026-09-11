@@ -668,8 +668,9 @@ pub fn UIContext::end_foreground(self : UIContext) -> Unit {
 ///|
 fn ascii_char_ratio(code : Int) -> Double {
   match code {
-    32 => 0.24 // space
+    32 => 0.26 // space
     33 | 39 | 44 | 46 | 58 | 59 | 105 | 108 | 124 => 0.28 // ! ' , . : ; i l |
+    34 => 0.36 // "
     106 | 114 | 116 | 102 | 73 => 0.38 // j r t f I
     40 | 41 | 91 | 93 | 123 | 125 | 49 | 45 | 96 => 0.40 // ( ) [ ] { } 1 - `
     47 | 92 | 42 | 122 => 0.48 // / \ * z

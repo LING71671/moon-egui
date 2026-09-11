@@ -214,11 +214,16 @@ pub fn UIContext::tree_view(
     }
   }
 
-  // 4. Hit testing and rendering visible rows
+  // 4. Hit testing and rendering visible rows with container scissor clipping
+  if node_count > 0 {
+    self.push_clip(rect)
+  }
   for i = 0; i < node_count; i = i + 1 {
     let flat = flat_nodes[i]
     let node = flat.node
     let row_y = rect.y + 2.0 + i.to_double() * item_height
+    let is_in_view = row_y + item_height <= rect.y + rect.h + 2.0 &&
+      row_y >= rect.y
     let row_rect = @math.Rect::new(
       rect.x + 2.0,
       row_y,
@@ -226,7 +231,7 @@ pub fn UIContext::tree_view(
       item_height,
     )
 
-    let is_row_hovered = self.is_hovered(row_rect)
+    let is_row_hovered = is_in_view && self.is_hovered(row_rect)
     let is_row_selected = Some(node.id) == cur_selected
 
     // Chevron hit box
@@ -340,6 +345,9 @@ pub fn UIContext::tree_view(
       12.0,
       label_col,
     )
+  }
+  if node_count > 0 {
+    self.pop_clip()
   }
 
   {

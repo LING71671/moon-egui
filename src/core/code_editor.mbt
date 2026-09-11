@@ -132,6 +132,53 @@ pub fn UIContext::code_editor(
   let mut current_text = text
   let lines = split_lines(current_text)
 
+  let gutter_w = if show_line_numbers { 38.0 } else { 0.0 }
+  let line_h = 20.0
+  let pad_top = 8.0
+  let pad_code_x = 10.0
+
+  // Click to position cursor on specific line and column (or line end)
+  if self.input.mouse_pressed && (resp.hovered() || resp.pressed()) {
+    self.request_focus(id)
+    self.reset_caret_blink()
+    let my = self.input.mouse_pos.y - (rect.y + pad_top)
+    let click_line = if my < 0.0 {
+      0
+    } else {
+      let l = (my / line_h).to_int()
+      if l >= lines.length() {
+        lines.length() - 1
+      } else {
+        l
+      }
+    }
+    let target_line = if click_line < 0 { 0 } else { click_line }
+    let line_str = if target_line < lines.length() {
+      lines[target_line]
+    } else {
+      ""
+    }
+    let code_x = rect.x + gutter_w + pad_code_x
+    let click_x = self.input.mouse_pos.x - code_x
+    let target_col = if click_x <= 0.0 {
+      0
+    } else {
+      let mut best_c = 0
+      let mut best_dist = click_x
+      for c = 1; c <= line_str.length(); c = c + 1 {
+        let sub = string_slice(line_str, 0, c)
+        let w = self.measure_text(sub, 12.5).x
+        let dist = if click_x > w { click_x - w } else { w - click_x }
+        if dist < best_dist {
+          best_dist = dist
+          best_c = c
+        }
+      }
+      best_c
+    }
+    cursor_pos = line_col_to_cursor(lines, target_line, target_col)
+  }
+
   if is_focused {
     if self.input.key_pressed(Key::ArrowLeft) ||
       self.input.key_pressed(Key::ArrowRight) ||
@@ -277,11 +324,6 @@ pub fn UIContext::code_editor(
 
   let render_lines = split_lines(current_text)
   let (active_line, active_col) = cursor_to_line_col(current_text, cursor_pos)
-
-  let gutter_w = if show_line_numbers { 38.0 } else { 0.0 }
-  let line_h = 20.0
-  let pad_top = 8.0
-  let pad_code_x = 10.0
 
   // Draw Gutter
   if show_line_numbers {

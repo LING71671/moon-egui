@@ -146,15 +146,7 @@ pub fn get_gallery_status() -> String {
 
 ///|
 pub fn get_gallery_cursor() -> String {
-  let icon = gallery_ctx.cursor_icon()
-  if icon != "default" {
-    icon
-  } else if gallery_ctx.hot_id() != @core.Id::zero() ||
-    gallery_ctx.active_id() != @core.Id::zero() {
-    "pointer"
-  } else {
-    "default"
-  }
+  gallery_ctx.cursor_icon()
 }
 
 // ----------------------------------------------------------------------
@@ -844,7 +836,7 @@ fn draw_tree_view_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
     tree_data,
     selected_id=gallery_state.tree_selected,
     expanded_ids=gallery_state.tree_expanded,
-    size=@math.Vec2::new(card_w - 32.0, 220.0),
+    size=@math.Vec2::new(card_w - 32.0, 290.0),
   )
 
   gallery_state.tree_expanded = tree_resp.expanded_ids
@@ -1316,7 +1308,7 @@ fn draw_splitter_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
 ///|
 fn draw_table_showcase(ui : @core.UIContext, card_w : Double) -> Unit {
   let _ = ui.label_colored(
-    "海量数据虚拟化表格 (Virtual Table)",
+    "虚拟化数据表格 (Virtual Table)",
     @color.Color::accent_primary(),
   )
   ui.spacer(6.0)
@@ -1518,7 +1510,8 @@ fn draw_segmented_control_showcase(ui : @core.UIContext) -> Unit {
     "gal_seg",
     views,
     gallery_state.segmented_sel,
-    width=360.0,
+    width=480.0,
+    height=34.0,
   )
   if sel != gallery_state.segmented_sel {
     gallery_state.segmented_sel = sel
@@ -1534,7 +1527,7 @@ fn draw_badge_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(6.0)
   let _ = ui.label(
-    "5 种低饱和专业双色阶调色板，支持前置呼吸状态圆点与右侧小叉号关闭移除。",
+    "5 种语义状态调色板，支持前置呼吸状态圆点与右侧小叉号关闭移除。",
   )
   ui.spacer(12.0)
 
@@ -1662,7 +1655,7 @@ fn draw_breadcrumb_showcase(ui : @core.UIContext) -> Unit {
 ///|
 fn draw_color_picker_showcase(ui : @core.UIContext) -> Unit {
   let _ = ui.label_colored(
-    "专业级 2D HSV 拾色器 (ColorPicker)",
+    "2D HSV 拾色器 (ColorPicker)",
     @color.Color::accent_primary(),
   )
   ui.spacer(6.0)

@@ -31,7 +31,7 @@
         <li><a href="gallery.html" class="nav-link" data-i18n="nav.gallery">组件展厅</a></li>
         <li><a href="docs.html" class="nav-link" data-i18n="nav.docs">文档中心</a></li>
         <li><a href="wiki.html" class="nav-link active" data-i18n="nav.wiki">技术 Wiki</a></li>
-        <li><a href="index.html#demo" class="nav-link" data-i18n="nav.canvas">画板演示</a></li>
+        <li><a href="benchmark.html" class="nav-link" data-i18n="nav.canvas">画板演示</a></li>
         <li><a href="https://github.com/ling71671/moon-egui" target="_blank" rel="noreferrer" class="nav-link" data-i18n="nav.github">GitHub 源码</a></li>
       </ul>
       <div class="nav-actions">
@@ -59,7 +59,7 @@
         <ul class="sidebar-nav">
           <li><a href="#im-vs-rm" class="sidebar-link active"><span>即时模式 vs 保留模式</span> <span class="sidebar-tag">Theory</span></a></li>
           <li><a href="#why-moonbit" class="sidebar-link"><span>为什么基于 MoonBit 构建</span> <span class="sidebar-tag">Design</span></a></li>
-          <li><a href="#core-painpoints" class="sidebar-link"><span>解决的工业痛点与生态空白</span> <span class="sidebar-tag">Vision</span></a></li>
+          <li><a href="#core-painpoints" class="sidebar-link"><span>设计初衷与生态空白</span> <span class="sidebar-tag">Vision</span></a></li>
         </ul>
       </div>
 
@@ -92,7 +92,7 @@
           <span class="sidebar-group-count">2</span>
         </div>
         <ul class="sidebar-nav">
-          <li><a href="#million-cells" class="sidebar-link"><span>百万级 CAD 矩阵视口剔除</span> <span class="sidebar-tag">Perf</span></a></li>
+          <li><a href="#million-cells" class="sidebar-link"><span>CAD 矩阵视口剔除</span> <span class="sidebar-tag">Perf</span></a></li>
           <li><a href="#gc-zero-jitter" class="sidebar-link"><span>零垃圾回收抖动优化</span> <span class="sidebar-tag">Memory</span></a></li>
         </ul>
       </div>
@@ -124,7 +124,7 @@
         <span class="page-badge">MOON-EGUI ARCHITECTURE WHITE PAPER</span>
         <h1 class="page-title" data-i18n="wiki.mainTitle">Moon-EGUI 架构设计与技术白皮书</h1>
         <p class="page-desc" data-i18n="wiki.mainDesc">
-          全面解析即时模式渲染原理、5 阶段确定性帧管线、跨平台 DrawCmd 图元流协议、百万级 CAD 视口裁剪以及全套自动化无头测试矩阵。
+          全面解析即时模式渲染原理、5 阶段确定性帧管线、跨平台 DrawCmd 图元流协议、CAD 矩阵视口裁剪以及全套自动化无头测试矩阵。
         </p>
       </header>
 
@@ -354,7 +354,7 @@
 
         <!-- Million Cells Benchmark -->
         <section id="million-cells">
-          <h2>9. 百万级 CAD 矩阵极限性能架构 <a href="#million-cells" class="heading-anchor">#</a></h2>
+          <h2>9. CAD 矩阵视口性能架构 <a href="#million-cells" class="heading-anchor">#</a></h2>
           <p>
             在 <code>benchmark.html</code> 演示中，面对 1,000,000 个复杂逻辑单元格，<code>moon-egui</code> 实现了稳定跑满 60 FPS 满帧刷新。核心优化技术包括：
           </p>

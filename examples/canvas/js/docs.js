@@ -76,46 +76,117 @@
     });
   }
 
-  /* Scroll-Spy for Right TOC */
+  /* Scroll-Spy for Left Sidebar & Right TOC */
   function initScrollSpy() {
+    var sidebarLinks = document.querySelectorAll('.sidebar-link');
     var tocLinks = document.querySelectorAll('.toc-link');
-    if (!tocLinks.length) return;
+    if (!sidebarLinks.length && !tocLinks.length) return;
 
-    var headingIds = [];
-    tocLinks.forEach(function(link) {
-      var href = link.getAttribute('href');
-      if (href && href.startsWith('#')) {
-        headingIds.push(href.substring(1));
+    // Collect all referenced IDs from both sidebar and TOC
+    var idSet = new Set();
+    var targets = [];
+
+    function registerLinks(links) {
+      links.forEach(function(link) {
+        var href = link.getAttribute('href');
+        if (href && href.startsWith('#') && href.length > 1) {
+          var targetId = href.substring(1);
+          if (!idSet.has(targetId)) {
+            idSet.add(targetId);
+            var el = document.getElementById(targetId);
+            if (el) {
+              targets.push({ id: targetId, el: el });
+            }
+          }
+        }
+      });
+    }
+
+    registerLinks(sidebarLinks);
+    registerLinks(tocLinks);
+
+    // Also collect all section elements for hierarchal fallback
+    document.querySelectorAll('section[id]').forEach(function(sec) {
+      if (!idSet.has(sec.id)) {
+        idSet.add(sec.id);
+        targets.push({ id: sec.id, el: sec });
       }
     });
 
-    var headings = headingIds.map(function(id) {
-      return document.getElementById(id);
-    }).filter(function(el) { return el !== null; });
+    if (!targets.length) return;
 
-    if (!headings.length) return;
+    function getElementTop(el) {
+      var box = el.getBoundingClientRect();
+      return box.top + window.scrollY;
+    }
 
     function onScroll() {
-      var scrollPos = window.scrollY + 100;
-      var activeId = null;
+      // Re-sort targets in case dynamic layouts or images shifted positions
+      targets.sort(function(a, b) {
+        return getElementTop(a.el) - getElementTop(b.el);
+      });
 
-      for (var i = 0; i < headings.length; i++) {
-        var el = headings[i];
-        if (el.offsetTop <= scrollPos) {
-          activeId = el.id;
+      var scrollPos = window.scrollY + 130;
+      var activeTarget = null;
+
+      for (var i = 0; i < targets.length; i++) {
+        var top = getElementTop(targets[i].el);
+        if (top <= scrollPos) {
+          activeTarget = targets[i];
         } else {
           break;
         }
       }
 
-      if (!activeId && headings.length > 0) {
-        activeId = headings[0].id;
+      if (!activeTarget && targets.length > 0) {
+        activeTarget = targets[0];
       }
 
+      var activeId = activeTarget ? activeTarget.id : null;
+      var activeEl = activeTarget ? activeTarget.el : null;
+
+      // 1. Update Right TOC links
       tocLinks.forEach(function(link) {
         var href = link.getAttribute('href');
         if (href === '#' + activeId) {
           link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+
+      // 2. Update Left Sidebar links
+      var matchedSidebarLink = null;
+      if (activeId) {
+        for (var s = 0; s < sidebarLinks.length; s++) {
+          if (sidebarLinks[s].getAttribute('href') === '#' + activeId) {
+            matchedSidebarLink = sidebarLinks[s];
+            break;
+          }
+        }
+      }
+
+      // Fallback: If current active is a sub-heading inside a parent section
+      if (!matchedSidebarLink && activeEl) {
+        var parentSection = activeEl.closest('section[id]');
+        if (parentSection) {
+          for (var p = 0; p < sidebarLinks.length; p++) {
+            if (sidebarLinks[p].getAttribute('href') === '#' + parentSection.id) {
+              matchedSidebarLink = sidebarLinks[p];
+              break;
+            }
+          }
+        }
+      }
+
+      sidebarLinks.forEach(function(link) {
+        if (link === matchedSidebarLink) {
+          if (!link.classList.contains('active')) {
+            link.classList.add('active');
+            if (typeof link.scrollIntoView === 'function') {
+              link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            }
+          }
         } else {
           link.classList.remove('active');
         }
