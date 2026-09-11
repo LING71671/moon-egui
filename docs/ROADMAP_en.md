@@ -30,9 +30,9 @@
   - [x] **Color & Drawing Primitives** (`src/color/`, `src/draw/`): RGBA `Color` model, hex parsing, `DrawCmd` enum, and `DrawList` command queue;
   - [x] **Input Protocol** (`src/core/input.mbt`): Normalized `RawInput` capturing pointer positions and button masks.
 * **Acceptance Criteria**:
-  - [x] `moon fmt --check` passes and `moon check` reports 0 errors (the reserved key variants of the input
-        protocol are not constructed by any host driver yet, which raises `unused_constructor` warnings;
-        see the interface-freeze item in milestone 5);
+  - [x] `moon fmt --check` passes and `moon check` reports 0 errors / 0 warnings
+        (the key and text events have been driven for real by the CAD demo host
+        since 2026-09-11, so the protocol no longer carries unused variants);
   - [x] `src/math/` and `src/core/` pass with comprehensive test coverage.
 
 ---
