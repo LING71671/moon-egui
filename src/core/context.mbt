@@ -275,14 +275,23 @@ pub fn UIContext::allocate_space(
 ) -> (Id, @math.Rect, Response) {
   self.auto_id_counter = self.auto_id_counter + 1
   let id = self.id_stack.derive_id(self.auto_id_counter.to_string())
-  let rect = @math.Rect::new(self.cursor.x, self.cursor.y, size.x, size.y)
-
   // Layout advancement based on current layout direction
   let current_scope = if self.layout_stack.is_empty() {
     None
   } else {
     Some(self.layout_stack[self.layout_stack.length() - 1])
   }
+
+  let item_y = match current_scope {
+    Some(scope) =>
+      if scope.dir == LeftToRight {
+        scope.start_y
+      } else {
+        self.cursor.y
+      }
+    None => self.cursor.y
+  }
+  let rect = @math.Rect::new(self.cursor.x, item_y, size.x, size.y)
 
   match current_scope {
     Some(scope) =>
@@ -302,7 +311,7 @@ pub fn UIContext::allocate_space(
           }
           self.cursor = @math.Vec2::new(
             self.cursor.x + size.x + self.item_spacing.x,
-            self.cursor.y,
+            scope.start_y,
           )
         }
       }

@@ -97,7 +97,24 @@ let gallery_ctx : @core.UIContext = @core.UIContext::new()
 
 ///|
 pub fn get_gallery_status() -> String {
-  gallery_state.status_text
+  let s = gallery_state.status_text
+  if s.is_empty() {
+    "Ready"
+  } else {
+    s
+  }
+}
+
+///|
+pub fn get_gallery_cursor() -> String {
+  if gallery_ctx.focused_id() != @core.Id::zero() {
+    "text"
+  } else if gallery_ctx.hot_id() != @core.Id::zero() ||
+    gallery_ctx.active_id() != @core.Id::zero() {
+    "pointer"
+  } else {
+    "default"
+  }
 }
 
 // ----------------------------------------------------------------------
@@ -113,16 +130,13 @@ fn draw_button_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(10.0)
 
   ui.horizontal(fn(row) {
-    if row.button_primary_sized(
-        "主要按钮 (Primary)",
-        @math.Vec2::new(130.0, 30.0),
-      ).clicked {
+    if row.button_primary("主要按钮 (Primary)").clicked {
       gallery_state.button_clicks = gallery_state.button_clicks + 1
       gallery_state.status_text = "Primary Button clicked: " +
         gallery_state.button_clicks.to_string()
     }
     row.spacer(10.0)
-    if row.button_sized("次级按钮 (Normal)", @math.Vec2::new(130.0, 30.0)).clicked {
+    if row.button("次级按钮 (Normal)").clicked {
       gallery_state.button_clicks = gallery_state.button_clicks + 1
       gallery_state.status_text = "Normal Button clicked: " +
         gallery_state.button_clicks.to_string()
@@ -151,9 +165,9 @@ fn draw_text_edit_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(10.0)
 
   let (n, r1) = ui.text_edit(
-    "用户名",
-    "请输入开发者姓名",
+    "name_input",
     gallery_state.text_name,
+    "请输入开发者姓名",
   )
   gallery_state.text_name = n
   if r1.has_focus {
@@ -163,9 +177,9 @@ fn draw_text_edit_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(10.0)
 
   let (e, r2) = ui.text_edit(
-    "电子邮箱",
-    "dev@moonbitlang.com",
+    "email_input",
     gallery_state.text_email,
+    "dev@moonbitlang.com",
   )
   gallery_state.text_email = e
   if r2.has_focus {
@@ -523,21 +537,23 @@ fn draw_knob_showcase(ui : @core.UIContext) -> Unit {
   ui.separator()
   ui.spacer(8.0)
   ui.horizontal(fn(row) {
-    if row.button_sized("默认预设", @math.Vec2::new(76.0, 24.0)).clicked {
+    if row.button_sized("默认预设", @math.Vec2::new(84.0, 26.0)).clicked {
       gallery_state.knob_cutoff = 1200.0
       gallery_state.knob_res = 25.0
       gallery_state.knob_pan = 0.0
       gallery_state.knob_drive = 6.0
       gallery_state.status_text = "Preset applied: Default"
     }
-    if row.button_sized("暖调低音", @math.Vec2::new(76.0, 24.0)).clicked {
+    row.spacer(10.0)
+    if row.button_sized("暖调低音", @math.Vec2::new(84.0, 26.0)).clicked {
       gallery_state.knob_cutoff = 380.0
       gallery_state.knob_res = 45.0
       gallery_state.knob_pan = 0.0
       gallery_state.knob_drive = 14.0
       gallery_state.status_text = "Preset applied: Warm Bass"
     }
-    if row.button_sized("亮音主导", @math.Vec2::new(76.0, 24.0)).clicked {
+    row.spacer(10.0)
+    if row.button_sized("亮音主导", @math.Vec2::new(84.0, 26.0)).clicked {
       gallery_state.knob_cutoff = 8500.0
       gallery_state.knob_res = 65.0
       gallery_state.knob_pan = 20.0

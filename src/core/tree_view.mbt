@@ -300,22 +300,27 @@ pub fn UIContext::tree_view(
       )
     }
 
-    // Icon glyph or prefix (if provided)
+    // Icon chiclet badge (if provided)
     let content_x = chevron_x + 18.0
     let mut text_x = content_x
     if !node.icon.is_empty() {
-      let icon_col = if is_row_selected {
-        @color.Color::accent_primary()
+      let icon_size = self.measure_text(node.icon, 10.0)
+      let badge_w = icon_size.x + 8.0
+      let badge_h = 16.0
+      let badge_rect = @math.Rect::new(content_x, row_y + 4.0, badge_w, badge_h)
+      let (badge_bg, badge_col) = if is_row_selected {
+        (@color.Color::accent_soft(), @color.Color::accent_primary())
       } else {
-        @color.Color::text_muted()
+        (@color.Color::bg_subtle(), @color.Color::text_secondary())
       }
+      self.draw_list.add_rect(badge_rect, badge_bg, 3.0)
       self.draw_list.add_text(
-        @math.Vec2::new(content_x, row_y + 5.5),
+        @math.Vec2::new(content_x + 4.0, row_y + 6.0),
         node.icon,
-        11.5,
-        icon_col,
+        10.0,
+        badge_col,
       )
-      text_x = content_x + 14.0
+      text_x = content_x + badge_w + 6.0
     }
 
     // Label text

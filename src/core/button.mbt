@@ -11,32 +11,24 @@ pub fn UIContext::button(
   primary? : Bool = false,
   size? : @math.Vec2 = @math.Vec2::zero(),
 ) -> Response {
-  let char_w = 8.0
-  let text_w = text.length().to_double() * char_w
+  let text_size = self.measure_text(text, 13.0)
+  let text_w = text_size.x
   let has_shortcut = shortcut.length() > 0
   let kbd_w = if has_shortcut {
-    shortcut.length().to_double() * 7.0 + 12.0
+    self.measure_text(shortcut, 11.0).x + 14.0
   } else {
     0.0
   }
 
-  let w = if size.x > 0.0 {
-    size.x
-  } else if has_shortcut {
-    let total_w = text_w + kbd_w + 32.0
-    if total_w > 80.0 {
-      total_w
-    } else {
-      80.0
-    }
+  let min_w = if has_shortcut { 88.0 } else { 68.0 }
+  let pad_w = if has_shortcut { 36.0 } else { 28.0 }
+  let content_w = if has_shortcut {
+    text_w + kbd_w + pad_w
   } else {
-    let total_w = text_w + 28.0
-    if total_w > 64.0 {
-      total_w
-    } else {
-      64.0
-    }
+    text_w + pad_w
   }
+  let auto_w = if content_w > min_w { content_w } else { min_w }
+  let w = if size.x > 0.0 { size.x } else { auto_w }
   let h = if size.y > 0.0 { size.y } else { 32.0 }
 
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
@@ -97,7 +89,7 @@ pub fn UIContext::button(
   if has_shortcut {
     // Left-align text when shortcut badge exists
     let text_x = draw_rect.x + 12.0
-    let text_y = draw_rect.y + (draw_rect.h - 14.0) * 0.5
+    let text_y = draw_rect.y + (draw_rect.h - 13.0) * 0.5
     self.draw_list.add_text(
       @math.Vec2::new(text_x, text_y),
       text,
@@ -107,7 +99,7 @@ pub fn UIContext::button(
 
     // Chiclet Shortcut Badge (synchronously moves down on press)
     let kbd_rect = @math.Rect::new(
-      draw_rect.x + draw_rect.w - kbd_w - 8.0,
+      draw_rect.x + draw_rect.w - kbd_w - 10.0,
       draw_rect.y + (draw_rect.h - 18.0) * 0.5,
       kbd_w,
       18.0,
@@ -131,8 +123,11 @@ pub fn UIContext::button(
       )
     }
     self.draw_list.add_rect(kbd_rect, kbd_bg, 4.0)
+    let sc_w = self.measure_text(shortcut, 11.0).x
+    let kbd_text_x = kbd_rect.x + (kbd_rect.w - sc_w) * 0.5
+    let kbd_text_y = kbd_rect.y + (kbd_rect.h - 11.0) * 0.5
     self.draw_list.add_text(
-      @math.Vec2::new(kbd_rect.x + 6.0, kbd_rect.y + 2.0),
+      @math.Vec2::new(kbd_text_x, kbd_text_y),
       shortcut,
       11.0,
       kbd_col,
@@ -140,7 +135,7 @@ pub fn UIContext::button(
   } else {
     // Center-align text in standard button
     let text_x = draw_rect.x + (draw_rect.w - text_w) * 0.5
-    let text_y = draw_rect.y + (draw_rect.h - 14.0) * 0.5
+    let text_y = draw_rect.y + (draw_rect.h - 13.0) * 0.5
     self.draw_list.add_text(
       @math.Vec2::new(text_x, text_y),
       text,

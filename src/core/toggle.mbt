@@ -8,9 +8,8 @@ pub fn UIContext::checkbox(
 ) -> (Bool, Response) {
   let box_size = 18.0
   let gap = 8.0
-  let char_w = 8.0
-  let text_w = text.length().to_double() * char_w
-  let w = box_size + gap + text_w
+  let text_size = self.measure_text(text, 14.0)
+  let w = box_size + gap + text_size.x
   let h = 22.0
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
   let new_state = if resp.clicked { !checked } else { checked }
@@ -130,9 +129,8 @@ pub fn UIContext::toggle(
   let switch_w = 36.0
   let switch_h = 20.0
   let gap = 8.0
-  let char_w = 8.0
-  let text_w = text.length().to_double() * char_w
-  let total_w = switch_w + gap + text_w
+  let text_size = self.measure_text(text, 14.0)
+  let total_w = switch_w + gap + text_size.x
   let h = 24.0
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
   let new_state = if resp.clicked { !checked } else { checked }

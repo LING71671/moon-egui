@@ -267,8 +267,8 @@
           const color = cmd._3;
           setFill(getColorStr(color));
           setFont(getFontStr(fontSize));
-          ctx.textBaseline = 'top';
-          ctx.fillText(text, pos.x, pos.y);
+          ctx.textBaseline = 'middle';
+          ctx.fillText(text, pos.x, pos.y + fontSize * 0.48);
           break;
         }
         case 6: { // Clip: cmd._0: rect
@@ -324,6 +324,16 @@
 
       ctx.clearRect(0, 0, width, height);
       renderDrawList(dl);
+
+      // Update dynamic canvas cursor based on MoonBit core interaction state
+      if (window.moon_gallery_cursor) {
+        try {
+          const cur = window.moon_gallery_cursor();
+          if (canvas.style.cursor !== cur) {
+            canvas.style.cursor = cur;
+          }
+        } catch (e) {}
+      }
 
       // Update footer response
       const statResp = document.getElementById('statResponse');

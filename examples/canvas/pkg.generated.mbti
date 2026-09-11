@@ -15,6 +15,8 @@ pub fn get_cam_x() -> Double
 
 pub fn get_cam_y() -> Double
 
+pub fn get_gallery_cursor() -> String
+
 pub fn get_gallery_status() -> String
 
 pub fn get_grid_dim() -> Int

@@ -33,8 +33,10 @@ def main():
 
     step_fn = step_match.group(1)
     gallery_step_fn = gallery_step_match.group(1)
-    status_match = re.search(r'function (_M0[A-Za-z0-9_]*18get__gallery__status)\(', content)
+    status_match = re.search(r'function (_M0[A-Za-z0-9_]*get__gallery__status)\(', content)
     status_fn = status_match.group(1) if status_match else "null"
+    cursor_match = re.search(r'function (_M0[A-Za-z0-9_]*get__gallery__cursor)\(', content)
+    cursor_fn = cursor_match.group(1) if cursor_match else "null"
 
     footer = f"""
 if (typeof window !== 'undefined') window.moon_step = {step_fn};
@@ -43,6 +45,8 @@ if (typeof window !== 'undefined') window.moon_gallery_step = {gallery_step_fn};
 if (typeof globalThis !== 'undefined') globalThis.moon_gallery_step = {gallery_step_fn};
 if (typeof window !== 'undefined') window.moon_gallery_status = {status_fn};
 if (typeof globalThis !== 'undefined') globalThis.moon_gallery_status = {status_fn};
+if (typeof window !== 'undefined') window.moon_gallery_cursor = {cursor_fn};
+if (typeof globalThis !== 'undefined') globalThis.moon_gallery_cursor = {cursor_fn};
 """
 
     with open(out_file, "w", encoding="utf-8") as f:

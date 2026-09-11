@@ -8,12 +8,8 @@ pub fn UIContext::slider(
   min : Double,
   max : Double,
 ) -> (Double, Response) {
-  let char_w = 8.0
-  let label_w = if label.length() > 0 {
-    label.length().to_double() * char_w + 12.0
-  } else {
-    0.0
-  }
+  let label_size = self.measure_text(label, 13.0)
+  let label_w = if label.length() > 0 { label_size.x + 12.0 } else { 0.0 }
   let track_w = 120.0
   let val_w = 42.0
   let total_w = label_w + track_w + val_w + 8.0
@@ -55,7 +51,7 @@ pub fn UIContext::slider(
   // Draw Label
   if label.length() > 0 {
     self.draw_list.add_text(
-      @math.Vec2::new(rect.x, rect.y + 4.0),
+      @math.Vec2::new(rect.x, rect.y + (h - 13.0) * 0.5),
       label,
       13.0,
       @color.Color::text_primary(),
@@ -131,7 +127,8 @@ pub fn UIContext::slider(
 
   // Draw Floating HUD Bubble above Thumb when active
   if is_active {
-    let bubble_w = val_text.length().to_double() * 7.5 + 14.0
+    let bubble_size = self.measure_text(val_text, 11.0)
+    let bubble_w = bubble_size.x + 14.0
     let bubble_h = 20.0
     let bubble_x = thumb_cx - bubble_w * 0.5
     let bubble_y = thumb_cy - thumb_r - bubble_h - 4.0
@@ -143,7 +140,10 @@ pub fn UIContext::slider(
       1.0,
       5.0,
     )
-    let bubble_text_pos = @math.Vec2::new(bubble_x + 7.0, bubble_y + 3.5)
+    let bubble_text_pos = @math.Vec2::new(
+      bubble_x + 7.0,
+      bubble_y + (bubble_h - 11.0) * 0.5,
+    )
     self.draw_list.add_text(
       bubble_text_pos,
       val_text,
@@ -154,7 +154,7 @@ pub fn UIContext::slider(
 
   // Draw Value Text in row
   self.draw_list.add_text(
-    @math.Vec2::new(track_rect.x + track_w + 10.0, rect.y + 4.0),
+    @math.Vec2::new(track_rect.x + track_w + 10.0, rect.y + (h - 12.0) * 0.5),
     val_text,
     12.0,
     @color.Color::text_secondary(),
@@ -199,12 +199,8 @@ pub fn UIContext::drag_value(
   min : Double,
   max : Double,
 ) -> (Double, Response) {
-  let char_w = 8.0
-  let label_w = if label.length() > 0 {
-    label.length().to_double() * char_w + 8.0
-  } else {
-    0.0
-  }
+  let label_size = self.measure_text(label, 13.0)
+  let label_w = if label.length() > 0 { label_size.x + 8.0 } else { 0.0 }
   let box_w = 64.0
   let total_w = label_w + box_w
   let h = 22.0
@@ -243,7 +239,7 @@ pub fn UIContext::drag_value(
   // Draw Label
   if label.length() > 0 {
     self.draw_list.add_text(
-      @math.Vec2::new(rect.x, rect.y + 4.0),
+      @math.Vec2::new(rect.x, rect.y + (h - 13.0) * 0.5),
       label,
       13.0,
       @color.Color::text_primary(),
@@ -292,7 +288,8 @@ pub fn UIContext::drag_value(
   let frac = (rounded_int % 10).abs()
   let val_str = whole.to_string() + "." + frac.to_string()
 
-  let text_x = box_rect.x + (box_w - val_str.length().to_double() * 7.0) * 0.5
+  let val_size = self.measure_text(val_str, 12.0)
+  let text_x = box_rect.x + (box_w - val_size.x) * 0.5
   let text_y = box_rect.y + (h - 12.0) * 0.5
   self.draw_list.add_text(
     @math.Vec2::new(text_x, text_y),
