@@ -58,6 +58,9 @@
       'code.resetBtn': '"重置视图"',
       'quickstart.title': '在 MoonBit 项目中快速引入依赖',
       'quickstart.sub': '支持 MoonBit 最新版本包管理规范',
+      'quickstart.copy': '复制',
+      'quickstart.copied': '已复制',
+      'quickstart.copyTitle': '复制安装命令',
 
       /* --- gallery.html --- */
       'gallery.title': 'moon-egui | 组件展厅',
@@ -171,6 +174,9 @@
       'code.resetBtn': '"Reset view"',
       'quickstart.title': 'Add the dependency to your MoonBit project',
       'quickstart.sub': 'Follows the current MoonBit package manager conventions',
+      'quickstart.copy': 'Copy',
+      'quickstart.copied': 'Copied',
+      'quickstart.copyTitle': 'Copy install command',
 
       /* --- gallery.html --- */
       'gallery.title': 'moon-egui | Component Gallery',
