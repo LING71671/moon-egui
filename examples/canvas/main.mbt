@@ -168,6 +168,20 @@ fn main {
     [],
     0,
   )
+  let _ = gallery_step(
+    "knob",
+    0.0,
+    0.0,
+    false,
+    0.0,
+    800.0,
+    600.0,
+    "",
+    [],
+    [],
+    0,
+  )
+  let _ = get_gallery_status()
   println(
     "Benchmark initialized, total commands: \{frame.draw_list.len()}, zoom: \{frame.zoom}",
   )

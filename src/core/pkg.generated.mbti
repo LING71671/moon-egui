@@ -340,6 +340,7 @@ pub fn UIContext::input(Self) -> InputState
 pub fn UIContext::is_collapsing_open(Self, Id, Bool) -> Bool
 pub fn UIContext::is_hovered(Self, @math.Rect) -> Bool
 pub fn UIContext::item_spacing(Self) -> @math.Vec2
+pub fn UIContext::knob(Self, String, String, Double, min_val? : Double, max_val? : Double, step? : Double, default_val? : Double, unit? : String, radius? : Double, bipolar? : Bool) -> (Double, Response)
 pub fn UIContext::label(Self, String) -> Response
 pub fn UIContext::label_colored(Self, String, @color.Color) -> Response
 pub fn UIContext::measure_text(Self, String, Double) -> @math.Vec2

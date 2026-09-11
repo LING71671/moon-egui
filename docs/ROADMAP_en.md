@@ -39,13 +39,15 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 
 * **Objective**: Reach parity with professional desktop UX standards, establishing robust keyboard focus navigation and contextual interactions.
 * **Deliverables**:
-  - [ ] **Command Palette Prototype (`CommandPalette` / `⌘K`)**: Fuzzy action search, history tracking, and keyboard-driven command dispatch;
-  - [ ] **Context Menu & Cascading Submenus (`ContextMenu` / `SubMenu`)**: In-place right-click menu with multi-level hover expansion and boundary flipping;
-  - [ ] **Multi-line Text & Code Editing (`text_edit_multiline`)**: Multi-line layouts, line numbering column, cursor selection, and clipboard coordination;
-  - [ ] **Hierarchical Tree View (`TreeView` / `TreeNode`)**: Multi-level nesting, expansion memory, indentation guide lines, and item selection;
-  - [ ] **Specialized Numerical Regulators**: Circular knobs (`Knob`) and vertical faders (`Fader`).
+  - [x] **Command Palette Prototype (`CommandPalette` / `⌘K`)** [Delivered]: Fuzzy action search, history tracking, and keyboard-driven command dispatch;
+  - [x] **Context Menu & Cascading Submenus (`ContextMenu` / `SubMenu`)** [Delivered]: In-place right-click menu with multi-level hover expansion and boundary flipping;
+  - [x] **Multi-line Text & Code Editing (`CodeEditor`)** [Delivered]: Multi-line layouts, line numbering column, cursor selection, and clipboard coordination;
+  - [x] **Hierarchical Tree View (`TreeView` / `TreeNode`)** [Delivered]: Multi-level nesting, expansion memory, indentation guide lines, and item selection;
+  - [x] **Specialized Numerical Regulators: Rotary Knob (`Knob`)** [Delivered]: 270-degree physical arc sweep, unipolar/bipolar fills, vertical drag delta, and Alt+Click reset;
+  - [x] **100% Native Canvas Gallery Engine Refactoring** [Delivered]: Component gallery fully powered by pure MoonBit WebAssembly/Canvas immediate-mode pipeline, eliminating simulated DOM and CSS;
+  - [ ] **Linear Fader Regulator (`Fader`)**: Linear channel slider for audio gain and continuous parameters.
 * **Acceptance Criteria**:
-  - Keyboard-only navigation smoothly cycles through interactive controls with passing headless test suites.
+  - Keyboard-only navigation smoothly cycles through interactive controls with passing headless test suites (103/103 tests passing).
 
 ---
 

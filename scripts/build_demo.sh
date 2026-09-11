@@ -28,8 +28,17 @@ STEP=$(grep -oE 'function (_M0[A-Za-z0-9_]*4step)\(' "$BUILD" |
   head -n 1 |
   sed -e 's/^function //' -e 's/($//')
 
+GALLERY_STEP=$(grep -oE 'function (_M0[A-Za-z0-9_]*13gallery__step)\(' "$BUILD" |
+  head -n 1 |
+  sed -e 's/^function //' -e 's/($//')
+
 if [ -z "$STEP" ]; then
   echo "error: could not locate the canvas.step entry point in the build output" >&2
+  exit 1
+fi
+
+if [ -z "$GALLERY_STEP" ]; then
+  echo "error: could not locate the canvas.gallery_step entry point in the build output" >&2
   exit 1
 fi
 
@@ -38,6 +47,8 @@ cp "$BUILD" "$OUT"
   echo
   echo "if (typeof window !== 'undefined') window.moon_step = $STEP;"
   echo "if (typeof globalThis !== 'undefined') globalThis.moon_step = $STEP;"
+  echo "if (typeof window !== 'undefined') window.moon_gallery_step = $GALLERY_STEP;"
+  echo "if (typeof globalThis !== 'undefined') globalThis.moon_gallery_step = $GALLERY_STEP;"
 } >> "$OUT"
 
-echo "wrote $OUT (entry point: $STEP)"
+echo "wrote $OUT (entry points: $STEP, $GALLERY_STEP)"

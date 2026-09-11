@@ -3,13 +3,19 @@ package "LING71671/moon-egui/examples/canvas"
 
 import {
   "LING71671/moon-egui/src/color",
+  "LING71671/moon-egui/src/core",
   "LING71671/moon-egui/src/draw",
+  "LING71671/moon-egui/src/math",
 }
 
 // Values
+pub fn gallery_step(String, Double, Double, Bool, Double, Double, Double, String, Array[String], Array[String], Int) -> @draw.DrawList
+
 pub fn get_cam_x() -> Double
 
 pub fn get_cam_y() -> Double
+
+pub fn get_gallery_status() -> String
 
 pub fn get_grid_dim() -> Int
 
@@ -72,6 +78,45 @@ pub struct FrameOutput {
   selected_id : Int
   show_studio : Bool
   is_vector : Bool
+}
+
+pub struct GalleryState {
+  mut button_clicks : Int
+  mut checkbox_gpu : Bool
+  mut checkbox_grid : Bool
+  mut checkbox_dark_contrast : Bool
+  mut checkbox_antialiasing : Bool
+  mut toggle_minimal : Bool
+  mut toggle_autosave : Bool
+  mut toggle_retina : Bool
+  mut toggle_haptics : Bool
+  mut radio_quality : Int
+  mut slider_zoom : Double
+  mut slider_opacity : Double
+  mut drag_x : Double
+  mut drag_y : Double
+  mut drag_scale : Double
+  mut knob_cutoff : Double
+  mut knob_res : Double
+  mut knob_pan : Double
+  mut knob_drive : Double
+  mut combo_format : Int
+  mut combo_color : Int
+  mut color_idx : Int
+  mut progress_val : Double
+  mut tree_selected : String?
+  mut tree_expanded : Array[String]
+  mut tab_selected : Int
+  mut text_name : String
+  mut text_email : String
+  mut code_buffer : String
+  toasts : Array[@core.Toast]
+  mut cmd_open : Bool
+  mut cmd_query : String
+  mut cmd_idx : Int
+  mut ctx_menu_open : Bool
+  mut ctx_menu_pos : @math.Vec2
+  mut status_text : String
 }
 
 // Type aliases

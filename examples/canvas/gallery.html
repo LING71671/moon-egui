@@ -108,7 +108,11 @@
           </button>
           <button class="comp-btn" data-id="drag_value">
             <span data-i18n="comp.drag_value.title">DragValue 数字微调</span>
-            <span class="comp-subtag" data-i18n="comp.drag_value.tag">拖动</span>
+            <span class="comp-subtag" data-i18n="comp.drag_value.tag">拖拽</span>
+          </button>
+          <button class="comp-btn" data-id="knob">
+            <span data-i18n="comp.knob.title">Knob 旋钮调节器</span>
+            <span class="comp-subtag" data-i18n="comp.knob.tag">旋钮</span>
           </button>
           <button class="comp-btn" data-id="combo_box">
             <span data-i18n="comp.combo_box.title">ComboBox 下拉框</span>
@@ -199,7 +203,7 @@
           <!-- Layer 2: Live Component UI (Foreground Curtain Layer) -->
           <div class="ui-curtain-layer" id="uiCurtainLayer">
             <div class="sandbox-box" id="sandboxBox">
-              <!-- Injected via JavaScript -->
+              <canvas id="gallery-canvas" tabindex="0"></canvas>
             </div>
           </div>
 
@@ -243,7 +247,10 @@
   <!-- Toast Message -->
   <div class="toast-msg" id="toastMsg">已成功复制代码到剪贴板！</div>
 
+  <!-- MoonBit Native Wasm Host & Gallery Runner -->
+  <script src="canvas.js"></script>
   <script src="gallery-data.js"></script>
+  <script src="gallery_runner.js"></script>
   <script src="gallery.js"></script>
 </body>
 </html>

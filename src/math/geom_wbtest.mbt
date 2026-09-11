@@ -109,3 +109,34 @@ test "rect intersections and scissor clipping" {
   assert_eq(shifted.w, 100.0)
   assert_eq(shifted.h, 100.0)
 }
+
+///|
+test "math: trigonometry functions and polar coordinates" {
+  let eps = 0.0001
+
+  // sin tests
+  assert_true((sin(0.0) - 0.0).abs() < eps)
+  assert_true((sin(pi * 0.5) - 1.0).abs() < eps)
+  assert_true((sin(pi) - 0.0).abs() < eps)
+  assert_true((sin(pi * 1.5) - -1.0).abs() < eps)
+  assert_true((sin(pi * 2.0) - 0.0).abs() < eps)
+
+  // cos tests
+  assert_true((cos(0.0) - 1.0).abs() < eps)
+  assert_true((cos(pi * 0.5) - 0.0).abs() < eps)
+  assert_true((cos(pi) - -1.0).abs() < eps)
+  assert_true((cos(pi * 2.0) - 1.0).abs() < eps)
+
+  // Periodic wrapping
+  assert_true((sin(pi * 4.5) - 1.0).abs() < eps)
+  assert_true((cos(pi * 4.0) - 1.0).abs() < eps)
+
+  // from_polar
+  let p1 = Vec2::from_polar(10.0, 0.0)
+  assert_true((p1.x - 10.0).abs() < eps)
+  assert_true((p1.y - 0.0).abs() < eps)
+
+  let p2 = Vec2::from_polar(10.0, pi * 0.5)
+  assert_true((p2.x - 0.0).abs() < eps)
+  assert_true((p2.y - 10.0).abs() < eps)
+}

@@ -6,6 +6,11 @@ import {
 }
 
 // Values
+pub fn cos(Double) -> Double
+
+pub let pi : Double
+
+pub fn sin(Double) -> Double
 
 // Errors
 
@@ -35,6 +40,7 @@ pub struct Vec2 {
 } derive(Default, Eq, @debug.Debug)
 pub fn Vec2::add(Self, Self) -> Self
 pub fn Vec2::dot(Self, Self) -> Double
+pub fn Vec2::from_polar(Double, Double) -> Self
 pub fn Vec2::length_sq(Self) -> Double
 pub fn Vec2::lerp(Self, Self, Double) -> Self
 pub fn Vec2::max(Self, Self) -> Self

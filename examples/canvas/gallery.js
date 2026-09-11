@@ -44,6 +44,10 @@ const appState = {
       } else if (pct > 90) {
         document.getElementById('btnPresetCode').classList.add('active');
       }
+
+      if (window.resizeGalleryCanvas) {
+        window.resizeGalleryCanvas();
+      }
     }
 
     // Dragging Logic
@@ -119,18 +123,13 @@ const appState = {
       activeCompSignature.textContent = comp.signature;
       codeSnippetTarget.innerHTML = highlightMoonBit(L(comp.code));
 
-      if (id === 'window') {
-        sandboxBox.className = 'sandbox-box-window is-animating';
-      } else {
-        sandboxBox.className = 'sandbox-box is-animating';
-      }
-
       codeSnippetTarget.classList.remove('is-animating');
       void codeSnippetTarget.offsetWidth; // trigger reflow
       codeSnippetTarget.classList.add('is-animating');
 
-      if (!appState.compStates[id]) appState.compStates[id] = {};
-      comp.renderUI(sandboxBox, appState.compStates[id]);
+      if (window.setGalleryActiveComp) {
+        window.setGalleryActiveComp(id);
+      }
 
       document.querySelectorAll('.comp-btn').forEach(btn => {
         if (btn.getAttribute('data-id') === id) {

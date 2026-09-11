@@ -174,3 +174,40 @@ pub fn Rect::shrink(self : Rect, margin : Double) -> Rect {
 pub fn Rect::translate(self : Rect, offset : Vec2) -> Rect {
   { x: self.x + offset.x, y: self.y + offset.y, w: self.w, h: self.h, }
 }
+
+///|
+pub let pi : Double = 3.141592653589793
+
+///|
+pub fn sin(rad : Double) -> Double {
+  let two_pi = 6.283185307179586
+  let mut x = rad % two_pi
+  if x > pi {
+    x = x - two_pi
+  } else if x < -pi {
+    x = x + two_pi
+  }
+  let half_pi = 1.5707963267948966
+  if x > half_pi {
+    x = pi - x
+  } else if x < -half_pi {
+    x = -pi - x
+  }
+  let x2 = x * x
+  let x3 = x * x2
+  let x5 = x3 * x2
+  let x7 = x5 * x2
+  let x9 = x7 * x2
+  let x11 = x9 * x2
+  x - x3 / 6.0 + x5 / 120.0 - x7 / 5040.0 + x9 / 362880.0 - x11 / 39916800.0
+}
+
+///|
+pub fn cos(rad : Double) -> Double {
+  sin(rad + 1.5707963267948966)
+}
+
+///|
+pub fn Vec2::from_polar(radius : Double, angle_rad : Double) -> Vec2 {
+  { x: radius * cos(angle_rad), y: radius * sin(angle_rad), }
+}
