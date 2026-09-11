@@ -23,6 +23,8 @@
     zh: {
       /* --- shared --- */
       'nav.gallery': '组件展厅',
+      'nav.docs': '文档中心',
+      'nav.wiki': '技术 Wiki',
       'nav.canvas': '画板演示',
       'nav.architecture': '设计架构',
       'nav.code': '代码范例',
@@ -147,12 +149,39 @@
       'bm.ready': '就绪',
       'bm.hover': '悬停',
       'bm.dragging': '拖拽中',
-      'bm.nodes': '逻辑节点'
+      'bm.nodes': '逻辑节点',
+
+      /* --- docs.html --- */
+      'docs.pageTitle': 'moon-egui | 官方开发者手册与 API 文档',
+      'docs.searchPh': '搜索文档与 API (/) ...',
+      'docs.mainTitle': 'Moon-EGUI 开发者指南与 API 手册',
+      'docs.mainDesc': 'MoonBit 原生即时模式 GUI 引擎完全开发手册。包含 27 个工业级交互控件、流式排版布局、几何模型与宿主桥接协议规范。',
+      'docs.grpGettingStarted': '快速起步',
+      'docs.grpCoreMath': '核心数学与响应模型',
+      'docs.grpBasicInputs': '基础输入组件',
+      'docs.grpValues': '选择与数值调节',
+      'docs.grpFeedback': '反馈与展示',
+      'docs.grpContainers': '容器与排版系统',
+      'docs.grpOverlays': '全局菜单与命令浮层',
+      'docs.grpTheming': '样式主题与高分屏',
+
+      /* --- wiki.html --- */
+      'wiki.pageTitle': 'moon-egui | 系统架构与技术 Wiki',
+      'wiki.searchPh': '检索技术 Wiki (/) ...',
+      'wiki.mainTitle': 'Moon-EGUI 架构设计与技术白皮书',
+      'wiki.mainDesc': '全面解析即时模式渲染原理、5 阶段确定性帧管线、跨平台 DrawCmd 图元流协议、百万级 CAD 视口裁剪以及全套自动化无头测试矩阵。',
+      'wiki.grpTheory': '设计哲学与范式',
+      'wiki.grpPipeline': '内核流水线与协议',
+      'wiki.grpBridge': 'Wasm 宿主互操作',
+      'wiki.grpPerf': '极限性能工程',
+      'wiki.grpQuality': '工程质量与贡献指南'
     },
 
     en: {
       /* --- shared --- */
       'nav.gallery': 'Components',
+      'nav.docs': 'Documentation',
+      'nav.wiki': 'Architecture Wiki',
       'nav.canvas': 'Live Canvas',
       'nav.architecture': 'Architecture',
       'nav.code': 'Code Examples',
@@ -276,8 +305,32 @@
       'bm.state': 'State:',
       'bm.ready': 'Ready',
       'bm.hover': 'Hover',
-      'bm.dragging': 'Dragging',
-      'bm.nodes': 'nodes'
+      'bm.nodes': 'nodes',
+
+      /* --- docs.html --- */
+      'docs.pageTitle': 'moon-egui | Developer Manual & API Reference',
+      'docs.searchPh': 'Search docs and API (/) ...',
+      'docs.mainTitle': 'Moon-EGUI Developer Manual & API Reference',
+      'docs.mainDesc': 'Complete developer guide for the MoonBit native immediate-mode GUI engine. Comprehensive coverage of 27 widgets, streaming layout, geometry primitives, and host bridge protocols.',
+      'docs.grpGettingStarted': 'Getting Started',
+      'docs.grpCoreMath': 'Core Math & Response',
+      'docs.grpBasicInputs': 'Basic Inputs',
+      'docs.grpValues': 'Values & Selection',
+      'docs.grpFeedback': 'Feedback & Display',
+      'docs.grpContainers': 'Containers & Layout',
+      'docs.grpOverlays': 'Menus & Overlays',
+      'docs.grpTheming': 'Theming & Retina DPI',
+
+      /* --- wiki.html --- */
+      'wiki.pageTitle': 'moon-egui | System Architecture & Technical Wiki',
+      'wiki.searchPh': 'Search technical wiki (/) ...',
+      'wiki.mainTitle': 'Moon-EGUI Architecture & Engineering White Paper',
+      'wiki.mainDesc': 'In-depth exploration of immediate-mode rendering, 5-stage deterministic frame lifecycle, platform-agnostic DrawCmd vector protocol, million-cell viewport culling, and automated test harness.',
+      'wiki.grpTheory': 'Design Philosophy',
+      'wiki.grpPipeline': 'Frame Lifecycle & Protocol',
+      'wiki.grpBridge': 'Wasm & Host Interop',
+      'wiki.grpPerf': 'Extreme Performance',
+      'wiki.grpQuality': 'Quality & Contributing'
     }
   };
 

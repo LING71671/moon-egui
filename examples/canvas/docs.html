@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>moon-egui | 官方开发者手册与 API 文档</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="docs.css">
+  <link rel="stylesheet" href="lang.css">
+  <script src="i18n.js"></script>
+</head>
+<body data-i18n-title="docs.pageTitle">
+
+  <!-- Sticky Minimalist Navigation Bar -->
+  <nav class="site-nav">
+    <div class="container nav-inner">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle navigation">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <a href="index.html" class="brand-link">
+          <img src="logo.png" alt="moon-egui logo" class="brand-logo" />
+          <span>moon-egui</span>
+          <span class="brand-tag">v0.1.1</span>
+        </a>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="gallery.html" class="nav-link" data-i18n="nav.gallery">组件展厅</a></li>
+        <li><a href="docs.html" class="nav-link active" data-i18n="nav.docs">文档中心</a></li>
+        <li><a href="wiki.html" class="nav-link" data-i18n="nav.wiki">技术 Wiki</a></li>
+        <li><a href="index.html#demo" class="nav-link" data-i18n="nav.canvas">画板演示</a></li>
+        <li><a href="https://github.com/ling71671/moon-egui" target="_blank" rel="noreferrer" class="nav-link" data-i18n="nav.github">GitHub 源码</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div data-lang-switch></div>
+        <a href="benchmark.html" class="nav-cta" data-i18n="nav.openCanvas">进入画板 →</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Docs Layout Container -->
+  <div class="container docs-layout">
+
+    <!-- Left Sidebar Navigation -->
+    <aside class="docs-sidebar">
+      <div class="sidebar-search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="sidebarSearch" class="sidebar-search" placeholder="搜索文档与 API (/) ..." data-i18n-attrs="placeholder:docs.searchPh" />
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">
+          <span data-i18n="docs.grpGettingStarted">快速起步</span>
+          <span class="sidebar-group-count">4</span>
+        </div>
+        <ul class="sidebar-nav">
+          <li><a href="#quickstart" class="sidebar-link active"><span>快速安装引入</span> <span class="sidebar-tag">Guide</span></a></li>
+          <li><a href="#hello-world" class="sidebar-link"><span>极简 Hello World</span> <span class="sidebar-tag">Sample</span></a></li>
+          <li><a href="#host-loop" class="sidebar-link"><span>宿主渲染主循环</span> <span class="sidebar-tag">Core</span></a></li>
+          <li><a href="#wasm-bundle" class="sidebar-link"><span>Wasm 与 JS 产物构建</span> <span class="sidebar-tag">Build</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">
+          <span data-i18n="docs.grpCoreMath">核心数学与响应模型</span>
+          <span class="sidebar-group-count">4</span>
+        </div>
+        <ul class="sidebar-nav">
+          <li><a href="#math-vec2" class="sidebar-link"><span>Vec2 二维向量</span> <span class="sidebar-tag">Math</span></a></li>
+          <li><a href="#math-rect" class="sidebar-link"><span>Rect 轴对齐矩形</span> <span class="sidebar-tag">AABB</span></a></li>
+          <li><a href="#math-color" class="sidebar-link"><span>Color RGBA 颜色</span> <span class="sidebar-tag">Color</span></a></li>
+          <li><a href="#core-response" class="sidebar-link"><span>Response 交互契约</span> <span class="sidebar-tag">Event</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">
+          <span data-i18n="docs.grpBasicInputs">基础输入组件</span>
+          <span class="sidebar-group-count">4</span>
+        </div>
+        <ul class="sidebar-nav">
+          <li><a href="#widget-button" class="sidebar-link"><span>Button 按钮套件</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-text-edit" class="sidebar-link"><span>TextEdit 文本输入</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-code-editor" class="sidebar-link"><span>CodeEditor 代码编辑器</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-labels" class="sidebar-link"><span>Label & Heading 文本</span> <span class="sidebar-tag">Widget</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">
+          <span data-i18n="docs.grpValues">选择与数值调节</span>
+          <span class="sidebar-group-count">6</span>
+        </div>
+        <ul class="sidebar-nav">
+          <li><a href="#widget-slider" class="sidebar-link"><span>Slider 滑动条</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-drag-value" class="sidebar-link"><span>DragValue 数字微调</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-knob" class="sidebar-link"><span>Knob 360°旋钮</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-checkbox-toggle" class="sidebar-link"><span>Checkbox & Toggle 开关</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-radio" class="sidebar-link"><span>Radio 单选按钮组</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-combo-box" class="sidebar-link"><span>ComboBox 下拉框</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-color-button" class="sidebar-link"><span>ColorButton 调色板</span> <span class="sidebar-tag">Widget</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">
+          <span data-i18n="docs.grpFeedback">反馈与展示</span>
+          <span class="sidebar-group-count">6</span>
+        </div>
+        <ul class="sidebar-nav">
+          <li><a href="#widget-progress" class="sidebar-link"><span>ProgressBar 进度条</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-spinner" class="sidebar-link"><span>Spinner 加载动效</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-badge-avatar" class="sidebar-link"><span>Badge & Avatar 头像徽章</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-tooltip" class="sidebar-link"><span>Tooltip 悬浮气泡</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-toast" class="sidebar-link"><span>Toast 瞬态通知</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-separator" class="sidebar-link"><span>Separator 分割线</span> <span class="sidebar-tag">Layout</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">
+          <span data-i18n="docs.grpContainers">容器与排版系统</span>
+          <span class="sidebar-group-count">5</span>
+        </div>
+        <ul class="sidebar-nav">
+          <li><a href="#widget-window" class="sidebar-link"><span>Window 浮动视窗</span> <span class="sidebar-tag">Layout</span></a></li>
+          <li><a href="#widget-collapsing" class="sidebar-link"><span>CollapsingHeader 折叠面板</span> <span class="sidebar-tag">Layout</span></a></li>
+          <li><a href="#widget-tab-bar" class="sidebar-link"><span>TabBar 标签栏</span> <span class="sidebar-tag">Layout</span></a></li>
+          <li><a href="#widget-tree-view" class="sidebar-link"><span>TreeView 树形视图</span> <span class="sidebar-tag">Layout</span></a></li>
+          <li><a href="#widget-scroll-area" class="sidebar-link"><span>ScrollArea 滚动区域</span> <span class="sidebar-tag">Layout</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">
+          <span data-i18n="docs.grpOverlays">全局菜单与命令浮层</span>
+          <span class="sidebar-group-count">3</span>
+        </div>
+        <ul class="sidebar-nav">
+          <li><a href="#widget-menu-bar" class="sidebar-link"><span>MenuBar 桌面应用菜单</span> <span class="sidebar-tag">Overlay</span></a></li>
+          <li><a href="#widget-context-menu" class="sidebar-link"><span>ContextMenu 右键菜单</span> <span class="sidebar-tag">Overlay</span></a></li>
+          <li><a href="#widget-command-palette" class="sidebar-link"><span>CommandPalette 命令面板</span> <span class="sidebar-tag">Overlay</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">
+          <span data-i18n="docs.grpTheming">样式主题与高分屏</span>
+          <span class="sidebar-group-count">2</span>
+        </div>
+        <ul class="sidebar-nav">
+          <li><a href="#theming-tokens" class="sidebar-link"><span>Studio Light 设计令牌</span> <span class="sidebar-tag">Theme</span></a></li>
+          <li><a href="#retina-dpi" class="sidebar-link"><span>Retina 与 DPI 物理对齐</span> <span class="sidebar-tag">DPI</span></a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content Body -->
+    <main class="docs-main">
+      <div class="breadcrumb">
+        <a href="index.html">首页</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="docs.html" data-i18n="nav.docs">文档中心</a>
+        <span class="breadcrumb-sep">/</span>
+        <span style="color: var(--text-main); font-weight: 500;">API 规范与参考手册</span>
+      </div>
+
+      <header class="page-header">
+        <span class="page-badge">MOON-EGUI API REFERENCE · v0.1.1</span>
+        <h1 class="page-title" data-i18n="docs.mainTitle">Moon-EGUI 开发者指南与 API 手册</h1>
+        <p class="page-desc" data-i18n="docs.mainDesc">
+          MoonBit 原生即时模式 GUI 引擎完全开发手册。包含 27 个工业级交互控件、流式排版布局、几何模型与宿主桥接协议规范。
+        </p>
+      </header>
+
+      <article class="docs-content">
+
+        <!-- Quickstart -->
+        <section id="quickstart">
+          <h2>1. 快速安装与配置 <a href="#quickstart" class="heading-anchor">#</a></h2>
+          <p>
+            <code>moon-egui</code> 采用纯 MoonBit 编写，无任何 C 语言或浏览器 DOM 依赖。可直接通过官方包管理器引入并在 WebAssembly / Canvas 2D 或桌面平台运行。
+          </p>
+
+          <div class="code-wrapper">
+            <div class="code-header">
+              <span class="code-lang-tag">Terminal</span>
+              <button class="code-copy-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copy</span>
+              </button>
+            </div>
+            <pre><code>moon add LING71671/moon-egui</code></pre>
+          </div>
+
+          <p>在你的模块 <code>moon.pkg.json</code> 中声明对 <code>moon-egui/core</code> 的导入：</p>
+
+          <div class="code-wrapper">
+            <div class="code-header">
+              <span class="code-lang-tag">JSON · moon.pkg.json</span>
+              <button class="code-copy-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copy</span>
+              </button>
+            </div>
+            <pre><code>{
+  <span class="syn-kw">"import"</span>: [
+    <span class="syn-str">"LING71671/moon-egui/core"</span>
+  ]
+}</code></pre>
+          </div>
+
+          <div class="callout callout-tip">
+            <div class="callout-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              即时模式核心概念
+            </div>
+            在即时模式中，界面不维护持久化的控件树。每帧当 <code>ui.button(...)</code> 被调用时，即刻完成布局度量、鼠标碰撞检测、绘制指令排队，并直接返回 <code>Response</code> 响应结构。
+          </div>
+        </section>
+
+        <!-- Hello World -->
+        <section id="hello-world">
+          <h2>2. 极简 Hello World 示范 <a href="#hello-world" class="heading-anchor">#</a></h2>
+          <p>仅需数行声明式代码，即可在指定视窗内运行带状态记忆的计数器与滑块：</p>
+
+          <div class="code-wrapper">
+            <div class="code-header">
+              <span class="code-lang-tag">MoonBit</span>
+              <button class="code-copy-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copy</span>
+              </button>
+            </div>
+            <pre><code><span class="syn-kw">struct</span> <span class="syn-type">AppState</span> {
+  <span class="syn-kw">mut</span> count : <span class="syn-type">Int</span>
+  <span class="syn-kw">mut</span> speed : <span class="syn-type">Double</span>
+}
+
+<span class="syn-kw">pub fn</span> <span class="syn-fn">render_app</span>(ui : @core.<span class="syn-type">UIContext</span>, state : <span class="syn-type">AppState</span>) -> <span class="syn-type">Unit</span> {
+  ui.window(<span class="syn-str">"快速控制台"</span>, @core.<span class="syn-type">Vec2</span>::new(<span class="syn-num">40.0</span>, <span class="syn-num">40.0</span>), @core.<span class="syn-type">Vec2</span>::new(<span class="syn-num">300.0</span>, <span class="syn-num">240.0</span>), <span class="syn-kw">fn</span>(win) {
+    win.label(<span class="syn-str">"当前点击次数: "</span> + state.count.to_string())
+    <span class="syn-kw">if</span> win.button_primary(<span class="syn-str">"点击增加 (+1)"</span>).clicked() {
+      state.count += <span class="syn-num">1</span>
+    }
+    win.separator()
+    <span class="syn-kw">let</span> (new_val, _) = win.slider(<span class="syn-str">"渲染速度"</span>, state.speed, <span class="syn-num">0.0</span>, <span class="syn-num">100.0</span>)
+    state.speed = new_val
+  })
+}</code></pre>
+          </div>
+        </section>
+
+        <!-- Host Loop -->
+        <section id="host-loop">
+          <h2>3. 宿主渲染循环接入 <a href="#host-loop" class="heading-anchor">#</a></h2>
+          <p>
+            引擎为平台无关架构，每帧通过 <code>RawInput</code> 传入当前帧时间、指针坐标、滚轮与修饰键，并在求值后输出 <code>DrawList</code> 矢量绘制图元供宿主执行渲染：
+          </p>
+
+          <div class="code-wrapper">
+            <div class="code-header">
+              <span class="code-lang-tag">JavaScript / Browser Host</span>
+              <button class="code-copy-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copy</span>
+              </button>
+            </div>
+            <pre><code><span class="syn-kw">function</span> <span class="syn-fn">frame</span>(timestamp) {
+  <span class="syn-cmt">// 1. 执行 MoonBit Wasm 导出的帧函数</span>
+  <span class="syn-kw">const</span> drawList = window.<span class="syn-fn">moon_step</span>(mouseX, mouseY, isMouseDown, deltaTime);
+
+  <span class="syn-cmt">// 2. 在 Canvas 2D 上批量分发 DrawCmd</span>
+  <span class="syn-fn">dispatchDrawCommands</span>(ctx, drawList);
+
+  <span class="syn-cmt">// 3. 驱动下一帧渲染</span>
+  requestAnimationFrame(frame);
+}</code></pre>
+          </div>
+        </section>
+
+        <!-- Core Math -->
+        <section id="core-math">
+          <h2>4. 核心数学与几何模型 <a href="#core-math" class="heading-anchor">#</a></h2>
+
+          <h3 id="math-vec2">4.1 2D 向量与坐标点 (`Vec2`)</h3>
+          <p>二维单精度/双精度坐标容器，提供完整的向量平移与欧式距离计算：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">pub struct</span> <span class="syn-type">Vec2</span> { x : <span class="syn-type">Double</span>; y : <span class="syn-type">Double</span> }
+
+<span class="syn-kw">fn</span> <span class="syn-type">Vec2</span>::<span class="syn-fn">new</span>(x : <span class="syn-type">Double</span>, y : <span class="syn-type">Double</span>) -> <span class="syn-type">Vec2</span>
+<span class="syn-kw">fn</span> <span class="syn-type">Vec2</span>::<span class="syn-fn">zero</span>() -> <span class="syn-type">Vec2</span>
+<span class="syn-kw">fn</span> <span class="syn-type">Vec2</span>::<span class="syn-fn">add</span>(<span class="syn-kw">self</span> : <span class="syn-type">Vec2</span>, other : <span class="syn-type">Vec2</span>) -> <span class="syn-type">Vec2</span>
+<span class="syn-kw">fn</span> <span class="syn-type">Vec2</span>::<span class="syn-fn">sub</span>(<span class="syn-kw">self</span> : <span class="syn-type">Vec2</span>, other : <span class="syn-type">Vec2</span>) -> <span class="syn-type">Vec2</span>
+<span class="syn-kw">fn</span> <span class="syn-type">Vec2</span>::<span class="syn-fn">scale</span>(<span class="syn-kw">self</span> : <span class="syn-type">Vec2</span>, factor : <span class="syn-type">Double</span>) -> <span class="syn-type">Vec2</span>
+<span class="syn-kw">fn</span> <span class="syn-type">Vec2</span>::<span class="syn-fn">dist</span>(<span class="syn-kw">self</span> : <span class="syn-type">Vec2</span>, other : <span class="syn-type">Vec2</span>) -> <span class="syn-type">Double</span></code></pre>
+          </div>
+
+          <h3 id="math-rect">4.2 轴对齐外接矩形 (`Rect`)</h3>
+          <p>所有控件尺寸与命中判定（Hit-testing）的基础数据结构：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">pub struct</span> <span class="syn-type">Rect</span> { x : <span class="syn-type">Double</span>; y : <span class="syn-type">Double</span>; w : <span class="syn-type">Double</span>; h : <span class="syn-type">Double</span> }
+
+<span class="syn-kw">fn</span> <span class="syn-type">Rect</span>::<span class="syn-fn">new</span>(x : <span class="syn-type">Double</span>, y : <span class="syn-type">Double</span>, w : <span class="syn-type">Double</span>, h : <span class="syn-type">Double</span>) -> <span class="syn-type">Rect</span>
+<span class="syn-kw">fn</span> <span class="syn-type">Rect</span>::<span class="syn-fn">contains</span>(<span class="syn-kw">self</span> : <span class="syn-type">Rect</span>, pt : <span class="syn-type">Vec2</span>) -> <span class="syn-type">Bool</span>
+<span class="syn-kw">fn</span> <span class="syn-type">Rect</span>::<span class="syn-fn">intersects</span>(<span class="syn-kw">self</span> : <span class="syn-type">Rect</span>, other : <span class="syn-type">Rect</span>) -> <span class="syn-type">Bool</span>
+<span class="syn-kw">fn</span> <span class="syn-type">Rect</span>::<span class="syn-fn">intersect</span>(<span class="syn-kw">self</span> : <span class="syn-type">Rect</span>, other : <span class="syn-type">Rect</span>) -> <span class="syn-type">Rect</span>
+<span class="syn-kw">fn</span> <span class="syn-type">Rect</span>::<span class="syn-fn">expand</span>(<span class="syn-kw">self</span> : <span class="syn-type">Rect</span>, margin : <span class="syn-type">Double</span>) -> <span class="syn-type">Rect</span>
+<span class="syn-kw">fn</span> <span class="syn-type">Rect</span>::<span class="syn-fn">shrink</span>(<span class="syn-kw">self</span> : <span class="syn-type">Rect</span>, margin : <span class="syn-type">Double</span>) -> <span class="syn-type">Rect</span></code></pre>
+          </div>
+
+          <h3 id="math-color">4.3 颜色模型 (`Color` - RGBA)</h3>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">pub struct</span> <span class="syn-type">Color</span> { r : <span class="syn-type">Int</span>; g : <span class="syn-type">Int</span>; b : <span class="syn-type">Int</span>; a : <span class="syn-type">Int</span> }
+
+<span class="syn-kw">fn</span> <span class="syn-type">Color</span>::<span class="syn-fn">rgb</span>(r : <span class="syn-type">Int</span>, g : <span class="syn-type">Int</span>, b : <span class="syn-type">Int</span>) -> <span class="syn-type">Color</span>
+<span class="syn-kw">fn</span> <span class="syn-type">Color</span>::<span class="syn-fn">rgba</span>(r : <span class="syn-type">Int</span>, g : <span class="syn-type">Int</span>, b : <span class="syn-type">Int</span>, a : <span class="syn-type">Int</span>) -> <span class="syn-type">Color</span>
+<span class="syn-kw">fn</span> <span class="syn-type">Color</span>::<span class="syn-fn">hex</span>(hex_code : <span class="syn-type">Int</span>) -> <span class="syn-type">Color</span>
+<span class="syn-kw">fn</span> <span class="syn-type">Color</span>::<span class="syn-fn">with_alpha</span>(<span class="syn-kw">self</span> : <span class="syn-type">Color</span>, alpha : <span class="syn-type">Int</span>) -> <span class="syn-type">Color</span></code></pre>
+          </div>
+
+          <h3 id="core-response">4.4 交互契约结构体 (`Response`)</h3>
+          <p>任何可交互控件在执行后即刻产生一个富状态快照：</p>
+          <div class="table-container">
+            <table class="props-table">
+              <thead>
+                <tr>
+                  <th>方法 / 字段</th>
+                  <th>类型</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>clicked()</code></td>
+                  <td><span class="type-pill">Bool</span></td>
+                  <td>当前帧指针在控件外接矩形内完成按下并释放（完整点击）</td>
+                </tr>
+                <tr>
+                  <td><code>hovered()</code></td>
+                  <td><span class="type-pill">Bool</span></td>
+                  <td>当前指针处于该控件外接矩形内部，且未被前台遮罩遮挡</td>
+                </tr>
+                <tr>
+                  <td><code>dragged()</code></td>
+                  <td><span class="type-pill">Bool</span></td>
+                  <td>当前正处于按住并移动拖拽状态中</td>
+                </tr>
+                <tr>
+                  <td><code>double_clicked()</code></td>
+                  <td><span class="type-pill">Bool</span></td>
+                  <td>在双击时间窗口内完成连续两次点击命中</td>
+                </tr>
+                <tr>
+                  <td><code>rect</code></td>
+                  <td><span class="type-pill">Rect</span></td>
+                  <td>该控件在当帧布局中锁定的全局外接矩形范围</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Basic Inputs -->
+        <section id="basic-inputs">
+          <h2>5. 基础输入组件套件 <a href="#basic-inputs" class="heading-anchor">#</a></h2>
+
+          <h3 id="widget-button">5.1 Button 按钮套件</h3>
+          <p>提供普通下压按钮、主行动点 CTA 强调按钮、小尺寸按钮以及快捷键集成按钮：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-cmt">// 1. 标准按钮</span>
+<span class="syn-kw">if</span> ui.button(<span class="syn-str">"确定保存"</span>).clicked() { ... }
+
+<span class="syn-cmt">// 2. 主行动点高亮按钮 (Primary CTA)</span>
+<span class="syn-kw">if</span> ui.button_primary(<span class="syn-str">"立即编译"</span>).clicked() { ... }
+
+<span class="syn-cmt">// 3. 带快捷键徽标指示的按钮</span>
+<span class="syn-kw">if</span> ui.button_with_shortcut(<span class="syn-str">"快速搜索"</span>, <span class="syn-str">"Ctrl+P"</span>).clicked() { ... }
+
+<span class="syn-cmt">// 4. 紧凑型小按钮</span>
+<span class="syn-kw">if</span> ui.button_small(<span class="syn-str">"+"</span>).clicked() { ... }</code></pre>
+          </div>
+
+          <h3 id="widget-text-edit">5.2 TextEdit 文本输入</h3>
+          <p>
+            支持即时光标定位、键盘文本录入、Backspace 退格、左右光标移动及双向绑定的单行/多行文本编辑框：
+          </p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> (new_text, resp) = ui.text_edit(state.username, placeholder=<span class="syn-str">"请输入用户名..."</span>)
+state.username = new_text</code></pre>
+          </div>
+
+          <h3 id="widget-code-editor">5.3 CodeEditor 代码编辑器</h3>
+          <p>内置等宽行号显示、Tab 缩进与深色代码展示容器：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> (code, resp) = ui.code_editor(state.source_code, line_numbers=<span class="syn-kw">true</span>)
+state.source_code = code</code></pre>
+          </div>
+
+          <h3 id="widget-labels">5.4 文本展示与排版 (Label & Heading)</h3>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code>ui.heading(<span class="syn-str">"项目总览"</span>)
+ui.label(<span class="syn-str">"普通状态描述文本"</span>)
+ui.label_colored(<span class="syn-str">"运行正常"</span>, @core.<span class="syn-type">Color</span>::rgb(<span class="syn-num">16</span>, <span class="syn-num">185</span>, <span class="syn-num">129</span>))</code></pre>
+          </div>
+        </section>
+
+        <!-- Values & Selection -->
+        <section id="values-selection">
+          <h2>6. 选择与数值调节组件 <a href="#values-selection" class="heading-anchor">#</a></h2>
+
+          <h3 id="widget-slider">6.1 Slider 滑动条</h3>
+          <p>支持连续型双精度浮点与离散整型滑动条，带微秒级平滑滚珠拖拽：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> (vol, _) = ui.slider(<span class="syn-str">"音量"</span>, state.volume, <span class="syn-num">0.0</span>, <span class="syn-num">1.0</span>)
+state.volume = vol
+
+<span class="syn-kw">let</span> (samples, _) = ui.slider_int(<span class="syn-str">"采样率"</span>, state.samples, <span class="syn-num">1</span>, <span class="syn-num">64</span>)
+state.samples = samples</code></pre>
+          </div>
+
+          <h3 id="widget-drag-value">6.2 DragValue Blender 风格数字微调</h3>
+          <p>按住数值标签横向拖动即可平滑加减数值，支持指定拖拽步进速度：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> (focal, _) = ui.drag_value(<span class="syn-str">"焦距 (mm)"</span>, state.focal_length, speed=<span class="syn-num">0.5</span>, min=<span class="syn-num">10.0</span>, max=<span class="syn-num">800.0</span>)
+state.focal_length = focal</code></pre>
+          </div>
+
+          <h3 id="widget-knob">6.3 Knob 360° 角度旋钮</h3>
+          <p>直观的环形仪表角度控制器，非常适合音频合成与旋转角度参数调节：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> (angle, _) = ui.knob(<span class="syn-str">"旋转角度"</span>, state.rotation_deg, <span class="syn-num">0.0</span>, <span class="syn-num">360.0</span>)
+state.rotation_deg = angle</code></pre>
+          </div>
+
+          <h3 id="widget-checkbox-toggle">6.4 Checkbox 与 Toggle 胶囊开关</h3>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> (sync, _) = ui.checkbox(<span class="syn-str">"启用垂直同步"</span>, state.vsync)
+state.vsync = sync
+
+<span class="syn-kw">let</span> (wire, _) = ui.toggle(<span class="syn-str">"线框模式"</span>, state.wireframe)
+state.wireframe = wire</code></pre>
+          </div>
+
+          <h3 id="widget-combo-box">6.5 ComboBox 下拉选择菜单</h3>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> options = [<span class="syn-str">"WebGL 2.0"</span>, <span class="syn-str">"Canvas 2D"</span>, <span class="syn-str">"WebGPU"</span>]
+<span class="syn-kw">let</span> (selected_idx, _) = ui.combo_box(<span class="syn-str">"图形后端"</span>, options, state.backend_idx)
+state.backend_idx = selected_idx</code></pre>
+          </div>
+
+          <h3 id="widget-color-button">6.6 ColorButton 颜色选择器</h3>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> (col, resp) = ui.color_button(<span class="syn-str">"画笔颜色"</span>, state.pen_color)
+state.pen_color = col</code></pre>
+          </div>
+        </section>
+
+        <!-- Feedback & Status -->
+        <section id="feedback-status">
+          <h2>7. 反馈与展示组件 <a href="#feedback-status" class="heading-anchor">#</a></h2>
+
+          <h3 id="widget-progress">7.1 ProgressBar 进度条</h3>
+          <p>取值范围为 <code>0.0</code> 至 <code>1.0</code>，自动绘制平滑填充滑道：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code>ui.progress_bar(state.download_percent)</code></pre>
+          </div>
+
+          <h3 id="widget-spinner">7.2 Spinner 加载动画</h3>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code>ui.spinner(size=<span class="syn-num">18.0</span>)</code></pre>
+          </div>
+
+          <h3 id="widget-badge-avatar">7.3 Badge 徽标与 Avatar 头像</h3>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code>ui.badge(<span class="syn-str">"PRO"</span>, @core.<span class="syn-type">Color</span>::rgb(<span class="syn-num">37</span>, <span class="syn-num">99</span>, <span class="syn-num">235</span>))
+ui.avatar(<span class="syn-str">"LX"</span>, size=<span class="syn-num">28.0</span>)</code></pre>
+          </div>
+
+          <h3 id="widget-tooltip">7.4 Tooltip 悬浮信息提示</h3>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> resp = ui.button(<span class="syn-str">"危险操作"</span>)
+resp.on_hover_text(ui, <span class="syn-str">"此操作将立即清空当前缓存"</span>)</code></pre>
+          </div>
+
+          <h3 id="widget-toast">7.5 Toast 瞬态全局消息通知</h3>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code>ui.toast(<span class="syn-str">"文件已成功导出至本地"</span>, duration_sec=<span class="syn-num">3.0</span>)</code></pre>
+          </div>
+        </section>
+
+        <!-- Containers & Navigation -->
+        <section id="containers-nav">
+          <h2>8. 容器与排版系统 <a href="#containers-nav" class="heading-anchor">#</a></h2>
+
+          <h3 id="widget-window">8.1 Window 自由浮动视窗</h3>
+          <p>
+            支持鼠标拖拽标题栏位移、右下角缩放手柄、局部坐标相对排版与自动视口剪裁（Scissor Clip）：
+          </p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code>ui.window(<span class="syn-str">"场景检视器"</span>, @core.<span class="syn-type">Vec2</span>::new(<span class="syn-num">80.0</span>, <span class="syn-num">120.0</span>), @core.<span class="syn-type">Vec2</span>::new(<span class="syn-num">320.0</span>, <span class="syn-num">400.0</span>), <span class="syn-kw">fn</span>(win) {
+  win.label(<span class="syn-str">"窗口内部组件..."</span>)
+})</code></pre>
+          </div>
+
+          <h3 id="widget-collapsing">8.2 CollapsingHeader 手风琴折叠栏</h3>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code>ui.collapsing_header(<span class="syn-str">"高级渲染设置"</span>, default_open=<span class="syn-kw">false</span>, <span class="syn-kw">fn</span>(panel) {
+  panel.checkbox(<span class="syn-str">"环境光遮蔽 (SSAO)"</span>, state.ssao)
+  panel.checkbox(<span class="syn-str">"泛光辉光 (Bloom)"</span>, state.bloom)
+})</code></pre>
+          </div>
+
+          <h3 id="widget-tab-bar">8.3 TabBar 多标签页组织</h3>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> tabs = [<span class="syn-str">"基本信息"</span>, <span class="syn-str">"材质贴图"</span>, <span class="syn-str">"动画骨骼"</span>]
+<span class="syn-kw">let</span> (active_tab, _) = ui.tab_bar(tabs, state.current_tab)
+state.current_tab = active_tab</code></pre>
+          </div>
+
+          <h3 id="widget-tree-view">8.4 TreeView 层级树形视图</h3>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code>ui.tree_node(<span class="syn-str">"Root Scene"</span>, <span class="syn-kw">fn</span>(node) {
+  node.leaf(<span class="syn-str">"Main Camera"</span>)
+  node.leaf(<span class="syn-str">"Directional Light"</span>)
+  node.tree_node(<span class="syn-str">"Characters"</span>, <span class="syn-kw">fn</span>(sub) {
+    sub.leaf(<span class="syn-str">"Player_Mesh"</span>)
+  })
+})</code></pre>
+          </div>
+
+          <h3 id="widget-scroll-area">8.5 ScrollArea 滚动视口</h3>
+          <p>针对超长列表进行局部滚动显示，提供平滑滚轮与拖拽滚动条：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code>ui.scroll_area(height=<span class="syn-num">200.0</span>, <span class="syn-kw">fn</span>(scroll) {
+  <span class="syn-kw">for</span> i = <span class="syn-num">0</span>; i < <span class="syn-num">100</span>; i = i + <span class="syn-num">1</span> {
+    scroll.label(<span class="syn-str">"数据项 #"</span> + i.to_string())
+  }
+})</code></pre>
+          </div>
+        </section>
+
+        <!-- Menus & Overlays -->
+        <section id="menus-overlays">
+          <h2>9. 全局菜单与高级浮层系统 <a href="#menus-overlays" class="heading-anchor">#</a></h2>
+
+          <h3 id="widget-menu-bar">9.1 MenuBar 桌面级应用程序菜单</h3>
+          <p>
+            置于画布顶部的全局菜单条，带 Hover-to-Switch 随动悬浮切换、快捷键徽章与图层最高层深：
+          </p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code>ui.menu_bar(<span class="syn-kw">fn</span>(bar) {
+  bar.menu(<span class="syn-str">"文件"</span>, <span class="syn-kw">fn</span>(menu) {
+    <span class="syn-kw">if</span> menu.menu_item(<span class="syn-str">"新建工程"</span>, shortcut=<span class="syn-str">"Ctrl+N"</span>).clicked() { ... }
+    <span class="syn-kw">if</span> menu.menu_item(<span class="syn-str">"打开文件..."</span>, shortcut=<span class="syn-str">"Ctrl+O"</span>).clicked() { ... }
+    menu.menu_separator()
+    <span class="syn-kw">if</span> menu.menu_item(<span class="syn-str">"退出"</span>).clicked() { ... }
+  })
+  bar.menu(<span class="syn-str">"编辑"</span>, <span class="syn-kw">fn</span>(menu) {
+    <span class="syn-kw">if</span> menu.menu_item(<span class="syn-str">"撤销"</span>, shortcut=<span class="syn-str">"Ctrl+Z"</span>).clicked() { ... }
+    <span class="syn-kw">if</span> menu.menu_item(<span class="syn-str">"重做"</span>, shortcut=<span class="syn-str">"Ctrl+Y"</span>).clicked() { ... }
+  })
+})</code></pre>
+          </div>
+
+          <h3 id="widget-context-menu">9.2 ContextMenu 鼠标右键上下文菜单</h3>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code>ui.context_menu(target_rect, <span class="syn-kw">fn</span>(menu) {
+  <span class="syn-kw">if</span> menu.item(<span class="syn-str">"复制"</span>).clicked() { ... }
+  <span class="syn-kw">if</span> menu.item(<span class="syn-str">"粘贴"</span>).clicked() { ... }
+  <span class="syn-kw">if</span> menu.item(<span class="syn-str">"删除"</span>).clicked() { ... }
+})</code></pre>
+          </div>
+
+          <h3 id="widget-command-palette">9.3 CommandPalette 快捷命令面板</h3>
+          <p>
+            类似 VS Code / Raycast 的全屏模糊搜索与快捷命令调度面板：
+          </p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">if</span> state.show_palette {
+  <span class="syn-kw">let</span> commands = [<span class="syn-str">"Format Document"</span>, <span class="syn-str">"Run Benchmark"</span>, <span class="syn-str">"Toggle Dark Mode"</span>]
+  ui.command_palette(commands, <span class="syn-kw">fn</span>(selected_cmd) {
+    state.execute_action(selected_cmd)
+    state.show_palette = <span class="syn-kw">false</span>
+  })
+}</code></pre>
+          </div>
+        </section>
+
+        <!-- Theming & Scaling -->
+        <section id="theming-scaling">
+          <h2>10. 样式设计系统与高分屏适配 <a href="#theming-scaling" class="heading-anchor">#</a></h2>
+
+          <h3 id="theming-tokens">10.1 Studio Light 设计令牌 (Design Tokens)</h3>
+          <p>
+            <code>moon-egui</code> 采用精细校准的 Studio Light 素雅现代工业风。核心控件样式（圆角、内边距、高亮色）均封装在 <code>WidgetStyle</code> 中，支持在运行时无缝微调：
+          </p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> style = ui.get_style()
+style.rounding = <span class="syn-num">6.0</span>
+style.item_spacing = @core.<span class="syn-type">Vec2</span>::new(<span class="syn-num">8.0</span>, <span class="syn-num">6.0</span>)
+style.primary_color = @core.<span class="syn-type">Color</span>::rgb(<span class="syn-num">37</span>, <span class="syn-num">99</span>, <span class="syn-num">235</span>)</code></pre>
+          </div>
+
+          <h3 id="retina-dpi">10.2 Retina 屏与设备物理像素对齐</h3>
+          <p>
+            为杜绝 Canvas 绘图在苹果 Retina 视网膜屏及高分屏下的模糊与毛刺，引擎内置 <code>scale_factor</code>（对齐 <code>window.devicePixelRatio</code>）：
+          </p>
+          <div class="callout callout-note">
+            <div class="callout-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              半像素对齐规则
+            </div>
+            1px 细线（如 <code>Separator</code> 分割线与视窗边框）自动对齐在 <code>x + 0.5</code> 物理栅格坐标上，光栅化后纯净锐利、零子像素混叠发虚。
+          </div>
+        </section>
+
+      </article>
+
+      <!-- Footer in docs -->
+      <footer class="docs-footer">
+        <div>
+          <span>© 2026 Ling71671. Apache-2.0 License.</span>
+        </div>
+        <div style="display: flex; gap: 16px;">
+          <a href="wiki.html" data-i18n="nav.wiki">技术 Wiki ↗</a>
+          <a href="gallery.html" data-i18n="nav.gallery">组件展厅 ↗</a>
+          <a href="https://github.com/ling71671/moon-egui" target="_blank">GitHub 源码 ↗</a>
+        </div>
+      </footer>
+    </main>
+
+    <!-- Right On-This-Page TOC -->
+    <aside class="docs-toc">
+      <div class="toc-title">本页目录</div>
+      <ul class="toc-nav">
+        <li><a href="#quickstart" class="toc-link">1. 快速安装与配置</a></li>
+        <li><a href="#hello-world" class="toc-link">2. 极简 Hello World</a></li>
+        <li><a href="#host-loop" class="toc-link">3. 宿主渲染循环接入</a></li>
+        <li><a href="#core-math" class="toc-link">4. 核心数学与几何</a></li>
+        <li><a href="#basic-inputs" class="toc-link">5. 基础输入控件</a></li>
+        <li><a href="#values-selection" class="toc-link">6. 选择与数值调节</a></li>
+        <li><a href="#feedback-status" class="toc-link">7. 反馈与状态展示</a></li>
+        <li><a href="#containers-nav" class="toc-link">8. 容器与排版布局</a></li>
+        <li><a href="#menus-overlays" class="toc-link">9. 全局菜单与浮层</a></li>
+        <li><a href="#theming-scaling" class="toc-link">10. 样式设计与高分屏</a></li>
+      </ul>
+
+      <div class="toc-actions">
+        <a href="#" class="toc-action-link">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+          <span>回到顶部</span>
+        </a>
+        <a href="https://github.com/ling71671/moon-egui/blob/main/docs/API_DESIGN_zh.md" target="_blank" class="toc-action-link">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          <span>在 GitHub 上编辑此页</span>
+        </a>
+      </div>
+    </aside>
+
+  </div>
+
+  <script src="docs.js"></script>
+</body>
+</html>

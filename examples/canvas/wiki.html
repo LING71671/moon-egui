@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>moon-egui | 系统架构与技术 Wiki</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="docs.css">
+  <link rel="stylesheet" href="lang.css">
+  <script src="i18n.js"></script>
+</head>
+<body data-i18n-title="wiki.pageTitle">
+
+  <!-- Sticky Navigation Bar -->
+  <nav class="site-nav">
+    <div class="container nav-inner">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle navigation">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <a href="index.html" class="brand-link">
+          <img src="logo.png" alt="moon-egui logo" class="brand-logo" />
+          <span>moon-egui</span>
+          <span class="brand-tag">Wiki</span>
+        </a>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="gallery.html" class="nav-link" data-i18n="nav.gallery">组件展厅</a></li>
+        <li><a href="docs.html" class="nav-link" data-i18n="nav.docs">文档中心</a></li>
+        <li><a href="wiki.html" class="nav-link active" data-i18n="nav.wiki">技术 Wiki</a></li>
+        <li><a href="index.html#demo" class="nav-link" data-i18n="nav.canvas">画板演示</a></li>
+        <li><a href="https://github.com/ling71671/moon-egui" target="_blank" rel="noreferrer" class="nav-link" data-i18n="nav.github">GitHub 源码</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div data-lang-switch></div>
+        <a href="benchmark.html" class="nav-cta" data-i18n="nav.openCanvas">进入画板 →</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Docs & Wiki Layout -->
+  <div class="container docs-layout">
+
+    <!-- Left Sidebar -->
+    <aside class="docs-sidebar">
+      <div class="sidebar-search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="sidebarSearch" class="sidebar-search" placeholder="检索技术 Wiki (/) ..." data-i18n-attrs="placeholder:wiki.searchPh" />
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">
+          <span data-i18n="wiki.grpTheory">设计哲学与范式</span>
+          <span class="sidebar-group-count">3</span>
+        </div>
+        <ul class="sidebar-nav">
+          <li><a href="#im-vs-rm" class="sidebar-link active"><span>即时模式 vs 保留模式</span> <span class="sidebar-tag">Theory</span></a></li>
+          <li><a href="#why-moonbit" class="sidebar-link"><span>为什么基于 MoonBit 构建</span> <span class="sidebar-tag">Design</span></a></li>
+          <li><a href="#core-painpoints" class="sidebar-link"><span>解决的工业痛点与生态空白</span> <span class="sidebar-tag">Vision</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">
+          <span data-i18n="wiki.grpPipeline">内核流水线与协议</span>
+          <span class="sidebar-group-count">3</span>
+        </div>
+        <ul class="sidebar-nav">
+          <li><a href="#frame-lifecycle" class="sidebar-link"><span>5 阶段逐帧生命周期</span> <span class="sidebar-tag">Pipeline</span></a></li>
+          <li><a href="#drawcmd-protocol" class="sidebar-link"><span>DrawCmd 矢量渲染协议</span> <span class="sidebar-tag">Protocol</span></a></li>
+          <li><a href="#id-system" class="sidebar-link"><span>分层 ID 哈希与作用域栈</span> <span class="sidebar-tag">State</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">
+          <span data-i18n="wiki.grpBridge">Wasm 宿主互操作</span>
+          <span class="sidebar-group-count">2</span>
+        </div>
+        <ul class="sidebar-nav">
+          <li><a href="#wasm-host-bridge" class="sidebar-link"><span>线性内存与零拷贝传输</span> <span class="sidebar-tag">Wasm</span></a></li>
+          <li><a href="#cursor-event-sync" class="sidebar-link"><span>输入归一化与光标状态机</span> <span class="sidebar-tag">Event</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">
+          <span data-i18n="wiki.grpPerf">极限性能工程</span>
+          <span class="sidebar-group-count">2</span>
+        </div>
+        <ul class="sidebar-nav">
+          <li><a href="#million-cells" class="sidebar-link"><span>百万级 CAD 矩阵视口剔除</span> <span class="sidebar-tag">Perf</span></a></li>
+          <li><a href="#gc-zero-jitter" class="sidebar-link"><span>零垃圾回收抖动优化</span> <span class="sidebar-tag">Memory</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">
+          <span data-i18n="wiki.grpQuality">工程质量与贡献指南</span>
+          <span class="sidebar-group-count">3</span>
+        </div>
+        <ul class="sidebar-nav">
+          <li><a href="#testing-harness" class="sidebar-link"><span>106+ 项无头单测体系</span> <span class="sidebar-tag">Testing</span></a></li>
+          <li><a href="#snapshot-testing" class="sidebar-link"><span>确定性快照回归验证</span> <span class="sidebar-tag">Snapshot</span></a></li>
+          <li><a href="#contributing-rules" class="sidebar-link"><span>编码规范与 PR 提交</span> <span class="sidebar-tag">Contrib</span></a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="docs-main">
+      <div class="breadcrumb">
+        <a href="index.html">首页</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="wiki.html" data-i18n="nav.wiki">技术 Wiki</a>
+        <span class="breadcrumb-sep">/</span>
+        <span style="color: var(--text-main); font-weight: 500;">系统架构白皮书</span>
+      </div>
+
+      <header class="page-header">
+        <span class="page-badge">MOON-EGUI ARCHITECTURE WHITE PAPER</span>
+        <h1 class="page-title" data-i18n="wiki.mainTitle">Moon-EGUI 架构设计与技术白皮书</h1>
+        <p class="page-desc" data-i18n="wiki.mainDesc">
+          全面解析即时模式渲染原理、5 阶段确定性帧管线、跨平台 DrawCmd 图元流协议、百万级 CAD 视口裁剪以及全套自动化无头测试矩阵。
+        </p>
+      </header>
+
+      <article class="docs-content">
+
+        <!-- Section 1: Philosophy -->
+        <section id="im-vs-rm">
+          <h2>1. 核心设计哲学：即时模式 vs 保留模式 <a href="#im-vs-rm" class="heading-anchor">#</a></h2>
+          <p>
+            现代图形界面开发主要分为两大流派：<strong>保留模式（Retained-Mode, RM）</strong> 与 <strong>即时模式（Immediate-Mode, IM）</strong>。
+          </p>
+
+          <div class="table-container">
+            <table class="props-table">
+              <thead>
+                <tr>
+                  <th>对比维度</th>
+                  <th>保留模式 (DOM / React / Flutter / Qt)</th>
+                  <th>即时模式 (moon-egui)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>对象生命周期</strong></td>
+                  <td>长期持有庞大的堆对象树，组件有 <code>mount/update/unmount</code> 生命周期</td>
+                  <td><strong>零持久化组件对象</strong>：每帧按需执行纯函数表达式，求值完成即析构</td>
+                </tr>
+                <tr>
+                  <td><strong>状态同步</strong></td>
+                  <td>双向同步：需要脏标记检查、Virtual DOM Diffing、事件订阅与回调绑定</td>
+                  <td><strong>状态就地声明</strong>：业务状态即是真实状态，代码即界面，彻底告别同步地狱</td>
+                </tr>
+                <tr>
+                  <td><strong>内存与 GC 开销</strong></td>
+                  <td>随组件复杂度线性膨胀，高频更新容易引发浏览器 GC 垃圾回收卡顿</td>
+                  <td><strong>零 GC 抖动</strong>：基础结构体栈上分配，百万节点下帧耗时仅 0.1ms</td>
+                </tr>
+                <tr>
+                  <td><strong>代码表达</strong></td>
+                  <td>分层深、闭包与事件处理链复杂，AI 代码生成容易产生生命周期死锁</td>
+                  <td><strong>线性扁平直观</strong>：<code>if ui.button("保存").clicked() { save() }</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout callout-note">
+            <div class="callout-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              代码即界面，界面即状态
+            </div>
+            在 <code>moon-egui</code> 中，一个交互式按钮本质上是一个瞬态函数调用。在单次循环遍历中，完成尺寸布局推进、AABB 碰撞检测、绘制指令排队并即时返回当帧交互结果。
+          </div>
+        </section>
+
+        <section id="why-moonbit">
+          <h2>2. 为什么选择基于 MoonBit 构建？ <a href="#why-moonbit" class="heading-anchor">#</a></h2>
+          <p>
+            传统的即时模式库（如著名的 C++ Dear ImGui）极度依赖全局静态指针与原始内存偏移，难以优雅实现多实例隔离、多线程并发和纯无头（Headless）CI 自动化单元测试。
+          </p>
+          <ul>
+            <li><strong>代数数据类型 (Algebraic Data Types)</strong>：绘制指令以带标签的强类型枚举 <code>DrawCmd</code> 表达，模式匹配保证 100% 穷尽性检查，杜绝空指针异常；</li>
+            <li><strong>纯函数式单实例可重入</strong>：<code>UIContext</code> 是独立的数据结构，同一进程或宿主中可以同时运行无数个完全隔离的画布实例；</li>
+            <li><strong>强大的死代码消除 (Dead Code Elimination)</strong>：仅打包用户实际调用的控件，产出的 WebAssembly 模块极限精简（小于 50KB gzip），极速冷启动；</li>
+            <li><strong>面向 WebAssembly 原生优化</strong>：针对 32 位/64 位线性内存进行高速数据对齐，执行效率逼近原生 C++。</li>
+          </ul>
+        </section>
+
+        <section id="core-painpoints">
+          <h2>3. 填补的核心生态空白 <a href="#core-painpoints" class="heading-anchor">#</a></h2>
+          <p>
+            在 <code>moon-egui</code> 诞生之前，MoonBit 生态在纯 Canvas / WebAssembly 领域缺乏原生的 UI 基础设施。游戏开发、CAD 矢量画板、音频合成器或物理仿真应用在画布内部寸步难行，不得不回退到笨重的外部 HTML DOM 浮层覆盖方案。
+          </p>
+          <p>
+            <code>moon-egui</code> 提供了纯 Canvas 内部的高性能完整交互套件，涵盖窗口、菜单、微调滑块、文本编辑与富图元绘制，彻底打破了生态瓶颈。
+          </p>
+        </section>
+
+        <!-- Pipeline -->
+        <section id="frame-lifecycle">
+          <h2>4. 5 阶段逐帧生命周期流水线 <a href="#frame-lifecycle" class="heading-anchor">#</a></h2>
+          <p>
+            在每一帧渲染循环中（Web 侧由 <code>requestAnimationFrame</code> 调度驱动），系统经历 5 个确定性的执行阶段：
+          </p>
+
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">Frame Lifecycle Architecture</span></div>
+            <pre><code>┌────────────────────────────────────────────────────────────────────────┐
+│                        阶段 1：输入数据采集 (Input Gathering)           │
+│  宿主浏览器系统事件 ──► 归一化为平台无关的 `RawInput` 状态结构          │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                  阶段 2：上下文帧初始化 (Context Frame Init)            │
+│  • 双缓冲滚动：将上一帧激活 ID 列表交换至 last_active 备查             │
+│  • 排版游标归位，清空 DrawCmd 指令缓冲，计算帧时间差 delta_time        │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                   阶段 3：即时逻辑求值 (IM Evaluation)                  │
+│  • 执行用户 UI 代码：`ui.window(...)`, `ui.button(...)`, `ui.slider(...)` │
+│  • 针对归一化指针坐标实时完成 AABB 碰撞命中测试                       │
+│  • 流式游标排版引擎顺序推进，动态测量并锁定各控件外接矩形              │
+│  • 将几何渲染指令追加至当前图层的绘制队列中                           │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                   阶段 4：图层合成与排序 (Layer Composition)            │
+│  • 按照窗口聚焦层深（Z-Index）对窗口进行层级重排                       │
+│  • 校验并扁平化各级视口裁切矩形（Scissor Clipping）                   │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                   阶段 5：后端渲染分发 (Backend Render Dispatch)       │
+│  • 将纯粹指令列表 `DrawList` 批量提交至 HTML5 Canvas 2D / WebGL 后端    │
+│  • 硬件光栅化绘图，全流程零 DOM 操作                                  │
+└────────────────────────────────────────────────────────────────────────┘</code></pre>
+          </div>
+        </section>
+
+        <!-- DrawCmd Protocol -->
+        <section id="drawcmd-protocol">
+          <h2>5. 跨平台 DrawCmd 矢量绘制指令协议 <a href="#drawcmd-protocol" class="heading-anchor">#</a></h2>
+          <p>
+            计算内核只输出几何指令列表，与具体的渲染 API 彻底解耦：
+          </p>
+
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit · DrawCmd ADT</span></div>
+            <pre><code><span class="syn-kw">pub enum</span> <span class="syn-type">DrawCmd</span> {
+  <span class="syn-fn">Rect</span>(rect : <span class="syn-type">Rect</span>, color : <span class="syn-type">Color</span>, rounding : <span class="syn-type">Double</span>)
+  <span class="syn-fn">RectStroke</span>(rect : <span class="syn-type">Rect</span>, color : <span class="syn-type">Color</span>, stroke_width : <span class="syn-type">Double</span>, rounding : <span class="syn-type">Double</span>)
+  <span class="syn-fn">Text</span>(pos : <span class="syn-type">Vec2</span>, text : <span class="syn-type">String</span>, color : <span class="syn-type">Color</span>, font_size : <span class="syn-type">Double</span>)
+  <span class="syn-fn">Circle</span>(center : <span class="syn-type">Vec2</span>, radius : <span class="syn-type">Double</span>, color : <span class="syn-type">Color</span>)
+  <span class="syn-fn">Line</span>(from : <span class="syn-type">Vec2</span>, to : <span class="syn-type">Vec2</span>, color : <span class="syn-type">Color</span>, width : <span class="syn-type">Double</span>)
+  <span class="syn-fn">ClipRect</span>(rect : <span class="syn-type">Rect</span>)
+  <span class="syn-fn">RestoreClip</span>
+}</code></pre>
+          </div>
+
+          <p>
+            基于这一协议，同一份 MoonBit 核心不仅能在 HTML5 Canvas 2D 上运行，未来还可无缝平替接入 WebGL / WebGPU 批处理管线或原生桌面 SDL/Raylib。
+          </p>
+        </section>
+
+        <!-- ID System -->
+        <section id="id-system">
+          <h2>6. 分层 ID 哈希系统与作用域栈 <a href="#id-system" class="heading-anchor">#</a></h2>
+          <p>
+            即时模式控件虽然每帧重新计算，但诸如文本框焦点、视窗拖拽锚点、手风琴折叠状态等交互必然需要跨帧追踪。
+          </p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">ID Calculation Formula</span></div>
+            <pre><code>Id = Hash64(Parent_Scope_Id + Salt + Widget_Name)</code></pre>
+          </div>
+          <ul>
+            <li><strong>作用域栈 (Scope Stack)</strong>：通过 <code>ui.push_id("panel_a")</code> 隔离命名空间，确保不同视窗中相同文本的按钮 ID 绝不冲突；</li>
+            <li><strong><code>hot_id</code></strong>：当前指针悬停的控件 ID；</li>
+            <li><strong><code>active_id</code></strong>：当前被按下激活、持有连续拖拽捕捉的控件 ID；</li>
+            <li><strong><code>focused_id</code></strong>：当前独占键盘文本输入的聚焦控件 ID。</li>
+          </ul>
+        </section>
+
+        <!-- Wasm & Host Bridge -->
+        <section id="wasm-host-bridge">
+          <h2>7. Wasm 与宿主桥接互操作 <a href="#wasm-host-bridge" class="heading-anchor">#</a></h2>
+          <p>
+            WebAssembly 运行时与宿主 JavaScript 环境之间通过高效线性内存与预分配缓冲进行数据交互：
+          </p>
+          <div class="callout callout-tip">
+            <div class="callout-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              零拷贝图元传递
+            </div>
+            图元坐标、色彩与顶点数据在 Wasm 侧紧凑对齐，宿主通过类型化数组（<code>Float64Array</code> / <code>Uint32Array</code>）进行块读取，避免了昂贵的 JSON 字符串序列化损耗。
+          </div>
+        </section>
+
+        <section id="cursor-event-sync">
+          <h2>8. 输入归一化与鼠标光标状态机 <a href="#cursor-event-sync" class="heading-anchor">#</a></h2>
+          <p>
+            <code>moon-egui</code> 具备全状态机级别的鼠标光标动态汇报机制。在 <code>step</code> 执行完毕后，宿主调用 <code>moon_gallery_cursor()</code> 获取内核建议的光标指针：
+          </p>
+          <div class="table-container">
+            <table class="props-table">
+              <thead>
+                <tr>
+                  <th>光标指示</th>
+                  <th>触发场景</th>
+                  <th>关联组件</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>"pointer"</code></td>
+                  <td>按钮悬停、复选框、下拉项、标签切换、折叠栏</td>
+                  <td><code>button</code>, <code>checkbox</code>, <code>toggle</code>, <code>tab_bar</code>, <code>combo_box</code></td>
+                </tr>
+                <tr>
+                  <td><code>"text"</code></td>
+                  <td>单行/多行文本编辑、代码编辑区域光标定位</td>
+                  <td><code>text_edit</code>, <code>code_editor</code></td>
+                </tr>
+                <tr>
+                  <td><code>"ew-resize"</code></td>
+                  <td>横向数值拖拽调节器、视窗左右边缘缩放</td>
+                  <td><code>slider</code>, <code>drag_value</code>, <code>window</code></td>
+                </tr>
+                <tr>
+                  <td><code>"ns-resize"</code></td>
+                  <td>纵向尺寸手柄、滚动条拖拽滑块</td>
+                  <td><code>scroll_area</code>, <code>window</code></td>
+                </tr>
+                <tr>
+                  <td><code>"crosshair"</code></td>
+                  <td>CAD 无限画布平移测量与点位选取</td>
+                  <td><code>Canvas Workbench</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Million Cells Benchmark -->
+        <section id="million-cells">
+          <h2>9. 百万级 CAD 矩阵极限性能架构 <a href="#million-cells" class="heading-anchor">#</a></h2>
+          <p>
+            在 <code>benchmark.html</code> 演示中，面对 1,000,000 个复杂逻辑单元格，<code>moon-egui</code> 实现了稳定跑满 60 FPS 满帧刷新。核心优化技术包括：
+          </p>
+          <ul>
+            <li><strong>空间 AABB 视口快速求交剔除</strong>：仅对当前摄像机视口裁剪矩形内部的可见单元格生成绘制图元，时间复杂度由 $O(N)$ 降至 $O(\text{visible})$；</li>
+            <li><strong>微秒级帧计算耗时</strong>：内核每一帧的计算总耗时控制在 0.1ms 至 0.3ms 之间，为宿主 Canvas 2D 硬件光栅化留出充足的 16ms 帧预算；</li>
+            <li><strong>图元批量调度</strong>：同类图形绘制指令自动连续批处理，降低宿主渲染上下文切换损耗。</li>
+          </ul>
+        </section>
+
+        <section id="gc-zero-jitter">
+          <h2>10. 零垃圾回收抖动 (Zero GC Jitter) <a href="#gc-zero-jitter" class="heading-anchor">#</a></h2>
+          <p>
+            传统 Web 前端框架随着界面元素增多，频繁的临时对象分配会导致 V8 引擎周期性触发 Full GC，造成肉眼可见的卡顿掉帧。
+          </p>
+          <p>
+            <code>moon-egui</code> 在内部广泛重用指令列表与临时缓冲区，基础几何计算完全由值类型和轻量结构体承载，实现了极度平稳的帧时间曲线。
+          </p>
+        </section>
+
+        <!-- Testing & Quality -->
+        <section id="testing-harness">
+          <h2>11. 106+ 项全功能自动化无头单测体系 <a href="#testing-harness" class="heading-anchor">#</a></h2>
+          <p>
+            项目构建了完备的白盒与黑盒测试套件（位于 <code>src/core/*_wbtest.mbt</code> 和 <code>src/core/*_test.mbt</code>），覆盖所有数学运算、控件交互状态机与边界用例：
+          </p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">Terminal · Test Suite</span></div>
+            <pre><code>$ moon test
+Running 106 test(s) in packages...
+Total tests: 106, passed: 106, failed: 0.</code></pre>
+          </div>
+        </section>
+
+        <section id="snapshot-testing">
+          <h2>12. 确定性快照测试机制 (Snapshot Testing) <a href="#snapshot-testing" class="heading-anchor">#</a></h2>
+          <p>
+            利用 MoonBit 的 <code>inspect()</code> 快照机制，当几何计算或排版规则发生变更时，自动生成结构化快照对比，任何意外的布局漂移均会在 CI 中被立即捕获。
+          </p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">Terminal</span></div>
+            <pre><code>moon test --update</code></pre>
+          </div>
+        </section>
+
+        <section id="contributing-rules">
+          <h2>13. 编码风格与开源贡献规范 <a href="#contributing-rules" class="heading-anchor">#</a></h2>
+          <ul>
+            <li><strong>块注释分隔符</strong>：代码模块均采用 <code>///|</code> 进行物理分块，保持纯净；</li>
+            <li><strong>弃用代码隔离</strong>：已过时的 API 统一归入各包下的 <code>deprecated.mbt</code> 文件，不污染主逻辑；</li>
+            <li><strong>接口更新与格式化</strong>：在提交 PR 前必须执行 <code>moon info && moon fmt</code>，并校验 <code>.mbti</code> 接口变动；</li>
+            <li><strong>规范化提交 (Conventional Commits)</strong>：提交信息遵循 <code>feat:</code>、<code>fix:</code>、<code>refactor:</code>、<code>docs:</code> 格式。</li>
+          </ul>
+        </section>
+
+      </article>
+
+      <!-- Footer in Wiki -->
+      <footer class="docs-footer">
+        <div>
+          <span>© 2026 Ling71671. Apache-2.0 License.</span>
+        </div>
+        <div style="display: flex; gap: 16px;">
+          <a href="docs.html" data-i18n="nav.docs">文档中心 ↗</a>
+          <a href="gallery.html" data-i18n="nav.gallery">组件展厅 ↗</a>
+          <a href="https://github.com/ling71671/moon-egui" target="_blank">GitHub 源码 ↗</a>
+        </div>
+      </footer>
+    </main>
+
+    <!-- Right TOC -->
+    <aside class="docs-toc">
+      <div class="toc-title">本篇目录</div>
+      <ul class="toc-nav">
+        <li><a href="#im-vs-rm" class="toc-link">1. 即时模式 vs 保留模式</a></li>
+        <li><a href="#why-moonbit" class="toc-link">2. 为何选择 MoonBit</a></li>
+        <li><a href="#core-painpoints" class="toc-link">3. 填补生态空白</a></li>
+        <li><a href="#frame-lifecycle" class="toc-link">4. 5 阶段帧流水线</a></li>
+        <li><a href="#drawcmd-protocol" class="toc-link">5. DrawCmd 图元协议</a></li>
+        <li><a href="#id-system" class="toc-link">6. 分层 ID 哈希系统</a></li>
+        <li><a href="#wasm-host-bridge" class="toc-link">7. Wasm 宿主互操作</a></li>
+        <li><a href="#cursor-event-sync" class="toc-link">8. 输入与光标状态机</a></li>
+        <li><a href="#million-cells" class="toc-link">9. 百万 CAD 矩阵架构</a></li>
+        <li><a href="#gc-zero-jitter" class="toc-link">10. 零 GC 垃圾回收抖动</a></li>
+        <li><a href="#testing-harness" class="toc-link">11. 106+ 项无头单测</a></li>
+        <li><a href="#snapshot-testing" class="toc-link">12. 确定性快照测试</a></li>
+        <li><a href="#contributing-rules" class="toc-link">13. 编码与贡献规范</a></li>
+      </ul>
+
+      <div class="toc-actions">
+        <a href="#" class="toc-action-link">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+          <span>回到顶部</span>
+        </a>
+        <a href="https://github.com/ling71671/moon-egui/blob/main/docs/ARCHITECTURE_zh.md" target="_blank" class="toc-action-link">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          <span>在 GitHub 上编辑此页</span>
+        </a>
+      </div>
+    </aside>
+
+  </div>
+
+  <script src="docs.js"></script>
+</body>
+</html>
