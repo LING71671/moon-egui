@@ -303,6 +303,8 @@ pub struct UIContext {
   prev_blocking_rects : Array[@math.Rect]
   mut style : WidgetStyle
   mut cursor_icon : String
+  mut time : Double
+  mut last_caret_activity : Double
 } derive(Eq, @debug.Debug)
 pub fn UIContext::active_id(Self) -> Id
 pub fn UIContext::advance_cursor(Self, @math.Vec2) -> Unit
@@ -340,6 +342,7 @@ pub fn UIContext::has_focus(Self, Id) -> Bool
 pub fn UIContext::horizontal(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::hot_id(Self) -> Id
 pub fn UIContext::input(Self) -> InputState
+pub fn UIContext::is_caret_visible(Self) -> Bool
 pub fn UIContext::is_collapsing_open(Self, Id, Bool) -> Bool
 pub fn UIContext::is_hovered(Self, @math.Rect) -> Bool
 pub fn UIContext::item_spacing(Self) -> @math.Vec2
@@ -363,6 +366,7 @@ pub fn UIContext::radio(Self, String, Bool) -> (Bool, Response)
 pub fn UIContext::raise_window(Self, Id) -> Unit
 pub fn UIContext::register_focusable(Self, Id) -> Unit
 pub fn UIContext::request_focus(Self, Id) -> Unit
+pub fn UIContext::reset_caret_blink(Self) -> Unit
 pub fn UIContext::scroll_area(Self, String, @math.Vec2, (Self) -> Unit) -> Unit
 pub fn UIContext::separator(Self) -> Unit
 pub fn UIContext::set_active_id(Self, Id) -> Unit
@@ -378,6 +382,7 @@ pub fn UIContext::set_scroll_content_height(Self, Id, Double) -> Unit
 pub fn UIContext::set_scroll_offset(Self, Id, Double) -> Unit
 pub fn UIContext::set_style(Self, WidgetStyle) -> Unit
 pub fn UIContext::set_text_cursor_pos(Self, Id, Int) -> Unit
+pub fn UIContext::set_time(Self, Double) -> Unit
 pub fn UIContext::set_wants_capture_mouse(Self, Bool) -> Unit
 pub fn UIContext::set_window_pos(Self, Id, @math.Vec2) -> Unit
 pub fn UIContext::slider(Self, String, Double, Double, Double) -> (Double, Response)
@@ -388,6 +393,7 @@ pub fn UIContext::surrender_focus(Self, Id) -> Unit
 pub fn UIContext::tab_bar(Self, String, Array[String], Int) -> (Int, Response)
 pub fn UIContext::text_edit(Self, String, String, String) -> (String, Response)
 pub fn UIContext::text_edit_sized(Self, String, String, String, @math.Vec2) -> (String, Response)
+pub fn UIContext::time(Self) -> Double
 pub fn UIContext::toast_stack(Self, Array[Toast], anchor? : ToastAnchor, viewport_size? : @math.Vec2) -> ToastResponse
 pub fn UIContext::toggle(Self, String, Bool) -> (Bool, Response)
 pub fn UIContext::tooltip(Self, String) -> Unit

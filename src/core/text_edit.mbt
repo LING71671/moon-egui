@@ -54,8 +54,10 @@ pub fn UIContext::text_edit_sized(
 
   if resp.pressed() || resp.clicked() {
     self.request_focus(id)
+    self.reset_caret_blink()
   }
   if self.input.mouse_pressed && (resp.hovered() || resp.pressed()) {
+    self.reset_caret_blink()
     let click_x = self.input.mouse_pos.x - (rect.x + padding_x)
     let total_text_w = measure_text_size(current_text, font_size).x
     if click_x <= 0.0 {
@@ -80,6 +82,16 @@ pub fn UIContext::text_edit_sized(
   let is_focused = self.has_focus(id)
 
   if is_focused {
+    if self.input.key_pressed(Key::ArrowLeft) ||
+      self.input.key_pressed(Key::ArrowRight) ||
+      self.input.key_pressed(Key::Home) ||
+      self.input.key_pressed(Key::End) ||
+      self.input.key_pressed(Key::Backspace) ||
+      self.input.key_pressed(Key::Delete) ||
+      !self.input.text_input().is_empty() {
+      self.reset_caret_blink()
+    }
+
     // Navigation keys
     if self.input.key_pressed(Key::ArrowLeft) {
       if cursor_pos > 0 {
@@ -183,8 +195,8 @@ pub fn UIContext::text_edit_sized(
     )
   }
 
-  // Draw blinking/solid cursor caret when focused (Cobalt blue in Studio Light)
-  if is_focused {
+  // Draw blinking cursor caret when focused (Cobalt blue in Studio Light)
+  if is_focused && self.is_caret_visible() {
     let sub = string_slice(current_text, 0, cursor_pos)
     let measured_prefix = measure_text_size(sub, font_size)
     let caret_x = rect.x + padding_x + measured_prefix.x

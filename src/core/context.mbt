@@ -55,6 +55,8 @@ pub struct UIContext {
   prev_blocking_rects : Array[@math.Rect]
   mut style : WidgetStyle
   mut cursor_icon : String
+  mut time : Double
+  mut last_caret_activity : Double
 } derive(Eq, Debug)
 
 ///|
@@ -101,6 +103,8 @@ pub fn UIContext::new() -> UIContext {
     prev_blocking_rects: [],
     style: WidgetStyle::default(),
     cursor_icon: "default",
+    time: 0.0,
+    last_caret_activity: 0.0,
   }
 }
 
@@ -108,6 +112,7 @@ pub fn UIContext::new() -> UIContext {
 pub fn UIContext::begin_frame(self : UIContext, raw_input : RawInput) -> Unit {
   self.cursor_icon = "default"
   self.input.update(raw_input)
+  self.time = self.time + self.input.dt
   self.draw_list.clear()
   self.fg_draw_list.clear()
   self.foreground = false
@@ -461,6 +466,7 @@ pub fn UIContext::request_focus(self : UIContext, id : Id) -> Unit {
       self.pending_lost_focus_id = self.focused_id
     }
     self.focused_id = id
+    self.reset_caret_blink()
   }
 }
 
@@ -876,4 +882,31 @@ pub fn UIContext::open_menu_id(self : UIContext) -> Id {
 ///|
 pub fn UIContext::set_open_menu_id(self : UIContext, id : Id) -> Unit {
   self.open_menu_id = id
+}
+
+///|
+pub fn UIContext::time(self : UIContext) -> Double {
+  self.time
+}
+
+///|
+pub fn UIContext::set_time(self : UIContext, t : Double) -> Unit {
+  self.time = t
+}
+
+///|
+pub fn UIContext::reset_caret_blink(self : UIContext) -> Unit {
+  self.last_caret_activity = self.time
+}
+
+///|
+pub fn UIContext::is_caret_visible(self : UIContext) -> Bool {
+  let elapsed = self.time - self.last_caret_activity
+  if elapsed < 0.5 {
+    true
+  } else {
+    // 500ms on, 500ms off period (1.0s cycle)
+    let half_seconds = ((elapsed - 0.5) * 2.0).to_int()
+    half_seconds % 2 == 1
+  }
 }

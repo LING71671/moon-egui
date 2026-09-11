@@ -94,6 +94,7 @@ pub fn UIContext::command_palette(
   let mut new_selected_index = selected_index
 
   if self.input.key_pressed(Key::Backspace) {
+    self.reset_caret_blink()
     let len = new_query.length()
     if len > 0 {
       new_query = string_slice(new_query, 0, len - 1)
@@ -102,6 +103,7 @@ pub fn UIContext::command_palette(
 
   let text_in = self.input.text_input()
   if !text_in.is_empty() {
+    self.reset_caret_blink()
     new_query = new_query + text_in
   }
 
@@ -301,12 +303,14 @@ pub fn UIContext::command_palette(
     )
     let q_size = self.measure_text(new_query, 13.5)
     let caret_x = card_x + 36.0 + q_size.x + 2.0
-    self.draw_list.add_line(
-      @math.Vec2::new(caret_x, card_y + 16.0),
-      @math.Vec2::new(caret_x, card_y + 31.0),
-      @color.Color::accent_primary(),
-      1.5,
-    )
+    if self.is_caret_visible() {
+      self.draw_list.add_line(
+        @math.Vec2::new(caret_x, card_y + 16.0),
+        @math.Vec2::new(caret_x, card_y + 31.0),
+        @color.Color::accent_primary(),
+        1.5,
+      )
+    }
   }
 
   // Right Esc badge

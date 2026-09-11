@@ -124,6 +124,7 @@ pub fn UIContext::code_editor(
   self.register_focusable(id)
   if resp.pressed() || resp.clicked() {
     self.request_focus(id)
+    self.reset_caret_blink()
   }
   let is_focused = self.has_focus(id)
 
@@ -132,6 +133,19 @@ pub fn UIContext::code_editor(
   let lines = split_lines(current_text)
 
   if is_focused {
+    if self.input.key_pressed(Key::ArrowLeft) ||
+      self.input.key_pressed(Key::ArrowRight) ||
+      self.input.key_pressed(Key::ArrowUp) ||
+      self.input.key_pressed(Key::ArrowDown) ||
+      self.input.key_pressed(Key::Home) ||
+      self.input.key_pressed(Key::End) ||
+      self.input.key_pressed(Key::Enter) ||
+      self.input.key_pressed(Key::Tab) ||
+      self.input.key_pressed(Key::Backspace) ||
+      self.input.key_pressed(Key::Delete) ||
+      !self.input.text_input().is_empty() {
+      self.reset_caret_blink()
+    }
     let (cur_line, cur_col) = cursor_to_line_col(current_text, cursor_pos)
 
     // Horizontal character navigation
@@ -338,7 +352,9 @@ pub fn UIContext::code_editor(
   }
 
   // Render Caret
-  if is_focused && active_line < render_lines.length() {
+  if is_focused &&
+    self.is_caret_visible() &&
+    active_line < render_lines.length() {
     let active_str = render_lines[active_line]
     let prefix = string_slice(active_str, 0, active_col)
     let prefix_w = self.measure_text(prefix, 12.5).x

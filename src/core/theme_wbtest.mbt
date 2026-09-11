@@ -59,3 +59,85 @@ test "theme: cursor_icon reporting on hover" {
   assert_true(resp_txt.hovered())
   assert_eq(ctx2.cursor_icon(), "text")
 }
+
+///|
+test "theme: caret blinking and interaction reset" {
+  let ctx = UIContext::new()
+  // Initially at time 0.0, caret is visible
+  assert_true(ctx.is_caret_visible())
+
+  // Advance time to 0.6s (within off phase [0.5, 1.0))
+  ctx.set_time(0.6)
+  assert_false(ctx.is_caret_visible())
+
+  // Advance time to 1.1s (within on phase [1.0, 1.5))
+  ctx.set_time(1.1)
+  assert_true(ctx.is_caret_visible())
+
+  // Advance time to 1.7s (within off phase [1.5, 2.0))
+  ctx.set_time(1.7)
+  assert_false(ctx.is_caret_visible())
+
+  // User types or clicks: caret immediately resets to visible
+  ctx.reset_caret_blink()
+  assert_true(ctx.is_caret_visible())
+}
+
+///|
+test "text_edit: caret line rendered when visible and omitted when blinking off" {
+  let ctx = UIContext::new()
+
+  // Frame 1: mouse down on field at time 0.0
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(30.0, 15.0), true)
+  ctx.begin_frame(raw1)
+  let _ = ctx.text_edit("email", "dev@moonbitlang.com", "")
+  let dl1 = ctx.end_frame()
+  let mut has_line1 = false
+  for i = 0; i < dl1.len(); i = i + 1 {
+    if dl1.get_command(i) is Some(@draw.DrawCmd::Line(_)) {
+      has_line1 = true
+    }
+  }
+  assert_true(has_line1)
+
+  // Frame 2: mouse released to complete click at time 0.05
+  ctx.set_time(0.05)
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(30.0, 15.0), false)
+  ctx.begin_frame(raw2)
+  let _ = ctx.text_edit("email", "dev@moonbitlang.com", "")
+  let _ = ctx.end_frame()
+
+  // Frame 3: idle for 0.6s (time = 0.65s) -> caret enters off phase (hidden)
+  ctx.set_time(0.65)
+  let raw3 = RawInput::from_mouse(@math.Vec2::new(-100.0, -100.0), false)
+  ctx.begin_frame(raw3)
+  let _ = ctx.text_edit("email", "dev@moonbitlang.com", "")
+  let dl3 = ctx.end_frame()
+  let mut has_line3 = false
+  for i = 0; i < dl3.len(); i = i + 1 {
+    if dl3.get_command(i) is Some(@draw.DrawCmd::Line(_)) {
+      has_line3 = true
+    }
+  }
+  assert_false(has_line3)
+
+  // Frame 4: user types a key -> caret immediately solid (visible)
+  let raw4 = RawInput::with_events(
+    @math.Vec2::new(-100.0, -100.0),
+    false,
+    @math.Vec2::zero(),
+    [],
+    "x",
+    Modifiers::none(),
+  )
+  ctx.begin_frame(raw4)
+  let _ = ctx.text_edit("email", "dev@moonbitlang.com", "")
+  let dl4 = ctx.end_frame()
+  let mut has_line4 = false
+  for i = 0; i < dl4.len(); i = i + 1 {
+    if dl4.get_command(i) is Some(@draw.DrawCmd::Line(_)) {
+      has_line4 = true
+    }
+  }
+  assert_true(has_line4)
+}
