@@ -145,7 +145,7 @@ pub fn UIContext::begin_frame(self : UIContext, raw_input : RawInput) -> Unit {
 ///|
 pub fn UIContext::end_frame(self : UIContext) -> @draw.DrawList {
   // Process Tab key focus traversal
-  if self.input.key_pressed(Key::Tab) && not(self.focusable_ids.is_empty()) {
+  if self.input.key_pressed(Key::Tab) && !self.focusable_ids.is_empty() {
     let count = self.focusable_ids.length()
     let mut current_idx = -1
     for i = 0; i < count; i = i + 1 {
@@ -340,7 +340,7 @@ pub fn UIContext::allocate_space(
   let is_focused = self.focused_id == id
   let gained_focus = is_focused && self.prev_focused_id != id
   let lost_focus = self.lost_focus_id == id ||
-    (self.pending_lost_focus_id == id && not(is_focused))
+    (self.pending_lost_focus_id == id && !is_focused)
 
   if clicked {
     self.request_focus(id)
@@ -461,7 +461,7 @@ pub fn UIContext::push_clip(self : UIContext, rect : @math.Rect) -> Unit {
 
 ///|
 pub fn UIContext::pop_clip(self : UIContext) -> Unit {
-  if not(self.clip_stack.is_empty()) {
+  if !self.clip_stack.is_empty() {
     let _ = self.clip_stack.pop()
   }
   self.draw_list.pop_clip()
