@@ -1,5 +1,5 @@
 ///|
-pub enum Key {
+pub(all) enum Key {
   Backspace
   Delete
   Enter
@@ -76,7 +76,7 @@ pub fn Modifiers::new(
 }
 
 ///|
-pub enum Event {
+pub(all) enum Event {
   Key(Key, Bool, Modifiers)
   TextInput(String)
   PointerWheel(@math.Vec2)
@@ -119,6 +119,30 @@ pub fn RawInput::from_mouse(
     events: [],
     text_input: "",
     modifiers: Modifiers::none(),
+  }
+}
+
+///|
+/// Full constructor for host drivers: pointer state plus the input events
+/// collected during the frame. `Key` and `Event` are `pub(all)`, so a host
+/// builds the events and passes them in; `text_input` carries the plain text
+/// typed this frame and may be left empty when text arrives as events instead.
+pub fn RawInput::with_events(
+  mouse_pos : @math.Vec2,
+  mouse_down : Bool,
+  scroll_delta : @math.Vec2,
+  events : Array[Event],
+  text_input : String,
+  modifiers : Modifiers,
+) -> RawInput {
+  {
+    mouse_pos,
+    mouse_down,
+    scroll_delta,
+    dt: 0.0166,
+    events,
+    text_input,
+    modifiers,
   }
 }
 
