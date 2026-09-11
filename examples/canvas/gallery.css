@@ -2589,6 +2589,216 @@
       transform-origin: left;
     }
 
+    /* TreeView Interactive Showcase */
+    .tree-stage-wrap {
+      background: #FFFFFF;
+      border: 1px solid var(--border, #CBD5E1);
+      border-radius: 8px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 380px;
+    }
+
+    .tree-toolbar {
+      background: #F8FAFC;
+      border-bottom: 1px solid var(--border-muted, #E2E8F0);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tree-toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tree-action-btn {
+      padding: 4px 10px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #475569;
+      background: #FFFFFF;
+      border: 1px solid var(--border, #CBD5E1);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .tree-action-btn:hover {
+      color: var(--brand, #2563EB);
+      border-color: var(--brand, #2563EB);
+      background: #EFF6FF;
+    }
+
+    .tree-action-btn:active {
+      transform: scale(0.97);
+    }
+
+    .tree-search-box {
+      display: flex;
+      align-items: center;
+      background: #FFFFFF;
+      border: 1px solid var(--border, #CBD5E1);
+      border-radius: 5px;
+      padding: 3px 8px;
+      font-size: 12px;
+      width: 160px;
+      transition: border-color 0.15s ease;
+    }
+
+    .tree-search-box:focus-within {
+      border-color: var(--brand, #2563EB);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+    }
+
+    .tree-search-input {
+      border: none;
+      outline: none;
+      background: transparent;
+      width: 100%;
+      font-size: 11.5px;
+      color: #0F172A;
+      font-family: inherit;
+    }
+
+    .tree-scroll-body {
+      flex: 1;
+      padding: 8px 6px;
+      overflow-y: auto;
+      max-height: 380px;
+      user-select: none;
+    }
+
+    .tree-node-row {
+      display: flex;
+      align-items: center;
+      height: 28px;
+      padding-right: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.12s ease, color 0.12s ease;
+      font-size: 12.5px;
+      color: #334155;
+    }
+
+    .tree-node-row:hover {
+      background: #F8FAFC;
+      color: #0F172A;
+    }
+
+    .tree-node-row.is-selected {
+      background: #EFF6FF;
+      color: var(--brand, #2563EB);
+      font-weight: 600;
+    }
+
+    .tree-node-row.is-selected::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 3px;
+      bottom: 3px;
+      width: 2.5px;
+      background: var(--brand, #2563EB);
+      border-radius: 0 2px 2px 0;
+    }
+
+    .tree-guide-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: #E2E8F0;
+    }
+
+    .tree-chevron-box {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #94A3B8;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .tree-chevron-box:hover {
+      color: #0F172A;
+      background: #E2E8F0;
+    }
+
+    .tree-chevron-box.is-expanded {
+      transform: rotate(90deg);
+    }
+
+    .tree-chevron-placeholder {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .tree-icon-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      margin-right: 6px;
+      flex-shrink: 0;
+    }
+
+    .tree-icon-scene { background: #EEF2FF; color: #4F46E5; }
+    .tree-icon-group { background: #FEF3C7; color: #D97706; }
+    .tree-icon-cam   { background: #E0E7FF; color: #4338CA; }
+    .tree-icon-mesh  { background: #ECFDF5; color: #059669; }
+    .tree-icon-mat   { background: #FCE7F3; color: #DB2777; }
+    .tree-icon-light { background: #FFFBEB; color: #B45309; }
+
+    .tree-node-title {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 28px;
+    }
+
+    .tree-node-tag {
+      font-size: 10.5px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #94A3B8;
+      margin-left: 8px;
+    }
+
+    .tree-node-row.is-selected .tree-node-tag {
+      color: #60A5FA;
+    }
+
+    .tree-statusbar {
+      background: #F8FAFC;
+      border-top: 1px solid var(--border-muted, #E2E8F0);
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #64748B;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
     /* Footer - Exactly matching index.html */
     .site-footer {
       border-top: 1px solid var(--border);

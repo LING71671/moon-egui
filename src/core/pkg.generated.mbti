@@ -245,6 +245,24 @@ pub struct ToastResponse {
   dismissed_id : String?
 } derive(Eq, @debug.Debug)
 
+pub struct TreeNode {
+  id : String
+  label : String
+  icon : String
+  children : Array[TreeNode]
+} derive(Eq, @debug.Debug)
+pub fn TreeNode::is_leaf(Self) -> Bool
+pub fn TreeNode::leaf(String, String, icon? : String) -> Self
+pub fn TreeNode::new(String, String, children? : Array[Self], icon? : String) -> Self
+
+pub struct TreeViewResponse {
+  selected_id : String?
+  expanded_ids : Array[String]
+  clicked_id : String?
+  toggled_id : String?
+  response : Response
+} derive(Eq, @debug.Debug)
+
 pub struct UIContext {
   input : InputState
   mut draw_list : @draw.DrawList
@@ -366,6 +384,7 @@ pub fn UIContext::text_edit_sized(Self, String, String, String, @math.Vec2) -> (
 pub fn UIContext::toast_stack(Self, Array[Toast], anchor? : ToastAnchor, viewport_size? : @math.Vec2) -> ToastResponse
 pub fn UIContext::toggle(Self, String, Bool) -> (Bool, Response)
 pub fn UIContext::tooltip(Self, String) -> Unit
+pub fn UIContext::tree_view(Self, String, Array[TreeNode], selected_id? : String?, expanded_ids? : Array[String], indent_step? : Double, item_height? : Double, size? : @math.Vec2) -> TreeViewResponse
 pub fn UIContext::vertical(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::wants_capture_mouse(Self) -> Bool
 pub fn UIContext::window(Self, String, @math.Vec2, @math.Vec2, (Self) -> Unit, id_salt? : String, constrain_to? : @math.Rect) -> Response

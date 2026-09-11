@@ -1143,6 +1143,333 @@ pub fn draw_collapsing(ui : @core.UIContext, state : AppState) -> Unit {
         }
       },
 
+      tree_view: {
+        titleKey: 'comp.tree_view.title',
+        signature: "ui.tree_view(id_salt, nodes, selected_id~, expanded_ids~, indent_step~, item_height~, size?) -> TreeViewResponse",
+        code: {
+          zh: `///|
+pub fn draw_cad_outliner(ui : @core.UIContext, state : AppState) -> Unit {
+  // 构建三维 CAD 场景资产层级树
+  let nodes = [
+    @core.TreeNode::new("scene_root", "场景装配体 (Root Scene)", icon="[S]", children=[
+      @core.TreeNode::new("cam_grp", "摄影机组 (Cameras)", icon="[G]", children=[
+        @core.TreeNode::leaf("main_cam", "透视主摄影机", icon="[C]"),
+        @core.TreeNode::leaf("ortho_top", "正交顶视图", icon="[C]"),
+      ]),
+      @core.TreeNode::new("geo_grp", "几何体实体 (Geometry)", icon="[G]", children=[
+        @core.TreeNode::leaf("bezier_curve", "三次贝塞尔曲线", icon="[M]"),
+        @core.TreeNode::new("robot_arm", "机械臂总成", icon="[G]", children=[
+          @core.TreeNode::leaf("joint_1", "基座旋转关节", icon="[M]"),
+          @core.TreeNode::leaf("gripper", "气动末端执行器", icon="[M]"),
+        ]),
+        @core.TreeNode::leaf("mesh_torus", "环面图元", icon="[M]"),
+      ]),
+      @core.TreeNode::new("mat_grp", "材质与着色器", icon="[G]", children=[
+        @core.TreeNode::leaf("pbr_metal", "PBR 导电金属材质", icon="[T]"),
+        @core.TreeNode::leaf("glass_mat", "次表面透光玻璃", icon="[T]"),
+      ]),
+      @core.TreeNode::leaf("env_light", "HDRI 环境光照", icon="[L]"),
+    ]),
+  ]
+
+  // 即时模式分层树渲染：支持记忆展开、发丝引导线与键盘上下/左右极速导航
+  let resp = ui.tree_view(
+    "cad_outliner",
+    nodes,
+    selected_id=state.selected_node,
+    expanded_ids=state.expanded_nodes,
+  )
+
+  state.selected_node = resp.selected_id
+  state.expanded_nodes = resp.expanded_ids
+
+  if resp.clicked_id is Some(node_id) {
+    println("选中 CAD 节点: \{node_id}")
+  }
+}`,
+          en: `///|
+pub fn draw_cad_outliner(ui : @core.UIContext, state : AppState) -> Unit {
+  // Construct 3D CAD hierarchy tree
+  let nodes = [
+    @core.TreeNode::new("scene_root", "Root Assembly (Scene)", icon="[S]", children=[
+      @core.TreeNode::new("cam_grp", "Cameras", icon="[G]", children=[
+        @core.TreeNode::leaf("main_cam", "Perspective Camera", icon="[C]"),
+        @core.TreeNode::leaf("ortho_top", "Orthographic Top", icon="[C]"),
+      ]),
+      @core.TreeNode::new("geo_grp", "Geometry Entities", icon="[G]", children=[
+        @core.TreeNode::leaf("bezier_curve", "Cubic Bezier Spline", icon="[M]"),
+        @core.TreeNode::new("robot_arm", "Robot Arm Assembly", icon="[G]", children=[
+          @core.TreeNode::leaf("joint_1", "Rotary Base Joint", icon="[M]"),
+          @core.TreeNode::leaf("gripper", "Pneumatic Gripper", icon="[M]"),
+        ]),
+        @core.TreeNode::leaf("mesh_torus", "Torus Topology", icon="[M]"),
+      ]),
+      @core.TreeNode::new("mat_grp", "Materials & Shaders", icon="[G]", children=[
+        @core.TreeNode::leaf("pbr_metal", "PBR Metallic Material", icon="[T]"),
+        @core.TreeNode::leaf("glass_mat", "Subsurface Glass", icon="[T]"),
+      ]),
+      @core.TreeNode::leaf("env_light", "HDRI Environment Light", icon="[L]"),
+    ]),
+  ]
+
+  // Immediate-mode TreeView: expand memory, guide lines, and full keyboard navigation
+  let resp = ui.tree_view(
+    "cad_outliner",
+    nodes,
+    selected_id=state.selected_node,
+    expanded_ids=state.expanded_nodes,
+  )
+
+  state.selected_node = resp.selected_id
+  state.expanded_nodes = resp.expanded_ids
+
+  if resp.clicked_id is Some(node_id) {
+    println("Selected CAD node: \{node_id}")
+  }
+}`
+        },
+        renderUI: (container, state) => {
+          state.treeSelected = state.treeSelected || 'scene_root';
+          state.treeExpanded = state.treeExpanded || ['scene_root', 'geo_grp', 'robot_arm'];
+          state.treeFilter = state.treeFilter || '';
+
+          const rawData = [
+            {
+              id: 'scene_root',
+              label: T('场景装配体 (Root Scene)', 'Root Assembly (Scene)'),
+              icon: 'S',
+              iconClass: 'tree-icon-scene',
+              tag: 'Scene',
+              children: [
+                {
+                  id: 'cam_grp',
+                  label: T('摄影机组 (Cameras)', 'Cameras'),
+                  icon: 'G',
+                  iconClass: 'tree-icon-group',
+                  tag: 'Group',
+                  children: [
+                    { id: 'main_cam', label: T('透视主摄影机', 'Perspective Camera'), icon: 'C', iconClass: 'tree-icon-cam', tag: 'Cam' },
+                    { id: 'ortho_top', label: T('正交顶视图', 'Orthographic Top'), icon: 'C', iconClass: 'tree-icon-cam', tag: 'Cam' }
+                  ]
+                },
+                {
+                  id: 'geo_grp',
+                  label: T('几何体实体 (Geometry)', 'Geometry Entities'),
+                  icon: 'G',
+                  iconClass: 'tree-icon-group',
+                  tag: 'Group',
+                  children: [
+                    { id: 'bezier_curve', label: T('三次贝塞尔曲线', 'Cubic Bezier Spline'), icon: 'M', iconClass: 'tree-icon-mesh', tag: 'Spline' },
+                    {
+                      id: 'robot_arm',
+                      label: T('机械臂总成', 'Robot Arm Assembly'),
+                      icon: 'G',
+                      iconClass: 'tree-icon-group',
+                      tag: 'Assembly',
+                      children: [
+                        { id: 'joint_1', label: T('基座旋转关节', 'Rotary Base Joint'), icon: 'M', iconClass: 'tree-icon-mesh', tag: 'Joint' },
+                        { id: 'gripper', label: T('气动末端执行器', 'Pneumatic Gripper'), icon: 'M', iconClass: 'tree-icon-mesh', tag: 'Gripper' }
+                      ]
+                    },
+                    { id: 'mesh_torus', label: T('环面拓扑网格', 'Torus Mesh'), icon: 'M', iconClass: 'tree-icon-mesh', tag: 'Mesh' }
+                  ]
+                },
+                {
+                  id: 'mat_grp',
+                  label: T('材质与着色器 (Materials)', 'Materials & Shaders'),
+                  icon: 'G',
+                  iconClass: 'tree-icon-group',
+                  tag: 'Shaders',
+                  children: [
+                    { id: 'pbr_metal', label: T('PBR 导电金属材质', 'PBR Metallic Material'), icon: 'T', iconClass: 'tree-icon-mat', tag: 'PBR' },
+                    { id: 'glass_mat', label: T('次表面透光玻璃', 'Subsurface Glass'), icon: 'T', iconClass: 'tree-icon-mat', tag: 'Refract' }
+                  ]
+                },
+                { id: 'env_light', label: T('HDRI 环境光照', 'HDRI Environment Light'), icon: 'L', iconClass: 'tree-icon-light', tag: 'Light' }
+              ]
+            }
+          ];
+
+          container.innerHTML = `
+            <div class="tree-stage-wrap" tabindex="0" id="treeStage">
+              <!-- Toolbar -->
+              <div class="tree-toolbar">
+                <div class="tree-toolbar-actions">
+                  <button class="tree-action-btn" id="btnExpandAll">${T('展开全部', 'Expand All')}</button>
+                  <button class="tree-action-btn" id="btnCollapseAll">${T('折叠全部', 'Collapse All')}</button>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div class="tree-search-box">
+                    <input type="text" class="tree-search-input" id="treeSearchInput" placeholder="${T('过滤节点...', 'Filter nodes...')}" value="${state.treeFilter}">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tree Body -->
+              <div class="tree-scroll-body" id="treeBody"></div>
+
+              <!-- Statusbar -->
+              <div class="tree-statusbar">
+                <span>selected_id: <strong style="color: var(--brand, #2563EB); font-weight: 600;" id="treeSelectedBadge">${state.treeSelected || 'none'}</strong></span>
+                <span id="treeStatsHint"></span>
+              </div>
+            </div>
+          `;
+
+          const body = container.querySelector('#treeBody');
+          const stage = container.querySelector('#treeStage');
+          const selectedBadge = container.querySelector('#treeSelectedBadge');
+          const statsHint = container.querySelector('#treeStatsHint');
+          const searchInput = container.querySelector('#treeSearchInput');
+
+          function flatten(nodes, depth, parentId, out) {
+            nodes.forEach(n => {
+              const hasChildren = n.children && n.children.length > 0;
+              const isExpanded = hasChildren && state.treeExpanded.includes(n.id);
+              out.push({ node: n, depth, hasChildren, isExpanded, parentId });
+              if (isExpanded) {
+                flatten(n.children, depth + 1, n.id, out);
+              }
+            });
+          }
+
+          function renderTree() {
+            const flat = [];
+            flatten(rawData, 0, null, flat);
+
+            const filter = state.treeFilter.trim().toLowerCase();
+            const visible = filter ? flat.filter(it => it.node.label.toLowerCase().includes(filter) || it.node.id.toLowerCase().includes(filter)) : flat;
+
+            let html = '';
+            visible.forEach(it => {
+              const n = it.node;
+              const isSel = n.id === state.treeSelected;
+              const indentPx = it.depth * 18;
+
+              let guideLines = '';
+              for (let d = 0; d < it.depth; d++) {
+                guideLines += `<div class="tree-guide-line" style="left: ${d * 18 + 14}px;"></div>`;
+              }
+
+              const chevronHtml = it.hasChildren
+                ? `<span class="tree-chevron-box ${it.isExpanded ? 'is-expanded' : ''}" data-toggle="${n.id}">▸</span>`
+                : `<span class="tree-chevron-placeholder"></span>`;
+
+              html += `
+                <div class="tree-node-row ${isSel ? 'is-selected' : ''}" data-id="${n.id}" style="padding-left: ${indentPx + 6}px;">
+                  ${guideLines}
+                  ${chevronHtml}
+                  <span class="tree-icon-badge ${n.iconClass || 'tree-icon-scene'}">${n.icon}</span>
+                  <span class="tree-node-title">${n.label}</span>
+                  <span class="tree-node-tag">${n.tag || ''}</span>
+                </div>
+              `;
+            });
+
+            body.innerHTML = html;
+            selectedBadge.textContent = state.treeSelected || 'none';
+            statsHint.textContent = `${visible.length} ${T('个可见节点', 'visible nodes')} · ${state.treeExpanded.length} ${T('展开组', 'expanded')}`;
+
+            // Attach events
+            body.querySelectorAll('.tree-chevron-box').forEach(ch => {
+              ch.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const nid = ch.getAttribute('data-toggle');
+                toggleNode(nid);
+              });
+            });
+
+            body.querySelectorAll('.tree-node-row').forEach(row => {
+              row.addEventListener('click', (e) => {
+                const nid = row.getAttribute('data-id');
+                selectNode(nid);
+              });
+            });
+          }
+
+          function toggleNode(nid) {
+            if (state.treeExpanded.includes(nid)) {
+              state.treeExpanded = state.treeExpanded.filter(id => id !== nid);
+            } else {
+              state.treeExpanded.push(nid);
+            }
+            renderTree();
+            document.getElementById('statResponse').textContent = `tree_view: toggled "${nid}"`;
+          }
+
+          function selectNode(nid) {
+            state.treeSelected = nid;
+            renderTree();
+            document.getElementById('statResponse').textContent = `tree_view: selected "${nid}"`;
+            showToast(T(`已选中资产节点: ${nid}`, `Selected asset node: ${nid}`));
+          }
+
+          function collectAllGroupIds(nodes, out) {
+            nodes.forEach(n => {
+              if (n.children && n.children.length > 0) {
+                out.push(n.id);
+                collectAllGroupIds(n.children, out);
+              }
+            });
+          }
+
+          container.querySelector('#btnExpandAll').addEventListener('click', () => {
+            const all = [];
+            collectAllGroupIds(rawData, all);
+            state.treeExpanded = all;
+            renderTree();
+            document.getElementById('statResponse').textContent = 'tree_view: expanded all';
+          });
+
+          container.querySelector('#btnCollapseAll').addEventListener('click', () => {
+            state.treeExpanded = [];
+            renderTree();
+            document.getElementById('statResponse').textContent = 'tree_view: collapsed all';
+          });
+
+          searchInput.addEventListener('input', (e) => {
+            state.treeFilter = e.target.value;
+            renderTree();
+          });
+
+          // Keyboard navigation
+          stage.addEventListener('keydown', (e) => {
+            const flat = [];
+            flatten(rawData, 0, null, flat);
+            const idx = flat.findIndex(it => it.node.id === state.treeSelected);
+
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              if (idx < flat.length - 1) {
+                selectNode(flat[idx + 1].node.id);
+              }
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              if (idx > 0) {
+                selectNode(flat[idx - 1].node.id);
+              }
+            } else if (e.key === 'ArrowRight' && idx >= 0) {
+              e.preventDefault();
+              const curr = flat[idx];
+              if (curr.hasChildren && !curr.isExpanded) {
+                toggleNode(curr.node.id);
+              }
+            } else if (e.key === 'ArrowLeft' && idx >= 0) {
+              e.preventDefault();
+              const curr = flat[idx];
+              if (curr.hasChildren && curr.isExpanded) {
+                toggleNode(curr.node.id);
+              } else if (curr.parentId) {
+                selectNode(curr.parentId);
+              }
+            }
+          });
+
+          renderTree();
+        }
+      },
+
       tooltip: {
         titleKey: 'comp.tooltip.title',
         signature: "ui.tooltip(text)",
