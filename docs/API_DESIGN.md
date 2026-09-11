@@ -226,39 +226,59 @@ fn UIContext::window(
 ```
 
 ### 4.2 Top Application Menu Bar
-* **[Status: 🚧 Proposed]**
+* **[Status: ✅ Implemented]**
 
 ```moonbit
-// [Proposed]
-fn UIContext::menu_bar(self : UIContext, content : (UIContext) -> Unit) -> Unit
-fn UIContext::menu(self : UIContext, title : String, content : (UIContext) -> Unit) -> Unit
-fn UIContext::menu_item(self : UIContext, label : String) -> Bool
+// [Implemented] Top application menu strip (customizable height, default 28.0px)
+pub fn UIContext::menu_bar(
+  self : UIContext, 
+  height? : Double, 
+  content : (UIContext) -> Unit
+) -> Response
+
+// [Implemented] Menu header and popup card (with desktop Hover-to-Switch and foreground occlusion)
+pub fn UIContext::menu(
+  self : UIContext, 
+  title : String, 
+  content : (UIContext) -> Unit
+) -> Response
+
+// [Implemented] Menu item (optional shortcut badge, returns interaction Response)
+pub fn UIContext::menu_item(
+  self : UIContext, 
+  label : String, 
+  shortcut? : String
+) -> Response
+
+// [Implemented] Menu internal hairline divider
+pub fn UIContext::menu_separator(self : UIContext) -> Unit
 ```
 
 ### 4.3 Layout Flow & Grouping
 * `horizontal` / `vertical`: **[Status: ✅ Implemented]**
-* `collapsing_header`: **[Status: 🚧 Proposed]**
+* `collapsing_header`: **[Status: ✅ Implemented]**
 
 ```moonbit
 // [Implemented] Arrange children horizontally in a row (wraps upon exit)
-fn UIContext::horizontal(self : UIContext, content : (UIContext) -> Unit) -> Unit
+pub fn UIContext::horizontal(self : UIContext, content : (UIContext) -> Unit) -> Unit
 
 // [Implemented] Arrange children vertically in a column (default)
-fn UIContext::vertical(self : UIContext, content : (UIContext) -> Unit) -> Unit
+pub fn UIContext::vertical(self : UIContext, content : (UIContext) -> Unit) -> Unit
 
-// [Proposed] Collapsible tree section
-fn UIContext::collapsing_header(
+// [Implemented] Collapsible tree section (with persistent open state and chevron indicator)
+pub fn UIContext::collapsing_header(
   self : UIContext, 
+  id : String, 
   title : String, 
-  default_open : Bool, 
-  content : (UIContext) -> Unit
-) -> Unit
+  content : (UIContext) -> Unit, 
+  default_open? : Bool
+) -> Response
 
-// Visual horizontal separator line
-fn UIContext::separator(self : &mut UIContext)
+// [Implemented] Visual horizontal separator line
+pub fn UIContext::separator(self : UIContext) -> Unit
 
-// Vertical whitespace spacer
-fn UIContext::spacing(self : &mut UIContext, amount : Double)
+// [Implemented] Vertical/horizontal whitespace spacer
+pub fn UIContext::spacer(self : UIContext, amount : Double) -> Unit
 ```
 
 ### 4.4 Scroll Area

@@ -157,21 +157,22 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 ### Available Now
 - **Core Draw Engine**: Pure MoonBit implementation of `Vec2`, `Rect`, `Color`, and platform-agnostic `DrawCmd` stream, supporting rectangles, lines, circles, text, and nested scissor clip stacks.
 - **Layout & Space Allocation**: `UIContext` manages `hot_id` / `active_id` state machine and layout scope stacks, supporting vertical and horizontal flow layouts (`horizontal`). `allocate_space()` computes geometry bounds and automatic cursor placement.
-- **Available Widget Suite**:
-  - **Labels**: `label` (standard text) and `label_colored` (custom tinted text).
-  - **Buttons**: `button` (standard button) and `button_primary` (accentuated CTA button) with Normal / Hover / Pressed responses.
-  - **Checkbox**: `checkbox` (interactive toggle box).
-  - **Continuous Sliders**: `slider` (floating-point scrub) and `slider_int` (stepped integer slider) with continuous drag tracking and percentage mapping.
-  - **Layout Spacing**: `separator` (horizontal divider) and `spacer` (vertical flexible padding).
-- **Window Container**: `window(title, pos, size, content)` provides background cards, header bar, local cursor scoping, and scissor viewport clipping.
-- **Headless & Automated Testing**: Core logic produces pure `DrawCmd` streams without browser bindings, verifiable via `moon test`.
+- **Core Widget Suite**:
+  - **Inputs**: `button` (with keyboard shortcuts, primary/default variants, and custom sizing), `text_edit` (single-line porcelain text entry), `label` / `label_colored`.
+  - **Selection & Values**: `checkbox` (precision toggle box), `toggle` (bistable capsule switch), `radio` (concentric option button), `slider` / `slider_int` (continuous/stepped numeric scrubbers), `drag_value` (fine-grained numeric drag), `combo_box` (lightweight dropdown selection), `color_button` (swatch and palette picker).
+  - **Feedback & Display**: `progress_bar` (smooth progress indicator), `tooltip` (floating bubble hints with boundary clipping prevention).
+  - **Layout Spacing**: `separator` (hairline divider) and `spacer` (flexible spacing).
+- **Windows & Container Architecture**:
+  - **Global Application Menu Bar**: `menu_bar`, `menu`, `menu_item`, `menu_separator` featuring isolated foreground layer projection, desktop-grade Hover-to-Switch transitions, and outside-click dismissal;
+  - **Free-Floating Windows**: `window` supporting title-bar drag repositioning, dynamic Z-Index elevation, local coordinate scoping, and scissor clipping;
+  - **Advanced Containers**: `collapsing_header` (tree groupings with persistent open memory), `scroll_area` (wheel-driven viewport scrolling), `tab_bar` (floating pill tab navigation).
+- **Headless & Automated Testing**: Core logic produces pure `DrawCmd` streams without browser bindings, backed by 58 automated unit tests (100% passing).
 - **Canvas 2D Host Driver**: Lightweight JavaScript bridge and 60 FPS rendering pipeline, coupled with O(1) viewport spatial culling and multi-scale LOD architecture.
 
 ### Planned & In Roadmap
-- **Advanced Inputs**: Blender-style numeric scrubbers (`DragValue`).
-- **Advanced Windowing**: Window title-bar drag repositioning, dynamic Z-index elevation, and collapsible tree sections (`CollapsingHeader`).
-- **Layout Containers**: Scrollable scissor viewports (`ScrollArea`) and top-level menus (`MenuBar`).
-- **Data & Telemetry**: Smooth progress bars (`ProgressBar`), live sparkline plots (`Sparkline`), and hover tooltips (`Tooltip`).
+- **Hardware-Accelerated Backends**: WebGL / WebGPU batched geometry rasterizers and custom shader pipelines.
+- **Cross-Platform Native Desktop**: Raylib / SDL3 windowing integration.
+- **Advanced Data Displays**: Real-time telemetry sparklines (`Sparkline`) and multi-panel docking systems.
 
 ---
 
@@ -181,11 +182,10 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
   - Core data structures delivered: `Vec2`, `Rect`, `Color`, `InputState`, `DrawCmd`, `DrawList`.
 - [x] **Milestone 2: Input State Machine & Basic Widgets** (Sep 12 – Sep 15)
   - Delivered: AABB hit-testing, bi-directional layouts (`horizontal`/`vertical`), `Button`, `Label`, `Checkbox`, `Slider`, `SliderInt`.
+- [x] **Milestone 3: Windowing & Container Management** (Sep 16 – Sep 18) [Delivered]
+  - Delivered: Free-floating draggable windows with dynamic Z-Index elevation (`Window`), global application menu bar (`MenuBar`), scrollable scissor viewports (`ScrollArea`), collapsible tree sections (`CollapsingHeader`).
 - [x] **Milestone 4 (Delivered Ahead): Canvas 2D Backend & Live Playground** (Deployed)
   - 60 FPS HTML5 Canvas 2D bridge, multi-scale LOD architecture, and automated GitHub Pages deployment.
-- [>] **Milestone 3 (In Progress): Windowing & Container Management** (Sep 16 – Sep 18)
-  - Delivered: Foundation `Window` container with local scoping and clipping.
-  - In Progress: Window dragging, dynamic Z-index management, collapsible sections.
 - [ ] **Milestone 5: Verification, Benchmarks & Release** (Sep 22 – Sep 24)
   - Comprehensive unit test coverage, documentation specs, and final acceptance.
 

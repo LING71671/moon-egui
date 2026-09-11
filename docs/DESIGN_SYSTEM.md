@@ -10,11 +10,11 @@
 
 ## 1. Design Aesthetics & Visual Identity
 
-`moon-egui` adopts a modern, premium **Low-Saturation Dark Industrial** design language inspired by tools like Linear, Raycast, and Unreal Engine:
-- **Clean Surfaces**: Dark charcoal backgrounds with subtle surface-layer elevation.
-- **Vibrant Semantic Accents**: Crisp electric blue/cyan accents for primary focus and interactive indicators.
-- **Balanced Radius**: Subtle, modern micro-radii (4px - 8px) avoiding cartoonish curves.
-- **Optical Ergonomics**: High contrast text ratios meeting WCAG AA standards.
+`moon-egui` adopts a refined, modern **Studio Light (Porcelain / Studio Light)** design language inspired by precision industrial instruments, mechanical tactile craft, and modern CAD workstations:
+- **Pristine Porcelain Surfaces & Micro-Elevation**: Crisp light porcelain surfaces (`#F8FAFC` ~ `#FFFFFF`) paired with subtle multi-tier elevation drop shadows for deep optical separation.
+- **High-Contrast Semantic Accents**: Cobalt Blue (`#2563EB`) as primary interactive indicators, focus rings, and selection highlights.
+- **Mechanical Tactile Haptics**: Core controls feature a distinct 1.5px mechanical press stroke (Chiclet keys, milled grooves) eliminating floaty, flat impressions.
+- **Optical Ergonomics**: Text utilizes deep titanium charcoal (`#0F172A`), strictly satisfying WCAG AA legibility criteria.
 
 ---
 
@@ -87,12 +87,13 @@ Spacing Scale (Base Unit: 4px):
 - **Button Height**: `28.0 px` (Standard compact desktop height)
 - **Input / Slider Height**: `26.0 px`
 - **Title Bar Height**: `32.0 px` (Allows comfortable drag hit-testing)
-- **Menu Bar Height**: `28.0 px`
+- **Global Menu Bar Height**: `28.0 px` (Full-width viewport edge strip)
+- **Menu Item Height**: `24.0 px` (Includes 4px shortcut badge)
 
 ### 3.2 Corner Radii Tokens
-- **`RADIUS_NONE`**: `0.0 px` (sharp corners for menu bars)
-- **`RADIUS_SM`**: `4.0 px` (buttons, checkboxes, text fields)
-- **`RADIUS_MD`**: `6.0 px` (cards, floating popups)
+- **`RADIUS_NONE`**: `0.0 px` (sharp corners for top menu bars)
+- **`RADIUS_SM`**: `4.0 px` (buttons, checkboxes, text fields, menu items)
+- **`RADIUS_MD`**: `6.0 px` (cards, floating dropdown popup cards)
 - **`RADIUS_LG`**: `8.0 px` (floating window corners)
 - **`RADIUS_PILL`**: `999.0 px` (toggle switches, status badges)
 
@@ -108,11 +109,13 @@ Fonts are mapped via the Canvas 2D font stack (defaulting to system UI fonts: `I
 | **Heading 2** | `15.0 px` | Semi-bold (600) | `20.0 px` | Subheadings, card titles |
 | **Body / Label** | `13.0 px` | Regular (400) | `18.0 px` | Standard widget labels, buttons |
 | **Caption / Small**| `11.0 px` | Regular (400) | `14.0 px` | Tooltips, sparkline legends, captions |
-| **Monospace / Code**| `12.0 px` | Mono (500) | `16.0 px` | Numerical telemetry, hex codes |
+| **Monospace / Code**| `12.0 px` | Mono (500) | `16.0 px` | Numerical telemetry, hex codes, shortcut badges |
 
 ---
 
 ## 5. Interactive State Machine
+
+### 5.1 Core Widget State Transitions
 
 Every interactive control undergoes a deterministic visual state transition:
 
@@ -128,3 +131,20 @@ Every interactive control undergoes a deterministic visual state transition:
        │
        └─► [Disabled == true] ───────► [Disabled State] (50% opacity, pointer events discarded)
 ```
+
+### 5.2 Dropdown Popup & Hover-to-Switch Flow
+
+The global application menu bar implements desktop-grade bistable switching:
+
+```
+[All Closed] ──(Click any Menu Header)──► [Opened: Menu A]
+                                                 │
+       ┌─────────────────────────────────────────┴─────────────────────────────────────────┐
+       │                                         │                                         │
+[Outside Click / Item Selected]        [Pointer Hovers Adjacent Menu B]              [Click Menu A Again]
+       │                                         │                                         │
+       ▼                                         ▼                                         ▼
+ [Back to Closed]                       [Switch to Opened: Menu B]                    [Dismiss to Closed]
+```
+- **Foreground Layer Isolation**: Dropdown popup cards render on an isolated `Foreground Layer` with shadow elevation and porcelain background.
+- **Occlusion Blocking**: While open, `block_hover` intercepts pointer events from penetrating to underlying canvas widgets.

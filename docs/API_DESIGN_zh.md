@@ -229,40 +229,59 @@ fn UIContext::window(
 ```
 
 ### 4.2 顶部全局应用程序菜单栏 (Application Menu Bar)
-* **[状态: 🚧 规划中 (Proposed)]**
+* **[状态: ✅ 已实现 (Implemented)]**
 
 ```moonbit
-// [规划中]
-fn UIContext::menu_bar(self : UIContext, content : (UIContext) -> Unit) -> Unit
-fn UIContext::menu(self : UIContext, title : String, content : (UIContext) -> Unit) -> Unit
-fn UIContext::menu_item(self : UIContext, label : String) -> Bool
+// [已实现] 顶部全局菜单条（支持自定义高度，默认 28.0px）
+pub fn UIContext::menu_bar(
+  self : UIContext, 
+  height? : Double, 
+  content : (UIContext) -> Unit
+) -> Response
+
+// [已实现] 菜单项与下拉弹出浮层（带桌面级 Hover-to-Switch 随动流转与前台图层遮挡）
+pub fn UIContext::menu(
+  self : UIContext, 
+  title : String, 
+  content : (UIContext) -> Unit
+) -> Response
+
+// [已实现] 下拉单项（支持可选快捷键注塑徽标，返回交互响应）
+pub fn UIContext::menu_item(
+  self : UIContext, 
+  label : String, 
+  shortcut? : String
+) -> Response
+
+// [已实现] 菜单内部细分割线
+pub fn UIContext::menu_separator(self : UIContext) -> Unit
 ```
 
 ### 4.3 流式排版组织与分组 (Layout Flow)
 * `horizontal` / `vertical`：**[状态: ✅ 已实现 (Implemented)]**
-* `collapsing_header`：**[状态: 🚧 规划中 (Proposed)]**
+* `collapsing_header`：**[状态: ✅ 已实现 (Implemented)]**
 
 ```moonbit
 // [已实现] 横向排列子元素（水平流式展开，退出时自动换行）
-fn UIContext::horizontal(self : UIContext, content : (UIContext) -> Unit) -> Unit
+pub fn UIContext::horizontal(self : UIContext, content : (UIContext) -> Unit) -> Unit
 
 // [已实现] 纵向排列子元素（默认垂直堆叠流）
-fn UIContext::vertical(self : UIContext, content : (UIContext) -> Unit) -> Unit
+pub fn UIContext::vertical(self : UIContext, content : (UIContext) -> Unit) -> Unit
 
-// [规划中] 可折叠树形分组面板
-fn UIContext::collapsing_header(
+// [已实现] 可折叠树形分组面板（带持久化展开状态与箭头指示）
+pub fn UIContext::collapsing_header(
   self : UIContext, 
+  id : String, 
   title : String, 
-  default_open : Bool, 
-  content : (UIContext) -> Unit
-) -> Unit
-)
+  content : (UIContext) -> Unit, 
+  default_open? : Bool
+) -> Response
 
-// 视觉水平分割横线
-fn UIContext::separator(self : &mut UIContext)
+// [已实现] 视觉水平分割横线
+pub fn UIContext::separator(self : UIContext) -> Unit
 
-// 垂直/水平空白占位间隔
-fn UIContext::spacing(self : &mut UIContext, amount : Double)
+// [已实现] 垂直/水平空白占位间隔
+pub fn UIContext::spacer(self : UIContext, amount : Double) -> Unit
 ```
 
 ### 4.4 滚动视图视口 (Scroll Area)

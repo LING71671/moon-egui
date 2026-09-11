@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Global Application Menu Bar (`menu_bar`, `menu`, `menu_item`, `menu_separator`)**: Desktop-grade menu strip featuring bistable Hover-to-Switch transitions, outside-click dismissal, deferred foreground layer elevation, and occlusion hover blocking.
+- **Milestone 3 Full Delivery**: Completion of Windowing, Advanced Containers, and Scissor Clipping suite (`window`, `menu_bar`, `scroll_area`, `collapsing_header`, `tab_bar`).
+- **Interactive Component Gallery Integration**: Added MenuBar showcase with real-time CAD workspace demo in `examples/canvas/gallery.html` and bilingual entries in `examples/canvas/i18n.js`.
+- **Studio Light Porcelain Design Unification**: Design token consolidation in `src/color/` and refreshed specifications across design system documentation.
+
 ---
 
 ## [0.1.0-alpha.1] - 2026-09-09
