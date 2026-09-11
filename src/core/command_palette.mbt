@@ -227,8 +227,14 @@ pub fn UIContext::command_palette(
     }
   }
 
+  // Layout metrics & elevation offsets
+  let row_pad_x = row_radius * scale
+  let row_w = card_w - row_pad_x * 2.0
+  let elevation_key_y = 8.0 * scale
+  let elevation_ambient_y = 2.0 * scale
+
   // Mouse hover & click on item rows
-  let mut cur_row_y = card_y + header_h + 6.0 * scale
+  let mut cur_row_y = card_y + header_h + row_pad_x
   let mut prev_row_cat = ""
   let mut clicked_id : String? = None
 
@@ -238,12 +244,7 @@ pub fn UIContext::command_palette(
       cur_row_y = cur_row_y + cat_h
       prev_row_cat = item.category
     }
-    let row_rect = @math.Rect::new(
-      card_x + 6.0 * scale,
-      cur_row_y,
-      card_w - 12.0 * scale,
-      row_h,
-    )
+    let row_rect = @math.Rect::new(card_x + row_pad_x, cur_row_y, row_w, row_h)
     if row_rect.contains(self.input.mouse_pos) {
       self.set_cursor_icon("pointer")
       new_selected_index = idx
@@ -271,12 +272,12 @@ pub fn UIContext::command_palette(
 
   // Drop shadows
   self.draw_list.add_rect(
-    @math.Rect::new(card_x, card_y + 8.0 * scale, card_w, card_h),
+    @math.Rect::new(card_x, card_y + elevation_key_y, card_w, card_h),
     @color.Color::shadow_key(),
     card_radius,
   )
   self.draw_list.add_rect(
-    @math.Rect::new(card_x, card_y + 2.0 * scale, card_w, card_h),
+    @math.Rect::new(card_x, card_y + elevation_ambient_y, card_w, card_h),
     @color.Color::shadow_ambient(),
     card_radius,
   )
@@ -354,22 +355,28 @@ pub fn UIContext::command_palette(
   )
 
   // Results Stream
-  let mut draw_y = card_y + header_h + 6.0 * scale
+  let mut draw_y = card_y + header_h + row_pad_x
   let mut prev_draw_cat = ""
 
   if filtered_count == 0 {
+    let empty_text_y = draw_y + (48.0 * scale - font_nm) * 0.5
     self.draw_list.add_text(
-      @math.Vec2::new(card_x + 20.0 * scale, draw_y + 16.0 * scale),
+      @math.Vec2::new(card_x + 20.0 * scale, empty_text_y),
       "未找到匹配命令",
       font_nm,
       @color.Color::text_muted(),
     )
   } else {
+    let indicator_h = 20.0 * scale
+    let indicator_w = 3.0 * scale
+    let text_pad_left = card_x + row_pad_x + 12.0 * scale
+
     for idx = 0; idx < filtered_count; idx = idx + 1 {
       let item = filtered[idx]
       if !item.category.is_empty() && item.category != prev_draw_cat {
+        let cat_y = draw_y + (cat_h - font_sm) * 0.5
         self.draw_list.add_text(
-          @math.Vec2::new(card_x + 16.0 * scale, draw_y + 5.0 * scale),
+          @math.Vec2::new(card_x + 16.0 * scale, cat_y),
           item.category,
           font_sm,
           @color.Color::text_muted(),
@@ -378,13 +385,9 @@ pub fn UIContext::command_palette(
         prev_draw_cat = item.category
       }
 
-      let row_rect = @math.Rect::new(
-        card_x + 6.0 * scale,
-        draw_y,
-        card_w - 12.0 * scale,
-        row_h,
-      )
+      let row_rect = @math.Rect::new(card_x + row_pad_x, draw_y, row_w, row_h)
       let is_selected = idx == new_selected_index
+      let text_y = draw_y + (row_h - font_nm) * 0.5
 
       if is_selected {
         self.draw_list.add_rect(
@@ -392,25 +395,26 @@ pub fn UIContext::command_palette(
           @color.Color::tree_row_selected(),
           row_radius,
         )
+        let indicator_y = draw_y + (row_h - indicator_h) * 0.5
         self.draw_list.add_rect(
           @math.Rect::new(
-            card_x + 6.0 * scale,
-            draw_y + 6.0 * scale,
-            3.0 * scale,
-            20.0 * scale,
+            card_x + row_pad_x,
+            indicator_y,
+            indicator_w,
+            indicator_h,
           ),
           @color.Color::accent_primary(),
-          1.5,
+          indicator_w * 0.5,
         )
         self.draw_list.add_text(
-          @math.Vec2::new(card_x + 18.0 * scale, draw_y + 9.0 * scale),
+          @math.Vec2::new(text_pad_left, text_y),
           item.title,
           font_nm,
           @color.Color::text_primary(),
         )
       } else {
         self.draw_list.add_text(
-          @math.Vec2::new(card_x + 18.0 * scale, draw_y + 9.0 * scale),
+          @math.Vec2::new(text_pad_left, text_y),
           item.title,
           font_nm,
           @color.Color::text_body(),
@@ -420,8 +424,9 @@ pub fn UIContext::command_palette(
       if !item.shortcut.is_empty() {
         let sc_size = self.measure_text(item.shortcut, font_sm)
         let sc_x = card_x + card_w - sc_size.x - 20.0 * scale
+        let sc_y = draw_y + (row_h - font_sm) * 0.5
         self.draw_list.add_text(
-          @math.Vec2::new(sc_x, draw_y + 9.5 * scale),
+          @math.Vec2::new(sc_x, sc_y),
           item.shortcut,
           font_sm,
           @color.Color::text_muted(),
