@@ -176,18 +176,20 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 
 ---
 
-## 开发路线图（2026 年 9 月 9 日 — 9 月 24 日）
+## 开发路线图（2026 年 9 月 9 日 — 9 月 25 日）
 
-- [x] **第一阶段：工程骨架与基础类型**（9月9日 – 9月11日）
-  - 交付核心数据结构：`Vec2`, `Rect`, `Color`, `InputState`, `DrawCmd`, `DrawList`。
-- [x] **第二阶段：输入状态机与基础排版**（9月12日 – 9月15日）
-  - 交付：AABB 空间命中判定、横纵双向排版（`horizontal`/`vertical`）、`Button`, `Label`, `Checkbox`, `Slider`, `SliderInt`。
-- [x] **第三阶段：高级视窗与容器交互**（9月16日 – 9月18日）[已交付]
-  - 交付：自由浮动视窗拖拽与动态 Z-Index 置顶（`Window`）、全局顶层菜单栏（`MenuBar`）、滚动裁剪视口（`ScrollArea`）、树形折叠分组（`CollapsingHeader`）。
-- [x] **第四阶段（提前交付）：Canvas 2D 桥接与在线 Playground**（已上线）
-  - 60 FPS HTML5 Canvas 2D 驱动器、LOD 自适应架构、GitHub Pages 自动化持续交付上线。
-- [ ] **第五阶段：全面自动化测试与正式交付**（9月22日 – 9月24日）
-  - 达成 150+ 自动化单元测试、完整文档规范与最终版本验收交付。
+### 第一阶段：核心架构与基础套件（9月9日 – 9月11日）[已全面交付]
+- [x] **里程碑 1：工程骨架与基础数学图元**：`Vec2`, `Rect`, `Color`, `InputState`, `DrawCmd`, `DrawList`。
+- [x] **里程碑 2：输入状态机与基础排版**：AABB 命中判定、横纵排版流、`Button`, `Label`, `Checkbox`, `Slider`, `SliderInt`。
+- [x] **里程碑 3：高级视窗与容器系统**：`Window` 拖拽与动态 Z-Index 置顶、全局顶层菜单栏（`MenuBar`）、视口滚动（`ScrollArea`）、折叠分组（`CollapsingHeader`）。
+- [x] **里程碑 4：Canvas 2D 驱动与百万节点画板**：60 FPS HTML5 Canvas 2D 宿主、自适应 LOD、GitHub Pages 自动化静态上线。
+
+### 第二阶段：专业工程能力深度演进（9月12日 – 9月25日）[推进中]
+- [ ] **里程碑 5：专业桌面交互与输入系统**（9月12日 – 9月15日）：全局命令面板 (`CommandPalette` / `⌘K`)、右键上下文菜单 (`ContextMenu`)、多行文本输入 (`text_edit_multiline`)、资产树控件 (`TreeView`)。
+- [ ] **里程碑 6：工作台排版体系与视窗停靠**（9月16日 – 9月18日）：可嵌套弹性分栏器 (`SplitPane`)、视窗磁吸与停靠机制原型 (`Docking`)、动量物理弹簧微动效 (`Spring Physics`)。
+- [ ] **里程碑 7：数据密集型组件与可视化探索**（9月19日 – 9月21日）：虚拟化数据表格 (`VirtualTable`)、节点流连线编辑器 (`NodeEditor`)、工程遥测图表套件 (`Plot`)、矢量 SVG 导出器 (`SvgExporter`)。
+- [ ] **里程碑 8：高性能渲染管线探索与应用范例**（9月22日 – 9月24日）：WebGL 2.0 顶点合批渲染后端探索、CAD/节点/音频/IDE 四大参考演示集成。
+- [ ] **里程碑 9：工程化验证、基准评测与正式发布**（9月25日）：150+ 自动化无头单元测试、微秒级性能耗时报告、发布 `v0.2.0` 正式版本。
 
 > 完整攻坚指标与详细验收准则请参阅 **[ROADMAP.md](docs/ROADMAP.md)** ([English](docs/ROADMAP_en.md))。
 

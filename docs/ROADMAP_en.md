@@ -11,104 +11,100 @@
 ## 1. Hackathon Execution Timeline (Sep 9 – Sep 24, 2026)
 
 ```
-2026.09.09          09.11           09.15           09.18           09.21           09.24
-    │───────────────│───────────────│───────────────│───────────────│───────────────│
-    [Milestone 1]   [Milestone 2]   [Milestone 3]   [Milestone 4]   [Milestone 5]
-    Scaffolding &   State Machine   Windowing &     Canvas 2D &     Hardening &
-    Math Primitives & Core Widgets  Clip Stack      Live Demo       Final Release
+2026.09.09         09.11                  09.15              09.18              09.21              09.24         09.25
+    │──────────────│──────────────────────│──────────────────│──────────────────│──────────────────│─────────────│
+   [Phase 1: M1-M4]       [M5: Desktop Input]    [M6: Workstation]  [M7: Dense Data &] [M8: Hardware Accel] [M9: Release]
+   [Delivered]            [System & Focus]       [Docking & Split]  [Visualization]    [& Scenario Demos]   [v0.2.0]
 ```
 
 ---
 
-### Milestone 1: Scaffolding & Mathematical Foundation (Sep 9 – Sep 11) [Delivered]
+### Phase 1 Retrospective: Scaffolding & Foundation Suite (Sep 9 – Sep 11) [All Delivered]
 
-* **Objective**: Establish pure algebraic data types, headless architecture, and zero-dependency mathematical foundations.
-* **Deliverables**:
-  - [x] Apache-2.0 licensing, clean package layout, and automated GitHub Actions CI pipeline;
-  - [x] Bilingual technical whitepapers (`ARCHITECTURE`, `API_DESIGN`, `DESIGN_SYSTEM`, `STYLE_GUIDE`);
-  - [x] **Geometric Math** (`src/math/`): `Vec2` arithmetic, `Rect` (AABB) spatial algorithms (`contains`, `intersects`, `intersect`, `expand`, `shrink`);
-  - [x] **Color & Drawing Primitives** (`src/color/`, `src/draw/`): RGBA `Color` model, hex parsing, `DrawCmd` enum, and `DrawList` command queue;
-  - [x] **Input Protocol** (`src/core/input.mbt`): Normalized `RawInput` capturing pointer positions and button masks.
-* **Acceptance Criteria**:
-  - [x] `moon fmt --check` passes and `moon check` reports 0 errors / 0 warnings
-        (the key and text events have been driven for real by the CAD demo host
-        since 2026-09-11, so the protocol no longer carries unused variants);
-  - [x] `src/math/` and `src/core/` pass with comprehensive test coverage.
+Over the initial 3-day sprint, the first four milestones were completed and accepted in production ahead of schedule:
+- **Milestone 1: Scaffolding & Mathematical Foundation** (`src/math/`, `src/color/`, `src/draw/`) [Delivered]
+- **Milestone 2: Input State Machine, Layout & Core Widgets** (`src/core/`) [Delivered]
+- **Milestone 3: Windowing, Advanced Containers & Scissor Clipping** (`window.mbt`, `menu_bar.mbt`, `containers.mbt`) [Delivered]
+- **Milestone 4: HTML5 Canvas 2D Backend & Live Interactive Demo** (`examples/canvas/`) [Delivered]
 
 ---
 
-### Milestone 2: Input State Machine, Layout & Core Widgets (Sep 12 – Sep 15) [Delivered]
+### Phase 2 Planning: Deep Workstation & Industrial Capabilities (Sep 12 – Sep 25)
 
-* **Objective**: Implement immediate-mode frame execution, hierarchical ID hashing, and interactive controls.
-* **Deliverables**:
-  - [x] **Hierarchical ID System** (`src/core/id.mbt`): 64-bit ID hashing, `push_id` / `pop_id` namespace stacks;
-  - [x] **Input State Machine** (`src/core/context.mbt`): Deterministic transitions for `hot_id` (hover), `active_id` (drag) and `allocate_space`;
-  - [x] **Multi-Directional Layout Stacks** (`src/core/context.mbt`): Vertical and scoped horizontal layout flows (`horizontal`), spacing, and separators;
-  - [x] **Response Record** (`src/core/response.mbt`): Chainable interaction inspection (`clicked`, `hovered`, `pressed`, `dragged`);
-  - [x] **Delivered Core Widgets & Sliders** (`src/core/widgets.mbt`):
-    - [x] Text: `label`, `label_colored`
-    - [x] Buttons: `button`, `button_primary`
-    - [x] Toggles: `checkbox`
-    - [x] Numeric inputs: continuous `slider` and stepped `slider_int`
-    - [x] Layout: `separator`, `spacer`
-* **Acceptance Criteria**:
-  - [x] Headless CI unit tests confirm that pointer-down, move, and release events trigger correct `Response` states and slider interpolation (22 tests pass).
+Rooted in MoonBit's language strengths and drawing from mature immediate-mode GUI practices (such as Dear ImGui and egui), the upcoming two weeks will systematically establish robust infrastructure for complex desktop and workstation environments:
 
 ---
 
-### Milestone 3: Windowing, Advanced Containers & Scissor Clipping (Sep 16 – Sep 18) [Delivered]
+### Milestone 5: Desktop Input System & Productivity Controls (Sep 12 – Sep 15)
 
-* **Objective**: Support multi-window layouts with dynamic Z-Index elevation and scissor clipping masks.
+* **Objective**: Reach parity with professional desktop UX standards, establishing robust keyboard focus navigation and contextual interactions.
 * **Deliverables**:
-  - [x] **Window Container Prototype** (`src/core/window.mbt`):
-    - [x] Background card, border, header bar, and title rendering;
-    - [x] Local cursor origin scoping and scissor viewport clipping (`push_clip` / `pop_clip`);
-    - [x] Title bar draggable AABB hit-testing and persistent position tracking;
-    - [x] Dynamic Z-Index elevation bringing clicked windows to foreground;
-  - [x] **Global Application Menu Bar** (`src/core/menu_bar.mbt`): `menu_bar`, `menu`, `menu_item`, `menu_separator` dropdown system, desktop-grade Hover-to-Switch flow, and foreground layer occlusion;
-  - [x] **Collapsible Sections** (`containers.mbt`): `collapsing_header` with state memory;
-  - [x] **Scissor Clip Stack** (`src/draw/draw_cmd.mbt`): `push_clip` / `pop_clip` intersecting nested bounding boxes and culling out-of-bounds primitives;
-  - [x] **Scroll Area** (`scroll_area.mbt`): Smooth mouse-wheel scrolling inside clipped viewports.
+  - [ ] **Command Palette Prototype (`CommandPalette` / `⌘K`)**: Fuzzy action search, history tracking, and keyboard-driven command dispatch;
+  - [ ] **Context Menu & Cascading Submenus (`ContextMenu` / `SubMenu`)**: In-place right-click menu with multi-level hover expansion and boundary flipping;
+  - [ ] **Multi-line Text & Code Editing (`text_edit_multiline`)**: Multi-line layouts, line numbering column, cursor selection, and clipboard coordination;
+  - [ ] **Hierarchical Tree View (`TreeView` / `TreeNode`)**: Multi-level nesting, expansion memory, indentation guide lines, and item selection;
+  - [ ] **Specialized Numerical Regulators**: Circular knobs (`Knob`) and vertical faders (`Fader`).
 * **Acceptance Criteria**:
-  - [x] Multi-window tests confirm background windows cannot be clicked through, and clipped content is properly masked; menu bar dropdown flows smoothly with headless tests passing and full external click dismiss.
+  - Keyboard-only navigation smoothly cycles through interactive controls with passing headless test suites.
 
 ---
 
-### Milestone 4: HTML5 Canvas 2D Backend & Live Interactive Demo (Sep 19 – Sep 21) [Delivered Ahead]
+### Milestone 6: Workstation Layout & Docking Architecture (Sep 16 – Sep 18)
 
-* **Objective**: Connect the pure Wasm engine to the browser and launch a live interactive GitHub Pages playground.
+* **Objective**: Advance from isolated windows to flexible, multi-viewport workspace partitioning.
 * **Deliverables**:
-  - [x] **Canvas 2D Host Driver** (`examples/canvas/run.js`):
-    - [x] Ultra-compact JS bridge consuming `DrawCmd` stream and rasterizing to Canvas 2D;
-    - [x] Translating native `PointerEvent`, `WheelEvent` into `RawInput`;
-    - [x] 60 FPS animation loop driven by `requestAnimationFrame`, with independent `Kernel` and `Render` telemetry metrics;
-  - [x] **Million-Node Canvas Benchmark** (`examples/canvas/main.mbt`):
-    - [x] Managing 128² to 1024² (1,048,576) logical node arrays;
-    - [x] O(1) viewport spatial culling + multi-scale adaptive LOD baked textures;
-    - [x] CAD dual-axis rulers and dynamic wave/repel physics;
-  - [x] **Automated GitHub Pages Deployment**: GitHub Actions workflow to build and publish the static demo.
+  - [ ] **Nested Draggable Splitter (`SplitPane`)**: Horizontal and vertical viewport splits with ratio preservation and minimum dimension guards;
+  - [ ] **Window Docking & Snapping Prototype (`Docking`)**: Drop guide visual previews when dragging near viewport edges and tabbed pane grouping;
+  - [ ] **Damped Momentum Physics (`Spring Physics`)**: Controlled physical spring-damper easing for window dragging and scrolling.
 * **Acceptance Criteria**:
-  - [x] Live demo loads in under 100ms;
-  - [x] Rock-solid 60 FPS rendering with zero memory leaks or GC stutter.
+  - Windows snap cleanly into tiled docks and split panes preserve proportional layouts across window resizing.
 
 ---
 
-### Milestone 5: Hardening, Benchmarking & Official Release (Sep 22 – Sep 24)
+### Milestone 7: Data-Dense Components & Visualization Engine (Sep 19 – Sep 21)
 
-* **Objective**: Deliver production-grade quality, comprehensive documentation, and official v0.1.0 release.
+* **Objective**: Validate immediate-mode performance under heavy data volume and topological graph structures.
 * **Deliverables**:
-  - [ ] **Extensive Test Coverage**: 150+ automated unit and integration tests covering edge cases;
-  - [ ] **Performance Benchmarks**: Sustained frame budget under 1.0ms for 200+ active widgets;
-  - [ ] **Interface Stabilization**: Freeze `.mbti` contract via `moon info` to guarantee zero breaking changes;
-  - [ ] **Release Packaging**: Tag and publish `v0.1.0` GitHub release with live demo links.
+  - [ ] **Virtualized Data Table (`VirtualTable`)**: Viewport-culled rasterization processing tens of thousands of rows with column resizing and sorting;
+  - [ ] **Node-Based Blueprint Editor Prototype (`NodeEditor`)**: Infinite canvas, node dragging, port connection validation, and smooth cubic Bezier link splines;
+  - [ ] **Engineering Plotting Suite (`Plot` / `Sparkline`)**: Continuous telemetry lines, bar charts, and adaptive dual-axis tick marks;
+  - [ ] **Vector SVG Exporter (`SvgExporter`)**: Export active frame command streams into clean, standard `.svg` vector files.
 * **Acceptance Criteria**:
-  - 100% passing CI suite (formatting, build, test, Wasm compilation);
-  - Complete documentation, runnable demo, and test suite fulfilling all hackathon goals.
+  - Sustained 60 FPS under large data sets and multi-node connection graphs with stable memory footprints.
+
+---
+
+### Milestone 8: Hardware-Accelerated Rendering & Production Scenarios (Sep 22 – Sep 24)
+
+* **Objective**: Explore hardware acceleration feasibility and provide real-world reference application shells.
+* **Deliverables**:
+  - [ ] **WebGL 2.0 Batched Geometry Pipeline**: Prototype assembling vertex and index buffers in Wasm to batch UI primitives into single GPU draw calls;
+  - [ ] **Reference Application Showcase (Deployed to Gallery)**:
+    - CAD mechanical vector workbench (rulers, snapping, inspector);
+    - Node-based visual logic stream demo;
+    - Audio synthesizer / timeline studio prototype;
+    - Lightweight online code workstation shell.
+* **Acceptance Criteria**:
+  - All reference demos run smoothly on the interactive showcase gallery with clear architectural patterns.
+
+---
+
+### Milestone 9: Verification, Benchmarking & Official Release (Sep 25)
+
+* **Objective**: Ensure industrial code reliability, freeze API contracts, and finalize project deliverables.
+* **Deliverables**:
+  - [ ] **Expanded Test Suite**: Reach 120~150+ automated whitebox and blackbox test cases;
+  - [ ] **Micro-Benchmark Telemetry (Benchmarks)**: Measure nanosecond and microsecond compute budgets across typical workloads;
+  - [ ] **Interface Stabilization**: Run `moon info && moon fmt`, freeze `.mbti` signatures, and finalize bilingual documentation;
+  - [ ] **Release Packaging**: Tag and publish official `v0.2.0` release.
+* **Acceptance Criteria**:
+  - 100% passing CI workflow with complete documentation, demos, and test suites archived.
 
 ---
 
 ## 2. Future Work
 
-- **Hardware-Accelerated Rendering**: Explore WebGL / WebGPU batch rendering pipelines to minimize rasterization overhead for large primitive counts;
-- **Advanced Containers & Layouts**: Explore multi-window docking and tabbed layout capabilities;
-- **Cross-Platform Native Backends**: Leverage MoonBit's native compilation to explore desktop backends (Raylib, SDL).
+- **Multi-Backend Maturation**: Deepen WebGL / WebGPU custom shader pipelines and texture atlas support;
+- **Native Desktop Backends**: Explore desktop windowing bindings (Raylib / SDL3) via MoonBit native targets;
+- **Vertical Domain Widgets**: Expand immediate-mode widget offerings for scientific computing, robotics telemetry, and game tools.
+

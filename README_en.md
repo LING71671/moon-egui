@@ -176,18 +176,20 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 
 ---
 
-## Development Roadmap (Sep 9 – Sep 24, 2026)
+## Development Roadmap (Sep 9 – Sep 25, 2026)
 
-- [x] **Milestone 1: Scaffolding & Mathematical Primitives** (Sep 9 – Sep 11)
-  - Core data structures delivered: `Vec2`, `Rect`, `Color`, `InputState`, `DrawCmd`, `DrawList`.
-- [x] **Milestone 2: Input State Machine & Basic Widgets** (Sep 12 – Sep 15)
-  - Delivered: AABB hit-testing, bi-directional layouts (`horizontal`/`vertical`), `Button`, `Label`, `Checkbox`, `Slider`, `SliderInt`.
-- [x] **Milestone 3: Windowing & Container Management** (Sep 16 – Sep 18) [Delivered]
-  - Delivered: Free-floating draggable windows with dynamic Z-Index elevation (`Window`), global application menu bar (`MenuBar`), scrollable scissor viewports (`ScrollArea`), collapsible tree sections (`CollapsingHeader`).
-- [x] **Milestone 4 (Delivered Ahead): Canvas 2D Backend & Live Playground** (Deployed)
-  - 60 FPS HTML5 Canvas 2D bridge, multi-scale LOD architecture, and automated GitHub Pages deployment.
-- [ ] **Milestone 5: Verification, Benchmarks & Release** (Sep 22 – Sep 24)
-  - Comprehensive unit test coverage, documentation specs, and final acceptance.
+### Phase 1: Core Scaffolding & Foundation Suite (Sep 9 – Sep 11) [All Delivered]
+- [x] **Milestone 1: Scaffolding & Mathematical Foundation**: `Vec2`, `Rect`, `Color`, `InputState`, `DrawCmd`, `DrawList`.
+- [x] **Milestone 2: Input State Machine, Layout & Core Widgets**: AABB hit-testing, bi-directional layouts, `Button`, `Label`, `Checkbox`, `Slider`, `SliderInt`.
+- [x] **Milestone 3: Windowing, Advanced Containers & Scissor Clipping**: Draggable `Window`, global `MenuBar`, `ScrollArea`, `CollapsingHeader`.
+- [x] **Milestone 4: Canvas 2D Backend & Live Interactive Demo**: 60 FPS Canvas 2D host driver, adaptive LOD, automated GitHub Pages deployment.
+
+### Phase 2: Workstation & Industrial Capabilities (Sep 12 – Sep 25) [In Progress]
+- [ ] **Milestone 5: Desktop Input System & Productivity Controls** (Sep 12 – Sep 15): `CommandPalette` (`⌘K`), context menus (`ContextMenu`), multi-line text edit (`text_edit_multiline`), tree view (`TreeView`).
+- [ ] **Milestone 6: Workstation Layout & Docking Architecture** (Sep 16 – Sep 18): nested draggable splitter (`SplitPane`), window docking & snapping (`Docking`), momentum spring physics (`Spring Physics`).
+- [ ] **Milestone 7: Data-Dense Components & Visualization Engine** (Sep 19 – Sep 21): virtualized data table (`VirtualTable`), node graph editor (`NodeEditor`), telemetry plots (`Plot`), vector SVG exporter (`SvgExporter`).
+- [ ] **Milestone 8: Hardware-Accelerated Rendering & Production Scenarios** (Sep 22 – Sep 24): WebGL 2.0 batched geometry pipeline, integrated CAD/node/audio/IDE reference showcases.
+- [ ] **Milestone 9: Verification, Benchmarking & Official Release** (Sep 25): 150+ automated unit tests, micro-benchmark reports, freeze `.mbti` signatures, publish `v0.2.0` release.
 
 > For full milestone metrics and acceptance criteria, see **[ROADMAP.md](docs/ROADMAP.md)** ([English](docs/ROADMAP_en.md)).
 
