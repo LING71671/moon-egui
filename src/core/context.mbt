@@ -35,6 +35,12 @@ pub struct UIContext {
   scroll_offsets : Array[(Id, Double)]
   scroll_content_heights : Array[(Id, Double)]
   window_positions : Array[(Id, @math.Vec2)]
+  window_batches : Array[(Id, @draw.DrawList)]
+  window_drawn : Array[Id]
+  window_focus : Array[Id]
+  mut win_active_z : Int
+  window_rects : Array[(@math.Rect, Int)]
+  prev_window_rects : Array[(@math.Rect, Int)]
   text_cursor_positions : Array[(Id, Int)]
   open_collapsing_ids : Array[(Id, Bool)]
   mut open_combo_id : Id
@@ -72,6 +78,12 @@ pub fn UIContext::new() -> UIContext {
     scroll_offsets: [],
     scroll_content_heights: [],
     window_positions: [],
+    window_batches: [],
+    window_drawn: [],
+    window_focus: [],
+    win_active_z: -1,
+    window_rects: [],
+    prev_window_rects: [],
     text_cursor_positions: [],
     open_collapsing_ids: [],
     open_combo_id: Id::zero(),
@@ -101,6 +113,16 @@ pub fn UIContext::begin_frame(self : UIContext, raw_input : RawInput) -> Unit {
     self.prev_blocking_rects.push(rect)
   }
   self.blocking_rects.clear()
+
+  // Windows are re-batched every frame and composited in z order, so the
+  // previous frame's rects are the only ones that can be tested for occlusion.
+  self.window_drawn.clear()
+  self.win_active_z = -1
+  self.prev_window_rects.clear()
+  for item in self.window_rects {
+    self.prev_window_rects.push(item)
+  }
+  self.window_rects.clear()
 
   self.cursor = @math.Vec2::zero()
   self.clip_stack.clear()
@@ -148,7 +170,18 @@ pub fn UIContext::end_frame(self : UIContext) -> @draw.DrawList {
   }
 
   self.prev_wants_capture_mouse = self.wants_capture_mouse
-  // Composite the deferred foreground layer on top of the main layer.
+
+  // Composite the deferred layers: floating windows bottom-up, then the
+  // foreground layer (popups, tooltips) above everything.
+  for id in self.window_focus {
+    if self.window_drawn.contains(id) {
+      for batch in self.window_batches {
+        if batch.0 == id {
+          self.draw_list.append(batch.1)
+        }
+      }
+    }
+  }
   self.draw_list.append(self.fg_draw_list)
   self.draw_list
 }
@@ -445,9 +478,10 @@ pub fn UIContext::current_clip(self : UIContext) -> @math.Rect? {
 
 ///|
 /// Clip-aware hover test. The pointer hovers `rect` only when it is inside the
-/// rect, inside the active scissor clip, and not covered by a foreground
-/// blocking region. Widgets that scroll out of a container or spill outside a
-/// window therefore stop responding to the pointer.
+/// rect, inside the active scissor clip, and neither covered by a foreground
+/// blocking region nor by a window stacked above the current draw target.
+/// Widgets that scroll out of a container or spill outside a window therefore
+/// stop responding to the pointer.
 pub fn UIContext::is_hovered(self : UIContext, rect : @math.Rect) -> Bool {
   let visible = match self.current_clip() {
     Some(clip) => rect.intersect(clip)
@@ -457,7 +491,13 @@ pub fn UIContext::is_hovered(self : UIContext, rect : @math.Rect) -> Bool {
     visible.h > 0.0 &&
     visible.contains(self.input.mouse_pos)
   in_visible_rect &&
-  (self.foreground || !self.is_blocked_by_foreground(self.input.mouse_pos))
+  (
+    self.foreground ||
+    (
+      !self.is_blocked_by_foreground(self.input.mouse_pos) &&
+      !self.is_occluded_by_window(self.input.mouse_pos)
+    )
+  )
 }
 
 ///|
@@ -475,6 +515,67 @@ fn UIContext::is_blocked_by_foreground(
     }
   }
   blocked
+}
+
+///|
+/// True when a window stacked above the current draw target covers `pt`.
+/// Content on the main layer sits below every window, so `win_active_z` is -1
+/// there; window content only yields to strictly higher windows.
+fn UIContext::is_occluded_by_window(self : UIContext, pt : @math.Vec2) -> Bool {
+  let mut occluded = false
+  for item in self.prev_window_rects {
+    if item.1 > self.win_active_z && item.0.contains(pt) {
+      occluded = true
+    }
+  }
+  occluded
+}
+
+///|
+/// Stacking rank of a window: the index in the focus order, where a higher
+/// index means closer to the viewer. Unknown windows join at the top.
+pub fn UIContext::window_z(self : UIContext, id : Id) -> Int {
+  let mut rank = -1
+  for i = 0; i < self.window_focus.length(); i = i + 1 {
+    if self.window_focus[i] == id {
+      rank = i
+    }
+  }
+  if rank < 0 {
+    self.window_focus.push(id)
+    rank = self.window_focus.length() - 1
+  }
+  rank
+}
+
+///|
+/// Move a window to the top of the stacking order. Called when the pointer
+/// presses anywhere inside the window.
+pub fn UIContext::raise_window(self : UIContext, id : Id) -> Unit {
+  let kept : Array[Id] = []
+  for other in self.window_focus {
+    if other != id {
+      kept.push(other)
+    }
+  }
+  self.window_focus.clear()
+  for other in kept {
+    self.window_focus.push(other)
+  }
+  self.window_focus.push(id)
+}
+
+///|
+/// The draw batch of a window, created on first use and reused afterwards.
+fn UIContext::window_batch(self : UIContext, id : Id) -> @draw.DrawList {
+  for batch in self.window_batches {
+    if batch.0 == id {
+      return batch.1
+    }
+  }
+  let list = @draw.DrawList::new()
+  self.window_batches.push((id, list))
+  list
 }
 
 ///|

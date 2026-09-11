@@ -20,6 +20,12 @@
 /// `pos` is the initial position: from the first drag onwards the context owns
 /// the position and `pos` is ignored. The window is identified by `id_salt`,
 /// falling back to `title`, so two windows sharing a title need explicit salts.
+///
+/// Windows are composited in stacking order rather than call order: pressing
+/// anywhere inside a window raises it above its siblings, and the content is
+/// drawn into a batch that is flushed at `end_frame`. A window is therefore
+/// always on top of the main layer, regardless of where in the frame it was
+/// declared.
 pub fn UIContext::window(
   self : UIContext,
   title : String,
@@ -40,8 +46,18 @@ pub fn UIContext::window(
     title_bar_h,
   )
 
-  // 1. Title bar interaction: grab on press, then follow the pointer delta.
+  // 1. Stacking. Hit testing has to know which window is on top before any of
+  // them can be tested, and a press anywhere inside raises the window.
+  self.win_active_z = self.window_z(id)
+  let window_hovered = self.is_hovered(window_rect)
   let bar_hovered = self.is_hovered(title_bar_rect)
+
+  if window_hovered && self.input.mouse_pressed {
+    self.raise_window(id)
+    self.win_active_z = self.window_z(id)
+  }
+
+  // 2. Title bar interaction: grab on press, then follow the pointer delta.
   if bar_hovered && self.input.mouse_pressed {
     self.set_active_id(id)
   }
@@ -66,15 +82,30 @@ pub fn UIContext::window(
     self.set_active_id(Id::zero())
   }
 
-  let window_hovered = self.is_hovered(window_rect)
   if window_hovered {
     self.wants_capture_mouse = true
   }
 
+  // Publish the settled rect so the next frame can resolve occlusion against
+  // it, then draw into a dedicated batch.
+  self.window_rects.push((window_rect, self.win_active_z))
+
+  let batch = self.window_batch(id)
+  batch.clear()
+  self.window_drawn.push(id)
+
+  let saved_draw_list = self.draw_list
+  let saved_clip : Array[@math.Rect] = []
+  for clip in self.clip_stack {
+    saved_clip.push(clip)
+  }
+  self.clip_stack.clear()
+  self.draw_list = batch
+
   let x = win_pos.x
   let y = win_pos.y
 
-  // 2. Draw Window Background & Border
+  // 3. Draw Window Background & Border
   let bg_color = @color.Color::bg_window()
   let border_color = @color.Color::border_muted()
   let header_color = @color.Color::bg_surface()
@@ -82,7 +113,7 @@ pub fn UIContext::window(
   self.draw_list.add_rect(window_rect, bg_color, 8.0)
   self.draw_list.add_rect_stroke(window_rect, border_color, 1.0, 8.0)
 
-  // 3. Draw Title Bar Header
+  // 4. Draw Title Bar Header
   self.draw_list.add_rect(title_bar_rect, header_color, 8.0)
   let filler_rect = @math.Rect::new(x, y + title_bar_h - 4.0, size.x, 4.0)
   self.draw_list.add_rect(filler_rect, header_color, 0.0)
@@ -93,7 +124,7 @@ pub fn UIContext::window(
     1.0,
   )
 
-  // 4. Draw Title Text
+  // 5. Draw Title Text
   self.draw_list.add_text(
     @math.Vec2::new(x + 12.0, y + 7.0),
     title,
@@ -101,7 +132,7 @@ pub fn UIContext::window(
     @color.Color::text_primary(),
   )
 
-  // 5. Content Area with Scissor Clipping & Scoped Layout
+  // 6. Content Area with Scissor Clipping & Scoped Layout
   let pad = 12.0
   let content_x = x + pad
   let content_y = y + title_bar_h + pad
@@ -124,6 +155,13 @@ pub fn UIContext::window(
   self.cursor = prev_cursor
   self.available_width = prev_avail_w
   self.pop_clip()
+
+  self.draw_list = saved_draw_list
+  self.clip_stack.clear()
+  for clip in saved_clip {
+    self.clip_stack.push(clip)
+  }
+  self.win_active_z = -1
 
   Response::with_focus(
     id, window_rect, window_hovered, clicked, is_dragging, is_dragging, false, false,

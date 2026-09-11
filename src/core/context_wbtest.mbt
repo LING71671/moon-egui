@@ -468,3 +468,79 @@ test "window content is not draggable and separate salts keep separate positions
   assert_eq(b.rect.x, 400.0)
   let _ = ctx.end_frame()
 }
+
+///|
+/// Collect the window titles in draw order. Each window emits exactly one text
+/// command (its title), so the sequence mirrors the compositing order.
+fn window_title_order(dl : @draw.DrawList) -> Array[String] {
+  let titles : Array[String] = []
+  for i = 0; i < dl.len(); i = i + 1 {
+    match dl.get_command(i) {
+      Some(@draw.DrawCmd::Text(_pos, text, _size, _color)) => titles.push(text)
+      _ => ()
+    }
+  }
+  titles
+}
+
+///|
+test "windows composite in stacking order and raise on press" {
+  let ctx = UIContext::new()
+  let size = @math.Vec2::new(100.0, 100.0)
+
+  // Frame 1: A is declared first, so B is stacked on top of it
+  ctx.begin_frame(RawInput::new())
+  let _ = ctx.window("A", @math.Vec2::zero(), size, fn(_ui) {  }, id_salt="a")
+  let _ = ctx.window(
+    "B",
+    @math.Vec2::new(50.0, 50.0),
+    size,
+    fn(_ui) {  },
+    id_salt="b",
+  )
+  let titles1 = window_title_order(ctx.end_frame())
+  assert_eq(titles1.length(), 2)
+  assert_eq(titles1[0], "A")
+  assert_eq(titles1[1], "B")
+
+  // Frame 2: pressing inside A raises it above B, even though B is declared
+  // later in the frame
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), true))
+  let _ = ctx.window("A", @math.Vec2::zero(), size, fn(_ui) {  }, id_salt="a")
+  let _ = ctx.window(
+    "B",
+    @math.Vec2::new(50.0, 50.0),
+    size,
+    fn(_ui) {  },
+    id_salt="b",
+  )
+  let titles2 = window_title_order(ctx.end_frame())
+  assert_eq(titles2[0], "B")
+  assert_eq(titles2[1], "A")
+}
+
+///|
+test "a raised window hides the window and the widgets underneath it" {
+  let ctx = UIContext::new()
+  let size = @math.Vec2::new(200.0, 200.0)
+
+  // Frame 1: A and B cover the same area, B declared last and therefore on top
+  ctx.begin_frame(RawInput::new())
+  let _ = ctx.window("A", @math.Vec2::zero(), size, fn(_ui) {  }, id_salt="a")
+  let _ = ctx.window("B", @math.Vec2::zero(), size, fn(_ui) {  }, id_salt="b")
+  let _ = ctx.end_frame()
+
+  // Frame 2: the pointer lands on both
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(50.0, 50.0), false))
+  let a = ctx.window("A", @math.Vec2::zero(), size, fn(_ui) {  }, id_salt="a")
+  let b = ctx.window("B", @math.Vec2::zero(), size, fn(_ui) {  }, id_salt="b")
+  assert_true(!a.hovered())
+  assert_true(b.hovered())
+
+  // Content on the main layer sits below every window
+  ctx.set_cursor(@math.Vec2::zero())
+  let (_id, rect, resp) = ctx.allocate_space(size)
+  assert_true(rect.contains(@math.Vec2::new(50.0, 50.0)))
+  assert_true(!resp.hovered())
+  let _ = ctx.end_frame()
+}
