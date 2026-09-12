@@ -78,7 +78,7 @@ pub fn UIContext::split_horizontal(
     self.set_active_id(bar_id)
   }
 
-  let is_active = self.active_id == bar_id
+  let is_active = self.active_id() == bar_id
   if is_active {
     self.set_wants_capture_mouse(true)
     self.set_cursor_icon("col-resize")
@@ -115,8 +115,8 @@ pub fn UIContext::split_horizontal(
     h,
   )
 
-  let saved_cursor = self.cursor
-  let saved_avail = self.available_width
+  let saved_cursor = self.cursor()
+  let saved_avail = self.available_width()
 
   // Render left pane
   self.push_clip(left_rect)
@@ -235,7 +235,7 @@ pub fn UIContext::split_vertical(
     self.set_active_id(bar_id)
   }
 
-  let is_active = self.active_id == bar_id
+  let is_active = self.active_id() == bar_id
   if is_active {
     self.set_wants_capture_mouse(true)
     self.set_cursor_icon("row-resize")
@@ -271,8 +271,8 @@ pub fn UIContext::split_vertical(
     bottom_h,
   )
 
-  let saved_cursor = self.cursor
-  let saved_avail = self.available_width
+  let saved_cursor = self.cursor()
+  let saved_avail = self.available_width()
 
   // Render top pane
   self.push_clip(top_rect)

@@ -121,8 +121,8 @@ pub fn UIContext::tree_view(
   let total_w = match size {
     Some(s) => s.x
     None =>
-      if self.available_width > 0.0 {
-        self.available_width
+      if self.available_width() > 0.0 {
+        self.available_width()
       } else {
         240.0 * scale
       }

@@ -120,8 +120,8 @@ pub fn UIContext::toast_stack(
   let vw = match viewport_size {
     Some(vp) => vp.x
     None =>
-      if self.available_width > 0.0 {
-        self.available_width
+      if self.available_width() > 0.0 {
+        self.available_width()
       } else {
         800.0
       }
@@ -196,7 +196,7 @@ pub fn UIContext::toast_stack(
   for rect in placed_rects {
     self.block_hover(rect)
     if rect.contains(self.input.mouse_pos) {
-      self.wants_capture_mouse = true
+      self.set_wants_capture_mouse(true)
     }
   }
 

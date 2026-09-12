@@ -176,8 +176,8 @@ pub fn UIContext::command_palette(
   let card_radius = self.style.command_palette_radius * scale
   let row_radius = self.style.radius_sm * scale
 
-  let viewport_w = if self.available_width > 0.0 {
-    self.available_width
+  let viewport_w = if self.available_width() > 0.0 {
+    self.available_width()
   } else {
     800.0
   }

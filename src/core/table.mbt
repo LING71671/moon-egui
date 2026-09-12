@@ -158,7 +158,7 @@ pub fn UIContext::table(
       self.set_active_id(handle_id)
     }
 
-    if self.active_id == handle_id {
+    if self.active_id() == handle_id {
       self.set_cursor_icon("col-resize")
       self.set_wants_capture_mouse(true)
       if self.input.mouse_down {
@@ -178,7 +178,7 @@ pub fn UIContext::table(
     // Header click for sorting (when not interacting with resize handle)
     let is_header_hovered = col_header_rect.contains(self.input.mouse_pos) &&
       !handle_hovered &&
-      (self.active_id == Id::zero() || self.active_id == table_id)
+      (self.active_id() == Id::zero() || self.active_id() == table_id)
 
     if is_header_hovered && col.sortable {
       self.set_cursor_icon("pointer")
@@ -304,7 +304,7 @@ pub fn UIContext::table(
     if is_row_hovered {
       hovered_row = Some(r)
       if self.input.mouse_pressed &&
-        (self.active_id == Id::zero() || self.active_id == table_id) {
+        (self.active_id() == Id::zero() || self.active_id() == table_id) {
         clicked_row = Some(r)
       }
     }
@@ -332,8 +332,8 @@ pub fn UIContext::table(
       let col = columns[c]
       let cell_rect = @math.Rect::new(cell_x, row_y, col.width, eff_row_h)
 
-      let prev_cursor = self.cursor
-      let prev_avail = self.available_width
+      let prev_cursor = self.cursor()
+      let prev_avail = self.available_width()
 
       self.set_cursor(@math.Vec2::new(cell_rect.x, cell_rect.y))
       self.set_available_width(cell_rect.w)

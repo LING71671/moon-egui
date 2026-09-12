@@ -9,7 +9,7 @@ pub fn UIContext::collapsing_header(
 ) -> Response {
   let header_id = self.id_stack.derive_id(id_salt)
   let scale = self.style.scale
-  let w = self.available_width
+  let w = self.available_width()
   let h = self.style.collapsing_header_h * scale
 
   self.push_id(id_salt)
@@ -97,18 +97,18 @@ pub fn UIContext::collapsing_header(
   )
 
   if is_open {
-    let prev_cursor = self.cursor
-    let prev_avail_w = self.available_width
+    let prev_cursor = self.cursor()
+    let prev_avail_w = self.available_width()
     let indent = self.style.collapsing_header_indent * scale
 
-    self.cursor = @math.Vec2::new(prev_cursor.x + indent, prev_cursor.y)
-    self.available_width = prev_avail_w - indent
+    self.set_cursor(@math.Vec2::new(prev_cursor.x + indent, prev_cursor.y))
+    self.set_available_width(prev_avail_w - indent)
 
     content(self)
 
-    let final_y = self.cursor.y
-    self.cursor = @math.Vec2::new(prev_cursor.x, final_y)
-    self.available_width = prev_avail_w
+    let final_y = self.cursor().y
+    self.set_cursor(@math.Vec2::new(prev_cursor.x, final_y))
+    self.set_available_width(prev_avail_w)
   }
 
   resp

@@ -107,6 +107,39 @@ pub(all) enum Event {
   PointerWheel(@math.Vec2)
 } derive(Eq, @debug.Debug)
 
+pub struct FocusManager {
+  mut hot_id : Id
+  mut active_id : Id
+  mut focused_id : Id
+  mut prev_focused_id : Id
+  mut lost_focus_id : Id
+  mut pending_lost_focus_id : Id
+  focusable_ids : Array[Id]
+  mut wants_capture_mouse : Bool
+  mut prev_wants_capture_mouse : Bool
+} derive(Eq, @debug.Debug)
+pub fn FocusManager::active_id(Self) -> Id
+pub fn FocusManager::begin_frame(Self) -> Unit
+pub fn FocusManager::clear_focusable(Self) -> Unit
+pub fn FocusManager::end_frame(Self) -> Unit
+pub fn FocusManager::focusable_ids(Self) -> Array[Id]
+pub fn FocusManager::focused_id(Self) -> Id
+pub fn FocusManager::has_focus(Self, Id) -> Bool
+pub fn FocusManager::hot_id(Self) -> Id
+pub fn FocusManager::lost_focus(Self, Id) -> Bool
+pub fn FocusManager::new() -> Self
+pub fn FocusManager::prev_focused_id(Self) -> Id
+pub fn FocusManager::prev_wants_capture_mouse(Self) -> Bool
+pub fn FocusManager::process_tab_traversal(Self, Bool) -> Bool
+pub fn FocusManager::register_focusable(Self, Id) -> Unit
+pub fn FocusManager::request_focus(Self, Id) -> Bool
+pub fn FocusManager::set_active_id(Self, Id) -> Unit
+pub fn FocusManager::set_focused_id(Self, Id) -> Unit
+pub fn FocusManager::set_hot_id(Self, Id) -> Unit
+pub fn FocusManager::set_wants_capture_mouse(Self, Bool) -> Unit
+pub fn FocusManager::surrender_focus(Self, Id) -> Unit
+pub fn FocusManager::wants_capture_mouse(Self) -> Bool
+
 pub struct Id {
   val : UInt64
 } derive(Default, Eq, Hash, @debug.Debug)
@@ -224,11 +257,58 @@ pub(all) enum Key {
   Num9
 } derive(Eq, Hash, @debug.Debug)
 
+pub struct LayerManager {
+  mut draw_list : @draw.DrawList
+  fg_draw_list : @draw.DrawList
+  mut fg_saved_draw_list : @draw.DrawList
+  clip_stack : Array[@math.Rect]
+  fg_saved_clip_stack : Array[@math.Rect]
+  mut foreground : Bool
+  blocking_rects : Array[@math.Rect]
+  prev_blocking_rects : Array[@math.Rect]
+} derive(Eq, @debug.Debug)
+pub fn LayerManager::begin_foreground(Self) -> Unit
+pub fn LayerManager::begin_frame(Self) -> Unit
+pub fn LayerManager::block_hover(Self, @math.Rect) -> Unit
+pub fn LayerManager::clip_stack(Self) -> Array[@math.Rect]
+pub fn LayerManager::current_clip(Self) -> @math.Rect?
+pub fn LayerManager::draw_list(Self) -> @draw.DrawList
+pub fn LayerManager::end_foreground(Self) -> Unit
+pub fn LayerManager::fg_draw_list(Self) -> @draw.DrawList
+pub fn LayerManager::is_blocked_by_foreground(Self, @math.Vec2) -> Bool
+pub fn LayerManager::is_foreground(Self) -> Bool
+pub fn LayerManager::new() -> Self
+pub fn LayerManager::pop_clip(Self) -> Unit
+pub fn LayerManager::push_clip(Self, @math.Rect) -> Unit
+pub fn LayerManager::set_draw_list(Self, @draw.DrawList) -> Unit
+
 pub enum LayoutDirection {
   TopDown
   LeftToRight
   LeftToRightWrapped
 } derive(Eq, @debug.Debug)
+
+pub struct LayoutEngine {
+  layout_stack : Array[LayoutScope]
+  mut cursor : @math.Vec2
+  mut available_width : Double
+  mut item_spacing : @math.Vec2
+  mut auto_id_counter : Int
+} derive(Eq, @debug.Debug)
+pub fn LayoutEngine::allocate_rect(Self, @math.Vec2) -> @math.Rect
+pub fn LayoutEngine::available_width(Self) -> Double
+pub fn LayoutEngine::begin_frame(Self, Double) -> Unit
+pub fn LayoutEngine::current_scope(Self) -> LayoutScope?
+pub fn LayoutEngine::cursor(Self) -> @math.Vec2
+pub fn LayoutEngine::item_spacing(Self) -> @math.Vec2
+pub fn LayoutEngine::layout_stack(Self) -> Array[LayoutScope]
+pub fn LayoutEngine::new() -> Self
+pub fn LayoutEngine::next_auto_id_counter(Self) -> Int
+pub fn LayoutEngine::pop_scope(Self) -> LayoutScope?
+pub fn LayoutEngine::push_scope(Self, LayoutScope) -> Unit
+pub fn LayoutEngine::set_available_width(Self, Double) -> Unit
+pub fn LayoutEngine::set_cursor(Self, @math.Vec2) -> Unit
+pub fn LayoutEngine::set_item_spacing(Self, @math.Vec2) -> Unit
 
 pub struct LayoutScope {
   dir : LayoutDirection
@@ -469,45 +549,21 @@ pub struct UIContext {
   input : InputState
   mut draw_list : @draw.DrawList
   id_stack : IdStack
-  mut hot_id : Id
-  mut active_id : Id
-  mut focused_id : Id
-  mut prev_focused_id : Id
-  mut lost_focus_id : Id
-  mut pending_lost_focus_id : Id
-  focusable_ids : Array[Id]
-  mut cursor : @math.Vec2
-  mut available_width : Double
-  mut item_spacing : @math.Vec2
-  clip_stack : Array[@math.Rect]
-  mut auto_id_counter : Int
-  layout_stack : Array[LayoutScope]
+  layout : LayoutEngine
+  focus : FocusManager
+  layers : LayerManager
+  windows : WindowManager
   memory : Memory
-  window_positions : @hashmap.HashMap[Id, @math.Vec2]
-  window_batches : Array[(Id, @draw.DrawList)]
-  window_drawn : Array[Id]
-  window_focus : Array[Id]
-  mut win_active_z : Int
-  window_rects : Array[(@math.Rect, Int)]
-  prev_window_rects : Array[(@math.Rect, Int)]
-  mut frame_counter : Int
-  mut open_combo_id : Id
-  mut open_menu_id : Id
-  mut active_submenu_id : String
-  mut wants_capture_mouse : Bool
-  mut prev_wants_capture_mouse : Bool
-  fg_draw_list : @draw.DrawList
-  mut fg_saved_draw_list : @draw.DrawList
-  fg_saved_clip_stack : Array[@math.Rect]
-  mut foreground : Bool
-  blocking_rects : Array[@math.Rect]
-  prev_blocking_rects : Array[@math.Rect]
   mut style : WidgetStyle
   mut theme : Theme
   mut cursor_icon : String
   mut time : Double
+  mut frame_counter : Int
   mut last_caret_activity : Double
   text_measure_cache : @hashmap.HashMap[String, Double]
+  mut open_combo_id : Id
+  mut open_menu_id : Id
+  mut active_submenu_id : String
 } derive(Eq, @debug.Debug)
 pub fn UIContext::active_id(Self) -> Id
 pub fn UIContext::active_submenu_id(Self) -> String
@@ -528,6 +584,7 @@ pub fn UIContext::button_primary_sized(Self, String, @math.Vec2) -> Response
 pub fn UIContext::button_sized(Self, String, @math.Vec2) -> Response
 pub fn UIContext::button_with_shortcut(Self, String, String) -> Response
 pub fn UIContext::checkbox(Self, String, Bool) -> (Bool, Response)
+pub fn UIContext::clear_focusable(Self) -> Unit
 pub fn UIContext::clear_text_selection(Self, Id) -> Unit
 pub fn UIContext::code_editor(Self, String, String, size? : @math.Vec2, show_line_numbers? : Bool, read_only? : Bool) -> (String, Response)
 pub fn UIContext::collapsing_header(Self, String, String, Bool, (Self) -> Unit) -> Response
@@ -548,6 +605,8 @@ pub fn UIContext::end_foreground(Self) -> Unit
 pub fn UIContext::end_frame(Self) -> @draw.DrawList
 pub fn UIContext::fader(Self, String, String, Double, min_val? : Double, max_val? : Double, step? : Double, default_val? : Double, unit? : String, show_ticks? : Bool, size? : @math.Vec2) -> (Double, Response)
 pub fn UIContext::fader_int(Self, String, String, Int, min_val? : Int, max_val? : Int, step? : Int, default_val? : Int, unit? : String, show_ticks? : Bool, size? : @math.Vec2) -> (Int, Response)
+pub fn UIContext::focus(Self) -> FocusManager
+pub fn UIContext::focusable_ids(Self) -> Array[Id]
 pub fn UIContext::focused_id(Self) -> Id
 pub fn UIContext::get_scroll_content_height(Self, Id) -> Double
 pub fn UIContext::get_scroll_offset(Self, Id) -> Double
@@ -567,6 +626,9 @@ pub fn UIContext::item_spacing(Self) -> @math.Vec2
 pub fn UIContext::knob(Self, String, String, Double, min_val? : Double, max_val? : Double, step? : Double, default_val? : Double, unit? : String, radius? : Double, bipolar? : Bool) -> (Double, Response)
 pub fn UIContext::label(Self, String) -> Response
 pub fn UIContext::label_colored(Self, String, @color.Color) -> Response
+pub fn UIContext::layers(Self) -> LayerManager
+pub fn UIContext::layout(Self) -> LayoutEngine
+pub fn UIContext::lost_focus(Self, Id) -> Bool
 pub fn UIContext::measure_text(Self, String, Double) -> @math.Vec2
 pub fn UIContext::memory(Self) -> Memory
 pub fn UIContext::menu(Self, String, (Self) -> Unit) -> Unit
@@ -574,11 +636,13 @@ pub fn UIContext::menu_bar(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::menu_item(Self, String, shortcut? : String, disabled? : Bool) -> Response
 pub fn UIContext::menu_separator(Self) -> Unit
 pub fn UIContext::new() -> Self
+pub fn UIContext::next_auto_id(Self) -> Id
 pub fn UIContext::open_combo_id(Self) -> Id
 pub fn UIContext::open_menu_id(Self) -> Id
 pub fn UIContext::plot(Self, String, Array[PlotSeries], size? : @math.Vec2, show_grid? : Bool, show_crosshair? : Bool, show_legend? : Bool) -> (@math.Vec2?, Response)
 pub fn UIContext::pop_clip(Self) -> Unit
 pub fn UIContext::pop_id(Self) -> Unit
+pub fn UIContext::prev_focused_id(Self) -> Id
 pub fn UIContext::progress_bar(Self, Double, String) -> Response
 pub fn UIContext::prune_stale_state(Self, Int) -> Unit
 pub fn UIContext::push_clip(Self, @math.Rect) -> Unit
@@ -600,6 +664,7 @@ pub fn UIContext::set_collapsing_open(Self, Id, Bool) -> Unit
 pub fn UIContext::set_cursor(Self, @math.Vec2) -> Unit
 pub fn UIContext::set_cursor_icon(Self, String) -> Unit
 pub fn UIContext::set_focused_id(Self, Id) -> Unit
+pub fn UIContext::set_hot_id(Self, Id) -> Unit
 pub fn UIContext::set_item_spacing(Self, @math.Vec2) -> Unit
 pub fn UIContext::set_open_combo_id(Self, Id) -> Unit
 pub fn UIContext::set_open_menu_id(Self, Id) -> Unit
@@ -637,6 +702,7 @@ pub fn UIContext::vertical(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::wants_capture_mouse(Self) -> Bool
 pub fn UIContext::window(Self, String, @math.Vec2, @math.Vec2, (Self) -> Unit, id_salt? : String, constrain_to? : @math.Rect) -> Response
 pub fn UIContext::window_z(Self, Id) -> Int
+pub fn UIContext::windows(Self) -> WindowManager
 
 pub struct WidgetStyle {
   scale : Double
@@ -740,6 +806,30 @@ pub struct WidgetStyle {
   fader_cap_radius : Double
 } derive(Eq, @debug.Debug)
 pub fn WidgetStyle::default() -> Self
+
+pub struct WindowManager {
+  positions : @hashmap.HashMap[Id, @math.Vec2]
+  batches : Array[(Id, @draw.DrawList)]
+  drawn : Array[Id]
+  focus : Array[Id]
+  mut active_z : Int
+  rects : Array[(@math.Rect, Int)]
+  prev_rects : Array[(@math.Rect, Int)]
+} derive(Eq, @debug.Debug)
+pub fn WindowManager::active_z(Self) -> Int
+pub fn WindowManager::batch(Self, Id) -> @draw.DrawList
+pub fn WindowManager::begin_frame(Self) -> Unit
+pub fn WindowManager::flush_to(Self, @draw.DrawList) -> Unit
+pub fn WindowManager::get_pos(Self, Id, @math.Vec2) -> @math.Vec2
+pub fn WindowManager::is_occluded(Self, @math.Vec2) -> Bool
+pub fn WindowManager::mark_drawn(Self, Id) -> Unit
+pub fn WindowManager::new() -> Self
+pub fn WindowManager::prune_stale(Self) -> Unit
+pub fn WindowManager::raise_window(Self, Id) -> Unit
+pub fn WindowManager::record_rect(Self, @math.Rect, Int) -> Unit
+pub fn WindowManager::set_active_z(Self, Int) -> Unit
+pub fn WindowManager::set_pos(Self, Id, @math.Vec2) -> Unit
+pub fn WindowManager::window_z(Self, Id) -> Int
 
 // Type aliases
 

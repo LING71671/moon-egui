@@ -25,7 +25,7 @@ pub fn UIContext::scroll_area(
   let (_id, container_rect, _resp) = self.allocate_space(size)
 
   if self.is_hovered(container_rect) {
-    self.wants_capture_mouse = true
+    self.set_wants_capture_mouse(true)
   }
 
   let mut scroll_y = self.get_scroll_offset(container_id)
@@ -54,8 +54,8 @@ pub fn UIContext::scroll_area(
   self.push_clip(container_rect)
 
   // Save current context layout state
-  let prev_cursor = self.cursor
-  let prev_avail_w = self.available_width
+  let prev_cursor = self.cursor()
+  let prev_avail_w = self.available_width()
 
   // Adjust available width if scrollbar is present
   let scrollbar_w = 6.0
@@ -65,12 +65,14 @@ pub fn UIContext::scroll_area(
     size.x
   }
 
-  self.cursor = @math.Vec2::new(container_rect.x, container_rect.y - scroll_y)
-  self.available_width = inner_w
+  self.set_cursor(
+    @math.Vec2::new(container_rect.x, container_rect.y - scroll_y),
+  )
+  self.set_available_width(inner_w)
 
   content(self)
 
-  let measured_content_h = self.cursor.y + scroll_y - container_rect.y
+  let measured_content_h = self.cursor().y + scroll_y - container_rect.y
   self.set_scroll_content_height(container_id, measured_content_h)
 
   // Post-closure height clamping: immediately clamp scroll_y if content shrank
@@ -85,8 +87,8 @@ pub fn UIContext::scroll_area(
   }
 
   // Restore cursor and pop scissor clip
-  self.cursor = prev_cursor
-  self.available_width = prev_avail_w
+  self.set_cursor(prev_cursor)
+  self.set_available_width(prev_avail_w)
   self.pop_clip()
 
   // Draw scrollbar thumb if content exceeds container height
@@ -129,7 +131,7 @@ pub fn UIContext::scroll_area(
       self.set_active_id(thumb_id)
     }
 
-    if self.active_id == thumb_id {
+    if self.active_id() == thumb_id {
       self.set_wants_capture_mouse(true)
       if self.input.mouse_down && usable_h > 0.0 {
         let rel_mouse_y = self.input.mouse_pos.y - bar_track_y - thumb_h * 0.5
@@ -154,7 +156,7 @@ pub fn UIContext::scroll_area(
       bar_x, active_thumb_y, scrollbar_w, thumb_h,
     )
 
-    let thumb_color = if self.active_id == thumb_id || is_thumb_hovered {
+    let thumb_color = if self.active_id() == thumb_id || is_thumb_hovered {
       @color.Color::accent_primary()
     } else {
       @color.Color::border_muted()

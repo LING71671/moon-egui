@@ -24,7 +24,7 @@ pub fn UIContext::label_colored(
 ///|
 /// Render a full-width horizontal divider line.
 pub fn UIContext::separator(self : UIContext) -> Unit {
-  let w = self.available_width
+  let w = self.available_width()
   let h = 9.0
   let (_id, rect, _resp) = self.allocate_space(@math.Vec2::new(w, h))
   let y = rect.y + 4.5
@@ -39,10 +39,9 @@ pub fn UIContext::separator(self : UIContext) -> Unit {
 ///|
 /// Insert spacing advancing the cursor along the active layout direction.
 pub fn UIContext::spacer(self : UIContext, amount : Double) -> Unit {
-  let is_horiz = if self.layout_stack.is_empty() {
-    false
-  } else {
-    self.layout_stack[self.layout_stack.length() - 1].dir == LeftToRight
+  let is_horiz = match self.layout.current_scope() {
+    Some(s) => s.dir == LeftToRight
+    None => false
   }
   if is_horiz {
     self.advance_cursor(@math.Vec2::new(amount, 0.0))

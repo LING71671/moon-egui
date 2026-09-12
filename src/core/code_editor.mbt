@@ -155,8 +155,8 @@ pub fn UIContext::code_editor(
   show_line_numbers? : Bool = true,
   read_only? : Bool = false,
 ) -> (String, Response) {
-  let default_w = if self.available_width > 0.0 {
-    self.available_width
+  let default_w = if self.available_width() > 0.0 {
+    self.available_width()
   } else {
     480.0
   }
@@ -681,8 +681,8 @@ pub fn UIContext::code_editor(
     resp.pressed,
     resp.dragged,
     is_focused,
-    is_focused && self.prev_focused_id != id,
-    self.lost_focus_id == id,
+    is_focused && self.prev_focused_id() != id,
+    self.lost_focus(id),
     secondary_clicked=resp.secondary_clicked,
   )
 

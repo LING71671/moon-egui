@@ -22,101 +22,45 @@ pub struct UIContext {
   input : InputState
   mut draw_list : @draw.DrawList
   id_stack : IdStack
-  mut hot_id : Id
-  mut active_id : Id
-  mut focused_id : Id
-  mut prev_focused_id : Id
-  mut lost_focus_id : Id
-  mut pending_lost_focus_id : Id
-  focusable_ids : Array[Id]
-  mut cursor : @math.Vec2
-  mut available_width : Double
-  mut item_spacing : @math.Vec2
-  clip_stack : Array[@math.Rect]
-  mut auto_id_counter : Int
-  layout_stack : Array[LayoutScope]
+  layout : LayoutEngine
+  focus : FocusManager
+  layers : LayerManager
+  windows : WindowManager
   memory : Memory
-  window_positions : @hashmap.HashMap[Id, @math.Vec2]
-  window_batches : Array[(Id, @draw.DrawList)]
-  window_drawn : Array[Id]
-  window_focus : Array[Id]
-  mut win_active_z : Int
-  window_rects : Array[(@math.Rect, Int)]
-  prev_window_rects : Array[(@math.Rect, Int)]
-  mut frame_counter : Int
-  mut open_combo_id : Id
-  mut open_menu_id : Id
-  mut active_submenu_id : String
-  mut wants_capture_mouse : Bool
-  mut prev_wants_capture_mouse : Bool
-  fg_draw_list : @draw.DrawList
-  mut fg_saved_draw_list : @draw.DrawList
-  fg_saved_clip_stack : Array[@math.Rect]
-  mut foreground : Bool
-  blocking_rects : Array[@math.Rect]
-  prev_blocking_rects : Array[@math.Rect]
   mut style : WidgetStyle
   mut theme : Theme
   mut cursor_icon : String
   mut time : Double
+  mut frame_counter : Int
   mut last_caret_activity : Double
   text_measure_cache : @hashmap.HashMap[String, Double]
+  mut open_combo_id : Id
+  mut open_menu_id : Id
+  mut active_submenu_id : String
 } derive(Eq, Debug)
 
 ///|
 pub fn UIContext::new() -> UIContext {
+  let layers = LayerManager::new()
   {
     input: InputState::new(),
-    draw_list: @draw.DrawList::new(),
+    draw_list: layers.draw_list(),
     id_stack: IdStack::new(),
-    hot_id: Id::zero(),
-    active_id: Id::zero(),
-    focused_id: Id::zero(),
-    prev_focused_id: Id::zero(),
-    lost_focus_id: Id::zero(),
-    pending_lost_focus_id: Id::zero(),
-    focusable_ids: [],
-    cursor: @math.Vec2::zero(),
-    available_width: 800.0,
-    item_spacing: @math.Vec2::new(8.0, 8.0),
-    clip_stack: [],
-    auto_id_counter: 0,
-    layout_stack: [
-      {
-        dir: TopDown,
-        start_x: 0.0,
-        start_y: 0.0,
-        max_cross_size: 0.0,
-        current_row_h: 0.0,
-        wrap_width: 0.0,
-      },
-    ],
+    layout: LayoutEngine::new(),
+    focus: FocusManager::new(),
+    layers,
+    windows: WindowManager::new(),
     memory: Memory::new(),
-    window_positions: @hashmap.HashMap([], capacity=32),
-    window_batches: [],
-    window_drawn: [],
-    window_focus: [],
-    win_active_z: -1,
-    window_rects: [],
-    prev_window_rects: [],
-    frame_counter: 0,
-    open_combo_id: Id::zero(),
-    open_menu_id: Id::zero(),
-    active_submenu_id: "",
-    wants_capture_mouse: false,
-    prev_wants_capture_mouse: false,
-    fg_draw_list: @draw.DrawList::new(),
-    fg_saved_draw_list: @draw.DrawList::new(),
-    fg_saved_clip_stack: [],
-    foreground: false,
-    blocking_rects: [],
-    prev_blocking_rects: [],
     style: WidgetStyle::default(),
     theme: Theme::studio_light(),
     cursor_icon: "default",
     time: 0.0,
+    frame_counter: 0,
     last_caret_activity: 0.0,
     text_measure_cache: @hashmap.HashMap([], capacity=256),
+    open_combo_id: Id::zero(),
+    open_menu_id: Id::zero(),
+    active_submenu_id: "",
   }
 }
 
@@ -126,99 +70,35 @@ pub fn UIContext::begin_frame(self : UIContext, raw_input : RawInput) -> Unit {
   self.frame_counter = self.frame_counter + 1
   self.input.update(raw_input)
   self.time = self.time + self.input.dt
-  self.draw_list.clear()
-  self.fg_draw_list.clear()
-  self.foreground = false
-
-  // Snapshot last frame's blocking regions, then reopen collection for this
-  // frame. Blocking regions apply with one frame of latency so that widgets
-  // drawn before a popup still see the suppression.
-  self.prev_blocking_rects.clear()
-  for rect in self.blocking_rects {
-    self.prev_blocking_rects.push(rect)
-  }
-  self.blocking_rects.clear()
-
-  // Windows are re-batched every frame and composited in z order, so the
-  // previous frame's rects are the only ones that can be tested for occlusion.
-  self.window_drawn.clear()
-  self.win_active_z = -1
-  self.prev_window_rects.clear()
-  for item in self.window_rects {
-    self.prev_window_rects.push(item)
-  }
-  self.window_rects.clear()
-
-  self.cursor = @math.Vec2::zero()
-  self.clip_stack.clear()
-  self.auto_id_counter = 0
-  self.hot_id = Id::zero()
-  self.prev_focused_id = self.focused_id
-  self.lost_focus_id = self.pending_lost_focus_id
-  self.pending_lost_focus_id = Id::zero()
-  self.focusable_ids.clear()
-  self.wants_capture_mouse = false
-  self.layout_stack.clear()
-  self.layout_stack.push({
-    dir: TopDown,
-    start_x: 0.0,
-    start_y: 0.0,
-    max_cross_size: 0.0,
-    current_row_h: 0.0,
-    wrap_width: 0.0,
-  })
+  self.layers.begin_frame()
+  self.draw_list = self.layers.draw_list()
+  self.windows.begin_frame()
+  self.layout.begin_frame(0.0)
+  self.focus.begin_frame()
 }
 
 ///|
 pub fn UIContext::end_frame(self : UIContext) -> @draw.DrawList {
   // Process Tab key focus traversal (skip if consumed by an active widget like CodeEditor)
-  if self.input.key_pressed(Key::Tab) &&
-    !self.input.is_key_consumed(Key::Tab) &&
-    !self.focusable_ids.is_empty() {
-    let count = self.focusable_ids.length()
-    let mut current_idx = -1
-    for i = 0; i < count; i = i + 1 {
-      if self.focusable_ids[i] == self.focused_id {
-        current_idx = i
-        break
-      }
+  if self.input.key_pressed(Key::Tab) && !self.input.is_key_consumed(Key::Tab) {
+    if self.focus.process_tab_traversal(self.input.modifiers.shift) {
+      self.reset_caret_blink()
     }
-    let is_shift = self.input.modifiers.shift
-    let next_idx = if is_shift {
-      if current_idx <= 0 {
-        count - 1
-      } else {
-        current_idx - 1
-      }
-    } else if current_idx < 0 || current_idx >= count - 1 {
-      0
-    } else {
-      current_idx + 1
-    }
-    self.request_focus(self.focusable_ids[next_idx])
   }
 
-  self.prev_wants_capture_mouse = self.wants_capture_mouse
+  self.focus.end_frame()
 
   // Composite the deferred layers: floating windows bottom-up, then the
   // foreground layer (popups, tooltips) above everything.
-  for id in self.window_focus {
-    if self.window_drawn.contains(id) {
-      for batch in self.window_batches {
-        if batch.0 == id {
-          self.draw_list.append(batch.1)
-        }
-      }
-    }
-  }
-  self.draw_list.append(self.fg_draw_list)
+  self.windows.flush_to(self.layers.draw_list())
+  self.layers.draw_list().append(self.layers.fg_draw_list())
 
   // Periodic generational cleanup every 300 frames (~5 seconds at 60 FPS)
   if self.frame_counter % 300 == 0 {
     self.prune_stale_state(600)
   }
 
-  self.draw_list
+  self.layers.draw_list()
 }
 
 ///|
@@ -232,23 +112,43 @@ pub fn UIContext::pop_id(self : UIContext) -> Unit {
 }
 
 ///|
+pub fn UIContext::layout(self : UIContext) -> LayoutEngine {
+  self.layout
+}
+
+///|
+pub fn UIContext::focus(self : UIContext) -> FocusManager {
+  self.focus
+}
+
+///|
+pub fn UIContext::layers(self : UIContext) -> LayerManager {
+  self.layers
+}
+
+///|
+pub fn UIContext::windows(self : UIContext) -> WindowManager {
+  self.windows
+}
+
+///|
 pub fn UIContext::cursor(self : UIContext) -> @math.Vec2 {
-  self.cursor
+  self.layout.cursor()
 }
 
 ///|
 pub fn UIContext::set_cursor(self : UIContext, pos : @math.Vec2) -> Unit {
-  self.cursor = pos
+  self.layout.set_cursor(pos)
 }
 
 ///|
 pub fn UIContext::advance_cursor(self : UIContext, offset : @math.Vec2) -> Unit {
-  self.cursor = self.cursor.add(offset)
+  self.layout.set_cursor(self.layout.cursor().add(offset))
 }
 
 ///|
 pub fn UIContext::item_spacing(self : UIContext) -> @math.Vec2 {
-  self.item_spacing
+  self.layout.item_spacing()
 }
 
 ///|
@@ -256,7 +156,7 @@ pub fn UIContext::set_item_spacing(
   self : UIContext,
   spacing : @math.Vec2,
 ) -> Unit {
-  self.item_spacing = spacing
+  self.layout.set_item_spacing(spacing)
 }
 
 ///|
@@ -267,7 +167,7 @@ pub fn UIContext::style(self : UIContext) -> WidgetStyle {
 ///|
 pub fn UIContext::set_style(self : UIContext, style : WidgetStyle) -> Unit {
   self.style = style
-  self.item_spacing = style.item_spacing
+  self.layout.set_item_spacing(style.item_spacing)
 }
 
 ///|
@@ -292,32 +192,57 @@ pub fn UIContext::input(self : UIContext) -> InputState {
 
 ///|
 pub fn UIContext::hot_id(self : UIContext) -> Id {
-  self.hot_id
+  self.focus.hot_id()
+}
+
+///|
+pub fn UIContext::set_hot_id(self : UIContext, id : Id) -> Unit {
+  self.focus.set_hot_id(id)
 }
 
 ///|
 pub fn UIContext::active_id(self : UIContext) -> Id {
-  self.active_id
+  self.focus.active_id()
+}
+
+///|
+pub fn UIContext::set_active_id(self : UIContext, id : Id) -> Unit {
+  self.focus.set_active_id(id)
 }
 
 ///|
 pub fn UIContext::focused_id(self : UIContext) -> Id {
-  self.focused_id
+  self.focus.focused_id()
 }
 
 ///|
 pub fn UIContext::set_focused_id(self : UIContext, id : Id) -> Unit {
-  self.focused_id = id
+  self.focus.set_focused_id(id)
+}
+
+///|
+pub fn UIContext::prev_focused_id(self : UIContext) -> Id {
+  self.focus.prev_focused_id()
+}
+
+///|
+pub fn UIContext::focusable_ids(self : UIContext) -> Array[Id] {
+  self.focus.focusable_ids()
 }
 
 ///|
 pub fn UIContext::available_width(self : UIContext) -> Double {
-  self.available_width
+  self.layout.available_width()
 }
 
 ///|
 pub fn UIContext::set_available_width(self : UIContext, width : Double) -> Unit {
-  self.available_width = width
+  self.layout.set_available_width(width)
+}
+
+///|
+pub fn UIContext::next_auto_id(self : UIContext) -> Id {
+  self.id_stack.derive_int(self.layout.next_auto_id_counter())
 }
 
 ///|
@@ -327,101 +252,24 @@ pub fn UIContext::allocate_space(
   self : UIContext,
   size : @math.Vec2,
 ) -> (Id, @math.Rect, Response) {
-  self.auto_id_counter = self.auto_id_counter + 1
-  let id = self.id_stack.derive_int(self.auto_id_counter)
-  // Layout advancement based on current layout direction
-  let current_scope = if self.layout_stack.is_empty() {
-    None
-  } else {
-    Some(self.layout_stack[self.layout_stack.length() - 1])
-  }
-
-  // Pre-allocation check for wrapping in LeftToRightWrapped flow
-  match current_scope {
-    Some(scope) =>
-      if scope.dir == LeftToRightWrapped {
-        let wrap_w = if scope.wrap_width > 0.0 {
-          scope.wrap_width
-        } else {
-          self.available_width
-        }
-        if self.cursor.x > scope.start_x &&
-          self.cursor.x + size.x > scope.start_x + wrap_w {
-          let next_y = self.cursor.y + scope.current_row_h + self.item_spacing.y
-          scope.max_cross_size = scope.max_cross_size +
-            scope.current_row_h +
-            self.item_spacing.y
-          scope.current_row_h = 0.0
-          self.cursor = @math.Vec2::new(scope.start_x, next_y)
-        }
-      }
-    None => ()
-  }
-
-  let item_y = match current_scope {
-    Some(scope) =>
-      if scope.dir == LeftToRight {
-        scope.start_y
-      } else {
-        self.cursor.y
-      }
-    None => self.cursor.y
-  }
-  let rect = @math.Rect::new(self.cursor.x, item_y, size.x, size.y)
-
-  match current_scope {
-    Some(scope) =>
-      match scope.dir {
-        TopDown => {
-          if size.x > scope.max_cross_size {
-            scope.max_cross_size = size.x
-          }
-          self.cursor = @math.Vec2::new(
-            self.cursor.x,
-            self.cursor.y + size.y + self.item_spacing.y,
-          )
-        }
-        LeftToRight => {
-          if size.y > scope.max_cross_size {
-            scope.max_cross_size = size.y
-          }
-          self.cursor = @math.Vec2::new(
-            self.cursor.x + size.x + self.item_spacing.x,
-            scope.start_y,
-          )
-        }
-        LeftToRightWrapped => {
-          if size.y > scope.current_row_h {
-            scope.current_row_h = size.y
-          }
-          self.cursor = @math.Vec2::new(
-            self.cursor.x + size.x + self.item_spacing.x,
-            self.cursor.y,
-          )
-        }
-      }
-    None =>
-      self.cursor = @math.Vec2::new(
-        self.cursor.x,
-        self.cursor.y + size.y + self.item_spacing.y,
-      )
-  }
+  let id = self.next_auto_id()
+  let rect = self.layout.allocate_rect(size)
 
   // Hit-testing evaluation
   let hovered = self.is_hovered(rect)
   if hovered {
-    self.hot_id = id
-    self.wants_capture_mouse = true
+    self.focus.set_hot_id(id)
+    self.focus.set_wants_capture_mouse(true)
   }
 
   // Pointer interaction state machine
   if hovered && self.input.mouse_pressed {
-    self.active_id = id
+    self.focus.set_active_id(id)
   }
 
-  let is_active = self.active_id == id
+  let is_active = self.focus.active_id() == id
   if is_active {
-    self.wants_capture_mouse = true
+    self.focus.set_wants_capture_mouse(true)
   }
   let pressed = is_active && self.input.mouse_down
   let mouse_clicked = is_active && self.input.mouse_released && hovered
@@ -430,13 +278,12 @@ pub fn UIContext::allocate_space(
     self.input.mouse_delta.length_sq() > 0.0
 
   if self.input.mouse_released && is_active {
-    self.active_id = Id::zero()
+    self.focus.set_active_id(Id::zero())
   }
 
-  let is_focused = self.focused_id == id
-  let gained_focus = is_focused && self.prev_focused_id != id
-  let lost_focus = self.lost_focus_id == id ||
-    (self.pending_lost_focus_id == id && !is_focused)
+  let is_focused = self.focus.focused_id() == id
+  let gained_focus = is_focused && self.focus.prev_focused_id() != id
+  let lost_focus = self.focus.lost_focus(id)
 
   // Keyboard activation (Space or Enter on focused control)
   let key_activated = is_focused &&
@@ -471,14 +318,9 @@ pub fn UIContext::allocate_space(
 }
 
 ///|
-pub fn UIContext::set_active_id(self : UIContext, id : Id) -> Unit {
-  self.active_id = id
-}
-
-///|
 /// Returns true if the pointer is currently hovering over or interacting with any UI widget or window.
 pub fn UIContext::wants_capture_mouse(self : UIContext) -> Bool {
-  self.prev_wants_capture_mouse || self.wants_capture_mouse
+  self.focus.prev_wants_capture_mouse() || self.focus.wants_capture_mouse()
 }
 
 ///|
@@ -487,7 +329,7 @@ pub fn UIContext::set_wants_capture_mouse(
   self : UIContext,
   capture : Bool,
 ) -> Unit {
-  self.wants_capture_mouse = capture
+  self.focus.set_wants_capture_mouse(capture)
 }
 
 ///|
@@ -498,8 +340,8 @@ pub fn UIContext::horizontal(
   self : UIContext,
   content : (UIContext) -> Unit,
 ) -> Unit {
-  let start_x = self.cursor.x
-  let start_y = self.cursor.y
+  let start_x = self.layout.cursor().x
+  let start_y = self.layout.cursor().y
   let scope : LayoutScope = {
     dir: LeftToRight,
     start_x,
@@ -508,14 +350,16 @@ pub fn UIContext::horizontal(
     current_row_h: 0.0,
     wrap_width: 0.0,
   }
-  self.layout_stack.push(scope)
+  self.layout.push_scope(scope)
   content(self)
-  let popped = self.layout_stack.pop()
+  let popped = self.layout.pop_scope()
   let max_h = match popped {
     Some(s) => s.max_cross_size
     None => 0.0
   }
-  self.cursor = @math.Vec2::new(start_x, start_y + max_h + self.item_spacing.y)
+  self.layout.set_cursor(
+    @math.Vec2::new(start_x, start_y + max_h + self.layout.item_spacing().y),
+  )
 }
 
 ///|
@@ -527,11 +371,11 @@ pub fn UIContext::horizontal_wrapped(
   content : (UIContext) -> Unit,
   wrap_width? : Double,
 ) -> Unit {
-  let start_x = self.cursor.x
-  let start_y = self.cursor.y
+  let start_x = self.layout.cursor().x
+  let start_y = self.layout.cursor().y
   let w = match wrap_width {
     Some(val) => val
-    None => self.available_width
+    None => self.layout.available_width()
   }
   let scope : LayoutScope = {
     dir: LeftToRightWrapped,
@@ -541,17 +385,16 @@ pub fn UIContext::horizontal_wrapped(
     current_row_h: 0.0,
     wrap_width: w,
   }
-  self.layout_stack.push(scope)
+  self.layout.push_scope(scope)
   content(self)
-  let popped = self.layout_stack.pop()
+  let popped = self.layout.pop_scope()
   let (total_cross, last_row_h) = match popped {
     Some(s) => (s.max_cross_size, s.current_row_h)
     None => (0.0, 0.0)
   }
   let total_h = total_cross + last_row_h
-  self.cursor = @math.Vec2::new(
-    start_x,
-    start_y + total_h + self.item_spacing.y,
+  self.layout.set_cursor(
+    @math.Vec2::new(start_x, start_y + total_h + self.layout.item_spacing().y),
   )
 }
 
@@ -561,8 +404,8 @@ pub fn UIContext::vertical(
   self : UIContext,
   content : (UIContext) -> Unit,
 ) -> Unit {
-  let start_x = self.cursor.x
-  let start_y = self.cursor.y
+  let start_x = self.layout.cursor().x
+  let start_y = self.layout.cursor().y
   let scope : LayoutScope = {
     dir: TopDown,
     start_x,
@@ -571,69 +414,58 @@ pub fn UIContext::vertical(
     current_row_h: 0.0,
     wrap_width: 0.0,
   }
-  self.layout_stack.push(scope)
+  self.layout.push_scope(scope)
   content(self)
-  let _ = self.layout_stack.pop()
+  let _ = self.layout.pop_scope()
 }
 
 ///|
 pub fn UIContext::request_focus(self : UIContext, id : Id) -> Unit {
-  if self.focused_id != id {
-    if self.focused_id != Id::zero() {
-      self.pending_lost_focus_id = self.focused_id
-    }
-    self.focused_id = id
+  if self.focus.request_focus(id) {
     self.reset_caret_blink()
   }
 }
 
 ///|
 pub fn UIContext::surrender_focus(self : UIContext, id : Id) -> Unit {
-  if self.focused_id == id {
-    self.pending_lost_focus_id = id
-    self.focused_id = Id::zero()
-  }
+  self.focus.surrender_focus(id)
 }
 
 ///|
 pub fn UIContext::has_focus(self : UIContext, id : Id) -> Bool {
-  self.focused_id == id
+  self.focus.has_focus(id)
+}
+
+///|
+pub fn UIContext::lost_focus(self : UIContext, id : Id) -> Bool {
+  self.focus.lost_focus(id)
 }
 
 ///|
 pub fn UIContext::register_focusable(self : UIContext, id : Id) -> Unit {
-  if !self.focusable_ids.contains(id) {
-    self.focusable_ids.push(id)
-  }
+  self.focus.register_focusable(id)
+}
+
+///|
+pub fn UIContext::clear_focusable(self : UIContext) -> Unit {
+  self.focus.clear_focusable()
 }
 
 ///|
 pub fn UIContext::push_clip(self : UIContext, rect : @math.Rect) -> Unit {
-  let effective_rect = if self.clip_stack.is_empty() {
-    rect
-  } else {
-    let parent_clip = self.clip_stack[self.clip_stack.length() - 1]
-    parent_clip.intersect(rect)
-  }
-  self.clip_stack.push(effective_rect)
-  self.draw_list.push_clip(effective_rect)
+  self.layers.push_clip(rect)
+  self.draw_list = self.layers.draw_list()
 }
 
 ///|
 pub fn UIContext::pop_clip(self : UIContext) -> Unit {
-  if !self.clip_stack.is_empty() {
-    let _ = self.clip_stack.pop()
-  }
-  self.draw_list.pop_clip()
+  self.layers.pop_clip()
+  self.draw_list = self.layers.draw_list()
 }
 
 ///|
 pub fn UIContext::current_clip(self : UIContext) -> @math.Rect? {
-  if self.clip_stack.is_empty() {
-    None
-  } else {
-    Some(self.clip_stack[self.clip_stack.length() - 1])
-  }
+  self.layers.current_clip()
 }
 
 ///|
@@ -643,7 +475,7 @@ pub fn UIContext::current_clip(self : UIContext) -> @math.Rect? {
 /// Widgets that scroll out of a container or spill outside a window therefore
 /// stop responding to the pointer.
 pub fn UIContext::is_hovered(self : UIContext, rect : @math.Rect) -> Bool {
-  let visible = match self.current_clip() {
+  let visible = match self.layers.current_clip() {
     Some(clip) => rect.intersect(clip)
     None => rect
   }
@@ -652,134 +484,44 @@ pub fn UIContext::is_hovered(self : UIContext, rect : @math.Rect) -> Bool {
     visible.contains(self.input.mouse_pos)
   in_visible_rect &&
   (
-    self.foreground ||
+    self.layers.is_foreground() ||
     (
-      !self.is_blocked_by_foreground(self.input.mouse_pos) &&
-      !self.is_occluded_by_window(self.input.mouse_pos)
+      !self.layers.is_blocked_by_foreground(self.input.mouse_pos) &&
+      !self.windows.is_occluded(self.input.mouse_pos)
     )
   )
 }
 
 ///|
-/// True when `pt` falls inside a blocking region registered by a popup on the
-/// previous frame. Regions of the current frame are not consulted yet, because
-/// widgets drawn earlier in the frame cannot retroactively lose hover.
-fn UIContext::is_blocked_by_foreground(
-  self : UIContext,
-  pt : @math.Vec2,
-) -> Bool {
-  let mut blocked = false
-  for rect in self.prev_blocking_rects {
-    if rect.contains(pt) {
-      blocked = true
-    }
-  }
-  blocked
-}
-
-///|
-/// True when a window stacked above the current draw target covers `pt`.
-/// Content on the main layer sits below every window, so `win_active_z` is -1
-/// there; window content only yields to strictly higher windows.
-fn UIContext::is_occluded_by_window(self : UIContext, pt : @math.Vec2) -> Bool {
-  let mut occluded = false
-  for item in self.prev_window_rects {
-    if item.1 > self.win_active_z && item.0.contains(pt) {
-      occluded = true
-    }
-  }
-  occluded
-}
-
-///|
-/// Stacking rank of a window: the index in the focus order, where a higher
-/// index means closer to the viewer. Unknown windows join at the top.
 pub fn UIContext::window_z(self : UIContext, id : Id) -> Int {
-  let mut rank = -1
-  for i = 0; i < self.window_focus.length(); i = i + 1 {
-    if self.window_focus[i] == id {
-      rank = i
-    }
-  }
-  if rank < 0 {
-    self.window_focus.push(id)
-    rank = self.window_focus.length() - 1
-  }
-  rank
+  self.windows.window_z(id)
 }
 
 ///|
-/// Move a window to the top of the stacking order. Called when the pointer
-/// presses anywhere inside the window.
 pub fn UIContext::raise_window(self : UIContext, id : Id) -> Unit {
-  let kept : Array[Id] = []
-  for other in self.window_focus {
-    if other != id {
-      kept.push(other)
-    }
-  }
-  self.window_focus.clear()
-  for other in kept {
-    self.window_focus.push(other)
-  }
-  self.window_focus.push(id)
+  self.windows.raise_window(id)
 }
 
 ///|
-/// The draw batch of a window, created on first use and reused afterwards.
 fn UIContext::window_batch(self : UIContext, id : Id) -> @draw.DrawList {
-  for batch in self.window_batches {
-    if batch.0 == id {
-      return batch.1
-    }
-  }
-  let list = @draw.DrawList::new()
-  self.window_batches.push((id, list))
-  list
+  self.windows.batch(id)
 }
 
 ///|
-/// Declare `rect` as a foreground blocking region: while it is registered,
-/// pointer hover inside it is suppressed for every widget drawn on the main
-/// layer. Popups call this so the widgets underneath stop responding.
-/// The region takes effect from the next frame.
 pub fn UIContext::block_hover(self : UIContext, rect : @math.Rect) -> Unit {
-  self.blocking_rects.push(rect)
+  self.layers.block_hover(rect)
 }
 
 ///|
-/// Redirect subsequent draw commands to the foreground layer, which is
-/// composited on top of the main layer at `end_frame`. The scissor clip stack
-/// is suspended for the duration so a popup is never clipped away by the
-/// container that spawned it.
 pub fn UIContext::begin_foreground(self : UIContext) -> Unit {
-  if self.foreground {
-    return
-  }
-  self.fg_saved_draw_list = self.draw_list
-  self.fg_saved_clip_stack.clear()
-  for rect in self.clip_stack {
-    self.fg_saved_clip_stack.push(rect)
-  }
-  self.clip_stack.clear()
-  self.draw_list = self.fg_draw_list
-  self.foreground = true
+  self.layers.begin_foreground()
+  self.draw_list = self.layers.draw_list()
 }
 
 ///|
-/// Leave the foreground layer and restore the draw target and scissor clip
-/// stack that were active before the matching `begin_foreground`.
 pub fn UIContext::end_foreground(self : UIContext) -> Unit {
-  if !self.foreground {
-    return
-  }
-  self.draw_list = self.fg_saved_draw_list
-  self.clip_stack.clear()
-  for rect in self.fg_saved_clip_stack {
-    self.clip_stack.push(rect)
-  }
-  self.fg_saved_clip_stack.clear()
-  self.foreground = false
+  self.layers.end_foreground()
+  self.draw_list = self.layers.draw_list()
 }
 
 ///|
@@ -931,10 +673,7 @@ pub fn UIContext::get_window_pos(
   fallback : @math.Vec2,
 ) -> @math.Vec2 {
   self.memory.touch(id, self.frame_counter)
-  match self.window_positions.get(id) {
-    Some(pos) => pos
-    None => fallback
-  }
+  self.windows.get_pos(id, fallback)
 }
 
 ///|
@@ -944,7 +683,7 @@ pub fn UIContext::set_window_pos(
   pos : @math.Vec2,
 ) -> Unit {
   self.memory.touch(id, self.frame_counter)
-  self.window_positions.set(id, pos)
+  self.windows.set_pos(id, pos)
 }
 
 ///|
@@ -1025,15 +764,7 @@ pub fn UIContext::set_collapsing_open(
 /// Prune persistent widget states that have not been active for more than `ttl_frames` frames.
 pub fn UIContext::prune_stale_state(self : UIContext, ttl_frames : Int) -> Unit {
   self.memory.prune_stale(self.frame_counter, ttl_frames)
-  let stale_win_ids : Array[Id] = []
-  self.window_positions.each(fn(id, _) {
-    if !self.window_drawn.contains(id) {
-      stale_win_ids.push(id)
-    }
-  })
-  for id in stale_win_ids {
-    self.window_positions.remove(id)
-  }
+  self.windows.prune_stale()
 }
 
 ///|

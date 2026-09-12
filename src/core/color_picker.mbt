@@ -155,7 +155,7 @@ pub fn UIContext::color_picker(
     self.set_active_id(sv_id)
   }
 
-  if self.active_id == sv_id {
+  if self.active_id() == sv_id {
     self.set_wants_capture_mouse(true)
     if self.input.mouse_down {
       let raw_s = (self.input.mouse_pos.x - sq_x) / sq_w
@@ -225,7 +225,7 @@ pub fn UIContext::color_picker(
     self.set_active_id(hue_id)
   }
 
-  if self.active_id == hue_id {
+  if self.active_id() == hue_id {
     self.set_wants_capture_mouse(true)
     if self.input.mouse_down {
       let raw_h = (self.input.mouse_pos.x - sq_x) / sq_w * 360.0
@@ -280,7 +280,7 @@ pub fn UIContext::color_picker(
       self.set_active_id(alpha_id)
     }
 
-    if self.active_id == alpha_id {
+    if self.active_id() == alpha_id {
       self.set_wants_capture_mouse(true)
       if self.input.mouse_down {
         let raw_a = (self.input.mouse_pos.x - sq_x) / sq_w * 255.0
@@ -461,7 +461,7 @@ pub fn UIContext::color_picker_button(
     @color.Color::text_body(),
   )
 
-  let is_open = self.open_combo_id == id
+  let is_open = self.open_combo_id() == id
   let mut next_color = color
 
   let key_toggle = is_focused &&
@@ -473,24 +473,24 @@ pub fn UIContext::color_picker_button(
 
   if resp.clicked || key_toggle {
     if is_open {
-      self.open_combo_id = Id::zero()
+      self.set_open_combo_id(Id::zero())
     } else {
-      self.open_combo_id = id
+      self.set_open_combo_id(id)
     }
   }
 
   if is_open {
     self.begin_foreground()
     let popup_pos = @math.Vec2::new(rect.x, rect.y + btn_h + 4.0 * scale)
-    let prev_cursor = self.cursor
-    self.cursor = popup_pos
+    let prev_cursor = self.cursor()
+    self.set_cursor(popup_pos)
     let (c, _) = self.color_picker(id_salt + "::popup", color, show_alpha~)
     next_color = c
-    self.cursor = prev_cursor
+    self.set_cursor(prev_cursor)
     self.end_foreground()
 
     if self.input.key_pressed(Key::Escape) {
-      self.open_combo_id = Id::zero()
+      self.set_open_combo_id(Id::zero())
       self.input.consume_key(Key::Escape)
     }
   }

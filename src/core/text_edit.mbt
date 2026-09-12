@@ -199,10 +199,10 @@ pub fn UIContext::text_edit(
   placeholder : String,
 ) -> (String, Response) {
   let default_w = 200.0 * self.style.scale
-  let w = if self.available_width > default_w {
+  let w = if self.available_width() > default_w {
     default_w
   } else {
-    self.available_width
+    self.available_width()
   }
   let h = self.style.text_edit_h * self.style.scale
   self.text_edit_sized(id_salt, text, placeholder, @math.Vec2::new(w, h))

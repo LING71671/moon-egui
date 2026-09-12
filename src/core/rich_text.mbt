@@ -128,7 +128,7 @@ pub fn UIContext::rich_text(
 ) -> RichTextResponse {
   let font_sz = self.style.font_normal * self.style.scale
   let line_h = self.style.rich_text_line_h * self.style.scale
-  let max_w = if wrap_width > 0.0 { wrap_width } else { self.available_width }
+  let max_w = if wrap_width > 0.0 { wrap_width } else { self.available_width() }
   let space_w = self.measure_text(" ", font_sz).x
 
   // Pre-calculate line breaking and item positioning

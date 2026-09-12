@@ -21,8 +21,8 @@ pub fn UIContext::menu_bar(
 ) -> Unit {
   let scale = self.style.scale
   let bar_h = self.style.menu_bar_h * scale
-  let bar_w = self.available_width
-  let bar_pos = self.cursor
+  let bar_w = self.available_width()
+  let bar_pos = self.cursor()
   let bar_rect = @math.Rect::new(bar_pos.x, bar_pos.y, bar_w, bar_h)
 
   // 1. Menu bar background and subtle bottom divider line
@@ -35,24 +35,23 @@ pub fn UIContext::menu_bar(
   )
 
   // 2. Lay out items horizontally inside the menu bar
-  let prev_cursor = self.cursor
-  let prev_avail_w = self.available_width
-  let prev_spacing = self.item_spacing
+  let prev_cursor = self.cursor()
+  let prev_avail_w = self.available_width()
+  let prev_spacing = self.item_spacing()
 
-  self.cursor = @math.Vec2::new(
-    bar_pos.x + 8.0 * scale,
-    bar_pos.y + 3.0 * scale,
+  self.set_cursor(
+    @math.Vec2::new(bar_pos.x + 8.0 * scale, bar_pos.y + 3.0 * scale),
   )
-  self.available_width = bar_w - 16.0 * scale
-  self.item_spacing = @math.Vec2::new(4.0 * scale, 0.0)
+  self.set_available_width(bar_w - 16.0 * scale)
+  self.set_item_spacing(@math.Vec2::new(4.0 * scale, 0.0))
 
   // Horizontal layout scope for menu triggers
   self.horizontal(content)
 
   // Restore cursor below menu bar
-  self.cursor = @math.Vec2::new(prev_cursor.x, bar_pos.y + bar_h)
-  self.available_width = prev_avail_w
-  self.item_spacing = prev_spacing
+  self.set_cursor(@math.Vec2::new(prev_cursor.x, bar_pos.y + bar_h))
+  self.set_available_width(prev_avail_w)
+  self.set_item_spacing(prev_spacing)
 }
 
 ///|
@@ -74,7 +73,7 @@ pub fn UIContext::menu(
   let (_id, btn_rect, _) = self.allocate_space(@math.Vec2::new(btn_w, btn_h))
   self.pop_id()
 
-  let is_open = self.open_menu_id == menu_id
+  let is_open = self.open_menu_id() == menu_id
   let hovered = self.is_hovered(btn_rect)
   if hovered {
     self.set_cursor_icon("pointer")
@@ -83,7 +82,9 @@ pub fn UIContext::menu(
   // Desktop Hover-to-Switch interaction:
   // If a menu is ALREADY open, moving the pointer over another menu trigger automatically
   // switches to open that menu!
-  if self.open_menu_id != Id::zero() && self.open_menu_id != menu_id && hovered {
+  if self.open_menu_id() != Id::zero() &&
+    self.open_menu_id() != menu_id &&
+    hovered {
     self.set_open_menu_id(menu_id)
   } else if hovered && self.input.mouse_pressed {
     if is_open {
@@ -93,7 +94,7 @@ pub fn UIContext::menu(
     }
   }
 
-  let currently_open = self.open_menu_id == menu_id
+  let currently_open = self.open_menu_id() == menu_id
 
   // Render the menu bar trigger button
   let btn_bg = if currently_open {
@@ -135,20 +136,20 @@ pub fn UIContext::menu(
     let popup_y = btn_rect.y + btn_rect.h + 3.0 * scale
 
     // Prevent spilling off-screen to the right if near viewport edge
-    if popup_x + popup_w > self.available_width {
-      let clamped = self.available_width - popup_w - 4.0 * scale
+    if popup_x + popup_w > self.available_width() {
+      let clamped = self.available_width() - popup_w - 4.0 * scale
       if clamped > 4.0 * scale {
         popup_x = clamped
       }
     }
 
-    let prev_cursor = self.cursor
-    let prev_avail_w = self.available_width
-    let prev_spacing = self.item_spacing
+    let prev_cursor = self.cursor()
+    let prev_avail_w = self.available_width()
+    let prev_spacing = self.item_spacing()
 
-    self.cursor = @math.Vec2::new(popup_x + pad, popup_y + pad)
-    self.available_width = popup_w - pad * 2.0
-    self.item_spacing = @math.Vec2::new(0.0, 2.0 * scale)
+    self.set_cursor(@math.Vec2::new(popup_x + pad, popup_y + pad))
+    self.set_available_width(popup_w - pad * 2.0)
+    self.set_item_spacing(@math.Vec2::new(0.0, 2.0 * scale))
 
     // Temporary draw list to capture items while determining exact height
     let item_draw_list = @draw.DrawList::new()
@@ -159,7 +160,7 @@ pub fn UIContext::menu(
 
     self.draw_list = saved_dl
 
-    let content_h = self.cursor.y - (popup_y + pad)
+    let content_h = self.cursor().y - (popup_y + pad)
     let total_h = if content_h > 0.0 { content_h + pad } else { 24.0 }
     let menu_rect = @math.Rect::new(popup_x, popup_y, popup_w, total_h)
 
@@ -198,9 +199,9 @@ pub fn UIContext::menu(
     self.draw_list.append(item_draw_list)
 
     // Restore context state
-    self.cursor = prev_cursor
-    self.available_width = prev_avail_w
-    self.item_spacing = prev_spacing
+    self.set_cursor(prev_cursor)
+    self.set_available_width(prev_avail_w)
+    self.set_item_spacing(prev_spacing)
 
     self.end_foreground()
   }
@@ -217,7 +218,7 @@ pub fn UIContext::menu_item(
 ) -> Response {
   let scale = self.style.scale
   let item_h = 24.0 * scale
-  let item_w = self.available_width
+  let item_w = self.available_width()
 
   self.push_id(label)
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(item_w, item_h))
@@ -286,7 +287,7 @@ pub fn UIContext::menu_item(
 /// Render a clean divider line between menu item groups.
 pub fn UIContext::menu_separator(self : UIContext) -> Unit {
   let sep_h = 7.0
-  let item_w = self.available_width
+  let item_w = self.available_width()
   let (_id, rect, _) = self.allocate_space(@math.Vec2::new(item_w, sep_h))
   let line_y = rect.y + 3.0
   self.draw_list.add_line(

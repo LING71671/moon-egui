@@ -108,8 +108,8 @@ pub fn UIContext::dialog(
   let eff_w = if width > 0.0 { width } else { self.style.dialog_w * scale }
   let vp_w = if viewport_size.x > 0.0 {
     viewport_size.x
-  } else if self.available_width > 0.0 {
-    self.available_width
+  } else if self.available_width() > 0.0 {
+    self.available_width()
   } else {
     800.0
   }
@@ -121,11 +121,11 @@ pub fn UIContext::dialog(
   let confirm_id = self.id_stack.derive_id(_id_salt + "::confirm")
 
   // Modal focus trapping: clear previous background focusable IDs and constrain to dialog buttons
-  self.focusable_ids.clear()
+  self.clear_focusable()
   self.register_focusable(cancel_id)
   self.register_focusable(confirm_id)
 
-  if self.focused_id != cancel_id && self.focused_id != confirm_id {
+  if self.focused_id() != cancel_id && self.focused_id() != confirm_id {
     self.request_focus(confirm_id)
   }
 

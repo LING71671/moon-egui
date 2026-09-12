@@ -48,10 +48,10 @@ pub fn UIContext::window(
   // end, so the window's own content clip is the only one that applies.
   let saved_draw_list = self.draw_list
   let saved_clip : Array[@math.Rect] = []
-  for clip in self.clip_stack {
+  for clip in self.layers.clip_stack() {
     saved_clip.push(clip)
   }
-  self.clip_stack.clear()
+  self.layers.clip_stack().clear()
 
   let mut win_pos = self.get_window_pos(id, pos)
   let mut window_rect = @math.Rect::new(win_pos.x, win_pos.y, size.x, size.y)
@@ -64,13 +64,13 @@ pub fn UIContext::window(
 
   // 1. Stacking. Hit testing has to know which window is on top before any of
   // them can be tested, and a press anywhere inside raises the window.
-  self.win_active_z = self.window_z(id)
+  self.windows.set_active_z(self.window_z(id))
   let window_hovered = self.is_hovered(window_rect)
   let bar_hovered = self.is_hovered(title_bar_rect)
 
   if window_hovered && self.input.mouse_pressed {
     self.raise_window(id)
-    self.win_active_z = self.window_z(id)
+    self.windows.set_active_z(self.window_z(id))
   }
 
   // 2. Title bar interaction: grab on press, then follow the pointer delta.
@@ -102,16 +102,16 @@ pub fn UIContext::window(
   }
 
   if window_hovered {
-    self.wants_capture_mouse = true
+    self.set_wants_capture_mouse(true)
   }
 
   // Publish the settled rect so the next frame can resolve occlusion against
   // it, then draw into a dedicated batch.
-  self.window_rects.push((window_rect, self.win_active_z))
+  self.windows.record_rect(window_rect, self.windows.active_z())
 
   let batch = self.window_batch(id)
   batch.clear()
-  self.window_drawn.push(id)
+  self.windows.mark_drawn(id)
   self.draw_list = batch
 
   let x = win_pos.x
@@ -157,25 +157,25 @@ pub fn UIContext::window(
   self.push_clip(clip_rect)
 
   // Save current context layout state
-  let prev_cursor = self.cursor
-  let prev_avail_w = self.available_width
+  let prev_cursor = self.cursor()
+  let prev_avail_w = self.available_width()
 
-  self.cursor = @math.Vec2::new(content_x, content_y)
-  self.available_width = content_w
+  self.set_cursor(@math.Vec2::new(content_x, content_y))
+  self.set_available_width(content_w)
 
   content(self)
 
   // Restore context state and pop clip
-  self.cursor = prev_cursor
-  self.available_width = prev_avail_w
+  self.set_cursor(prev_cursor)
+  self.set_available_width(prev_avail_w)
   self.pop_clip()
 
   self.draw_list = saved_draw_list
-  self.clip_stack.clear()
+  self.layers.clip_stack().clear()
   for clip in saved_clip {
-    self.clip_stack.push(clip)
+    self.layers.clip_stack().push(clip)
   }
-  self.win_active_z = -1
+  self.windows.set_active_z(-1)
 
   Response::with_focus(
     id, window_rect, window_hovered, clicked, is_dragging, is_dragging, false, false,

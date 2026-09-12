@@ -155,8 +155,8 @@ pub fn UIContext::context_menu_items(
   let viewport = match viewport_size {
     Some(vp) => vp
     None => {
-      let vw = if self.available_width > 0.0 {
-        self.available_width
+      let vw = if self.available_width() > 0.0 {
+        self.available_width()
       } else {
         800.0
       }
@@ -536,13 +536,13 @@ pub fn UIContext::context_menu(
   let total_w = menu_width
 
   // Measure content by evaluating in a temporary draw list
-  let prev_cursor = self.cursor
-  let prev_avail_w = self.available_width
-  let prev_spacing = self.item_spacing
+  let prev_cursor = self.cursor()
+  let prev_avail_w = self.available_width()
+  let prev_spacing = self.item_spacing()
 
-  self.cursor = @math.Vec2::new(pad, pad)
-  self.available_width = total_w - pad * 2.0
-  self.item_spacing = @math.Vec2::new(0.0, 2.0)
+  self.set_cursor(@math.Vec2::new(pad, pad))
+  self.set_available_width(total_w - pad * 2.0)
+  self.set_item_spacing(@math.Vec2::new(0.0, 2.0))
 
   let temp_draw_list = @draw.DrawList::new()
   let saved_dl = self.draw_list
@@ -552,7 +552,7 @@ pub fn UIContext::context_menu(
 
   self.draw_list = saved_dl
 
-  let content_h = self.cursor.y - pad
+  let content_h = self.cursor().y - pad
   let total_h = if content_h > 0.0 { content_h + pad * 2.0 } else { 32.0 }
   let menu_size = @math.Vec2::new(total_w, total_h)
 
@@ -560,8 +560,8 @@ pub fn UIContext::context_menu(
   let viewport = match viewport_size {
     Some(vp) => vp
     None => {
-      let vw = if self.available_width > 0.0 {
-        self.available_width
+      let vw = if self.available_width() > 0.0 {
+        self.available_width()
       } else {
         800.0
       }
@@ -577,18 +577,18 @@ pub fn UIContext::context_menu(
   // Escape key dismissal
   if self.input.key_pressed(Key::Escape) {
     self.set_open_menu_id(Id::zero())
-    self.cursor = prev_cursor
-    self.available_width = prev_avail_w
-    self.item_spacing = prev_spacing
+    self.set_cursor(prev_cursor)
+    self.set_available_width(prev_avail_w)
+    self.set_item_spacing(prev_spacing)
     return { open: false, selected_id: None, pos: placed_pos, size: menu_size, }
   }
 
   // Outside click dismissal
   if self.input.mouse_pressed && !menu_rect.contains(self.input.mouse_pos) {
     self.set_open_menu_id(Id::zero())
-    self.cursor = prev_cursor
-    self.available_width = prev_avail_w
-    self.item_spacing = prev_spacing
+    self.set_cursor(prev_cursor)
+    self.set_available_width(prev_avail_w)
+    self.set_item_spacing(prev_spacing)
     return { open: false, selected_id: None, pos: placed_pos, size: menu_size, }
   }
 
@@ -621,18 +621,18 @@ pub fn UIContext::context_menu(
     custom_menu_radius,
   )
 
-  self.cursor = @math.Vec2::new(placed_pos.x + pad, placed_pos.y + pad)
-  self.available_width = total_w - pad * 2.0
-  self.item_spacing = @math.Vec2::new(0.0, 2.0)
+  self.set_cursor(@math.Vec2::new(placed_pos.x + pad, placed_pos.y + pad))
+  self.set_available_width(total_w - pad * 2.0)
+  self.set_item_spacing(@math.Vec2::new(0.0, 2.0))
 
   self.vertical(content)
 
   self.end_foreground()
 
-  self.cursor = prev_cursor
-  self.available_width = prev_avail_w
-  self.item_spacing = prev_spacing
+  self.set_cursor(prev_cursor)
+  self.set_available_width(prev_avail_w)
+  self.set_item_spacing(prev_spacing)
 
-  let is_still_open = self.open_menu_id == menu_id
+  let is_still_open = self.open_menu_id() == menu_id
   { open: is_still_open, selected_id: None, pos: placed_pos, size: menu_size, }
 }

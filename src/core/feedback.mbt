@@ -6,7 +6,7 @@ pub fn UIContext::progress_bar(
   text : String,
 ) -> Response {
   let scale = self.style.scale
-  let w = self.available_width
+  let w = self.available_width()
   let h = self.style.progress_bar_h * scale
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
 
@@ -79,12 +79,14 @@ pub fn UIContext::tooltip(self : UIContext, text : String) -> Unit {
   let mut tip_x = mouse.x + 12.0 * scale
   let tip_y = mouse.y + 12.0 * scale
 
-  let vp_w = if self.clip_stack.length() > 0 {
-    self.clip_stack[0].w
-  } else if self.available_width > 0.0 {
-    self.available_width
-  } else {
-    800.0
+  let vp_w = match self.layers.current_clip() {
+    Some(c) => c.w
+    None =>
+      if self.available_width() > 0.0 {
+        self.available_width()
+      } else {
+        800.0
+      }
   }
   if tip_x + tip_w > vp_w {
     tip_x = mouse.x - tip_w - 4.0 * scale
