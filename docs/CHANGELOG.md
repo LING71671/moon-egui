@@ -11,6 +11,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.0] - 2026-09-12
+
+### Added
+- **Full Self-Hosted "Pure Canvas Studio" (`gallery.html`)**: Complete migration of the component gallery to an in-canvas workbench featuring segmented theme switching (`studio_light`, `slate_dark`, `high_contrast`), 50/50 draggable curtain splitter (`split_horizontal`), line-numbered code viewer (`code_editor`), and full 32-widget code repository.
+- **Input Accessibility & Multi-Pointer Overhaul**: Secondary pointer click (right-click) support in `RawInput`, complete Tab focus navigation chain across all widgets, Space/Enter keyboard activation with focus stroke rings, and event consumption (`consume_key`).
+- **Typography & Grapheme Traversal Engine**: CJK word-wrapping and line breaking with punctuation avoidance in `rich_text.mbt`, atomic UTF-16 surrogate cluster traversal (`prev_char_boundary`, `next_char_boundary`), LRU typographical measurement caching, and native browser IME `<textarea>` composition bridge.
+- **Widget Resiliency Suite**:
+  - `CodeEditor`: Binary search character hit-testing, vertical wheel scrolling, auto-scrolling to caret, line culling, and text selection buffers with pointer drag and Shift/Ctrl+A key shortcuts.
+  - `ScrollArea`: Interactive vertical scrollbar thumb dragging and post-closure content height clamping.
+  - `Dialog`: Dynamic card height computation and Tab focus trapping.
+  - `CommandPalette`: Scissor-clipped scrolling and 320px maximum height clamping.
+  - `ComboBox`: Boundary collision detection with automatic upward flipping and internal scrolling.
+  - `ContextMenu`: Recursive cascading submenus (`children : Array[ContextMenuItem]`, `ContextMenuItem::submenu`) with hover tracking.
+  - `Splitter`: Zero-dimension guards and safe minimum padding clamping.
+  - `Tooltip` & `Toast`: Viewport boundary clamping and hover occlusion blocking.
+- **Rendering & Pipeline Optimizations**:
+  - Added `DrawCmd::LinearGradient` primitive and `DrawList::add_linear_gradient`, mapped to `ctx.createLinearGradient` in JS backends.
+  - Removed redundant per-cell `push_clip`/`pop_clip` in `Table`, saving 240 canvas state save/restores per frame.
+- **Advanced Core Layout & Dynamic Theming**:
+  - Auto-wrapping flow layout `UIContext::horizontal_wrapped`.
+  - Dynamic runtime theme switching with `Theme` struct (`Theme::studio_light()`, `Theme::slate_dark()`, `Theme::high_contrast()`).
+  - Immediate-mode animation tweening state machine (`animate_bool`, `animate_float`).
+- **Memory & State Hardening**:
+  - Replaced persistent state arrays with generational hash maps (`@hashmap.HashMap[Id, T]`) and frame-counter pruning (`prune_stale_state`).
+  - Non-allocating 64-bit integer ID derivation (`Id::from_int`, `Id::with_int`, `IdStack::derive_int`).
+- **158 Headless Tests**: 100% test pass rate across unit and whitebox test suites.
+
+---
+
 ## [0.1.1] - 2026-09-11
 
 ### Added

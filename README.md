@@ -161,22 +161,23 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 ### 已交付可用特性 (Available Now)
 - **底层图形与绘制内核 (Core Draw Engine)**：纯 MoonBit 实现的 `Vec2`, `Rect`, `Color`, `DrawCmd` 平台无关指令流，支持矩形、线段、圆、文本与嵌套矩形裁剪栈（Scissor Clipping）。
 - **交互状态机与多向排版 (Layout & Space Allocation)**：`UIContext` 维护 `hot_id` / `active_id` 状态机与布局作用域栈，支持单向垂直流、水平行内排版流（`horizontal`），`allocate_space()` 自动分配几何尺寸并完成鼠标交互命中判定。
-- **核心交互控件套件 (Available Widgets)**：
-  - **基础输入**：`button`（支持快捷键、主次样式与尺寸）、`text_edit`（纯白骨瓷单行文本输入）、`label` / `label_colored`。
-  - **选择与调节**：`checkbox`（精密复选框）、`toggle`（双稳态胶囊开关）、`radio`（同心圆单选）、`slider` / `slider_int`（连续/步进数值条）、`drag_value`（数字微调器）、`combo_box`（轻量下拉选择框）、`color_button`（调色板取色器）。
-  - **反馈与展示**：`progress_bar`（平滑进度条）、`tooltip`（悬浮气泡提示与视口防溢出）。
-  - **排版微调**：`separator`（水平发丝分割线）、`spacer`（弹性留白）。
+- **核心交互控件套件 (32 Available Widgets)**：
+  - **基础输入与编辑**：`button`（支持快捷键、主次样式与尺寸）、`text_edit`（单行文本输入与隐藏式 IME 桥接）、`code_editor`（多行代码编辑器，支持行号、语法着色、选区高亮、光标滚动、全选与快捷键）、`label` / `label_colored`。
+  - **选择与调节**：`checkbox`（精密复选框）、`toggle`（双稳态胶囊开关）、`radio`（单选框）、`slider` / `slider_int`（连续/步进数值条）、`drag_value`（数字微调器）、`knob`（270° 圆弧行程旋钮）、`combo_box`（自适应碰撞翻转下拉框）、`color_button` / `color_picker`（HSV 调色取色盘）。
+  - **反馈与通知**：`progress_bar`（平滑进度条）、`badge`（状态徽标与点标）、`toast`（悬浮通知弹窗与遮罩阻断）、`tooltip`（视口防溢出气泡提示）。
+  - **高级导航与交互**：`menu_bar`（桌面级菜单栏）、`context_menu`（递归级联多级右键菜单）、`command_palette`（全局快捷命令检索面板）、`tree_view`（资产层次树）、`segmented_control`（分段选择器）。
+  - **排版微调与流式布局**：`separator`（水平发丝分割线）、`spacer`（弹性留白）、`horizontal_wrapped`（自动折行流式布局）。
 - **视窗与高级容器系统 (Windows & Containers)**：
   - **全局顶层菜单栏**：`menu_bar`, `menu`, `menu_item`, `menu_separator`，具备前台图层投影隔离、桌面级 Hover-to-Switch 随动流转与外部点击安全闭合；
   - **自由浮动视窗**：`window` 支持标题栏拖拽位移、动态 Z-Index 置顶管理、内容局部坐标系与 Scissor 视口裁剪；
-  - **高级容器**：`collapsing_header`（树形折叠分组）、`scroll_area`（滚轮驱动平滑视口滚动）、`tab_bar`（悬浮滑块标签导航）。
-- **无头纯算与高覆盖测试**：核心图元与组件逻辑完全脱离浏览器，内置 58 项自动化无头白盒单元测试（100% 通过）。
-- **Canvas 2D 宿主驱动器**：轻量 JavaScript 桥接层与 60 FPS 渲染管线，结合 O(1) 视口边界裁剪与多尺度 LOD 架构。
+  - **高级容器**：`splitter`（双向可拖拽分栏器）、`table`（高性能数据表格与列宽拖拽）、`collapsing_header`（树形折叠分组）、`scroll_area`（滚轮与滑块交互视口滚动）、`tab_bar`（标签导航）、`dialog`（模态确认对话框与焦点陷阱）。
+- **无头纯算与高覆盖测试**：核心图元与组件逻辑完全脱离浏览器，内置 158 项自动化无头白盒单元测试（100% 通过）。
+- **Canvas 2D 宿主驱动器**：轻量 JavaScript 桥接层与 60 FPS 渲染管线，结合 O(1) 视口边界裁剪与自适应 LOD 架构。
 
 ### 规划与演进中特性 (Planned / In Roadmap)
 - **硬件加速渲染后端**：WebGL / WebGPU 批量几何图元渲染器与自定义着色器流水线。
 - **跨平台原生桌面桥接**：Raylib / SDL3 跨平台窗口环境驱动器适配。
-- **高级数据流图元**：实时遥测波动折线图（`Sparkline`）、多视窗停靠排版系统（Docking System）。
+- **复杂流图与节点编辑**：节点流连线编辑器 (`NodeEditor`)。
 
 ---
 
@@ -188,12 +189,12 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
 - [x] **里程碑 3：高级视窗与容器系统**：`Window` 拖拽与动态 Z-Index 置顶、全局顶层菜单栏（`MenuBar`）、视口滚动（`ScrollArea`）、折叠分组（`CollapsingHeader`）。
 - [x] **里程碑 4：Canvas 2D 驱动与百万节点画板**：60 FPS HTML5 Canvas 2D 宿主、自适应 LOD、GitHub Pages 自动化静态上线。
 
-### 第二阶段：专业工程能力深度演进（9月12日 – 9月25日）[推进中]
-- [ ] **里程碑 5：专业桌面交互与输入系统**（9月12日 – 9月15日）：全局命令面板 (`CommandPalette` / `⌘K`)、右键上下文菜单 (`ContextMenu`)、多行文本输入 (`text_edit_multiline`)、资产树控件 (`TreeView`)。
-- [ ] **里程碑 6：工作台排版体系与视窗停靠**（9月16日 – 9月18日）：可嵌套弹性分栏器 (`SplitPane`)、视窗磁吸与停靠机制原型 (`Docking`)、动量物理弹簧微动效 (`Spring Physics`)。
-- [ ] **里程碑 7：数据密集型组件与可视化探索**（9月19日 – 9月21日）：虚拟化数据表格 (`VirtualTable`)、节点流连线编辑器 (`NodeEditor`)、工程遥测图表套件 (`Plot`)、矢量 SVG 导出器 (`SvgExporter`)。
-- [ ] **里程碑 8：高性能渲染管线探索与应用范例**（9月22日 – 9月24日）：WebGL 2.0 顶点合批渲染后端探索、CAD/节点/音频/IDE 四大参考演示集成。
-- [ ] **里程碑 9：工程化验证、基准评测与正式发布**（9月25日）：150+ 自动化无头单元测试、微秒级性能耗时报告、发布 `v0.2.0` 正式版本。
+### 第二阶段：专业工程能力深度演进（9月12日 – 9月25日）
+- [x] **里程碑 5：专业桌面交互与输入系统**（已交付）：全局命令面板 (`CommandPalette` / `⌘K`)、右键上下文菜单 (`ContextMenu`)、代码编辑控件 (`CodeEditor`)、资产树控件 (`TreeView`)、环形旋钮 (`Knob`)、全自宿主 Pure Canvas Studio。
+- [x] **里程碑 6：工作台排版体系与高弹性控件**（已交付）：可拖拽弹性分栏器 (`Splitter`)、虚拟化数据表格 (`Table`)、模态对话框 (`Dialog`)、通知提示 (`Toast`)、流式自动折行 (`horizontal_wrapped`)、多主题系统 (`Theme`)。
+- [x] **里程碑 9：工程化验证、基准评测与正式发布**（已交付）：158 项自动化无头单元测试（100% 通过）、Wasm-GC 编译支持、正式发布 `v0.2.0`。
+- [ ] **里程碑 7：数据密集型组件与高级可视化**（演进中）：节点流连线编辑器 (`NodeEditor`)、工程遥测图表套件 (`Plot`)、矢量 SVG 导出器 (`SvgExporter`)。
+- [ ] **里程碑 8：高性能渲染管线探索与应用范例**（演进中）：WebGL 2.0 顶点合批渲染后端探索、CAD/节点/音频/IDE 多场景参考演示。
 
 > 完整攻坚指标与详细验收准则请参阅 **[ROADMAP.md](docs/ROADMAP.md)** ([English](docs/ROADMAP_en.md))。
 

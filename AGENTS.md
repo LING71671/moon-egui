@@ -93,9 +93,20 @@ Every version release of this library **MUST** execute a synchronized dual-chann
 
 The canonical release procedure is defined as follows:
 
-1. **Version Declaration**:
-   - Bump `version = "X.Y.Z"` in `moon.mod` adhering to Semantic Versioning (`MAJOR.MINOR.PATCH`).
-   - If public API changes occur, reflect breaking or additive changes in package documentation.
+1. **Version Declaration & Documentation Synchronization Checklist**:
+   - **Module Manifest**: Bump `version = "X.Y.Z"` in `moon.mod` adhering to Semantic Versioning (`MAJOR.MINOR.PATCH`).
+   - **CLI Console Output**: Update version string in `cmd/main/main.mbt` (`println("=== Moon-EGUI vX.Y.Z Interactive Frame ===")`) to prevent drift.
+   - **Release Changelog**: Insert new release section `## [X.Y.Z] - YYYY-MM-DD` in `docs/CHANGELOG.md` with complete Added/Fixed/Changed entries.
+   - **Project READMEs**: In both `README.md` and `README_en.md`, update:
+     - Versioned installation commands (`moon add LING71671/moon-egui@X.Y.Z`).
+     - Delivered widget count (e.g. 32 Available Widgets) and automated test count.
+     - Milestone checklist status in the Development Roadmap section.
+   - **Roadmap Documents**: Update `docs/ROADMAP.md` and `docs/ROADMAP_en.md` delivery checkboxes.
+   - **Web Showcase Brand Badges & Cache Busters**:
+     - `examples/canvas/index.html`: Update navigation `<span class="brand-tag">vX.Y.Z</span>` and quickstart copy command.
+     - `examples/canvas/gallery.html`: Update navigation `<span class="brand-tag">vX.Y.Z</span>` and script/CSS query strings (`canvas.js?v=X.Y.Z`, `css/gallery.css?v=X.Y.Z`).
+     - `examples/canvas/docs.html`: Update navigation `<span class="brand-tag">vX.Y.Z</span>` and page header `<span class="page-badge">MOON-EGUI API REFERENCE · vX.Y.Z</span>`.
+     - `examples/canvas/benchmark.html`: Update script query strings (`canvas.js?v=X.Y.Z`, `js/run.js?v=X.Y.Z`).
 
 2. **Interface Generation and Code Formatting**:
    - Execute `moon info && moon fmt`.
@@ -104,7 +115,7 @@ The canonical release procedure is defined as follows:
 3. **Compilation and Test Suite Verification**:
    - Execute `moon test` and ensure 100% test pass rate across all unit and whitebox tests.
    - Verify Wasm-GC compatibility via `moon check --target wasm-gc`.
-   - Rebuild demo bundle via `pwsh scripts/build_demo.ps1` to keep runtime assets in sync.
+   - Rebuild demo bundle synchronously using both `pwsh scripts/build_demo.ps1` (local) and `sh scripts/build_demo.sh` (Linux CI compatibility) to keep runtime assets in sync.
 
 4. **Mooncake Central Registry Publishing**:
    - Run `moon publish --dry-run` to validate package archive construction and server pre-flight checks (verifying `Server status: 202 Accepted`).
@@ -112,9 +123,10 @@ The canonical release procedure is defined as follows:
    - Run `moon update` to refresh the local registry index and verify that the new version appears in `$env:USERPROFILE\.moon\registry\index\user\LING71671\moon-egui.index`.
 
 5. **Git Commit, Tagging, and Synchronous Remote Push**:
-   - Stage all modified files (`moon.mod`, `.mbti`, source files, demo bundles, issue trackers).
+   - Stage all modified files (`moon.mod`, `.mbti`, source files, demo bundles, HTML showcase pages, changelog, READMEs).
    - Commit using Conventional Commits: `release: vX.Y.Z - <summary>`.
    - Create an annotated Git tag: `git tag -a vX.Y.Z -m "<release-notes>"`.
    - Push both the main branch and release tags synchronously: `git push origin main && git push origin vX.Y.Z` (or `git push && git push --tags`).
    - Ensure working tree is clean and `origin/main` is in lockstep with local HEAD.
+   - Verify that the `Deploy GitHub Pages` and `CI` GitHub Actions workflows both pass with 100% green status.
 

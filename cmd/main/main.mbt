@@ -14,7 +14,7 @@ fn main {
   let (fullscreen, chk_resp) = ctx.checkbox("Enable Fullscreen", false)
   let dl = ctx.end_frame()
 
-  println("=== Moon-EGUI v0.1.1 Interactive Frame ===")
+  println("=== Moon-EGUI v0.2.0 Interactive Frame ===")
   println("Label rendered: Control Panel")
   println("Button 'Launch System' hovered: \{btn.hovered()}")
   println("Button 'Deploy Wasm' hovered: \{pbtn.hovered()}")
