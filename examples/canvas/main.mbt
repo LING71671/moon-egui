@@ -183,10 +183,6 @@ fn main {
   )
   let _ = get_gallery_status()
   let _ = get_gallery_cursor()
-  set_gallery_view_mode(1)
-  let _ = get_gallery_view_mode()
-  set_gallery_theme(1)
-  let _ = get_gallery_theme()
   println(
     "Benchmark initialized, total commands: \{frame.draw_list.len()}, zoom: \{frame.zoom}",
   )

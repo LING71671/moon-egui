@@ -473,22 +473,6 @@
     resizeCanvas();
   };
 
-  window.setGalleryViewMode = function (mode) {
-    if (window.moon_set_gallery_view_mode) {
-      try {
-        window.moon_set_gallery_view_mode(mode);
-      } catch (e) {}
-    }
-  };
-
-  window.setGalleryTheme = function (themeIdx) {
-    if (window.moon_set_gallery_theme) {
-      try {
-        window.moon_set_gallery_theme(themeIdx);
-      } catch (e) {}
-    }
-  };
-
   window.initNativeGallery = initCanvas;
   window.resizeGalleryCanvas = resizeCanvas;
 

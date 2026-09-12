@@ -92,18 +92,9 @@ const appState = {
 
 
     // Presets
-    document.getElementById('btnPresetUI').onclick = () => {
-      setCurtain(0);
-      if (window.setGalleryViewMode) window.setGalleryViewMode(0);
-    };
-    document.getElementById('btnPresetSplit').onclick = () => {
-      setCurtain(50);
-      if (window.setGalleryViewMode) window.setGalleryViewMode(1);
-    };
-    document.getElementById('btnPresetCode').onclick = () => {
-      setCurtain(100);
-      if (window.setGalleryViewMode) window.setGalleryViewMode(2);
-    };
+    document.getElementById('btnPresetUI').onclick = () => setCurtain(0);
+    document.getElementById('btnPresetSplit').onclick = () => setCurtain(50);
+    document.getElementById('btnPresetCode').onclick = () => setCurtain(100);
 
     curtainDivider.ondblclick = () => {
       if (appState.curtainPct < 25) setCurtain(50);
@@ -113,13 +104,37 @@ const appState = {
 
     // Syntax Highlighter matching index.html colors
     function highlightMoonBit(raw) {
-      return raw
-        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-        .replace(/(\/\/\/.*|\/\/.*)/g, '<span class="code-comment">$1</span>')
+      const tokens = [];
+      let s = raw
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+      // 1. Extract comments into placeholders
+      s = s.replace(/(\/\/\/.*|\/\/.*)/g, (m) => {
+        const id = `___COMM_${tokens.length}___`;
+        tokens.push({ id, html: `<span class="code-comment">${m}</span>` });
+        return id;
+      });
+
+      // 2. Extract string literals into placeholders
+      s = s.replace(/(".*?")/g, (m) => {
+        const id = `___STR_${tokens.length}___`;
+        tokens.push({ id, html: `<span class="code-str">${m}</span>` });
+        return id;
+      });
+
+      // 3. Highlight keywords, types, and function calls
+      s = s
         .replace(/\b(pub|fn|let|mut|match|struct|type|if|else|return|for|in|while|true|false)\b/g, '<span class="code-kw">$1</span>')
         .replace(/\b(Unit|Int|Double|String|Bool|UIContext|Response|AppState|Rect|Vec2)\b/g, '<span class="code-type">$1</span>')
-        .replace(/(".*?")/g, '<span class="code-str">$1</span>')
         .replace(/\b([a-zA-Z_]\w*)(?=\()/g, '<span class="code-fn">$1</span>');
+
+      // 4. Restore tokens
+      for (let i = 0; i < tokens.length; i++) {
+        s = s.replace(tokens[i].id, tokens[i].html);
+      }
+      return s;
     }
 
     // Switch Component with smooth stage animation

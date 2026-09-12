@@ -15,15 +15,9 @@ pub fn get_cam_x() -> Double
 
 pub fn get_cam_y() -> Double
 
-pub fn get_gallery_component_info(String) -> (String, String, String)
-
 pub fn get_gallery_cursor() -> String
 
 pub fn get_gallery_status() -> String
-
-pub fn get_gallery_theme() -> Int
-
-pub fn get_gallery_view_mode() -> Int
 
 pub fn get_grid_dim() -> Int
 
@@ -42,10 +36,6 @@ pub fn is_magnetic_repel() -> Bool
 pub fn is_show_studio() -> Bool
 
 pub fn is_wave_pulse() -> Bool
-
-pub fn set_gallery_theme(Int) -> Unit
-
-pub fn set_gallery_view_mode(Int) -> Unit
 
 pub fn step(Double, Double, Bool, Double, Double, Double, Int, Double, Double, String, Array[String], Array[String], Int) -> FrameOutput
 
@@ -149,9 +139,6 @@ pub struct GalleryState {
   mut color_picker_val : @color.Color
   mut breadcrumb_last_clicked : String
   mut rich_text_last_url : String
-  mut view_mode : Int
-  mut curtain_ratio : Double
-  mut theme_idx : Int
 }
 
 // Type aliases
