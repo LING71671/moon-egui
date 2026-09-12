@@ -22,7 +22,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Geometry & Sizing Design Token Normalization**:
   - Formalized widget dimensions across `WidgetStyle` (`progress_bar_h`, `tooltip_pad_x`, `tooltip_pad_y`, `tooltip_radius`, `window_title_bar_h`, `combo_box_w`, `combo_box_h`, `collapsing_header_h`, `collapsing_header_indent`, `tab_bar_h`, `tab_bar_pad_x`, `drag_value_w`, `drag_value_h`, `color_picker_w`, `color_picker_btn_h`, `breadcrumb_h`, `breadcrumb_sep_gap`, `plot_default_w`, `plot_default_h`, `plot_pad_left`, `plot_pad_right`, `plot_pad_top`, `plot_pad_bottom`, `bar_chart_default_w`, `bar_chart_default_h`, `bar_chart_gap`).
   - Added semantic palette tokens `Color::grid_line()`, `Color::guideline_wash()`, and `Color::plot_crosshair()`.
-- **Test Suite Expansion**: Added comprehensive whitebox tests for `Plot` and `BarChart` (`src/core/plot_wbtest.mbt`), bringing total automated test coverage to 161 tests (100% pass rate).
+- **Vertical Channel Fader Regulator (`Fader` & `FaderInt`)**:
+  - Implemented `UIContext::fader` and `UIContext::fader_int` for audio and parameter mixing channels.
+  - Features recessed track groove, calibrated tick marks, tactile fader cap with center indicator line, vertical drag delta, scroll wheel stepping, Shift (0.1x) / Ctrl (10x) modifiers, Arrow/Home/End keyboard navigation, and Alt+Click reset.
+  - Added semantic design tokens `Color::fader_track_bg()`, `Color::fader_tick()`, `Color::fader_cap_line()`, and `WidgetStyle` fields `fader_w`, `fader_h`, `fader_track_w`, `fader_cap_w`, `fader_cap_h`, `fader_cap_radius`.
+- **Graphical Primitive Typographical Metadata (`BUG-DRAW-03`)**:
+  - Added `font_family : String` and `font_weight : Int` metadata to `DrawCmd::Text` and `DrawList::add_text`.
+  - Enabled bold font weight (700) in `RichText` and explicit monospace typeface in `CodeEditor` line numbers and code text.
+  - Updated HTML5 Canvas 2D runners (`gallery_runner.js` and `run.js`) with LRU font string assembly and caching.
+- **Test Suite Expansion**: Added comprehensive whitebox tests for `Fader` (`src/core/fader_wbtest.mbt`), bringing total automated test coverage to 167 tests (100% pass rate).
 
 ---
 

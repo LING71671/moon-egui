@@ -45,9 +45,9 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
   - [x] **Hierarchical Tree View (`TreeView` / `TreeNode`)** [Delivered]: Multi-level nesting, expansion memory, indentation guide lines, and item selection;
   - [x] **Specialized Numerical Regulators: Rotary Knob (`Knob`)** [Delivered]: 270-degree physical arc sweep, unipolar/bipolar fills, vertical drag delta, and Alt+Click reset;
   - [x] **100% Native Canvas Gallery Engine Refactoring** [Delivered]: Component gallery fully powered by pure MoonBit WebAssembly/Canvas immediate-mode pipeline, eliminating simulated DOM and CSS;
-  - [ ] **Linear Fader Regulator (`Fader`)**: Linear channel slider for audio gain and continuous parameters.
+  - [x] **Linear Fader Regulator (`Fader`)** [Delivered]: Linear channel slider for audio gain and continuous parameters, with calibrated ticks, vertical drag delta, scroll wheel, and Alt+Click reset (Milestone 5 100% Delivered).
 * **Acceptance Criteria**:
-  - Keyboard-only navigation smoothly cycles through interactive controls with passing headless test suites (103/103 tests passing).
+  - Keyboard-only navigation smoothly cycles through interactive controls with passing headless test suites (167/167 tests passing).
 
 ---
 
@@ -95,7 +95,7 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 
 * **Objective**: Ensure industrial code reliability, freeze API contracts, and finalize project deliverables.
 * **Deliverables**:
-  - [x] **Expanded Test Suite** [Delivered]: Reach 161 automated whitebox and blackbox test cases (100% passing rate);
+  - [x] **Expanded Test Suite** [Delivered]: Reach 167 automated whitebox and blackbox test cases (100% passing rate);
   - [ ] **Micro-Benchmark Telemetry (Benchmarks)**: Measure nanosecond and microsecond compute budgets across typical workloads;
   - [ ] **Interface Stabilization**: Run `moon info && moon fmt`, freeze `.mbti` signatures, and finalize bilingual documentation;
   - [ ] **Release Packaging**: Tag and publish official `v0.2.0` release.

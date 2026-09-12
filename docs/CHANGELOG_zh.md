@@ -22,7 +22,15 @@
 - **控件几何与尺寸设计令牌规范化**：
   - 全面规范化 `WidgetStyle` 几何维度，引入进度条、气泡提示、标题栏、下拉框、折叠面板、标签栏、数值微调、调色盘、面包屑及图表的一级样式字段。
   - 在 `@color.Color` 中引入语义令牌 `Color::grid_line()`、`Color::guideline_wash()` 与 `Color::plot_crosshair()`。
-- **自动化测试套件扩展**：新增 `Plot` 与 `BarChart` 完整白盒测试（`src/core/plot_wbtest.mbt`），使无头白盒与黑盒自动化测试总数增至 161 项（100% 通过率）。
+- **垂直通道推子调节器 (`Fader` & `FaderInt`)**：
+  - 新增 `UIContext::fader` 与 `UIContext::fader_int`，专用于音频调音台与连续参数控制。
+  - 支持下陷导轨背景、双侧物理刻度线标尺、中心荧光指示线推子帽、垂直鼠标拖拽、滚轮微调、Shift（0.1x）/ Ctrl（10x）倍率修饰、键盘方向键/Home/End 导航与 Alt+Click 复位。
+  - 补充设计令牌 `Color::fader_track_bg()`、`Color::fader_tick()`、`Color::fader_cap_line()` 及 `WidgetStyle` 字段 `fader_w`、`fader_h`、`fader_track_w`、`fader_cap_w`、`fader_cap_h`、`fader_cap_radius`。
+- **底层图元文本字体与字重元数据补全 (`BUG-DRAW-03`)**：
+  - 在 `DrawCmd::Text` 与 `DrawList::add_text` 中增加字体族名 (`font_family`) 与字重 (`font_weight`) 字段。
+  - 支持 `RichText` 粗体真实应用 700 字重，支持 `CodeEditor` 声明等宽字体族名。
+  - 更新 Web 渲染驱动（`gallery_runner.js` 与 `run.js`），支持动态装配与 LRU 字体缓存。
+- **自动化测试套件扩展**：新增 `Fader` 完整白盒单元测试（`src/core/fader_wbtest.mbt`），使无头白盒与黑盒自动化测试总数增至 167 项（100% 通过率）。
 
 ---
 

@@ -337,8 +337,9 @@ Items are prioritized as:
 
 ---
 
-### BUG-DRAW-03 (P3): `DrawCmd::Text` Lacks Font Family, Font Weight, and Alignment Metadata
+### BUG-DRAW-03 (P3) [RESOLVED]: `DrawCmd::Text` Lacks Font Family, Font Weight, and Alignment Metadata
 - **Location**: [src/draw/draw_cmd.mbt#L8](file:///a:/moonbit-project/src/draw/draw_cmd.mbt#L8), [examples/canvas/js/gallery_runner.js#L53-L60](file:///a:/moonbit-project/examples/canvas/js/gallery_runner.js#L53-L60)
+- **Status**: **RESOLVED** (Phase 8). Added `font_family` and `font_weight` fields to `DrawCmd::Text`, optional arguments to `DrawList::add_text`, mapped `Bold` rich text span to weight 700, and mapped `CodeEditor` line numbers and code buffer to monospace font family with dynamic JS font string caching.
 - **Description**:
   `DrawCmd::Text(@math.Vec2, String, Double, @color.Color)` only conveys position, string, size, and color.
 - **Failure Mechanism**:
@@ -491,6 +492,7 @@ Items in this section describe high-value architectural capabilities and showcas
 | **bug** | `BUG-WIDGET-11`| ContextMenu Cascading Multi-Level Submenus | **P2** | Resolved (Phase 4) |
 | **bug** | `BUG-DRAW-01` | LinearGradient Primitive in DrawCmd & Canvas Backends | **P2** | Resolved (Phase 4) |
 | **bug** | `BUG-DRAW-02` | Elimination of Redundant Per-Cell Canvas Save/Restores | **P3** | Resolved (Phase 4) |
+| **bug** | `BUG-DRAW-03` | `DrawCmd::Text` Font Family and Weight Metadata | **P3** | Resolved (Phase 8) |
 | **feat** | `FEAT-SHOWCASE-01`| Full Self-Hosted Pure Canvas Studio Workbench | **P1** | Resolved (Phase 5) |
 | **feat** | `FEAT-CORE-02` | Auto-Wrapping Flow Layout (`horizontal_wrapped`) | **P1** | Resolved (Phase 6) |
 | **feat** | `FEAT-CORE-03` | Runtime Dynamic Theming (`studio_light`, `slate_dark`) | **P2** | Resolved (Phase 6) |
