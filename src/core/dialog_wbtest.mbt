@@ -104,11 +104,11 @@ test "dialog: multiline message dynamic height and Tab focus trapping" {
   let _ = ctx.dialog("wrap_dlg", "Dynamic Title", long_msg)
 
   // Verify background button was evicted from focus chain by dialog modal focus trapping
-  assert_false(ctx.focusable_ids.contains(bg_btn_id))
+  assert_false(ctx.focusable_ids().contains(bg_btn_id))
   let cancel_id = ctx.id_stack.derive_id("wrap_dlg::cancel")
   let confirm_id = ctx.id_stack.derive_id("wrap_dlg::confirm")
-  assert_true(ctx.focusable_ids.contains(cancel_id))
-  assert_true(ctx.focusable_ids.contains(confirm_id))
+  assert_true(ctx.focusable_ids().contains(cancel_id))
+  assert_true(ctx.focusable_ids().contains(confirm_id))
   assert_true(ctx.has_focus(confirm_id))
 
   let dl = ctx.end_frame()
