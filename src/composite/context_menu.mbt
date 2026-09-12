@@ -271,6 +271,70 @@ pub fn context_menu_items(
     }
   }
 
+  // Keyboard navigation while the menu is open: arrows walk the actionable
+  // rows (persisted in scoped memory), Enter activates a row or opens a
+  // submenu. The keyboard selection highlights like hover in the render pass.
+  let menu_kb_id = ctx.id_stack.derive_id("ctx_menu_kb::" + id_salt)
+  let actionable : Array[Int] = []
+  for i, it in items {
+    if !it.is_separator && !it.disabled {
+      actionable.push(i)
+    }
+  }
+  if actionable.length() > 0 {
+    let mut cur = ctx
+      .memory()
+      .get_int_or_default(menu_kb_id, actionable[0], tag="kb")
+    let mut in_list = false
+    for i in actionable {
+      if i == cur {
+        in_list = true
+        break
+      }
+    }
+    if !in_list {
+      cur = actionable[0]
+    }
+    if ctx.input.key_pressed(Key::ArrowDown) {
+      ctx.input.consume_key(Key::ArrowDown)
+      let pos_in = (fn() {
+        for p, i in actionable {
+          if i == cur {
+            return p
+          }
+        }
+        0
+      })()
+      cur = actionable[if pos_in + 1 < actionable.length() {
+          pos_in + 1
+        } else {
+          pos_in
+        }]
+    }
+    if ctx.input.key_pressed(Key::ArrowUp) {
+      ctx.input.consume_key(Key::ArrowUp)
+      let pos_in = (fn() {
+        for p, i in actionable {
+          if i == cur {
+            return p
+          }
+        }
+        0
+      })()
+      cur = actionable[if pos_in > 0 { pos_in - 1 } else { 0 }]
+    }
+    ctx.memory().set_int(menu_kb_id, cur, tag="kb")
+    let kb_item = items[cur]
+    if ctx.input.key_pressed(Key::Enter) {
+      ctx.input.consume_key(Key::Enter)
+      if kb_item.children.length() > 0 {
+        ctx.set_active_submenu_id(kb_item.id)
+      } else {
+        selected_id = Some(kb_item.id)
+      }
+    }
+  }
+
   // Outside click dismissal
   if ctx.input.mouse_pressed {
     let in_main = menu_rect.contains(ctx.input.mouse_pos)
@@ -334,8 +398,9 @@ pub fn context_menu_items(
   .add_rect_stroke(menu_rect, @color.Color::border_default(), 1.0, menu_radius)
 
   // Render main menu items
+  let kb_idx = ctx.memory().get_int_or_default(menu_kb_id, -1, tag="kb")
   let mut cur_draw_y = placed_pos.y + pad_y
-  for item in items {
+  for i, item in items {
     if item.is_separator {
       let line_y = cur_draw_y + 3.0 * scale
       ctx
@@ -354,8 +419,11 @@ pub fn context_menu_items(
         total_w - 8.0 * scale,
         item_h,
       )
+      let kb_selected = !item.is_separator && !item.disabled && kb_idx == i
       let hovered = (
-          ctx.is_hovered(row_rect) || ctx.active_submenu_id() == item.id
+          ctx.is_hovered(row_rect) ||
+          ctx.active_submenu_id() == item.id ||
+          kb_selected
         ) &&
         !item.disabled
 

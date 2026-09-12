@@ -137,3 +137,53 @@ test "table: keyboard arrows move the highlight and Enter activates the row" {
   let _ = ctx.end_frame()
   assert_eq(resp3.clicked_row, Some(1))
 }
+
+///|
+test "context_menu: arrows and Enter drive the open menu" {
+  let ctx = @core.UIContext::new()
+  let menu = [
+    ContextMenuItem::new("edit", "Edit"),
+    ContextMenuItem::submenu("export", "Export", [
+      ContextMenuItem::new("export_png", "Export as PNG"),
+    ]),
+  ]
+
+  // Frame 1: open the menu with the pointer away
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(-50.0, -50.0), false),
+  )
+  let r1 = context_menu_items(
+    ctx,
+    "kb_menu",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  let _ = ctx.end_frame()
+  assert_eq(r1.open, true)
+
+  // Frame 2: ArrowDown highlights the next actionable row ("Export")
+  ctx.begin_frame(kb_key_input(@core.Key::ArrowDown))
+  let r2 = context_menu_items(
+    ctx,
+    "kb_menu",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  let _ = ctx.end_frame()
+  assert_eq(r2.open, true)
+
+  // Frame 3: Enter opens the highlighted submenu
+  ctx.begin_frame(kb_key_input(@core.Key::Enter))
+  let r3 = context_menu_items(
+    ctx,
+    "kb_menu",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  let _ = ctx.end_frame()
+  assert_eq(r3.open, true)
+  assert_eq(ctx.active_submenu_id(), "export")
+}
