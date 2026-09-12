@@ -50,6 +50,15 @@ pub fn BadgeKind::info() -> Self
 pub fn BadgeKind::success() -> Self
 pub fn BadgeKind::warning() -> Self
 
+pub struct CodeEditorStyle {
+  font_size : Double
+  gutter_font_size : Double
+  line_h : Double
+  gutter_w : Double
+  radius : Double
+} derive(Eq, @debug.Debug)
+pub fn CodeEditorStyle::default() -> Self
+
 pub struct CommandItem {
   id : String
   title : String
@@ -106,6 +115,16 @@ pub(all) enum Event {
   TextInput(String)
   PointerWheel(@math.Vec2)
 } derive(Eq, @debug.Debug)
+
+pub struct FaderStyle {
+  width : Double
+  height : Double
+  track_w : Double
+  cap_w : Double
+  cap_h : Double
+  cap_radius : Double
+} derive(Eq, @debug.Debug)
+pub fn FaderStyle::default() -> Self
 
 pub struct FocusManager {
   mut hot_id : Id
@@ -257,6 +276,11 @@ pub(all) enum Key {
   Num9
 } derive(Eq, Hash, @debug.Debug)
 
+pub struct KnobStyle {
+  radius : Double
+} derive(Eq, @debug.Debug)
+pub fn KnobStyle::default() -> Self
+
 pub struct LayerManager {
   mut draw_list : @draw.DrawList
   fg_draw_list : @draw.DrawList
@@ -401,6 +425,19 @@ pub enum PlotSeriesKind {
   Area
 } derive(Eq, @debug.Debug)
 
+pub struct PlotStyle {
+  default_w : Double
+  default_h : Double
+  pad_left : Double
+  pad_right : Double
+  pad_top : Double
+  pad_bottom : Double
+  bar_chart_default_w : Double
+  bar_chart_default_h : Double
+  bar_chart_gap : Double
+} derive(Eq, @debug.Debug)
+pub fn PlotStyle::default() -> Self
+
 pub struct RawInput {
   mouse_pos : @math.Vec2
   mouse_down : Bool
@@ -467,6 +504,13 @@ pub(all) enum TableSortDirection {
   Descending
   NoSort
 } derive(Eq, @debug.Debug)
+
+pub struct TableStyle {
+  header_h : Double
+  row_h : Double
+  radius : Double
+} derive(Eq, @debug.Debug)
+pub fn TableStyle::default() -> Self
 
 pub struct TextSpan {
   text : String
@@ -728,104 +772,28 @@ pub fn UIContext::windows(Self) -> WindowManager
 
 pub struct WidgetStyle {
   scale : Double
-  button_h : Double
-  button_pad_x : Double
-  button_radius : Double
-  button_min_w : Double
-  text_edit_h : Double
-  text_edit_pad_x : Double
-  text_edit_radius : Double
-  caret_h : Double
-  caret_blink_interval : Double
-  slider_h : Double
-  slider_track_w : Double
-  slider_track_h : Double
-  slider_thumb_r : Double
-  toggle_w : Double
-  toggle_h : Double
-  toggle_thumb_r : Double
-  knob_r : Double
-  code_editor_line_h : Double
-  code_editor_gutter_w : Double
-  font_normal : Double
+  elevation : Double
+  control_h_sm : Double
+  control_h_md : Double
+  control_h_lg : Double
+  font_xs : Double
+  font_sm : Double
   font_small : Double
+  font_normal : Double
   font_large : Double
+  font_xl : Double
+  spacing_xs : Double
+  spacing_sm : Double
+  spacing_md : Double
+  spacing_lg : Double
+  spacing_xl : Double
   item_spacing : @math.Vec2
+  radius_xs : Double
   radius_sm : Double
   radius_md : Double
   radius_lg : Double
   radius_xl : Double
-  segmented_h : Double
-  segmented_pad : Double
-  segmented_radius : Double
-  segmented_pill_radius : Double
-  segmented_item_pad_x : Double
-  dialog_w : Double
-  dialog_min_h : Double
-  dialog_radius : Double
-  dialog_btn_w : Double
-  code_editor_font_size : Double
-  code_editor_gutter_font_size : Double
-  code_editor_radius : Double
-  command_palette_w : Double
-  command_palette_radius : Double
-  command_palette_row_h : Double
-  command_palette_header_h : Double
-  command_palette_footer_h : Double
-  toast_radius : Double
-  table_header_h : Double
-  table_row_h : Double
-  table_radius : Double
-  tree_view_row_h : Double
-  tree_view_radius : Double
-  rich_text_line_h : Double
-  checkbox_size : Double
-  checkbox_gap : Double
-  checkbox_h : Double
-  checkbox_radius : Double
-  radio_r : Double
-  radio_gap : Double
-  radio_h : Double
-  badge_dot_w : Double
-  badge_pad_x : Double
-  badge_h : Double
-  badge_radius : Double
-  menu_bar_h : Double
-  menu_bar_btn_h : Double
-  menu_bar_popup_w : Double
-  menu_bar_radius : Double
-  progress_bar_h : Double
-  tooltip_pad_x : Double
-  tooltip_pad_y : Double
-  tooltip_radius : Double
-  window_title_bar_h : Double
-  combo_box_w : Double
-  combo_box_h : Double
-  collapsing_header_h : Double
-  collapsing_header_indent : Double
-  tab_bar_h : Double
-  tab_bar_pad_x : Double
-  drag_value_w : Double
-  drag_value_h : Double
-  color_picker_w : Double
-  color_picker_btn_h : Double
-  breadcrumb_h : Double
-  breadcrumb_sep_gap : Double
-  plot_default_w : Double
-  plot_default_h : Double
-  plot_pad_left : Double
-  plot_pad_right : Double
-  plot_pad_top : Double
-  plot_pad_bottom : Double
-  bar_chart_default_w : Double
-  bar_chart_default_h : Double
-  bar_chart_gap : Double
-  fader_w : Double
-  fader_h : Double
-  fader_track_w : Double
-  fader_cap_w : Double
-  fader_cap_h : Double
-  fader_cap_radius : Double
+  caret_blink_interval : Double
 } derive(Eq, @debug.Debug)
 pub fn WidgetStyle::default() -> Self
 

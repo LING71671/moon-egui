@@ -385,7 +385,7 @@ pub fn UIContext::color_picker_button(
 
   let txt_sz = self.measure_text(hex_text, font_sz)
   let btn_w = (20.0 + 8.0 + 16.0) * scale + txt_sz.x
-  let btn_h = self.style.color_picker_btn_h * scale
+  let btn_h = (self.style.control_h_sm + self.style.spacing_xs) * scale
 
   self.push_id(id_salt)
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(btn_w, btn_h))

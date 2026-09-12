@@ -208,7 +208,7 @@ pub fn UIContext::toast_stack(
     let rect = placed_rects[i]
 
     let scale = self.style.scale
-    let toast_radius = self.style.toast_radius * scale
+    let toast_radius = (self.style.radius_md + 1.0) * scale
 
     // Shadows
     self

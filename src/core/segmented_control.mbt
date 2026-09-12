@@ -30,12 +30,16 @@ pub fn UIContext::segmented_control(
   }
 
   let scale = self.style.scale
-  let eff_h = if height > 0.0 { height } else { self.style.segmented_h * scale }
+  let eff_h = if height > 0.0 {
+    height
+  } else {
+    (self.style.control_h_md + self.style.radius_xs) * scale
+  }
   let font_sz = self.style.font_normal * scale
-  let pad = self.style.segmented_pad * scale
-  let item_pad_x = self.style.segmented_item_pad_x * scale
-  let track_radius = self.style.segmented_radius * scale
-  let pill_radius = self.style.segmented_pill_radius * scale
+  let pad = 3.0 * scale
+  let item_pad_x = self.style.spacing_md * scale
+  let track_radius = 7.0 * scale
+  let pill_radius = 5.0 * scale
 
   // Calculate item width
   let item_w = if width > 0.0 {

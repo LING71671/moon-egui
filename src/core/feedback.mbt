@@ -7,7 +7,7 @@ pub fn UIContext::progress_bar(
 ) -> Response {
   let scale = self.style.scale
   let w = self.available_width()
-  let h = self.style.progress_bar_h * scale
+  let h = (self.style.control_h_sm - self.style.radius_md) * scale
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
 
   let clamped_pct = if fraction < 0.0 {
@@ -56,8 +56,8 @@ pub fn UIContext::progress_bar(
 pub fn UIContext::tooltip(self : UIContext, text : String) -> Unit {
   let scale = self.style.scale
   let font_size = self.style.font_small * scale
-  let pad_x = self.style.tooltip_pad_x * scale
-  let pad_y = self.style.tooltip_pad_y * scale
+  let pad_x = self.style.spacing_sm * scale
+  let pad_y = self.style.spacing_xs * scale
   let text_size = self.measure_text(text, font_size)
   let tip_w = text_size.x + pad_x * 2.0
   let tip_h = text_size.y + pad_y * 2.0
@@ -85,7 +85,7 @@ pub fn UIContext::tooltip(self : UIContext, text : String) -> Unit {
 
   self.begin_foreground()
 
-  let tip_radius = self.style.tooltip_radius * scale
+  let tip_radius = self.style.radius_sm * scale
   let fp = self.painter()
   // Floating bubble with dark background & subtle border
   fp.add_rect(tip_rect, @color.Color::bg_inverse(), tip_radius)

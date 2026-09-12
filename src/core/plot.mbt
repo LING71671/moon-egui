@@ -13,6 +13,35 @@
 // limitations under the License.
 
 ///|
+/// Component style descriptor for scientific plotting and charts.
+pub struct PlotStyle {
+  default_w : Double
+  default_h : Double
+  pad_left : Double
+  pad_right : Double
+  pad_top : Double
+  pad_bottom : Double
+  bar_chart_default_w : Double
+  bar_chart_default_h : Double
+  bar_chart_gap : Double
+} derive(Eq, Debug)
+
+///|
+pub fn PlotStyle::default() -> PlotStyle {
+  {
+    default_w: 280.0,
+    default_h: 150.0,
+    pad_left: 38.0,
+    pad_right: 14.0,
+    pad_top: 14.0,
+    pad_bottom: 24.0,
+    bar_chart_default_w: 280.0,
+    bar_chart_default_h: 150.0,
+    bar_chart_gap: 8.0,
+  }
+}
+
+///|
 /// Single 2D data coordinate point for immediate-mode plotting.
 pub struct PlotPoint {
   x : Double
@@ -97,8 +126,9 @@ pub fn UIContext::plot(
   show_legend? : Bool = true,
 ) -> (@math.Vec2?, Response) {
   let scale = self.style.scale
-  let default_w = self.style.plot_default_w * scale
-  let default_h = self.style.plot_default_h * scale
+  let p_style = PlotStyle::default()
+  let default_w = p_style.default_w * scale
+  let default_h = p_style.default_h * scale
   let chosen_size = match size {
     Some(s) => s
     None => @math.Vec2::new(default_w, default_h)
@@ -109,10 +139,10 @@ pub fn UIContext::plot(
   self.pop_id()
 
   let radius = self.style.radius_md * scale
-  let pad_left = self.style.plot_pad_left * scale
-  let pad_right = self.style.plot_pad_right * scale
-  let pad_top = self.style.plot_pad_top * scale
-  let pad_bottom = self.style.plot_pad_bottom * scale
+  let pad_left = p_style.pad_left * scale
+  let pad_right = p_style.pad_right * scale
+  let pad_top = p_style.pad_top * scale
+  let pad_bottom = p_style.pad_bottom * scale
   let font_sz = self.style.font_small * scale
 
   // 1. Draw Container Surface
@@ -415,8 +445,9 @@ pub fn UIContext::bar_chart(
   bar_color? : @color.Color = @color.Color::accent_primary(),
 ) -> (Int?, Response) {
   let scale = self.style.scale
-  let default_w = self.style.bar_chart_default_w * scale
-  let default_h = self.style.bar_chart_default_h * scale
+  let p_style = PlotStyle::default()
+  let default_w = p_style.bar_chart_default_w * scale
+  let default_h = p_style.bar_chart_default_h * scale
   let chosen_size = match size {
     Some(s) => s
     None => @math.Vec2::new(default_w, default_h)
@@ -427,12 +458,12 @@ pub fn UIContext::bar_chart(
   self.pop_id()
 
   let radius = self.style.radius_md * scale
-  let pad_left = self.style.plot_pad_left * scale
-  let pad_right = self.style.plot_pad_right * scale
-  let pad_top = self.style.plot_pad_top * scale
-  let pad_bottom = self.style.plot_pad_bottom * scale
+  let pad_left = p_style.pad_left * scale
+  let pad_right = p_style.pad_right * scale
+  let pad_top = p_style.pad_top * scale
+  let pad_bottom = p_style.pad_bottom * scale
   let font_sz = self.style.font_small * scale
-  let gap = self.style.bar_chart_gap * scale
+  let gap = p_style.bar_chart_gap * scale
 
   // Container Surface
   self.painter().add_rect(rect, @color.Color::bg_surface(), radius)

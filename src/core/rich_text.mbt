@@ -127,7 +127,8 @@ pub fn UIContext::rich_text(
   wrap_width? : Double = 0.0,
 ) -> RichTextResponse {
   let font_sz = self.style.font_normal * self.style.scale
-  let line_h = self.style.rich_text_line_h * self.style.scale
+  let line_h = (self.style.control_h_sm - self.style.radius_xs) *
+    self.style.scale
   let max_w = if wrap_width > 0.0 { wrap_width } else { self.available_width() }
   let space_w = self.measure_text(" ", font_sz).x
 

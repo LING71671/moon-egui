@@ -10,7 +10,7 @@ pub fn UIContext::collapsing_header(
   let header_id = self.id_stack.derive_id(id_salt)
   let scale = self.style.scale
   let w = self.available_width()
-  let h = self.style.collapsing_header_h * scale
+  let h = (self.style.control_h_sm + self.style.radius_xs) * scale
 
   self.push_id(id_salt)
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
@@ -98,7 +98,7 @@ pub fn UIContext::collapsing_header(
   if is_open {
     let prev_cursor = self.cursor()
     let prev_avail_w = self.available_width()
-    let indent = self.style.collapsing_header_indent * scale
+    let indent = self.style.spacing_lg * scale
 
     self.set_cursor(@math.Vec2::new(prev_cursor.x + indent, prev_cursor.y))
     self.set_available_width(prev_avail_w - indent)
@@ -131,9 +131,9 @@ pub fn UIContext::combo_box(
   } else {
     0.0
   }
-  let box_w = self.style.combo_box_w * scale
+  let box_w = 140.0 * scale
   let total_w = label_size + box_w
-  let h = self.style.combo_box_h * scale
+  let h = (self.style.control_h_sm + self.style.spacing_xs) * scale
 
   self.push_id(id_salt)
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
@@ -405,12 +405,12 @@ pub fn UIContext::tab_bar(
 ) -> (Int, Response) {
   let scale = self.style.scale
   let font_size = self.style.font_normal * scale
-  let tab_pad = self.style.tab_bar_pad_x * scale
+  let tab_pad = self.style.spacing_md * scale
   let mut total_w = 0.0
   for tab in tabs {
     total_w = total_w + self.measure_text(tab, font_size).x + tab_pad * 2.0
   }
-  let h = self.style.tab_bar_h * scale
+  let h = (self.style.control_h_sm + self.style.spacing_xs) * scale
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
   self.register_focusable(id)
 

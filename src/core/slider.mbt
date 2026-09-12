@@ -16,10 +16,10 @@ pub fn UIContext::slider(
   } else {
     0.0
   }
-  let track_w = self.style.slider_track_w * scale
+  let track_w = 120.0 * scale
   let val_w = 42.0 * scale
   let total_w = label_w + track_w + val_w + 8.0 * scale
-  let h = self.style.slider_h * scale
+  let h = self.style.control_h_sm * scale
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
   self.register_focusable(id)
 
@@ -269,8 +269,8 @@ pub fn UIContext::drag_value(
   let font_nm = self.style.font_normal * scale
   let font_sm = self.style.font_small * scale
   let radius_sm = self.style.radius_sm * scale
-  let box_w = self.style.drag_value_w * scale
-  let h = self.style.drag_value_h * scale
+  let box_w = 64.0 * scale
+  let h = (self.style.control_h_sm - self.style.radius_xs) * scale
 
   let label_size = self.measure_text(label, font_nm)
   let label_w = if label.length() > 0 {

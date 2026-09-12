@@ -13,6 +13,27 @@
 // limitations under the License.
 
 ///|
+/// Component style descriptor for CodeEditor.
+pub struct CodeEditorStyle {
+  font_size : Double
+  gutter_font_size : Double
+  line_h : Double
+  gutter_w : Double
+  radius : Double
+} derive(Eq, Debug)
+
+///|
+pub fn CodeEditorStyle::default() -> CodeEditorStyle {
+  {
+    font_size: 12.5,
+    gutter_font_size: 11.0,
+    line_h: 20.0,
+    gutter_w: 44.0,
+    radius: 6.0,
+  }
+}
+
+///|
 fn split_lines(text : String) -> Array[String] {
   let lines : Array[String] = []
   let mut start = 0
@@ -185,14 +206,11 @@ pub fn UIContext::code_editor(
   let mut lines = split_lines(current_text)
 
   let scale = self.style.scale
-  let code_font_sz = self.style.code_editor_font_size * scale
-  let gutter_font_sz = self.style.code_editor_gutter_font_size * scale
-  let gutter_w = if show_line_numbers {
-    self.style.code_editor_gutter_w * scale
-  } else {
-    0.0
-  }
-  let line_h = self.style.code_editor_line_h * scale
+  let ce_style = CodeEditorStyle::default()
+  let code_font_sz = ce_style.font_size * scale
+  let gutter_font_sz = ce_style.gutter_font_size * scale
+  let gutter_w = if show_line_numbers { ce_style.gutter_w * scale } else { 0.0 }
+  let line_h = ce_style.line_h * scale
   let pad_top = 8.0 * scale
   let pad_code_x = 10.0 * scale
 
@@ -505,7 +523,7 @@ pub fn UIContext::code_editor(
     @color.Color::border_default()
   }
 
-  let editor_radius = self.style.code_editor_radius * scale
+  let editor_radius = ce_style.radius * scale
 
   // Editor frame background & border
   self.painter().add_rect(rect, @color.Color::bg_window(), editor_radius)
@@ -644,13 +662,13 @@ pub fn UIContext::code_editor(
       scroll_y +
       3.0 * scale
 
-    if caret_y + self.style.caret_h * scale >= rect.y &&
-      caret_y <= rect.y + rect.h {
+    let caret_h = self.style.spacing_lg * scale
+    if caret_y + caret_h >= rect.y && caret_y <= rect.y + rect.h {
       self
       .painter()
       .add_line(
         @math.Vec2::new(caret_x, caret_y),
-        @math.Vec2::new(caret_x, caret_y + self.style.caret_h * scale),
+        @math.Vec2::new(caret_x, caret_y + caret_h),
         @color.Color::accent_primary(),
         1.5 * scale,
       )

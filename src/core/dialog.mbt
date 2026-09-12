@@ -105,7 +105,7 @@ pub fn UIContext::dialog(
   viewport_size? : @math.Vec2 = @math.Vec2::zero(),
 ) -> DialogResult {
   let scale = self.style.scale
-  let eff_w = if width > 0.0 { width } else { self.style.dialog_w * scale }
+  let eff_w = if width > 0.0 { width } else { 380.0 * scale }
   let vp_w = if viewport_size.x > 0.0 {
     viewport_size.x
   } else if self.available_width() > 0.0 {
@@ -142,9 +142,9 @@ pub fn UIContext::dialog(
     self.style.font_large * scale
   }
   let msg_gap = 10.0 * scale
-  let btn_radius = self.style.button_radius * scale
-  let btn_h = self.style.button_h * scale
-  let btn_w = self.style.dialog_btn_w * scale
+  let btn_radius = self.style.radius_md * scale
+  let btn_h = self.style.control_h_md * scale
+  let btn_w = self.style.control_h_lg * 2.0 * scale
   let btn_pad_right = 16.0 * scale
   let btn_gap = 8.0 * scale
   let btn_margin_top = 18.0 * scale
@@ -157,7 +157,7 @@ pub fn UIContext::dialog(
     btn_margin_top +
     btn_h +
     btn_pad_y
-  let min_h = self.style.dialog_min_h * scale
+  let min_h = 160.0 * scale
   let max_allowed_h = if vp_h > 80.0 * scale {
     vp_h - 40.0 * scale
   } else {
@@ -171,7 +171,7 @@ pub fn UIContext::dialog(
     content_needed_h
   }
 
-  let card_radius = self.style.dialog_radius * scale
+  let card_radius = self.style.radius_xl * scale
   let card_x = (vp_w - eff_w) * 0.5
   let card_y = (vp_h - card_h) * 0.5
   let card_rect = @math.Rect::new(card_x, card_y, eff_w, card_h)

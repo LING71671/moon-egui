@@ -29,10 +29,10 @@ pub fn UIContext::text_edit_sized(
     self.set_cursor_icon("text")
   }
   let scale = self.style.scale
-  let padding_x = self.style.text_edit_pad_x * scale
+  let padding_x = (self.style.spacing_sm + self.style.radius_xs) * scale
   let font_size = self.style.font_normal * scale
-  let caret_h = self.style.caret_h * scale
-  let radius = self.style.text_edit_radius * scale
+  let caret_h = self.style.spacing_lg * scale
+  let radius = self.style.radius_md * scale
 
   // Manage cursor position stored in UIContext
   let mut cursor_pos = self.get_text_cursor_pos(id, text.length())
@@ -210,6 +210,6 @@ pub fn UIContext::text_edit(
   } else {
     self.available_width()
   }
-  let h = self.style.text_edit_h * self.style.scale
+  let h = self.style.control_h_md * self.style.scale
   self.text_edit_sized(id_salt, text, placeholder, @math.Vec2::new(w, h))
 }

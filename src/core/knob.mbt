@@ -13,6 +13,17 @@
 // limitations under the License.
 
 ///|
+/// Component style descriptor for rotary knob controls.
+pub struct KnobStyle {
+  radius : Double
+} derive(Eq, Debug)
+
+///|
+pub fn KnobStyle::default() -> KnobStyle {
+  { radius: 20.0, }
+}
+
+///|
 fn draw_arc(
   p : Painter,
   center : @math.Vec2,

@@ -13,107 +13,44 @@
 // limitations under the License.
 
 ///|
-/// Comprehensive UI metrics, typography, and sizing tokens.
+
+///|
+/// Systemic design tokens holding foundational scales, typography, and elevation metrics.
 pub struct WidgetStyle {
+  // Scaling & Elevation
   scale : Double
-  button_h : Double
-  button_pad_x : Double
-  button_radius : Double
-  button_min_w : Double
-  text_edit_h : Double
-  text_edit_pad_x : Double
-  text_edit_radius : Double
-  caret_h : Double
-  caret_blink_interval : Double
-  slider_h : Double
-  slider_track_w : Double
-  slider_track_h : Double
-  slider_thumb_r : Double
-  toggle_w : Double
-  toggle_h : Double
-  toggle_thumb_r : Double
-  knob_r : Double
-  code_editor_line_h : Double
-  code_editor_gutter_w : Double
-  font_normal : Double
-  font_small : Double
-  font_large : Double
-  item_spacing : @math.Vec2
-  radius_sm : Double
-  radius_md : Double
-  radius_lg : Double
-  radius_xl : Double
-  segmented_h : Double
-  segmented_pad : Double
-  segmented_radius : Double
-  segmented_pill_radius : Double
-  segmented_item_pad_x : Double
-  dialog_w : Double
-  dialog_min_h : Double
-  dialog_radius : Double
-  dialog_btn_w : Double
-  code_editor_font_size : Double
-  code_editor_gutter_font_size : Double
-  code_editor_radius : Double
-  command_palette_w : Double
-  command_palette_radius : Double
-  command_palette_row_h : Double
-  command_palette_header_h : Double
-  command_palette_footer_h : Double
-  toast_radius : Double
-  table_header_h : Double
-  table_row_h : Double
-  table_radius : Double
-  tree_view_row_h : Double
-  tree_view_radius : Double
-  rich_text_line_h : Double
-  checkbox_size : Double
-  checkbox_gap : Double
-  checkbox_h : Double
-  checkbox_radius : Double
-  radio_r : Double
-  radio_gap : Double
-  radio_h : Double
-  badge_dot_w : Double
-  badge_pad_x : Double
-  badge_h : Double
-  badge_radius : Double
-  menu_bar_h : Double
-  menu_bar_btn_h : Double
-  menu_bar_popup_w : Double
-  menu_bar_radius : Double
-  progress_bar_h : Double
-  tooltip_pad_x : Double
-  tooltip_pad_y : Double
-  tooltip_radius : Double
-  window_title_bar_h : Double
-  combo_box_w : Double
-  combo_box_h : Double
-  collapsing_header_h : Double
-  collapsing_header_indent : Double
-  tab_bar_h : Double
-  tab_bar_pad_x : Double
-  drag_value_w : Double
-  drag_value_h : Double
-  color_picker_w : Double
-  color_picker_btn_h : Double
-  breadcrumb_h : Double
-  breadcrumb_sep_gap : Double
-  plot_default_w : Double
-  plot_default_h : Double
-  plot_pad_left : Double
-  plot_pad_right : Double
-  plot_pad_top : Double
-  plot_pad_bottom : Double
-  bar_chart_default_w : Double
-  bar_chart_default_h : Double
-  bar_chart_gap : Double
-  fader_w : Double
-  fader_h : Double
-  fader_track_w : Double
-  fader_cap_w : Double
-  fader_cap_h : Double
-  fader_cap_radius : Double
+  elevation : Double
+
+  // Base Interactive Control Heights
+  control_h_sm : Double // 24.0
+  control_h_md : Double // 32.0
+  control_h_lg : Double // 40.0
+
+  // Typography Scales
+  font_xs : Double // 10.0
+  font_sm : Double // 11.0
+  font_small : Double // 11.0 (alias for font_sm)
+  font_normal : Double // 13.0
+  font_large : Double // 15.0
+  font_xl : Double // 18.0
+
+  // Spacing Scales
+  spacing_xs : Double // 4.0
+  spacing_sm : Double // 8.0
+  spacing_md : Double // 12.0
+  spacing_lg : Double // 16.0
+  spacing_xl : Double // 24.0
+  item_spacing : @math.Vec2 // (8.0, 8.0)
+
+  // Corner Radius Scales
+  radius_xs : Double // 2.0
+  radius_sm : Double // 4.0
+  radius_md : Double // 6.0
+  radius_lg : Double // 10.0
+  radius_xl : Double // 12.0
+
+  // Caret & Cursor Interaction
+  caret_blink_interval : Double // 0.53
 } derive(Eq, Debug)
 
 ///|
@@ -121,104 +58,28 @@ pub struct WidgetStyle {
 pub fn WidgetStyle::default() -> WidgetStyle {
   {
     scale: 1.0,
-    button_h: 32.0,
-    button_pad_x: 14.0,
-    button_radius: 6.0,
-    button_min_w: 68.0,
-    text_edit_h: 32.0,
-    text_edit_pad_x: 10.0,
-    text_edit_radius: 5.0,
-    caret_h: 16.0,
-    caret_blink_interval: 0.53,
-    slider_h: 24.0,
-    slider_track_w: 120.0,
-    slider_track_h: 4.0,
-    slider_thumb_r: 7.0,
-    toggle_w: 36.0,
-    toggle_h: 20.0,
-    toggle_thumb_r: 8.0,
-    knob_r: 20.0,
-    code_editor_line_h: 20.0,
-    code_editor_gutter_w: 44.0,
-    font_normal: 13.0,
+    elevation: 1.0,
+    control_h_sm: 24.0,
+    control_h_md: 32.0,
+    control_h_lg: 40.0,
+    font_xs: 10.0,
+    font_sm: 11.0,
     font_small: 11.0,
+    font_normal: 13.0,
     font_large: 15.0,
+    font_xl: 18.0,
+    spacing_xs: 4.0,
+    spacing_sm: 8.0,
+    spacing_md: 12.0,
+    spacing_lg: 16.0,
+    spacing_xl: 24.0,
     item_spacing: @math.Vec2::new(8.0, 8.0),
+    radius_xs: 2.0,
     radius_sm: 4.0,
     radius_md: 6.0,
     radius_lg: 10.0,
     radius_xl: 12.0,
-    segmented_h: 34.0,
-    segmented_pad: 3.0,
-    segmented_radius: 7.0,
-    segmented_pill_radius: 5.0,
-    segmented_item_pad_x: 12.0,
-    dialog_w: 380.0,
-    dialog_min_h: 160.0,
-    dialog_radius: 12.0,
-    dialog_btn_w: 80.0,
-    code_editor_font_size: 12.5,
-    code_editor_gutter_font_size: 11.0,
-    code_editor_radius: 6.0,
-    command_palette_w: 540.0,
-    command_palette_radius: 8.0,
-    command_palette_row_h: 32.0,
-    command_palette_header_h: 46.0,
-    command_palette_footer_h: 28.0,
-    toast_radius: 7.0,
-    table_header_h: 32.0,
-    table_row_h: 30.0,
-    table_radius: 6.0,
-    tree_view_row_h: 26.0,
-    tree_view_radius: 6.0,
-    rich_text_line_h: 22.0,
-    checkbox_size: 18.0,
-    checkbox_gap: 8.0,
-    checkbox_h: 22.0,
-    checkbox_radius: 4.0,
-    radio_r: 7.0,
-    radio_gap: 8.0,
-    radio_h: 22.0,
-    badge_dot_w: 12.0,
-    badge_pad_x: 8.0,
-    badge_h: 22.0,
-    badge_radius: 4.0,
-    menu_bar_h: 28.0,
-    menu_bar_btn_h: 22.0,
-    menu_bar_popup_w: 170.0,
-    menu_bar_radius: 4.0,
-    progress_bar_h: 18.0,
-    tooltip_pad_x: 8.0,
-    tooltip_pad_y: 4.0,
-    tooltip_radius: 4.0,
-    window_title_bar_h: 28.0,
-    combo_box_w: 140.0,
-    combo_box_h: 28.0,
-    collapsing_header_h: 26.0,
-    collapsing_header_indent: 16.0,
-    tab_bar_h: 28.0,
-    tab_bar_pad_x: 12.0,
-    drag_value_w: 64.0,
-    drag_value_h: 22.0,
-    color_picker_w: 220.0,
-    color_picker_btn_h: 28.0,
-    breadcrumb_h: 26.0,
-    breadcrumb_sep_gap: 6.0,
-    plot_default_w: 280.0,
-    plot_default_h: 150.0,
-    plot_pad_left: 38.0,
-    plot_pad_right: 14.0,
-    plot_pad_top: 14.0,
-    plot_pad_bottom: 24.0,
-    bar_chart_default_w: 280.0,
-    bar_chart_default_h: 150.0,
-    bar_chart_gap: 8.0,
-    fader_w: 44.0,
-    fader_h: 150.0,
-    fader_track_w: 6.0,
-    fader_cap_w: 32.0,
-    fader_cap_h: 20.0,
-    fader_cap_radius: 3.0,
+    caret_blink_interval: 0.53,
   }
 }
 

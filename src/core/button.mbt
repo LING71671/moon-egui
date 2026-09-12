@@ -23,15 +23,11 @@ pub fn UIContext::button(
     0.0
   }
 
-  let min_w = if has_shortcut {
-    (self.style.button_min_w + 20.0) * scale
-  } else {
-    self.style.button_min_w * scale
-  }
+  let min_w = if has_shortcut { 88.0 * scale } else { 68.0 * scale }
   let pad_w = if has_shortcut {
     36.0 * scale
   } else {
-    self.style.button_pad_x * 2.0 * scale
+    (self.style.spacing_sm + self.style.radius_md) * 2.0 * scale
   }
   let content_w = if has_shortcut {
     text_w + kbd_w + pad_w
@@ -40,7 +36,7 @@ pub fn UIContext::button(
   }
   let auto_w = if content_w > min_w { content_w } else { min_w }
   let w = if size.x > 0.0 { size.x } else { auto_w }
-  let h = if size.y > 0.0 { size.y } else { self.style.button_h * scale }
+  let h = if size.y > 0.0 { size.y } else { self.style.control_h_md * scale }
 
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
   self.register_focusable(id)
@@ -101,7 +97,7 @@ pub fn UIContext::button(
   }
 
   let painter = self.painter()
-  let radius = self.style.button_radius * scale
+  let radius = self.style.radius_md * scale
   painter.add_rect(draw_rect, bg_color, radius)
   let stroke_w = if resp.has_focus() { 1.5 * scale } else { 1.0 }
   painter.add_rect_stroke(draw_rect, border_color, stroke_w, radius)
@@ -234,7 +230,7 @@ pub fn UIContext::color_button(
   }
 
   // Draw color swatch with clean white rim
-  let swatch_radius = self.style.text_edit_radius
+  let swatch_radius = self.style.radius_md * self.style.scale
   let p = self.painter()
   p.add_rect(btn_rect, color, swatch_radius)
   p.add_rect_stroke(btn_rect, border_color, 1.5, swatch_radius)

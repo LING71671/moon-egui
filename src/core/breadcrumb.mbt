@@ -31,8 +31,8 @@ pub fn UIContext::breadcrumb(
   let scale = self.style.scale
   let font_sz = self.style.font_normal * scale
   let sep_sz = self.measure_text(separator, font_sz)
-  let sep_gap = self.style.breadcrumb_sep_gap * scale
-  let pad_x = 8.0 * scale
+  let sep_gap = 6.0 * scale
+  let pad_x = self.style.spacing_sm * scale
 
   // Fold middle items into "..." if exceeding max_visible
   let display_items : Array[(String, Int)] = []
@@ -62,7 +62,7 @@ pub fn UIContext::breadcrumb(
     }
   }
 
-  let h = self.style.breadcrumb_h * scale
+  let h = (self.style.control_h_sm + self.style.radius_xs) * scale
   self.push_id(id_salt)
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
   self.pop_id()

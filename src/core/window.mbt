@@ -39,7 +39,7 @@ pub fn UIContext::window(
   constrain_to? : @math.Rect,
 ) -> Response {
   let scale = self.style.scale
-  let title_bar_h = self.style.window_title_bar_h * scale
+  let title_bar_h = (self.style.control_h_sm + self.style.spacing_xs) * scale
   let id = self.id_stack.derive_id("window::" + id_salt.unwrap_or(title))
 
   // A floating window is not subject to the scissor clip of whatever container

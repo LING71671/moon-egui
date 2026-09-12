@@ -13,6 +13,29 @@
 // limitations under the License.
 
 ///|
+/// Component style descriptor for vertical fader channel controls.
+pub struct FaderStyle {
+  width : Double
+  height : Double
+  track_w : Double
+  cap_w : Double
+  cap_h : Double
+  cap_radius : Double
+} derive(Eq, Debug)
+
+///|
+pub fn FaderStyle::default() -> FaderStyle {
+  {
+    width: 44.0,
+    height: 150.0,
+    track_w: 6.0,
+    cap_w: 32.0,
+    cap_h: 20.0,
+    cap_radius: 3.0,
+  }
+}
+
+///|
 /// Immediate-mode vertical audio channel fader parameter controller.
 /// Features vertical recessed track groove, calibrated tick marks,
 /// tactile fader cap with center index indicator line, vertical drag delta,
@@ -34,18 +57,19 @@ pub fn UIContext::fader(
   let scale = self.style.scale
   let font_nm = self.style.font_normal * scale
   let font_sm = self.style.font_small * scale
+  let f_style = FaderStyle::default()
   let total_w = match size {
     Some(s) => s.x
-    None => self.style.fader_w * scale
+    None => f_style.width * scale
   }
   let total_h = match size {
     Some(s) => s.y
-    None => self.style.fader_h * scale
+    None => f_style.height * scale
   }
-  let track_w = self.style.fader_track_w * scale
-  let cap_w = self.style.fader_cap_w * scale
-  let cap_h = self.style.fader_cap_h * scale
-  let cap_radius = self.style.fader_cap_radius * scale
+  let track_w = f_style.track_w * scale
+  let cap_w = f_style.cap_w * scale
+  let cap_h = f_style.cap_h * scale
+  let cap_radius = f_style.cap_radius * scale
 
   let range = if max_val > min_val { max_val - min_val } else { 1.0 }
   let clamped_initial = if value < min_val {

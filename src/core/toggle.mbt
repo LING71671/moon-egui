@@ -7,12 +7,12 @@ pub fn UIContext::checkbox(
   checked : Bool,
 ) -> (Bool, Response) {
   let scale = self.style.scale
-  let box_size = self.style.checkbox_size * scale
-  let gap = self.style.checkbox_gap * scale
+  let box_size = 18.0 * scale
+  let gap = self.style.spacing_sm * scale
   let font_nm = self.style.font_normal * scale
   let text_size = self.measure_text(text, font_nm)
   let w = box_size + gap + text_size.x
-  let h = self.style.checkbox_h * scale
+  let h = (self.style.control_h_sm - self.style.radius_xs) * scale
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
   self.register_focusable(id)
   if resp.hovered {
@@ -27,7 +27,7 @@ pub fn UIContext::checkbox(
     box_size,
   )
 
-  let radius = self.style.checkbox_radius * scale
+  let radius = self.style.radius_sm * scale
   if checked {
     self.painter().add_rect(box_rect, @color.Color::accent_primary(), radius)
     let stroke_color = if resp.has_focus() {
@@ -80,12 +80,12 @@ pub fn UIContext::radio(
   selected : Bool,
 ) -> (Bool, Response) {
   let scale = self.style.scale
-  let circle_r = self.style.radio_r * scale
-  let gap = self.style.radio_gap * scale
+  let circle_r = 7.0 * scale
+  let gap = self.style.spacing_sm * scale
   let font_nm = self.style.font_normal * scale
   let text_size = self.measure_text(label, font_nm)
   let total_w = circle_r * 2.0 + gap + text_size.x
-  let total_h = self.style.radio_h * scale
+  let total_h = (self.style.control_h_sm - self.style.radius_xs) * scale
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, total_h))
   if resp.hovered {
     self.set_cursor_icon("pointer")
@@ -146,12 +146,12 @@ pub fn UIContext::toggle(
 ) -> (Bool, Response) {
   let scale = self.style.scale
   let font_nm = self.style.font_normal * scale
-  let switch_w = self.style.toggle_w * scale
-  let switch_h = self.style.toggle_h * scale
-  let gap = 8.0 * scale
+  let switch_w = 36.0 * scale
+  let switch_h = 20.0 * scale
+  let gap = self.style.spacing_sm * scale
   let text_size = self.measure_text(text, font_nm)
   let total_w = switch_w + gap + text_size.x
-  let h = 24.0 * scale
+  let h = self.style.control_h_sm * scale
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
   self.register_focusable(id)
   if resp.hovered {

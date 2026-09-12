@@ -104,7 +104,7 @@ pub fn UIContext::tree_view(
   let eff_row_h = if item_height > 0.0 {
     item_height
   } else {
-    self.style.tree_view_row_h * scale
+    (self.style.control_h_sm + self.style.radius_xs) * scale
   }
 
   // 1. Flatten visible hierarchy based on expanded set
@@ -148,7 +148,7 @@ pub fn UIContext::tree_view(
   }
   let is_focused = self.has_focus(id)
 
-  let tree_radius = self.style.tree_view_radius * scale
+  let tree_radius = self.style.radius_md * scale
 
   // Surface and outer border
   self.painter().add_rect(rect, @color.Color::bg_window(), tree_radius)

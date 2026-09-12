@@ -13,6 +13,19 @@
 // limitations under the License.
 
 ///|
+/// Component style descriptor for data table controls.
+pub struct TableStyle {
+  header_h : Double
+  row_h : Double
+  radius : Double
+} derive(Eq, Debug)
+
+///|
+pub fn TableStyle::default() -> TableStyle {
+  { header_h: 32.0, row_h: 30.0, radius: 6.0, }
+}
+
+///|
 /// Sort direction indicator for table columns.
 pub(all) enum TableSortDirection {
   Ascending
@@ -69,17 +82,18 @@ pub fn UIContext::table(
   sort_direction? : TableSortDirection = NoSort,
 ) -> TableResponse {
   let scale = self.style.scale
+  let t_style = TableStyle::default()
   let eff_row_h = if row_height > 0.0 {
     row_height
   } else {
-    self.style.table_row_h * scale
+    t_style.row_h * scale
   }
   let eff_header_h = if header_height > 0.0 {
     header_height
   } else {
-    self.style.table_header_h * scale
+    t_style.header_h * scale
   }
-  let table_radius = self.style.table_radius * scale
+  let table_radius = t_style.radius * scale
 
   self.push_id(id_salt)
   let (table_id, table_rect, _resp) = self.allocate_space(size)

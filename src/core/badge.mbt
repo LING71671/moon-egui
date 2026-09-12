@@ -97,13 +97,13 @@ pub fn UIContext::badge(
   let font_sz = self.style.font_small * scale
   let text_sz = self.measure_text(text, font_sz)
 
-  let dot_w = if dot { self.style.badge_dot_w * scale } else { 0.0 }
-  let pad_x = self.style.badge_pad_x * scale
-  let h = self.style.badge_h * scale
+  let dot_w = if dot { self.style.spacing_md * scale } else { 0.0 }
+  let pad_x = self.style.spacing_sm * scale
+  let h = (self.style.control_h_sm - self.style.radius_xs) * scale
   let w = pad_x * 2.0 + dot_w + text_sz.x
 
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
-  let radius = if pill { h * 0.5 } else { self.style.badge_radius * scale }
+  let radius = if pill { h * 0.5 } else { self.style.radius_sm * scale }
 
   let (bg, border, fg) = badge_colors(kind)
 

@@ -20,7 +20,7 @@ pub fn UIContext::menu_bar(
   content : (UIContext) -> Unit,
 ) -> Unit {
   let scale = self.style.scale
-  let bar_h = self.style.menu_bar_h * scale
+  let bar_h = (self.style.control_h_sm + self.style.spacing_xs) * scale
   let bar_w = self.available_width()
   let bar_pos = self.cursor()
   let bar_rect = @math.Rect::new(bar_pos.x, bar_pos.y, bar_w, bar_h)
@@ -69,7 +69,7 @@ pub fn UIContext::menu(
   let menu_id = self.id_stack.derive_id("menu::" + title)
   let text_size = self.measure_text(title, font_nm)
   let btn_w = text_size.x + 16.0 * scale
-  let btn_h = self.style.menu_bar_btn_h * scale
+  let btn_h = (self.style.control_h_sm - self.style.radius_xs) * scale
 
   self.push_id(title)
   let (_id, btn_rect, _) = self.allocate_space(@math.Vec2::new(btn_w, btn_h))
@@ -114,7 +114,7 @@ pub fn UIContext::menu(
     @color.Color::text_body()
   }
 
-  let radius = self.style.menu_bar_radius * scale
+  let radius = self.style.radius_sm * scale
   if currently_open || hovered {
     self.painter().add_rect(btn_rect, btn_bg, radius)
   }
@@ -135,7 +135,7 @@ pub fn UIContext::menu(
     self.begin_foreground()
 
     let pad = 4.0 * scale
-    let popup_w = self.style.menu_bar_popup_w * scale
+    let popup_w = 170.0 * scale
     let mut popup_x = btn_rect.x
     let popup_y = btn_rect.y + btn_rect.h + 3.0 * scale
 

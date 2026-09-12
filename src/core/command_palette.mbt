@@ -173,7 +173,7 @@ pub fn UIContext::command_palette(
   let font_sm = self.style.font_small * scale
   let font_nm = self.style.font_normal * scale
   let font_lg = self.style.font_large * scale
-  let card_radius = self.style.command_palette_radius * scale
+  let card_radius = self.style.radius_lg * scale
   let row_radius = self.style.radius_sm * scale
 
   let viewport_w = if self.available_width() > 0.0 {
@@ -184,7 +184,7 @@ pub fn UIContext::command_palette(
   let viewport_h = 800.0
   let scrim_rect = @math.Rect::new(0.0, 0.0, viewport_w, viewport_h)
 
-  let default_palette_w = self.style.command_palette_w * scale
+  let default_palette_w = 540.0 * scale
   let card_w = if viewport_w < default_palette_w + 20.0 * scale {
     viewport_w - 32.0 * scale
   } else {
@@ -192,9 +192,9 @@ pub fn UIContext::command_palette(
   }
   let card_x = (viewport_w - card_w) * 0.5
   let card_y = 64.0 * scale
-  let header_h = self.style.command_palette_header_h * scale
-  let footer_h = self.style.command_palette_footer_h * scale
-  let row_h = self.style.command_palette_row_h * scale
+  let header_h = (self.style.control_h_lg + self.style.radius_md) * scale
+  let footer_h = (self.style.control_h_sm + self.style.spacing_xs) * scale
+  let row_h = self.style.control_h_md * scale
   let cat_h = 24.0 * scale
 
   let mut content_h = 0.0
