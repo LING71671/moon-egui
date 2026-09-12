@@ -288,3 +288,26 @@ test "window: a window declared inside a clip stack ignores that clip" {
   assert_true(resp.hovered())
   assert_true(ctx.current_clip() is None)
 }
+
+///|
+test "window: title bar advertises the move cursor" {
+  let ctx = @core.UIContext::new()
+  let size = @math.Vec2::new(200.0, 150.0)
+  let start = @math.Vec2::new(50.0, 50.0)
+
+  // On the title bar (y 50..78)
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(120.0, 60.0), false),
+  )
+  let _ = window(ctx, "Panel", start, size, fn(_ui) {  })
+  assert_eq(ctx.cursor_icon(), "move")
+  let _ = ctx.end_frame()
+
+  // Inside the content area the window is not a drag target
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(120.0, 120.0), false),
+  )
+  let _ = window(ctx, "Panel", start, size, fn(_ui) {  })
+  assert_eq(ctx.cursor_icon(), "default")
+  let _ = ctx.end_frame()
+}

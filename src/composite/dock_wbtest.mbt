@@ -161,3 +161,25 @@ test "dock: fluent DockArea widget and ui.add dispatch" {
   let dl = ctx.end_frame()
   assert_true(dl.len() > 0)
 }
+
+///|
+test "dock: tabs and splitter handles advertise their cursor" {
+  let ctx = @core.UIContext::new()
+  let tab = DockTab::new("t1", "Tab 1")
+  let tree = DockTree::leaf([tab])
+
+  // Tab strip: the first tab starts at x + 4 and the bar is 28 tall, so the
+  // point (12, 12) sits inside the tab.
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(12.0, 12.0), false),
+  )
+  let _ = dock_area(ctx, "cursor_dock", @math.Vec2::new(800.0, 500.0), tree, fn(
+    _ui,
+    _id,
+    _rect,
+  ) {
+
+  })
+  assert_eq(ctx.cursor_icon(), "pointer")
+  let _ = ctx.end_frame()
+}

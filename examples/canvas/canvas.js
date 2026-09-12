@@ -780,7 +780,7 @@ function _M0DTP49LING7167111moon_2degui3src4core5Event12PointerWheel(param0) {
   this._0 = param0;
 }
 _M0DTP49LING7167111moon_2degui3src4core5Event12PointerWheel.prototype.$tag = 2;
-function _M0TP49LING7167111moon_2degui8examples6canvas11FrameOutput(param0, param1, param2, param3, param4, param5, param6, param7, param8) {
+function _M0TP49LING7167111moon_2degui8examples6canvas11FrameOutput(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9) {
   this.draw_list = param0;
   this.cam_x = param1;
   this.cam_y = param2;
@@ -790,6 +790,7 @@ function _M0TP49LING7167111moon_2degui8examples6canvas11FrameOutput(param0, para
   this.selected_id = param6;
   this.show_studio = param7;
   this.is_vector = param8;
+  this.cursor = param9;
 }
 function _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite15ContextMenuItemEE4None() {}
 _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite15ContextMenuItemEE4None.prototype.$tag = 0;
@@ -6675,6 +6676,7 @@ function _M0FP49LING7167111moon_2degui3src9composite17sparkline_2einner(ctx, id_
   }
   let hovered_idx = undefined;
   if (show_hover && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _rect)) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
     const mouse_rel = (ctx.input.mouse_pos.x - (_rect.x + 4)) / plot_w;
     const raw_idx = _M0MPC16double6Double7to__int(mouse_rel * denom + 0.5);
     const snapped_idx = raw_idx < 0 ? 0 : raw_idx >= count ? count - 1 | 0 : raw_idx;
@@ -7901,6 +7903,9 @@ function _M0FP49LING7167111moon_2degui3src9composite18render__dock__node(ctx, no
           const tab_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(cur_tab_x, rect.y + 2 * scale, tab_w, tab_bar_h - 2 * scale);
           const is_current = i === valid_active;
           const is_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, tab_rect);
+          if (is_hovered) {
+            _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+          }
           if (is_current) {
             _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, tab_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), 4 * scale);
             _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, tab_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, 4 * scale);
@@ -8905,7 +8910,17 @@ function _M0FP49LING7167111moon_2degui3src9composite21color__picker_2einner(ctx,
   let v = _init_v;
   let a = color.a;
   const sv_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `cp_sv::${id_salt}`);
-  const sv_hovered = _M0MP49LING7167111moon_2degui3src4math4Rect8contains(sq_rect, ctx.input.mouse_pos);
+  const sv_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, sq_rect);
+  let _tmp;
+  if (sv_hovered) {
+    _tmp = true;
+  } else {
+    const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+    _tmp = BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, sv_id.val);
+  }
+  if (_tmp) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
+  }
   if (sv_hovered && ctx.input.mouse_pressed) {
     _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, sv_id);
   }
@@ -8924,14 +8939,14 @@ function _M0FP49LING7167111moon_2degui3src9composite21color__picker_2einner(ctx,
   }
   const cell_w = sq_w / (10 + 0);
   const cell_h = 126 / (7 + 0);
-  let _tmp = 0;
+  let _tmp$2 = 0;
   while (true) {
-    const gx = _tmp;
+    const gx = _tmp$2;
     if (gx < 10) {
       const cell_s = (gx + 0) / (9 + 0);
-      let _tmp$2 = 0;
+      let _tmp$3 = 0;
       while (true) {
-        const gy = _tmp$2;
+        const gy = _tmp$3;
         if (gy < 7) {
           const cell_v = 1 - (gy + 0) / (6 + 0);
           const _bind$3 = _M0FP49LING7167111moon_2degui3src9composite12hsv__to__rgb(h, cell_s, cell_v);
@@ -8940,13 +8955,13 @@ function _M0FP49LING7167111moon_2degui3src9composite21color__picker_2einner(ctx,
           const _cb = _bind$3._2;
           const c_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sq_x + (gx + 0) * cell_w, sq_y + (gy + 0) * cell_h, cell_w + 0.5, cell_h + 0.5);
           _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), c_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(_cr, _cg, _cb), 0);
-          _tmp$2 = gy + 1 | 0;
+          _tmp$3 = gy + 1 | 0;
           continue;
         } else {
           break;
         }
       }
-      _tmp = gx + 1 | 0;
+      _tmp$2 = gx + 1 | 0;
       continue;
     } else {
       break;
@@ -8961,7 +8976,17 @@ function _M0FP49LING7167111moon_2degui3src9composite21color__picker_2einner(ctx,
   const hue_y = sq_y + 126 + 8;
   const hue_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sq_x, hue_y, sq_w, 12);
   const hue_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `cp_hue::${id_salt}`);
-  const hue_hovered = _M0MP49LING7167111moon_2degui3src4math4Rect8contains(hue_rect, ctx.input.mouse_pos);
+  const hue_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, hue_rect);
+  let _tmp$3;
+  if (hue_hovered) {
+    _tmp$3 = true;
+  } else {
+    const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+    _tmp$3 = BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, hue_id.val);
+  }
+  if (_tmp$3) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "ew-resize");
+  }
   if (hue_hovered && ctx.input.mouse_pressed) {
     _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, hue_id);
   }
@@ -8977,9 +9002,9 @@ function _M0FP49LING7167111moon_2degui3src9composite21color__picker_2einner(ctx,
     }
   }
   const hue_step_w = sq_w / (24 + 0);
-  let _tmp$2 = 0;
+  let _tmp$4 = 0;
   while (true) {
-    const step = _tmp$2;
+    const step = _tmp$4;
     if (step < 24) {
       const step_h = (step + 0) / (24 + 0) * 360;
       const _bind$3 = _M0FP49LING7167111moon_2degui3src9composite12hsv__to__rgb(step_h, 1, 1);
@@ -8988,7 +9013,7 @@ function _M0FP49LING7167111moon_2degui3src9composite21color__picker_2einner(ctx,
       const _hb = _bind$3._2;
       const slice_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sq_x + (step + 0) * hue_step_w, hue_y, hue_step_w + 0.5, 12);
       _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), slice_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(_hr, _hg, _hb), 0);
-      _tmp$2 = step + 1 | 0;
+      _tmp$4 = step + 1 | 0;
       continue;
     } else {
       break;
@@ -9003,7 +9028,17 @@ function _M0FP49LING7167111moon_2degui3src9composite21color__picker_2einner(ctx,
     const alpha_y = hue_y + 12 + 8;
     const alpha_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sq_x, alpha_y, sq_w, 12);
     const alpha_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `cp_alpha::${id_salt}`);
-    const alpha_hovered = _M0MP49LING7167111moon_2degui3src4math4Rect8contains(alpha_rect, ctx.input.mouse_pos);
+    const alpha_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, alpha_rect);
+    let _tmp$5;
+    if (alpha_hovered) {
+      _tmp$5 = true;
+    } else {
+      const _p$3 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+      _tmp$5 = BigInt.asUintN(64, _p$3.val) === BigInt.asUintN(64, alpha_id.val);
+    }
+    if (_tmp$5) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "ew-resize");
+    }
     if (alpha_hovered && ctx.input.mouse_pressed) {
       _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, alpha_id);
     }
@@ -9025,14 +9060,14 @@ function _M0FP49LING7167111moon_2degui3src9composite21color__picker_2einner(ctx,
     const _cur_r = _bind$3._0;
     const _cur_g = _bind$3._1;
     const _cur_b = _bind$3._2;
-    let _tmp$3 = 0;
+    let _tmp$6 = 0;
     while (true) {
-      const step = _tmp$3;
+      const step = _tmp$6;
       if (step < 16) {
         const step_a = _M0MPC16double6Double7to__int((step + 0) / (16 + 0) * 255);
         const slice_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sq_x + (step + 0) * alpha_step_w, alpha_y, alpha_step_w + 0.5, 12);
         _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), slice_rect, _M0MP49LING7167111moon_2degui3src5color5Color4rgba(_cur_r, _cur_g, _cur_b, step_a), 0);
-        _tmp$3 = step + 1 | 0;
+        _tmp$6 = step + 1 | 0;
         continue;
       } else {
         break;
@@ -9919,6 +9954,9 @@ function _M0FP49LING7167111moon_2degui3src7widgets6window(ctx, title, pos, size,
   const is_active = BigInt.asUintN(64, _p$4.val) === BigInt.asUintN(64, id.val);
   const is_dragging = is_active && (ctx.input.mouse_down && !ctx.input.mouse_pressed);
   const clicked = is_active && (ctx.input.mouse_released && bar_hovered);
+  if (bar_hovered || is_active) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "move");
+  }
   if (is_dragging) {
     win_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23add(win_pos, ctx.input.mouse_delta);
     if (constrain_to === undefined) {
@@ -10260,9 +10298,12 @@ function _M0FP49LING7167111moon_2degui3src7widgets20toast__stack_2einner(ctx, to
     if (i < next_active.length) {
       const rect = _M0MPC15array5Array2atGsE(placed_rects, i);
       const close_btn_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x + 280 - 26, rect.y + 6, 20, 20);
-      if (_M0MP49LING7167111moon_2degui3src4math4Rect8contains(close_btn_rect, ctx.input.mouse_pos) && ctx.input.mouse_pressed) {
-        dismissed_id = _M0MPC15array5Array2atGsE(next_active, i).id;
-        break;
+      if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, close_btn_rect)) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+        if (ctx.input.mouse_pressed) {
+          dismissed_id = _M0MPC15array5Array2atGsE(next_active, i).id;
+          break;
+        }
       }
       _tmp$5 = i + 1 | 0;
       continue;
@@ -12929,7 +12970,7 @@ function _M0FP49LING7167111moon_2degui8examples6canvas4step(mouse_x, mouse_y, mo
   _M0FP49LING7167111moon_2degui8examples6canvas26render__ruler__projections(dl, _M0FP49LING7167111moon_2degui8examples6canvas5state, 48, 22, cv_w, cv_h, 0, 0, 48, 22, sc_x, sc_y, pitch, pitch, grid_dim);
   _M0FP49LING7167111moon_2degui8examples6canvas22render__studio__window(_M0FP49LING7167111moon_2degui8examples6canvas3ctx, _M0FP49LING7167111moon_2degui8examples6canvas5state, cur_w, cur_h, 264, 340);
   const final_dl = _M0MP49LING7167111moon_2degui3src4core9UIContext10end__frame(_M0FP49LING7167111moon_2degui8examples6canvas3ctx);
-  return new _M0TP49LING7167111moon_2degui8examples6canvas11FrameOutput(final_dl, _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x, _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y, _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom, _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim, _M0FP49LING7167111moon_2degui8examples6canvas5state.visible_cells, _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id, _M0FP49LING7167111moon_2degui8examples6canvas5state.show_studio, is_vector);
+  return new _M0TP49LING7167111moon_2degui8examples6canvas11FrameOutput(final_dl, _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_x, _M0FP49LING7167111moon_2degui8examples6canvas5state.cam_y, _M0FP49LING7167111moon_2degui8examples6canvas5state.zoom, _M0FP49LING7167111moon_2degui8examples6canvas5state.grid_dim, _M0FP49LING7167111moon_2degui8examples6canvas5state.visible_cells, _M0FP49LING7167111moon_2degui8examples6canvas5state.selected_id, _M0FP49LING7167111moon_2degui8examples6canvas5state.show_studio, is_vector, _M0FP49LING7167111moon_2degui8examples6canvas3ctx.cursor_icon);
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas21draw__badge__showcase(ui) {
   _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "状态胶囊与交互标签 (Badge & Tag)", _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());

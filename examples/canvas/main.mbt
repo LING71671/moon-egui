@@ -23,6 +23,9 @@ pub struct FrameOutput {
   selected_id : Int
   show_studio : Bool
   is_vector : Bool
+  /// Cursor icon the engine wants while the pointer sits where it does, so the
+  /// host page can mirror it onto `canvas.style.cursor`.
+  cursor : String
 }
 
 ///|
@@ -148,6 +151,7 @@ pub fn step(
     selected_id: state.selected_id,
     show_studio: state.show_studio,
     is_vector,
+    cursor: ctx.cursor_icon(),
   }
 }
 

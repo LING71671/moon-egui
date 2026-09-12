@@ -737,6 +737,11 @@
       const dtRender = performance.now() - t1;
       renderTimeRolling = renderTimeRolling * 0.85 + dtRender * 0.15;
 
+      // Mirror the engine's cursor request (buttons, sliders, window title bar)
+      if (frameOut && typeof frameOut.cursor === 'string' && canvas.style.cursor !== frameOut.cursor) {
+        canvas.style.cursor = frameOut.cursor;
+      }
+
       // Telemetry updates
       const kernelEl = document.getElementById('telemetry-kernel');
       if (kernelEl) {

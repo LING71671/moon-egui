@@ -67,3 +67,33 @@ test "sparkline: hovering snaps to closest data point" {
 
   assert_eq(hovered, Some(2))
 }
+
+///|
+test "sparkline: hover reports the inspection cursor" {
+  let ctx = @core.UIContext::new()
+  let data = [10.0, 25.0, 18.0, 40.0, 32.0]
+
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(50.0, 15.0), false),
+  )
+  let _ = sparkline(
+    ctx,
+    "cursor_metric",
+    data,
+    size=@math.Vec2::new(100.0, 30.0),
+  )
+  assert_eq(ctx.cursor_icon(), "pointer")
+  let _ = ctx.end_frame()
+
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(-50.0, -50.0), false),
+  )
+  let _ = sparkline(
+    ctx,
+    "cursor_metric",
+    data,
+    size=@math.Vec2::new(100.0, 30.0),
+  )
+  assert_eq(ctx.cursor_icon(), "default")
+  let _ = ctx.end_frame()
+}

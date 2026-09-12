@@ -173,6 +173,8 @@ pub fn sparkline(
   let mut hovered_idx : Int? = None
 
   if show_hover && ctx.is_hovered(rect) {
+    // The chart answers the pointer with a snapped readout, so say so.
+    ctx.set_cursor_icon("pointer")
     let mouse_rel = (ctx.input.mouse_pos.x - (rect.x + pad_x)) / plot_w
     let raw_idx = (mouse_rel * denom + 0.5).to_int()
     let snapped_idx = if raw_idx < 0 {

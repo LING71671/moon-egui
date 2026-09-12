@@ -177,9 +177,12 @@ pub fn toast_stack(
       20.0,
       20.0,
     )
-    if close_btn_rect.contains(ctx.input.mouse_pos) && ctx.input.mouse_pressed {
-      dismissed_id = Some(next_active[i].id)
-      break
+    if ctx.is_hovered(close_btn_rect) {
+      ctx.set_cursor_icon("pointer")
+      if ctx.input.mouse_pressed {
+        dismissed_id = Some(next_active[i].id)
+        break
+      }
     }
   }
 

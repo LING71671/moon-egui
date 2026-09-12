@@ -122,6 +122,12 @@ pub fn window(
     !ctx.input.mouse_pressed
   let clicked = is_active && ctx.input.mouse_released && bar_hovered
 
+  // The title bar is the drag handle: advertise it, and keep the cursor while
+  // the drag continues even after the pointer has left the bar.
+  if bar_hovered || is_active {
+    ctx.set_cursor_icon("move")
+  }
+
   if is_dragging {
     win_pos = win_pos.add(ctx.input.mouse_delta)
     if constrain_to is Some(bounds) {

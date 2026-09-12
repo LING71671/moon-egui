@@ -71,3 +71,38 @@ test "color_picker_button: renders button with swatch and hex" {
   assert_eq(resp.rect.h, 28.0)
   assert_true(dl.len() >= 4) // button bg, border, swatch, swatch border, text
 }
+
+///|
+test "color_picker: drag handles report a resize cursor" {
+  let ctx = @core.UIContext::new()
+
+  // The panel is (180 x 230) at the cursor; inside it the SV area spans
+  // y + 10 .. y + 136, the hue bar y + 144 .. y + 156 and the alpha bar
+  // y + 164 .. y + 176.
+  let cx = 90.0
+
+  let sv = @core.RawInput::from_mouse(@math.Vec2::new(cx, 70.0), false)
+  ctx.begin_frame(sv)
+  let _ = color_picker(ctx, "cp_cursor_sv", @color.Color::rgb(255, 0, 0))
+  assert_eq(ctx.cursor_icon(), "crosshair")
+  let _ = ctx.end_frame()
+
+  let hue = @core.RawInput::from_mouse(@math.Vec2::new(cx, 150.0), false)
+  ctx.begin_frame(hue)
+  let _ = color_picker(ctx, "cp_cursor_hue", @color.Color::rgb(255, 0, 0))
+  assert_eq(ctx.cursor_icon(), "ew-resize")
+  let _ = ctx.end_frame()
+
+  let alpha = @core.RawInput::from_mouse(@math.Vec2::new(cx, 170.0), false)
+  ctx.begin_frame(alpha)
+  let _ = color_picker(ctx, "cp_cursor_alpha", @color.Color::rgb(255, 0, 0))
+  assert_eq(ctx.cursor_icon(), "ew-resize")
+  let _ = ctx.end_frame()
+
+  // Away from the panel the cursor falls back to the default arrow.
+  let away = @core.RawInput::from_mouse(@math.Vec2::new(600.0, 400.0), false)
+  ctx.begin_frame(away)
+  let _ = color_picker(ctx, "cp_cursor_away", @color.Color::rgb(255, 0, 0))
+  assert_eq(ctx.cursor_icon(), "default")
+  let _ = ctx.end_frame()
+}

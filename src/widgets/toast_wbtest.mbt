@@ -146,3 +146,18 @@ test "toast: kinds color coverage" {
   assert_eq(res.active_toasts.length(), 4)
   let _ = ctx.end_frame()
 }
+
+///|
+test "toast: close button advertises the pointer cursor" {
+  let ctx = @core.UIContext::new()
+
+  // Bottom-right anchor with the default 800 x 600 viewport: the card spans
+  // x 500..780, y 542..580, and the close cross sits in its top-right corner.
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(760.0, 555.0), false),
+  )
+  let t = Toast::new("cursor_toast", "关闭我")
+  let _ = toast_stack(ctx, [t])
+  assert_eq(ctx.cursor_icon(), "pointer")
+  let _ = ctx.end_frame()
+}

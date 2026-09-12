@@ -147,7 +147,10 @@ pub fn color_picker(
 
   // 1. 2D Saturation/Value Area Interaction
   let sv_id = ctx.id_stack.derive_id("cp_sv::" + id_salt)
-  let sv_hovered = sq_rect.contains(ctx.input.mouse_pos)
+  let sv_hovered = ctx.is_hovered(sq_rect)
+  if sv_hovered || ctx.active_id() == sv_id {
+    ctx.set_cursor_icon("crosshair")
+  }
   if sv_hovered && ctx.input.mouse_pressed {
     ctx.set_active_id(sv_id)
   }
@@ -208,7 +211,10 @@ pub fn color_picker(
   let hue_rect = @math.Rect::new(sq_x, hue_y, sq_w, hue_h)
   let hue_id = ctx.id_stack.derive_id("cp_hue::" + id_salt)
 
-  let hue_hovered = hue_rect.contains(ctx.input.mouse_pos)
+  let hue_hovered = ctx.is_hovered(hue_rect)
+  if hue_hovered || ctx.active_id() == hue_id {
+    ctx.set_cursor_icon("ew-resize")
+  }
   if hue_hovered && ctx.input.mouse_pressed {
     ctx.set_active_id(hue_id)
   }
@@ -257,7 +263,10 @@ pub fn color_picker(
     let alpha_rect = @math.Rect::new(sq_x, alpha_y, sq_w, alpha_h)
     let alpha_id = ctx.id_stack.derive_id("cp_alpha::" + id_salt)
 
-    let alpha_hovered = alpha_rect.contains(ctx.input.mouse_pos)
+    let alpha_hovered = ctx.is_hovered(alpha_rect)
+    if alpha_hovered || ctx.active_id() == alpha_id {
+      ctx.set_cursor_icon("ew-resize")
+    }
     if alpha_hovered && ctx.input.mouse_pressed {
       ctx.set_active_id(alpha_id)
     }

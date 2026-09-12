@@ -324,6 +324,12 @@ fn render_dock_node(
         let is_current = i == valid_active
         let is_hovered = ctx.is_hovered(tab_rect)
 
+        // A tab is a click target as a whole; the close cross overrides this
+        // with its own pointer further down.
+        if is_hovered {
+          ctx.set_cursor_icon("pointer")
+        }
+
         // Tab background pill
         if is_current {
           painter.add_rect(tab_rect, @color.Color::bg_window(), 4.0 * scale)

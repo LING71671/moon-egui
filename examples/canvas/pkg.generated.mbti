@@ -81,6 +81,7 @@ pub struct FrameOutput {
   selected_id : Int
   show_studio : Bool
   is_vector : Bool
+  cursor : String
 }
 
 pub struct GalleryState {
