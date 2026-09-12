@@ -13002,7 +13002,7 @@ function _M0FP49LING7167111moon_2degui8examples6canvas21draw__badge__showcase(ui
     _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(row, 8);
     _M0FP49LING7167111moon_2degui3src7widgets13badge_2einner(row, "Danger", 3, false, true);
     _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(row, 8);
-    _M0FP49LING7167111moon_2degui3src7widgets13badge_2einner(row, "Beta v0.2.0", 4, true, true);
+    _M0FP49LING7167111moon_2degui3src7widgets13badge_2einner(row, "v0.3.0", 4, true, true);
   });
   _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 14);
   _M0MP49LING7167111moon_2degui3src4core9UIContext10horizontal(ui, (row) => {

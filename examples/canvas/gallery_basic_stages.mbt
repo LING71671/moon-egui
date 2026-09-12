@@ -421,7 +421,7 @@ fn draw_badge_showcase(ui : @core.UIContext) -> Unit {
     row.spacer(8.0)
     let _ = @widgets.badge(
       row,
-      "Beta v0.2.0",
+      "v0.3.0",
       kind=@widgets.BadgeKind::info(),
       dot=true,
       pill=true,

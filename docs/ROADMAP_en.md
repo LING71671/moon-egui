@@ -95,10 +95,10 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 
 * **Objective**: Ensure industrial code reliability, freeze API contracts, and finalize project deliverables.
 * **Deliverables**:
-  - [x] **Expanded Test Suite** [Delivered]: Reach 211 automated whitebox and blackbox test cases (100% passing rate);
+  - [x] **Expanded Test Suite** [Delivered]: Reach 221 automated whitebox and blackbox test cases (100% passing rate);
   - [ ] **Micro-Benchmark Telemetry (Benchmarks)**: Measure nanosecond and microsecond compute budgets across typical workloads;
   - [ ] **Interface Stabilization**: Run `moon info && moon fmt`, freeze `.mbti` signatures, and finalize bilingual documentation;
-  - [ ] **Release Packaging**: Tag and publish official `v0.2.0` release.
+  - [x] **Release Packaging** [Delivered]: Tag and publish the `v0.3.0` release (layered packages and interaction hardening).
 * **Acceptance Criteria**:
   - 100% passing CI workflow with complete documentation, demos, and test suites archived.
 
