@@ -40,7 +40,28 @@ MoonBit follows specific idiomatic conventions:
 
 ---
 
-## 3. Testing Standards
+## 3. Low-Coupling Architecture Standard & Review Checklist
+
+All contributions must strictly adhere to low-coupling, high-cohesion architectural principles. Monolithic God Objects and leaky abstractions are strictly rejected:
+
+1. **Context Integrity**: Strictly forbid adding widget-specific persistent state fields (such as scroll offsets, cursor positions, or collapsing flags) to `UIContext`. Widget state must be encapsulated within widget structs and stored via the generic memory subsystem.
+2. **Design Tokens Stratification**: `WidgetStyle` must only hold foundational, systemic tokens (typography scales, spacing scales, radius scales, and base control heights). Do not hardcode concrete widget dimensions onto `WidgetStyle`.
+3. **First-Class Widget Structs**: Complex interactive widgets must be defined as standalone first-class structs with fluent builder methods (e.g. `Slider::new(...).step(0.1)`), avoiding methods with more than 4-5 arguments on `UIContext`.
+4. **Scoped Drawing Abstraction**: Widgets must not directly mutate global coordinate arithmetic on `DrawList` or manually manage scissor clipping stacks. All drawing operations must be routed through scoped `Painter` abstractions.
+5. **Unidirectional Package Dependencies**: Maintain strict unidirectional dependencies (`math` -> `color` -> `draw` -> `core/engine` -> `core/widgets`). Circular dependencies are strictly forbidden.
+
+### Architectural Decoupling Checklist (PR Checklist)
+
+- [ ] **Context Integrity**: Does this PR add any widget-specific fields to `UIContext`? (If YES, refactor out into self-contained state).
+- [ ] **State Encapsulation**: Is widget persistence handled via generic `Memory` / `IdMap` rather than bespoke central fields?
+- [ ] **Token Stratification**: Does `WidgetStyle` remain free of component-specific geometry constants?
+- [ ] **Widget API Surface**: Are complex widgets declared as standalone structs with fluent builder methods?
+- [ ] **Drawing Scoping**: Does drawing logic avoid hardcoded absolute screen coordinates and raw scissor stack manipulations?
+- [ ] **Package Boundary**: Does this change respect strict unidirectional package dependencies?
+
+---
+
+## 4. Testing Standards
 
 High test coverage is mandatory for all core geometric, layout, and state machine algorithms:
 
@@ -58,7 +79,7 @@ High test coverage is mandatory for all core geometric, layout, and state machin
 
 ---
 
-## 4. Git Commit Conventions & Granularity
+## 5. Git Commit Conventions & Granularity
 
 We strictly enforce [Conventional Commits](https://www.conventionalcommits.org/) and atomic, fine-grained commit scopes:
 
@@ -88,7 +109,7 @@ Examples:
 
 ---
 
-## 5. Development Workflow
+## 6. Development Workflow
 
 1. Fork or clone the repository:
    ```bash

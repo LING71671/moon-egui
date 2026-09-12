@@ -2,9 +2,10 @@
 
 This document provides a systematic, factual audit of the codebase (`src/core`, `src/draw`, `src/color`, `src/math`, and runtime showcase pages).
 
-It is organized into two primary tracks:
+It is organized into three primary tracks:
 - **Part I: Defects and Technical Debt (`bug`)**: Memory leaks, state corruption, unhandled input channels, typographical drift, and widget edge-case omissions.
 - **Part II: Engine Capabilities and Dogfooding Roadmap (`feat`)**: Core engine extensions, layout enhancements, and showcase pages where raw HTML/DOM should be replaced by our native MoonBit GUI engine.
+- **Part III: Structural Decoupling and Architecture Modularization (`arch`)**: Subsystem modularization, generic memory persistence, design token stratification, first-class widget structs, painter rendering abstraction, package hierarchy, and showcase stage decomposition.
 
 ---
 
@@ -464,7 +465,171 @@ Items in this section describe high-value architectural capabilities and showcas
 
 ---
 
-## 8. Prioritized Roadmap & Milestone Matrix
+# Part III: Structural Decoupling and Architecture Modularization (`arch`)
+
+Items in this section address foundational decoupling across the engine: modularizing the God Context, generalizing state persistence, separating design tokens from component configurations, introducing first-class widget structs with builder APIs, isolating rendering through a scoped Painter abstraction, and breaking down monolithic packages and stages.
+
+---
+
+## 8. Architectural Decoupling Initiatives (`arch`)
+
+### ARCH-01 (P1): `UIContext` God-Object Subsystem Modularization (`Layout`, `Focus`, `Window`, `Layer`)
+- **Location**: [src/core/context.mbt#L21-L71](file:///a:/moonbit-project/src/core/context.mbt#L21-L71)
+- **Status**: Backlog
+- **Category**: Context Architecture
+- **Description**:
+  `UIContext` contains 46 fields spanning five distinct subsystems (spatial layout stack, focus/hit-testing ring, scissor clipping/layer composition, window z-compositing, and persistent storage).
+- **Coupling Mechanism**:
+  1. Any change to a sub-engine (such as adding flexbox/grid layout properties or updating window z-ordering) directly mutates the monolithic `UIContext` struct definition.
+  2. Subsystems cannot be independently unit-tested or mocked in isolation without spinning up a complete 46-field context.
+- **Remediation**:
+  - Decompose `UIContext` internally into dedicated composite sub-structs:
+    - `LayoutState`: manages `layout_stack`, `LayoutScope`, `cursor`, `available_width`, and `item_spacing`.
+    - `FocusState`: manages `hot_id`, `active_id`, `focused_id`, `prev_focused_id`, `lost_focus_id`, and `focusable_ids`.
+    - `WindowState`: manages `window_positions`, `window_batches`, `window_drawn`, `window_focus`, `win_active_z`, and `window_rects`.
+    - `LayerState`: manages `draw_list`, `fg_draw_list`, `fg_saved_draw_list`, `clip_stack`, `foreground`, and `blocking_rects`.
+  - Maintain external facade methods on `UIContext` to preserve API compatibility while delegating execution to the respective sub-structs.
+
+---
+
+### ARCH-02 (P1): Generic Keyed State Storage (`Memory` / `IdMap`) Decoupling Widget Persistence
+- **Location**: [src/core/context.mbt#L38-L54](file:///a:/moonbit-project/src/core/context.mbt#L38-L54), [src/core/text_edit.mbt](file:///a:/moonbit-project/src/core/text_edit.mbt), [src/core/scroll_area.mbt](file:///a:/moonbit-project/src/core/scroll_area.mbt), [src/core/code_editor.mbt](file:///a:/moonbit-project/src/core/code_editor.mbt), [src/core/containers.mbt](file:///a:/moonbit-project/src/core/containers.mbt)
+- **Status**: Backlog
+- **Category**: State Management Decoupling
+- **Description**:
+  `UIContext` hardcodes 8 widget-specific storage tables:
+  - `scroll_offsets : HashMap[Id, Double]`
+  - `scroll_content_heights : HashMap[Id, Double]`
+  - `text_cursor_positions : HashMap[Id, Int]`
+  - `text_selection_anchors : HashMap[Id, Int]`
+  - `open_collapsing_ids : HashMap[Id, Bool]`
+  - `open_combo_id : Id`
+  - `open_menu_id : Id`
+  - `active_submenu_id : String`
+  Accompanied by 16+ dedicated getter/setter glue methods (`get_text_cursor_pos`, `set_text_cursor_pos`, `get_scroll_offset`, etc.).
+- **Coupling Mechanism**:
+  1. Adding a new stateful widget (e.g. tree node expansion, tab selection, virtual list offset) forces schema changes and new fields inside the core `UIContext` struct.
+  2. Third-party or userland widgets cannot declare persistent cross-frame state because state storage is closed to extension.
+- **Remediation**:
+  - Introduce a generic `Memory` / `IdMap` subsystem that allows any widget to declare and persist its own state struct:
+    ```moonbit
+    struct TextEditState {
+      cursor_pos : Int
+      selection_anchor : Int?
+    }
+    ```
+  - Provide generic lookup and insertion APIs: `ctx.memory.get_or_default(id, fn() { ... })` and `ctx.memory.set(id, state)`.
+  - Migrate all 8 widget-specific tables out of `UIContext` and into the generic memory subsystem with generational frame pruning.
+
+---
+
+### ARCH-03 (P1): `WidgetStyle` Token Decoupling (System Design Tokens vs. Component Configuration)
+- **Location**: [src/core/theme.mbt#L17-L116](file:///a:/moonbit-project/src/core/theme.mbt#L17-L116)
+- **Status**: Backlog
+- **Category**: Design System Decoupling
+- **Description**:
+  `WidgetStyle` is a flat structure containing 70+ fields enumerating specific geometric metrics for 32 widgets (`button_h`, `button_pad_x`, `slider_track_w`, `knob_r`, `fader_cap_w`, `dialog_btn_w`, `code_editor_gutter_w`, `table_row_h`, etc.).
+- **Coupling Mechanism**:
+  1. The central style definition possesses exhaustive knowledge of every concrete widget in the library.
+  2. Introducing or refactoring a widget requires modifying `WidgetStyle`, its constructor `WidgetStyle::default()`, and all associated test assertions.
+  3. External packages cannot add styling metrics for their custom widgets.
+- **Remediation**:
+  - Stratify the styling architecture into two distinct tiers:
+    1. **Foundation Design Tokens** (in `WidgetStyle`): scale factor, font size scales (`font_sm`, `font_md`, `font_lg`), spacing scale (`spacing_xs`, `spacing_sm`, `spacing_md`, `spacing_lg`), radius scale (`radius_sm`, `radius_md`, `radius_lg`), and base interactive control heights (`control_h_sm`, `control_h_md`, `control_h_lg`).
+    2. **Component Style Descriptors**: specialized widgets derive their default dimensions proportionally from foundation tokens, or accept an optional component-level style descriptor (e.g. `CodeEditorStyle`, `PlotStyle`).
+
+---
+
+### ARCH-04 (P1): First-Class `Widget` Structs and Fluent Builder Protocol (`ui.add(widget)`)
+- **Location**: [src/core/button.mbt](file:///a:/moonbit-project/src/core/button.mbt), [src/core/slider.mbt](file:///a:/moonbit-project/src/core/slider.mbt), [src/core/knob.mbt](file:///a:/moonbit-project/src/core/knob.mbt), [src/core/fader.mbt](file:///a:/moonbit-project/src/core/fader.mbt), [src/core/table.mbt](file:///a:/moonbit-project/src/core/table.mbt), [src/core/plot.mbt](file:///a:/moonbit-project/src/core/plot.mbt)
+- **Status**: Backlog
+- **Category**: Widget API Decoupling
+- **Description**:
+  All 32 widgets currently exist strictly as extension methods on `UIContext` (`ctx.button(...)`, `ctx.knob(...)`). Complex widgets take up to 11 positional and optional arguments (e.g. `knob` has 11 parameters, `fader` has 11 parameters, `code_editor` has 6 parameters).
+- **Coupling Mechanism**:
+  1. Widgets cannot be instantiated as independent values, passed as arguments, stored in collections, or lazily evaluated.
+  2. Adding any new configuration option inflates the method signature for all callers.
+  3. No polymorphic composition protocol exists (such as `ui.add(widget)`).
+- **Remediation**:
+  - Define standalone first-class structs for each widget with builder methods:
+    ```moonbit
+    pub struct Slider[T] {
+      label : String
+      value : T
+      min_val : T
+      max_val : T
+      step : T?
+    }
+    pub fn Slider::new(label : String, value : Double, min : Double, max : Double) -> Slider[Double]
+    pub fn Slider::step(self : Slider[Double], step : Double) -> Slider[Double]
+    ```
+  - Provide a uniform dispatch protocol `pub fn UIContext::add[W : Widget](self : UIContext, widget : W) -> Response`.
+  - Retain existing `ctx.button(...)`, `ctx.slider(...)` methods as lightweight ergonomic one-liner forwarders.
+
+---
+
+### ARCH-05 (P2): `Painter` Rendering Abstraction Decoupling Widgets from Screen Coordinates and Global `DrawList`
+- **Location**: [src/core/context.mbt#L23](file:///a:/moonbit-project/src/core/context.mbt#L23), [src/draw/draw_cmd.mbt](file:///a:/moonbit-project/src/draw/draw_cmd.mbt), all widget files
+- **Status**: Backlog
+- **Category**: Rendering Subsystem Decoupling
+- **Description**:
+  All widgets directly access `self.draw_list` and manually perform global coordinate offsets and scissor stack management (`push_clip` / `pop_clip`).
+- **Coupling Mechanism**:
+  1. Widgets must know about global absolute screen coordinates and raw `DrawList` command queues.
+  2. Implementing local coordinate systems (e.g. canvas panning, canvas zooming, sub-pixel offsetting, or cached layer rendering) requires auditing and modifying every widget's coordinate arithmetic.
+- **Remediation**:
+  - Introduce a `Painter` struct:
+    ```moonbit
+    pub struct Painter {
+      draw_list : @draw.DrawList
+      clip_rect : @math.Rect
+      layer_id : Int
+      offset : @math.Vec2
+    }
+    ```
+  - Widgets interact solely through the `Painter` interface (`painter.rect(...)`, `painter.text(...)`, `painter.line(...)`), which automatically enforces active scissor clipping and coordinate translation.
+
+---
+
+### ARCH-06 (P2): Multi-Package Architectural Hierarchy (Decomposing the 59-File `src/core` Monolith)
+- **Location**: [src/core/](file:///a:/moonbit-project/src/core/)
+- **Status**: Backlog
+- **Category**: Package Architecture
+- **Description**:
+  `src/core` contains 59 source files, housing both the immediate-mode engine runtime (`Id`, `InputState`, `Layout`, `Context`, `Theme`) and all 32 specialized domain widgets (from `Button` to `Plot`, `Table`, `CodeEditor`, and `CommandPalette`).
+- **Coupling Mechanism**:
+  1. No physical package encapsulation exists between the runtime core and domain widgets.
+  2. Developers cannot import just the core engine runtime to build bespoke widgets without pulling in all 32 built-in widgets.
+- **Remediation**:
+  - Structure `src/core` into layered logical packages:
+    - `src/core` (pure immediate-mode runtime: `Id`, `InputState`, `Memory`, `Layout`, `UIContext`, `Painter`)
+    - `src/widgets` (standard UI controls: `Button`, `Checkbox`, `Slider`, `Toggle`, `TextEdit`, `Label`, `Containers`)
+    - `src/composite` (advanced widgets: `CodeEditor`, `Plot`, `Table`, `TreeView`, `ColorPicker`, `CommandPalette`)
+    - `src/` (umbrella package re-exporting all components for backward compatibility)
+
+---
+
+### ARCH-07 (P2): Showcase Stage Modularization (Splitting 2088-Line `gallery_stage.mbt` Monolith)
+- **Location**: [examples/canvas/gallery_stage.mbt](file:///a:/moonbit-project/examples/canvas/gallery_stage.mbt)
+- **Status**: Backlog
+- **Category**: Showcase Architecture
+- **Description**:
+  `gallery_stage.mbt` contains 2088 lines of code in a single file, encompassing all 32 component gallery stages, porcelain card framing, telemetry, host input conversion, and view-mode layout switching.
+- **Coupling Mechanism**:
+  1. Every modification to a single component's showcase triggers re-compilation of the entire 2088-line showcase unit.
+  2. Monolithic `match comp_id { "button" => ..., "slider" => ..., ... }` pattern matching with 32 branches hinders modular additions.
+- **Remediation**:
+  - Decompose `gallery_stage.mbt` into modular stage units:
+    - `examples/canvas/stages/basic_stages.mbt` (`button`, `slider`, `toggle`, `checkbox`, `radio`, `badge`)
+    - `examples/canvas/stages/editor_stages.mbt` (`text_edit`, `code_editor`, `rich_text`)
+    - `examples/canvas/stages/data_stages.mbt` (`table`, `tree_view`, `plot`, `sparkline`)
+    - `examples/canvas/stages/audio_stages.mbt` (`knob`, `fader`)
+    - `examples/canvas/stages/nav_stages.mbt` (`tabs`, `breadcrumb`, `segmented`, `menu_bar`)
+    - `examples/canvas/gallery_stage.mbt` (retains only frame harness, porcelain shell, and dispatcher)
+
+---
+
+## 9. Prioritized Roadmap & Milestone Matrix
 
 | Track | ID | Title | Priority | Status |
 | :--- | :--- | :--- | :--- | :--- |
@@ -501,3 +666,10 @@ Items in this section describe high-value architectural capabilities and showcas
 | **feat** | `FEAT-SHOWCASE-03`| Native In-Canvas Studio Header Bar in Benchmark | **P3** | Backlog |
 | **feat** | `FEAT-CORE-01` | Multi-Window Docking Layout System (`DockArea`) | **P3** | Backlog |
 | **feat** | `FEAT-CORE-05` | Immediate-Mode Plotting & Charting Suite (`plot`, `bar_chart`) | **P3** | Resolved (Phase 7) |
+| **arch** | `ARCH-01` | `UIContext` God-Object Subsystem Modularization | **P1** | Backlog |
+| **arch** | `ARCH-02` | Generic Keyed State Storage (`Memory` / `IdMap`) | **P1** | Backlog |
+| **arch** | `ARCH-03` | `WidgetStyle` Token Decoupling (System vs Component) | **P1** | Backlog |
+| **arch** | `ARCH-04` | First-Class Widget Structs & Fluent Builder Protocol | **P1** | Backlog |
+| **arch** | `ARCH-05` | `Painter` Rendering & Scissor Coordinate Abstraction | **P2** | Backlog |
+| **arch** | `ARCH-06` | Multi-Package Hierarchy (Decompose `src/core` Monolith) | **P2** | Backlog |
+| **arch** | `ARCH-07` | Showcase Stage Modularization (`gallery_stage.mbt`) | **P2** | Backlog |

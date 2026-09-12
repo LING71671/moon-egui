@@ -87,6 +87,44 @@ Hardcoding arbitrary constants (magic numbers, raw color literals, fixed layout 
 5. **Showcase and Demo Layouts**:
    - Example stages in `examples/canvas/` must use structured container queries and `available_width` instead of arbitrary manual subtractions (e.g. `card_w - 32.0`, `card_w - 40.0`).
 
+## Low-Coupling Architecture & Structural Decoupling Standard (Mandatory)
+
+All structural and component implementations in this repository **MUST** strictly adhere to low-coupling, high-cohesion architectural principles. Anti-patterns such as God Objects, leaking widget-private state into central contexts, flat monolithic style tokens, and unconstrained coordinate mutation are strictly forbidden.
+
+1. **Context Decoupling & Zero Private Widget State in `UIContext`**:
+   - `UIContext` must exclusively house core engine runtime primitives (frame lifecycle, layout stack, focus ring, layer composition, and window manager).
+   - **Strictly Forbid adding widget-specific fields** (e.g. `foo_scroll_offset`, `bar_cursor_pos`, `baz_open_id`) to `UIContext`.
+   - All cross-frame persistent widget state must be encapsulated within widget-defined state structs and stored via the generic `Memory` / `IdMap` key-value subsystem.
+
+2. **Design Tokens vs. Component Configuration Stratification**:
+   - `WidgetStyle` must only hold foundational, systemic design tokens (scale factor, typography scales `font_sm/md/lg`, spacing scales `spacing_xs/sm/md/lg`, radius scales `radius_sm/md/lg`, elevation, and base control heights `control_h_sm/md/lg`).
+   - **Strictly Forbid adding widget-specific geometry fields** directly to `WidgetStyle` (e.g. `knob_r`, `fader_cap_w`, `dialog_btn_w`).
+   - Widgets must derive their layout metrics proportionally from foundational tokens, or accept an optional component-level style descriptor (e.g. `CodeEditorStyle`).
+
+3. **First-Class Widget Structs & Fluent Builder Protocol**:
+   - Complex interactive widgets must be declared as standalone first-class structs (e.g. `Slider[T]`, `Knob`, `Fader`, `Plot`, `Table`) with fluent builder methods (`.step(...)`, `.min(...)`, `.max(...)`, `.primary(...)`).
+   - **Strictly Forbid expanding function signatures** with more than 4-5 positional/optional parameters on `UIContext` methods.
+   - Support uniform `ui.add(widget)` dispatch while retaining lightweight `ctx.widget(...)` convenience one-liners.
+
+4. **Rendering & Scissor Isolation via `Painter`**:
+   - Widgets must not directly mutate global coordinate arithmetic on `DrawList` or manually manage scissor clipping stacks.
+   - Drawing operations must be routed through scoped `Painter` abstractions that automatically enforce relative coordinate offsets and active clip bounds.
+
+5. **Physical Package & Directory Layering**:
+   - Maintain strict unidirectional dependency flow across packages (`math` -> `color` -> `draw` -> `core/engine` -> `core/widgets` -> `core/composite`).
+   - Prevent circular dependencies and avoid flat directory accumulation (no single directory should exceed ~15-20 source files).
+
+### Architectural Decoupling Checklist (Mandatory for PRs and Reviews)
+
+Before proposing, reviewing, or committing any structural changes, every developer and agent must verify this checklist:
+
+- [ ] **Context Integrity**: Does this change add any new fields to `UIContext`? (If YES, reject unless it is a universal engine subsystem primitive).
+- [ ] **State Encapsulation**: Is widget persistence handled via generic `Memory` / `IdMap` with self-contained state structs rather than central context fields?
+- [ ] **Token Stratification**: Does `WidgetStyle` remain free of component-specific geometry constants? Are component metrics derived from foundational tokens?
+- [ ] **Widget API Surface**: Are complex widgets defined as standalone structs with fluent builder methods rather than sprawling 6+ parameter functions?
+- [ ] **Drawing Scoping**: Does drawing logic avoid hardcoded absolute screen coordinate assumptions and direct scissor stack manipulations?
+- [ ] **Package Boundary**: Does this change respect unidirectional package dependencies without introducing circular dependencies or cross-layer private leaks?
+
 ## Synchronous Release and Publishing Standard (Mandatory)
 
 Every version release of this library **MUST** execute a synchronized dual-channel release across MoonBit Mooncake Registry and Git remote repository in strict lockstep. Releasing to one channel without the other is strictly prohibited.
