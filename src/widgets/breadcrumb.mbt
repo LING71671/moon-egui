@@ -107,11 +107,45 @@ pub fn breadcrumb(
 
   let h = (ctx.style.control_h_sm + ctx.style.radius_xs) * scale
   ctx.push_id(id_salt)
-  let (_id, rect, resp) = ctx.allocate_space(@math.Vec2::new(total_w, h))
+  let (id, rect, resp) = ctx.allocate_space(@math.Vec2::new(total_w, h))
   ctx.pop_id()
 
-  let mut current_x = rect.x
+  // Keyboard support: the whole breadcrumb is one Tab stop; Left / Right walk
+  // the selectable ancestors and Enter follows the highlighted one. The
+  // highlighted position persists in the scoped memory store.
+  ctx.register_focusable(id)
+  let is_focused = resp.has_focus() || ctx.has_focus(id)
   let mut clicked_idx : Int? = None
+  let selectable : Array[Int] = []
+  for i = 0; i < num_display; i = i + 1 {
+    let (_, orig_idx) = display_items[i]
+    if i != num_display - 1 && orig_idx >= 0 {
+      selectable.push(i)
+    }
+  }
+  let mut kb_pos : Int? = None
+  if is_focused && selectable.length() > 0 {
+    let mut cur = ctx.memory().get_int_or_default(id, 0, tag="kb")
+    if cur >= selectable.length() {
+      cur = selectable.length() - 1
+    }
+    if ctx.input.key_pressed(Key::ArrowRight) {
+      cur = if cur + 1 < selectable.length() { cur + 1 } else { cur }
+      ctx.input.consume_key(Key::ArrowRight)
+    }
+    if ctx.input.key_pressed(Key::ArrowLeft) {
+      cur = if cur - 1 >= 0 { cur - 1 } else { cur }
+      ctx.input.consume_key(Key::ArrowLeft)
+    }
+    ctx.memory().set_int(id, cur, tag="kb")
+    kb_pos = Some(selectable[cur])
+    if ctx.input.key_pressed(Key::Enter) {
+      ctx.input.consume_key(Key::Enter)
+      clicked_idx = Some(display_items[selectable[cur]].1)
+    }
+  }
+
+  let mut current_x = rect.x
 
   for i = 0; i < num_display; i = i + 1 {
     let (label, orig_idx) = display_items[i]
@@ -121,17 +155,20 @@ pub fn breadcrumb(
     let item_rect = @math.Rect::new(current_x, rect.y, item_w, h)
 
     let is_hovered = ctx.is_hovered(item_rect)
+    let is_kb = kb_pos == Some(i)
     let painter = ctx.painter()
 
     if !is_last && orig_idx >= 0 {
-      if is_hovered {
-        ctx.set_cursor_icon("pointer")
+      if is_hovered || is_kb {
+        if is_hovered {
+          ctx.set_cursor_icon("pointer")
+        }
         painter.add_rect(
           item_rect,
           @color.Color::bg_hover(),
           ctx.style.radius_sm * scale,
         )
-        if ctx.input.mouse_pressed {
+        if is_hovered && ctx.input.mouse_pressed {
           clicked_idx = Some(orig_idx)
         }
       }
@@ -139,7 +176,7 @@ pub fn breadcrumb(
 
     let text_col = if is_last {
       @color.Color::text_strong()
-    } else if is_hovered && orig_idx >= 0 {
+    } else if (is_hovered || is_kb) && orig_idx >= 0 {
       @color.Color::text_primary()
     } else {
       @color.Color::text_secondary()
@@ -163,6 +200,18 @@ pub fn breadcrumb(
       )
       current_x = sep_x + sep_sz.x + sep_gap
     }
+  }
+
+  // Focus ring so Tab users can see the trail is keyboard-navigable
+  if is_focused {
+    ctx
+    .painter()
+    .add_rect_stroke(
+      rect,
+      @color.Color::border_focus(),
+      1.0 * scale,
+      ctx.style.radius_sm * scale,
+    )
   }
 
   (clicked_idx, resp)

@@ -86,6 +86,7 @@ pub fn window(
   let scale = ctx.style.scale
   let title_bar_h = (ctx.style.control_h_sm + ctx.style.spacing_xs) * scale
   let id = ctx.id_stack.derive_id("window::" + id_salt.unwrap_or(title))
+  ctx.register_focusable(id)
 
   let saved_draw_list = ctx.layers.draw_list()
   let saved_clip : Array[@math.Rect] = []
@@ -114,6 +115,7 @@ pub fn window(
 
   if bar_hovered && ctx.input.mouse_pressed {
     ctx.set_active_id(id)
+    ctx.request_focus(id)
   }
 
   let is_active = ctx.active_id() == id
@@ -136,6 +138,44 @@ pub fn window(
     ctx.set_window_pos(id, win_pos)
     window_rect = @math.Rect::new(win_pos.x, win_pos.y, size.x, size.y)
     title_bar_rect = @math.Rect::new(win_pos.x, win_pos.y, size.x, title_bar_h)
+  }
+
+  // Keyboard move: with the window focused, the arrows nudge it inside the
+  // same constraint bounds the mouse drag uses.
+  if ctx.has_focus(id) {
+    let kb_step = 8.0 * scale
+    let mut dx = 0.0
+    let mut dy = 0.0
+    if ctx.input.key_pressed(Key::ArrowRight) {
+      dx = kb_step
+      ctx.input.consume_key(Key::ArrowRight)
+    }
+    if ctx.input.key_pressed(Key::ArrowLeft) {
+      dx = -kb_step
+      ctx.input.consume_key(Key::ArrowLeft)
+    }
+    if ctx.input.key_pressed(Key::ArrowDown) {
+      dy = kb_step
+      ctx.input.consume_key(Key::ArrowDown)
+    }
+    if ctx.input.key_pressed(Key::ArrowUp) {
+      dy = -kb_step
+      ctx.input.consume_key(Key::ArrowUp)
+    }
+    if dx != 0.0 || dy != 0.0 {
+      win_pos = win_pos.add(@math.Vec2::new(dx, dy))
+      if constrain_to is Some(bounds) {
+        win_pos = clamp_window_pos(win_pos, size, bounds)
+      }
+      ctx.set_window_pos(id, win_pos)
+      window_rect = @math.Rect::new(win_pos.x, win_pos.y, size.x, size.y)
+      title_bar_rect = @math.Rect::new(
+        win_pos.x,
+        win_pos.y,
+        size.x,
+        title_bar_h,
+      )
+    }
   }
 
   if is_active && ctx.input.mouse_released {

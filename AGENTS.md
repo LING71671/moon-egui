@@ -87,6 +87,37 @@ Hardcoding arbitrary constants (magic numbers, raw color literals, fixed layout 
 5. **Showcase and Demo Layouts**:
    - Example stages in `examples/canvas/` must use structured container queries and `available_width` instead of arbitrary manual subtractions (e.g. `card_w - 32.0`, `card_w - 40.0`).
 
+## Widget Interaction Standard (Mandatory)
+
+Every interactive surface (anything that responds to hover, clicks, or drags) must satisfy the following contract. This is not optional polish: the 2026-09 interaction audit traced real user-visible defects (invisible resize affordances, dead popups, mis-scaled dials) to violations of these rules.
+
+1. **Cursor Contract**:
+   - Every interactive surface reports a cursor via `ctx.set_cursor_icon(...)` while hovered (and while dragging, so the affordance survives the pointer leaving the widget).
+   - Canonical values: `pointer` (buttons, labels, tabs, list rows, close buttons), `ew-resize` (horizontal sliders) / `ns-resize` (vertical faders, knobs), `col-resize` / `row-resize` (splitters, table column handles), `move` (window title bars), `text` (text editing), `crosshair` (2D picking surfaces such as the HSV area).
+   - Host pages must propagate the engine decision: `gallery.html` reads `moon_gallery_cursor()`, `benchmark.html` reads `FrameOutput.cursor`. A host that ignores it silently downgrades every widget to the default arrow.
+
+2. **Hit Testing**:
+   - All hover / click geometry checks go through `ctx.is_hovered(rect)`. Raw `rect.contains(ctx.input.mouse_pos)` is reserved for the one legitimate exception: modal "click outside the card dismisses" checks, which must fire exactly where no card is.
+   - Raw hit tests keep reacting while a widget is scrolled out of a `scroll_area` or covered by a window / foreground layer. That is a defect, not an optimization.
+
+3. **Popup Interaction Scope (the self-blocking trap)**:
+   - A popup that calls `block_hover(rect)` over its own area must run its *interaction* phase inside `ctx.begin_foreground()` / `ctx.end_foreground()`; `is_hovered` ignores blockers only while the foreground flag is up. Otherwise the one-frame-old blocker swallows the popup's own rows from the second frame on (menu selection dies, palette wheel dies, toast close dies).
+   - Every early `return` inside that scope must call `ctx.end_foreground()` first, or the rest of the frame keeps drawing into the foreground batch.
+   - Follow the reference implementations: `context_menu.mbt`, `command_palette.mbt`, `toast.mbt`.
+
+4. **Global Scale**:
+   - Every geometric value (including component descriptor defaults such as `KnobStyle.radius`) is multiplied by `ctx.style.scale` at use time. One unscaled widget breaks the whole density story.
+   - Lock it with a geometry-invariance test: rendering at scale 2.0 must produce exactly twice the scale 1.0 rect (see `src/composite/scale_wbtest.mbt`).
+
+5. **Keyboard Reachability**:
+   - Interactive widgets call `ctx.register_focusable(id)`, draw a focus ring when focused, and consume the keys they handle. Focus is exclusive: a focused child keeps its arrow keys, a focused scroll viewport keeps Home / End.
+   - Reference pattern: `register_focusable` + `let is_focused = resp.has_focus() || ctx.has_focus(id)` + Space / Enter (or arrows) with `consume_key`, as in `containers.mbt` (collapsing header / combo) and `keyboard_wbtest.mbt`.
+   - Keyboard support ships with frame-sequence tests; single-frame tests cannot see focus- or blocker-dependent behavior.
+
+6. **Interaction Test Pattern**:
+   - Script multi-frame sequences: `ctx.begin_frame(RawInput::with_events(...))` with explicit pointer / key events per frame, then assert state (`cursor_icon()`, memory-backed values, returned responses).
+   - For cursor and hit-zone coverage on the real bundle, prefer the headless grid sweep over `moon_gallery_step` + `moon_gallery_cursor()` with a 2px step (thin 6px hit bands defeat coarse grids). Screenshots and synthetic `MouseEvent`s are the tools of last resort.
+
 ## Low-Coupling Architecture & Structural Decoupling Standard (Mandatory)
 
 All structural and component implementations in this repository **MUST** strictly adhere to low-coupling, high-cohesion architectural principles. Anti-patterns such as God Objects, leaking widget-private state into central contexts, flat monolithic style tokens, and unconstrained coordinate mutation are strictly forbidden.
@@ -145,6 +176,7 @@ The canonical release procedure is defined as follows:
      - `examples/canvas/gallery.html`: Update navigation `<span class="brand-tag">vX.Y.Z</span>` and script/CSS query strings (`canvas.js?v=X.Y.Z`, `css/gallery.css?v=X.Y.Z`).
      - `examples/canvas/docs.html`: Update navigation `<span class="brand-tag">vX.Y.Z</span>` and page header `<span class="page-badge">MOON-EGUI API REFERENCE · vX.Y.Z</span>`.
      - `examples/canvas/benchmark.html`: Update script query strings (`canvas.js?v=X.Y.Z`, `js/run.js?v=X.Y.Z`).
+     - `examples/canvas/gallery_basic_stages.mbt`: Update the hard-coded version badge string ("vX.Y.Z") and rebuild the demo bundle (`sh scripts/build_demo.sh`), or the showcase keeps advertising the previous release.
 
 2. **Interface Generation and Code Formatting**:
    - Execute `moon info && moon fmt`.

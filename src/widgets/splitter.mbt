@@ -168,6 +168,8 @@ pub fn split_horizontal(
 
   let bar_id = ctx.id_stack.derive_id("splitter_h::" + id_salt)
   let hovered = ctx.is_hovered(hit_rect)
+  ctx.register_focusable(bar_id)
+  let is_focused = ctx.has_focus(bar_id)
 
   if hovered {
     ctx.set_cursor_icon("col-resize")
@@ -199,6 +201,27 @@ pub fn split_horizontal(
     }
     if ctx.input.mouse_released {
       ctx.set_active_id(@core.Id::zero())
+    }
+  }
+
+  // Keyboard resize: the divider is Tab-reachable; arrows nudge the ratio.
+  if is_focused {
+    let kb_step = 0.02
+    if ctx.input.key_pressed(Key::ArrowRight) {
+      ctx.input.consume_key(Key::ArrowRight)
+      effective_ratio = if effective_ratio + kb_step > max_ratio {
+        max_ratio
+      } else {
+        effective_ratio + kb_step
+      }
+    }
+    if ctx.input.key_pressed(Key::ArrowLeft) {
+      ctx.input.consume_key(Key::ArrowLeft)
+      effective_ratio = if effective_ratio - kb_step < min_ratio {
+        min_ratio
+      } else {
+        effective_ratio - kb_step
+      }
     }
   }
 
@@ -261,6 +284,17 @@ pub fn split_horizontal(
   .painter()
   .add_circle(@math.Vec2::new(divider_x, mid_y + 6.0), 1.5, dot_col)
 
+  if is_focused {
+    ctx
+    .painter()
+    .add_rect_stroke(
+      hit_rect.expand(1.0),
+      @color.Color::border_focus(),
+      1.0,
+      ctx.style.radius_sm,
+    )
+  }
+
   effective_ratio
 }
 
@@ -318,6 +352,8 @@ pub fn split_vertical(
 
   let bar_id = ctx.id_stack.derive_id("splitter_v::" + id_salt)
   let hovered = ctx.is_hovered(hit_rect)
+  ctx.register_focusable(bar_id)
+  let is_focused = ctx.has_focus(bar_id)
 
   if hovered {
     ctx.set_cursor_icon("row-resize")
@@ -349,6 +385,27 @@ pub fn split_vertical(
     }
     if ctx.input.mouse_released {
       ctx.set_active_id(@core.Id::zero())
+    }
+  }
+
+  // Keyboard resize: the divider is Tab-reachable; arrows nudge the ratio.
+  if is_focused {
+    let kb_step = 0.02
+    if ctx.input.key_pressed(Key::ArrowDown) {
+      ctx.input.consume_key(Key::ArrowDown)
+      effective_ratio = if effective_ratio + kb_step > max_ratio {
+        max_ratio
+      } else {
+        effective_ratio + kb_step
+      }
+    }
+    if ctx.input.key_pressed(Key::ArrowUp) {
+      ctx.input.consume_key(Key::ArrowUp)
+      effective_ratio = if effective_ratio - kb_step < min_ratio {
+        min_ratio
+      } else {
+        effective_ratio - kb_step
+      }
     }
   }
 
@@ -410,6 +467,17 @@ pub fn split_vertical(
   ctx
   .painter()
   .add_circle(@math.Vec2::new(mid_x + 6.0, divider_y), 1.5, dot_col)
+
+  if is_focused {
+    ctx
+    .painter()
+    .add_rect_stroke(
+      hit_rect.expand(1.0),
+      @color.Color::border_focus(),
+      1.0,
+      ctx.style.radius_sm,
+    )
+  }
 
   effective_ratio
 }

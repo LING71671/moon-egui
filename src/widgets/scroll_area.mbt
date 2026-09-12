@@ -47,6 +47,10 @@ pub fn scroll_area(
   let container_id = ctx.id_stack.derive_id(id_salt)
   let (_id, container_rect, _resp) = ctx.allocate_space(size)
 
+  // The viewport is Tab-reachable: keyboard scrolling applies only while the
+  // container itself holds focus, so focused children keep their arrow keys.
+  ctx.register_focusable(container_id)
+
   if ctx.is_hovered(container_rect) {
     ctx.set_wants_capture_mouse(true)
   }
@@ -107,10 +111,64 @@ pub fn scroll_area(
     ctx.set_scroll_offset(container_id, scroll_y)
   }
 
+  // Keyboard scrolling while the container holds focus. Focus is exclusive,
+  // so a focused child (text_edit, slider, ...) keeps its arrow keys.
+  if ctx.has_focus(container_id) && real_max_scroll > 0.0 {
+    let kb_step = 36.0 * ctx.style.scale
+    let page = size.y * 0.85
+    let mut delta = 0.0
+    if ctx.input.key_pressed(Key::ArrowDown) {
+      delta = kb_step
+      ctx.input.consume_key(Key::ArrowDown)
+    }
+    if ctx.input.key_pressed(Key::ArrowUp) {
+      delta = -kb_step
+      ctx.input.consume_key(Key::ArrowUp)
+    }
+    if ctx.input.key_pressed(Key::PageDown) {
+      delta = page
+      ctx.input.consume_key(Key::PageDown)
+    }
+    if ctx.input.key_pressed(Key::PageUp) {
+      delta = -page
+      ctx.input.consume_key(Key::PageUp)
+    }
+    if ctx.input.key_pressed(Key::End) {
+      delta = real_max_scroll - scroll_y
+      ctx.input.consume_key(Key::End)
+    }
+    if ctx.input.key_pressed(Key::Home) {
+      delta = -scroll_y
+      ctx.input.consume_key(Key::Home)
+    }
+    if delta != 0.0 {
+      scroll_y = if scroll_y + delta < 0.0 {
+        0.0
+      } else if scroll_y + delta > real_max_scroll {
+        real_max_scroll
+      } else {
+        scroll_y + delta
+      }
+      ctx.set_scroll_offset(container_id, scroll_y)
+    }
+  }
+
   // Restore cursor and pop scissor clip
   ctx.set_cursor(prev_cursor)
   ctx.set_available_width(prev_avail_w)
   ctx.pop_clip()
+
+  // Focus ring so Tab users can see the viewport is keyboard-scrollable
+  if ctx.has_focus(container_id) {
+    ctx
+    .painter()
+    .add_rect_stroke(
+      container_rect,
+      @color.Color::border_focus(),
+      1.0 * ctx.style.scale,
+      ctx.style.radius_md,
+    )
+  }
 
   // Draw scrollbar thumb if content exceeds container height
   if real_max_scroll > 0.0 && measured_content_h > 0.0 {

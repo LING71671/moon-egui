@@ -185,15 +185,30 @@ pub fn tag(
   let w = pad_x * 2.0 + text_sz.x + close_w
 
   ctx.push_id(id_salt)
-  let (_id, rect, resp) = ctx.allocate_space(@math.Vec2::new(w, h))
+  let (id, rect, resp) = ctx.allocate_space(@math.Vec2::new(w, h))
   ctx.pop_id()
+  ctx.register_focusable(id)
+  let is_focused = resp.has_focus() || ctx.has_focus(id)
 
   let (bg, border, fg) = badge_colors(kind)
 
   let tag_radius = ctx.style.radius_sm
   let p = ctx.painter()
   p.add_rect(rect, bg, tag_radius)
-  p.add_rect_stroke(rect, border, 1.0, tag_radius)
+  p.add_rect_stroke(
+    rect,
+    if is_focused {
+      @color.Color::border_focus()
+    } else {
+      border
+    },
+    if is_focused {
+      1.5
+    } else {
+      1.0
+    },
+    tag_radius,
+  )
 
   // Label text
   let text_y = rect.y + (h - font_sz) * 0.5
@@ -218,6 +233,13 @@ pub fn tag(
       }
     }
 
+    // Keyboard close while the tag holds focus
+    if is_focused &&
+      (ctx.input.key_pressed(Key::Space) || ctx.input.key_pressed(Key::Enter)) {
+      ctx.input.consume_key(Key::Space)
+      ctx.input.consume_key(Key::Enter)
+      closed = true
+    }
     let x_center = close_box.center()
     let r = 3.5
     p.add_line(
