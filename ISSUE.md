@@ -669,7 +669,7 @@ Items in this section address foundational decoupling across the engine: modular
 | **arch** | `ARCH-01` | `UIContext` God-Object Subsystem Modularization | **P1** | Resolved (Phase 2) |
 | **arch** | `ARCH-02` | Generic Keyed State Storage (`Memory` / `IdMap`) | **P1** | Resolved (Phase 1) |
 | **arch** | `ARCH-03` | `WidgetStyle` Token Decoupling (System vs Component) | **P1** | Resolved (Phase 4) |
-| **arch** | `ARCH-04` | First-Class Widget Structs & Fluent Builder Protocol | **P1** | Backlog |
+| **arch** | `ARCH-04` | First-Class Widget Structs & Fluent Builder Protocol | **P1** | Resolved (Phase 5) |
 | **arch** | `ARCH-05` | `Painter` Rendering & Scissor Coordinate Abstraction | **P2** | Resolved (Phase 3) |
 | **arch** | `ARCH-06` | Multi-Package Hierarchy (Decompose `src/core` Monolith) | **P2** | Backlog |
 | **arch** | `ARCH-07` | Showcase Stage Modularization (`gallery_stage.mbt`) | **P2** | Backlog |
