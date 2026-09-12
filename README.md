@@ -42,7 +42,7 @@
 
 ### 核心特性
 
-- **即时模式心智**：逐帧声明界面，无需维护生命周期回调与双向同步，交互判定就地完成（例如 `if ui.button("保存").clicked { ... }`）。
+- **即时模式心智**：逐帧声明界面，无需维护生命周期回调与双向同步，交互判定就地完成（例如 `if @widgets.button(ctx, "保存").clicked { ... }`）。
 - **零 FFI 原生依赖**：100% 纯 MoonBit 编写，内核解耦宿主环境，零外部运行时依赖，一行 `moon add` 即装即用。
 - **微秒级帧管线**：内置视口空间裁剪与图元合并，单帧内核开销低至 0.1ms，在百万节点画布下稳定跑满 60 FPS。
 - **开箱即用套件**：内置层级窗口（支持拖拽置顶与视口约束）、标签栏、支持真实键盘输入的文本框、防穿透下拉框与工具提示。
@@ -56,7 +56,7 @@
 moon add LING71671/moon-egui
 
 # 或指定锁定版本
-moon add LING71671/moon-egui@0.2.0
+moon add LING71671/moon-egui@0.3.0
 ```
 
 安装后在 `moon.pkg` 中按需引入分层包：只做自绘 HUD 时引入 `src/core`（纯即时模式运行时），需要内置控件时再叠加 `src/widgets`（标准控件）与 `src/composite`（高级组件）。
@@ -90,34 +90,36 @@ moon add LING71671/moon-egui@0.2.0
 ## 快速代码示例
 
 ```moonbit
-fn update_ui(ui : &mut UIContext, state : &mut AppState) {
-  // 1. 全局系统菜单栏
-  ui.menu_bar(fn() {
-    ui.menu("文件", fn() {
-      if ui.menu_item("新建项目") { state.new_project() }
-      if ui.menu_item("保存配置") { state.save() }
+fn update_ui(ctx : @core.UIContext, state : AppState) {
+  // 1. 全局系统菜单栏（src/composite）
+  @composite.menu_bar(ctx, fn(top) {
+    @composite.menu(top, "文件", fn(menu) {
+      if @composite.menu_item(menu, "新建项目").clicked { state.new_project() }
+      if @composite.menu_item(menu, "保存配置").clicked { state.save() }
     })
-    ui.menu("视图", fn() {
-      if ui.menu_item("切换主题") { state.toggle_theme() }
+    @composite.menu(top, "视图", fn(menu) {
+      if @composite.menu_item(menu, "切换主题").clicked { state.toggle_theme() }
     })
   })
 
-  // 2. 浮动可拖拽视窗
-  ui.window("控制台 & 属性监视", 50.0, 50.0, 300.0, 420.0, fn() {
-    ui.label("欢迎使用 moon-egui")
-    
-    if ui.button("触发测试") {
+  // 2. 浮动可拖拽视窗（src/widgets）
+  @widgets.window(ctx, "控制台 & 属性监视", @math.Vec2::new(50.0, 50.0), @math.Vec2::new(300.0, 420.0), fn(win) {
+    let _ = win.label("欢迎使用 moon-egui")
+
+    if @widgets.button(win, "触发测试").clicked {
       state.counter += 1
     }
-    
+
     // Blender 风格数值拖拽调节
-    ui.drag_float("重力参数", &mut state.gravity, speed=0.1, min=0.0, max=20.0)
-    ui.checkbox("开启物理碰撞", &mut state.collision_enabled)
-    
+    let (gravity, _) = @widgets.drag_value(win, "重力参数", state.gravity, speed=0.1, min=0.0, max=20.0)
+    state.gravity = gravity
+    let (collision, _) = @widgets.checkbox(win, "开启物理碰撞", state.collision_enabled)
+    state.collision_enabled = collision
+
     // 折叠数据面板
-    ui.collapsing_header("实时渲染监控", fn() {
-      ui.sparkline("实时帧率曲线", state.fps_history)
-      ui.progress_bar(state.progress)
+    @widgets.collapsing_header(win, "render_monitor", "实时渲染监控", false, fn(panel) {
+      let (_, _) = @composite.sparkline(panel, "fps", state.fps_history)
+      @widgets.progress_bar(panel, state.progress)
     })
   })
 }

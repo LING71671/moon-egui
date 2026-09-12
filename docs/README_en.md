@@ -46,32 +46,35 @@ Inspired by Rust's `egui` and C++'s `Dear ImGui`, `moon-egui` operates on an imm
 ## Quick Example
 
 ```moonbit
-fn update_ui(ui : &mut UIContext, state : &mut AppState) {
-  // Top-level application menu bar
-  ui.menu_bar(fn() {
-    ui.menu("File", fn() {
-      if ui.menu_item("New") { state.new_project() }
-      if ui.menu_item("Save") { state.save() }
+fn update_ui(ctx : @core.UIContext, state : AppState) {
+  // Top-level application menu bar (src/composite)
+  @composite.menu_bar(ctx, fn(top) {
+    @composite.menu(top, "File", fn(menu) {
+      if @composite.menu_item(menu, "New").clicked { state.new_project() }
+      if @composite.menu_item(menu, "Save").clicked { state.save() }
     })
   })
 
-  // Floating draggable inspector window
-  ui.window("Inspector & Control", 50.0, 50.0, 300.0, 420.0, fn() {
-    ui.label("Welcome to moon-egui")
-    
-    if ui.button("Trigger Action") {
+  // Floating draggable inspector window (src/widgets)
+  @widgets.window(ctx, "Inspector & Control", @math.Vec2::new(50.0, 50.0), @math.Vec2::new(300.0, 420.0), fn(win) {
+    let _ = win.label("Welcome to moon-egui")
+
+    if @widgets.button(win, "Trigger Action").clicked {
       state.counter += 1
     }
-    
+
     // Blender-style DragValue adjustment
-    ui.drag_float("Gravity", &mut state.gravity, speed=0.1, min=0.0, max=20.0)
-    ui.checkbox("Enable Physics", &mut state.physics_enabled)
-    
+    let (gravity, _) = @widgets.drag_value(win, "Gravity", state.gravity, speed=0.1, min=0.0, max=20.0)
+    state.gravity = gravity
+    let (physics, _) = @widgets.checkbox(win, "Enable Physics", state.physics_enabled)
+    state.physics_enabled = physics
+
     // Collapsible telemetry panel
-    ui.collapsing_header("Telemetry", fn() {
-      ui.sparkline("FPS History", state.fps_history)
-      ui.progress_bar(state.progress)
+    @widgets.collapsing_header(win, "telemetry", "Telemetry", false, fn(panel) {
+      let (_, _) = @composite.sparkline(panel, "fps", state.fps_history)
+      @widgets.progress_bar(panel, state.progress)
     })
+  }))
   })
 }
 ```

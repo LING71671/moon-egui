@@ -9,7 +9,18 @@
 
 ---
 
-## [未发布]
+## [0.3.0] - 2026-09-13
+
+### 破坏性变更 (Breaking Changes)
+- **控件调用全面迁移到分层命名空间**：`ctx.button(...)` 等 `UIContext` 点方法移除，改为 `@widgets.button(ctx, ...)` / `@composite.knob(ctx, ...)`；控件导入从 `src/core` 迁至 `src/widgets` / `src/composite`；`src/lib.mbt` 门面保留全部类型重导出。详见 `docs/API_DESIGN.md` 与 `ARCH-06`。
+
+### 问题修复
+- **光标契约落地**：全部可交互表面按语义上报光标（按钮/标签/标签页 = `pointer`，滑杆 = `ew-resize` / `ns-resize`，分栏 = `col-resize` / `row-resize`，窗口标题栏 = `move`，文本 = `text`，HSV 取色区 = `crosshair`）；修复 ColorPicker、窗口标题栏、DockArea 标签、Toast 关闭钮、Sparkline 悬停五处缺失；**CAD 画板页（benchmark.html）宿主此前从不应用光标**，现经 `FrameOutput.cursor` 全帧同步。
+- **命中测试统一走 `is_hovered`**：清除 21 处原始 `rect.contains(mouse_pos)` 命中测试，控件在 `scroll_area` 裁剪外或被窗口/前景层遮挡时不再误响应（刻意保留三处 modal「点卡片外部关闭」的原始几何判定）。
+- **弹层自遮挡修复**：context menu / command palette / toast 此前会用自己的 hover blocker 在第二帧起吞掉自身 `is_hovered`——表现为菜单选不中行、面板滚轮失灵、toast 关闭钮点不掉；现将弹层交互阶段置于前景作用域，并附第二帧回归测试。
+- **全局缩放覆盖补全**：`Knob` 与 `ColorPicker` 此前不随 `WidgetStyle.scale` 缩放（几何为硬编码字面量），现全部跟随，并以「scale 2 几何恰为 scale 1 两倍」的回归测试锁定。
+- **构建脚本入口符号锚定**：`scripts/build_demo.*` 此前的模糊匹配会把 `window.moon_step` 错绑到 `Knob::step` 导致画板页静默失效，现锚定 `examples/canvas` 模块并重建产物。
+- **文档与官网示例 API 迁移**：README（中英）、`docs/API_DESIGN*`、`docs/ARCHITECTURE*`、`docs/README_en` 与官网四页（docs / wiki / index / gallery）共约 160 处示例全部迁移至新命名空间 API。
 
 ### 新增功能与优化
 - **即时模式工程图表套件 (`Plot` & `BarChart`)**：
@@ -30,7 +41,7 @@
   - 在 `DrawCmd::Text` 与 `DrawList::add_text` 中增加字体族名 (`font_family`) 与字重 (`font_weight`) 字段。
   - 支持 `RichText` 粗体真实应用 700 字重，支持 `CodeEditor` 声明等宽字体族名。
   - 更新 Web 渲染驱动（`gallery_runner.js` 与 `run.js`），支持动态装配与 LRU 字体缓存。
-- **自动化测试套件扩展**：新增 `Fader` 完整白盒单元测试，使无头白盒与黑盒自动化测试总数增至 211 项（100% 通过率）。
+- **自动化测试套件扩展**：新增 `Fader` 完整白盒单元测试，使无头白盒与黑盒自动化测试总数增至 221 项（100% 通过率）。
 - **分层包结构重构 (`ARCH-06`)**：
   - 依据 `ARCH-06` 将原 59 文件的 `src/core` 单体包拆分为 `src/core`（纯即时模式运行时）、`src/widgets`（标准控件）与 `src/composite`（高级组件）三层物理包，依赖方向严格单向：`math -> color -> draw -> core -> widgets -> composite -> src`。
   - `src/core` 仅保留引擎运行时（`context`、`id`、`input`、`memory`、`layout_engine`、`focus_manager`、`window_manager`、`layer_manager`、`painter`、`theme`、`response`、`unicode`、`widget`、`text_layout`）。

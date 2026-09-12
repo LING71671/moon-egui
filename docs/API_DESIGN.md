@@ -321,33 +321,35 @@ struct GameTelemetry {
   fps_history : Array[Double]
 }
 
-fn render_frame(ui : &mut UIContext, state : &mut GameTelemetry) {
-  // Top Menu
-  ui.menu_bar(fn(ui) {
-    ui.menu("Game", fn(ui) {
-      if ui.menu_item("Reset Stats") {
+fn render_frame(ctx : @core.UIContext, state : GameTelemetry) {
+  // Top Menu (src/composite)
+  @composite.menu_bar(ctx, fn(top) {
+    @composite.menu(top, "Game", fn(menu) {
+      if @composite.menu_item(menu, "Reset Stats").clicked {
         state.counter = 0
       }
     })
   })
 
-  // Inspector Window
-  ui.window("Game Inspector", 40.0, 40.0, 320.0, 400.0, fn(ui) {
-    ui.heading("Physics Controls")
-    ui.separator()
+  // Inspector Window (src/widgets)
+  @widgets.window(ctx, "Game Inspector", @math.Vec2::new(40.0, 40.0), @math.Vec2::new(320.0, 400.0), fn(win) {
+    let _ = win.label_colored("Physics Controls", @color.Color::text_strong())
+    win.separator()
 
-    ui.horizontal(fn(ui) {
-      if ui.button("Increment").clicked() {
+    win.horizontal(fn(row) {
+      if @widgets.button(row, "Increment").clicked {
         state.counter += 1
       }
-      ui.label("Clicks: \{state.counter}")
+      let _ = row.label("Clicks: " + state.counter.to_string())
     })
 
-    ui.slider_float("Speed (m/s)", &mut state.speed, 0.0, 120.0)
-    ui.checkbox("Draw Collision Grid", &mut state.show_grid)
+    let (speed, _) = @widgets.slider(win, "Speed (m/s)", state.speed, 0.0, 120.0)
+    state.speed = speed
+    let (grid, _) = @widgets.checkbox(win, "Draw Collision Grid", state.show_grid)
+    state.show_grid = grid
 
-    ui.collapsing_header("Performance Telemetry", true, fn(ui) {
-      ui.sparkline("Frame Times (ms)", state.fps_history, 50.0)
+    @widgets.collapsing_header(win, "telemetry", "Performance Telemetry", true, fn(panel) {
+      let (_, _) = @composite.sparkline(panel, "frame_times", state.fps_history, size=@math.Vec2::new(240.0, 50.0))
     })
   })
 }

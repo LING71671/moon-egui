@@ -21,7 +21,7 @@
 - **每帧全量重算**：在 60 FPS 的渲染循环中，界面代码每一帧直接基于业务底层状态就地执行并同步产出；
 - **代码即界面，界面即状态**：一个交互式按钮本质上就是一个轻量级即时求值表达式：
   ```moonbit
-  if ui.button("点击我") {
+  if @widgets.button(ctx, "点击我") {
     state.counter += 1
   }
   ```
@@ -65,7 +65,7 @@
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐
 │                   阶段 3：即时模式逻辑求值 (IM Execution)               │
-│  • 执行用户 UI 代码：`ui.window(...)`, `ui.button(...)`, `ui.slider(...)` │
+│  • 执行用户 UI 代码：`@widgets.window(...)`, `@widgets.button(...)`, `@widgets.slider(...)` │
 │  • 针对归一化指针坐标实时完成 AABB 碰撞命中测试                       │
 │  • 流式游标排版引擎顺序推进，动态测量并锁定各控件外接矩形              │
 │  • 将几何渲染指令追加至当前图层的绘制队列中                           │
@@ -97,7 +97,7 @@
 ```
 Id = Hash(Parent_Scope_Id + Salt + Widget_Label)
 ```
-- **作用域栈 (Scope Stack)**：通过调用 `ui.push_id("sub_panel")` 可以将命名空间压入 ID 栈，确保在不同视窗中出现文本完全相同的两个 `"确定"` 按钮时绝不发生碰撞混淆；
+- **作用域栈 (Scope Stack)**：通过调用 `ctx.push_id("sub_panel")` 可以将命名空间压入 ID 栈，确保在不同视窗中出现文本完全相同的两个 `"确定"` 按钮时绝不发生碰撞混淆；
 - **`hot_id`**：当前指针光标所悬停（Hover）的最上层控件 ID；
 - **`active_id`**：当前被鼠标按下（Pressed/Dragging）的激活控件 ID。在鼠标抬起释放前，唯有激活控件持续接收拖拽位移；
 - **`focused_id`**：当前捕获键盘输入聚焦的控件 ID。
@@ -117,7 +117,7 @@ Id = Hash(Parent_Scope_Id + Salt + Widget_Label)
 |       ▼ 向下推进 y 偏移：(控件高度 + item_spacing)           |
 | [游标 Cursor (x, y)] ───► 控件 B (按钮 Button)              |
 |       │                                                     |
-|       ▼ 横向布局块：ui.horizontal(fn() { ... })             |
+||       ▼ 横向布局块：@widgets.horizontal(fn() { ... })      |
 |   [子游标] ──► [第 1 列] ──► [第 2 列] ──► [第 3 列]        |
 |       │                                                     |
 |       ▼ 恢复主游标并向下推进行最大高度                       |

@@ -539,7 +539,7 @@
       <a href="index.html" class="brand-link">
         <img src="assets/logo.png" alt="moon-egui logo" class="brand-logo" />
         <span>moon-egui</span>
-        <span class="brand-tag">v0.2.0</span>
+        <span class="brand-tag">v0.3.0</span>
       </a>
       <ul class="nav-menu">
         <li><a href="gallery.html" class="nav-link" data-i18n="nav.gallery">组件展厅</a></li>
@@ -637,11 +637,11 @@
 <span class="code-kw">fn</span> <span class="code-fn">render_frame</span>() -&gt; @draw.DrawList {
   ctx.begin_frame(input)
 
-  ctx.window(<span class="code-str" data-i18n="code.windowTitle">"属性面板"</span>, <span class="code-kw">fn</span>(ui) {
+  @widgets.window(ctx, <span class="code-str" data-i18n="code.windowTitle">"属性面板"</span>, @math.Vec2::new(40.0, 40.0), @math.Vec2::new(280.0, 220.0), <span class="code-kw">fn</span>(ui) {
     ui.label(<span class="code-str" data-i18n="code.param">"控制参数"</span>)
-    <span class="code-kw">let</span> (val, _) = ui.slider(zoom, min=0.1, max=5.0)
+    <span class="code-kw">let</span> (val, _) = @widgets.slider(ui, "zoom", zoom, min=0.1, max=5.0)
 
-    <span class="code-kw">if</span> ui.button(<span class="code-str" data-i18n="code.resetBtn">"重置视图"</span>, shortcut=<span class="code-str">"⌘R"</span>, primary=<span class="code-kw">true</span>).clicked {
+    <span class="code-kw">if</span> @widgets.button(ui, <span class="code-str" data-i18n="code.resetBtn">"重置视图"</span>, shortcut=<span class="code-str">"⌘R"</span>, primary=<span class="code-kw">true</span>).clicked {
       reset_camera()
     }
   })

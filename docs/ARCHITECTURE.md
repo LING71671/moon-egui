@@ -21,7 +21,7 @@ Traditional graphical user interface frameworks (such as the HTML DOM, Qt, Flutt
 - User interface code is re-executed every frame (at 60 FPS) directly from the application's business state.
 - **Code is UI, and UI is state.** An interactive button is just an evaluation:
   ```moonbit
-  if ui.button("Click Me") {
+  if @widgets.button(ctx, "Click Me") {
     state.counter += 1
   }
   ```
@@ -65,7 +65,7 @@ Each rendering tick (driven by `requestAnimationFrame` on the Web or a game loop
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐
 │                    Phase 3: Immediate-Mode Execution                   │
-│  • User app calls `ui.window(...)`, `ui.button(...)`, `ui.slider(...)` │
+│  • User app calls `@widgets.window(...)`, `@widgets.button(...)`, `@widgets.slider(...)` │
 │  • Hit-testing evaluated against normalized pointer coordinates        │
 │  • Layout engine computes widget bounding boxes sequentially           │
 │  • Geometric DrawCmds appended to active window/layer command queue    │
@@ -97,7 +97,7 @@ Every interactive widget derives a 64-bit/32-bit unique `Id` through hashing:
 ```
 Id = Hash(Parent_Scope_Id + Salt + Widget_Label)
 ```
-- **Scope Stack**: Calling `ui.push_id("sub_panel")` pushes a salt onto the ID stack, ensuring two identical buttons labeled `"OK"` inside different windows never collide.
+- **Scope Stack**: Calling `ctx.push_id("sub_panel")` pushes a salt onto the ID stack, ensuring two identical buttons labeled `"OK"` inside different windows never collide.
 - **`hot_id`**: The ID of the widget currently hovered over by the pointer.
 - **`active_id`**: The ID of the widget currently clicked/pressed down. Only the active widget receives drag motions until release.
 - **`focused_id`**: The ID of the widget capturing keyboard input.
@@ -117,7 +117,7 @@ The layout engine uses a **Linear Cursor Positioning Model**:
 |       ▼ advance y by (height + item_spacing)                |
 | [Cursor (x, y)] ──────> Widget B (Button)                   |
 |       │                                                     |
-|       ▼ ui.horizontal(fn() { ... })                         |
+||       ▼ @widgets.horizontal(fn() { ... })                  |
 |   [Sub-Cursor] ──> [Col 1] ──> [Col 2] ──> [Col 3]          |
 |       │                                                     |
 |       ▼ advance y by row max_height                         |

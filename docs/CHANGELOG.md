@@ -9,7 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## [0.3.0] - 2026-09-13
+
+### Breaking Changes
+- **All widget calls migrate to the layered namespaces**: the `ctx.button(...)` style `UIContext` methods are gone; use `@widgets.button(ctx, ...)` / `@composite.knob(ctx, ...)` instead, and import widgets from `src/widgets` / `src/composite` rather than `src/core`. The `src/lib.mbt` facade keeps every type re-exported. See `docs/API_DESIGN.md` and `ARCH-06`.
+
+### Fixed
+- **Cursor contract**: every interactive surface reports a semantic cursor (buttons/labels/tabs = `pointer`, sliders = `ew-resize` / `ns-resize`, splitters = `col-resize` / `row-resize`, window title bars = `move`, text = `text`, HSV area = `crosshair`); fixes five missing spots (ColorPicker, window title bar, DockArea tabs, Toast close, Sparkline hover) and **benchmark.html, whose host never applied the cursor at all**, now synced every frame via `FrameOutput.cursor`.
+- **Hit tests unified through `is_hovered`**: removed 21 raw `rect.contains(mouse_pos)` hit tests so widgets stop reacting while scrolled out of a `scroll_area` or covered by windows/foreground layers (the three intentional modal outside-click checks keep raw geometry).
+- **Popups no longer swallow their own hover**: context menu / command palette / toast registered hover blockers over themselves, so from the second frame on `is_hovered` failed - menu rows could not be selected, the palette wheel died, a toast close cross became unclickable. Their interaction phases now run in the foreground scope, with frame-two regression tests.
+- **Global scale coverage**: `Knob` and `ColorPicker` ignored `WidgetStyle.scale` (hard-coded literal geometry); both follow it now, locked by "scale 2 geometry is exactly twice scale 1" regression tests.
+- **Build script entry anchoring**: the loose symbol match in `scripts/build_demo.*` bound `window.moon_step` to `Knob::step`, silently breaking the CAD page; the pattern now anchors the `examples/canvas` module and the bundle was rebuilt.
+- **Docs and site examples migrated**: README (zh/en), `docs/API_DESIGN*`, `docs/ARCHITECTURE*`, `docs/README_en` and the four site pages (docs / wiki / index / gallery) - about 160 examples now teach the new namespace API.
 
 ### Added
 - **Immediate-Mode Plotting Suite (`Plot` & `BarChart`)**:
@@ -30,7 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added `font_family : String` and `font_weight : Int` metadata to `DrawCmd::Text` and `DrawList::add_text`.
   - Enabled bold font weight (700) in `RichText` and explicit monospace typeface in `CodeEditor` line numbers and code text.
   - Updated HTML5 Canvas 2D runners (`gallery_runner.js` and `run.js`) with LRU font string assembly and caching.
-- **Test Suite Expansion**: Added comprehensive whitebox tests for `Fader`, bringing total automated test coverage to 211 tests (100% pass rate).
+- **Test Suite Expansion**: Added comprehensive whitebox tests for `Fader`, bringing total automated test coverage to 221 tests (100% pass rate).
 - **Layered Package Restructure (`ARCH-06`)**:
   - Split the former 59-file `src/core` monolith into three physical packages: `src/core` (bare immediate-mode runtime), `src/widgets` (standard controls) and `src/composite` (advanced components), with a strictly unidirectional dependency flow `math -> color -> draw -> core -> widgets -> composite -> src`.
   - `src/core` now contains only the engine runtime (`context`, `id`, `input`, `memory`, `layout_engine`, `focus_manager`, `window_manager`, `layer_manager`, `painter`, `theme`, `response`, `unicode`, `widget`, `text_layout`).

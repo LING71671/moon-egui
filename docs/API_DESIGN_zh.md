@@ -324,33 +324,35 @@ struct GameTelemetry {
   fps_history : Array[Double]
 }
 
-fn render_frame(ui : &mut UIContext, state : &mut GameTelemetry) {
-  // 1. 顶部全局菜单栏
-  ui.menu_bar(fn(ui) {
-    ui.menu("游戏控制", fn(ui) {
-      if ui.menu_item("重置数据") {
+fn render_frame(ctx : @core.UIContext, state : GameTelemetry) {
+  // 1. 顶部全局菜单栏（src/composite）
+  @composite.menu_bar(ctx, fn(top) {
+    @composite.menu(top, "游戏控制", fn(menu) {
+      if @composite.menu_item(menu, "重置数据").clicked {
         state.counter = 0
       }
     })
   })
 
-  // 2. 属性监视悬浮窗口
-  ui.window("物理调试监视器", 40.0, 40.0, 320.0, 400.0, fn(ui) {
-    ui.heading("物理引擎参数")
-    ui.separator()
+  // 2. 属性监视悬浮窗口（src/widgets）
+  @widgets.window(ctx, "物理调试监视器", @math.Vec2::new(40.0, 40.0), @math.Vec2::new(320.0, 400.0), fn(win) {
+    let _ = win.label_colored("物理引擎参数", @color.Color::text_strong())
+    win.separator()
 
-    ui.horizontal(fn(ui) {
-      if ui.button("增加点击").clicked() {
+    win.horizontal(fn(row) {
+      if @widgets.button(row, "增加点击").clicked {
         state.counter += 1
       }
-      ui.label("累计点击次数: \{state.counter}")
+      let _ = row.label("累计点击次数: " + state.counter.to_string())
     })
 
-    ui.slider_float("运行速度 (m/s)", &mut state.speed, 0.0, 120.0)
-    ui.checkbox("显示碰撞网格", &mut state.show_grid)
+    let (speed, _) = @widgets.slider(win, "运行速度 (m/s)", state.speed, 0.0, 120.0)
+    state.speed = speed
+    let (grid, _) = @widgets.checkbox(win, "显示碰撞网格", state.show_grid)
+    state.show_grid = grid
 
-    ui.collapsing_header("实时渲染遥测", true, fn(ui) {
-      ui.sparkline("逐帧耗时曲线 (ms)", state.fps_history, 50.0)
+    @widgets.collapsing_header(win, "telemetry", "实时渲染遥测", true, fn(panel) {
+      let (_, _) = @composite.sparkline(panel, "frame_times", state.fps_history, size=@math.Vec2::new(240.0, 50.0))
     })
   })
 }

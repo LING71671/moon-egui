@@ -415,6 +415,45 @@ Items in this section describe high-value architectural capabilities and showcas
 
 ---
 
+### FEAT-A11Y-01 (P2): Keyboard Reachability for Container & Overlay Widgets
+- **Location**: [src/widgets/](file:///a:/moonbit-project/src/widgets/), [src/composite/](file:///a:/moonbit-project/src/composite/)
+- **Status**: Backlog
+- **Category**: Accessibility & Input
+- **Current State**:
+  Core input controls (button, slider, toggle, checkbox, radio, text_edit, knob, fader, dialog, segmented_control, tree_view, code_editor, color_picker) register focusables and handle Space / Enter / arrows. Twelve interactive surfaces never call `register_focusable`, so Tab cannot reach them: `badge` / `tag` close buttons, `breadcrumb` items, `scroll_area` (keyboard scrolling), `splitter` (keyboard resize), `toast` close, `window` (keyboard move), `context_menu`, `dock`, `menu_bar` dropdowns, `rich_text` (selection), `table` (row navigation).
+- **Why it matters**:
+  Keyboard-only operation is a stated milestone acceptance criterion, and containers are the gap.
+- **Remediation**:
+  - Follow the established pattern: `register_focusable` + explicit key consumption + focus ring rendering, per widget, with a whitebox test each.
+  - Modals that already own full keyboard flows (`command_palette`) are exempt.
+  - Feature-sized work: schedule as a dedicated pass rather than drive-by fixes.
+
+---
+
+### DEBT-TEST-01 (P3): Whitebox Coverage Gaps in `src/composite` Containers
+- **Location**: [src/composite/](file:///a:/moonbit-project/src/composite/)
+- **Status**: Backlog
+- **Category**: Test Infrastructure
+- **Current State**:
+  `moon coverage analyze` reports 622 uncovered lines in `src/`, concentrated in `dock` (59), `code_editor` (54), `context_menu` (52), `containers` (35), `splitter` (32), `rich_text` (31), `color_picker` (29), `command_palette` (28) — mostly interaction branches (dragging, clipping, sub-menus).
+- **Why it matters**:
+  The ARCH-06 migration and the 2026-09-13 interaction fixes both showed that "tests pass" can hide real defects; these files carry the largest untested surface.
+- **Remediation**:
+  - Cover drag / clip / occlusion branches per widget with headless frame sequences (scripted `RawInput`), following the toast close-button frame-two regression test as the template.
+
+---
+
+### DEBT-ARCH-01 (P3): `composite -> widgets` Dependency Edge Not Yet Declared
+- **Location**: [src/composite/moon.pkg](file:///a:/moonbit-project/src/composite/moon.pkg)
+- **Status**: Backlog
+- **Category**: Package Architecture
+- **Current State**:
+  The layering rules permit `composite -> widgets`, but no composite component embeds a standard control in production code, and whitebox-test usage does not count as import usage (an unused import triggers `unused_package`). The edge is exercised only from the blackbox suite ([test/smoke_test.mbt](file:///a:/moonbit-project/test/smoke_test.mbt)).
+- **Remediation**:
+  Declare the import the first time a composite component embeds a standard control (for example an empty-dock placeholder rendered with `@widgets`).
+
+---
+
 ### FEAT-CORE-01 (High) [RESOLVED]: Multi-Window Docking and Tiling Layout System (`DockArea`)
 - **Location**: [src/core/dock.mbt](file:///a:/moonbit-project/src/core/dock.mbt), [src/core/dock_wbtest.mbt](file:///a:/moonbit-project/src/core/dock_wbtest.mbt), [examples/canvas/gallery_container_stages.mbt](file:///a:/moonbit-project/examples/canvas/gallery_container_stages.mbt)
 - **Status**: **RESOLVED** (Phase 7). Implemented recursive `DockTree` (`Leaf`, `Split`), `DockTab`, interactive splitter dividers with dragging handles, compact tab bars with close buttons and switching, scoped Scissor clipping per pane, fluent `DockArea` builder, and `UIContext::dock_area` primitive.
@@ -670,3 +709,6 @@ Items in this section address foundational decoupling across the engine: modular
 | **arch** | `ARCH-05` | `Painter` Rendering & Scissor Coordinate Abstraction | **P2** | Resolved (Phase 3) |
 | **arch** | `ARCH-06` | Multi-Package Hierarchy (Decompose `src/core` Monolith) | **P2** | Resolved (Phase 9) |
 | **arch** | `ARCH-07` | Showcase Stage Modularization (`gallery_stage.mbt`) | **P2** | Resolved (Phase 6) |
+| **a11y** | `FEAT-A11Y-01` | Keyboard Reachability for Container & Overlay Widgets | **P2** | Backlog |
+| **test** | `DEBT-TEST-01` | Whitebox Coverage Gaps in `src/composite` Containers | **P3** | Backlog |
+| **arch** | `DEBT-ARCH-01` | Declare `composite -> widgets` Dependency Edge | **P3** | Backlog |

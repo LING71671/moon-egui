@@ -165,7 +165,7 @@
                 <tr>
                   <td><strong>代码表达</strong></td>
                   <td>分层深、闭包与事件处理链复杂，AI 代码生成容易产生生命周期死锁</td>
-                  <td><strong>线性扁平直观</strong>：<code>if ui.button("保存").clicked() { save() }</code></td>
+                  <td><strong>线性扁平直观</strong>：<code>if @widgets.button(ctx, "保存").clicked { save() }</code></td>
                 </tr>
               </tbody>
             </table>
@@ -227,7 +227,7 @@
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐
 │                   阶段 3：即时逻辑求值 (IM Evaluation)                  │
-│  • 执行用户 UI 代码：`ui.window(...)`, `ui.button(...)`, `ui.slider(...)` │
+│  • 执行用户 UI 代码：@widgets.window / @widgets.button / @widgets.slider │
 │  • 针对归一化指针坐标实时完成 AABB 碰撞命中测试                       │
 │  • 流式游标排版引擎顺序推进，动态测量并锁定各控件外接矩形              │
 │  • 将几何渲染指令追加至当前图层的绘制队列中                           │
@@ -285,7 +285,7 @@
             <pre><code>Id = Hash64(Parent_Scope_Id + Salt + Widget_Name)</code></pre>
           </div>
           <ul>
-            <li><strong>作用域栈 (Scope Stack)</strong>：通过 <code>ui.push_id("panel_a")</code> 隔离命名空间，确保不同视窗中相同文本的按钮 ID 绝不冲突；</li>
+            <li><strong>作用域栈 (Scope Stack)</strong>：通过 <code>ctx.push_id("panel_a")</code> 隔离命名空间，确保不同视窗中相同文本的按钮 ID 绝不冲突；</li>
             <li><strong><code>hot_id</code></strong>：当前指针悬停的控件 ID；</li>
             <li><strong><code>active_id</code></strong>：当前被按下激活、持有连续拖拽捕捉的控件 ID；</li>
             <li><strong><code>focused_id</code></strong>：当前独占键盘文本输入的聚焦控件 ID。</li>

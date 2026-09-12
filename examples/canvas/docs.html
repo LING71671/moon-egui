@@ -24,7 +24,7 @@
         <a href="index.html" class="brand-link">
           <img src="assets/logo.png" alt="moon-egui logo" class="brand-logo" />
           <span>moon-egui</span>
-          <span class="brand-tag">v0.2.0</span>
+          <span class="brand-tag">v0.3.0</span>
         </a>
       </div>
       <ul class="nav-menu">
@@ -170,7 +170,7 @@
       </div>
 
       <header class="page-header">
-        <span class="page-badge">MOON-EGUI API REFERENCE · v0.2.0</span>
+        <span class="page-badge">MOON-EGUI API REFERENCE · v0.3.0</span>
         <h1 class="page-title" data-i18n="docs.mainTitle">Moon-EGUI 开发者指南与 API 手册</h1>
         <p class="page-desc" data-i18n="docs.mainDesc">
           MoonBit 原生即时模式 GUI 引擎完全开发手册。包含 32 个核心交互控件、流式排版布局、几何模型与宿主桥接协议规范。
@@ -222,7 +222,7 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
               即时模式核心概念
             </div>
-            在即时模式中，界面不维护持久化的控件树。每帧当 <code>ui.button(...)</code> 被调用时，即刻完成布局度量、鼠标碰撞检测、绘制指令排队，并直接返回 <code>Response</code> 响应结构。
+            在即时模式中，界面不维护持久化的控件树。每帧当 <code>@widgets.button(ctx, ...)</code> 被调用时，即刻完成布局度量、鼠标碰撞检测、绘制指令排队，并直接返回 <code>Response</code> 响应结构。
           </div>
         </section>
 
@@ -239,19 +239,14 @@
                 <span>Copy</span>
               </button>
             </div>
-            <pre><code><span class="syn-kw">struct</span> <span class="syn-type">AppState</span> {
-  <span class="syn-kw">mut</span> count : <span class="syn-type">Int</span>
-  <span class="syn-kw">mut</span> speed : <span class="syn-type">Double</span>
-}
-
-<span class="syn-kw">pub fn</span> <span class="syn-fn">render_app</span>(ui : @core.<span class="syn-type">UIContext</span>, state : <span class="syn-type">AppState</span>) -> <span class="syn-type">Unit</span> {
-  ui.window(<span class="syn-str">"快速控制台"</span>, @core.<span class="syn-type">Vec2</span>::new(<span class="syn-num">40.0</span>, <span class="syn-num">40.0</span>), @core.<span class="syn-type">Vec2</span>::new(<span class="syn-num">300.0</span>, <span class="syn-num">240.0</span>), <span class="syn-kw">fn</span>(win) {
-    win.label(<span class="syn-str">"当前点击次数: "</span> + state.count.to_string())
-    <span class="syn-kw">if</span> win.button_primary(<span class="syn-str">"点击增加 (+1)"</span>).clicked() {
+            <pre><code><span class="syn-kw">pub</span> <span class="syn-kw">fn</span> render_app(ctx : @core.<span class="syn-type">UIContext</span>, state : <span class="syn-type">AppState</span>) -> <span class="syn-type">Unit</span> {
+  @widgets.window(ctx, <span class="syn-str">"快速控制台"</span>, @math.<span class="syn-type">Vec2</span>::new(<span class="syn-num">40.0</span>, <span class="syn-num">40.0</span>), @math.<span class="syn-type">Vec2</span>::new(<span class="syn-num">300.0</span>, <span class="syn-num">240.0</span>), <span class="syn-kw">fn</span>(win) {
+    <span class="syn-kw">let</span> _ = win.label(<span class="syn-str">"当前点击次数: "</span> + state.count.to_string())
+    <span class="syn-kw">if</span> @widgets.button_primary(win, <span class="syn-str">"点击增加 (+1)"</span>).clicked {
       state.count += <span class="syn-num">1</span>
     }
     win.separator()
-    <span class="syn-kw">let</span> (new_val, _) = win.slider(<span class="syn-str">"渲染速度"</span>, state.speed, <span class="syn-num">0.0</span>, <span class="syn-num">100.0</span>)
+    <span class="syn-kw">let</span> (new_val, _) = @widgets.slider(win, <span class="syn-str">"渲染速度"</span>, state.speed, <span class="syn-num">0.0</span>, <span class="syn-num">100.0</span>)
     state.speed = new_val
   })
 }</code></pre>
@@ -380,16 +375,16 @@
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
             <pre><code><span class="syn-cmt">// 1. 标准按钮</span>
-<span class="syn-kw">if</span> ui.button(<span class="syn-str">"确定保存"</span>).clicked() { ... }
+<span class="syn-kw">if</span> @widgets.button(ctx, <span class="syn-str">"确定保存"</span>).clicked { ... }
 
 <span class="syn-cmt">// 2. 主行动点高亮按钮 (Primary CTA)</span>
-<span class="syn-kw">if</span> ui.button_primary(<span class="syn-str">"立即编译"</span>).clicked() { ... }
+<span class="syn-kw">if</span> @widgets.button_primary(ctx, <span class="syn-str">"立即编译"</span>).clicked { ... }
 
 <span class="syn-cmt">// 3. 带快捷键徽标指示的按钮</span>
-<span class="syn-kw">if</span> ui.button_with_shortcut(<span class="syn-str">"快速搜索"</span>, <span class="syn-str">"Ctrl+P"</span>).clicked() { ... }
+<span class="syn-kw">if</span> @widgets.button_with_shortcut(ctx, <span class="syn-str">"快速搜索"</span>, <span class="syn-str">"Ctrl+P"</span>).clicked { ... }
 
-<span class="syn-cmt">// 4. 紧凑型小按钮</span>
-<span class="syn-kw">if</span> ui.button_small(<span class="syn-str">"+"</span>).clicked() { ... }</code></pre>
+<span class="syn-cmt">// 4. 紧凑型小按钮（显式尺寸）</span>
+<span class="syn-kw">if</span> @widgets.button_sized(ctx, <span class="syn-str">"+"</span>, @math.<span class="syn-type">Vec2</span>::new(<span class="syn-num">24.0</span>, <span class="syn-num">24.0</span>)).clicked { ... }</code></pre>
           </div>
 
           <h3 id="widget-text-edit">5.2 TextEdit 文本输入</h3>
@@ -398,7 +393,7 @@
           </p>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code><span class="syn-kw">let</span> (new_text, resp) = ui.text_edit(state.username, placeholder=<span class="syn-str">"请输入用户名..."</span>)
+            <pre><code><span class="syn-kw">let</span> (new_text, resp) = @widgets.text_edit_val(ctx, <span class="syn-str">"username"</span>, state.username, placeholder=<span class="syn-str">"请输入用户名..."</span>)
 state.username = new_text</code></pre>
           </div>
 
@@ -406,16 +401,16 @@ state.username = new_text</code></pre>
           <p>内置等宽行号显示、Tab 缩进与深色代码展示容器：</p>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code><span class="syn-kw">let</span> (code, resp) = ui.code_editor(state.source_code, line_numbers=<span class="syn-kw">true</span>)
+            <pre><code><span class="syn-kw">let</span> (code, resp) = @composite.code_editor(ctx, <span class="syn-str">"source"</span>, state.source_code, show_line_numbers=<span class="syn-kw">true</span>)
 state.source_code = code</code></pre>
           </div>
 
-          <h3 id="widget-labels">5.4 文本展示与排版 (Label & Heading)</h3>
+          <h3 id="widget-labels">5.4 文本展示与排版 (Label)</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code>ui.heading(<span class="syn-str">"项目总览"</span>)
-ui.label(<span class="syn-str">"普通状态描述文本"</span>)
-ui.label_colored(<span class="syn-str">"运行正常"</span>, @core.<span class="syn-type">Color</span>::rgb(<span class="syn-num">16</span>, <span class="syn-num">185</span>, <span class="syn-num">129</span>))</code></pre>
+            <pre><code>ctx.label_colored(<span class="syn-str">"项目总览"</span>, @color.<span class="syn-type">Color</span>::text_strong())
+ctx.label(<span class="syn-str">"普通状态描述文本"</span>)
+ctx.label_colored(<span class="syn-str">"运行正常"</span>, @color.<span class="syn-type">Color</span>::rgb(<span class="syn-num">16</span>, <span class="syn-num">185</span>, <span class="syn-num">129</span>))</code></pre>
           </div>
         </section>
 
@@ -427,10 +422,10 @@ ui.label_colored(<span class="syn-str">"运行正常"</span>, @core.<span class=
           <p>支持连续型双精度浮点与离散整型滑动条，带微秒级平滑滚珠拖拽：</p>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code><span class="syn-kw">let</span> (vol, _) = ui.slider(<span class="syn-str">"音量"</span>, state.volume, <span class="syn-num">0.0</span>, <span class="syn-num">1.0</span>)
+            <pre><code><span class="syn-kw">let</span> (vol, _) = @widgets.slider(ctx, <span class="syn-str">"音量"</span>, state.volume, <span class="syn-num">0.0</span>, <span class="syn-num">1.0</span>)
 state.volume = vol
 
-<span class="syn-kw">let</span> (samples, _) = ui.slider_int(<span class="syn-str">"采样率"</span>, state.samples, <span class="syn-num">1</span>, <span class="syn-num">64</span>)
+<span class="syn-kw">let</span> (samples, _) = @widgets.slider_int(ctx, <span class="syn-str">"采样率"</span>, state.samples, <span class="syn-num">1</span>, <span class="syn-num">64</span>)
 state.samples = samples</code></pre>
           </div>
 
@@ -438,7 +433,7 @@ state.samples = samples</code></pre>
           <p>按住数值标签横向拖动即可平滑加减数值，支持指定拖拽步进速度：</p>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code><span class="syn-kw">let</span> (focal, _) = ui.drag_value(<span class="syn-str">"焦距 (mm)"</span>, state.focal_length, speed=<span class="syn-num">0.5</span>, min=<span class="syn-num">10.0</span>, max=<span class="syn-num">800.0</span>)
+            <pre><code><span class="syn-kw">let</span> (focal, _) = @widgets.drag_value(ctx, <span class="syn-str">"焦距 (mm)"</span>, state.focal_length, speed=<span class="syn-num">0.5</span>, min=<span class="syn-num">10.0</span>, max=<span class="syn-num">800.0</span>)
 state.focal_length = focal</code></pre>
           </div>
 
@@ -446,17 +441,17 @@ state.focal_length = focal</code></pre>
           <p>直观的环形仪表角度控制器，非常适合音频合成与旋转角度参数调节：</p>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code><span class="syn-kw">let</span> (angle, _) = ui.knob(<span class="syn-str">"旋转角度"</span>, state.rotation_deg, <span class="syn-num">0.0</span>, <span class="syn-num">360.0</span>)
+            <pre><code><span class="syn-kw">let</span> (angle, _) = @composite.knob(ctx, <span class="syn-str">"rotation"</span>, <span class="syn-str">"旋转角度"</span>, state.rotation_deg, min_val=<span class="syn-num">0.0</span>, max_val=<span class="syn-num">360.0</span>)
 state.rotation_deg = angle</code></pre>
           </div>
 
           <h3 id="widget-checkbox-toggle">6.4 Checkbox 与 Toggle 胶囊开关</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code><span class="syn-kw">let</span> (sync, _) = ui.checkbox(<span class="syn-str">"启用垂直同步"</span>, state.vsync)
+            <pre><code><span class="syn-kw">let</span> (sync, _) = @widgets.checkbox(ctx, <span class="syn-str">"启用垂直同步"</span>, state.vsync)
 state.vsync = sync
 
-<span class="syn-kw">let</span> (wire, _) = ui.toggle(<span class="syn-str">"线框模式"</span>, state.wireframe)
+<span class="syn-kw">let</span> (wire, _) = @widgets.toggle(ctx, <span class="syn-str">"线框模式"</span>, state.wireframe)
 state.wireframe = wire</code></pre>
           </div>
 
@@ -464,15 +459,19 @@ state.wireframe = wire</code></pre>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
             <pre><code><span class="syn-kw">let</span> options = [<span class="syn-str">"WebGL 2.0"</span>, <span class="syn-str">"Canvas 2D"</span>, <span class="syn-str">"WebGPU"</span>]
-<span class="syn-kw">let</span> (selected_idx, _) = ui.combo_box(<span class="syn-str">"图形后端"</span>, options, state.backend_idx)
+<span class="syn-kw">let</span> (selected_idx, _) = @widgets.combo_box(ctx, <span class="syn-str">"backend"</span>, <span class="syn-str">"图形后端"</span>, state.backend_idx, options)
 state.backend_idx = selected_idx</code></pre>
           </div>
 
           <h3 id="widget-color-button">6.6 ColorButton 颜色选择器</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code><span class="syn-kw">let</span> (col, resp) = ui.color_button(<span class="syn-str">"画笔颜色"</span>, state.pen_color)
-state.pen_color = col</code></pre>
+            <pre><code><span class="syn-cmt">// 色块按钮：点击时返回 picked</span>
+<span class="syn-kw">let</span> (picked, resp) = @widgets.color_button(ctx, <span class="syn-str">"pen_color"</span>, state.pen_color)
+
+<span class="syn-cmt">// 带十六进制读数与弹出拾色器的按钮</span>
+<span class="syn-kw">let</span> (pen, _) = @composite.color_picker_button(ctx, <span class="syn-str">"画笔颜色"</span>, state.pen_color)
+state.pen_color = pen</code></pre>
           </div>
         </section>
 
@@ -484,33 +483,36 @@ state.pen_color = col</code></pre>
           <p>取值范围为 <code>0.0</code> 至 <code>1.0</code>，自动绘制平滑填充滑道：</p>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code>ui.progress_bar(state.download_percent)</code></pre>
+            <pre><code>@widgets.progress_bar(ctx, state.download_percent)</code></pre>
           </div>
 
           <h3 id="widget-spinner">7.2 Spinner 加载动画</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code>ui.spinner(size=<span class="syn-num">18.0</span>)</code></pre>
+            <pre><code>@widgets.spinner(ctx, size=<span class="syn-num">18.0</span>)</code></pre>
           </div>
 
-          <h3 id="widget-badge-avatar">7.3 Badge 徽标与 Avatar 头像</h3>
+          <h3 id="widget-badge-avatar">7.3 Badge 徽标与 Tag 可关闭标签</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code>ui.badge(<span class="syn-str">"PRO"</span>, @core.<span class="syn-type">Color</span>::rgb(<span class="syn-num">37</span>, <span class="syn-num">99</span>, <span class="syn-num">235</span>))
-ui.avatar(<span class="syn-str">"LX"</span>, size=<span class="syn-num">28.0</span>)</code></pre>
+            <pre><code>@widgets.badge(ctx, <span class="syn-str">"PRO"</span>, kind=@widgets.<span class="syn-type">BadgeKind</span>::info(), dot=<span class="syn-kw">true</span>)
+<span class="syn-kw">let</span> (closed, resp) = @widgets.tag(ctx, <span class="syn-str">"build_tag"</span>, <span class="syn-str">"v0.3.0"</span>, closable=<span class="syn-kw">true</span>)</code></pre>
           </div>
 
           <h3 id="widget-tooltip">7.4 Tooltip 悬浮信息提示</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code><span class="syn-kw">let</span> resp = ui.button(<span class="syn-str">"危险操作"</span>)
-resp.on_hover_text(ui, <span class="syn-str">"此操作将立即清空当前缓存"</span>)</code></pre>
+            <pre><code><span class="syn-kw">let</span> resp = @widgets.button(ctx, <span class="syn-str">"危险操作"</span>)
+<span class="syn-kw">if</span> resp.hovered {
+  @widgets.tooltip(ctx, <span class="syn-str">"此操作将立即清空当前缓存"</span>)
+}</code></pre>
           </div>
 
           <h3 id="widget-toast">7.5 Toast 瞬态全局消息通知</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code>ui.toast(<span class="syn-str">"文件已成功导出至本地"</span>, duration_sec=<span class="syn-num">3.0</span>)</code></pre>
+            <pre><code><span class="syn-kw">let</span> toast = @widgets.<span class="syn-type">Toast</span>::info(<span class="syn-str">"文件已成功导出至本地"</span>, duration=<span class="syn-num">3.0</span>)
+<span class="syn-kw">let</span> res = @widgets.toast_stack(ctx, [toast], viewport_size=@math.<span class="syn-type">Vec2</span>::new(<span class="syn-num">800.0</span>, <span class="syn-num">600.0</span>))</code></pre>
           </div>
         </section>
 
@@ -524,17 +526,19 @@ resp.on_hover_text(ui, <span class="syn-str">"此操作将立即清空当前缓�
           </p>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code>ui.window(<span class="syn-str">"场景检视器"</span>, @core.<span class="syn-type">Vec2</span>::new(<span class="syn-num">80.0</span>, <span class="syn-num">120.0</span>), @core.<span class="syn-type">Vec2</span>::new(<span class="syn-num">320.0</span>, <span class="syn-num">400.0</span>), <span class="syn-kw">fn</span>(win) {
-  win.label(<span class="syn-str">"窗口内部组件..."</span>)
-})</code></pre>
+            <pre><code>@widgets.window(ctx, <span class="syn-str">"场景检视器"</span>, @math.<span class="syn-type">Vec2</span>::new(<span class="syn-num">80.0</span>, <span class="syn-num">120.0</span>), @math.<span class="syn-type">Vec2</span>::new(<span class="syn-num">320.0</span>, <span class="syn-num">400.0</span>), <span class="syn-kw">fn</span>(win) {
+  <span class="syn-kw">let</span> _ = win.label(<span class="syn-str">"窗口内部组件..."</span>)
+}, id_salt=<span class="syn-str">"inspector"</span>)</code></pre>
           </div>
 
           <h3 id="widget-collapsing">8.2 CollapsingHeader 手风琴折叠栏</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code>ui.collapsing_header(<span class="syn-str">"高级渲染设置"</span>, default_open=<span class="syn-kw">false</span>, <span class="syn-kw">fn</span>(panel) {
-  panel.checkbox(<span class="syn-str">"环境光遮蔽 (SSAO)"</span>, state.ssao)
-  panel.checkbox(<span class="syn-str">"泛光辉光 (Bloom)"</span>, state.bloom)
+            <pre><code>@widgets.collapsing_header(ctx, <span class="syn-str">"render_settings"</span>, <span class="syn-str">"高级渲染设置"</span>, <span class="syn-kw">false</span>, <span class="syn-kw">fn</span>(panel) {
+  <span class="syn-kw">let</span> (ssao, _) = @widgets.checkbox(panel, <span class="syn-str">"环境光遮蔽 (SSAO)"</span>, state.ssao)
+  state.ssao = ssao
+  <span class="syn-kw">let</span> (bloom, _) = @widgets.checkbox(panel, <span class="syn-str">"泛光辉光 (Bloom)"</span>, state.bloom)
+  state.bloom = bloom
 })</code></pre>
           </div>
 
@@ -542,29 +546,33 @@ resp.on_hover_text(ui, <span class="syn-str">"此操作将立即清空当前缓�
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
             <pre><code><span class="syn-kw">let</span> tabs = [<span class="syn-str">"基本信息"</span>, <span class="syn-str">"材质贴图"</span>, <span class="syn-str">"动画骨骼"</span>]
-<span class="syn-kw">let</span> (active_tab, _) = ui.tab_bar(tabs, state.current_tab)
+<span class="syn-kw">let</span> (active_tab, _) = @widgets.tab_bar(ctx, <span class="syn-str">"inspector_tabs"</span>, tabs, state.current_tab)
 state.current_tab = active_tab</code></pre>
           </div>
 
           <h3 id="widget-tree-view">8.4 TreeView 层级树形视图</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code>ui.tree_node(<span class="syn-str">"Root Scene"</span>, <span class="syn-kw">fn</span>(node) {
-  node.leaf(<span class="syn-str">"Main Camera"</span>)
-  node.leaf(<span class="syn-str">"Directional Light"</span>)
-  node.tree_node(<span class="syn-str">"Characters"</span>, <span class="syn-kw">fn</span>(sub) {
-    sub.leaf(<span class="syn-str">"Player_Mesh"</span>)
-  })
-})</code></pre>
+            <pre><code><span class="syn-kw">let</span> nodes = [
+  @composite.<span class="syn-type">TreeNode</span>::branch(<span class="syn-str">"root"</span>, <span class="syn-str">"Root Scene"</span>, [
+    @composite.<span class="syn-type">TreeNode</span>::leaf(<span class="syn-str">"camera"</span>, <span class="syn-str">"Main Camera"</span>),
+    @composite.<span class="syn-type">TreeNode</span>::leaf(<span class="syn-str">"light"</span>, <span class="syn-str">"Directional Light"</span>),
+    @composite.<span class="syn-type">TreeNode</span>::new(<span class="syn-str">"chars"</span>, <span class="syn-str">"Characters"</span>, [
+      @composite.<span class="syn-type">TreeNode</span>::leaf(<span class="syn-str">"mesh"</span>, <span class="syn-str">"Player_Mesh"</span>),
+    ]),
+  ]),
+]
+<span class="syn-kw">let</span> res = @composite.tree_view(ctx, <span class="syn-str">"scene_tree"</span>, nodes)
+<span class="syn-kw">if</span> res.selected_id is Some(id) { ... }</code></pre>
           </div>
 
           <h3 id="widget-scroll-area">8.5 ScrollArea 滚动视口</h3>
           <p>针对超长列表进行局部滚动显示，提供平滑滚轮与拖拽滚动条：</p>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code>ui.scroll_area(height=<span class="syn-num">200.0</span>, <span class="syn-kw">fn</span>(scroll) {
+            <pre><code>@widgets.scroll_area(ctx, <span class="syn-str">"data_list"</span>, @math.<span class="syn-type">Vec2</span>::new(<span class="syn-num">300.0</span>, <span class="syn-num">200.0</span>), <span class="syn-kw">fn</span>(scroll) {
   <span class="syn-kw">for</span> i = <span class="syn-num">0</span>; i < <span class="syn-num">100</span>; i = i + <span class="syn-num">1</span> {
-    scroll.label(<span class="syn-str">"数据项 #"</span> + i.to_string())
+    <span class="syn-kw">let</span> _ = scroll.label(<span class="syn-str">"数据项 #"</span> + i.to_string())
   }
 })</code></pre>
           </div>
@@ -580,16 +588,16 @@ state.current_tab = active_tab</code></pre>
           </p>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code>ui.menu_bar(<span class="syn-kw">fn</span>(bar) {
-  bar.menu(<span class="syn-str">"文件"</span>, <span class="syn-kw">fn</span>(menu) {
-    <span class="syn-kw">if</span> menu.menu_item(<span class="syn-str">"新建工程"</span>, shortcut=<span class="syn-str">"Ctrl+N"</span>).clicked() { ... }
-    <span class="syn-kw">if</span> menu.menu_item(<span class="syn-str">"打开文件..."</span>, shortcut=<span class="syn-str">"Ctrl+O"</span>).clicked() { ... }
-    menu.menu_separator()
-    <span class="syn-kw">if</span> menu.menu_item(<span class="syn-str">"退出"</span>).clicked() { ... }
+            <pre><code>@composite.menu_bar(ctx, <span class="syn-kw">fn</span>(top) {
+  @composite.menu(top, <span class="syn-str">"文件"</span>, <span class="syn-kw">fn</span>(menu) {
+    <span class="syn-kw">if</span> @composite.menu_item(menu, <span class="syn-str">"新建工程"</span>, shortcut=<span class="syn-str">"Ctrl+N"</span>).clicked { ... }
+    <span class="syn-kw">if</span> @composite.menu_item(menu, <span class="syn-str">"打开文件..."</span>, shortcut=<span class="syn-str">"Ctrl+O"</span>).clicked { ... }
+    @composite.menu_separator(menu)
+    <span class="syn-kw">if</span> @composite.menu_item(menu, <span class="syn-str">"退出"</span>).clicked { ... }
   })
-  bar.menu(<span class="syn-str">"编辑"</span>, <span class="syn-kw">fn</span>(menu) {
-    <span class="syn-kw">if</span> menu.menu_item(<span class="syn-str">"撤销"</span>, shortcut=<span class="syn-str">"Ctrl+Z"</span>).clicked() { ... }
-    <span class="syn-kw">if</span> menu.menu_item(<span class="syn-str">"重做"</span>, shortcut=<span class="syn-str">"Ctrl+Y"</span>).clicked() { ... }
+  @composite.menu(top, <span class="syn-str">"编辑"</span>, <span class="syn-kw">fn</span>(menu) {
+    <span class="syn-kw">if</span> @composite.menu_item(menu, <span class="syn-str">"撤销"</span>, shortcut=<span class="syn-str">"Ctrl+Z"</span>).clicked { ... }
+    <span class="syn-kw">if</span> @composite.menu_item(menu, <span class="syn-str">"重做"</span>, shortcut=<span class="syn-str">"Ctrl+Y"</span>).clicked { ... }
   })
 })</code></pre>
           </div>
@@ -597,11 +605,20 @@ state.current_tab = active_tab</code></pre>
           <h3 id="widget-context-menu">9.2 ContextMenu 鼠标右键上下文菜单</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code>ui.context_menu(target_rect, <span class="syn-kw">fn</span>(menu) {
-  <span class="syn-kw">if</span> menu.item(<span class="syn-str">"复制"</span>).clicked() { ... }
-  <span class="syn-kw">if</span> menu.item(<span class="syn-str">"粘贴"</span>).clicked() { ... }
-  <span class="syn-kw">if</span> menu.item(<span class="syn-str">"删除"</span>).clicked() { ... }
-})</code></pre>
+            <pre><code><span class="syn-kw">let</span> items = [
+  @composite.<span class="syn-type">ContextMenuItem</span>::new(<span class="syn-str">"copy"</span>, <span class="syn-str">"复制"</span>, shortcut=<span class="syn-str">"Ctrl+C"</span>),
+  @composite.<span class="syn-type">ContextMenuItem</span>::new(<span class="syn-str">"paste"</span>, <span class="syn-str">"粘贴"</span>, shortcut=<span class="syn-str">"Ctrl+V"</span>),
+  @composite.<span class="syn-type">ContextMenuItem</span>::separator(),
+  @composite.<span class="syn-type">ContextMenuItem</span>::new(<span class="syn-str">"delete"</span>, <span class="syn-str">"删除"</span>),
+]
+<span class="syn-kw">let</span> res = @composite.context_menu_items(
+  ctx,
+  <span class="syn-str">"scene_ctx"</span>,
+  ctx.input.mouse_secondary_pressed(),
+  ctx.input.mouse_pos(),
+  items,
+)
+<span class="syn-kw">if</span> res.selected_id is Some(action) { ... }</code></pre>
           </div>
 
           <h3 id="widget-command-palette">9.3 CommandPalette 快捷命令面板</h3>
@@ -611,11 +628,24 @@ state.current_tab = active_tab</code></pre>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
             <pre><code><span class="syn-kw">if</span> state.show_palette {
-  <span class="syn-kw">let</span> commands = [<span class="syn-str">"Format Document"</span>, <span class="syn-str">"Run Benchmark"</span>, <span class="syn-str">"Toggle Dark Mode"</span>]
-  ui.command_palette(commands, <span class="syn-kw">fn</span>(selected_cmd) {
-    state.execute_action(selected_cmd)
+  <span class="syn-kw">let</span> commands = [
+    @composite.<span class="syn-type">CommandItem</span>::new(<span class="syn-str">"format"</span>, <span class="syn-str">"Format Document"</span>),
+    @composite.<span class="syn-type">CommandItem</span>::new(<span class="syn-str">"bench"</span>, <span class="syn-str">"Run Benchmark"</span>),
+    @composite.<span class="syn-type">CommandItem</span>::new(<span class="syn-str">"dark"</span>, <span class="syn-str">"Toggle Dark Mode"</span>),
+  ]
+  <span class="syn-kw">let</span> res = @composite.command_palette(
+    ctx,
+    <span class="syn-kw">true</span>,
+    state.palette_query,
+    commands,
+    selected_index=state.palette_idx,
+  )
+  state.palette_query = res.query
+  state.palette_idx = res.selected_index
+  <span class="syn-kw">if</span> res.selected_id is Some(id) {
+    state.execute_action(id)
     state.show_palette = <span class="syn-kw">false</span>
-  })
+  }
 }</code></pre>
           </div>
         </section>
@@ -630,10 +660,8 @@ state.current_tab = active_tab</code></pre>
           </p>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
-            <pre><code><span class="syn-kw">let</span> style = ui.get_style()
-style.rounding = <span class="syn-num">6.0</span>
-style.item_spacing = @core.<span class="syn-type">Vec2</span>::new(<span class="syn-num">8.0</span>, <span class="syn-num">6.0</span>)
-style.primary_color = @core.<span class="syn-type">Color</span>::rgb(<span class="syn-num">37</span>, <span class="syn-num">99</span>, <span class="syn-num">235</span>)</code></pre>
+            <pre><code><span class="syn-kw">let</span> style = ctx.style()
+ctx.set_style(style.scaled(<span class="syn-num">1.25</span>))</code></pre>
           </div>
 
           <h3 id="retina-dpi">10.2 Retina 屏与设备物理像素对齐</h3>

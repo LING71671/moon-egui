@@ -42,7 +42,7 @@ When building interactive user interfaces within WebAssembly and HTML5 Canvas en
 
 ### Key Features
 
-- **Immediate-Mode Ergonomics**: UI is declared frame-by-frame with zero lifecycle callbacks or two-way synchronization. Handling user interactions is as simple as `if ui.button("Save").clicked { ... }`.
+- **Immediate-Mode Ergonomics**: UI is declared frame-by-frame with zero lifecycle callbacks or two-way synchronization. Handling user interactions is as simple as `if @widgets.button(ctx, "Save").clicked { ... }`.
 - **Zero FFI Dependencies**: 100% pure MoonBit with a headless core decoupled from host runtimes. Installable in one command (`moon add ling71671/moon-egui`).
 - **Microsecond Frame Pipeline**: Viewport spatial culling and command batching keep per-frame kernel cost at ~0.1ms, maintaining a locked 60 FPS.
 - **Production-Ready Widgets**: Movable windows with z-ordering and viewport clamping, tab bars, keyboard-driven text inputs, click-outside-dismiss combo boxes, and tooltips.
@@ -56,7 +56,7 @@ When building interactive user interfaces within WebAssembly and HTML5 Canvas en
 moon add LING71671/moon-egui
 
 # Or pin to an exact version
-moon add LING71671/moon-egui@0.2.0
+moon add LING71671/moon-egui@0.3.0
 ```
 
 Import the layers you need in your `moon.pkg`: `src/core` is the bare immediate-mode runtime, `src/widgets` adds the standard controls, and `src/composite` the advanced components.
@@ -90,35 +90,38 @@ Experience the interactive capabilities and rendering performance of `moon-egui`
 ## Quick Example
 
 ```moonbit
-fn update_ui(ui : &mut UIContext, state : &mut AppState) {
-  // 1. Global top-level application menu bar
-  ui.menu_bar(fn() {
-    ui.menu("File", fn() {
-      if ui.menu_item("New Project") { state.new_project() }
-      if ui.menu_item("Save Config") { state.save() }
+fn update_ui(ctx : @core.UIContext, state : AppState) {
+  // 1. Global top-level application menu bar (src/composite)
+  @composite.menu_bar(ctx, fn(top) {
+    @composite.menu(top, "File", fn(menu) {
+      if @composite.menu_item(menu, "New Project").clicked { state.new_project() }
+      if @composite.menu_item(menu, "Save Config").clicked { state.save() }
     })
-    ui.menu("View", fn() {
-      if ui.menu_item("Toggle Theme") { state.toggle_theme() }
+    @composite.menu(top, "View", fn(menu) {
+      if @composite.menu_item(menu, "Toggle Theme").clicked { state.toggle_theme() }
     })
   })
 
-  // 2. Floating draggable inspector window
-  ui.window("Console & Properties", 50.0, 50.0, 300.0, 420.0, fn() {
-    ui.label("Welcome to moon-egui")
-    
-    if ui.button("Trigger Action") {
+  // 2. Floating draggable inspector window (src/widgets)
+  @widgets.window(ctx, "Console & Properties", @math.Vec2::new(50.0, 50.0), @math.Vec2::new(300.0, 420.0), fn(win) {
+    let _ = win.label("Welcome to moon-egui")
+
+    if @widgets.button(win, "Trigger Action").clicked {
       state.counter += 1
     }
-    
+
     // Blender-style DragValue adjustment
-    ui.drag_float("Gravity", &mut state.gravity, speed=0.1, min=0.0, max=20.0)
-    ui.checkbox("Enable Collision", &mut state.collision_enabled)
-    
+    let (gravity, _) = @widgets.drag_value(win, "Gravity", state.gravity, speed=0.1, min=0.0, max=20.0)
+    state.gravity = gravity
+    let (collision, _) = @widgets.checkbox(win, "Enable Collision", state.collision_enabled)
+    state.collision_enabled = collision
+
     // Collapsible telemetry panel
-    ui.collapsing_header("Runtime Monitor", fn() {
-      ui.sparkline("FPS History", state.fps_history)
-      ui.progress_bar(state.progress)
+    @widgets.collapsing_header(win, "render_monitor", "Runtime Monitor", false, fn(panel) {
+      let (_, _) = @composite.sparkline(panel, "fps", state.fps_history)
+      @widgets.progress_bar(panel, state.progress)
     })
+  }))
   })
 }
 ```
