@@ -245,7 +245,7 @@ fn draw_code_editor_showcase(ui : @core.UIContext) -> Unit {
   let (new_code, resp) = ui.code_editor(
     "gallery_code",
     gallery_state.code_buffer,
-    size=@math.Vec2::new(ui.available_width, 210.0),
+    size=@math.Vec2::new(ui.available_width(), 210.0),
     show_line_numbers=true,
   )
   gallery_state.code_buffer = new_code
@@ -917,7 +917,7 @@ fn draw_tree_view_showcase(ui : @core.UIContext) -> Unit {
     tree_data,
     selected_id=gallery_state.tree_selected,
     expanded_ids=gallery_state.tree_expanded,
-    size=@math.Vec2::new(ui.available_width, 290.0),
+    size=@math.Vec2::new(ui.available_width(), 290.0),
   )
 
   gallery_state.tree_expanded = tree_resp.expanded_ids
@@ -1103,17 +1103,19 @@ fn draw_scroll_area_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(6.0)
 
-  ui.scroll_area("gallery_scroll", @math.Vec2::new(ui.available_width, 200.0), fn(
-    sa,
-  ) {
-    for i = 1; i <= 20; i = i + 1 {
-      let text = "图元索引条目 #" +
-        i.to_string() +
-        " (Immediate-Mode Vector Render Record)"
-      let _ = sa.label(text)
-      sa.spacer(4.0)
-    }
-  })
+  ui.scroll_area(
+    "gallery_scroll",
+    @math.Vec2::new(ui.available_width(), 200.0),
+    fn(sa) {
+      for i = 1; i <= 20; i = i + 1 {
+        let text = "图元索引条目 #" +
+          i.to_string() +
+          " (Immediate-Mode Vector Render Record)"
+        let _ = sa.label(text)
+        sa.spacer(4.0)
+      }
+    },
+  )
   ui.spacer(8.0)
   let _ = ui.label(
     "支持鼠标滚轮滚动、精确局部 Scissor 剪裁与按需滚动条。",
@@ -1366,7 +1368,7 @@ fn draw_splitter_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(10.0)
 
-  let split_size = @math.Vec2::new(ui.available_width, 220.0)
+  let split_size = @math.Vec2::new(ui.available_width(), 220.0)
   let new_ratio = ui.split_horizontal(
     "gal_split_h",
     gallery_state.splitter_ratio,
@@ -1414,7 +1416,7 @@ fn draw_table_showcase(ui : @core.UIContext) -> Unit {
 
   let resp = ui.table(
     "gal_table",
-    @math.Vec2::new(ui.available_width, 220.0),
+    @math.Vec2::new(ui.available_width(), 220.0),
     gallery_state.table_columns,
     10000,
     fn(cell_ui, r, c, rect) {
@@ -1644,8 +1646,8 @@ fn draw_plot_showcase(ui : @core.UIContext) -> Unit {
     color=@color.Color::warning(),
   )
 
-  let plot_w = if ui.available_width > 200.0 {
-    ui.available_width
+  let plot_w = if ui.available_width() > 200.0 {
+    ui.available_width()
   } else {
     480.0
   }
@@ -1682,8 +1684,8 @@ fn draw_bar_chart_showcase(ui : @core.UIContext) -> Unit {
   let labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"]
   let values = [45.0, 78.0, 62.0, 95.0, 84.0, 110.0, 92.0, 130.0]
 
-  let chart_w = if ui.available_width > 200.0 {
-    ui.available_width
+  let chart_w = if ui.available_width() > 200.0 {
+    ui.available_width()
   } else {
     480.0
   }
@@ -1919,7 +1921,7 @@ fn draw_rich_text_showcase(ui : @core.UIContext) -> Unit {
     @core.TextSpan::normal("。"),
   ]
 
-  let resp = ui.rich_text("gal_rt", spans, wrap_width=ui.available_width)
+  let resp = ui.rich_text("gal_rt", spans, wrap_width=ui.available_width())
   match resp.clicked_url {
     Some(url) => {
       gallery_state.rich_text_last_url = url
