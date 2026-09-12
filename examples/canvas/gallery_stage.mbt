@@ -33,6 +33,10 @@ pub struct GalleryState {
   mut knob_res : Double
   mut knob_pan : Double
   mut knob_drive : Double
+  mut fader_vol : Double
+  mut fader_gain : Double
+  mut fader_l : Double
+  mut fader_r : Double
   mut combo_format : Int
   mut combo_color : Int
   mut color_idx : Int
@@ -92,6 +96,10 @@ let gallery_state : GalleryState = {
   knob_res: 25.0,
   knob_pan: 0.0,
   knob_drive: 6.0,
+  fader_vol: 0.75,
+  fader_gain: 0.0,
+  fader_l: 0.65,
+  fader_r: 0.65,
   combo_format: 0,
   combo_color: 1,
   color_idx: 0,
@@ -598,6 +606,110 @@ fn draw_knob_showcase(ui : @core.UIContext) -> Unit {
       gallery_state.knob_drive = 8.0
       gallery_state.status_text = "Preset applied: Bright Lead"
     }
+  })
+}
+
+///|
+fn draw_fader_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "垂直通道推子调节器 (Audio Channel Fader Rack)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(8.0)
+  ui.horizontal(fn(row) {
+    let (v, _) = row.fader(
+      "master_vol",
+      "MASTER",
+      gallery_state.fader_vol,
+      min_val=0.0,
+      max_val=1.0,
+      step=0.01,
+      default_val=0.75,
+      unit="%",
+      show_ticks=true,
+    )
+    if v != gallery_state.fader_vol {
+      gallery_state.fader_vol = v
+      gallery_state.status_text = "Master Volume: " +
+        (v * 100.0).to_int().to_string() +
+        "%"
+    }
+
+    row.spacer(14.0)
+
+    let (g, _) = row.fader(
+      "channel_gain",
+      "GAIN",
+      gallery_state.fader_gain,
+      min_val=-60.0,
+      max_val=12.0,
+      step=0.5,
+      default_val=0.0,
+      unit="dB",
+      show_ticks=true,
+    )
+    if g != gallery_state.fader_gain {
+      gallery_state.fader_gain = g
+      gallery_state.status_text = "Gain: " + g.to_string() + " dB"
+    }
+
+    row.spacer(14.0)
+
+    let (fl, _) = row.fader(
+      "ch_left",
+      "LEFT",
+      gallery_state.fader_l,
+      min_val=0.0,
+      max_val=1.0,
+      step=0.01,
+      default_val=0.65,
+      unit="%",
+      show_ticks=true,
+    )
+    if fl != gallery_state.fader_l {
+      gallery_state.fader_l = fl
+      gallery_state.status_text = "Stereo Left: " +
+        (fl * 100.0).to_int().to_string() +
+        "%"
+    }
+
+    row.spacer(8.0)
+
+    let (fr, _) = row.fader(
+      "ch_right",
+      "RIGHT",
+      gallery_state.fader_r,
+      min_val=0.0,
+      max_val=1.0,
+      step=0.01,
+      default_val=0.65,
+      unit="%",
+      show_ticks=true,
+    )
+    if fr != gallery_state.fader_r {
+      gallery_state.fader_r = fr
+      gallery_state.status_text = "Stereo Right: " +
+        (fr * 100.0).to_int().to_string() +
+        "%"
+    }
+  })
+
+  ui.spacer(14.0)
+  ui.separator()
+  ui.spacer(8.0)
+  ui.horizontal(fn(row) {
+    if row.button_sized("复位默认值", @math.Vec2::new(88.0, 26.0)).clicked {
+      gallery_state.fader_vol = 0.75
+      gallery_state.fader_gain = 0.0
+      gallery_state.fader_l = 0.65
+      gallery_state.fader_r = 0.65
+      gallery_state.status_text = "已复位推子通道参数"
+    }
+    row.spacer(12.0)
+    let _ = row.label_colored(
+      "提示: 垂直拖拽微调, 滚轮步进, Shift 精确调节, Alt+点击复位",
+      @color.Color::text_muted(),
+    )
   })
 }
 
@@ -1859,6 +1971,7 @@ fn draw_component_preview(
     "slider" => draw_slider_showcase(ui)
     "drag_value" => draw_drag_value_showcase(ui)
     "knob" => draw_knob_showcase(ui)
+    "fader" => draw_fader_showcase(ui)
     "combo_box" => draw_combo_box_showcase(ui)
     "color_button" => draw_color_button_showcase(ui)
 

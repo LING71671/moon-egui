@@ -112,6 +112,10 @@ pub struct GalleryState {
   mut knob_res : Double
   mut knob_pan : Double
   mut knob_drive : Double
+  mut fader_vol : Double
+  mut fader_gain : Double
+  mut fader_l : Double
+  mut fader_r : Double
   mut combo_format : Int
   mut combo_color : Int
   mut color_idx : Int

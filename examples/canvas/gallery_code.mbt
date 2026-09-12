@@ -70,6 +70,11 @@ pub fn get_gallery_component_info(comp_id : String) -> (String, String, String) 
         "Knob 旋钮调节器", "ui.knob(id_salt, label, value, min, max, unit~) -> (Double, Response)",
         "///| Knob 旋转音频/滤镜控制器示例\npub fn draw_knob(ui : @core.UIContext, state : AppState) -> Unit {\n  let (cutoff, res) = ui.knob(\"cutoff_knob\", \"低通截止\", state.cutoff, 20.0, 20000.0, unit=\"Hz\")\n  if res.changed {\n    state.cutoff = cutoff\n  }\n}",
       )
+    "fader" =>
+      (
+        "Fader 垂直推子调节器", "ui.fader(id_salt, label, value, min_val~, max_val~, step~, default_val~, unit~, show_ticks~, size~) -> (Double, Response)",
+        "///| Fader 垂直推子示例\npub fn draw_faders(ui : @core.UIContext, state : AppState) -> Unit {\n  // 通道主音量推子\n  let (master, res) = ui.fader(\n    \"master\",\n    \"MASTER\",\n    state.volume,\n    min_val=0.0,\n    max_val=1.0,\n    step=0.01,\n    default_val=0.75,\n    unit=\"%\",\n    show_ticks=true,\n  )\n  if res.changed() {\n    state.volume = master\n  }\n}",
+      )
     "combo_box" =>
       (
         "ComboBox 下拉选择框", "ui.combo_box(id_salt, selected_index, options) -> (Int, Response)",

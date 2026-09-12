@@ -288,6 +288,38 @@ pub fn draw_synth_rack(ui : @core.UIContext, state : SynthState) -> Unit {
 }`
     }
   },
+  fader: {
+    titleKey: 'comp.fader.title',
+    signature: "ui.fader(id_salt, label, value, min_val~, max_val~, step~, default_val~, unit~, show_ticks~, size~) -> (Double, Response)",
+    code: {
+      zh: `///|
+pub fn draw_faders(ui : @core.UIContext, state : AudioState) -> Unit {
+  ui.horizontal(fn(row) {
+    let (v, _) = row.fader("master_vol", "MASTER", state.master_vol, min_val=0.0, max_val=1.0, step=0.01, default_val=0.75, unit="%")
+    let (g, _) = row.fader("gain", "GAIN", state.gain, min_val=-60.0, max_val=12.0, step=0.5, default_val=0.0, unit="dB")
+    let (l, _) = row.fader("left", "LEFT", state.vol_left, min_val=0.0, max_val=1.0, step=0.01, default_val=0.65, unit="%")
+    let (r, _) = row.fader("right", "RIGHT", state.vol_right, min_val=0.0, max_val=1.0, step=0.01, default_val=0.65, unit="%")
+    state.master_vol = v
+    state.gain = g
+    state.vol_left = l
+    state.vol_right = r
+  })
+}`,
+      en: `///|
+pub fn draw_faders(ui : @core.UIContext, state : AudioState) -> Unit {
+  ui.horizontal(fn(row) {
+    let (v, _) = row.fader("master_vol", "MASTER", state.master_vol, min_val=0.0, max_val=1.0, step=0.01, default_val=0.75, unit="%")
+    let (g, _) = row.fader("gain", "GAIN", state.gain, min_val=-60.0, max_val=12.0, step=0.5, default_val=0.0, unit="dB")
+    let (l, _) = row.fader("left", "LEFT", state.vol_left, min_val=0.0, max_val=1.0, step=0.01, default_val=0.65, unit="%")
+    let (r, _) = row.fader("right", "RIGHT", state.vol_right, min_val=0.0, max_val=1.0, step=0.01, default_val=0.65, unit="%")
+    state.master_vol = v
+    state.gain = g
+    state.vol_left = l
+    state.vol_right = r
+  })
+}`
+    }
+  },
   combo_box: {
     titleKey: 'comp.combo_box.title',
     signature: "ui.combo_box(id, label, selected_idx, options) -> (Int, Response)",
