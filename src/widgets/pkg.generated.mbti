@@ -1,0 +1,384 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "LING71671/moon-egui/src/widgets"
+
+import {
+  "LING71671/moon-egui/src/color",
+  "LING71671/moon-egui/src/core",
+  "LING71671/moon-egui/src/math",
+  "moonbitlang/core/debug",
+  "moonbitlang/core/ref",
+}
+
+// Values
+pub fn badge(@core.UIContext, String, kind? : BadgeKind, dot? : Bool, pill? : Bool) -> @core.Response
+
+pub fn breadcrumb(@core.UIContext, String, Array[String], separator? : String, max_visible? : Int) -> (Int?, @core.Response)
+
+pub fn button(@core.UIContext, String, shortcut? : String, primary? : Bool, size? : @math.Vec2) -> @core.Response
+
+pub fn button_primary(@core.UIContext, String) -> @core.Response
+
+pub fn button_primary_sized(@core.UIContext, String, @math.Vec2) -> @core.Response
+
+pub fn button_sized(@core.UIContext, String, @math.Vec2) -> @core.Response
+
+pub fn button_with_shortcut(@core.UIContext, String, String) -> @core.Response
+
+pub fn checkbox(@core.UIContext, String, Bool) -> (Bool, @core.Response)
+
+pub fn collapsing_header(@core.UIContext, String, String, Bool, (@core.UIContext) -> Unit) -> @core.Response
+
+pub fn color_button(@core.UIContext, String, @color.Color) -> (Bool, @core.Response)
+
+pub fn combo_box(@core.UIContext, String, String, Int, Array[String]) -> (Int, @core.Response)
+
+pub fn dialog(@core.UIContext, String, String, String, kind? : DialogKind, confirm_label? : String, cancel_label? : String, width? : Double, viewport_size? : @math.Vec2) -> DialogResult
+
+pub fn drag_value(@core.UIContext, String, Double, speed? : Double, min? : Double, max? : Double) -> (Double, @core.Response)
+
+pub fn progress_bar(@core.UIContext, Double, text? : String) -> @core.Response
+
+pub fn radio(@core.UIContext, String, Bool) -> (Bool, @core.Response)
+
+pub fn scroll_area(@core.UIContext, String, @math.Vec2, (@core.UIContext) -> Unit) -> Unit
+
+pub fn segmented_control(@core.UIContext, String, Array[String], Int, height? : Double, width? : Double) -> (Int, @core.Response)
+
+pub fn slider(@core.UIContext, String, Double, Double, Double, step? : Double) -> (Double, @core.Response)
+
+pub fn slider_int(@core.UIContext, String, Int, Int, Int, step? : Int) -> (Int, @core.Response)
+
+pub fn spinner(@core.UIContext, size? : Double, color? : @color.Color, stroke_width? : Double) -> @core.Response
+
+pub fn spinner_with_label(@core.UIContext, String, size? : Double, color? : @color.Color, stroke_width? : Double) -> @core.Response
+
+pub fn split_horizontal(@core.UIContext, String, Double, @math.Vec2, (@core.UIContext, @math.Rect) -> Unit, (@core.UIContext, @math.Rect) -> Unit, min_ratio? : Double, max_ratio? : Double, min_px? : Double) -> Double
+
+pub fn split_vertical(@core.UIContext, String, Double, @math.Vec2, (@core.UIContext, @math.Rect) -> Unit, (@core.UIContext, @math.Rect) -> Unit, min_ratio? : Double, max_ratio? : Double, min_px? : Double) -> Double
+
+pub fn tab_bar(@core.UIContext, String, Array[String], Int) -> (Int, @core.Response)
+
+pub fn tag(@core.UIContext, String, String, kind? : BadgeKind, closable? : Bool) -> (Bool, @core.Response)
+
+pub fn text_edit(@core.UIContext, String, @ref.Ref[String], placeholder? : String) -> @core.Response
+
+pub fn text_edit_sized(@core.UIContext, String, String, String, @math.Vec2) -> (String, @core.Response)
+
+pub fn text_edit_val(@core.UIContext, String, String, placeholder? : String) -> (String, @core.Response)
+
+pub fn toast_stack(@core.UIContext, Array[Toast], anchor? : ToastAnchor, viewport_size? : @math.Vec2) -> ToastResponse
+
+pub fn toggle(@core.UIContext, String, Bool) -> (Bool, @core.Response)
+
+pub fn tooltip(@core.UIContext, String) -> Unit
+
+pub fn window(@core.UIContext, String, @math.Vec2, @math.Vec2, (@core.UIContext) -> Unit, id_salt? : String, constrain_to? : @math.Rect) -> @core.Response
+
+// Errors
+
+// Types and methods
+pub struct Badge {
+  text : String
+  kind : BadgeKind
+  dot : Bool
+  pill : Bool
+} derive(Eq, @debug.Debug)
+pub fn Badge::dot(Self, Bool) -> Self
+pub fn Badge::kind(Self, BadgeKind) -> Self
+pub fn Badge::new(String) -> Self
+pub fn Badge::pill(Self, Bool) -> Self
+pub impl @core.Widget for Badge
+
+pub(all) enum BadgeKind {
+  Default
+  Success
+  Warning
+  Danger
+  Info
+} derive(Eq, @debug.Debug)
+pub fn BadgeKind::danger() -> Self
+pub fn BadgeKind::default() -> Self
+pub fn BadgeKind::info() -> Self
+pub fn BadgeKind::success() -> Self
+pub fn BadgeKind::warning() -> Self
+
+pub struct Breadcrumb {
+  id_salt : String
+  items : Array[String]
+  separator : String
+  max_visible : Int
+} derive(Eq, @debug.Debug)
+pub fn Breadcrumb::max_visible(Self, Int) -> Self
+pub fn Breadcrumb::new(String, Array[String]) -> Self
+pub fn Breadcrumb::separator(Self, String) -> Self
+pub fn Breadcrumb::show(Self, @core.UIContext) -> (Int?, @core.Response)
+
+pub struct Button {
+  text : String
+  shortcut : String
+  primary : Bool
+  size : @math.Vec2
+} derive(Eq, @debug.Debug)
+pub fn Button::new(String) -> Self
+pub fn Button::primary(Self, Bool) -> Self
+pub fn Button::shortcut(Self, String) -> Self
+pub fn Button::size(Self, @math.Vec2) -> Self
+pub impl @core.Widget for Button
+
+pub struct Checkbox {
+  text : String
+  checked : Bool
+} derive(Eq, @debug.Debug)
+pub fn Checkbox::from_ref(String, @ref.Ref[Bool]) -> CheckboxRef
+pub fn Checkbox::new(String, Bool) -> Self
+pub fn Checkbox::show(Self, @core.UIContext) -> (Bool, @core.Response)
+
+pub struct CheckboxRef {
+  text : String
+  target : @ref.Ref[Bool]
+}
+pub impl @core.Widget for CheckboxRef
+
+pub struct CollapsingHeader {
+  id_salt : String
+  title : String
+  default_open : Bool
+} derive(Eq, @debug.Debug)
+pub fn CollapsingHeader::default_open(Self, Bool) -> Self
+pub fn CollapsingHeader::new(String, String) -> Self
+pub fn CollapsingHeader::show(Self, @core.UIContext, (@core.UIContext) -> Unit) -> @core.Response
+
+pub struct ComboBox {
+  id_salt : String
+  label : String
+  selected_index : Int
+  options : Array[String]
+} derive(Eq, @debug.Debug)
+pub fn ComboBox::label(Self, String) -> Self
+pub fn ComboBox::new(String, Int, Array[String]) -> Self
+pub fn ComboBox::show(Self, @core.UIContext) -> (Int, @core.Response)
+
+pub struct Dialog {
+  id_salt : String
+  title : String
+  message : String
+  kind : DialogKind
+  confirm_label : String
+  cancel_label : String
+  width : Double
+} derive(Eq, @debug.Debug)
+pub fn Dialog::cancel_label(Self, String) -> Self
+pub fn Dialog::confirm_label(Self, String) -> Self
+pub fn Dialog::kind(Self, DialogKind) -> Self
+pub fn Dialog::new(String, String, String) -> Self
+pub fn Dialog::show(Self, @core.UIContext) -> DialogResult
+pub fn Dialog::width(Self, Double) -> Self
+
+pub(all) enum DialogKind {
+  Info
+  Warning
+  Danger
+  Confirm
+} derive(Eq, @debug.Debug)
+pub fn DialogKind::confirm() -> Self
+pub fn DialogKind::danger() -> Self
+pub fn DialogKind::info() -> Self
+pub fn DialogKind::warning() -> Self
+
+pub(all) enum DialogResult {
+  Confirmed
+  Cancelled
+  Open
+} derive(Eq, @debug.Debug)
+
+pub struct ProgressBar {
+  fraction : Double
+  text : String
+} derive(Eq, @debug.Debug)
+pub fn ProgressBar::new(Double) -> Self
+pub fn ProgressBar::text(Self, String) -> Self
+pub impl @core.Widget for ProgressBar
+
+pub struct Radio {
+  label : String
+  selected : Bool
+} derive(Eq, @debug.Debug)
+pub fn Radio::new(String, Bool) -> Self
+pub fn Radio::show(Self, @core.UIContext) -> (Bool, @core.Response)
+
+pub struct ScrollArea {
+  id_salt : String
+  size : @math.Vec2
+} derive(Eq, @debug.Debug)
+pub fn ScrollArea::new(String, @math.Vec2) -> Self
+pub fn ScrollArea::show(Self, @core.UIContext, (@core.UIContext) -> Unit) -> Unit
+
+pub struct SegmentedControl {
+  id_salt : String
+  options : Array[String]
+  selected_index : Int
+  height : Double
+  width : Double
+} derive(Eq, @debug.Debug)
+pub fn SegmentedControl::height(Self, Double) -> Self
+pub fn SegmentedControl::new(String, Array[String], Int) -> Self
+pub fn SegmentedControl::show(Self, @core.UIContext) -> (Int, @core.Response)
+pub fn SegmentedControl::width(Self, Double) -> Self
+
+pub struct Slider {
+  label : String
+  value : Double
+  min : Double
+  max : Double
+  step : Double?
+} derive(Eq, @debug.Debug)
+pub fn Slider::from_ref(String, @ref.Ref[Double], Double, Double) -> SliderRef
+pub fn Slider::new(String, Double, Double, Double) -> Self
+pub fn Slider::show(Self, @core.UIContext) -> (Double, @core.Response)
+pub fn Slider::step(Self, Double) -> Self
+
+pub struct SliderRef {
+  label : String
+  target : @ref.Ref[Double]
+  min : Double
+  max : Double
+  step : Double?
+}
+pub fn SliderRef::step(Self, Double) -> Self
+pub impl @core.Widget for SliderRef
+
+pub struct Splitter {
+  id_salt : String
+  split_ratio : Double
+  size : @math.Vec2
+  min_ratio : Double
+  max_ratio : Double
+  min_px : Double
+  vertical : Bool
+} derive(Eq, @debug.Debug)
+pub fn Splitter::horizontal(String, Double, @math.Vec2) -> Self
+pub fn Splitter::max_ratio(Self, Double) -> Self
+pub fn Splitter::min_px(Self, Double) -> Self
+pub fn Splitter::min_ratio(Self, Double) -> Self
+pub fn Splitter::show(Self, @core.UIContext, (@core.UIContext, @math.Rect) -> Unit, (@core.UIContext, @math.Rect) -> Unit) -> Double
+pub fn Splitter::vertical(String, Double, @math.Vec2) -> Self
+
+pub struct TabBar {
+  id_str : String
+  tabs : Array[String]
+  selected_idx : Int
+} derive(Eq, @debug.Debug)
+pub fn TabBar::new(String, Array[String], Int) -> Self
+pub fn TabBar::show(Self, @core.UIContext) -> (Int, @core.Response)
+
+pub struct TextEdit {
+  id_salt : String
+  text : String
+  placeholder : String
+  size : @math.Vec2
+} derive(Eq, @debug.Debug)
+pub fn TextEdit::from_ref(String, @ref.Ref[String]) -> TextEditRef
+pub fn TextEdit::new(String, String) -> Self
+pub fn TextEdit::placeholder(Self, String) -> Self
+pub fn TextEdit::size(Self, @math.Vec2) -> Self
+
+pub struct TextEditRef {
+  id_salt : String
+  target : @ref.Ref[String]
+  placeholder : String
+  size : @math.Vec2
+}
+pub fn TextEditRef::placeholder(Self, String) -> Self
+pub fn TextEditRef::size(Self, @math.Vec2) -> Self
+pub impl @core.Widget for TextEditRef
+
+pub struct Toast {
+  id : String
+  title : String
+  message : String
+  kind : ToastKind
+  mut elapsed : Double
+  duration : Double
+} derive(Eq, @debug.Debug)
+pub fn Toast::danger(String, message? : String, duration? : Double) -> Self
+pub fn Toast::info(String, message? : String, duration? : Double) -> Self
+pub fn Toast::new(String, String, message? : String, kind? : ToastKind, duration? : Double) -> Self
+pub fn Toast::success(String, message? : String, duration? : Double) -> Self
+pub fn Toast::warning(String, message? : String, duration? : Double) -> Self
+
+pub(all) enum ToastAnchor {
+  TopRight
+  BottomRight
+  BottomCenter
+} derive(Eq, @debug.Debug)
+
+pub(all) enum ToastKind {
+  Info
+  Success
+  Warning
+  Danger
+} derive(Eq, @debug.Debug)
+
+pub struct ToastResponse {
+  active_toasts : Array[Toast]
+  dismissed_id : String?
+} derive(Eq, @debug.Debug)
+
+pub struct Toggle {
+  text : String
+  checked : Bool
+} derive(Eq, @debug.Debug)
+pub fn Toggle::from_ref(String, @ref.Ref[Bool]) -> ToggleRef
+pub fn Toggle::new(String, Bool) -> Self
+pub fn Toggle::show(Self, @core.UIContext) -> (Bool, @core.Response)
+
+pub struct ToggleRef {
+  text : String
+  target : @ref.Ref[Bool]
+}
+pub impl @core.Widget for ToggleRef
+
+pub struct Tooltip {
+  text : String
+} derive(Eq, @debug.Debug)
+pub fn Tooltip::new(String) -> Self
+pub fn Tooltip::show(Self, @core.UIContext) -> Unit
+
+pub struct Window {
+  title : String
+  pos : @math.Vec2
+  size : @math.Vec2
+  id_salt : String?
+  constrain_to : @math.Rect?
+} derive(Eq, @debug.Debug)
+pub fn Window::constrain_to(Self, @math.Rect) -> Self
+pub fn Window::id_salt(Self, String) -> Self
+pub fn Window::new(String, @math.Vec2, @math.Vec2) -> Self
+pub fn Window::show(Self, @core.UIContext, (@core.UIContext) -> Unit) -> @core.Response
+
+// Type aliases
+pub using @core {type Id}
+
+pub using @core {type IdStack}
+
+pub using @core {type InputState}
+
+pub using @core {type Key}
+
+pub using @core {type Memory}
+
+pub using @core {type Modifiers}
+
+pub using @core {type Painter}
+
+pub using @core {type RawInput}
+
+pub using @core {type Response}
+
+pub using @core {type Theme}
+
+pub using @core {type UIContext}
+
+pub using @core {type WidgetStyle}
+
+// Traits

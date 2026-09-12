@@ -518,7 +518,7 @@ pub fn UIContext::raise_window(self : UIContext, id : Id) -> Unit {
 }
 
 ///|
-fn UIContext::window_batch(self : UIContext, id : Id) -> @draw.DrawList {
+pub fn UIContext::window_batch(self : UIContext, id : Id) -> @draw.DrawList {
   self.windows.batch(id)
 }
 
