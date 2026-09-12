@@ -120,7 +120,7 @@ pub fn breadcrumb(
     let item_w = item_sz.x + pad_x
     let item_rect = @math.Rect::new(current_x, rect.y, item_w, h)
 
-    let is_hovered = item_rect.contains(ctx.input.mouse_pos)
+    let is_hovered = ctx.is_hovered(item_rect)
     let painter = ctx.painter()
 
     if !is_last && orig_idx >= 0 {

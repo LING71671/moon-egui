@@ -161,3 +161,24 @@ test "toast: close button advertises the pointer cursor" {
   assert_eq(ctx.cursor_icon(), "pointer")
   let _ = ctx.end_frame()
 }
+
+///|
+test "toast: close button stays clickable once the hover blocker is live" {
+  let ctx = @core.UIContext::new()
+
+  // Frame 1: first render registers the toast card as a hover blocker for the
+  // next frame.
+  ctx.begin_frame(@core.RawInput::new())
+  let t = Toast::new("linger", "常驻提示", duration=60.0)
+  let r1 = toast_stack(ctx, [t])
+  let _ = ctx.end_frame()
+  assert_eq(r1.active_toasts.length(), 1)
+
+  // Frame 2: with the blocker live, pressing the cross must still dismiss.
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(760.0, 555.0), true),
+  )
+  let r2 = toast_stack(ctx, r1.active_toasts)
+  let _ = ctx.end_frame()
+  assert_eq(r2.dismissed_id, Some("linger"))
+}

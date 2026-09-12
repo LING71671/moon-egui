@@ -189,7 +189,8 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
   let step = self.step
   let default_val = self.default_val
   let unit = self.unit
-  let radius = self.radius
+  let scale = ctx.style.scale
+  let radius = self.radius * scale
   let bipolar = self.bipolar
   let label = self.label
   let value = self.value
@@ -204,10 +205,10 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
   }
 
   let diameter = radius * 2.0
-  let label_h = if label.is_empty() { 0.0 } else { 15.0 }
-  let val_h = 16.0
-  let total_w = diameter + 16.0
-  let total_h = diameter + label_h + val_h + 8.0
+  let label_h = if label.is_empty() { 0.0 } else { 15.0 * scale }
+  let val_h = 16.0 * scale
+  let total_w = diameter + 16.0 * scale
+  let total_h = diameter + label_h + val_h + 8.0 * scale
 
   let id = ctx.id_stack.derive_id("knob::" + self.id_salt)
   let (_, rect, response) = ctx.allocate_space(
@@ -285,9 +286,9 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
 
   // 5. Visual Rendering
   let center_x = rect.x + total_w * 0.5
-  let center_y = rect.y + label_h + 4.0 + radius
+  let center_y = rect.y + label_h + 4.0 * scale + radius
   let center = @math.Vec2::new(center_x, center_y)
-  let dial_radius = radius - 3.5
+  let dial_radius = radius - 3.5 * scale
 
   // 270 degree sweep: from 135 deg (0.75 pi) to 405 deg (2.25 pi)
   let start_angle = 0.75 * @math.pi
@@ -304,7 +305,7 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
     start_angle,
     end_angle,
     @color.Color::border_muted(),
-    3.5,
+    3.5 * scale,
     20,
   )
 
@@ -322,7 +323,7 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
       mid_angle,
       curr_angle,
       @color.Color::accent_primary(),
-      3.5,
+      3.5 * scale,
       segs,
     )
   } else {
@@ -335,14 +336,14 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
       start_angle,
       curr_angle,
       @color.Color::accent_primary(),
-      3.5,
+      3.5 * scale,
       segs,
     )
   }
 
   // C. Dial Cap (White Porcelain disc + border + shadow)
   p.add_circle(
-    center.add(@math.Vec2::new(0.0, 1.5)),
+    center.add(@math.Vec2::new(0.0, 1.5 * scale)),
     dial_radius,
     @color.Color::shadow(),
   )
@@ -359,7 +360,7 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
   } else {
     @color.Color::border_default()
   }
-  p.add_circle_stroke(center, dial_radius, border_col, 1.0)
+  p.add_circle_stroke(center, dial_radius, border_col, 1.0 * scale)
 
   // D. Laser-engraved pointer tick
   let pointer_angle = start_angle + norm * total_sweep
@@ -374,9 +375,9 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
   } else {
     @color.Color::text_secondary()
   }
-  p.add_line(tick_start, tick_end, tick_col, 2.0)
+  p.add_line(tick_start, tick_end, tick_col, 2.0 * scale)
 
-  let font_sm = ctx.style.font_small
+  let font_sm = ctx.style.font_small * scale
   // E. Uppercase Label (Top)
   if !label.is_empty() {
     let label_w = ctx.measure_text(label, font_sm).x
@@ -401,7 +402,7 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
     @color.Color::text_strong()
   }
   p.add_text(
-    @math.Vec2::new(center_x - val_w * 0.5, center_y + radius + 4.0),
+    @math.Vec2::new(center_x - val_w * 0.5, center_y + radius + 4.0 * scale),
     val_str,
     font_sm,
     val_col,

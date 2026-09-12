@@ -341,8 +341,8 @@ pub fn dialog(
     btn_h,
   )
 
-  let cancel_hovered = cancel_rect.contains(ctx.input.mouse_pos)
-  let confirm_hovered = confirm_rect.contains(ctx.input.mouse_pos)
+  let cancel_hovered = ctx.is_hovered(cancel_rect)
+  let confirm_hovered = ctx.is_hovered(confirm_rect)
   if cancel_hovered || confirm_hovered {
     ctx.set_cursor_icon("pointer")
   }

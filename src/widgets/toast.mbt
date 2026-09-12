@@ -168,7 +168,16 @@ pub fn toast_stack(
     }
   }
 
-  // 3. Hit-testing for close button
+  for rect in placed_rects {
+    ctx.block_hover(rect)
+  }
+
+  ctx.begin_foreground()
+
+  // Close-button hit-testing runs inside the foreground pass: on the main
+  // layer the toast's own hover blocker (registered one frame earlier) would
+  // swallow is_hovered and the cross could never be clicked again after the
+  // first frame.
   for i = 0; i < next_active.length(); i = i + 1 {
     let rect = placed_rects[i]
     let close_btn_rect = @math.Rect::new(
@@ -184,6 +193,9 @@ pub fn toast_stack(
         break
       }
     }
+    if ctx.is_hovered(rect) {
+      ctx.set_wants_capture_mouse(true)
+    }
   }
 
   let final_active : Array[Toast] = []
@@ -192,15 +204,6 @@ pub fn toast_stack(
       final_active.push(toast)
     }
   }
-
-  for rect in placed_rects {
-    ctx.block_hover(rect)
-    if rect.contains(ctx.input.mouse_pos) {
-      ctx.set_wants_capture_mouse(true)
-    }
-  }
-
-  ctx.begin_foreground()
 
   for i = 0; i < final_active.length(); i = i + 1 {
     let toast = final_active[i]
@@ -266,12 +269,9 @@ pub fn toast_stack(
       )
     }
 
-    let close_hover = @math.Rect::new(
-      rect.x + toast_w - 24.0,
-      rect.y + 6.0,
-      18.0,
-      18.0,
-    ).contains(ctx.input.mouse_pos)
+    let close_hover = ctx.is_hovered(
+      @math.Rect::new(rect.x + toast_w - 24.0, rect.y + 6.0, 18.0, 18.0),
+    )
     let close_col = if close_hover {
       @color.Color::text_primary()
     } else {

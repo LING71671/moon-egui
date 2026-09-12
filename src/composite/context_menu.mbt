@@ -176,7 +176,11 @@ pub fn context_menu_items(
     return { open: false, selected_id: None, pos: placed_pos, size: menu_size, }
   }
 
-  // Identify hovered item and active submenu
+  // Identify hovered item and active submenu. Like every popup that blocks
+  // hover over its own area, the interaction phase runs in the foreground
+  // scope: is_hovered ignores blockers there, so the menu's own one-frame-old
+  // blocker cannot swallow its rows.
+  ctx.begin_foreground()
   let mut cur_y = placed_pos.y + pad_y
   let mut active_sub_item : ContextMenuItem? = None
   let mut active_sub_row_y = 0.0
@@ -192,7 +196,7 @@ pub fn context_menu_items(
         total_w - 8.0 * scale,
         item_h,
       )
-      let hovered = row_rect.contains(ctx.input.mouse_pos) && !item.disabled
+      let hovered = ctx.is_hovered(row_rect) && !item.disabled
       if hovered {
         ctx.set_cursor_icon("pointer")
         if item.children.length() > 0 {
@@ -255,8 +259,7 @@ pub fn context_menu_items(
           sub_w - 8.0 * scale,
           item_h,
         )
-        let child_hovered = child_row.contains(ctx.input.mouse_pos) &&
-          !child.disabled
+        let child_hovered = ctx.is_hovered(child_row) && !child.disabled
         if child_hovered {
           ctx.set_cursor_icon("pointer")
           if ctx.input.mouse_pressed {
@@ -277,6 +280,7 @@ pub fn context_menu_items(
     }
     if !in_main && !in_sub {
       ctx.set_active_submenu_id("")
+      ctx.end_foreground()
       return {
         open: false,
         selected_id: None,
@@ -288,6 +292,7 @@ pub fn context_menu_items(
 
   if selected_id is Some(id) {
     ctx.set_active_submenu_id("")
+    ctx.end_foreground()
     return {
       open: false,
       selected_id: Some(id),
@@ -295,6 +300,8 @@ pub fn context_menu_items(
       size: menu_size,
     }
   }
+
+  ctx.end_foreground()
 
   // Render into foreground layer
   ctx.begin_foreground()
@@ -348,8 +355,7 @@ pub fn context_menu_items(
         item_h,
       )
       let hovered = (
-          row_rect.contains(ctx.input.mouse_pos) ||
-          ctx.active_submenu_id() == item.id
+          ctx.is_hovered(row_rect) || ctx.active_submenu_id() == item.id
         ) &&
         !item.disabled
 
@@ -465,8 +471,7 @@ pub fn context_menu_items(
           sub_rect.w - 8.0 * scale,
           item_h,
         )
-        let child_hovered = child_row.contains(ctx.input.mouse_pos) &&
-          !child.disabled
+        let child_hovered = ctx.is_hovered(child_row) && !child.disabled
         if child_hovered {
           ctx
           .painter()

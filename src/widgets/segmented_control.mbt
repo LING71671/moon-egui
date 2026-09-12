@@ -168,7 +168,7 @@ pub fn segmented_control(
     let opt_x = track_rect.x + pad + i.to_double() * item_w
     let opt_rect = @math.Rect::new(opt_x, pill_y, item_w, pill_h)
 
-    let is_hovered = opt_rect.contains(ctx.input.mouse_pos)
+    let is_hovered = ctx.is_hovered(opt_rect)
     if is_hovered {
       ctx.set_cursor_icon("pointer")
       if i != current_sel {

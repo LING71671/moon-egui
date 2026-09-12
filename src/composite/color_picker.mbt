@@ -115,8 +115,9 @@ pub fn color_picker(
   color : @color.Color,
   show_alpha? : Bool = true,
 ) -> (@color.Color, Response) {
-  let width = 180.0
-  let height = if show_alpha { 230.0 } else { 206.0 }
+  let scale = ctx.style.scale
+  let width = 180.0 * scale
+  let height = (if show_alpha { 230.0 } else { 206.0 }) * scale
 
   ctx.push_id(id_salt)
   let (_panel_id, rect, resp) = ctx.allocate_space(
@@ -125,18 +126,23 @@ pub fn color_picker(
   ctx.pop_id()
 
   // Panel background card
-  let card_radius = ctx.style.radius_md
-  let inner_radius = ctx.style.radius_sm
+  let card_radius = ctx.style.radius_md * scale
+  let inner_radius = ctx.style.radius_sm * scale
   ctx.painter().add_rect(rect, @color.Color::bg_surface(), card_radius)
   ctx
   .painter()
-  .add_rect_stroke(rect, @color.Color::border_default(), 1.0, card_radius)
+  .add_rect_stroke(
+    rect,
+    @color.Color::border_default(),
+    1.0 * scale,
+    card_radius,
+  )
 
-  let pad = 10.0
+  let pad = 10.0 * scale
   let sq_x = rect.x + pad
   let sq_y = rect.y + pad
   let sq_w = rect.w - pad * 2.0
-  let sq_h = 126.0
+  let sq_h = 126.0 * scale
   let sq_rect = @math.Rect::new(sq_x, sq_y, sq_w, sq_h)
 
   let (init_h, init_s, init_v) = rgb_to_hsv(color.r, color.g, color.b)
@@ -192,7 +198,12 @@ pub fn color_picker(
   // Border outline for SV square
   ctx
   .painter()
-  .add_rect_stroke(sq_rect, @color.Color::border_muted(), 1.0, inner_radius)
+  .add_rect_stroke(
+    sq_rect,
+    @color.Color::border_muted(),
+    1.0 * scale,
+    inner_radius,
+  )
 
   // Dual-ring cursor on SV area
   let cur_x = sq_x + s * sq_w
@@ -200,14 +211,24 @@ pub fn color_picker(
   let cur_center = @math.Vec2::new(cur_x, cur_y)
   ctx
   .painter()
-  .add_circle_stroke(cur_center, 5.0, @color.Color::bg_window(), 1.6)
+  .add_circle_stroke(
+    cur_center,
+    5.0 * scale,
+    @color.Color::bg_window(),
+    1.6 * scale,
+  )
   ctx
   .painter()
-  .add_circle_stroke(cur_center, 3.5, @color.Color::text_primary(), 1.2)
+  .add_circle_stroke(
+    cur_center,
+    3.5 * scale,
+    @color.Color::text_primary(),
+    1.2 * scale,
+  )
 
   // 2. Hue Rainbow Slider
-  let hue_y = sq_y + sq_h + 8.0
-  let hue_h = 12.0
+  let hue_y = sq_y + sq_h + 8.0 * scale
+  let hue_h = 12.0 * scale
   let hue_rect = @math.Rect::new(sq_x, hue_y, sq_w, hue_h)
   let hue_id = ctx.id_stack.derive_id("cp_hue::" + id_salt)
 
@@ -246,20 +267,32 @@ pub fn color_picker(
   }
   ctx
   .painter()
-  .add_rect_stroke(hue_rect, @color.Color::border_muted(), 1.0, inner_radius)
+  .add_rect_stroke(
+    hue_rect,
+    @color.Color::border_muted(),
+    1.0 * scale,
+    inner_radius,
+  )
 
   // Hue Slider Thumb
   let hue_thumb_x = sq_x + h / 360.0 * sq_w
   let hue_thumb_center = @math.Vec2::new(hue_thumb_x, hue_y + hue_h * 0.5)
-  ctx.painter().add_circle(hue_thumb_center, 6.0, @color.Color::bg_window())
   ctx
   .painter()
-  .add_circle_stroke(hue_thumb_center, 6.0, @color.Color::border_default(), 1.0)
+  .add_circle(hue_thumb_center, 6.0 * scale, @color.Color::bg_window())
+  ctx
+  .painter()
+  .add_circle_stroke(
+    hue_thumb_center,
+    6.0 * scale,
+    @color.Color::border_default(),
+    1.0 * scale,
+  )
 
   // 3. Alpha Slider (Optional)
   if show_alpha {
-    let alpha_y = hue_y + hue_h + 8.0
-    let alpha_h = 12.0
+    let alpha_y = hue_y + hue_h + 8.0 * scale
+    let alpha_h = 12.0 * scale
     let alpha_rect = @math.Rect::new(sq_x, alpha_y, sq_w, alpha_h)
     let alpha_id = ctx.id_stack.derive_id("cp_alpha::" + id_salt)
 
@@ -310,7 +343,7 @@ pub fn color_picker(
     .add_rect_stroke(
       alpha_rect,
       @color.Color::border_muted(),
-      1.0,
+      1.0 * scale,
       inner_radius,
     )
 
@@ -320,14 +353,16 @@ pub fn color_picker(
       alpha_thumb_x,
       alpha_y + alpha_h * 0.5,
     )
-    ctx.painter().add_circle(alpha_thumb_center, 6.0, @color.Color::bg_window())
+    ctx
+    .painter()
+    .add_circle(alpha_thumb_center, 6.0 * scale, @color.Color::bg_window())
     ctx
     .painter()
     .add_circle_stroke(
       alpha_thumb_center,
-      6.0,
+      6.0 * scale,
       @color.Color::border_default(),
-      1.0,
+      1.0 * scale,
     )
   }
 
@@ -336,18 +371,18 @@ pub fn color_picker(
   let updated_color = @color.Color::rgba(final_r, final_g, final_b, a)
 
   let footer_y = if show_alpha {
-    hue_y + hue_h + 8.0 + 12.0 + 8.0
+    hue_y + hue_h + 8.0 * scale + 12.0 * scale + 8.0 * scale
   } else {
-    hue_y + hue_h + 8.0
+    hue_y + hue_h + 8.0 * scale
   }
-  let swatch_rect = @math.Rect::new(sq_x, footer_y, 22.0, 22.0)
+  let swatch_rect = @math.Rect::new(sq_x, footer_y, 22.0 * scale, 22.0 * scale)
   ctx.painter().add_rect(swatch_rect, updated_color, inner_radius)
   ctx
   .painter()
   .add_rect_stroke(
     swatch_rect,
     @color.Color::border_default(),
-    1.0,
+    1.0 * scale,
     inner_radius,
   )
 
@@ -361,8 +396,11 @@ pub fn color_picker(
     "#" + hex_byte(final_r) + hex_byte(final_g) + hex_byte(final_b)
   }
 
-  let font_sz = ctx.style.font_small
-  let hex_pos = @math.Vec2::new(sq_x + 30.0, footer_y + (22.0 - font_sz) * 0.5)
+  let font_sz = ctx.style.font_small * scale
+  let hex_pos = @math.Vec2::new(
+    sq_x + 30.0 * scale,
+    footer_y + (22.0 * scale - font_sz) * 0.5,
+  )
   ctx
   .painter()
   .add_text(hex_pos, hex_text, font_sz, @color.Color::text_strong())

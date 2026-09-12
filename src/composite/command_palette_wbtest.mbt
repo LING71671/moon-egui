@@ -189,3 +189,25 @@ test "command_palette: query filtering matches title and category" {
   assert_eq(res2.selected_id, Some("save_file"))
   let _ = ctx.end_frame()
 }
+
+///|
+test "command_palette: rows stay clickable while the palette's own blocker is live" {
+  let ctx = UIContext::new()
+
+  // Frame 1: open with the pointer away; the palette registers a full-screen
+  // hover blocker for the next frame.
+  ctx.begin_frame(@core.RawInput::new())
+  let r1 = command_palette(ctx, true, "", sample_commands())
+  let _ = ctx.end_frame()
+  assert_eq(r1.open, true)
+
+  // Frame 2: with the blocker live, pressing the second row ("保存") must
+  // still execute it. Rows start at card_y + header_h + row_pad_x + cat_h.
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(400.0, 185.0), true),
+  )
+  let r2 = command_palette(ctx, r1.open, r1.query, sample_commands())
+  let _ = ctx.end_frame()
+  assert_eq(r2.selected_id, Some("save_file"))
+  assert_eq(r2.open, false)
+}

@@ -221,6 +221,11 @@ pub fn command_palette(
   let card_rect = @math.Rect::new(card_x, card_y, card_w, card_h)
 
   // Scroll offset tracking
+  // The interaction phase runs in the foreground scope: the palette blocked
+  // hover over the whole screen one frame earlier, and is_hovered ignores
+  // blockers only while the foreground flag is up. Without this the palette
+  // would stop reacting to its own rows and wheel from the second frame on.
+  ctx.begin_foreground()
   let content_clip_rect = @math.Rect::new(
     card_x,
     card_y + header_h,
@@ -256,6 +261,7 @@ pub fn command_palette(
 
   // Outside click dismissal
   if ctx.input.mouse_pressed && !card_rect.contains(ctx.input.mouse_pos) {
+    ctx.end_foreground()
     return {
       open: false,
       selected_id: None,
@@ -283,7 +289,7 @@ pub fn command_palette(
     }
     let row_rect = @math.Rect::new(card_x + row_pad_x, cur_row_y, row_w, row_h)
     if content_clip_rect.contains(ctx.input.mouse_pos) &&
-      row_rect.contains(ctx.input.mouse_pos) {
+      ctx.is_hovered(row_rect) {
       ctx.set_cursor_icon("pointer")
       new_selected_index = idx
       if ctx.input.mouse_pressed {
@@ -294,6 +300,7 @@ pub fn command_palette(
   }
 
   if clicked_id is Some(id) {
+    ctx.end_foreground()
     return {
       open: false,
       selected_id: Some(id),
@@ -303,6 +310,7 @@ pub fn command_palette(
   }
 
   // 6. Rendering into foreground layer
+  ctx.end_foreground()
   ctx.begin_foreground()
 
   // Semi-transparent backdrop scrim

@@ -209,7 +209,7 @@ pub fn tag(
       14.0,
       14.0,
     )
-    let is_close_hovered = close_box.contains(ctx.input.mouse_pos)
+    let is_close_hovered = ctx.is_hovered(close_box)
     if is_close_hovered {
       ctx.set_cursor_icon("pointer")
       p.add_rect(close_box, @color.Color::tag_close_hover(), tag_radius)

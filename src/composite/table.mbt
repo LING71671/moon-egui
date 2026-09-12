@@ -257,7 +257,7 @@ pub fn table(
       "table_col_handle::" + id_salt + "::" + col.id,
     )
 
-    let handle_hovered = handle_rect.contains(ctx.input.mouse_pos)
+    let handle_hovered = ctx.is_hovered(handle_rect)
     if handle_hovered {
       ctx.set_cursor_icon("col-resize")
     }
@@ -283,7 +283,7 @@ pub fn table(
     }
 
     // Header click for sorting (when not interacting with resize handle)
-    let is_header_hovered = col_header_rect.contains(ctx.input.mouse_pos) &&
+    let is_header_hovered = ctx.is_hovered(col_header_rect) &&
       !handle_hovered &&
       (ctx.active_id() == Id::zero() || ctx.active_id() == table_id)
 

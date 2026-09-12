@@ -189,7 +189,7 @@ pub fn rich_text(
       rel.w,
       rel.h,
     )
-    let is_hovered = abs_rect.contains(ctx.input.mouse_pos)
+    let is_hovered = ctx.is_hovered(abs_rect)
     if is_hovered {
       match kind {
         Link(_) => ()

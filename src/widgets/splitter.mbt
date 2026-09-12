@@ -167,7 +167,7 @@ pub fn split_horizontal(
   )
 
   let bar_id = ctx.id_stack.derive_id("splitter_h::" + id_salt)
-  let hovered = hit_rect.contains(ctx.input.mouse_pos)
+  let hovered = ctx.is_hovered(hit_rect)
 
   if hovered {
     ctx.set_cursor_icon("col-resize")
@@ -317,7 +317,7 @@ pub fn split_vertical(
   )
 
   let bar_id = ctx.id_stack.derive_id("splitter_v::" + id_salt)
-  let hovered = hit_rect.contains(ctx.input.mouse_pos)
+  let hovered = ctx.is_hovered(hit_rect)
 
   if hovered {
     ctx.set_cursor_icon("row-resize")
