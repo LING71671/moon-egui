@@ -100,3 +100,8 @@ pub fn Id::with_int(seed : UInt64, index : Int) -> Id {
   }
   { val: hash, }
 }
+
+///|
+pub fn Id::with_tag(self : Id, tag : String) -> Id {
+  Id::with_seed(self.val, tag)
+}

@@ -117,6 +117,7 @@ pub fn Id::is_valid(Self) -> Bool
 pub fn Id::new(UInt64) -> Self
 pub fn Id::with_int(UInt64, Int) -> Self
 pub fn Id::with_seed(UInt64, String) -> Self
+pub fn Id::with_tag(Self, String) -> Self
 pub fn Id::zero() -> Self
 
 pub struct IdStack {
@@ -237,6 +238,35 @@ pub struct LayoutScope {
   mut current_row_h : Double
   wrap_width : Double
 } derive(Eq, @debug.Debug)
+
+pub struct Memory {
+  integers : @hashmap.HashMap[Id, Int]
+  doubles : @hashmap.HashMap[Id, Double]
+  booleans : @hashmap.HashMap[Id, Bool]
+  strings : @hashmap.HashMap[Id, String]
+  ids : @hashmap.HashMap[Id, Id]
+  last_accessed : @hashmap.HashMap[Id, Int]
+  sub_keys : @hashmap.HashMap[Id, Array[Id]]
+} derive(Eq, @debug.Debug)
+pub fn Memory::get_bool(Self, Id, tag? : String) -> Bool?
+pub fn Memory::get_bool_or_default(Self, Id, Bool, tag? : String) -> Bool
+pub fn Memory::get_double(Self, Id, tag? : String) -> Double?
+pub fn Memory::get_double_or_default(Self, Id, Double, tag? : String) -> Double
+pub fn Memory::get_id(Self, Id, tag? : String) -> Id?
+pub fn Memory::get_int(Self, Id, tag? : String) -> Int?
+pub fn Memory::get_int_or_default(Self, Id, Int, tag? : String) -> Int
+pub fn Memory::get_string(Self, Id, tag? : String) -> String?
+pub fn Memory::get_string_or_default(Self, Id, String, tag? : String) -> String
+pub fn Memory::new() -> Self
+pub fn Memory::prune_stale(Self, Int, Int) -> Unit
+pub fn Memory::remove(Self, Id) -> Unit
+pub fn Memory::remove_sub_key(Self, Id, String) -> Unit
+pub fn Memory::set_bool(Self, Id, Bool, tag? : String, frame? : Int) -> Unit
+pub fn Memory::set_double(Self, Id, Double, tag? : String, frame? : Int) -> Unit
+pub fn Memory::set_id(Self, Id, Id, tag? : String, frame? : Int) -> Unit
+pub fn Memory::set_int(Self, Id, Int, tag? : String, frame? : Int) -> Unit
+pub fn Memory::set_string(Self, Id, String, tag? : String, frame? : Int) -> Unit
+pub fn Memory::touch(Self, Id, Int) -> Unit
 
 pub struct Modifiers {
   ctrl : Bool
@@ -452,8 +482,7 @@ pub struct UIContext {
   clip_stack : Array[@math.Rect]
   mut auto_id_counter : Int
   layout_stack : Array[LayoutScope]
-  scroll_offsets : @hashmap.HashMap[Id, Double]
-  scroll_content_heights : @hashmap.HashMap[Id, Double]
+  memory : Memory
   window_positions : @hashmap.HashMap[Id, @math.Vec2]
   window_batches : Array[(Id, @draw.DrawList)]
   window_drawn : Array[Id]
@@ -461,14 +490,10 @@ pub struct UIContext {
   mut win_active_z : Int
   window_rects : Array[(@math.Rect, Int)]
   prev_window_rects : Array[(@math.Rect, Int)]
-  text_cursor_positions : @hashmap.HashMap[Id, Int]
-  open_collapsing_ids : @hashmap.HashMap[Id, Bool]
-  last_active_frame : @hashmap.HashMap[Id, Int]
   mut frame_counter : Int
   mut open_combo_id : Id
   mut open_menu_id : Id
   mut active_submenu_id : String
-  text_selection_anchors : @hashmap.HashMap[Id, Int]
   mut wants_capture_mouse : Bool
   mut prev_wants_capture_mouse : Bool
   fg_draw_list : @draw.DrawList
@@ -483,7 +508,6 @@ pub struct UIContext {
   mut time : Double
   mut last_caret_activity : Double
   text_measure_cache : @hashmap.HashMap[String, Double]
-  animation_states : @hashmap.HashMap[Id, Double]
 } derive(Eq, @debug.Debug)
 pub fn UIContext::active_id(Self) -> Id
 pub fn UIContext::active_submenu_id(Self) -> String
@@ -544,6 +568,7 @@ pub fn UIContext::knob(Self, String, String, Double, min_val? : Double, max_val?
 pub fn UIContext::label(Self, String) -> Response
 pub fn UIContext::label_colored(Self, String, @color.Color) -> Response
 pub fn UIContext::measure_text(Self, String, Double) -> @math.Vec2
+pub fn UIContext::memory(Self) -> Memory
 pub fn UIContext::menu(Self, String, (Self) -> Unit) -> Unit
 pub fn UIContext::menu_bar(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::menu_item(Self, String, shortcut? : String, disabled? : Bool) -> Response

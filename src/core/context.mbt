@@ -35,8 +35,7 @@ pub struct UIContext {
   clip_stack : Array[@math.Rect]
   mut auto_id_counter : Int
   layout_stack : Array[LayoutScope]
-  scroll_offsets : @hashmap.HashMap[Id, Double]
-  scroll_content_heights : @hashmap.HashMap[Id, Double]
+  memory : Memory
   window_positions : @hashmap.HashMap[Id, @math.Vec2]
   window_batches : Array[(Id, @draw.DrawList)]
   window_drawn : Array[Id]
@@ -44,14 +43,10 @@ pub struct UIContext {
   mut win_active_z : Int
   window_rects : Array[(@math.Rect, Int)]
   prev_window_rects : Array[(@math.Rect, Int)]
-  text_cursor_positions : @hashmap.HashMap[Id, Int]
-  open_collapsing_ids : @hashmap.HashMap[Id, Bool]
-  last_active_frame : @hashmap.HashMap[Id, Int]
   mut frame_counter : Int
   mut open_combo_id : Id
   mut open_menu_id : Id
   mut active_submenu_id : String
-  text_selection_anchors : @hashmap.HashMap[Id, Int]
   mut wants_capture_mouse : Bool
   mut prev_wants_capture_mouse : Bool
   fg_draw_list : @draw.DrawList
@@ -66,7 +61,6 @@ pub struct UIContext {
   mut time : Double
   mut last_caret_activity : Double
   text_measure_cache : @hashmap.HashMap[String, Double]
-  animation_states : @hashmap.HashMap[Id, Double]
 } derive(Eq, Debug)
 
 ///|
@@ -97,8 +91,7 @@ pub fn UIContext::new() -> UIContext {
         wrap_width: 0.0,
       },
     ],
-    scroll_offsets: @hashmap.HashMap([], capacity=64),
-    scroll_content_heights: @hashmap.HashMap([], capacity=64),
+    memory: Memory::new(),
     window_positions: @hashmap.HashMap([], capacity=32),
     window_batches: [],
     window_drawn: [],
@@ -106,14 +99,10 @@ pub fn UIContext::new() -> UIContext {
     win_active_z: -1,
     window_rects: [],
     prev_window_rects: [],
-    text_cursor_positions: @hashmap.HashMap([], capacity=64),
-    open_collapsing_ids: @hashmap.HashMap([], capacity=64),
-    last_active_frame: @hashmap.HashMap([], capacity=128),
     frame_counter: 0,
     open_combo_id: Id::zero(),
     open_menu_id: Id::zero(),
     active_submenu_id: "",
-    text_selection_anchors: @hashmap.HashMap([], capacity=64),
     wants_capture_mouse: false,
     prev_wants_capture_mouse: false,
     fg_draw_list: @draw.DrawList::new(),
@@ -128,7 +117,6 @@ pub fn UIContext::new() -> UIContext {
     time: 0.0,
     last_caret_activity: 0.0,
     text_measure_cache: @hashmap.HashMap([], capacity=256),
-    animation_states: @hashmap.HashMap([], capacity=64),
   }
 }
 
@@ -942,7 +930,7 @@ pub fn UIContext::get_window_pos(
   id : Id,
   fallback : @math.Vec2,
 ) -> @math.Vec2 {
-  self.last_active_frame.set(id, self.frame_counter)
+  self.memory.touch(id, self.frame_counter)
   match self.window_positions.get(id) {
     Some(pos) => pos
     None => fallback
@@ -955,17 +943,14 @@ pub fn UIContext::set_window_pos(
   id : Id,
   pos : @math.Vec2,
 ) -> Unit {
-  self.last_active_frame.set(id, self.frame_counter)
+  self.memory.touch(id, self.frame_counter)
   self.window_positions.set(id, pos)
 }
 
 ///|
 pub fn UIContext::get_scroll_offset(self : UIContext, id : Id) -> Double {
-  self.last_active_frame.set(id, self.frame_counter)
-  match self.scroll_offsets.get(id) {
-    Some(offset) => offset
-    None => 0.0
-  }
+  self.memory.touch(id, self.frame_counter)
+  self.memory.get_double_or_default(id, 0.0)
 }
 
 ///|
@@ -974,8 +959,7 @@ pub fn UIContext::set_scroll_offset(
   id : Id,
   offset : Double,
 ) -> Unit {
-  self.last_active_frame.set(id, self.frame_counter)
-  self.scroll_offsets.set(id, offset)
+  self.memory.set_double(id, offset, frame=self.frame_counter)
 }
 
 ///|
@@ -983,11 +967,8 @@ pub fn UIContext::get_scroll_content_height(
   self : UIContext,
   id : Id,
 ) -> Double {
-  self.last_active_frame.set(id, self.frame_counter)
-  match self.scroll_content_heights.get(id) {
-    Some(height) => height
-    None => 0.0
-  }
+  self.memory.touch(id, self.frame_counter)
+  self.memory.get_double_or_default(id, 0.0, tag="content_h")
 }
 
 ///|
@@ -996,8 +977,7 @@ pub fn UIContext::set_scroll_content_height(
   id : Id,
   height : Double,
 ) -> Unit {
-  self.last_active_frame.set(id, self.frame_counter)
-  self.scroll_content_heights.set(id, height)
+  self.memory.set_double(id, height, tag="content_h", frame=self.frame_counter)
 }
 
 ///|
@@ -1006,8 +986,8 @@ pub fn UIContext::get_text_cursor_pos(
   id : Id,
   max_len : Int,
 ) -> Int {
-  self.last_active_frame.set(id, self.frame_counter)
-  match self.text_cursor_positions.get(id) {
+  self.memory.touch(id, self.frame_counter)
+  match self.memory.get_int(id, tag="cursor_pos") {
     Some(p) => if p > max_len { max_len } else if p < 0 { 0 } else { p }
     None => max_len
   }
@@ -1019,8 +999,7 @@ pub fn UIContext::set_text_cursor_pos(
   id : Id,
   pos : Int,
 ) -> Unit {
-  self.last_active_frame.set(id, self.frame_counter)
-  self.text_cursor_positions.set(id, pos)
+  self.memory.set_int(id, pos, tag="cursor_pos", frame=self.frame_counter)
 }
 
 ///|
@@ -1029,11 +1008,8 @@ pub fn UIContext::is_collapsing_open(
   id : Id,
   default_open : Bool,
 ) -> Bool {
-  self.last_active_frame.set(id, self.frame_counter)
-  match self.open_collapsing_ids.get(id) {
-    Some(open) => open
-    None => default_open
-  }
+  self.memory.touch(id, self.frame_counter)
+  self.memory.get_bool_or_default(id, default_open, tag="collapsing")
 }
 
 ///|
@@ -1042,30 +1018,21 @@ pub fn UIContext::set_collapsing_open(
   id : Id,
   is_open : Bool,
 ) -> Unit {
-  self.last_active_frame.set(id, self.frame_counter)
-  self.open_collapsing_ids.set(id, is_open)
+  self.memory.set_bool(id, is_open, tag="collapsing", frame=self.frame_counter)
 }
 
 ///|
 /// Prune persistent widget states that have not been active for more than `ttl_frames` frames.
 pub fn UIContext::prune_stale_state(self : UIContext, ttl_frames : Int) -> Unit {
-  let stale_ids : Array[Id] = []
-  self.last_active_frame.each(fn(id, last_frame) {
-    if self.frame_counter - last_frame > ttl_frames {
-      stale_ids.push(id)
+  self.memory.prune_stale(self.frame_counter, ttl_frames)
+  let stale_win_ids : Array[Id] = []
+  self.window_positions.each(fn(id, _) {
+    if !self.window_drawn.contains(id) {
+      stale_win_ids.push(id)
     }
   })
-  for id in stale_ids {
-    self.last_active_frame.remove(id)
-    self.scroll_offsets.remove(id)
-    self.scroll_content_heights.remove(id)
-    self.text_cursor_positions.remove(id)
-    self.text_selection_anchors.remove(id)
-    self.open_collapsing_ids.remove(id)
-    self.animation_states.remove(id)
-    if !self.window_drawn.contains(id) {
-      self.window_positions.remove(id)
-    }
+  for id in stale_win_ids {
+    self.window_positions.remove(id)
   }
 }
 
@@ -1081,7 +1048,8 @@ pub fn UIContext::set_active_submenu_id(self : UIContext, id : String) -> Unit {
 
 ///|
 pub fn UIContext::get_text_selection_anchor(self : UIContext, id : Id) -> Int? {
-  self.text_selection_anchors.get(id)
+  self.memory.touch(id, self.frame_counter)
+  self.memory.get_int(id, tag="sel_anchor")
 }
 
 ///|
@@ -1090,16 +1058,16 @@ pub fn UIContext::set_text_selection_anchor(
   id : Id,
   anchor : Int?,
 ) -> Unit {
-  self.last_active_frame.set(id, self.frame_counter)
   match anchor {
-    Some(a) => self.text_selection_anchors.set(id, a)
-    None => self.text_selection_anchors.remove(id)
+    Some(a) =>
+      self.memory.set_int(id, a, tag="sel_anchor", frame=self.frame_counter)
+    None => self.memory.remove_sub_key(id, "sel_anchor")
   }
 }
 
 ///|
 pub fn UIContext::clear_text_selection(self : UIContext, id : Id) -> Unit {
-  self.text_selection_anchors.remove(id)
+  self.memory.remove_sub_key(id, "sel_anchor")
 }
 
 ///|
@@ -1164,6 +1132,11 @@ pub fn UIContext::set_theme(self : UIContext, theme : Theme) -> Unit {
 }
 
 ///|
+pub fn UIContext::memory(self : UIContext) -> Memory {
+  self.memory
+}
+
+///|
 /// Smooth immediate-mode boolean animation tweening over `duration` seconds.
 /// Returns a scalar factor in `[0.0, 1.0]` that transitions smoothly when `target` changes.
 pub fn UIContext::animate_bool(
@@ -1173,14 +1146,18 @@ pub fn UIContext::animate_bool(
   duration : Double,
 ) -> Double {
   let target_val = if target { 1.0 } else { 0.0 }
-  let current = match self.animation_states.get(id) {
+  let current = match self.memory.get_double(id, tag="anim") {
     Some(v) => v
     None => {
-      self.animation_states.set(id, target_val)
+      self.memory.set_double(
+        id,
+        target_val,
+        tag="anim",
+        frame=self.frame_counter,
+      )
       target_val
     }
   }
-  self.last_active_frame.set(id, self.frame_counter)
   if current == target_val || duration <= 0.0 {
     current
   } else {
@@ -1201,7 +1178,7 @@ pub fn UIContext::animate_bool(
         v
       }
     }
-    self.animation_states.set(id, next_val)
+    self.memory.set_double(id, next_val, tag="anim", frame=self.frame_counter)
     next_val
   }
 }
@@ -1214,14 +1191,13 @@ pub fn UIContext::animate_float(
   target : Double,
   duration : Double,
 ) -> Double {
-  let current = match self.animation_states.get(id) {
+  let current = match self.memory.get_double(id, tag="anim") {
     Some(v) => v
     None => {
-      self.animation_states.set(id, target)
+      self.memory.set_double(id, target, tag="anim", frame=self.frame_counter)
       target
     }
   }
-  self.last_active_frame.set(id, self.frame_counter)
   if current == target || duration <= 0.0 {
     current
   } else {
@@ -1246,7 +1222,7 @@ pub fn UIContext::animate_float(
         v
       }
     }
-    self.animation_states.set(id, next_val)
+    self.memory.set_double(id, next_val, tag="anim", frame=self.frame_counter)
     next_val
   }
 }
