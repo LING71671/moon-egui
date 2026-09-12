@@ -69,13 +69,34 @@ pub fn menu(
   let btn_h = (ctx.style.control_h_sm - ctx.style.radius_xs) * scale
 
   ctx.push_id(title)
-  let (_id, btn_rect, _) = ctx.allocate_space(@math.Vec2::new(btn_w, btn_h))
+  let (id, btn_rect, _) = ctx.allocate_space(@math.Vec2::new(btn_w, btn_h))
   ctx.pop_id()
+  ctx.register_focusable(id)
+  let is_focused = ctx.has_focus(id)
 
   let is_open = ctx.open_menu_id() == menu_id
   let hovered = ctx.is_hovered(btn_rect)
   if hovered {
     ctx.set_cursor_icon("pointer")
+  }
+
+  // Keyboard: Enter / Space / ArrowDown toggles the dropdown while the
+  // trigger holds focus; Escape closes it.
+  let key_toggle = is_focused &&
+    (
+      ctx.input.key_pressed(Key::Enter) ||
+      ctx.input.key_pressed(Key::Space) ||
+      ctx.input.key_pressed(Key::ArrowDown)
+    )
+  if key_toggle {
+    ctx.input.consume_key(Key::Enter)
+    ctx.input.consume_key(Key::Space)
+    ctx.input.consume_key(Key::ArrowDown)
+    if is_open {
+      ctx.set_open_menu_id(Id::zero())
+    } else {
+      ctx.set_open_menu_id(menu_id)
+    }
   }
 
   // Desktop Hover-to-Switch interaction:
@@ -94,6 +115,12 @@ pub fn menu(
   }
 
   let currently_open = ctx.open_menu_id() == menu_id
+
+  // Escape closes the open dropdown
+  if currently_open && ctx.input.key_pressed(Key::Escape) {
+    ctx.input.consume_key(Key::Escape)
+    ctx.set_open_menu_id(Id::zero())
+  }
 
   // Render the menu bar trigger button
   let btn_bg = if currently_open {
@@ -114,6 +141,11 @@ pub fn menu(
   let radius = ctx.style.radius_sm * scale
   if currently_open || hovered {
     ctx.painter().add_rect(btn_rect, btn_bg, radius)
+  }
+  if is_focused {
+    ctx
+    .painter()
+    .add_rect_stroke(btn_rect, @color.Color::border_focus(), 1.0, radius)
   }
   ctx
   .painter()
@@ -224,6 +256,8 @@ pub fn menu_item(
   ctx.push_id(label)
   let (id, rect, resp) = ctx.allocate_space(@math.Vec2::new(item_w, item_h))
   ctx.pop_id()
+  ctx.register_focusable(id)
+  let is_focused = resp.has_focus() || ctx.has_focus(id)
 
   let is_hovered = ctx.is_hovered(rect) && !disabled
 
@@ -234,11 +268,24 @@ pub fn menu_item(
     ctx.set_cursor_icon("pointer")
     ctx.painter().add_rect(rect, @color.Color::bg_surface(), item_radius)
   }
+  if is_focused {
+    ctx
+    .painter()
+    .add_rect_stroke(rect, @color.Color::border_focus(), 1.0, item_radius)
+  }
+
+  let key_activate = is_focused &&
+    !disabled &&
+    (ctx.input.key_pressed(Key::Space) || ctx.input.key_pressed(Key::Enter))
+  if key_activate {
+    ctx.input.consume_key(Key::Space)
+    ctx.input.consume_key(Key::Enter)
+  }
 
   let clicked = if disabled {
     false
   } else {
-    is_hovered && (ctx.input.mouse_pressed || resp.clicked)
+    (is_hovered && (ctx.input.mouse_pressed || resp.clicked)) || key_activate
   }
   if clicked {
     ctx.set_open_menu_id(Id::zero())

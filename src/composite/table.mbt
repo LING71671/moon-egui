@@ -187,6 +187,8 @@ pub fn table(
   ctx.push_id(id_salt)
   let (table_id, table_rect, _resp) = ctx.allocate_space(size)
   ctx.pop_id()
+  ctx.register_focusable(table_id)
+  let is_focused = ctx.has_focus(table_id)
 
   let mut active_sort_col = sort_column
   let mut active_sort_dir = sort_direction
@@ -380,6 +382,49 @@ pub fn table(
   ctx.set_scroll_offset(body_container_id, scroll_y)
   ctx.set_scroll_content_height(body_container_id, total_content_h)
 
+  let mut hovered_row : Int? = None
+  let mut clicked_row : Int? = None
+
+  // Keyboard row navigation while the table holds focus: arrows move the
+  // highlighted row (kept inside the visible window), Enter activates it.
+  let mut kb_row = -1
+  if is_focused && row_count > 0 {
+    let mut cur = ctx.memory().get_int_or_default(table_id, 0, tag="kb_row")
+    if cur < 0 {
+      cur = 0
+    }
+    if cur >= row_count {
+      cur = row_count - 1
+    }
+    if ctx.input.key_pressed(Key::ArrowDown) {
+      cur = if cur + 1 < row_count { cur + 1 } else { cur }
+      ctx.input.consume_key(Key::ArrowDown)
+    }
+    if ctx.input.key_pressed(Key::ArrowUp) {
+      cur = if cur - 1 >= 0 { cur - 1 } else { cur }
+      ctx.input.consume_key(Key::ArrowUp)
+    }
+    let row_top = cur.to_double() * eff_row_h
+    if row_top < scroll_y {
+      scroll_y = row_top
+    } else if row_top + eff_row_h > scroll_y + body_h {
+      scroll_y = row_top + eff_row_h - body_h
+    }
+    if scroll_y < 0.0 {
+      scroll_y = 0.0
+    }
+    if scroll_y > max_scroll {
+      scroll_y = max_scroll
+    }
+    ctx.set_scroll_offset(body_container_id, scroll_y)
+    ctx.memory().set_int(table_id, cur, tag="kb_row")
+    kb_row = cur
+    if ctx.input.key_pressed(Key::Enter) {
+      ctx.input.consume_key(Key::Enter)
+      clicked_row = Some(cur)
+    }
+  }
+
   // Calculate virtual row window
   let start_row_raw = (scroll_y / eff_row_h).to_int()
   let start_row = if start_row_raw < 0 {
@@ -397,9 +442,6 @@ pub fn table(
     start_row + visible_count
   }
 
-  let mut hovered_row : Int? = None
-  let mut clicked_row : Int? = None
-
   ctx.push_clip(body_rect)
 
   for r = start_row; r < end_row; r = r + 1 {
@@ -416,12 +458,19 @@ pub fn table(
     }
 
     // Row background styling
+    let is_kb_row = is_focused && r == kb_row
     if r == selected_row {
       ctx.painter().add_rect(row_rect, @color.Color::table_row_selected(), 0.0)
-    } else if is_row_hovered {
+    } else if is_kb_row || is_row_hovered {
       ctx.painter().add_rect(row_rect, @color.Color::bg_hover(), 0.0)
     } else if r % 2 == 1 {
       ctx.painter().add_rect(row_rect, @color.Color::bg_subtle(), 0.0)
+    }
+
+    if is_kb_row {
+      ctx
+      .painter()
+      .add_rect_stroke(row_rect, @color.Color::border_focus(), 1.0, 0.0)
     }
 
     // Row bottom separator line
