@@ -96,7 +96,9 @@ pub fn UIContext::slider(
 
   // Draw Label
   if label.length() > 0 {
-    self.draw_list.add_text(
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(rect.x, rect.y + (h - 13.0) * 0.5),
       label,
       13.0,
@@ -105,20 +107,17 @@ pub fn UIContext::slider(
   }
 
   // Draw Recessed Track Background
-  self.draw_list.add_rect(track_rect, @color.Color::bg_surface(), 3.0)
-  self.draw_list.add_rect_stroke(
-    track_rect,
-    @color.Color::border_muted(),
-    1.0,
-    3.0,
-  )
+  self.painter().add_rect(track_rect, @color.Color::bg_surface(), 3.0)
+  self
+  .painter()
+  .add_rect_stroke(track_rect, @color.Color::border_muted(), 1.0, 3.0)
 
   // Draw Discrete Ticks (25%, 50%, 75%)
   let tick_col = @color.Color::border_default()
   for t in [0.25, 0.5, 0.75] {
     let tick_x = track_rect.x + track_rect.w * t
     let tick_y = track_rect.y + track_rect.h * 0.5
-    self.draw_list.add_circle(@math.Vec2::new(tick_x, tick_y), 1.5, tick_col)
+    self.painter().add_circle(@math.Vec2::new(tick_x, tick_y), 1.5, tick_col)
   }
 
   // Draw Active Progress Fill
@@ -136,7 +135,7 @@ pub fn UIContext::slider(
       active_w,
       track_rect.h,
     )
-    self.draw_list.add_rect(fill_rect, @color.Color::accent_primary(), 3.0)
+    self.painter().add_rect(fill_rect, @color.Color::accent_primary(), 3.0)
   }
 
   // Compute Value Text
@@ -169,7 +168,9 @@ pub fn UIContext::slider(
   } else {
     5.5 * scale
   }
-  self.draw_list.add_circle(
+  self
+  .painter()
+  .add_circle(
     @math.Vec2::new(thumb_cx, thumb_cy),
     thumb_r,
     @color.Color::bg_window(),
@@ -180,7 +181,9 @@ pub fn UIContext::slider(
     @color.Color::accent_primary()
   }
   let thumb_stroke_w = if is_focused { 2.0 * scale } else { 1.5 }
-  self.draw_list.add_circle_stroke(
+  self
+  .painter()
+  .add_circle_stroke(
     @math.Vec2::new(thumb_cx, thumb_cy),
     thumb_r,
     thumb_stroke,
@@ -195,8 +198,10 @@ pub fn UIContext::slider(
     let bubble_x = thumb_cx - bubble_w * 0.5
     let bubble_y = thumb_cy - thumb_r - bubble_h - 4.0 * scale
     let bubble_rect = @math.Rect::new(bubble_x, bubble_y, bubble_w, bubble_h)
-    self.draw_list.add_rect(bubble_rect, @color.Color::bg_window(), radius_sm)
-    self.draw_list.add_rect_stroke(
+    self.painter().add_rect(bubble_rect, @color.Color::bg_window(), radius_sm)
+    self
+    .painter()
+    .add_rect_stroke(
       bubble_rect,
       @color.Color::border_default(),
       1.0,
@@ -206,16 +211,15 @@ pub fn UIContext::slider(
       bubble_x + 7.0 * scale,
       bubble_y + (bubble_h - font_sm) * 0.5,
     )
-    self.draw_list.add_text(
-      bubble_text_pos,
-      val_text,
-      font_sm,
-      @color.Color::text_primary(),
-    )
+    self
+    .painter()
+    .add_text(bubble_text_pos, val_text, font_sm, @color.Color::text_primary())
   }
 
   // Draw Value Text in row
-  self.draw_list.add_text(
+  self
+  .painter()
+  .add_text(
     @math.Vec2::new(track_rect.x + track_w + 10.0, rect.y + (h - 12.0) * 0.5),
     val_text,
     12.0,
@@ -339,7 +343,9 @@ pub fn UIContext::drag_value(
 
   // 3. Draw Label
   if label.length() > 0 {
-    self.draw_list.add_text(
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(rect.x, rect.y + (h - font_nm) * 0.5),
       label,
       font_nm,
@@ -364,7 +370,7 @@ pub fn UIContext::drag_value(
     @color.Color::border_default()
   }
 
-  self.draw_list.add_rect(box_rect, bg_color, radius_sm)
+  self.painter().add_rect(box_rect, bg_color, radius_sm)
 
   // Blender-style Mercury Progress Fill inside box
   if min < max {
@@ -379,17 +385,17 @@ pub fn UIContext::drag_value(
         fill_w,
         box_rect.h,
       )
-      self.draw_list.add_rect(
-        mercury_rect,
-        @color.Color::accent_soft(),
-        radius_sm,
-      )
+      self
+      .painter()
+      .add_rect(mercury_rect, @color.Color::accent_soft(), radius_sm)
     }
   }
 
-  self.draw_list.add_rect_stroke(box_rect, border_color, 1.0, radius_sm)
+  self.painter().add_rect_stroke(box_rect, border_color, 1.0, radius_sm)
   if is_focused {
-    self.draw_list.add_rect_stroke(
+    self
+    .painter()
+    .add_rect_stroke(
       box_rect.expand(2.0 * scale),
       @color.Color::border_focus(),
       1.5,
@@ -406,7 +412,9 @@ pub fn UIContext::drag_value(
   let val_size = self.measure_text(val_str, font_sm)
   let text_x = box_rect.x + (box_w - val_size.x) * 0.5
   let text_y = box_rect.y + (h - font_sm) * 0.5
-  self.draw_list.add_text(
+  self
+  .painter()
+  .add_text(
     @math.Vec2::new(text_x, text_y),
     val_str,
     font_sm,

@@ -17,7 +17,7 @@ pub fn UIContext::label_colored(
   let h = 18.0
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
   let text_pos = @math.Vec2::new(rect.x, rect.y + (h - font_sz) * 0.5)
-  self.draw_list.add_text(text_pos, text, font_sz, color)
+  self.painter().add_text(text_pos, text, font_sz, color)
   resp
 }
 
@@ -28,7 +28,9 @@ pub fn UIContext::separator(self : UIContext) -> Unit {
   let h = 9.0
   let (_id, rect, _resp) = self.allocate_space(@math.Vec2::new(w, h))
   let y = rect.y + 4.5
-  self.draw_list.add_line(
+  self
+  .painter()
+  .add_line(
     @math.Vec2::new(rect.x, y),
     @math.Vec2::new(rect.x + rect.w, y),
     @color.Color::border_muted(),

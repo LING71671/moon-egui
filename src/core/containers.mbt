@@ -47,10 +47,12 @@ pub fn UIContext::collapsing_header(
     @color.Color::border_muted()
   }
   let header_radius = self.style.radius_sm * scale
-  self.draw_list.add_rect(rect, bg_color, header_radius)
-  self.draw_list.add_rect_stroke(rect, border_color, 1.0, header_radius)
+  self.painter().add_rect(rect, bg_color, header_radius)
+  self.painter().add_rect_stroke(rect, border_color, 1.0, header_radius)
   if is_focused {
-    self.draw_list.add_rect_stroke(
+    self
+    .painter()
+    .add_rect_stroke(
       rect.expand(2.0 * scale),
       @color.Color::border_focus(),
       1.5,
@@ -71,14 +73,14 @@ pub fn UIContext::collapsing_header(
     let p1 = @math.Vec2::new(arrow_cx - 3.5, arrow_cy - 1.5)
     let p2 = @math.Vec2::new(arrow_cx, arrow_cy + 2.0)
     let p3 = @math.Vec2::new(arrow_cx + 3.5, arrow_cy - 1.5)
-    self.draw_list.add_line(p1, p2, arrow_color, 1.5)
-    self.draw_list.add_line(p2, p3, arrow_color, 1.5)
+    self.painter().add_line(p1, p2, arrow_color, 1.5)
+    self.painter().add_line(p2, p3, arrow_color, 1.5)
   } else {
     let p1 = @math.Vec2::new(arrow_cx - 1.5, arrow_cy - 3.5)
     let p2 = @math.Vec2::new(arrow_cx + 2.0, arrow_cy)
     let p3 = @math.Vec2::new(arrow_cx - 1.5, arrow_cy + 3.5)
-    self.draw_list.add_line(p1, p2, arrow_color, 1.5)
-    self.draw_list.add_line(p2, p3, arrow_color, 1.5)
+    self.painter().add_line(p1, p2, arrow_color, 1.5)
+    self.painter().add_line(p2, p3, arrow_color, 1.5)
   }
 
   let font_sz = self.style.font_normal
@@ -89,12 +91,9 @@ pub fn UIContext::collapsing_header(
   } else {
     @color.Color::text_body()
   }
-  self.draw_list.add_text(
-    @math.Vec2::new(title_x, title_y),
-    title,
-    font_sz,
-    text_color,
-  )
+  self
+  .painter()
+  .add_text(@math.Vec2::new(title_x, title_y), title, font_sz, text_color)
 
   if is_open {
     let prev_cursor = self.cursor()
@@ -191,7 +190,9 @@ pub fn UIContext::combo_box(
 
   if !label.is_empty() {
     let label_y = rect.y + (h - combo_font_sz) * 0.5
-    self.draw_list.add_text(
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(rect.x, label_y),
       label,
       combo_font_sz,
@@ -213,9 +214,9 @@ pub fn UIContext::combo_box(
   }
 
   let box_radius = self.style.radius_sm
-  self.draw_list.add_rect(box_rect, bg_color, box_radius)
+  self.painter().add_rect(box_rect, bg_color, box_radius)
   let stroke_w = if is_focused || is_open { 1.5 } else { 1.0 }
-  self.draw_list.add_rect_stroke(box_rect, border_color, stroke_w, box_radius)
+  self.painter().add_rect_stroke(box_rect, border_color, stroke_w, box_radius)
 
   let selected_str = if current_idx >= 0 && current_idx < options.length() {
     options[current_idx]
@@ -223,7 +224,9 @@ pub fn UIContext::combo_box(
     ""
   }
   let text_y = box_rect.y + (h - combo_font_sz) * 0.5
-  self.draw_list.add_text(
+  self
+  .painter()
+  .add_text(
     @math.Vec2::new(box_rect.x + 8.0, text_y),
     selected_str,
     combo_font_sz,
@@ -244,14 +247,14 @@ pub fn UIContext::combo_box(
     let p1 = @math.Vec2::new(chevron_cx - 3.5, chevron_cy + 1.5)
     let p2 = @math.Vec2::new(chevron_cx, chevron_cy - 2.0)
     let p3 = @math.Vec2::new(chevron_cx + 3.5, chevron_cy + 1.5)
-    self.draw_list.add_line(p1, p2, chevron_col, 1.5)
-    self.draw_list.add_line(p2, p3, chevron_col, 1.5)
+    self.painter().add_line(p1, p2, chevron_col, 1.5)
+    self.painter().add_line(p2, p3, chevron_col, 1.5)
   } else {
     let p1 = @math.Vec2::new(chevron_cx - 3.5, chevron_cy - 1.5)
     let p2 = @math.Vec2::new(chevron_cx, chevron_cy + 2.0)
     let p3 = @math.Vec2::new(chevron_cx + 3.5, chevron_cy - 1.5)
-    self.draw_list.add_line(p1, p2, chevron_col, 1.5)
-    self.draw_list.add_line(p2, p3, chevron_col, 1.5)
+    self.painter().add_line(p1, p2, chevron_col, 1.5)
+    self.painter().add_line(p2, p3, chevron_col, 1.5)
   }
 
   if is_open {
@@ -316,13 +319,13 @@ pub fn UIContext::combo_box(
     let menu_radius = self.style.radius_md
     let item_radius = self.style.radius_sm
     let item_font_sz = self.style.font_small
-    self.draw_list.add_rect(
-      shadow_rect,
-      @color.Color::shadow_ambient(),
-      menu_radius,
-    )
-    self.draw_list.add_rect(menu_rect, @color.Color::bg_window(), item_radius)
-    self.draw_list.add_rect_stroke(
+    self
+    .painter()
+    .add_rect(shadow_rect, @color.Color::shadow_ambient(), menu_radius)
+    self.painter().add_rect(menu_rect, @color.Color::bg_window(), item_radius)
+    self
+    .painter()
+    .add_rect_stroke(
       menu_rect,
       @color.Color::border_default(),
       1.0,
@@ -341,11 +344,9 @@ pub fn UIContext::combo_box(
       let item_hovered = self.is_hovered(item_rect)
       if item_hovered {
         self.set_cursor_icon("pointer")
-        self.draw_list.add_rect(
-          item_rect,
-          @color.Color::bg_surface(),
-          item_radius,
-        )
+        self
+        .painter()
+        .add_rect(item_rect, @color.Color::bg_surface(), item_radius)
         if self.input.mouse_pressed() {
           current_idx = i
           self.set_open_combo_id(Id::zero())
@@ -358,7 +359,9 @@ pub fn UIContext::combo_box(
       } else {
         @color.Color::text_body()
       }
-      self.draw_list.add_text(
+      self
+      .painter()
+      .add_text(
         @math.Vec2::new(
           item_rect.x + 8.0,
           item_rect.y + (item_h - item_font_sz) * 0.5,
@@ -375,8 +378,8 @@ pub fn UIContext::combo_box(
         let p1 = @math.Vec2::new(chk_x - 4.0, chk_y)
         let p2 = @math.Vec2::new(chk_x - 1.5, chk_y + 2.5)
         let p3 = @math.Vec2::new(chk_x + 3.5, chk_y - 2.5)
-        self.draw_list.add_line(p1, p2, @color.Color::accent_primary(), 1.5)
-        self.draw_list.add_line(p2, p3, @color.Color::accent_primary(), 1.5)
+        self.painter().add_line(p1, p2, @color.Color::accent_primary(), 1.5)
+        self.painter().add_line(p2, p3, @color.Color::accent_primary(), 1.5)
       }
     }
 
@@ -436,8 +439,10 @@ pub fn UIContext::tab_bar(
   let container_radius = self.style.radius_md * scale
   let tab_radius = self.style.radius_sm * scale
   // Draw recessed groove container
-  self.draw_list.add_rect(rect, @color.Color::bg_surface(), container_radius)
-  self.draw_list.add_rect_stroke(
+  self.painter().add_rect(rect, @color.Color::bg_surface(), container_radius)
+  self
+  .painter()
+  .add_rect_stroke(
     rect,
     if is_focused {
       @color.Color::border_focus()
@@ -466,12 +471,12 @@ pub fn UIContext::tab_bar(
 
     if is_selected {
       let active_rect = tab_rect.shrink(2.0)
-      self.draw_list.add_rect(
-        active_rect,
-        @color.Color::bg_window(),
-        tab_radius,
-      )
-      self.draw_list.add_rect_stroke(
+      self
+      .painter()
+      .add_rect(active_rect, @color.Color::bg_window(), tab_radius)
+      self
+      .painter()
+      .add_rect_stroke(
         active_rect,
         @color.Color::border_default(),
         1.0,
@@ -479,7 +484,7 @@ pub fn UIContext::tab_bar(
       )
     } else if is_hovered {
       let hover_rect = tab_rect.shrink(2.0)
-      self.draw_list.add_rect(hover_rect, @color.Color::bg_subtle(), tab_radius)
+      self.painter().add_rect(hover_rect, @color.Color::bg_subtle(), tab_radius)
     }
 
     let text_col = if is_selected {
@@ -492,12 +497,9 @@ pub fn UIContext::tab_bar(
 
     let text_x = tab_rect.x + (tab_w - text_w) * 0.5
     let text_y = tab_rect.y + (h - font_size) * 0.5
-    self.draw_list.add_text(
-      @math.Vec2::new(text_x, text_y),
-      tab_text,
-      font_size,
-      text_col,
-    )
+    self
+    .painter()
+    .add_text(@math.Vec2::new(text_x, text_y), tab_text, font_size, text_col)
 
     cur_x = cur_x + tab_w
   }

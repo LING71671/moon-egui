@@ -179,28 +179,29 @@ pub fn UIContext::dialog(
   self.begin_foreground()
 
   // 1. Fullscreen Backdrop Scrim
-  self.draw_list.add_rect(scrim_rect, @color.Color::bg_scrim(), 0.0)
+  self.painter().add_rect(scrim_rect, @color.Color::bg_scrim(), 0.0)
 
   // 2. Multi-layer Studio Light Shadows
-  self.draw_list.add_rect(
+  self
+  .painter()
+  .add_rect(
     @math.Rect::new(card_x, card_y + 4.0 * scale, eff_w, card_h),
     @color.Color::shadow_key(),
     card_radius,
   )
-  self.draw_list.add_rect(
+  self
+  .painter()
+  .add_rect(
     @math.Rect::new(card_x, card_y + 12.0 * scale, eff_w, card_h),
     @color.Color::shadow_ambient(),
     card_radius,
   )
 
   // 3. Card Base & Outline
-  self.draw_list.add_rect(card_rect, @color.Color::bg_surface(), card_radius)
-  self.draw_list.add_rect_stroke(
-    card_rect,
-    @color.Color::border_default(),
-    1.0,
-    card_radius,
-  )
+  self.painter().add_rect(card_rect, @color.Color::bg_surface(), card_radius)
+  self
+  .painter()
+  .add_rect_stroke(card_rect, @color.Color::border_default(), 1.0, card_radius)
 
   // 4. Semantic Badge Icon
   let icon_center = @math.Vec2::new(
@@ -215,22 +216,21 @@ pub fn UIContext::dialog(
       (@color.Color::badge_info_bg(), "?", @color.Color::accent_primary())
   }
 
-  self.draw_list.add_circle(icon_center, 16.0 * scale, badge_bg)
+  self.painter().add_circle(icon_center, 16.0 * scale, badge_bg)
   let sym_offset = self.measure_text(badge_sym, self.style.font_normal * scale)
   let sym_pos = @math.Vec2::new(
     icon_center.x - sym_offset.x * 0.5,
     icon_center.y - sym_offset.y * 0.5,
   )
-  self.draw_list.add_text(
-    sym_pos,
-    badge_sym,
-    self.style.font_normal * scale,
-    badge_fg,
-  )
+  self
+  .painter()
+  .add_text(sym_pos, badge_sym, self.style.font_normal * scale, badge_fg)
 
   // 5. Title & Message Text
   let title_pos = @math.Vec2::new(card_x + 60.0 * scale, card_y + pad_top)
-  self.draw_list.add_text(
+  self
+  .painter()
+  .add_text(
     title_pos,
     title,
     self.style.font_large * scale,
@@ -242,7 +242,9 @@ pub fn UIContext::dialog(
   for idx = 0; idx < msg_lines.length(); idx = idx + 1 {
     let line_y = msg_start_y + idx.to_double() * msg_line_h
     if line_y + msg_line_h <= btn_y - 6.0 * scale {
-      self.draw_list.add_text(
+      self
+      .painter()
+      .add_text(
         @math.Vec2::new(card_x + 60.0 * scale, line_y),
         msg_lines[idx],
         msg_font_sz,
@@ -275,15 +277,14 @@ pub fn UIContext::dialog(
   } else {
     @color.Color::bg_subtle()
   }
-  self.draw_list.add_rect(cancel_rect, cancel_bg, btn_radius)
-  self.draw_list.add_rect_stroke(
-    cancel_rect,
-    @color.Color::border_default(),
-    1.0,
-    btn_radius,
-  )
+  self.painter().add_rect(cancel_rect, cancel_bg, btn_radius)
+  self
+  .painter()
+  .add_rect_stroke(cancel_rect, @color.Color::border_default(), 1.0, btn_radius)
   if self.has_focus(cancel_id) {
-    self.draw_list.add_rect_stroke(
+    self
+    .painter()
+    .add_rect_stroke(
       cancel_rect.expand(2.0),
       @color.Color::border_focus(),
       1.5,
@@ -298,7 +299,9 @@ pub fn UIContext::dialog(
     cancel_rect.x + (cancel_rect.w - cancel_sz.x) * 0.5,
     cancel_rect.y + (cancel_rect.h - cancel_sz.y) * 0.5,
   )
-  self.draw_list.add_text(
+  self
+  .painter()
+  .add_text(
     cancel_text_pos,
     cancel_label,
     self.style.font_normal * scale,
@@ -319,9 +322,11 @@ pub fn UIContext::dialog(
         @color.Color::accent_primary()
       }
   }
-  self.draw_list.add_rect(confirm_rect, confirm_bg, btn_radius)
+  self.painter().add_rect(confirm_rect, confirm_bg, btn_radius)
   if self.has_focus(confirm_id) {
-    self.draw_list.add_rect_stroke(
+    self
+    .painter()
+    .add_rect_stroke(
       confirm_rect.expand(2.0),
       @color.Color::border_focus(),
       1.5,
@@ -336,7 +341,9 @@ pub fn UIContext::dialog(
     confirm_rect.x + (confirm_rect.w - confirm_sz.x) * 0.5,
     confirm_rect.y + (confirm_rect.h - confirm_sz.y) * 0.5,
   )
-  self.draw_list.add_text(
+  self
+  .painter()
+  .add_text(
     confirm_text_pos,
     confirm_label,
     self.style.font_normal * scale,

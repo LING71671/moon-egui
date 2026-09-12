@@ -78,12 +78,13 @@ pub fn UIContext::breadcrumb(
     let item_rect = @math.Rect::new(current_x, rect.y, item_w, h)
 
     let is_hovered = item_rect.contains(self.input.mouse_pos)
+    let painter = self.painter()
 
     // Last item is current location, not interactive
     if !is_last && orig_idx >= 0 {
       if is_hovered {
         self.set_cursor_icon("pointer")
-        self.draw_list.add_rect(
+        painter.add_rect(
           item_rect,
           @color.Color::bg_hover(),
           self.style.radius_sm * scale,
@@ -106,14 +107,14 @@ pub fn UIContext::breadcrumb(
       current_x + 4.0,
       rect.y + (h - font_sz) * 0.5,
     )
-    self.draw_list.add_text(text_pos, label, font_sz, text_col)
+    painter.add_text(text_pos, label, font_sz, text_col)
     current_x = current_x + item_w
 
     // Separator
     if !is_last {
       let sep_x = current_x + sep_gap
       let sep_pos = @math.Vec2::new(sep_x, rect.y + (h - font_sz) * 0.5)
-      self.draw_list.add_text(
+      painter.add_text(
         sep_pos,
         separator,
         font_sz,

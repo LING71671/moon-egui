@@ -116,13 +116,10 @@ pub fn UIContext::plot(
   let font_sz = self.style.font_small * scale
 
   // 1. Draw Container Surface
-  self.draw_list.add_rect(rect, @color.Color::bg_surface(), radius)
-  self.draw_list.add_rect_stroke(
-    rect,
-    @color.Color::border_muted(),
-    1.0,
-    radius,
-  )
+  self.painter().add_rect(rect, @color.Color::bg_surface(), radius)
+  self
+  .painter()
+  .add_rect_stroke(rect, @color.Color::border_muted(), 1.0, radius)
 
   // Inner Plot Coordinate Rect
   let plot_w = rect.w - pad_left - pad_right
@@ -197,7 +194,9 @@ pub fn UIContext::plot(
     for i = 0; i <= num_h_ticks; i = i + 1 {
       let t = i.to_double() / num_h_ticks.to_double()
       let gy = plot_bottom - t * plot_rect.h
-      self.draw_list.add_line(
+      self
+      .painter()
+      .add_line(
         @math.Vec2::new(plot_rect.x, gy),
         @math.Vec2::new(plot_right, gy),
         @color.Color::grid_line(),
@@ -207,7 +206,9 @@ pub fn UIContext::plot(
       let tick_val = min_y + t * span_y
       let label = format_coord_val(tick_val)
       let label_sz = self.measure_text(label, font_sz)
-      self.draw_list.add_text(
+      self
+      .painter()
+      .add_text(
         @math.Vec2::new(
           plot_rect.x - label_sz.x - 4.0 * scale,
           gy - font_sz * 0.45,
@@ -223,7 +224,9 @@ pub fn UIContext::plot(
     for i = 0; i <= num_v_ticks; i = i + 1 {
       let t = i.to_double() / num_v_ticks.to_double()
       let gx = plot_rect.x + t * plot_rect.w
-      self.draw_list.add_line(
+      self
+      .painter()
+      .add_line(
         @math.Vec2::new(gx, plot_rect.y),
         @math.Vec2::new(gx, plot_bottom),
         @color.Color::grid_line(),
@@ -233,7 +236,9 @@ pub fn UIContext::plot(
       let tick_val = min_x + t * span_x
       let label = format_coord_val(tick_val)
       let label_sz = self.measure_text(label, font_sz)
-      self.draw_list.add_text(
+      self
+      .painter()
+      .add_text(
         @math.Vec2::new(gx - label_sz.x * 0.5, plot_bottom + 4.0 * scale),
         label,
         font_sz,
@@ -257,12 +262,9 @@ pub fn UIContext::plot(
         let mut prev_screen = map_data_to_screen(pts[0])
         for i = 1; i < count; i = i + 1 {
           let curr_screen = map_data_to_screen(pts[i])
-          self.draw_list.add_line(
-            prev_screen,
-            curr_screen,
-            s.color,
-            2.0 * scale,
-          )
+          self
+          .painter()
+          .add_line(prev_screen, curr_screen, s.color, 2.0 * scale)
           prev_screen = curr_screen
         }
       }
@@ -270,7 +272,7 @@ pub fn UIContext::plot(
         let r = 3.5 * scale
         for i = 0; i < count; i = i + 1 {
           let pt_screen = map_data_to_screen(pts[i])
-          self.draw_list.add_circle(pt_screen, r, s.color)
+          self.painter().add_circle(pt_screen, r, s.color)
         }
       }
       Area => {
@@ -289,7 +291,9 @@ pub fn UIContext::plot(
             curr_screen.x - prev_screen.x,
             base_y - p_top,
           )
-          self.draw_list.add_linear_gradient(
+          self
+          .painter()
+          .add_linear_gradient(
             seg_rect,
             @math.Vec2::new(seg_rect.x, seg_rect.y),
             @math.Vec2::new(seg_rect.x, seg_rect.y + seg_rect.h),
@@ -297,12 +301,9 @@ pub fn UIContext::plot(
             s.color.with_alpha(15),
             0.0,
           )
-          self.draw_list.add_line(
-            prev_screen,
-            curr_screen,
-            s.color,
-            2.0 * scale,
-          )
+          self
+          .painter()
+          .add_line(prev_screen, curr_screen, s.color, 2.0 * scale)
           prev_screen = curr_screen
         }
       }
@@ -324,8 +325,10 @@ pub fn UIContext::plot(
         leg_x + 5.0 * scale,
         plot_rect.y + 10.0 * scale,
       )
-      self.draw_list.add_circle(dot_center, dot_r, s.color)
-      self.draw_list.add_text(
+      self.painter().add_circle(dot_center, dot_r, s.color)
+      self
+      .painter()
+      .add_text(
         @math.Vec2::new(leg_x + 12.0 * scale, plot_rect.y + 4.0 * scale),
         s.name,
         font_sz,
@@ -349,14 +352,18 @@ pub fn UIContext::plot(
     )
 
     // Vertical Hairline
-    self.draw_list.add_line(
+    self
+    .painter()
+    .add_line(
       @math.Vec2::new(mouse_pos.x, plot_rect.y),
       @math.Vec2::new(mouse_pos.x, plot_bottom),
       @color.Color::plot_crosshair(),
       1.0,
     )
     // Horizontal Hairline
-    self.draw_list.add_line(
+    self
+    .painter()
+    .add_line(
       @math.Vec2::new(plot_rect.x, mouse_pos.y),
       @math.Vec2::new(plot_right, mouse_pos.y),
       @color.Color::plot_crosshair(),
@@ -382,8 +389,10 @@ pub fn UIContext::plot(
     }
     let tip_rect = @math.Rect::new(tip_x, tip_y, tip_w, tip_h)
     let tip_radius = self.style.radius_sm * scale
-    self.draw_list.add_rect(tip_rect, @color.Color::text_strong(), tip_radius)
-    self.draw_list.add_text(
+    self.painter().add_rect(tip_rect, @color.Color::text_strong(), tip_radius)
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(tip_x + tip_pad_x, tip_y + tip_pad_y),
       text,
       font_sz,
@@ -426,13 +435,10 @@ pub fn UIContext::bar_chart(
   let gap = self.style.bar_chart_gap * scale
 
   // Container Surface
-  self.draw_list.add_rect(rect, @color.Color::bg_surface(), radius)
-  self.draw_list.add_rect_stroke(
-    rect,
-    @color.Color::border_muted(),
-    1.0,
-    radius,
-  )
+  self.painter().add_rect(rect, @color.Color::bg_surface(), radius)
+  self
+  .painter()
+  .add_rect_stroke(rect, @color.Color::border_muted(), 1.0, radius)
 
   let count = values.length()
   if count == 0 {
@@ -466,7 +472,9 @@ pub fn UIContext::bar_chart(
   for i = 0; i <= num_guidelines; i = i + 1 {
     let t = i.to_double() / num_guidelines.to_double()
     let gy = plot_bottom - t * plot_rect.h
-    self.draw_list.add_line(
+    self
+    .painter()
+    .add_line(
       @math.Vec2::new(plot_rect.x, gy),
       @math.Vec2::new(plot_right, gy),
       @color.Color::grid_line(),
@@ -475,7 +483,9 @@ pub fn UIContext::bar_chart(
     let val = t * max_val
     let label = format_coord_val(val)
     let label_sz = self.measure_text(label, font_sz)
-    self.draw_list.add_text(
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(
         plot_rect.x - label_sz.x - 4.0 * scale,
         gy - font_sz * 0.45,
@@ -518,7 +528,7 @@ pub fn UIContext::bar_chart(
     }
 
     let bar_radius = self.style.radius_sm * scale
-    self.draw_list.add_rect(bar_rect, col, bar_radius)
+    self.painter().add_rect(bar_rect, col, bar_radius)
 
     // Category Label
     if i < labels.length() {
@@ -526,7 +536,9 @@ pub fn UIContext::bar_chart(
       let lbl_sz = self.measure_text(lbl, font_sz)
       let lx = bx + (bar_w - lbl_sz.x) * 0.5
       let ly = plot_bottom + 4.0 * scale
-      self.draw_list.add_text(
+      self
+      .painter()
+      .add_text(
         @math.Vec2::new(lx, ly),
         lbl,
         font_sz,
@@ -545,12 +557,16 @@ pub fn UIContext::bar_chart(
       let badge_x = bx + (bar_w - badge_w) * 0.5
       let badge_y = by - badge_h - 4.0 * scale
       let badge_rect = @math.Rect::new(badge_x, badge_y, badge_w, badge_h)
-      self.draw_list.add_rect(
+      self
+      .painter()
+      .add_rect(
         badge_rect,
         @color.Color::text_strong(),
         self.style.radius_sm * scale,
       )
-      self.draw_list.add_text(
+      self
+      .painter()
+      .add_text(
         @math.Vec2::new(badge_x + badge_pad_x, badge_y + badge_pad_y),
         val_str,
         font_sz,

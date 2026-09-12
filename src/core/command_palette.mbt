@@ -306,31 +306,34 @@ pub fn UIContext::command_palette(
   self.begin_foreground()
 
   // Semi-transparent backdrop scrim
-  self.draw_list.add_rect(scrim_rect, @color.Color::bg_scrim(), 0.0)
+  self.painter().add_rect(scrim_rect, @color.Color::bg_scrim(), 0.0)
 
   // Drop shadows
-  self.draw_list.add_rect(
+  self
+  .painter()
+  .add_rect(
     @math.Rect::new(card_x, card_y + elevation_key_y, card_w, card_h),
     @color.Color::shadow_key(),
     card_radius,
   )
-  self.draw_list.add_rect(
+  self
+  .painter()
+  .add_rect(
     @math.Rect::new(card_x, card_y + elevation_ambient_y, card_w, card_h),
     @color.Color::shadow_ambient(),
     card_radius,
   )
 
   // Porcelain card surface and border
-  self.draw_list.add_rect(card_rect, @color.Color::bg_window(), card_radius)
-  self.draw_list.add_rect_stroke(
-    card_rect,
-    @color.Color::border_default(),
-    1.0,
-    card_radius,
-  )
+  self.painter().add_rect(card_rect, @color.Color::bg_window(), card_radius)
+  self
+  .painter()
+  .add_rect_stroke(card_rect, @color.Color::border_default(), 1.0, card_radius)
 
   // Search prompt icon '>'
-  self.draw_list.add_text(
+  self
+  .painter()
+  .add_text(
     @math.Vec2::new(card_x + 16.0 * scale, card_y + 14.0 * scale),
     ">",
     font_lg,
@@ -339,14 +342,18 @@ pub fn UIContext::command_palette(
 
   // Search input text or placeholder
   if new_query.is_empty() {
-    self.draw_list.add_text(
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(card_x + 36.0 * scale, card_y + 16.0 * scale),
       "键入命令或搜索动作...",
       font_nm,
       @color.Color::text_muted(),
     )
   } else {
-    self.draw_list.add_text(
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(card_x + 36.0 * scale, card_y + 16.0 * scale),
       new_query,
       font_nm,
@@ -355,7 +362,9 @@ pub fn UIContext::command_palette(
     let q_size = self.measure_text(new_query, font_nm)
     let caret_x = card_x + 36.0 * scale + q_size.x + 2.0 * scale
     if self.is_caret_visible() {
-      self.draw_list.add_line(
+      self
+      .painter()
+      .add_line(
         @math.Vec2::new(caret_x, card_y + 16.0 * scale),
         @math.Vec2::new(caret_x, card_y + 31.0 * scale),
         @color.Color::accent_primary(),
@@ -370,14 +379,13 @@ pub fn UIContext::command_palette(
   let esc_x = card_x + card_w - esc_w - 14.0 * scale
   let esc_y = card_y + 14.0 * scale
   let esc_rect = @math.Rect::new(esc_x, esc_y, esc_w, esc_h)
-  self.draw_list.add_rect(esc_rect, @color.Color::bg_surface(), row_radius)
-  self.draw_list.add_rect_stroke(
-    esc_rect,
-    @color.Color::border_muted(),
-    1.0,
-    row_radius,
-  )
-  self.draw_list.add_text(
+  self.painter().add_rect(esc_rect, @color.Color::bg_surface(), row_radius)
+  self
+  .painter()
+  .add_rect_stroke(esc_rect, @color.Color::border_muted(), 1.0, row_radius)
+  self
+  .painter()
+  .add_text(
     @math.Vec2::new(esc_x + 6.0 * scale, esc_y + 3.0 * scale),
     "Esc",
     font_sm,
@@ -385,7 +393,9 @@ pub fn UIContext::command_palette(
   )
 
   // Hairline divider below search bar
-  self.draw_list.add_line(
+  self
+  .painter()
+  .add_line(
     @math.Vec2::new(card_x, card_y + header_h),
     @math.Vec2::new(card_x + card_w, card_y + header_h),
     @color.Color::border_muted(),
@@ -399,7 +409,9 @@ pub fn UIContext::command_palette(
 
   if filtered_count == 0 {
     let empty_text_y = draw_y + (48.0 * scale - font_nm) * 0.5
-    self.draw_list.add_text(
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(card_x + 20.0 * scale, empty_text_y),
       "未找到匹配命令",
       font_nm,
@@ -414,7 +426,9 @@ pub fn UIContext::command_palette(
       let item = filtered[idx]
       if !item.category.is_empty() && item.category != prev_draw_cat {
         let cat_y = draw_y + (cat_h - font_sm) * 0.5
-        self.draw_list.add_text(
+        self
+        .painter()
+        .add_text(
           @math.Vec2::new(card_x + 16.0 * scale, cat_y),
           item.category,
           font_sm,
@@ -429,13 +443,13 @@ pub fn UIContext::command_palette(
       let text_y = draw_y + (row_h - font_nm) * 0.5
 
       if is_selected {
-        self.draw_list.add_rect(
-          row_rect,
-          @color.Color::tree_row_selected(),
-          row_radius,
-        )
+        self
+        .painter()
+        .add_rect(row_rect, @color.Color::tree_row_selected(), row_radius)
         let indicator_y = draw_y + (row_h - indicator_h) * 0.5
-        self.draw_list.add_rect(
+        self
+        .painter()
+        .add_rect(
           @math.Rect::new(
             card_x + row_pad_x,
             indicator_y,
@@ -445,14 +459,18 @@ pub fn UIContext::command_palette(
           @color.Color::accent_primary(),
           indicator_w * 0.5,
         )
-        self.draw_list.add_text(
+        self
+        .painter()
+        .add_text(
           @math.Vec2::new(text_pad_left, text_y),
           item.title,
           font_nm,
           @color.Color::text_primary(),
         )
       } else {
-        self.draw_list.add_text(
+        self
+        .painter()
+        .add_text(
           @math.Vec2::new(text_pad_left, text_y),
           item.title,
           font_nm,
@@ -464,7 +482,9 @@ pub fn UIContext::command_palette(
         let sc_size = self.measure_text(item.shortcut, font_sm)
         let sc_x = card_x + card_w - sc_size.x - 20.0 * scale
         let sc_y = draw_y + (row_h - font_sm) * 0.5
-        self.draw_list.add_text(
+        self
+        .painter()
+        .add_text(
           @math.Vec2::new(sc_x, sc_y),
           item.shortcut,
           font_sm,
@@ -480,14 +500,18 @@ pub fn UIContext::command_palette(
   // Footer bar
   let footer_y = card_y + card_h - footer_h
   let footer_rect = @math.Rect::new(card_x, footer_y, card_w, footer_h)
-  self.draw_list.add_rect(footer_rect, @color.Color::bg_surface(), card_radius)
-  self.draw_list.add_line(
+  self.painter().add_rect(footer_rect, @color.Color::bg_surface(), card_radius)
+  self
+  .painter()
+  .add_line(
     @math.Vec2::new(card_x, footer_y),
     @math.Vec2::new(card_x + card_w, footer_y),
     @color.Color::border_muted(),
     1.0,
   )
-  self.draw_list.add_text(
+  self
+  .painter()
+  .add_text(
     @math.Vec2::new(card_x + 16.0 * scale, footer_y + 8.0 * scale),
     "↑↓ 导航   ↵ 选择   Esc 退出",
     font_sm,

@@ -127,13 +127,10 @@ pub fn UIContext::color_picker(
   // Panel background card
   let card_radius = self.style.radius_md
   let inner_radius = self.style.radius_sm
-  self.draw_list.add_rect(rect, @color.Color::bg_surface(), card_radius)
-  self.draw_list.add_rect_stroke(
-    rect,
-    @color.Color::border_default(),
-    1.0,
-    card_radius,
-  )
+  self.painter().add_rect(rect, @color.Color::bg_surface(), card_radius)
+  self
+  .painter()
+  .add_rect_stroke(rect, @color.Color::border_default(), 1.0, card_radius)
 
   let pad = 10.0
   let sq_x = rect.x + pad
@@ -185,34 +182,25 @@ pub fn UIContext::color_picker(
         cell_w + 0.5,
         cell_h + 0.5,
       )
-      self.draw_list.add_rect(c_rect, @color.Color::rgb(cr, cg, cb), 0.0)
+      self.painter().add_rect(c_rect, @color.Color::rgb(cr, cg, cb), 0.0)
     }
   }
 
   // Border outline for SV square
-  self.draw_list.add_rect_stroke(
-    sq_rect,
-    @color.Color::border_muted(),
-    1.0,
-    inner_radius,
-  )
+  self
+  .painter()
+  .add_rect_stroke(sq_rect, @color.Color::border_muted(), 1.0, inner_radius)
 
   // Dual-ring cursor on SV area
   let cur_x = sq_x + s * sq_w
   let cur_y = sq_y + (1.0 - v) * sq_h
   let cur_center = @math.Vec2::new(cur_x, cur_y)
-  self.draw_list.add_circle_stroke(
-    cur_center,
-    5.0,
-    @color.Color::bg_window(),
-    1.6,
-  )
-  self.draw_list.add_circle_stroke(
-    cur_center,
-    3.5,
-    @color.Color::text_primary(),
-    1.2,
-  )
+  self
+  .painter()
+  .add_circle_stroke(cur_center, 5.0, @color.Color::bg_window(), 1.6)
+  self
+  .painter()
+  .add_circle_stroke(cur_center, 3.5, @color.Color::text_primary(), 1.2)
 
   // 2. Hue Rainbow Slider
   let hue_y = sq_y + sq_h + 8.0
@@ -248,25 +236,19 @@ pub fn UIContext::color_picker(
       hue_step_w + 0.5,
       hue_h,
     )
-    self.draw_list.add_rect(slice_rect, @color.Color::rgb(hr, hg, hb), 0.0)
+    self.painter().add_rect(slice_rect, @color.Color::rgb(hr, hg, hb), 0.0)
   }
-  self.draw_list.add_rect_stroke(
-    hue_rect,
-    @color.Color::border_muted(),
-    1.0,
-    inner_radius,
-  )
+  self
+  .painter()
+  .add_rect_stroke(hue_rect, @color.Color::border_muted(), 1.0, inner_radius)
 
   // Hue Slider Thumb
   let hue_thumb_x = sq_x + h / 360.0 * sq_w
   let hue_thumb_center = @math.Vec2::new(hue_thumb_x, hue_y + hue_h * 0.5)
-  self.draw_list.add_circle(hue_thumb_center, 6.0, @color.Color::bg_window())
-  self.draw_list.add_circle_stroke(
-    hue_thumb_center,
-    6.0,
-    @color.Color::border_default(),
-    1.0,
-  )
+  self.painter().add_circle(hue_thumb_center, 6.0, @color.Color::bg_window())
+  self
+  .painter()
+  .add_circle_stroke(hue_thumb_center, 6.0, @color.Color::border_default(), 1.0)
 
   // 3. Alpha Slider (Optional)
   if show_alpha {
@@ -293,7 +275,7 @@ pub fn UIContext::color_picker(
     }
 
     // Alpha Bar Background & Gradient
-    self.draw_list.add_rect(alpha_rect, @color.Color::bg_subtle(), inner_radius)
+    self.painter().add_rect(alpha_rect, @color.Color::bg_subtle(), inner_radius)
     let alpha_steps = 16
     let alpha_step_w = sq_w / alpha_steps.to_double()
     let (cur_r, cur_g, cur_b) = hsv_to_rgb(h, s, v)
@@ -306,13 +288,17 @@ pub fn UIContext::color_picker(
         alpha_step_w + 0.5,
         alpha_h,
       )
-      self.draw_list.add_rect(
+      self
+      .painter()
+      .add_rect(
         slice_rect,
         @color.Color::rgba(cur_r, cur_g, cur_b, step_a),
         0.0,
       )
     }
-    self.draw_list.add_rect_stroke(
+    self
+    .painter()
+    .add_rect_stroke(
       alpha_rect,
       @color.Color::border_muted(),
       1.0,
@@ -325,12 +311,12 @@ pub fn UIContext::color_picker(
       alpha_thumb_x,
       alpha_y + alpha_h * 0.5,
     )
-    self.draw_list.add_circle(
-      alpha_thumb_center,
-      6.0,
-      @color.Color::bg_window(),
-    )
-    self.draw_list.add_circle_stroke(
+    self
+    .painter()
+    .add_circle(alpha_thumb_center, 6.0, @color.Color::bg_window())
+    self
+    .painter()
+    .add_circle_stroke(
       alpha_thumb_center,
       6.0,
       @color.Color::border_default(),
@@ -348,8 +334,10 @@ pub fn UIContext::color_picker(
     hue_y + hue_h + 8.0
   }
   let swatch_rect = @math.Rect::new(sq_x, footer_y, 22.0, 22.0)
-  self.draw_list.add_rect(swatch_rect, updated_color, inner_radius)
-  self.draw_list.add_rect_stroke(
+  self.painter().add_rect(swatch_rect, updated_color, inner_radius)
+  self
+  .painter()
+  .add_rect_stroke(
     swatch_rect,
     @color.Color::border_default(),
     1.0,
@@ -368,12 +356,9 @@ pub fn UIContext::color_picker(
 
   let font_sz = self.style.font_small
   let hex_pos = @math.Vec2::new(sq_x + 30.0, footer_y + (22.0 - font_sz) * 0.5)
-  self.draw_list.add_text(
-    hex_pos,
-    hex_text,
-    font_sz,
-    @color.Color::text_strong(),
-  )
+  self
+  .painter()
+  .add_text(hex_pos, hex_text, font_sz, @color.Color::text_strong())
 
   (updated_color, resp)
 }
@@ -415,8 +400,10 @@ pub fn UIContext::color_picker_button(
     @color.Color::bg_surface()
   }
   let btn_radius = self.style.radius_sm * scale
-  self.draw_list.add_rect(rect, btn_bg, btn_radius)
-  self.draw_list.add_rect_stroke(
+  self.painter().add_rect(rect, btn_bg, btn_radius)
+  self
+  .painter()
+  .add_rect_stroke(
     rect,
     if is_focused {
       @color.Color::border_focus()
@@ -427,7 +414,9 @@ pub fn UIContext::color_picker_button(
     btn_radius,
   )
   if is_focused {
-    self.draw_list.add_rect_stroke(
+    self
+    .painter()
+    .add_rect_stroke(
       rect.expand(2.0 * scale),
       @color.Color::border_focus(),
       1.5,
@@ -444,17 +433,16 @@ pub fn UIContext::color_picker_button(
     swatch_size,
     swatch_size,
   )
-  self.draw_list.add_rect(swatch_rect, color, btn_radius)
-  self.draw_list.add_rect_stroke(
-    swatch_rect,
-    @color.Color::border_muted(),
-    1.0,
-    btn_radius,
-  )
+  self.painter().add_rect(swatch_rect, color, btn_radius)
+  self
+  .painter()
+  .add_rect_stroke(swatch_rect, @color.Color::border_muted(), 1.0, btn_radius)
 
   // Hex Text
   let text_y = rect.y + (btn_h - font_sz) * 0.5
-  self.draw_list.add_text(
+  self
+  .painter()
+  .add_text(
     @math.Vec2::new(rect.x + swatch_pad * 2.0 + swatch_size, text_y),
     hex_text,
     font_sz,

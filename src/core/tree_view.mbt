@@ -151,13 +151,13 @@ pub fn UIContext::tree_view(
   let tree_radius = self.style.tree_view_radius * scale
 
   // Surface and outer border
-  self.draw_list.add_rect(rect, @color.Color::bg_window(), tree_radius)
+  self.painter().add_rect(rect, @color.Color::bg_window(), tree_radius)
   let border_color = if is_focused {
     @color.Color::border_focus()
   } else {
     @color.Color::border_muted()
   }
-  self.draw_list.add_rect_stroke(rect, border_color, 1.0, tree_radius)
+  self.painter().add_rect_stroke(rect, border_color, 1.0, tree_radius)
 
   let mut cur_selected = selected_id
   let next_expanded = expanded_ids.copy()
@@ -294,13 +294,13 @@ pub fn UIContext::tree_view(
 
     // Row background wash
     if is_row_selected {
-      self.draw_list.add_rect(
-        row_rect,
-        @color.Color::tree_row_selected(),
-        row_radius,
-      )
+      self
+      .painter()
+      .add_rect(row_rect, @color.Color::tree_row_selected(), row_radius)
       // Left cobalt accent bar (2.5px)
-      self.draw_list.add_rect(
+      self
+      .painter()
+      .add_rect(
         @math.Rect::new(
           row_rect.x,
           row_rect.y + 2.0 * scale,
@@ -311,7 +311,7 @@ pub fn UIContext::tree_view(
         1.0,
       )
     } else if is_row_hovered {
-      self.draw_list.add_rect(row_rect, @color.Color::bg_hover(), row_radius)
+      self.painter().add_rect(row_rect, @color.Color::bg_hover(), row_radius)
     }
 
     // Hierarchy guide lines (for depths > 0)
@@ -320,7 +320,9 @@ pub fn UIContext::tree_view(
         4.0 * scale +
         d.to_double() * indent_step +
         7.5 * scale
-      self.draw_list.add_line(
+      self
+      .painter()
+      .add_line(
         @math.Vec2::new(guide_x, row_rect.y),
         @math.Vec2::new(guide_x, row_rect.y + row_rect.h),
         @color.Color::border_muted(),
@@ -336,7 +338,9 @@ pub fn UIContext::tree_view(
       } else {
         @color.Color::text_muted()
       }
-      self.draw_list.add_text(
+      self
+      .painter()
+      .add_text(
         @math.Vec2::new(chevron_x + 3.0 * scale, row_y + 5.0 * scale),
         chevron_glyph,
         font_sm,
@@ -362,8 +366,10 @@ pub fn UIContext::tree_view(
       } else {
         (@color.Color::bg_subtle(), @color.Color::text_secondary())
       }
-      self.draw_list.add_rect(badge_rect, badge_bg, 3.0 * scale)
-      self.draw_list.add_text(
+      self.painter().add_rect(badge_rect, badge_bg, 3.0 * scale)
+      self
+      .painter()
+      .add_text(
         @math.Vec2::new(content_x + 4.0 * scale, row_y + 6.0 * scale),
         node.icon,
         font_sm,
@@ -380,7 +386,9 @@ pub fn UIContext::tree_view(
     } else {
       @color.Color::text_body()
     }
-    self.draw_list.add_text(
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(text_x, row_y + 5.5 * scale),
       node.label,
       font_nm,

@@ -305,32 +305,35 @@ pub fn UIContext::context_menu_items(
   let font_sm = self.style.font_small * scale
 
   // 1. Dual-layer Elevation Shadow for main menu
-  self.draw_list.add_rect(
+  self
+  .painter()
+  .add_rect(
     @math.Rect::new(placed_pos.x, placed_pos.y + 4.0 * scale, total_w, total_h),
     @color.Color::shadow_ambient(),
     menu_radius,
   )
-  self.draw_list.add_rect(
+  self
+  .painter()
+  .add_rect(
     @math.Rect::new(placed_pos.x, placed_pos.y + 1.0 * scale, total_w, total_h),
     @color.Color::shadow_key(),
     menu_radius,
   )
 
   // Porcelain Surface and Crisp Border
-  self.draw_list.add_rect(menu_rect, @color.Color::bg_window(), menu_radius)
-  self.draw_list.add_rect_stroke(
-    menu_rect,
-    @color.Color::border_default(),
-    1.0,
-    menu_radius,
-  )
+  self.painter().add_rect(menu_rect, @color.Color::bg_window(), menu_radius)
+  self
+  .painter()
+  .add_rect_stroke(menu_rect, @color.Color::border_default(), 1.0, menu_radius)
 
   // Render main menu items
   let mut cur_draw_y = placed_pos.y + pad_y
   for item in items {
     if item.is_separator {
       let line_y = cur_draw_y + 3.0 * scale
-      self.draw_list.add_line(
+      self
+      .painter()
+      .add_line(
         @math.Vec2::new(placed_pos.x + 8.0 * scale, line_y),
         @math.Vec2::new(placed_pos.x + total_w - 8.0 * scale, line_y),
         @color.Color::border_muted(),
@@ -351,11 +354,9 @@ pub fn UIContext::context_menu_items(
         !item.disabled
 
       if hovered {
-        self.draw_list.add_rect(
-          row_rect,
-          @color.Color::bg_surface(),
-          row_radius,
-        )
+        self
+        .painter()
+        .add_rect(row_rect, @color.Color::bg_surface(), row_radius)
       }
 
       let text_col = if item.disabled {
@@ -367,7 +368,9 @@ pub fn UIContext::context_menu_items(
       }
 
       let text_y = cur_draw_y + (item_h - font_nm) * 0.5
-      self.draw_list.add_text(
+      self
+      .painter()
+      .add_text(
         @math.Vec2::new(placed_pos.x + 12.0 * scale, text_y),
         item.label,
         font_nm,
@@ -381,7 +384,9 @@ pub fn UIContext::context_menu_items(
         } else {
           @color.Color::text_muted()
         }
-        self.draw_list.add_text(
+        self
+        .painter()
+        .add_text(
           @math.Vec2::new(placed_pos.x + total_w - 18.0 * scale, text_y),
           ">",
           font_sm,
@@ -397,7 +402,9 @@ pub fn UIContext::context_menu_items(
         } else {
           @color.Color::text_muted()
         }
-        self.draw_list.add_text(
+        self
+        .painter()
+        .add_text(
           @math.Vec2::new(sc_x, text_y + 1.0 * scale),
           item.shortcut,
           font_sm,
@@ -411,7 +418,9 @@ pub fn UIContext::context_menu_items(
 
   // 2. Render cascading Submenu if active
   if active_sub_item is Some(sub_item) && sub_rect_opt is Some(sub_rect) {
-    self.draw_list.add_rect(
+    self
+    .painter()
+    .add_rect(
       @math.Rect::new(
         sub_rect.x,
         sub_rect.y + 4.0 * scale,
@@ -421,7 +430,9 @@ pub fn UIContext::context_menu_items(
       @color.Color::shadow_ambient(),
       menu_radius,
     )
-    self.draw_list.add_rect(
+    self
+    .painter()
+    .add_rect(
       @math.Rect::new(
         sub_rect.x,
         sub_rect.y + 1.0 * scale,
@@ -431,19 +442,18 @@ pub fn UIContext::context_menu_items(
       @color.Color::shadow_key(),
       menu_radius,
     )
-    self.draw_list.add_rect(sub_rect, @color.Color::bg_window(), menu_radius)
-    self.draw_list.add_rect_stroke(
-      sub_rect,
-      @color.Color::border_default(),
-      1.0,
-      menu_radius,
-    )
+    self.painter().add_rect(sub_rect, @color.Color::bg_window(), menu_radius)
+    self
+    .painter()
+    .add_rect_stroke(sub_rect, @color.Color::border_default(), 1.0, menu_radius)
 
     let mut sub_draw_y = sub_rect.y + pad_y
     for child in sub_item.children {
       if child.is_separator {
         let line_y = sub_draw_y + 3.0 * scale
-        self.draw_list.add_line(
+        self
+        .painter()
+        .add_line(
           @math.Vec2::new(sub_rect.x + 8.0 * scale, line_y),
           @math.Vec2::new(sub_rect.x + sub_rect.w - 8.0 * scale, line_y),
           @color.Color::border_muted(),
@@ -460,11 +470,9 @@ pub fn UIContext::context_menu_items(
         let child_hovered = child_row.contains(self.input.mouse_pos) &&
           !child.disabled
         if child_hovered {
-          self.draw_list.add_rect(
-            child_row,
-            @color.Color::bg_surface(),
-            row_radius,
-          )
+          self
+          .painter()
+          .add_rect(child_row, @color.Color::bg_surface(), row_radius)
         }
 
         let text_col = if child.disabled {
@@ -476,7 +484,9 @@ pub fn UIContext::context_menu_items(
         }
 
         let text_y = sub_draw_y + (item_h - font_nm) * 0.5
-        self.draw_list.add_text(
+        self
+        .painter()
+        .add_text(
           @math.Vec2::new(sub_rect.x + 12.0 * scale, text_y),
           child.label,
           font_nm,
@@ -493,7 +503,9 @@ pub fn UIContext::context_menu_items(
           } else {
             @color.Color::text_muted()
           }
-          self.draw_list.add_text(
+          self
+          .painter()
+          .add_text(
             @math.Vec2::new(sc_x, text_y + 1.0 * scale),
             child.shortcut,
             font_sm,
@@ -545,12 +557,12 @@ pub fn UIContext::context_menu(
   self.set_item_spacing(@math.Vec2::new(0.0, 2.0))
 
   let temp_draw_list = @draw.DrawList::new()
-  let saved_dl = self.draw_list
-  self.draw_list = temp_draw_list
+  let saved_dl = self.layers.draw_list()
+  self.layers.set_draw_list(temp_draw_list)
 
   self.vertical(content)
 
-  self.draw_list = saved_dl
+  self.layers.set_draw_list(saved_dl)
 
   let content_h = self.cursor().y - pad
   let total_h = if content_h > 0.0 { content_h + pad * 2.0 } else { 32.0 }
@@ -597,24 +609,28 @@ pub fn UIContext::context_menu(
 
   // Shadows
   let custom_menu_radius = self.style.radius_md
-  self.draw_list.add_rect(
+  self
+  .painter()
+  .add_rect(
     @math.Rect::new(placed_pos.x, placed_pos.y + 4.0, total_w, total_h),
     @color.Color::shadow_ambient(),
     custom_menu_radius,
   )
-  self.draw_list.add_rect(
+  self
+  .painter()
+  .add_rect(
     @math.Rect::new(placed_pos.x, placed_pos.y + 1.0, total_w, total_h),
     @color.Color::shadow_key(),
     custom_menu_radius,
   )
 
   // Card
-  self.draw_list.add_rect(
-    menu_rect,
-    @color.Color::bg_window(),
-    custom_menu_radius,
-  )
-  self.draw_list.add_rect_stroke(
+  self
+  .painter()
+  .add_rect(menu_rect, @color.Color::bg_window(), custom_menu_radius)
+  self
+  .painter()
+  .add_rect_stroke(
     menu_rect,
     @color.Color::border_default(),
     1.0,

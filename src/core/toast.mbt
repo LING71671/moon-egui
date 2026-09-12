@@ -211,25 +211,26 @@ pub fn UIContext::toast_stack(
     let toast_radius = self.style.toast_radius * scale
 
     // Shadows
-    self.draw_list.add_rect(
+    self
+    .painter()
+    .add_rect(
       @math.Rect::new(rect.x, rect.y + 4.0 * scale, rect.w, rect.h),
       @color.Color::shadow_ambient(),
       toast_radius,
     )
-    self.draw_list.add_rect(
+    self
+    .painter()
+    .add_rect(
       @math.Rect::new(rect.x, rect.y + 1.0 * scale, rect.w, rect.h),
       @color.Color::shadow_key(),
       toast_radius,
     )
 
     // Porcelain Capsule & Stroke
-    self.draw_list.add_rect(rect, @color.Color::bg_window(), toast_radius)
-    self.draw_list.add_rect_stroke(
-      rect,
-      @color.Color::border_default(),
-      1.0,
-      toast_radius,
-    )
+    self.painter().add_rect(rect, @color.Color::bg_window(), toast_radius)
+    self
+    .painter()
+    .add_rect_stroke(rect, @color.Color::border_default(), 1.0, toast_radius)
 
     // Status Indicator Bar
     let kind_color = match toast.kind {
@@ -238,7 +239,9 @@ pub fn UIContext::toast_stack(
       Warning => @color.Color::warning()
       Danger => @color.Color::danger()
     }
-    self.draw_list.add_rect(
+    self
+    .painter()
+    .add_rect(
       @math.Rect::new(rect.x, rect.y + 5.0, 3.5, rect.h - 10.0),
       kind_color,
       1.5,
@@ -248,7 +251,9 @@ pub fn UIContext::toast_stack(
     let has_detail = !toast.message.is_empty()
     let title_y = if has_detail { rect.y + 10.0 } else { rect.y + 12.0 }
 
-    self.draw_list.add_text(
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(rect.x + 16.0, title_y),
       toast.title,
       12.5,
@@ -256,7 +261,9 @@ pub fn UIContext::toast_stack(
     )
 
     if has_detail {
-      self.draw_list.add_text(
+      self
+      .painter()
+      .add_text(
         @math.Vec2::new(rect.x + 16.0, rect.y + 29.0),
         toast.message,
         11.0,
@@ -276,7 +283,9 @@ pub fn UIContext::toast_stack(
     } else {
       @color.Color::text_disabled()
     }
-    self.draw_list.add_text(
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(rect.x + toast_w - 18.0, rect.y + 9.0),
       "x",
       11.5,

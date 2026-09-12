@@ -359,6 +359,26 @@ pub fn Modifiers::new(Bool, Bool, Bool, Bool) -> Self
 pub fn Modifiers::none() -> Self
 pub fn Modifiers::shift() -> Self
 
+pub struct Painter {
+  draw_list : @draw.DrawList
+  clip_rect : @math.Rect?
+  offset : @math.Vec2
+} derive(Eq, @debug.Debug)
+pub fn Painter::add_circle(Self, @math.Vec2, Double, @color.Color) -> Unit
+pub fn Painter::add_circle_stroke(Self, @math.Vec2, Double, @color.Color, Double) -> Unit
+pub fn Painter::add_line(Self, @math.Vec2, @math.Vec2, @color.Color, Double) -> Unit
+pub fn Painter::add_linear_gradient(Self, @math.Rect, @math.Vec2, @math.Vec2, @color.Color, @color.Color, Double) -> Unit
+pub fn Painter::add_rect(Self, @math.Rect, @color.Color, Double) -> Unit
+pub fn Painter::add_rect_stroke(Self, @math.Rect, @color.Color, Double, Double) -> Unit
+pub fn Painter::add_text(Self, @math.Vec2, String, Double, @color.Color, font_family? : String, font_weight? : Int) -> Unit
+pub fn Painter::append(Self, @draw.DrawList) -> Unit
+pub fn Painter::clip_rect(Self) -> @math.Rect?
+pub fn Painter::new(@draw.DrawList, clip_rect? : @math.Rect?, offset? : @math.Vec2) -> Self
+pub fn Painter::offset(Self) -> @math.Vec2
+pub fn Painter::pop_clip(Self) -> Unit
+pub fn Painter::push_clip(Self, @math.Rect) -> Unit
+pub fn Painter::sub_painter(Self, @math.Vec2, sub_clip? : @math.Rect?) -> Self
+
 pub struct PlotPoint {
   x : Double
   y : Double
@@ -547,7 +567,6 @@ pub struct TreeViewResponse {
 
 pub struct UIContext {
   input : InputState
-  mut draw_list : @draw.DrawList
   id_stack : IdStack
   layout : LayoutEngine
   focus : FocusManager
@@ -605,6 +624,7 @@ pub fn UIContext::end_foreground(Self) -> Unit
 pub fn UIContext::end_frame(Self) -> @draw.DrawList
 pub fn UIContext::fader(Self, String, String, Double, min_val? : Double, max_val? : Double, step? : Double, default_val? : Double, unit? : String, show_ticks? : Bool, size? : @math.Vec2) -> (Double, Response)
 pub fn UIContext::fader_int(Self, String, String, Int, min_val? : Int, max_val? : Int, step? : Int, default_val? : Int, unit? : String, show_ticks? : Bool, size? : @math.Vec2) -> (Int, Response)
+pub fn UIContext::fg_painter(Self) -> Painter
 pub fn UIContext::focus(Self) -> FocusManager
 pub fn UIContext::focusable_ids(Self) -> Array[Id]
 pub fn UIContext::focused_id(Self) -> Id
@@ -639,6 +659,7 @@ pub fn UIContext::new() -> Self
 pub fn UIContext::next_auto_id(Self) -> Id
 pub fn UIContext::open_combo_id(Self) -> Id
 pub fn UIContext::open_menu_id(Self) -> Id
+pub fn UIContext::painter(Self) -> Painter
 pub fn UIContext::plot(Self, String, Array[PlotSeries], size? : @math.Vec2, show_grid? : Bool, show_crosshair? : Bool, show_legend? : Bool) -> (@math.Vec2?, Response)
 pub fn UIContext::pop_clip(Self) -> Unit
 pub fn UIContext::pop_id(Self) -> Unit
@@ -663,6 +684,7 @@ pub fn UIContext::set_cached_text_width(Self, String, Double, Double) -> Unit
 pub fn UIContext::set_collapsing_open(Self, Id, Bool) -> Unit
 pub fn UIContext::set_cursor(Self, @math.Vec2) -> Unit
 pub fn UIContext::set_cursor_icon(Self, String) -> Unit
+pub fn UIContext::set_draw_list(Self, @draw.DrawList) -> Unit
 pub fn UIContext::set_focused_id(Self, Id) -> Unit
 pub fn UIContext::set_hot_id(Self, Id) -> Unit
 pub fn UIContext::set_item_spacing(Self, @math.Vec2) -> Unit

@@ -26,8 +26,10 @@ pub fn UIContext::menu_bar(
   let bar_rect = @math.Rect::new(bar_pos.x, bar_pos.y, bar_w, bar_h)
 
   // 1. Menu bar background and subtle bottom divider line
-  self.draw_list.add_rect(bar_rect, @color.Color::bg_surface(), 0.0)
-  self.draw_list.add_line(
+  self.painter().add_rect(bar_rect, @color.Color::bg_surface(), 0.0)
+  self
+  .painter()
+  .add_line(
     @math.Vec2::new(bar_rect.x, bar_rect.y + bar_h),
     @math.Vec2::new(bar_rect.x + bar_w, bar_rect.y + bar_h),
     @color.Color::border_muted(),
@@ -114,9 +116,11 @@ pub fn UIContext::menu(
 
   let radius = self.style.menu_bar_radius * scale
   if currently_open || hovered {
-    self.draw_list.add_rect(btn_rect, btn_bg, radius)
+    self.painter().add_rect(btn_rect, btn_bg, radius)
   }
-  self.draw_list.add_text(
+  self
+  .painter()
+  .add_text(
     @math.Vec2::new(
       btn_rect.x + 8.0 * scale,
       btn_rect.y + (btn_h - font_nm) * 0.5,
@@ -153,12 +157,12 @@ pub fn UIContext::menu(
 
     // Temporary draw list to capture items while determining exact height
     let item_draw_list = @draw.DrawList::new()
-    let saved_dl = self.draw_list
-    self.draw_list = item_draw_list
+    let saved_dl = self.layers.draw_list()
+    self.layers.set_draw_list(item_draw_list)
 
     self.vertical(content)
 
-    self.draw_list = saved_dl
+    self.layers.set_draw_list(saved_dl)
 
     let content_h = self.cursor().y - (popup_y + pad)
     let total_h = if content_h > 0.0 { content_h + pad } else { 24.0 }
@@ -180,15 +184,15 @@ pub fn UIContext::menu(
       menu_rect.h,
     )
     let menu_radius = self.style.radius_md
-    self.draw_list.add_rect(
-      shadow_rect,
-      @color.Color::shadow_ambient(),
-      menu_radius,
-    )
+    self
+    .painter()
+    .add_rect(shadow_rect, @color.Color::shadow_ambient(), menu_radius)
 
     // Card background and border
-    self.draw_list.add_rect(menu_rect, @color.Color::bg_window(), menu_radius)
-    self.draw_list.add_rect_stroke(
+    self.painter().add_rect(menu_rect, @color.Color::bg_window(), menu_radius)
+    self
+    .painter()
+    .add_rect_stroke(
       menu_rect,
       @color.Color::border_default(),
       1.0,
@@ -196,7 +200,7 @@ pub fn UIContext::menu(
     )
 
     // Append items on top of background
-    self.draw_list.append(item_draw_list)
+    self.painter().append(item_draw_list)
 
     // Restore context state
     self.set_cursor(prev_cursor)
@@ -231,7 +235,7 @@ pub fn UIContext::menu_item(
   let font_sm = self.style.font_small * scale
   if is_hovered {
     self.set_cursor_icon("pointer")
-    self.draw_list.add_rect(rect, @color.Color::bg_surface(), item_radius)
+    self.painter().add_rect(rect, @color.Color::bg_surface(), item_radius)
   }
 
   let clicked = if disabled {
@@ -253,7 +257,9 @@ pub fn UIContext::menu_item(
 
   // Left-aligned label
   let text_y = rect.y + (item_h - font_nm) * 0.5
-  self.draw_list.add_text(
+  self
+  .painter()
+  .add_text(
     @math.Vec2::new(rect.x + 8.0 * scale, text_y),
     label,
     font_nm,
@@ -272,12 +278,9 @@ pub fn UIContext::menu_item(
     } else {
       @color.Color::text_muted()
     }
-    self.draw_list.add_text(
-      @math.Vec2::new(sc_x, sc_y),
-      shortcut,
-      font_sm,
-      sc_col,
-    )
+    self
+    .painter()
+    .add_text(@math.Vec2::new(sc_x, sc_y), shortcut, font_sm, sc_col)
   }
 
   Response::new(id, rect, is_hovered, clicked, resp.pressed, false)
@@ -290,7 +293,9 @@ pub fn UIContext::menu_separator(self : UIContext) -> Unit {
   let item_w = self.available_width()
   let (_id, rect, _) = self.allocate_space(@math.Vec2::new(item_w, sep_h))
   let line_y = rect.y + 3.0
-  self.draw_list.add_line(
+  self
+  .painter()
+  .add_line(
     @math.Vec2::new(rect.x + 4.0, line_y),
     @math.Vec2::new(rect.x + item_w - 4.0, line_y),
     @color.Color::border_muted(),

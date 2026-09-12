@@ -26,7 +26,8 @@ pub fn UIContext::spinner(
   let radius = (size - stroke_width) * 0.5
 
   // 1. Subtle Background Track Ring
-  self.draw_list.add_circle_stroke(
+  let p = self.painter()
+  p.add_circle_stroke(
     center,
     radius,
     @color.Color::border_track(),
@@ -54,7 +55,7 @@ pub fn UIContext::spinner(
 
     let alpha = (80.0 + t2 * 175.0).to_int()
     let seg_color = color.with_alpha(alpha)
-    self.draw_list.add_line(p1, p2, seg_color, stroke_width)
+    p.add_line(p1, p2, seg_color, stroke_width)
   }
 
   resp
@@ -79,7 +80,8 @@ pub fn UIContext::spinner_with_label(
   let radius = (size - stroke_width) * 0.5
 
   // Background ring
-  self.draw_list.add_circle_stroke(
+  let p = self.painter()
+  p.add_circle_stroke(
     center,
     radius,
     @color.Color::border_track(),
@@ -104,7 +106,7 @@ pub fn UIContext::spinner_with_label(
 
     let alpha = (90.0 + t2 * 165.0).to_int()
     let seg_color = color.with_alpha(alpha)
-    self.draw_list.add_line(p1, p2, seg_color, stroke_width)
+    p.add_line(p1, p2, seg_color, stroke_width)
   }
 
   // Label text
@@ -112,12 +114,7 @@ pub fn UIContext::spinner_with_label(
     rect.x + size + 8.0,
     rect.y + (rect.h - font_sz) * 0.5,
   )
-  self.draw_list.add_text(
-    text_pos,
-    label,
-    font_sz,
-    @color.Color::text_secondary(),
-  )
+  p.add_text(text_pos, label, font_sz, @color.Color::text_secondary())
 
   resp
 }

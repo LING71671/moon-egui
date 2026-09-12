@@ -100,16 +100,17 @@ pub fn UIContext::button(
     @color.Color::text_body()
   }
 
+  let painter = self.painter()
   let radius = self.style.button_radius * scale
-  self.draw_list.add_rect(draw_rect, bg_color, radius)
+  painter.add_rect(draw_rect, bg_color, radius)
   let stroke_w = if resp.has_focus() { 1.5 * scale } else { 1.0 }
-  self.draw_list.add_rect_stroke(draw_rect, border_color, stroke_w, radius)
+  painter.add_rect_stroke(draw_rect, border_color, stroke_w, radius)
 
   if has_shortcut {
     // Left-align text when shortcut badge exists
     let text_x = draw_rect.x + 12.0 * scale
     let text_y = draw_rect.y + (draw_rect.h - font_size) * 0.5
-    self.draw_list.add_text(
+    painter.add_text(
       @math.Vec2::new(text_x, text_y),
       text,
       font_size,
@@ -142,11 +143,11 @@ pub fn UIContext::button(
         },
       )
     }
-    self.draw_list.add_rect(kbd_rect, kbd_bg, self.style.radius_sm * scale)
+    painter.add_rect(kbd_rect, kbd_bg, self.style.radius_sm * scale)
     let sc_w = self.measure_text(shortcut, kbd_font_size).x
     let kbd_text_x = kbd_rect.x + (kbd_rect.w - sc_w) * 0.5
     let kbd_text_y = kbd_rect.y + (kbd_rect.h - kbd_font_size) * 0.5
-    self.draw_list.add_text(
+    painter.add_text(
       @math.Vec2::new(kbd_text_x, kbd_text_y),
       shortcut,
       kbd_font_size,
@@ -156,7 +157,7 @@ pub fn UIContext::button(
     // Center-align text in standard button
     let text_x = draw_rect.x + (draw_rect.w - text_w) * 0.5
     let text_y = draw_rect.y + (draw_rect.h - font_size) * 0.5
-    self.draw_list.add_text(
+    painter.add_text(
       @math.Vec2::new(text_x, text_y),
       text,
       font_size,
@@ -234,8 +235,9 @@ pub fn UIContext::color_button(
 
   // Draw color swatch with clean white rim
   let swatch_radius = self.style.text_edit_radius
-  self.draw_list.add_rect(btn_rect, color, swatch_radius)
-  self.draw_list.add_rect_stroke(btn_rect, border_color, 1.5, swatch_radius)
+  let p = self.painter()
+  p.add_rect(btn_rect, color, swatch_radius)
+  p.add_rect_stroke(btn_rect, border_color, 1.5, swatch_radius)
 
   (resp.clicked, resp)
 }

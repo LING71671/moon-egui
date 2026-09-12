@@ -107,8 +107,9 @@ pub fn UIContext::badge(
 
   let (bg, border, fg) = badge_colors(kind)
 
-  self.draw_list.add_rect(rect, bg, radius)
-  self.draw_list.add_rect_stroke(rect, border, 1.0, radius)
+  let p = self.painter()
+  p.add_rect(rect, bg, radius)
+  p.add_rect_stroke(rect, border, 1.0, radius)
 
   let mut current_x = rect.x + pad_x
 
@@ -116,13 +117,13 @@ pub fn UIContext::badge(
   if dot {
     let dot_r = 3.0 * scale
     let dot_center = @math.Vec2::new(current_x + dot_r, rect.y + h * 0.5)
-    self.draw_list.add_circle(dot_center, dot_r, fg)
+    p.add_circle(dot_center, dot_r, fg)
     current_x = current_x + dot_w
   }
 
   // Text
   let text_y = rect.y + (h - font_sz) * 0.5
-  self.draw_list.add_text(@math.Vec2::new(current_x, text_y), text, font_sz, fg)
+  p.add_text(@math.Vec2::new(current_x, text_y), text, font_sz, fg)
 
   resp
 }
@@ -151,17 +152,13 @@ pub fn UIContext::tag(
   let (bg, border, fg) = badge_colors(kind)
 
   let tag_radius = self.style.radius_sm
-  self.draw_list.add_rect(rect, bg, tag_radius)
-  self.draw_list.add_rect_stroke(rect, border, 1.0, tag_radius)
+  let p = self.painter()
+  p.add_rect(rect, bg, tag_radius)
+  p.add_rect_stroke(rect, border, 1.0, tag_radius)
 
   // Label text
   let text_y = rect.y + (h - font_sz) * 0.5
-  self.draw_list.add_text(
-    @math.Vec2::new(rect.x + pad_x, text_y),
-    text,
-    font_sz,
-    fg,
-  )
+  p.add_text(@math.Vec2::new(rect.x + pad_x, text_y), text, font_sz, fg)
 
   let mut closed = false
 
@@ -176,11 +173,7 @@ pub fn UIContext::tag(
     let is_close_hovered = close_box.contains(self.input.mouse_pos)
     if is_close_hovered {
       self.set_cursor_icon("pointer")
-      self.draw_list.add_rect(
-        close_box,
-        @color.Color::tag_close_hover(),
-        tag_radius,
-      )
+      p.add_rect(close_box, @color.Color::tag_close_hover(), tag_radius)
       if self.input.mouse_pressed {
         closed = true
       }
@@ -188,13 +181,13 @@ pub fn UIContext::tag(
 
     let x_center = close_box.center()
     let r = 3.5
-    self.draw_list.add_line(
+    p.add_line(
       @math.Vec2::new(x_center.x - r, x_center.y - r),
       @math.Vec2::new(x_center.x + r, x_center.y + r),
       fg,
       1.2,
     )
-    self.draw_list.add_line(
+    p.add_line(
       @math.Vec2::new(x_center.x - r, x_center.y + r),
       @math.Vec2::new(x_center.x + r, x_center.y - r),
       fg,

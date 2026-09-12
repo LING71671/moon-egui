@@ -34,13 +34,10 @@ pub fn UIContext::sparkline(
   let radius = self.style.radius_sm * scale
 
   // 1. Container Card
-  self.draw_list.add_rect(rect, @color.Color::sparkline_wash(), radius)
-  self.draw_list.add_rect_stroke(
-    rect,
-    @color.Color::border_muted(),
-    1.0,
-    radius,
-  )
+  self.painter().add_rect(rect, @color.Color::sparkline_wash(), radius)
+  self
+  .painter()
+  .add_rect_stroke(rect, @color.Color::border_muted(), 1.0, radius)
 
   if count == 0 {
     return (None, resp)
@@ -54,7 +51,9 @@ pub fn UIContext::sparkline(
 
   if count == 1 {
     let mid_y = rect.y + pad_y + plot_h * 0.5
-    self.draw_list.add_line(
+    self
+    .painter()
+    .add_line(
       @math.Vec2::new(rect.x + pad_x, mid_y),
       @math.Vec2::new(rect.x + pad_x + plot_w, mid_y),
       color,
@@ -103,18 +102,16 @@ pub fn UIContext::sparkline(
       let avg_y = (p1.y + p2.y) * 0.5
       let slice_h = base_y - avg_y
       if slice_h > 0.0 {
-        self.draw_list.add_rect(
-          @math.Rect::new(p1.x, avg_y, slice_w, slice_h),
-          fill_col,
-          0.0,
-        )
+        self
+        .painter()
+        .add_rect(@math.Rect::new(p1.x, avg_y, slice_w, slice_h), fill_col, 0.0)
       }
     }
   }
 
   // 5. Antialiased Polyline
   for i = 0; i < count - 1; i = i + 1 {
-    self.draw_list.add_line(points[i], points[i + 1], color, 1.8)
+    self.painter().add_line(points[i], points[i + 1], color, 1.8)
   }
 
   // 6. Interactive Hover Guideline & Data Dot Snapping
@@ -135,7 +132,9 @@ pub fn UIContext::sparkline(
     let pt = points[snapped_idx]
 
     // Vertical dashed guideline
-    self.draw_list.add_line(
+    self
+    .painter()
+    .add_line(
       @math.Vec2::new(pt.x, rect.y + pad_y),
       @math.Vec2::new(pt.x, base_y),
       @color.Color::guideline_wash(color),
@@ -143,8 +142,8 @@ pub fn UIContext::sparkline(
     )
 
     // Snapped target dot with dual-ring highlight
-    self.draw_list.add_circle(pt, 4.0 * scale, color)
-    self.draw_list.add_circle(pt, 2.0 * scale, @color.Color::bg_window())
+    self.painter().add_circle(pt, 4.0 * scale, color)
+    self.painter().add_circle(pt, 2.0 * scale, @color.Color::bg_window())
   }
 
   (hovered_idx, resp)

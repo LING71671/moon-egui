@@ -90,8 +90,10 @@ pub fn UIContext::table(
   let mut sort_changed = false
 
   // 1. Render Table Background Card
-  self.draw_list.add_rect(table_rect, @color.Color::bg_surface(), table_radius)
-  self.draw_list.add_rect_stroke(
+  self.painter().add_rect(table_rect, @color.Color::bg_surface(), table_radius)
+  self
+  .painter()
+  .add_rect_stroke(
     table_rect,
     @color.Color::border_default(),
     1.0,
@@ -106,7 +108,7 @@ pub fn UIContext::table(
   )
 
   // Header background fill
-  self.draw_list.add_rect(header_rect, @color.Color::bg_subtle(), table_radius)
+  self.painter().add_rect(header_rect, @color.Color::bg_subtle(), table_radius)
   // Square off bottom corners of header
   let header_bottom_fill = @math.Rect::new(
     table_rect.x,
@@ -114,10 +116,12 @@ pub fn UIContext::table(
     table_rect.w,
     table_radius,
   )
-  self.draw_list.add_rect(header_bottom_fill, @color.Color::bg_subtle(), 0.0)
+  self.painter().add_rect(header_bottom_fill, @color.Color::bg_subtle(), 0.0)
 
   // Bottom border line for header
-  self.draw_list.add_line(
+  self
+  .painter()
+  .add_line(
     @math.Vec2::new(table_rect.x, table_rect.y + eff_header_h),
     @math.Vec2::new(table_rect.x + table_rect.w, table_rect.y + eff_header_h),
     @color.Color::border_default(),
@@ -210,7 +214,7 @@ pub fn UIContext::table(
     } else {
       @color.Color::text_secondary()
     }
-    self.draw_list.add_text(title_pos, col.title, font_sz, title_color)
+    self.painter().add_text(title_pos, col.title, font_sz, title_color)
 
     // Sort indicator arrow
     if active_sort_col == col.id {
@@ -222,19 +226,18 @@ pub fn UIContext::table(
       if arrow_str != "" {
         let arrow_x = current_x + col.width - 16.0 * scale
         let arrow_pos = @math.Vec2::new(arrow_x, title_pos.y)
-        self.draw_list.add_text(
-          arrow_pos,
-          arrow_str,
-          font_sz,
-          @color.Color::accent_primary(),
-        )
+        self
+        .painter()
+        .add_text(arrow_pos, arrow_str, font_sz, @color.Color::accent_primary())
       }
     }
 
     // Vertical column divider line
     if c < total_cols - 1 {
       let divider_x = current_x + col.width
-      self.draw_list.add_line(
+      self
+      .painter()
+      .add_line(
         @math.Vec2::new(divider_x, table_rect.y + 6.0 * scale),
         @math.Vec2::new(divider_x, table_rect.y + eff_header_h - 6.0 * scale),
         @color.Color::border_muted(),
@@ -311,15 +314,17 @@ pub fn UIContext::table(
 
     // Row background styling
     if r == selected_row {
-      self.draw_list.add_rect(row_rect, @color.Color::table_row_selected(), 0.0)
+      self.painter().add_rect(row_rect, @color.Color::table_row_selected(), 0.0)
     } else if is_row_hovered {
-      self.draw_list.add_rect(row_rect, @color.Color::bg_hover(), 0.0)
+      self.painter().add_rect(row_rect, @color.Color::bg_hover(), 0.0)
     } else if r % 2 == 1 {
-      self.draw_list.add_rect(row_rect, @color.Color::bg_subtle(), 0.0)
+      self.painter().add_rect(row_rect, @color.Color::bg_subtle(), 0.0)
     }
 
     // Row bottom separator line
-    self.draw_list.add_line(
+    self
+    .painter()
+    .add_line(
       @math.Vec2::new(row_rect.x, row_rect.y + eff_row_h),
       @math.Vec2::new(row_rect.x + row_rect.w, row_rect.y + eff_row_h),
       @color.Color::border_muted(),
@@ -380,7 +385,7 @@ pub fn UIContext::table(
     } else {
       @color.Color::border_muted()
     }
-    self.draw_list.add_rect(thumb_rect, thumb_color, 3.0)
+    self.painter().add_rect(thumb_rect, thumb_color, 3.0)
   }
 
   {

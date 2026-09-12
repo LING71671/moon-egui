@@ -203,19 +203,18 @@ pub fn UIContext::rich_text(
           abs_rect.x,
           abs_rect.y + (line_h - font_sz) * 0.5,
         )
-        self.draw_list.add_text(
-          text_pos,
-          text,
-          font_sz,
-          @color.Color::text_body(),
-        )
+        self
+        .painter()
+        .add_text(text_pos, text, font_sz, @color.Color::text_body())
       }
       Bold => {
         let text_pos = @math.Vec2::new(
           abs_rect.x,
           abs_rect.y + (line_h - font_sz) * 0.5,
         )
-        self.draw_list.add_text(
+        self
+        .painter()
+        .add_text(
           text_pos,
           text,
           font_sz,
@@ -232,12 +231,12 @@ pub fn UIContext::rich_text(
           line_h - 4.0,
         )
         let code_radius = self.style.radius_sm
-        self.draw_list.add_rect(
-          code_bg_rect,
-          @color.Color::bg_subtle(),
-          code_radius,
-        )
-        self.draw_list.add_rect_stroke(
+        self
+        .painter()
+        .add_rect(code_bg_rect, @color.Color::bg_subtle(), code_radius)
+        self
+        .painter()
+        .add_rect_stroke(
           code_bg_rect,
           @color.Color::border_muted(),
           1.0,
@@ -248,7 +247,9 @@ pub fn UIContext::rich_text(
           abs_rect.x + pad_x,
           abs_rect.y + (line_h - font_sz) * 0.5,
         )
-        self.draw_list.add_text(
+        self
+        .painter()
+        .add_text(
           text_pos,
           text,
           font_sz,
@@ -275,12 +276,14 @@ pub fn UIContext::rich_text(
           abs_rect.x,
           abs_rect.y + (line_h - font_sz) * 0.5,
         )
-        self.draw_list.add_text(text_pos, text, font_sz, link_col)
+        self.painter().add_text(text_pos, text, font_sz, link_col)
 
         // Underline when hovered
         if is_hovered {
           let line_y = abs_rect.y + line_h - 3.0
-          self.draw_list.add_line(
+          self
+          .painter()
+          .add_line(
             @math.Vec2::new(abs_rect.x, line_y),
             @math.Vec2::new(abs_rect.x + abs_rect.w, line_y),
             link_col,
@@ -320,11 +323,13 @@ pub fn UIContext::hyperlink(
   }
 
   let text_pos = @math.Vec2::new(rect.x, rect.y + (h - font_sz) * 0.5)
-  self.draw_list.add_text(text_pos, text, font_sz, link_col)
+  self.painter().add_text(text_pos, text, font_sz, link_col)
 
   if is_hovered {
     let line_y = rect.y + h - 2.0
-    self.draw_list.add_line(
+    self
+    .painter()
+    .add_line(
       @math.Vec2::new(rect.x, line_y),
       @math.Vec2::new(rect.x + w, line_y),
       link_col,

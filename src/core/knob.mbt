@@ -14,7 +14,7 @@
 
 ///|
 fn draw_arc(
-  dl : @draw.DrawList,
+  p : Painter,
   center : @math.Vec2,
   radius : Double,
   start_angle : Double,
@@ -32,7 +32,7 @@ fn draw_arc(
   for i = 1; i <= segments; i = i + 1 {
     let a = start_angle + step * i.to_double()
     let cur_p = center.add(@math.Vec2::from_polar(radius, a))
-    dl.add_line(prev_p, cur_p, color, width)
+    p.add_line(prev_p, cur_p, color, width)
     prev_p = cur_p
   }
 }
@@ -154,9 +154,11 @@ pub fn UIContext::knob(
   let total_sweep = 1.5 * @math.pi
   let end_angle = start_angle + total_sweep
 
+  let p = self.painter()
+
   // A. Background track arc
   draw_arc(
-    self.draw_list,
+    p,
     center,
     radius,
     start_angle,
@@ -174,7 +176,7 @@ pub fn UIContext::knob(
     let segs = ((curr_angle - mid_angle).abs() / total_sweep * 16.0).to_int() +
       2
     draw_arc(
-      self.draw_list,
+      p,
       center,
       radius,
       mid_angle,
@@ -187,7 +189,7 @@ pub fn UIContext::knob(
     let curr_angle = start_angle + norm * total_sweep
     let segs = (norm * 20.0).to_int() + 2
     draw_arc(
-      self.draw_list,
+      p,
       center,
       radius,
       start_angle,
@@ -199,7 +201,7 @@ pub fn UIContext::knob(
   }
 
   // C. Dial Cap (White Porcelain disc + border + shadow)
-  self.draw_list.add_circle(
+  p.add_circle(
     center.add(@math.Vec2::new(0.0, 1.5)),
     dial_radius,
     @color.Color::shadow(),
@@ -211,13 +213,13 @@ pub fn UIContext::knob(
   } else {
     @color.Color::bg_window()
   }
-  self.draw_list.add_circle(center, dial_radius, cap_col)
+  p.add_circle(center, dial_radius, cap_col)
   let border_col = if is_focused {
     @color.Color::border_focus()
   } else {
     @color.Color::border_default()
   }
-  self.draw_list.add_circle_stroke(center, dial_radius, border_col, 1.0)
+  p.add_circle_stroke(center, dial_radius, border_col, 1.0)
 
   // D. Laser-engraved pointer tick
   let pointer_angle = start_angle + norm * total_sweep
@@ -232,13 +234,13 @@ pub fn UIContext::knob(
   } else {
     @color.Color::text_secondary()
   }
-  self.draw_list.add_line(tick_start, tick_end, tick_col, 2.0)
+  p.add_line(tick_start, tick_end, tick_col, 2.0)
 
   let font_sm = self.style.font_small
   // E. Uppercase Label (Top)
   if !label.is_empty() {
     let label_w = self.measure_text(label, font_sm).x
-    self.draw_list.add_text(
+    p.add_text(
       @math.Vec2::new(center_x - label_w * 0.5, rect.y),
       label,
       font_sm,
@@ -258,7 +260,7 @@ pub fn UIContext::knob(
   } else {
     @color.Color::text_strong()
   }
-  self.draw_list.add_text(
+  p.add_text(
     @math.Vec2::new(center_x - val_w * 0.5, center_y + radius + 4.0),
     val_str,
     font_sm,

@@ -508,8 +508,8 @@ pub fn UIContext::code_editor(
   let editor_radius = self.style.code_editor_radius * scale
 
   // Editor frame background & border
-  self.draw_list.add_rect(rect, @color.Color::bg_window(), editor_radius)
-  self.draw_list.add_rect_stroke(rect, border_col, 1.0, editor_radius)
+  self.painter().add_rect(rect, @color.Color::bg_window(), editor_radius)
+  self.painter().add_rect_stroke(rect, border_col, 1.0, editor_radius)
 
   // Scissor clip for editor interior
   let clip_rect = @math.Rect::new(
@@ -523,8 +523,10 @@ pub fn UIContext::code_editor(
   // Draw Gutter
   if show_line_numbers {
     let gutter_rect = @math.Rect::new(rect.x, rect.y, gutter_w, rect.h)
-    self.draw_list.add_rect(gutter_rect, @color.Color::bg_subtle(), 0.0)
-    self.draw_list.add_line(
+    self.painter().add_rect(gutter_rect, @color.Color::bg_subtle(), 0.0)
+    self
+    .painter()
+    .add_line(
       @math.Vec2::new(rect.x + gutter_w, rect.y),
       @math.Vec2::new(rect.x + gutter_w, rect.y + rect.h),
       @color.Color::border_muted(),
@@ -545,7 +547,7 @@ pub fn UIContext::code_editor(
         rect.w - gutter_w - 2.0,
         line_h,
       )
-      self.draw_list.add_rect(wash_rect, @color.Color::bg_surface(), 0.0)
+      self.painter().add_rect(wash_rect, @color.Color::bg_surface(), 0.0)
     }
   }
 
@@ -571,7 +573,7 @@ pub fn UIContext::code_editor(
           let pre_w = self.measure_text(pre, code_font_sz).x
           let sel_w = self.measure_text(sel, code_font_sz).x
           let sel_rect = @math.Rect::new(code_x + pre_w, line_y, sel_w, line_h)
-          self.draw_list.add_rect(sel_rect, @color.Color::accent_soft(), 0.0)
+          self.painter().add_rect(sel_rect, @color.Color::accent_soft(), 0.0)
         }
       }
     }
@@ -601,7 +603,9 @@ pub fn UIContext::code_editor(
       } else {
         @color.Color::text_disabled()
       }
-      self.draw_list.add_text(
+      self
+      .painter()
+      .add_text(
         @math.Vec2::new(num_x, line_y + 3.0 * scale),
         num_str,
         gutter_font_sz,
@@ -617,7 +621,9 @@ pub fn UIContext::code_editor(
       @color.Color::text_primary()
     }
 
-    self.draw_list.add_text(
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(code_x, line_y + 3.0 * scale),
       line_text,
       code_font_sz,
@@ -640,7 +646,9 @@ pub fn UIContext::code_editor(
 
     if caret_y + self.style.caret_h * scale >= rect.y &&
       caret_y <= rect.y + rect.h {
-      self.draw_list.add_line(
+      self
+      .painter()
+      .add_line(
         @math.Vec2::new(caret_x, caret_y),
         @math.Vec2::new(caret_x, caret_y + self.style.caret_h * scale),
         @color.Color::accent_primary(),
@@ -664,7 +672,9 @@ pub fn UIContext::code_editor(
     let scroll_ratio = scroll_y / max_scroll
     let thumb_y = rect.y + 2.0 * scale + (track_h - thumb_h) * scroll_ratio
     let thumb_rect = @math.Rect::new(bar_x, thumb_y, bar_w, thumb_h)
-    self.draw_list.add_rect(
+    self
+    .painter()
+    .add_rect(
       thumb_rect,
       @color.Color::border_default(),
       self.style.radius_sm * scale,

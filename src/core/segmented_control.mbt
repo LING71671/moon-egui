@@ -82,13 +82,10 @@ pub fn UIContext::segmented_control(
   }
 
   // 2. Track Background
-  self.draw_list.add_rect(track_rect, @color.Color::bg_subtle(), track_radius)
-  self.draw_list.add_rect_stroke(
-    track_rect,
-    @color.Color::border_muted(),
-    1.0,
-    track_radius,
-  )
+  self.painter().add_rect(track_rect, @color.Color::bg_subtle(), track_radius)
+  self
+  .painter()
+  .add_rect_stroke(track_rect, @color.Color::border_muted(), 1.0, track_radius)
 
   // 3. Floating Active Porcelain Pill
   let pill_h = track_rect.h - pad * 2.0
@@ -97,19 +94,21 @@ pub fn UIContext::segmented_control(
   let pill_rect = @math.Rect::new(pill_x, pill_y, item_w, pill_h)
 
   // Pill subtle ambient shadow
-  self.draw_list.add_rect(
+  self
+  .painter()
+  .add_rect(
     @math.Rect::new(pill_x, pill_y + 1.0 * scale, item_w, pill_h),
     @color.Color::pill_ambient_shadow(),
     pill_radius,
   )
   // Pill surface fill
-  self.draw_list.add_rect(
-    pill_rect,
-    @color.Color::pill_active_bg(),
-    pill_radius,
-  )
+  self
+  .painter()
+  .add_rect(pill_rect, @color.Color::pill_active_bg(), pill_radius)
   // Pill outline
-  self.draw_list.add_rect_stroke(
+  self
+  .painter()
+  .add_rect_stroke(
     pill_rect,
     @color.Color::pill_active_border(),
     1.0,
@@ -125,11 +124,9 @@ pub fn UIContext::segmented_control(
     if is_hovered {
       self.set_cursor_icon("pointer")
       if i != current_sel {
-        self.draw_list.add_rect(
-          opt_rect,
-          @color.Color::wash_hover(),
-          pill_radius,
-        )
+        self
+        .painter()
+        .add_rect(opt_rect, @color.Color::wash_hover(), pill_radius)
       }
       if self.input.mouse_pressed {
         current_sel = i
@@ -150,7 +147,7 @@ pub fn UIContext::segmented_control(
       opt_x + (item_w - text_sz.x) * 0.5,
       pill_y + (pill_h - text_sz.y) * 0.5,
     )
-    self.draw_list.add_text(text_pos, options[i], font_sz, text_col)
+    self.painter().add_text(text_pos, options[i], font_sz, text_col)
   }
 
   (current_sel, resp)

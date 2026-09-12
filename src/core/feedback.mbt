@@ -19,22 +19,14 @@ pub fn UIContext::progress_bar(
   }
 
   let bar_radius = self.style.radius_sm * scale
-  self.draw_list.add_rect(rect, @color.Color::bg_surface(), bar_radius)
-  self.draw_list.add_rect_stroke(
-    rect,
-    @color.Color::border_muted(),
-    1.0,
-    bar_radius,
-  )
+  let p = self.painter()
+  p.add_rect(rect, @color.Color::bg_surface(), bar_radius)
+  p.add_rect_stroke(rect, @color.Color::border_muted(), 1.0, bar_radius)
 
   let fill_w = rect.w * clamped_pct
   if fill_w > 0.0 {
     let fill_rect = @math.Rect::new(rect.x, rect.y, fill_w, rect.h)
-    self.draw_list.add_rect(
-      fill_rect,
-      @color.Color::accent_primary(),
-      bar_radius,
-    )
+    p.add_rect(fill_rect, @color.Color::accent_primary(), bar_radius)
   }
 
   let display_text = if text.is_empty() {
@@ -52,12 +44,7 @@ pub fn UIContext::progress_bar(
   } else {
     @color.Color::text_primary()
   }
-  self.draw_list.add_text(
-    @math.Vec2::new(text_x, text_y),
-    display_text,
-    font_sz,
-    text_color,
-  )
+  p.add_text(@math.Vec2::new(text_x, text_y), display_text, font_sz, text_color)
 
   resp
 }
@@ -99,15 +86,11 @@ pub fn UIContext::tooltip(self : UIContext, text : String) -> Unit {
   self.begin_foreground()
 
   let tip_radius = self.style.tooltip_radius * scale
+  let fp = self.painter()
   // Floating bubble with dark background & subtle border
-  self.draw_list.add_rect(tip_rect, @color.Color::bg_inverse(), tip_radius)
-  self.draw_list.add_rect_stroke(
-    tip_rect,
-    @color.Color::border_muted(),
-    1.0,
-    tip_radius,
-  )
-  self.draw_list.add_text(
+  fp.add_rect(tip_rect, @color.Color::bg_inverse(), tip_radius)
+  fp.add_rect_stroke(tip_rect, @color.Color::border_muted(), 1.0, tip_radius)
+  fp.add_text(
     @math.Vec2::new(tip_rect.x + pad_x, tip_rect.y + pad_y),
     text,
     font_size,

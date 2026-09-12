@@ -46,7 +46,7 @@ pub fn UIContext::window(
   // declared it - neither when it draws nor when it tests the pointer. The
   // caller's clip stack is suspended for this whole body and restored at the
   // end, so the window's own content clip is the only one that applies.
-  let saved_draw_list = self.draw_list
+  let saved_draw_list = self.layers.draw_list()
   let saved_clip : Array[@math.Rect] = []
   for clip in self.layers.clip_stack() {
     saved_clip.push(clip)
@@ -112,7 +112,7 @@ pub fn UIContext::window(
   let batch = self.window_batch(id)
   batch.clear()
   self.windows.mark_drawn(id)
-  self.draw_list = batch
+  self.layers.set_draw_list(batch)
 
   let x = win_pos.x
   let y = win_pos.y
@@ -124,14 +124,15 @@ pub fn UIContext::window(
 
   let win_radius = self.style.radius_md
   let font_sz = self.style.font_normal
-  self.draw_list.add_rect(window_rect, bg_color, win_radius)
-  self.draw_list.add_rect_stroke(window_rect, border_color, 1.0, win_radius)
+  let painter = self.painter()
+  painter.add_rect(window_rect, bg_color, win_radius)
+  painter.add_rect_stroke(window_rect, border_color, 1.0, win_radius)
 
   // 4. Draw Title Bar Header
-  self.draw_list.add_rect(title_bar_rect, header_color, win_radius)
+  painter.add_rect(title_bar_rect, header_color, win_radius)
   let filler_rect = @math.Rect::new(x, y + title_bar_h - 4.0, size.x, 4.0)
-  self.draw_list.add_rect(filler_rect, header_color, 0.0)
-  self.draw_list.add_line(
+  painter.add_rect(filler_rect, header_color, 0.0)
+  painter.add_line(
     @math.Vec2::new(x, y + title_bar_h),
     @math.Vec2::new(x + size.x, y + title_bar_h),
     border_color,
@@ -139,7 +140,7 @@ pub fn UIContext::window(
   )
 
   // 5. Draw Title Text
-  self.draw_list.add_text(
+  painter.add_text(
     @math.Vec2::new(x + 12.0, y + 7.0),
     title,
     font_sz,
@@ -170,7 +171,7 @@ pub fn UIContext::window(
   self.set_available_width(prev_avail_w)
   self.pop_clip()
 
-  self.draw_list = saved_draw_list
+  self.layers.set_draw_list(saved_draw_list)
   self.layers.clip_stack().clear()
   for clip in saved_clip {
     self.layers.clip_stack().push(clip)

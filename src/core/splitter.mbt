@@ -144,7 +144,9 @@ pub fn UIContext::split_horizontal(
   }
   let line_w = if is_active || hovered { 2.0 } else { 1.0 }
 
-  self.draw_list.add_line(
+  self
+  .painter()
+  .add_line(
     @math.Vec2::new(divider_x, container_rect.y),
     @math.Vec2::new(divider_x, container_rect.y + h),
     line_col,
@@ -158,17 +160,13 @@ pub fn UIContext::split_horizontal(
   } else {
     @color.Color::border_strong()
   }
-  self.draw_list.add_circle(
-    @math.Vec2::new(divider_x, mid_y - 6.0),
-    1.5,
-    dot_col,
-  )
-  self.draw_list.add_circle(@math.Vec2::new(divider_x, mid_y), 1.5, dot_col)
-  self.draw_list.add_circle(
-    @math.Vec2::new(divider_x, mid_y + 6.0),
-    1.5,
-    dot_col,
-  )
+  self
+  .painter()
+  .add_circle(@math.Vec2::new(divider_x, mid_y - 6.0), 1.5, dot_col)
+  self.painter().add_circle(@math.Vec2::new(divider_x, mid_y), 1.5, dot_col)
+  self
+  .painter()
+  .add_circle(@math.Vec2::new(divider_x, mid_y + 6.0), 1.5, dot_col)
 
   effective_ratio
 }
@@ -300,7 +298,9 @@ pub fn UIContext::split_vertical(
   }
   let line_w = if is_active || hovered { 2.0 } else { 1.0 }
 
-  self.draw_list.add_line(
+  self
+  .painter()
+  .add_line(
     @math.Vec2::new(container_rect.x, divider_y),
     @math.Vec2::new(container_rect.x + w, divider_y),
     line_col,
@@ -314,17 +314,13 @@ pub fn UIContext::split_vertical(
   } else {
     @color.Color::border_strong()
   }
-  self.draw_list.add_circle(
-    @math.Vec2::new(mid_x - 6.0, divider_y),
-    1.5,
-    dot_col,
-  )
-  self.draw_list.add_circle(@math.Vec2::new(mid_x, divider_y), 1.5, dot_col)
-  self.draw_list.add_circle(
-    @math.Vec2::new(mid_x + 6.0, divider_y),
-    1.5,
-    dot_col,
-  )
+  self
+  .painter()
+  .add_circle(@math.Vec2::new(mid_x - 6.0, divider_y), 1.5, dot_col)
+  self.painter().add_circle(@math.Vec2::new(mid_x, divider_y), 1.5, dot_col)
+  self
+  .painter()
+  .add_circle(@math.Vec2::new(mid_x + 6.0, divider_y), 1.5, dot_col)
 
   effective_ratio
 }

@@ -20,7 +20,6 @@ pub struct LayoutScope {
 ///|
 pub struct UIContext {
   input : InputState
-  mut draw_list : @draw.DrawList
   id_stack : IdStack
   layout : LayoutEngine
   focus : FocusManager
@@ -44,7 +43,6 @@ pub fn UIContext::new() -> UIContext {
   let layers = LayerManager::new()
   {
     input: InputState::new(),
-    draw_list: layers.draw_list(),
     id_stack: IdStack::new(),
     layout: LayoutEngine::new(),
     focus: FocusManager::new(),
@@ -71,7 +69,6 @@ pub fn UIContext::begin_frame(self : UIContext, raw_input : RawInput) -> Unit {
   self.input.update(raw_input)
   self.time = self.time + self.input.dt
   self.layers.begin_frame()
-  self.draw_list = self.layers.draw_list()
   self.windows.begin_frame()
   self.layout.begin_frame(0.0)
   self.focus.begin_frame()
@@ -182,7 +179,27 @@ pub fn UIContext::set_cursor_icon(self : UIContext, icon : String) -> Unit {
 
 ///|
 pub fn UIContext::draw_list(self : UIContext) -> @draw.DrawList {
-  self.draw_list
+  self.layers.draw_list()
+}
+
+///|
+pub fn UIContext::set_draw_list(
+  self : UIContext,
+  list : @draw.DrawList,
+) -> Unit {
+  self.layers.set_draw_list(list)
+}
+
+///|
+/// Return a scoped Painter for the active draw target enforcing scissor clipping and offset.
+pub fn UIContext::painter(self : UIContext) -> Painter {
+  Painter::new(self.layers.draw_list(), clip_rect=self.layers.current_clip())
+}
+
+///|
+/// Return a scoped Painter targeting the deferred foreground overlay layer.
+pub fn UIContext::fg_painter(self : UIContext) -> Painter {
+  Painter::new(self.layers.fg_draw_list())
 }
 
 ///|
@@ -454,13 +471,11 @@ pub fn UIContext::clear_focusable(self : UIContext) -> Unit {
 ///|
 pub fn UIContext::push_clip(self : UIContext, rect : @math.Rect) -> Unit {
   self.layers.push_clip(rect)
-  self.draw_list = self.layers.draw_list()
 }
 
 ///|
 pub fn UIContext::pop_clip(self : UIContext) -> Unit {
   self.layers.pop_clip()
-  self.draw_list = self.layers.draw_list()
 }
 
 ///|
@@ -515,13 +530,11 @@ pub fn UIContext::block_hover(self : UIContext, rect : @math.Rect) -> Unit {
 ///|
 pub fn UIContext::begin_foreground(self : UIContext) -> Unit {
   self.layers.begin_foreground()
-  self.draw_list = self.layers.draw_list()
 }
 
 ///|
 pub fn UIContext::end_foreground(self : UIContext) -> Unit {
   self.layers.end_foreground()
-  self.draw_list = self.layers.draw_list()
 }
 
 ///|

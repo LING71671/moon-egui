@@ -29,16 +29,16 @@ pub fn UIContext::checkbox(
 
   let radius = self.style.checkbox_radius * scale
   if checked {
-    self.draw_list.add_rect(box_rect, @color.Color::accent_primary(), radius)
+    self.painter().add_rect(box_rect, @color.Color::accent_primary(), radius)
     let stroke_color = if resp.has_focus() {
       @color.Color::border_focus()
     } else {
       @color.Color::accent_pressed()
     }
     let stroke_w = if resp.has_focus() { 1.5 * scale } else { 1.0 }
-    self.draw_list.add_rect_stroke(box_rect, stroke_color, stroke_w, radius)
+    self.painter().add_rect_stroke(box_rect, stroke_color, stroke_w, radius)
     let inner = box_rect.shrink(4.0 * scale)
-    self.draw_list.add_rect(inner, @color.Color::text_inverse(), 2.0 * scale)
+    self.painter().add_rect(inner, @color.Color::text_inverse(), 2.0 * scale)
   } else {
     let box_bg = if resp.hovered {
       @color.Color::bg_subtle()
@@ -53,8 +53,8 @@ pub fn UIContext::checkbox(
       @color.Color::border_default()
     }
     let stroke_w = if resp.has_focus() { 1.5 * scale } else { 1.0 }
-    self.draw_list.add_rect(box_rect, box_bg, radius)
-    self.draw_list.add_rect_stroke(box_rect, box_border, stroke_w, radius)
+    self.painter().add_rect(box_rect, box_bg, radius)
+    self.painter().add_rect_stroke(box_rect, box_border, stroke_w, radius)
   }
 
   let text_x = rect.x + box_size + gap
@@ -64,12 +64,9 @@ pub fn UIContext::checkbox(
   } else {
     @color.Color::text_body()
   }
-  self.draw_list.add_text(
-    @math.Vec2::new(text_x, text_y),
-    text,
-    font_nm,
-    text_color,
-  )
+  self
+  .painter()
+  .add_text(@math.Vec2::new(text_x, text_y), text, font_nm, text_color)
 
   (new_state, resp)
 }
@@ -116,15 +113,13 @@ pub fn UIContext::radio(
     @color.Color::bg_window()
   }
 
-  self.draw_list.add_circle(center, circle_r, bg_circle_color)
-  self.draw_list.add_circle_stroke(center, circle_r, outer_color, 1.5 * scale)
+  self.painter().add_circle(center, circle_r, bg_circle_color)
+  self.painter().add_circle_stroke(center, circle_r, outer_color, 1.5 * scale)
 
   if selected {
-    self.draw_list.add_circle(
-      center,
-      circle_r * 0.5,
-      @color.Color::accent_primary(),
-    )
+    self
+    .painter()
+    .add_circle(center, circle_r * 0.5, @color.Color::accent_primary())
   }
 
   let text_pos = @math.Vec2::new(
@@ -136,7 +131,7 @@ pub fn UIContext::radio(
   } else {
     @color.Color::text_body()
   }
-  self.draw_list.add_text(text_pos, label, font_nm, text_color)
+  self.painter().add_text(text_pos, label, font_nm, text_color)
 
   (new_selected, resp)
 }
@@ -184,9 +179,11 @@ pub fn UIContext::toggle(
   }
 
   // Draw pill background with subtle shadow
-  self.draw_list.add_rect(switch_rect, bg_color, switch_h * 0.5)
+  self.painter().add_rect(switch_rect, bg_color, switch_h * 0.5)
   if resp.has_focus() {
-    self.draw_list.add_rect_stroke(
+    self
+    .painter()
+    .add_rect_stroke(
       switch_rect,
       @color.Color::border_focus(),
       1.5 * scale,
@@ -208,7 +205,7 @@ pub fn UIContext::toggle(
     thumb_radius * 2.0,
     thumb_radius * 2.0,
   )
-  self.draw_list.add_rect(thumb_rect, @color.Color::bg_window(), thumb_radius)
+  self.painter().add_rect(thumb_rect, @color.Color::bg_window(), thumb_radius)
 
   // Draw label text
   let text_x = rect.x + switch_w + gap
@@ -218,12 +215,9 @@ pub fn UIContext::toggle(
   } else {
     @color.Color::text_body()
   }
-  self.draw_list.add_text(
-    @math.Vec2::new(text_x, text_y),
-    text,
-    font_nm,
-    text_color,
-  )
+  self
+  .painter()
+  .add_text(@math.Vec2::new(text_x, text_y), text, font_nm, text_color)
 
   (new_state, resp)
 }

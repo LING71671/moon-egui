@@ -139,8 +139,8 @@ pub fn UIContext::text_edit_sized(
   let border_width = if is_focused { 1.5 } else { 1.0 }
 
   // Draw background and border
-  self.draw_list.add_rect(rect, bg_color, radius)
-  self.draw_list.add_rect_stroke(rect, border_color, border_width, radius)
+  self.painter().add_rect(rect, bg_color, radius)
+  self.painter().add_rect_stroke(rect, border_color, border_width, radius)
 
   // Scissor clip for text inside input box
   let inner_clip = @math.Rect::new(
@@ -155,7 +155,9 @@ pub fn UIContext::text_edit_sized(
 
   if current_text.is_empty() {
     if !placeholder.is_empty() {
-      self.draw_list.add_text(
+      self
+      .painter()
+      .add_text(
         @math.Vec2::new(rect.x + padding_x, text_y),
         placeholder,
         font_size,
@@ -163,7 +165,9 @@ pub fn UIContext::text_edit_sized(
       )
     }
   } else {
-    self.draw_list.add_text(
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(rect.x + padding_x, text_y),
       current_text,
       font_size,
@@ -178,7 +182,9 @@ pub fn UIContext::text_edit_sized(
     let caret_x = rect.x + padding_x + measured_prefix.x
     let caret_top = rect.y + (rect.h - caret_h) * 0.5
     let caret_bottom = caret_top + caret_h
-    self.draw_list.add_line(
+    self
+    .painter()
+    .add_line(
       @math.Vec2::new(caret_x, caret_top),
       @math.Vec2::new(caret_x, caret_bottom),
       @color.Color::accent_primary(),

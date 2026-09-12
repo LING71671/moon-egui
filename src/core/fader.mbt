@@ -164,7 +164,9 @@ pub fn UIContext::fader(
   if label.length() > 0 {
     let lbl_sz = self.measure_text(label, font_nm)
     let lbl_x = center_x - lbl_sz.x * 0.5
-    self.draw_list.add_text(
+    self
+    .painter()
+    .add_text(
       @math.Vec2::new(lbl_x, rect.y),
       label,
       font_nm,
@@ -187,14 +189,18 @@ pub fn UIContext::fader(
         @color.Color::fader_tick()
       }
       // Left tick
-      self.draw_list.add_line(
+      self
+      .painter()
+      .add_line(
         @math.Vec2::new(center_x - track_w * 0.5 - 2.0 * scale - cur_len, ty),
         @math.Vec2::new(center_x - track_w * 0.5 - 2.0 * scale, ty),
         tick_col,
         1.0,
       )
       // Right tick
-      self.draw_list.add_line(
+      self
+      .painter()
+      .add_line(
         @math.Vec2::new(center_x + track_w * 0.5 + 2.0 * scale, ty),
         @math.Vec2::new(center_x + track_w * 0.5 + 2.0 * scale + cur_len, ty),
         tick_col,
@@ -210,17 +216,12 @@ pub fn UIContext::fader(
     track_w,
     track_travel_h,
   )
-  self.draw_list.add_rect(
-    track_rect,
-    @color.Color::fader_track_bg(),
-    track_w * 0.5,
-  )
-  self.draw_list.add_rect_stroke(
-    track_rect,
-    @color.Color::border_muted(),
-    1.0,
-    track_w * 0.5,
-  )
+  self
+  .painter()
+  .add_rect(track_rect, @color.Color::fader_track_bg(), track_w * 0.5)
+  self
+  .painter()
+  .add_rect_stroke(track_rect, @color.Color::border_muted(), 1.0, track_w * 0.5)
 
   // D. Active Level Fill inside track (bottom up to cap)
   let cap_y = track_bottom_y - clamped_frac * track_travel_h
@@ -232,11 +233,9 @@ pub fn UIContext::fader(
       track_w,
       fill_h,
     )
-    self.draw_list.add_rect(
-      fill_rect,
-      @color.Color::accent_primary(),
-      track_w * 0.5,
-    )
+    self
+    .painter()
+    .add_rect(fill_rect, @color.Color::accent_primary(), track_w * 0.5)
   }
 
   // E. Tactile Fader Cap
@@ -268,7 +267,9 @@ pub fn UIContext::fader(
   }
 
   // Cap drop shadow
-  self.draw_list.add_rect(
+  self
+  .painter()
+  .add_rect(
     @math.Rect::new(
       cap_rect.x,
       cap_rect.y + 1.0 * scale,
@@ -279,12 +280,14 @@ pub fn UIContext::fader(
     cap_radius,
   )
   // Cap body
-  self.draw_list.add_rect(cap_rect, cap_bg, cap_radius)
-  self.draw_list.add_rect_stroke(cap_rect, cap_border, 1.0, cap_radius)
+  self.painter().add_rect(cap_rect, cap_bg, cap_radius)
+  self.painter().add_rect_stroke(cap_rect, cap_border, 1.0, cap_radius)
 
   // Cap center indicator index line
   let line_w = cap_w - 8.0 * scale
-  self.draw_list.add_line(
+  self
+  .painter()
+  .add_line(
     @math.Vec2::new(center_x - line_w * 0.5, cap_y),
     @math.Vec2::new(center_x + line_w * 0.5, cap_y),
     if is_active || is_focused {
@@ -297,7 +300,9 @@ pub fn UIContext::fader(
 
   // Focus ring
   if is_focused {
-    self.draw_list.add_rect_stroke(
+    self
+    .painter()
+    .add_rect_stroke(
       cap_rect.expand(2.0 * scale),
       @color.Color::border_focus(),
       1.5,
@@ -316,7 +321,9 @@ pub fn UIContext::fader(
   let readout_sz = self.measure_text(readout_str, font_sm)
   let readout_x = center_x - readout_sz.x * 0.5
   let readout_y = rect.y + total_h - font_sm
-  self.draw_list.add_text(
+  self
+  .painter()
+  .add_text(
     @math.Vec2::new(readout_x, readout_y),
     readout_str,
     font_sm,
