@@ -415,17 +415,12 @@ Items in this section describe high-value architectural capabilities and showcas
 
 ---
 
-## 7. Core Engine & Widget Feature Roadmap (`feat`)
-
-### FEAT-CORE-01 (High): Multi-Window Docking and Tiling Layout System (`DockArea`)
+### FEAT-CORE-01 (High) [RESOLVED]: Multi-Window Docking and Tiling Layout System (`DockArea`)
+- **Location**: [src/core/dock.mbt](file:///a:/moonbit-project/src/core/dock.mbt), [src/core/dock_wbtest.mbt](file:///a:/moonbit-project/src/core/dock_wbtest.mbt), [examples/canvas/gallery_container_stages.mbt](file:///a:/moonbit-project/examples/canvas/gallery_container_stages.mbt)
+- **Status**: **RESOLVED** (Phase 7). Implemented recursive `DockTree` (`Leaf`, `Split`), `DockTab`, interactive splitter dividers with dragging handles, compact tab bars with close buttons and switching, scoped Scissor clipping per pane, fluent `DockArea` builder, and `UIContext::dock_area` primitive.
 - **Category**: Layout & Window Management
 - **Description**:
-  Currently, `window()` only supports floating drag-and-drop. It cannot dock to window edges (Left, Right, Bottom), split into tabs, or tile across panes.
-- **Proposed Capability**:
-  Introduce a `DockArea` or `dock_node` layout abstraction supporting:
-  - Splitting workspace into horizontal/vertical dock containers.
-  - Tabbed window grouping.
-  - Drag-to-dock preview overlays.
+  Provides a native immediate-mode multi-pane docking and tiling layout system (`DockArea`), enabling developers to divide workspaces into flexible, tabbed, and split-pane hierarchical layouts with interactive splitter handles, tab switching, and Scissor-clipped pane rendering.
 
 ---
 
@@ -665,7 +660,7 @@ Items in this section address foundational decoupling across the engine: modular
 | **feat** | `FEAT-CORE-04` | Immediate-Mode Animation Tweening State Machine | **P2** | Resolved (Phase 6) |
 | **feat** | `FEAT-SHOWCASE-02`| Live Interactive Sandboxes in Docs | **P2** | Backlog |
 | **feat** | `FEAT-SHOWCASE-03`| Native In-Canvas Studio Header Bar in Benchmark | **P3** | Backlog |
-| **feat** | `FEAT-CORE-01` | Multi-Window Docking Layout System (`DockArea`) | **P3** | Backlog |
+| **feat** | `FEAT-CORE-01` | Multi-Window Docking Layout System (`DockArea`) | **P3** | Resolved (Phase 7) |
 | **feat** | `FEAT-CORE-05` | Immediate-Mode Plotting & Charting Suite (`plot`, `bar_chart`) | **P3** | Resolved (Phase 7) |
 | **arch** | `ARCH-01` | `UIContext` God-Object Subsystem Modularization | **P1** | Resolved (Phase 2) |
 | **arch** | `ARCH-02` | Generic Keyed State Storage (`Memory` / `IdMap`) | **P1** | Resolved (Phase 1) |

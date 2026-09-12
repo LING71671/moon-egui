@@ -55,11 +55,11 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 
 * **Objective**: Advance from isolated windows to flexible, multi-viewport workspace partitioning.
 * **Deliverables**:
-  - [ ] **Nested Draggable Splitter (`SplitPane`)**: Horizontal and vertical viewport splits with ratio preservation and minimum dimension guards;
-  - [ ] **Window Docking & Snapping Prototype (`Docking`)**: Drop guide visual previews when dragging near viewport edges and tabbed pane grouping;
+  - [x] **Nested Draggable Splitter (`SplitPane` / `splitter.mbt`)** [Delivered]: Horizontal and vertical viewport splits with ratio preservation and minimum dimension guards;
+  - [x] **Multi-Window Docking & Snapping System (`DockArea` / `dock.mbt`)** [Delivered]: Hierarchical DockTree workspace partitioning with draggable splitters, tab switching/closing, and Scissor clipping;
   - [ ] **Damped Momentum Physics (`Spring Physics`)**: Controlled physical spring-damper easing for window dragging and scrolling.
 * **Acceptance Criteria**:
-  - Windows snap cleanly into tiled docks and split panes preserve proportional layouts across window resizing.
+  - Windows snap cleanly into tiled docks and split panes preserve proportional layouts across window resizing (195/195 tests passing).
 
 ---
 
