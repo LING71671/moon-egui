@@ -49,22 +49,151 @@ fn draw_arc(
 }
 
 ///|
-/// Immediate-mode rotary knob parameter controller in Studio Light porcelain style.
-/// Features 270-degree arc track, unipolar/bipolar sweeps, vertical drag delta,
-/// scroll wheel stepping, Shift precision scaling, and monospace readouts.
-pub fn UIContext::knob(
-  self : UIContext,
+/// Standalone rotary knob controller widget supporting fluent configuration.
+pub struct Knob {
+  id_salt : String
+  label : String
+  value : Double
+  min_val : Double
+  max_val : Double
+  step : Double
+  default_val : Double
+  unit : String
+  radius : Double
+  bipolar : Bool
+} derive(Eq, Debug)
+
+///|
+/// Create a new rotary knob widget with standard defaults.
+pub fn Knob::new(id_salt : String, label : String, value : Double) -> Knob {
+  {
+    id_salt,
+    label,
+    value,
+    min_val: 0.0,
+    max_val: 1.0,
+    step: 0.01,
+    default_val: 0.0,
+    unit: "",
+    radius: 22.0,
+    bipolar: false,
+  }
+}
+
+///|
+/// Set minimum parameter value.
+pub fn Knob::min(self : Knob, min_val : Double) -> Knob {
+  { ..self, min_val, }
+}
+
+///|
+/// Set maximum parameter value.
+pub fn Knob::max(self : Knob, max_val : Double) -> Knob {
+  { ..self, max_val, }
+}
+
+///|
+/// Set adjustment step increment.
+pub fn Knob::step(self : Knob, step : Double) -> Knob {
+  { ..self, step, }
+}
+
+///|
+/// Set default reset value (triggered on Alt+Click).
+pub fn Knob::default_val(self : Knob, default_val : Double) -> Knob {
+  { ..self, default_val, }
+}
+
+///|
+/// Set display unit suffix (e.g. "dB", "Hz", "%").
+pub fn Knob::unit(self : Knob, unit : String) -> Knob {
+  { ..self, unit, }
+}
+
+///|
+/// Set knob dial radius in pixels.
+pub fn Knob::radius(self : Knob, radius : Double) -> Knob {
+  { ..self, radius, }
+}
+
+///|
+/// Enable bipolar center-zero mode (-max to +max, center arc).
+pub fn Knob::bipolar(self : Knob, bipolar : Bool) -> Knob {
+  { ..self, bipolar, }
+}
+
+///|
+/// Reference-bound knob widget for uniform `ui.add(...)` dispatch.
+pub struct KnobRef {
+  knob : Knob
+  target : Ref[Double]
+}
+
+///|
+/// Create a rotary knob bound directly to a `Ref[Double]`.
+pub fn Knob::from_ref(
   id_salt : String,
   label : String,
-  value : Double,
-  min_val? : Double = 0.0,
-  max_val? : Double = 1.0,
-  step? : Double = 0.01,
-  default_val? : Double = 0.0,
-  unit? : String = "",
-  radius? : Double = 22.0,
-  bipolar? : Bool = false,
-) -> (Double, Response) {
+  target : Ref[Double],
+) -> KnobRef {
+  { knob: Knob::new(id_salt, label, target.val), target, }
+}
+
+///|
+pub fn KnobRef::min(self : KnobRef, min_val : Double) -> KnobRef {
+  { ..self, knob: self.knob.min(min_val), }
+}
+
+///|
+pub fn KnobRef::max(self : KnobRef, max_val : Double) -> KnobRef {
+  { ..self, knob: self.knob.max(max_val), }
+}
+
+///|
+pub fn KnobRef::step(self : KnobRef, step : Double) -> KnobRef {
+  { ..self, knob: self.knob.step(step), }
+}
+
+///|
+pub fn KnobRef::default_val(self : KnobRef, default_val : Double) -> KnobRef {
+  { ..self, knob: self.knob.default_val(default_val), }
+}
+
+///|
+pub fn KnobRef::unit(self : KnobRef, unit : String) -> KnobRef {
+  { ..self, knob: self.knob.unit(unit), }
+}
+
+///|
+pub fn KnobRef::radius(self : KnobRef, radius : Double) -> KnobRef {
+  { ..self, knob: self.knob.radius(radius), }
+}
+
+///|
+pub fn KnobRef::bipolar(self : KnobRef, bipolar : Bool) -> KnobRef {
+  { ..self, knob: self.knob.bipolar(bipolar), }
+}
+
+///|
+pub impl Widget for KnobRef with fn ui(self, ctx : UIContext) -> Response {
+  let (new_val, resp) = { ..self.knob, value: self.target.val, }.show(ctx)
+  self.target.val = new_val
+  resp
+}
+
+///|
+/// Render the knob and return the updated value alongside the interaction response.
+pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
+  let min_val = self.min_val
+  let max_val = self.max_val
+  let step = self.step
+  let default_val = self.default_val
+  let unit = self.unit
+  let radius = self.radius
+  let bipolar = self.bipolar
+  let label = self.label
+  let value = self.value
+
   let range = if max_val > min_val { max_val - min_val } else { 1.0 }
   let clamped_initial = if value < min_val {
     min_val
@@ -80,62 +209,62 @@ pub fn UIContext::knob(
   let total_w = diameter + 16.0
   let total_h = diameter + label_h + val_h + 8.0
 
-  let id = self.id_stack.derive_id("knob::" + id_salt)
-  let (_, rect, response) = self.allocate_space(
+  let id = ctx.id_stack.derive_id("knob::" + self.id_salt)
+  let (_, rect, response) = ctx.allocate_space(
     @math.Vec2::new(total_w, total_h),
   )
 
-  self.register_focusable(id)
+  ctx.register_focusable(id)
   if response.pressed() || response.clicked() {
-    self.request_focus(id)
+    ctx.request_focus(id)
   }
   if response.hovered() || response.dragged() || response.pressed() {
-    self.set_cursor_icon("ns-resize")
+    ctx.set_cursor_icon("ns-resize")
   }
-  let is_focused = self.has_focus(id)
+  let is_focused = ctx.has_focus(id)
 
   let mut current_val = clamped_initial
 
   // 1. Mouse Drag Gesture (Vertical delta is primary industry standard)
-  if !self.input.modifiers.alt &&
-    (response.dragged() || (response.pressed() && self.input.mouse_down)) {
-    let dy = -self.input.mouse_delta.y
-    let dx = self.input.mouse_delta.x
+  if !ctx.input.modifiers.alt &&
+    (response.dragged() || (response.pressed() && ctx.input.mouse_down)) {
+    let dy = -ctx.input.mouse_delta.y
+    let dx = ctx.input.mouse_delta.x
     let delta = dy + dx
-    let sensitivity = if self.input.modifiers.shift { 0.001 } else { 0.005 }
+    let sensitivity = if ctx.input.modifiers.shift { 0.001 } else { 0.005 }
     current_val = current_val + delta * range * sensitivity
   }
 
   // 2. Mouse Scroll Wheel
-  if response.hovered() && self.input.scroll_delta.y.abs() > 0.0 {
-    let dir = if self.input.scroll_delta.y > 0.0 { 1.0 } else { -1.0 }
+  if response.hovered() && ctx.input.scroll_delta.y.abs() > 0.0 {
+    let dir = if ctx.input.scroll_delta.y > 0.0 { 1.0 } else { -1.0 }
     current_val = current_val + dir * step
   }
 
   // 3. Keyboard Navigation when focused
   if is_focused {
-    if self.input.key_pressed(Key::ArrowUp) ||
-      self.input.key_pressed(Key::ArrowRight) {
+    if ctx.input.key_pressed(Key::ArrowUp) ||
+      ctx.input.key_pressed(Key::ArrowRight) {
       current_val = current_val + step
     }
-    if self.input.key_pressed(Key::ArrowDown) ||
-      self.input.key_pressed(Key::ArrowLeft) {
+    if ctx.input.key_pressed(Key::ArrowDown) ||
+      ctx.input.key_pressed(Key::ArrowLeft) {
       current_val = current_val - step
     }
-    if self.input.key_pressed(Key::Home) {
+    if ctx.input.key_pressed(Key::Home) {
       current_val = min_val
     }
-    if self.input.key_pressed(Key::End) {
+    if ctx.input.key_pressed(Key::End) {
       current_val = max_val
     }
-    if self.input.key_pressed(Key::Backspace) ||
-      self.input.key_pressed(Key::Delete) {
+    if ctx.input.key_pressed(Key::Backspace) ||
+      ctx.input.key_pressed(Key::Delete) {
       current_val = default_val
     }
   }
 
   // 4. Reset to default on Alt+Click or Alt+Press
-  if (response.pressed() || response.clicked()) && self.input.modifiers.alt {
+  if (response.pressed() || response.clicked()) && ctx.input.modifiers.alt {
     current_val = default_val
   }
 
@@ -165,7 +294,7 @@ pub fn UIContext::knob(
   let total_sweep = 1.5 * @math.pi
   let end_angle = start_angle + total_sweep
 
-  let p = self.painter()
+  let p = ctx.painter()
 
   // A. Background track arc
   draw_arc(
@@ -247,10 +376,10 @@ pub fn UIContext::knob(
   }
   p.add_line(tick_start, tick_end, tick_col, 2.0)
 
-  let font_sm = self.style.font_small
+  let font_sm = ctx.style.font_small
   // E. Uppercase Label (Top)
   if !label.is_empty() {
-    let label_w = self.measure_text(label, font_sm).x
+    let label_w = ctx.measure_text(label, font_sm).x
     p.add_text(
       @math.Vec2::new(center_x - label_w * 0.5, rect.y),
       label,
@@ -265,7 +394,7 @@ pub fn UIContext::knob(
   } else {
     final_val.to_string() + " " + unit
   }
-  let val_w = self.measure_text(val_str, font_sm).x
+  let val_w = ctx.measure_text(val_str, font_sm).x
   let val_col = if is_focused || response.pressed() {
     @color.Color::accent_primary()
   } else {
@@ -279,4 +408,32 @@ pub fn UIContext::knob(
   )
 
   (final_val, response)
+}
+
+///|
+/// Immediate-mode rotary knob parameter controller in Studio Light porcelain style.
+/// Features 270-degree arc track, unipolar/bipolar sweeps, vertical drag delta,
+/// scroll wheel stepping, Shift precision scaling, and monospace readouts.
+pub fn UIContext::knob(
+  self : UIContext,
+  id_salt : String,
+  label : String,
+  value : Double,
+  min_val? : Double = 0.0,
+  max_val? : Double = 1.0,
+  step? : Double = 0.01,
+  default_val? : Double = 0.0,
+  unit? : String = "",
+  radius? : Double = 22.0,
+  bipolar? : Bool = false,
+) -> (Double, Response) {
+  Knob::new(id_salt, label, value)
+  .min(min_val)
+  .max(max_val)
+  .step(step)
+  .default_val(default_val)
+  .unit(unit)
+  .radius(radius)
+  .bipolar(bipolar)
+  .show(self)
 }

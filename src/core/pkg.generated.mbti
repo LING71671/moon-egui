@@ -7,6 +7,7 @@ import {
   "LING71671/moon-egui/src/math",
   "moonbitlang/core/debug",
   "moonbitlang/core/hashmap",
+  "moonbitlang/core/ref",
 }
 
 // Values
@@ -37,6 +38,18 @@ pub fn string_slice(String, Int, Int) -> String
 // Errors
 
 // Types and methods
+pub struct Badge {
+  text : String
+  kind : BadgeKind
+  dot : Bool
+  pill : Bool
+} derive(Eq, @debug.Debug)
+pub fn Badge::dot(Self, Bool) -> Self
+pub fn Badge::kind(Self, BadgeKind) -> Self
+pub fn Badge::new(String) -> Self
+pub fn Badge::pill(Self, Bool) -> Self
+pub impl Widget for Badge
+
 pub(all) enum BadgeKind {
   Default
   Success
@@ -49,6 +62,44 @@ pub fn BadgeKind::default() -> Self
 pub fn BadgeKind::info() -> Self
 pub fn BadgeKind::success() -> Self
 pub fn BadgeKind::warning() -> Self
+
+pub struct BarChart {
+  id_salt : String
+  labels : Array[String]
+  values : Array[Double]
+  size : @math.Vec2?
+  bar_color : @color.Color
+}
+pub fn BarChart::bar_color(Self, @color.Color) -> Self
+pub fn BarChart::new(String, Array[String], Array[Double]) -> Self
+pub fn BarChart::show(Self, UIContext) -> (Int?, Response)
+pub fn BarChart::size(Self, @math.Vec2) -> Self
+
+pub struct Button {
+  text : String
+  shortcut : String
+  primary : Bool
+  size : @math.Vec2
+} derive(Eq, @debug.Debug)
+pub fn Button::new(String) -> Self
+pub fn Button::primary(Self, Bool) -> Self
+pub fn Button::shortcut(Self, String) -> Self
+pub fn Button::size(Self, @math.Vec2) -> Self
+pub impl Widget for Button
+
+pub struct Checkbox {
+  text : String
+  checked : Bool
+} derive(Eq, @debug.Debug)
+pub fn Checkbox::from_ref(String, @ref.Ref[Bool]) -> CheckboxRef
+pub fn Checkbox::new(String, Bool) -> Self
+pub fn Checkbox::show(Self, UIContext) -> (Bool, Response)
+
+pub struct CheckboxRef {
+  text : String
+  target : @ref.Ref[Bool]
+}
+pub impl Widget for CheckboxRef
 
 pub struct CodeEditorStyle {
   font_size : Double
@@ -115,6 +166,42 @@ pub(all) enum Event {
   TextInput(String)
   PointerWheel(@math.Vec2)
 } derive(Eq, @debug.Debug)
+
+pub struct Fader {
+  id_salt : String
+  label : String
+  value : Double
+  min_val : Double
+  max_val : Double
+  step : Double
+  default_val : Double
+  unit : String
+  show_ticks : Bool
+  size : @math.Vec2?
+} derive(Eq, @debug.Debug)
+pub fn Fader::default_val(Self, Double) -> Self
+pub fn Fader::from_ref(String, String, @ref.Ref[Double]) -> FaderRef
+pub fn Fader::max(Self, Double) -> Self
+pub fn Fader::min(Self, Double) -> Self
+pub fn Fader::new(String, String, Double) -> Self
+pub fn Fader::show(Self, UIContext) -> (Double, Response)
+pub fn Fader::show_ticks(Self, Bool) -> Self
+pub fn Fader::size(Self, @math.Vec2) -> Self
+pub fn Fader::step(Self, Double) -> Self
+pub fn Fader::unit(Self, String) -> Self
+
+pub struct FaderRef {
+  fader : Fader
+  target : @ref.Ref[Double]
+}
+pub fn FaderRef::default_val(Self, Double) -> Self
+pub fn FaderRef::max(Self, Double) -> Self
+pub fn FaderRef::min(Self, Double) -> Self
+pub fn FaderRef::show_ticks(Self, Bool) -> Self
+pub fn FaderRef::size(Self, @math.Vec2) -> Self
+pub fn FaderRef::step(Self, Double) -> Self
+pub fn FaderRef::unit(Self, String) -> Self
+pub impl Widget for FaderRef
 
 pub struct FaderStyle {
   width : Double
@@ -276,10 +363,54 @@ pub(all) enum Key {
   Num9
 } derive(Eq, Hash, @debug.Debug)
 
+pub struct Knob {
+  id_salt : String
+  label : String
+  value : Double
+  min_val : Double
+  max_val : Double
+  step : Double
+  default_val : Double
+  unit : String
+  radius : Double
+  bipolar : Bool
+} derive(Eq, @debug.Debug)
+pub fn Knob::bipolar(Self, Bool) -> Self
+pub fn Knob::default_val(Self, Double) -> Self
+pub fn Knob::from_ref(String, String, @ref.Ref[Double]) -> KnobRef
+pub fn Knob::max(Self, Double) -> Self
+pub fn Knob::min(Self, Double) -> Self
+pub fn Knob::new(String, String, Double) -> Self
+pub fn Knob::radius(Self, Double) -> Self
+pub fn Knob::show(Self, UIContext) -> (Double, Response)
+pub fn Knob::step(Self, Double) -> Self
+pub fn Knob::unit(Self, String) -> Self
+
+pub struct KnobRef {
+  knob : Knob
+  target : @ref.Ref[Double]
+}
+pub fn KnobRef::bipolar(Self, Bool) -> Self
+pub fn KnobRef::default_val(Self, Double) -> Self
+pub fn KnobRef::max(Self, Double) -> Self
+pub fn KnobRef::min(Self, Double) -> Self
+pub fn KnobRef::radius(Self, Double) -> Self
+pub fn KnobRef::step(Self, Double) -> Self
+pub fn KnobRef::unit(Self, String) -> Self
+pub impl Widget for KnobRef
+
 pub struct KnobStyle {
   radius : Double
 } derive(Eq, @debug.Debug)
 pub fn KnobStyle::default() -> Self
+
+pub struct Label {
+  text : String
+  color : @color.Color?
+} derive(Eq, @debug.Debug)
+pub fn Label::color(Self, @color.Color) -> Self
+pub fn Label::new(String) -> Self
+pub impl Widget for Label
 
 pub struct LayerManager {
   mut draw_list : @draw.DrawList
@@ -403,6 +534,21 @@ pub fn Painter::pop_clip(Self) -> Unit
 pub fn Painter::push_clip(Self, @math.Rect) -> Unit
 pub fn Painter::sub_painter(Self, @math.Vec2, sub_clip? : @math.Rect?) -> Self
 
+pub struct Plot {
+  id_salt : String
+  series : Array[PlotSeries]
+  size : @math.Vec2?
+  show_grid : Bool
+  show_crosshair : Bool
+  show_legend : Bool
+}
+pub fn Plot::new(String, Array[PlotSeries]) -> Self
+pub fn Plot::show(Self, UIContext) -> (@math.Vec2?, Response)
+pub fn Plot::show_crosshair(Self, Bool) -> Self
+pub fn Plot::show_grid(Self, Bool) -> Self
+pub fn Plot::show_legend(Self, Bool) -> Self
+pub fn Plot::size(Self, @math.Vec2) -> Self
+
 pub struct PlotPoint {
   x : Double
   y : Double
@@ -437,6 +583,21 @@ pub struct PlotStyle {
   bar_chart_gap : Double
 } derive(Eq, @debug.Debug)
 pub fn PlotStyle::default() -> Self
+
+pub struct ProgressBar {
+  fraction : Double
+  text : String
+} derive(Eq, @debug.Debug)
+pub fn ProgressBar::new(Double) -> Self
+pub fn ProgressBar::text(Self, String) -> Self
+pub impl Widget for ProgressBar
+
+pub struct Radio {
+  label : String
+  selected : Bool
+} derive(Eq, @debug.Debug)
+pub fn Radio::new(String, Bool) -> Self
+pub fn Radio::show(Self, UIContext) -> (Bool, Response)
 
 pub struct RawInput {
   mouse_pos : @math.Vec2
@@ -481,6 +642,53 @@ pub struct RichTextResponse {
   clicked_url : String?
   resp : Response
 } derive(Eq, @debug.Debug)
+
+pub struct Separator {
+} derive(Eq, @debug.Debug)
+pub fn Separator::new() -> Self
+pub impl Widget for Separator
+
+pub struct Slider {
+  label : String
+  value : Double
+  min : Double
+  max : Double
+  step : Double?
+} derive(Eq, @debug.Debug)
+pub fn Slider::from_ref(String, @ref.Ref[Double], Double, Double) -> SliderRef
+pub fn Slider::new(String, Double, Double, Double) -> Self
+pub fn Slider::show(Self, UIContext) -> (Double, Response)
+pub fn Slider::step(Self, Double) -> Self
+
+pub struct SliderRef {
+  label : String
+  target : @ref.Ref[Double]
+  min : Double
+  max : Double
+  step : Double?
+}
+pub fn SliderRef::step(Self, Double) -> Self
+pub impl Widget for SliderRef
+
+pub struct Table {
+  id_salt : String
+  size : @math.Vec2
+  columns : Array[TableColumn]
+  row_count : Int
+  render_cell : (UIContext, Int, Int, @math.Rect) -> Unit
+  row_height : Double
+  header_height : Double
+  selected_row : Int
+  sort_column : String
+  sort_direction : TableSortDirection
+}
+pub fn Table::header_height(Self, Double) -> Self
+pub fn Table::new(String, @math.Vec2, Array[TableColumn], Int, (UIContext, Int, Int, @math.Rect) -> Unit) -> Self
+pub fn Table::row_height(Self, Double) -> Self
+pub fn Table::selected_row(Self, Int) -> Self
+pub fn Table::show(Self, UIContext) -> TableResponse
+pub fn Table::sort_column(Self, String) -> Self
+pub fn Table::sort_direction(Self, TableSortDirection) -> Self
 
 pub struct TableColumn {
   id : String
@@ -591,6 +799,20 @@ pub struct ToastResponse {
   dismissed_id : String?
 } derive(Eq, @debug.Debug)
 
+pub struct Toggle {
+  text : String
+  checked : Bool
+} derive(Eq, @debug.Debug)
+pub fn Toggle::from_ref(String, @ref.Ref[Bool]) -> ToggleRef
+pub fn Toggle::new(String, Bool) -> Self
+pub fn Toggle::show(Self, UIContext) -> (Bool, Response)
+
+pub struct ToggleRef {
+  text : String
+  target : @ref.Ref[Bool]
+}
+pub impl Widget for ToggleRef
+
 pub struct TreeNode {
   id : String
   label : String
@@ -630,6 +852,7 @@ pub struct UIContext {
 } derive(Eq, @debug.Debug)
 pub fn UIContext::active_id(Self) -> Id
 pub fn UIContext::active_submenu_id(Self) -> String
+pub fn[W : Widget] UIContext::add(Self, W) -> Response
 pub fn UIContext::advance_cursor(Self, @math.Vec2) -> Unit
 pub fn UIContext::allocate_space(Self, @math.Vec2) -> (Id, @math.Rect, Response)
 pub fn UIContext::animate_bool(Self, Id, Bool, Double) -> Double
@@ -824,3 +1047,6 @@ pub fn WindowManager::window_z(Self, Id) -> Int
 // Type aliases
 
 // Traits
+pub trait Widget {
+  fn ui(Self, UIContext) -> Response
+}

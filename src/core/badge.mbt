@@ -84,6 +84,45 @@ fn badge_colors(kind : BadgeKind) -> (@color.Color, @color.Color, @color.Color) 
 }
 
 ///|
+/// Standalone semantic status badge widget supporting fluent configuration.
+pub struct Badge {
+  text : String
+  kind : BadgeKind
+  dot : Bool
+  pill : Bool
+} derive(Eq, Debug)
+
+///|
+/// Create a new status badge widget.
+pub fn Badge::new(text : String) -> Badge {
+  { text, kind: Default, dot: false, pill: false, }
+}
+
+///|
+/// Set semantic color kind.
+pub fn Badge::kind(self : Badge, kind : BadgeKind) -> Badge {
+  { ..self, kind, }
+}
+
+///|
+/// Toggle breathing status dot.
+pub fn Badge::dot(self : Badge, dot : Bool) -> Badge {
+  { ..self, dot, }
+}
+
+///|
+/// Toggle pill-shaped fully rounded borders.
+pub fn Badge::pill(self : Badge, pill : Bool) -> Badge {
+  { ..self, pill, }
+}
+
+///|
+/// Render the badge into the provided UIContext.
+pub impl Widget for Badge with fn ui(self, ctx : UIContext) -> Response {
+  ctx.badge(self.text, kind=self.kind, dot=self.dot, pill=self.pill)
+}
+
+///|
 /// Render a compact semantic status badge capsule with optional breathing status dot
 /// and pill-shaped fully rounded borders.
 pub fn UIContext::badge(

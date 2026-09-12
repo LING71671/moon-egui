@@ -66,6 +66,94 @@ pub struct TableResponse {
 } derive(Eq, Debug)
 
 ///|
+/// Standalone virtualized data table widget supporting fluent configuration.
+pub struct Table {
+  id_salt : String
+  size : @math.Vec2
+  columns : Array[TableColumn]
+  row_count : Int
+  render_cell : (UIContext, Int, Int, @math.Rect) -> Unit
+  row_height : Double
+  header_height : Double
+  selected_row : Int
+  sort_column : String
+  sort_direction : TableSortDirection
+}
+
+///|
+/// Create a new virtualized data table builder.
+pub fn Table::new(
+  id_salt : String,
+  size : @math.Vec2,
+  columns : Array[TableColumn],
+  row_count : Int,
+  render_cell : (UIContext, Int, Int, @math.Rect) -> Unit,
+) -> Table {
+  {
+    id_salt,
+    size,
+    columns,
+    row_count,
+    render_cell,
+    row_height: 0.0,
+    header_height: 0.0,
+    selected_row: -1,
+    sort_column: "",
+    sort_direction: NoSort,
+  }
+}
+
+///|
+/// Set row height in pixels.
+pub fn Table::row_height(self : Table, row_height : Double) -> Table {
+  { ..self, row_height, }
+}
+
+///|
+/// Set header height in pixels.
+pub fn Table::header_height(self : Table, header_height : Double) -> Table {
+  { ..self, header_height, }
+}
+
+///|
+/// Set index of currently selected row.
+pub fn Table::selected_row(self : Table, selected_row : Int) -> Table {
+  { ..self, selected_row, }
+}
+
+///|
+/// Set column identifier used for active sorting.
+pub fn Table::sort_column(self : Table, sort_column : String) -> Table {
+  { ..self, sort_column, }
+}
+
+///|
+/// Set sort direction (Ascending, Descending, NoSort).
+pub fn Table::sort_direction(
+  self : Table,
+  sort_direction : TableSortDirection,
+) -> Table {
+  { ..self, sort_direction, }
+}
+
+///|
+/// Render the table into the provided UIContext.
+pub fn Table::show(self : Table, ctx : UIContext) -> TableResponse {
+  ctx.table(
+    self.id_salt,
+    self.size,
+    self.columns,
+    self.row_count,
+    self.render_cell,
+    row_height=self.row_height,
+    header_height=self.header_height,
+    selected_row=self.selected_row,
+    sort_column=self.sort_column,
+    sort_direction=self.sort_direction,
+  )
+}
+
+///|
 /// Render a virtualized data table with resizable column headers, sorting,
 /// alternating row stripes, row selection, and smooth vertical scrolling.
 pub fn UIContext::table(

@@ -1,17 +1,77 @@
 ///|
-/// Render a continuous floating-point slider.
-/// Returns a tuple of (new_value, response).
-pub fn UIContext::slider(
-  self : UIContext,
+/// Standalone continuous floating-point slider widget supporting fluent configuration.
+pub struct Slider {
+  label : String
+  value : Double
+  min : Double
+  max : Double
+  step : Double?
+} derive(Eq, Debug)
+
+///|
+/// Create a new slider widget.
+pub fn Slider::new(
   label : String,
   value : Double,
   min : Double,
   max : Double,
-) -> (Double, Response) {
-  let scale = self.style.scale
-  let font_size = self.style.font_normal * scale
-  let label_size = self.measure_text(label, font_size)
-  let label_w = if label.length() > 0 {
+) -> Slider {
+  { label, value, min, max, step: None, }
+}
+
+///|
+/// Configure an optional stepping increment for keyboard and drag adjustment.
+pub fn Slider::step(self : Slider, step : Double) -> Slider {
+  { ..self, step: Some(step), }
+}
+
+///|
+/// Reference-bound slider widget for uniform `ui.add(...)` dispatch.
+pub struct SliderRef {
+  label : String
+  target : Ref[Double]
+  min : Double
+  max : Double
+  step : Double?
+}
+
+///|
+/// Create a slider bound directly to a `Ref[Double]` variable.
+pub fn Slider::from_ref(
+  label : String,
+  target : Ref[Double],
+  min : Double,
+  max : Double,
+) -> SliderRef {
+  { label, target, min, max, step: None, }
+}
+
+///|
+/// Configure stepping increment on reference-bound slider.
+pub fn SliderRef::step(self : SliderRef, step : Double) -> SliderRef {
+  { ..self, step: Some(step), }
+}
+
+///|
+/// Render the reference-bound slider, writing the updated value to target ref.
+pub impl Widget for SliderRef with fn ui(self, ctx : UIContext) -> Response {
+  let slider = match self.step {
+    Some(s) =>
+      Slider::new(self.label, self.target.val, self.min, self.max).step(s)
+    None => Slider::new(self.label, self.target.val, self.min, self.max)
+  }
+  let (new_val, resp) = slider.show(ctx)
+  self.target.val = new_val
+  resp
+}
+
+///|
+/// Render the slider and return the updated value alongside the interaction response.
+pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
+  let scale = ctx.style.scale
+  let font_size = ctx.style.font_normal * scale
+  let label_size = ctx.measure_text(self.label, font_size)
+  let label_w = if self.label.length() > 0 {
     label_size.x + 12.0 * scale
   } else {
     0.0
@@ -19,9 +79,9 @@ pub fn UIContext::slider(
   let track_w = 120.0 * scale
   let val_w = 42.0 * scale
   let total_w = label_w + track_w + val_w + 8.0 * scale
-  let h = self.style.control_h_sm * scale
-  let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
-  self.register_focusable(id)
+  let h = ctx.style.control_h_sm * scale
+  let (id, rect, resp) = ctx.allocate_space(@math.Vec2::new(total_w, h))
+  ctx.register_focusable(id)
 
   let track_h = 6.0 * scale
   let track_rect = @math.Rect::new(
@@ -38,23 +98,23 @@ pub fn UIContext::slider(
     track_w + 8.0 * scale,
     h,
   )
-  let is_hovered = self.is_hovered(touch_rect)
-  if is_hovered && self.input.mouse_pressed {
-    self.set_active_id(id)
+  let is_hovered = ctx.is_hovered(touch_rect)
+  if is_hovered && ctx.input.mouse_pressed {
+    ctx.set_active_id(id)
   }
 
-  let is_active = self.active_id() == id
+  let is_active = ctx.active_id() == id
   if is_hovered || is_active {
-    self.set_cursor_icon("ew-resize")
+    ctx.set_cursor_icon("ew-resize")
   }
-  let clamped_min = if min < max { min } else { max }
-  let clamped_max = if max > min { max } else { min }
+  let clamped_min = if self.min < self.max { self.min } else { self.max }
+  let clamped_max = if self.max > self.min { self.max } else { self.min }
   let range = clamped_max - clamped_min
   let safe_range = if range > 0.000001 { range } else { 1.0 }
 
-  let mut new_val = value
-  if is_active && self.input.mouse_down {
-    let mouse_x = self.input.mouse_pos.x
+  let mut new_val = self.value
+  if is_active && ctx.input.mouse_down {
+    let mouse_x = ctx.input.mouse_pos.x
     let mut pct = (mouse_x - track_rect.x) / track_rect.w
     if pct < 0.0 {
       pct = 0.0
@@ -62,53 +122,66 @@ pub fn UIContext::slider(
       pct = 1.0
     }
     new_val = clamped_min + pct * safe_range
+    if self.step is Some(s) {
+      if s > 0.000001 {
+        let steps_cnt = ((new_val - clamped_min) / s + 0.5).to_int().to_double()
+        new_val = clamped_min + steps_cnt * s
+        if new_val > clamped_max {
+          new_val = clamped_max
+        }
+      }
+    }
   }
 
   // Keyboard navigation when focused
   let is_focused = resp.has_focus()
   if is_focused {
-    let step = if safe_range >= 100.0 {
-      1.0
-    } else if safe_range >= 10.0 {
-      0.5
-    } else {
-      0.05
+    let step = match self.step {
+      Some(s) => s
+      None =>
+        if safe_range >= 100.0 {
+          1.0
+        } else if safe_range >= 10.0 {
+          0.5
+        } else {
+          0.05
+        }
     }
-    if self.input.key_pressed(Key::ArrowLeft) ||
-      self.input.key_pressed(Key::ArrowDown) {
+    if ctx.input.key_pressed(Key::ArrowLeft) ||
+      ctx.input.key_pressed(Key::ArrowDown) {
       new_val = new_val - step
       if new_val < clamped_min {
         new_val = clamped_min
       }
-      self.input.consume_key(Key::ArrowLeft)
-      self.input.consume_key(Key::ArrowDown)
+      ctx.input.consume_key(Key::ArrowLeft)
+      ctx.input.consume_key(Key::ArrowDown)
     }
-    if self.input.key_pressed(Key::ArrowRight) ||
-      self.input.key_pressed(Key::ArrowUp) {
+    if ctx.input.key_pressed(Key::ArrowRight) ||
+      ctx.input.key_pressed(Key::ArrowUp) {
       new_val = new_val + step
       if new_val > clamped_max {
         new_val = clamped_max
       }
-      self.input.consume_key(Key::ArrowRight)
-      self.input.consume_key(Key::ArrowUp)
+      ctx.input.consume_key(Key::ArrowRight)
+      ctx.input.consume_key(Key::ArrowUp)
     }
   }
 
   // Draw Label
-  if label.length() > 0 {
-    self
+  if self.label.length() > 0 {
+    ctx
     .painter()
     .add_text(
       @math.Vec2::new(rect.x, rect.y + (h - 13.0) * 0.5),
-      label,
+      self.label,
       13.0,
       @color.Color::text_primary(),
     )
   }
 
   // Draw Recessed Track Background
-  self.painter().add_rect(track_rect, @color.Color::bg_surface(), 3.0)
-  self
+  ctx.painter().add_rect(track_rect, @color.Color::bg_surface(), 3.0)
+  ctx
   .painter()
   .add_rect_stroke(track_rect, @color.Color::border_muted(), 1.0, 3.0)
 
@@ -117,7 +190,7 @@ pub fn UIContext::slider(
   for t in [0.25, 0.5, 0.75] {
     let tick_x = track_rect.x + track_rect.w * t
     let tick_y = track_rect.y + track_rect.h * 0.5
-    self.painter().add_circle(@math.Vec2::new(tick_x, tick_y), 1.5, tick_col)
+    ctx.painter().add_circle(@math.Vec2::new(tick_x, tick_y), 1.5, tick_col)
   }
 
   // Draw Active Progress Fill
@@ -135,7 +208,7 @@ pub fn UIContext::slider(
       active_w,
       track_rect.h,
     )
-    self.painter().add_rect(fill_rect, @color.Color::accent_primary(), 3.0)
+    ctx.painter().add_rect(fill_rect, @color.Color::accent_primary(), 3.0)
   }
 
   // Compute Value Text
@@ -157,9 +230,9 @@ pub fn UIContext::slider(
   // Draw White Ceramic Thumb Handle with Cobalt Border
   let thumb_cx = track_rect.x + active_w
   let thumb_cy = track_rect.y + track_rect.h * 0.5
-  let scale = self.style.scale
-  let font_sm = self.style.font_small * scale
-  let radius_sm = self.style.radius_sm * scale
+  let scale = ctx.style.scale
+  let font_sm = ctx.style.font_small * scale
+  let radius_sm = ctx.style.radius_sm * scale
 
   let thumb_r = if is_active {
     7.0 * scale
@@ -168,7 +241,7 @@ pub fn UIContext::slider(
   } else {
     5.5 * scale
   }
-  self
+  ctx
   .painter()
   .add_circle(
     @math.Vec2::new(thumb_cx, thumb_cy),
@@ -181,7 +254,7 @@ pub fn UIContext::slider(
     @color.Color::accent_primary()
   }
   let thumb_stroke_w = if is_focused { 2.0 * scale } else { 1.5 }
-  self
+  ctx
   .painter()
   .add_circle_stroke(
     @math.Vec2::new(thumb_cx, thumb_cy),
@@ -192,14 +265,14 @@ pub fn UIContext::slider(
 
   // Draw Floating HUD Bubble above Thumb when active
   if is_active {
-    let bubble_size = self.measure_text(val_text, font_sm)
+    let bubble_size = ctx.measure_text(val_text, font_sm)
     let bubble_w = bubble_size.x + 14.0 * scale
     let bubble_h = 20.0 * scale
     let bubble_x = thumb_cx - bubble_w * 0.5
     let bubble_y = thumb_cy - thumb_r - bubble_h - 4.0 * scale
     let bubble_rect = @math.Rect::new(bubble_x, bubble_y, bubble_w, bubble_h)
-    self.painter().add_rect(bubble_rect, @color.Color::bg_window(), radius_sm)
-    self
+    ctx.painter().add_rect(bubble_rect, @color.Color::bg_window(), radius_sm)
+    ctx
     .painter()
     .add_rect_stroke(
       bubble_rect,
@@ -211,13 +284,13 @@ pub fn UIContext::slider(
       bubble_x + 7.0 * scale,
       bubble_y + (bubble_h - font_sm) * 0.5,
     )
-    self
+    ctx
     .painter()
     .add_text(bubble_text_pos, val_text, font_sm, @color.Color::text_primary())
   }
 
   // Draw Value Text in row
-  self
+  ctx
   .painter()
   .add_text(
     @math.Vec2::new(track_rect.x + track_w + 10.0, rect.y + (h - 12.0) * 0.5),
@@ -227,6 +300,19 @@ pub fn UIContext::slider(
   )
 
   (new_val, resp)
+}
+
+///|
+/// Render a continuous floating-point slider.
+/// Returns a tuple of (new_value, response).
+pub fn UIContext::slider(
+  self : UIContext,
+  label : String,
+  value : Double,
+  min : Double,
+  max : Double,
+) -> (Double, Response) {
+  Slider::new(label, value, min, max).show(self)
 }
 
 ///|

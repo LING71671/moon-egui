@@ -1,4 +1,29 @@
 ///|
+/// Standalone progress bar widget supporting fluent configuration.
+pub struct ProgressBar {
+  fraction : Double
+  text : String
+} derive(Eq, Debug)
+
+///|
+/// Create a new progress bar widget with a normalized 0.0-1.0 fraction.
+pub fn ProgressBar::new(fraction : Double) -> ProgressBar {
+  { fraction, text: "", }
+}
+
+///|
+/// Set custom display label text (defaults to percentage if empty).
+pub fn ProgressBar::text(self : ProgressBar, text : String) -> ProgressBar {
+  { ..self, text, }
+}
+
+///|
+/// Render the progress bar into the provided UIContext.
+pub impl Widget for ProgressBar with fn ui(self, ctx : UIContext) -> Response {
+  ctx.progress_bar(self.fraction, self.text)
+}
+
+///|
 /// Render a styled progress bar with progress fill and label.
 pub fn UIContext::progress_bar(
   self : UIContext,

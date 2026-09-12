@@ -1,4 +1,60 @@
 ///|
+/// Standalone read-only text label widget supporting custom colors and fluent configuration.
+pub struct Label {
+  text : String
+  color : @color.Color?
+} derive(Eq, Debug)
+
+///|
+/// Create a new text label widget.
+pub fn Label::new(text : String) -> Label {
+  { text, color: None, }
+}
+
+///|
+/// Set custom text color.
+pub fn Label::color(self : Label, color : @color.Color) -> Label {
+  { ..self, color: Some(color), }
+}
+
+///|
+/// Render the label into the provided UIContext.
+pub impl Widget for Label with fn ui(self, ctx : UIContext) -> Response {
+  match self.color {
+    Some(c) => ctx.label_colored(self.text, c)
+    None => ctx.label(self.text)
+  }
+}
+
+///|
+/// Standalone horizontal divider line widget implementing Widget trait.
+pub struct Separator {} derive(Eq, Debug)
+
+///|
+/// Create a new horizontal separator widget.
+pub fn Separator::new() -> Separator {
+  Separator::{ }
+}
+
+///|
+/// Render the separator into the provided UIContext.
+pub impl Widget for Separator with fn ui(_self, ctx : UIContext) -> Response {
+  let w = ctx.available_width()
+  let h = 9.0
+  let (_id, rect, resp) = ctx.allocate_space(@math.Vec2::new(w, h))
+  let y = rect.y + 4.5
+  ctx
+  .painter()
+  .add_line(
+    @math.Vec2::new(rect.x, y),
+    @math.Vec2::new(rect.x + rect.w, y),
+    @color.Color::border_muted(),
+    1.0,
+  )
+  resp
+}
+
+///|
 /// Render a read-only text label using Studio Light slate text color.
 pub fn UIContext::label(self : UIContext, text : String) -> Response {
   self.label_colored(text, @color.Color::text_primary())

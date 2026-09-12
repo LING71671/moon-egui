@@ -1,24 +1,47 @@
 ///|
-/// Render an interactive button with modern Studio Light porcelain aesthetic and 1.5px physical mechanical actuation travel.
-/// Supports optional labeled parameters:
-/// - `shortcut~`: e.g. "⌘S" or "Esc", renders an Apple-grade chiclet keycap badge.
-/// - `primary~`: renders a high-contrast cold cobalt blue emphasize button.
-/// - `size~`: overrides automatic dimension calculation.
-pub fn UIContext::button(
-  self : UIContext,
-  text : String,
-  shortcut? : String = "",
-  primary? : Bool = false,
-  size? : @math.Vec2 = @math.Vec2::zero(),
-) -> Response {
-  let scale = self.style.scale
-  let font_size = self.style.font_normal * scale
-  let text_size = self.measure_text(text, font_size)
+/// Standalone button widget struct supporting fluent configuration.
+pub struct Button {
+  text : String
+  shortcut : String
+  primary : Bool
+  size : @math.Vec2
+} derive(Eq, Debug)
+
+///|
+/// Create a new button widget with default styling.
+pub fn Button::new(text : String) -> Button {
+  { text, shortcut: "", primary: false, size: @math.Vec2::zero(), }
+}
+
+///|
+/// Configure an Apple-grade chiclet keyboard shortcut badge (e.g. "⌘S", "Esc").
+pub fn Button::shortcut(self : Button, shortcut : String) -> Button {
+  { ..self, shortcut, }
+}
+
+///|
+/// Configure button as high-contrast cold cobalt primary action.
+pub fn Button::primary(self : Button, primary : Bool) -> Button {
+  { ..self, primary, }
+}
+
+///|
+/// Explicitly override the button's layout dimensions.
+pub fn Button::size(self : Button, size : @math.Vec2) -> Button {
+  { ..self, size, }
+}
+
+///|
+/// Render the button into the provided UIContext.
+pub impl Widget for Button with fn ui(self, ctx : UIContext) -> Response {
+  let scale = ctx.style.scale
+  let font_size = ctx.style.font_normal * scale
+  let text_size = ctx.measure_text(self.text, font_size)
   let text_w = text_size.x
-  let has_shortcut = shortcut.length() > 0
-  let kbd_font_size = self.style.font_small * scale
+  let has_shortcut = self.shortcut.length() > 0
+  let kbd_font_size = ctx.style.font_small * scale
   let kbd_w = if has_shortcut {
-    self.measure_text(shortcut, kbd_font_size).x + 14.0 * scale
+    ctx.measure_text(self.shortcut, kbd_font_size).x + 14.0 * scale
   } else {
     0.0
   }
@@ -27,7 +50,7 @@ pub fn UIContext::button(
   let pad_w = if has_shortcut {
     36.0 * scale
   } else {
-    (self.style.spacing_sm + self.style.radius_md) * 2.0 * scale
+    (ctx.style.spacing_sm + ctx.style.radius_md) * 2.0 * scale
   }
   let content_w = if has_shortcut {
     text_w + kbd_w + pad_w
@@ -35,13 +58,17 @@ pub fn UIContext::button(
     text_w + pad_w
   }
   let auto_w = if content_w > min_w { content_w } else { min_w }
-  let w = if size.x > 0.0 { size.x } else { auto_w }
-  let h = if size.y > 0.0 { size.y } else { self.style.control_h_md * scale }
+  let w = if self.size.x > 0.0 { self.size.x } else { auto_w }
+  let h = if self.size.y > 0.0 {
+    self.size.y
+  } else {
+    ctx.style.control_h_md * scale
+  }
 
-  let (id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
-  self.register_focusable(id)
+  let (id, rect, resp) = ctx.allocate_space(@math.Vec2::new(w, h))
+  ctx.register_focusable(id)
   if resp.hovered {
-    self.set_cursor_icon("pointer")
+    ctx.set_cursor_icon("pointer")
   }
 
   // 1.5px Mechanical Press Travel & Tactile Actuation Displacement
@@ -54,7 +81,7 @@ pub fn UIContext::button(
   )
 
   // Studio Light Lunar Porcelain Palette
-  let bg_color = if primary {
+  let bg_color = if self.primary {
     if resp.pressed {
       @color.Color::accent_pressed() // Deep cobalt under load
     } else if resp.hovered {
@@ -72,7 +99,7 @@ pub fn UIContext::button(
 
   let border_color = if resp.has_focus() {
     @color.Color::border_focus()
-  } else if primary {
+  } else if self.primary {
     if resp.pressed {
       @color.Color::accent_deep()
     } else {
@@ -86,7 +113,7 @@ pub fn UIContext::button(
     @color.Color::border_default() // Milled cold-slate hairline
   }
 
-  let text_color = if primary {
+  let text_color = if self.primary {
     @color.Color::text_inverse()
   } else if resp.pressed {
     @color.Color::text_strong()
@@ -96,8 +123,8 @@ pub fn UIContext::button(
     @color.Color::text_body()
   }
 
-  let painter = self.painter()
-  let radius = self.style.radius_md * scale
+  let painter = ctx.painter()
+  let radius = ctx.style.radius_md * scale
   painter.add_rect(draw_rect, bg_color, radius)
   let stroke_w = if resp.has_focus() { 1.5 * scale } else { 1.0 }
   painter.add_rect_stroke(draw_rect, border_color, stroke_w, radius)
@@ -108,7 +135,7 @@ pub fn UIContext::button(
     let text_y = draw_rect.y + (draw_rect.h - font_size) * 0.5
     painter.add_text(
       @math.Vec2::new(text_x, text_y),
-      text,
+      self.text,
       font_size,
       text_color,
     )
@@ -121,7 +148,7 @@ pub fn UIContext::button(
       kbd_w,
       kbd_h,
     )
-    let (kbd_bg, kbd_col) = if primary {
+    let (kbd_bg, kbd_col) = if self.primary {
       (@color.Color::accent_highlight(), @color.Color::text_inverse())
     } else {
       (
@@ -139,13 +166,13 @@ pub fn UIContext::button(
         },
       )
     }
-    painter.add_rect(kbd_rect, kbd_bg, self.style.radius_sm * scale)
-    let sc_w = self.measure_text(shortcut, kbd_font_size).x
+    painter.add_rect(kbd_rect, kbd_bg, ctx.style.radius_sm * scale)
+    let sc_w = ctx.measure_text(self.shortcut, kbd_font_size).x
     let kbd_text_x = kbd_rect.x + (kbd_rect.w - sc_w) * 0.5
     let kbd_text_y = kbd_rect.y + (kbd_rect.h - kbd_font_size) * 0.5
     painter.add_text(
       @math.Vec2::new(kbd_text_x, kbd_text_y),
-      shortcut,
+      self.shortcut,
       kbd_font_size,
       kbd_col,
     )
@@ -155,13 +182,29 @@ pub fn UIContext::button(
     let text_y = draw_rect.y + (draw_rect.h - font_size) * 0.5
     painter.add_text(
       @math.Vec2::new(text_x, text_y),
-      text,
+      self.text,
       font_size,
       text_color,
     )
   }
 
   resp
+}
+
+///|
+/// Render an interactive button with modern Studio Light porcelain aesthetic and 1.5px physical mechanical actuation travel.
+/// Supports optional labeled parameters:
+/// - `shortcut~`: e.g. "⌘S" or "Esc", renders an Apple-grade chiclet keycap badge.
+/// - `primary~`: renders a high-contrast cold cobalt blue emphasize button.
+/// - `size~`: overrides automatic dimension calculation.
+pub fn UIContext::button(
+  self : UIContext,
+  text : String,
+  shortcut? : String = "",
+  primary? : Bool = false,
+  size? : @math.Vec2 = @math.Vec2::zero(),
+) -> Response {
+  self.add(Button::new(text).shortcut(shortcut).primary(primary).size(size))
 }
 
 ///|

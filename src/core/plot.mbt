@@ -113,6 +113,78 @@ fn format_coord_val(v : Double) -> String {
 }
 
 ///|
+/// Standalone 2D coordinate plot widget supporting fluent configuration.
+pub struct Plot {
+  id_salt : String
+  series : Array[PlotSeries]
+  size : @math.Vec2?
+  show_grid : Bool
+  show_crosshair : Bool
+  show_legend : Bool
+}
+
+///|
+/// Create a new 2D plot widget builder.
+pub fn Plot::new(id_salt : String, series : Array[PlotSeries]) -> Plot {
+  {
+    id_salt,
+    series,
+    size: None,
+    show_grid: true,
+    show_crosshair: true,
+    show_legend: true,
+  }
+}
+
+///|
+/// Override plot layout dimensions.
+pub fn Plot::size(self : Plot, size : @math.Vec2) -> Plot {
+  { ..self, size: Some(size), }
+}
+
+///|
+/// Toggle background coordinate grid lines.
+pub fn Plot::show_grid(self : Plot, show_grid : Bool) -> Plot {
+  { ..self, show_grid, }
+}
+
+///|
+/// Toggle interactive crosshair line and coordinate HUD tooltip.
+pub fn Plot::show_crosshair(self : Plot, show_crosshair : Bool) -> Plot {
+  { ..self, show_crosshair, }
+}
+
+///|
+/// Toggle multi-series legend badges.
+pub fn Plot::show_legend(self : Plot, show_legend : Bool) -> Plot {
+  { ..self, show_legend, }
+}
+
+///|
+/// Render the plot into the provided UIContext.
+pub fn Plot::show(self : Plot, ctx : UIContext) -> (@math.Vec2?, Response) {
+  match self.size {
+    Some(s) =>
+      ctx.plot(
+        self.id_salt,
+        self.series,
+        size=s,
+        show_grid=self.show_grid,
+        show_crosshair=self.show_crosshair,
+        show_legend=self.show_legend,
+      )
+    None =>
+      ctx.plot(
+        self.id_salt,
+        self.series,
+        show_grid=self.show_grid,
+        show_crosshair=self.show_crosshair,
+        show_legend=self.show_legend,
+      )
+  }
+}
+
+///|
 /// Render an immediate-mode 2D coordinate plot with multi-series support,
 /// automatic axis scaling, divide-by-zero protection, background grid,
 /// scissor-clipped curve drawing, and interactive crosshair coordinates.
@@ -431,6 +503,69 @@ pub fn UIContext::plot(
   }
 
   (hovered_coord, resp)
+}
+
+///|
+/// Standalone categorical bar chart widget supporting fluent configuration.
+pub struct BarChart {
+  id_salt : String
+  labels : Array[String]
+  values : Array[Double]
+  size : @math.Vec2?
+  bar_color : @color.Color
+}
+
+///|
+/// Create a new categorical bar chart builder.
+pub fn BarChart::new(
+  id_salt : String,
+  labels : Array[String],
+  values : Array[Double],
+) -> BarChart {
+  {
+    id_salt,
+    labels,
+    values,
+    size: None,
+    bar_color: @color.Color::accent_primary(),
+  }
+}
+
+///|
+/// Override bar chart layout dimensions.
+pub fn BarChart::size(self : BarChart, size : @math.Vec2) -> BarChart {
+  { ..self, size: Some(size), }
+}
+
+///|
+/// Set custom bar fill color.
+pub fn BarChart::bar_color(
+  self : BarChart,
+  bar_color : @color.Color,
+) -> BarChart {
+  { ..self, bar_color, }
+}
+
+///|
+/// Render the bar chart into the provided UIContext.
+pub fn BarChart::show(self : BarChart, ctx : UIContext) -> (Int?, Response) {
+  match self.size {
+    Some(s) =>
+      ctx.bar_chart(
+        self.id_salt,
+        self.labels,
+        self.values,
+        size=s,
+        bar_color=self.bar_color,
+      )
+    None =>
+      ctx.bar_chart(
+        self.id_salt,
+        self.labels,
+        self.values,
+        bar_color=self.bar_color,
+      )
+  }
 }
 
 ///|
