@@ -47,7 +47,7 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
   - [x] **100% Native Canvas Gallery Engine Refactoring** [Delivered]: Component gallery fully powered by pure MoonBit WebAssembly/Canvas immediate-mode pipeline, eliminating simulated DOM and CSS;
   - [x] **Linear Fader Regulator (`Fader`)** [Delivered]: Linear channel slider for audio gain and continuous parameters, with calibrated ticks, vertical drag delta, scroll wheel, and Alt+Click reset (Milestone 5 100% Delivered).
 * **Acceptance Criteria**:
-  - Keyboard-only navigation smoothly cycles through interactive controls with passing headless test suites (167/167 tests passing).
+  - Keyboard-only navigation smoothly cycles through interactive controls with passing headless test suites (211/211 tests passing).
 
 ---
 
@@ -59,7 +59,7 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
   - [x] **Multi-Window Docking & Snapping System (`DockArea` / `dock.mbt`)** [Delivered]: Hierarchical DockTree workspace partitioning with draggable splitters, tab switching/closing, and Scissor clipping;
   - [ ] **Damped Momentum Physics (`Spring Physics`)**: Controlled physical spring-damper easing for window dragging and scrolling.
 * **Acceptance Criteria**:
-  - Windows snap cleanly into tiled docks and split panes preserve proportional layouts across window resizing (195/195 tests passing).
+  - Windows snap cleanly into tiled docks and split panes preserve proportional layouts across window resizing (211/211 tests passing).
 
 ---
 
@@ -95,7 +95,7 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 
 * **Objective**: Ensure industrial code reliability, freeze API contracts, and finalize project deliverables.
 * **Deliverables**:
-  - [x] **Expanded Test Suite** [Delivered]: Reach 167 automated whitebox and blackbox test cases (100% passing rate);
+  - [x] **Expanded Test Suite** [Delivered]: Reach 211 automated whitebox and blackbox test cases (100% passing rate);
   - [ ] **Micro-Benchmark Telemetry (Benchmarks)**: Measure nanosecond and microsecond compute budgets across typical workloads;
   - [ ] **Interface Stabilization**: Run `moon info && moon fmt`, freeze `.mbti` signatures, and finalize bilingual documentation;
   - [ ] **Release Packaging**: Tag and publish official `v0.2.0` release.

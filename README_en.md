@@ -59,12 +59,14 @@ moon add LING71671/moon-egui
 moon add LING71671/moon-egui@0.2.0
 ```
 
-Then import the packages in your `moon.pkg`:
+Import the layers you need in your `moon.pkg`: `src/core` is the bare immediate-mode runtime, `src/widgets` adds the standard controls, and `src/composite` the advanced components.
 
 ```json
 {
   "import": [
     "LING71671/moon-egui/src/core",
+    "LING71671/moon-egui/src/widgets",
+    "LING71671/moon-egui/src/composite",
     "LING71671/moon-egui/src/draw",
     "LING71671/moon-egui/src/math",
     "LING71671/moon-egui/src/color"
@@ -172,7 +174,7 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
   - **Global Application Menu Bar**: `menu_bar`, `menu`, `menu_item`, `menu_separator` featuring isolated foreground layer projection, desktop-grade Hover-to-Switch transitions, and outside-click dismissal;
   - **Free-Floating Windows**: `window` supporting title-bar drag repositioning, dynamic Z-Index elevation, local coordinate scoping, and scissor clipping;
   - **Advanced Containers**: `splitter` (bidirectional draggable divider), `table` (high-performance virtualized data table with resizable columns), `collapsing_header` (tree groupings with persistent open memory), `scroll_area` (wheel and thumb draggable viewport scrolling), `tab_bar` (tab navigation), `dialog` (modal confirmation dialog with focus trap).
-- **Headless & Automated Testing**: Core logic produces pure `DrawCmd` streams without browser bindings, backed by 167 automated unit tests (100% passing).
+- **Headless & Automated Testing**: Core logic produces pure `DrawCmd` streams without browser bindings, backed by 211 automated headless unit and integration tests (100% passing).
 - **Canvas 2D Host Driver**: Lightweight JavaScript bridge and 60 FPS rendering pipeline, coupled with O(1) viewport spatial culling and adaptive LOD architecture.
 
 ### Planned & In Roadmap

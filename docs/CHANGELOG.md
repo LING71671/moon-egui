@@ -30,7 +30,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added `font_family : String` and `font_weight : Int` metadata to `DrawCmd::Text` and `DrawList::add_text`.
   - Enabled bold font weight (700) in `RichText` and explicit monospace typeface in `CodeEditor` line numbers and code text.
   - Updated HTML5 Canvas 2D runners (`gallery_runner.js` and `run.js`) with LRU font string assembly and caching.
-- **Test Suite Expansion**: Added comprehensive whitebox tests for `Fader` (`src/core/fader_wbtest.mbt`), bringing total automated test coverage to 167 tests (100% pass rate).
+- **Test Suite Expansion**: Added comprehensive whitebox tests for `Fader`, bringing total automated test coverage to 211 tests (100% pass rate).
+- **Layered Package Restructure (`ARCH-06`)**:
+  - Split the former 59-file `src/core` monolith into three physical packages: `src/core` (bare immediate-mode runtime), `src/widgets` (standard controls) and `src/composite` (advanced components), with a strictly unidirectional dependency flow `math -> color -> draw -> core -> widgets -> composite -> src`.
+  - `src/core` now contains only the engine runtime (`context`, `id`, `input`, `memory`, `layout_engine`, `focus_manager`, `window_manager`, `layer_manager`, `painter`, `theme`, `response`, `unicode`, `widget`, `text_layout`).
+  - Cross-package contract: widgets implement `@core.Widget` and dispatch through `ctx.add(...)`, callers use the `@widgets.*` / `@composite.*` namespace helpers, and read-only structs such as `WidgetStyle` are derived through fluent builders like `WidgetStyle::scaled(factor)` instead of struct update syntax.
+  - `src/lib.mbt` acts as the umbrella facade re-exporting every public type and the `Widget` trait via `pub using @core { trait Widget }`.
 
 ---
 

@@ -586,21 +586,22 @@ Items in this section address foundational decoupling across the engine: modular
 
 ---
 
-### ARCH-06 (P2): Multi-Package Architectural Hierarchy (Decomposing the 59-File `src/core` Monolith)
-- **Location**: [src/core/](file:///a:/moonbit-project/src/core/)
-- **Status**: Backlog
+### ARCH-06 (P2) [RESOLVED]: Multi-Package Architectural Hierarchy (Decomposing the 59-File `src/core` Monolith)
+- **Location**: [src/core/](file:///a:/moonbit-project/src/core/), [src/widgets/](file:///a:/moonbit-project/src/widgets/), [src/composite/](file:///a:/moonbit-project/src/composite/)
+- **Status**: **RESOLVED** (Phase 9). The monolithic package is split into three physical packages with a strict unidirectional dependency flow `math -> color -> draw -> core -> widgets -> composite -> src`, and `examples/canvas/canvas.js` was rebuilt from the new layout.
 - **Category**: Package Architecture
 - **Description**:
-  `src/core` contains 59 source files, housing both the immediate-mode engine runtime (`Id`, `InputState`, `Layout`, `Context`, `Theme`) and all 32 specialized domain widgets (from `Button` to `Plot`, `Table`, `CodeEditor`, and `CommandPalette`).
+  `src/core` used to contain 59 source files, housing both the immediate-mode engine runtime (`Id`, `InputState`, `Layout`, `Context`, `Theme`) and all 32 specialized domain widgets (from `Button` to `Plot`, `Table`, `CodeEditor`, and `CommandPalette`).
 - **Coupling Mechanism**:
-  1. No physical package encapsulation exists between the runtime core and domain widgets.
-  2. Developers cannot import just the core engine runtime to build bespoke widgets without pulling in all 32 built-in widgets.
+  1. No physical package encapsulation existed between the runtime core and domain widgets.
+  2. Developers could not import just the core engine runtime to build bespoke widgets without pulling in all 32 built-in widgets.
 - **Remediation**:
-  - Structure `src/core` into layered logical packages:
-    - `src/core` (pure immediate-mode runtime: `Id`, `InputState`, `Memory`, `Layout`, `UIContext`, `Painter`)
-    - `src/widgets` (standard UI controls: `Button`, `Checkbox`, `Slider`, `Toggle`, `TextEdit`, `Label`, `Containers`)
-    - `src/composite` (advanced widgets: `CodeEditor`, `Plot`, `Table`, `TreeView`, `ColorPicker`, `CommandPalette`)
-    - `src/` (umbrella package re-exporting all components for backward compatibility)
+  - `src/core` now holds the engine runtime only: `context.mbt`, `id.mbt`, `input.mbt`, `memory.mbt`, `layout_engine.mbt`, `focus_manager.mbt`, `window_manager.mbt`, `layer_manager.mbt`, `painter.mbt`, `theme.mbt`, `response.mbt`, `unicode.mbt`, `widget.mbt`, plus `text_layout.mbt` (the `label` / `label_colored` / `separator` / `spacer` primitives that every widget builds on). 14 source files, no widget structs.
+  - `src/widgets` holds the standard controls: `Button`, `Checkbox`, `Toggle`, `Slider`, `TextEdit`, `Label`, `Separator`, `Badge`, `ProgressBar`, `Container` family, `ScrollArea`, `Splitter`, `Window`, `Dialog`, `Toast`, `Tooltip`, `Breadcrumb`, `SegmentedControl`.
+  - `src/composite` holds the advanced components: `CodeEditor`, `Plot` / `BarChart` / `Sparkline`, `Table`, `TreeView`, `ColorPicker`, `CommandPalette`, `DockArea`, `Knob`, `Fader`, `MenuBar`, `ContextMenu`, `RichText`.
+  - `src/` is the umbrella facade re-exporting every public type, and it also re-exports the `Widget` trait via `pub using @core { trait Widget }`.
+  - Because MoonBit forbids dot-methods on foreign types and `pub struct` literals outside their package, the cross-package contract is: widgets implement `@core.Widget` through `ctx.add(...)`, callers use namespace helpers (`@widgets.button(ctx, "...")`), and style derivation goes through fluent builders such as `WidgetStyle::scaled(factor)` instead of struct update syntax.
+  - Whitebox tests moved with their subjects; the cross-layer composition assert (Tab consumed by the code editor must not leak focus to a neighbouring button) lives in the blackbox suite at [test/smoke_test.mbt](file:///a:/moonbit-project/test/smoke_test.mbt).
 
 ---
 
@@ -667,5 +668,5 @@ Items in this section address foundational decoupling across the engine: modular
 | **arch** | `ARCH-03` | `WidgetStyle` Token Decoupling (System vs Component) | **P1** | Resolved (Phase 4) |
 | **arch** | `ARCH-04` | First-Class Widget Structs & Fluent Builder Protocol | **P1** | Resolved (Phase 5) |
 | **arch** | `ARCH-05` | `Painter` Rendering & Scissor Coordinate Abstraction | **P2** | Resolved (Phase 3) |
-| **arch** | `ARCH-06` | Multi-Package Hierarchy (Decompose `src/core` Monolith) | **P2** | Backlog |
+| **arch** | `ARCH-06` | Multi-Package Hierarchy (Decompose `src/core` Monolith) | **P2** | Resolved (Phase 9) |
 | **arch** | `ARCH-07` | Showcase Stage Modularization (`gallery_stage.mbt`) | **P2** | Resolved (Phase 6) |

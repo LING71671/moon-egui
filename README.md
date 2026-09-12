@@ -59,12 +59,14 @@ moon add LING71671/moon-egui
 moon add LING71671/moon-egui@0.2.0
 ```
 
-安装后在 `moon.pkg` 中引入即可使用：
+安装后在 `moon.pkg` 中按需引入分层包：只做自绘 HUD 时引入 `src/core`（纯即时模式运行时），需要内置控件时再叠加 `src/widgets`（标准控件）与 `src/composite`（高级组件）。
 
 ```json
 {
   "import": [
     "LING71671/moon-egui/src/core",
+    "LING71671/moon-egui/src/widgets",
+    "LING71671/moon-egui/src/composite",
     "LING71671/moon-egui/src/draw",
     "LING71671/moon-egui/src/math",
     "LING71671/moon-egui/src/color"
@@ -172,7 +174,7 @@ fn update_ui(ui : &mut UIContext, state : &mut AppState) {
   - **全局顶层菜单栏**：`menu_bar`, `menu`, `menu_item`, `menu_separator`，具备前台图层投影隔离、桌面级 Hover-to-Switch 随动流转与外部点击安全闭合；
   - **自由浮动视窗**：`window` 支持标题栏拖拽位移、动态 Z-Index 置顶管理、内容局部坐标系与 Scissor 视口裁剪；
   - **高级容器**：`splitter`（双向可拖拽分栏器）、`table`（高性能数据表格与列宽拖拽）、`collapsing_header`（树形折叠分组）、`scroll_area`（滚轮与滑块交互视口滚动）、`tab_bar`（标签导航）、`dialog`（模态确认对话框与焦点陷阱）。
-- **无头纯算与高覆盖测试**：核心图元与组件逻辑完全脱离浏览器，内置 167 项自动化无头白盒单元测试（100% 通过）。
+- **无头纯算与高覆盖测试**：核心图元与组件逻辑完全脱离浏览器，内置 211 项自动化无头白盒与黑盒测试（100% 通过）。
 - **Canvas 2D 宿主驱动器**：轻量 JavaScript 桥接层与 60 FPS 渲染管线，结合 O(1) 视口边界裁剪与自适应 LOD 架构。
 
 ### 规划与演进中特性 (Planned / In Roadmap)

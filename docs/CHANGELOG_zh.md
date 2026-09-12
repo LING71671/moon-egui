@@ -30,7 +30,12 @@
   - 在 `DrawCmd::Text` 与 `DrawList::add_text` 中增加字体族名 (`font_family`) 与字重 (`font_weight`) 字段。
   - 支持 `RichText` 粗体真实应用 700 字重，支持 `CodeEditor` 声明等宽字体族名。
   - 更新 Web 渲染驱动（`gallery_runner.js` 与 `run.js`），支持动态装配与 LRU 字体缓存。
-- **自动化测试套件扩展**：新增 `Fader` 完整白盒单元测试（`src/core/fader_wbtest.mbt`），使无头白盒与黑盒自动化测试总数增至 167 项（100% 通过率）。
+- **自动化测试套件扩展**：新增 `Fader` 完整白盒单元测试，使无头白盒与黑盒自动化测试总数增至 211 项（100% 通过率）。
+- **分层包结构重构 (`ARCH-06`)**：
+  - 依据 `ARCH-06` 将原 59 文件的 `src/core` 单体包拆分为 `src/core`（纯即时模式运行时）、`src/widgets`（标准控件）与 `src/composite`（高级组件）三层物理包，依赖方向严格单向：`math -> color -> draw -> core -> widgets -> composite -> src`。
+  - `src/core` 仅保留引擎运行时（`context`、`id`、`input`、`memory`、`layout_engine`、`focus_manager`、`window_manager`、`layer_manager`、`painter`、`theme`、`response`、`unicode`、`widget`、`text_layout`）。
+  - 跨包契约：控件以 `@core.Widget` 实现并经由 `ctx.add(...)` 派发，调用方使用 `@widgets.*` / `@composite.*` 命名空间函数；`WidgetStyle` 等只读结构体通过 `WidgetStyle::scaled(factor)` 等流式构建器派生，而非跨包结构体更新语法。
+  - `src/lib.mbt` 作为总门面重导出全部公开类型，并通过 `pub using @core { trait Widget }` 转出引擎 trait。
 
 ---
 
