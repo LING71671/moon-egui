@@ -1374,7 +1374,7 @@ fn draw_splitter_showcase(ui : @core.UIContext) -> Unit {
     gallery_state.splitter_ratio,
     split_size,
     fn(pane_ui, rect) {
-      pane_ui.draw_list().add_rect(rect, @color.Color::bg_hover(), 4.0)
+      pane_ui.painter().add_rect(rect, @color.Color::bg_hover(), 4.0)
       pane_ui.set_cursor(@math.Vec2::new(rect.x + 12.0, rect.y + 12.0))
       let _ = pane_ui.label_colored(
         "左侧主导航栏",
@@ -1385,7 +1385,7 @@ fn draw_splitter_showcase(ui : @core.UIContext) -> Unit {
       let _ = pane_ui.label("资源目录 (assets/)")
     },
     fn(pane_ui, rect) {
-      pane_ui.draw_list().add_rect(rect, @color.Color::bg_surface(), 4.0)
+      pane_ui.painter().add_rect(rect, @color.Color::bg_surface(), 4.0)
       pane_ui.set_cursor(@math.Vec2::new(rect.x + 12.0, rect.y + 12.0))
       let _ = pane_ui.label_colored(
         "右侧工作区画布",
@@ -2054,8 +2054,8 @@ pub fn gallery_step(
   gallery_ctx.begin_frame(raw)
 
   // 3. Render Subtle Studio Light Grid Background
-  let dl = gallery_ctx.draw_list
-  dl.add_rect(
+  let painter = gallery_ctx.painter()
+  painter.add_rect(
     @math.Rect::new(0.0, 0.0, cur_w, cur_h),
     @color.Color::bg_subtle(),
     0.0,
@@ -2069,13 +2069,13 @@ pub fn gallery_step(
   let card_rect = @math.Rect::new(pad_x, pad_y, card_w, card_h)
 
   // Porcelain Card Disc & Border Shadow
-  dl.add_rect(
+  painter.add_rect(
     @math.Rect::new(pad_x, pad_y + 2.0, card_w, card_h),
     @color.Color::shadow(),
     8.0,
   )
-  dl.add_rect(card_rect, @color.Color::bg_window(), 8.0)
-  dl.add_rect_stroke(card_rect, @color.Color::border_default(), 1.0, 8.0)
+  painter.add_rect(card_rect, @color.Color::bg_window(), 8.0)
+  painter.add_rect_stroke(card_rect, @color.Color::border_default(), 1.0, 8.0)
 
   // Layout Cursor within Porcelain Card
   gallery_ctx.set_cursor(@math.Vec2::new(pad_x + 20.0, pad_y + 18.0))
