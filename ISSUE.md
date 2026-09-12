@@ -540,9 +540,9 @@ Items in this section address foundational decoupling across the engine: modular
 
 ---
 
-### ARCH-04 (P1): First-Class `Widget` Structs and Fluent Builder Protocol (`ui.add(widget)`)
-- **Location**: [src/core/button.mbt](file:///a:/moonbit-project/src/core/button.mbt), [src/core/slider.mbt](file:///a:/moonbit-project/src/core/slider.mbt), [src/core/knob.mbt](file:///a:/moonbit-project/src/core/knob.mbt), [src/core/fader.mbt](file:///a:/moonbit-project/src/core/fader.mbt), [src/core/table.mbt](file:///a:/moonbit-project/src/core/table.mbt), [src/core/plot.mbt](file:///a:/moonbit-project/src/core/plot.mbt)
-- **Status**: Backlog
+### ARCH-04 (P1) [RESOLVED]: First-Class `Widget` Structs and Fluent Builder Protocol (`ui.add(widget)`)
+- **Location**: [src/core/button.mbt](file:///a:/moonbit-project/src/core/button.mbt), [src/core/slider.mbt](file:///a:/moonbit-project/src/core/slider.mbt), [src/core/knob.mbt](file:///a:/moonbit-project/src/core/knob.mbt), [src/core/fader.mbt](file:///a:/moonbit-project/src/core/fader.mbt), [src/core/table.mbt](file:///a:/moonbit-project/src/core/table.mbt), [src/core/plot.mbt](file:///a:/moonbit-project/src/core/plot.mbt), [src/core/widget.mbt](file:///a:/moonbit-project/src/core/widget.mbt)
+- **Status**: **RESOLVED** (Phase 5). Introduced `pub trait Widget { fn ui(Self, UIContext) -> Response }` and `pub fn[W : Widget] UIContext::add(self, widget) -> Response`. Created standalone first-class structs with fluent builders (`Button`, `Slider`, `Knob`, `Fader`, `Checkbox`, `Toggle`, `Radio`, `Table`, `Plot`, `BarChart`, `Label`, `Separator`, `Badge`, `ProgressBar`) and bidirectional `Ref[T]` bindings.
 - **Category**: Widget API Decoupling
 - **Description**:
   All 32 widgets currently exist strictly as extension methods on `UIContext` (`ctx.button(...)`, `ctx.knob(...)`). Complex widgets take up to 11 positional and optional arguments (e.g. `knob` has 11 parameters, `fader` has 11 parameters, `code_editor` has 6 parameters).
