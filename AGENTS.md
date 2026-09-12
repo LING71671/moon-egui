@@ -130,3 +130,8 @@ The canonical release procedure is defined as follows:
    - Ensure working tree is clean and `origin/main` is in lockstep with local HEAD.
    - Verify that the `Deploy GitHub Pages` and `CI` GitHub Actions workflows both pass with 100% green status.
 
+6. **GitHub Official Release Publication**:
+   - Create the official GitHub Release associated with the Git tag:
+     `gh release create vX.Y.Z -t "vX.Y.Z — <Title>" -F scratch/release_notes_vX.Y.Z.md`
+   - Verify that the release displays as `Latest` on `https://github.com/LING71671/moon-egui/releases`.
+
