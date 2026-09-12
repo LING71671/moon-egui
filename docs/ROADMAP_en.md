@@ -69,7 +69,7 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 * **Deliverables**:
   - [ ] **Virtualized Data Table (`VirtualTable`)**: Viewport-culled rasterization processing tens of thousands of rows with column resizing and sorting;
   - [ ] **Node-Based Blueprint Editor Prototype (`NodeEditor`)**: Infinite canvas, node dragging, port connection validation, and smooth cubic Bezier link splines;
-  - [ ] **Engineering Plotting Suite (`Plot` / `Sparkline`)**: Continuous telemetry lines, bar charts, and adaptive dual-axis tick marks;
+  - [x] **Engineering Plotting Suite (`Plot` / `Sparkline`)** [Delivered]: Multi-series plotting (Line, Scatter, Area) and bar charts (`BarChart`) with adaptive grid lines, numeric tick labels, crosshairs, and data hover tooltips;
   - [ ] **Vector SVG Exporter (`SvgExporter`)**: Export active frame command streams into clean, standard `.svg` vector files.
 * **Acceptance Criteria**:
   - Sustained 60 FPS under large data sets and multi-node connection graphs with stable memory footprints.
@@ -95,7 +95,7 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 
 * **Objective**: Ensure industrial code reliability, freeze API contracts, and finalize project deliverables.
 * **Deliverables**:
-  - [ ] **Expanded Test Suite**: Reach 120~150+ automated whitebox and blackbox test cases;
+  - [x] **Expanded Test Suite** [Delivered]: Reach 161 automated whitebox and blackbox test cases (100% passing rate);
   - [ ] **Micro-Benchmark Telemetry (Benchmarks)**: Measure nanosecond and microsecond compute budgets across typical workloads;
   - [ ] **Interface Stabilization**: Run `moon info && moon fmt`, freeze `.mbti` signatures, and finalize bilingual documentation;
   - [ ] **Release Packaging**: Tag and publish official `v0.2.0` release.

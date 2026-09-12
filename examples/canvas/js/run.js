@@ -595,6 +595,25 @@
           cachedLineWidth = -1;
           break;
         }
+        case 8: { // LinearGradient: cmd._0: rect, cmd._1: p1, cmd._2: p2, cmd._3: col1, cmd._4: col2, cmd._5: radius
+          const rect = cmd._0;
+          const p1 = cmd._1;
+          const p2 = cmd._2;
+          const grad = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+          grad.addColorStop(0, getColorStr(cmd._3));
+          grad.addColorStop(1, getColorStr(cmd._4));
+          ctx.fillStyle = grad;
+          cachedFillStyle = '';
+          const radius = cmd._5 || 0;
+          if (radius > 1 && ctx.roundRect) {
+            ctx.beginPath();
+            ctx.roundRect(rect.x, rect.y, rect.w, rect.h, radius);
+            ctx.fill();
+          } else {
+            ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+          }
+          break;
+        }
       }
     }
 

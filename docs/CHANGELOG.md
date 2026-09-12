@@ -1,5 +1,7 @@
 # Changelog
 
+[English](CHANGELOG.md) | [中文](CHANGELOG_zh.md)
+
 All notable changes to `moon-egui` will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
@@ -8,6 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## [Unreleased]
+
+### Added
+- **Immediate-Mode Plotting Suite (`Plot` & `BarChart`)**:
+  - `UIContext::plot` supporting multi-series composite rendering (`PlotSeriesKind::Line`, `PlotSeriesKind::Scatter`, `PlotSeriesKind::Area`) with automatic bounds calculation, adaptive grid subdivisions, numeric coordinate tick labels, hover crosshairs, and data value tooltips.
+  - `UIContext::bar_chart` featuring dynamic column width calculation, proportional gutter spacing, category axis labels, hover highlight indicators, and value capsule indicators.
+- **Keyboard Navigation & Scrubbing for `DragValue`**:
+  - Added ArrowLeft/ArrowDown (decrement) and ArrowRight/ArrowUp (increment) keyboard navigation when focused.
+  - Multiplier acceleration: Shift key for fine-stepping (0.1x) and Ctrl key for coarse-stepping (10x).
+  - Explicit visual focus ring (`@color.Color::border_focus()`).
+- **Geometry & Sizing Design Token Normalization**:
+  - Formalized widget dimensions across `WidgetStyle` (`progress_bar_h`, `tooltip_pad_x`, `tooltip_pad_y`, `tooltip_radius`, `window_title_bar_h`, `combo_box_w`, `combo_box_h`, `collapsing_header_h`, `collapsing_header_indent`, `tab_bar_h`, `tab_bar_pad_x`, `drag_value_w`, `drag_value_h`, `color_picker_w`, `color_picker_btn_h`, `breadcrumb_h`, `breadcrumb_sep_gap`, `plot_default_w`, `plot_default_h`, `plot_pad_left`, `plot_pad_right`, `plot_pad_top`, `plot_pad_bottom`, `bar_chart_default_w`, `bar_chart_default_h`, `bar_chart_gap`).
+  - Added semantic palette tokens `Color::grid_line()`, `Color::guideline_wash()`, and `Color::plot_crosshair()`.
+- **Test Suite Expansion**: Added comprehensive whitebox tests for `Plot` and `BarChart` (`src/core/plot_wbtest.mbt`), bringing total automated test coverage to 161 tests (100% pass rate).
 
 ---
 

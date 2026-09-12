@@ -51,12 +51,15 @@ pub fn Color::border_strong() -> Self
 pub fn Color::border_track() -> Self
 pub fn Color::danger() -> Self
 pub fn Color::danger_hover() -> Self
+pub fn Color::grid_line() -> Self
+pub fn Color::guideline_wash(Self) -> Self
 pub fn Color::hex(Int) -> Self
 pub fn Color::hex_alpha(Int) -> Self
 pub fn Color::lerp(Self, Self, Double) -> Self
 pub fn Color::pill_active_bg() -> Self
 pub fn Color::pill_active_border() -> Self
 pub fn Color::pill_ambient_shadow() -> Self
+pub fn Color::plot_crosshair() -> Self
 pub fn Color::rgb(Int, Int, Int) -> Self
 pub fn Color::rgba(Int, Int, Int, Int) -> Self
 pub fn Color::shadow() -> Self

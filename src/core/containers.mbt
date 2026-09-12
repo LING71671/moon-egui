@@ -8,15 +8,25 @@ pub fn UIContext::collapsing_header(
   content : (UIContext) -> Unit,
 ) -> Response {
   let header_id = self.id_stack.derive_id(id_salt)
+  let scale = self.style.scale
   let w = self.available_width
-  let h = 26.0
+  let h = self.style.collapsing_header_h * scale
 
   self.push_id(id_salt)
-  let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
+  let (id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
   self.pop_id()
+  self.register_focusable(id)
 
+  let is_focused = resp.has_focus() || self.has_focus(id)
   let mut is_open = self.is_collapsing_open(header_id, default_open)
-  if resp.clicked() {
+  let key_toggle = is_focused &&
+    (self.input.key_pressed(Key::Space) || self.input.key_pressed(Key::Enter))
+  if key_toggle {
+    self.input.consume_key(Key::Space)
+    self.input.consume_key(Key::Enter)
+  }
+
+  if resp.clicked() || key_toggle {
     is_open = !is_open
     self.set_collapsing_open(header_id, is_open)
   }
@@ -29,16 +39,26 @@ pub fn UIContext::collapsing_header(
   } else {
     @color.Color::bg_subtle()
   }
-  let border_color = if resp.hovered() {
+  let border_color = if is_focused {
+    @color.Color::border_focus()
+  } else if resp.hovered() {
     @color.Color::border_default()
   } else {
     @color.Color::border_muted()
   }
-  let header_radius = self.style.radius_sm
+  let header_radius = self.style.radius_sm * scale
   self.draw_list.add_rect(rect, bg_color, header_radius)
   self.draw_list.add_rect_stroke(rect, border_color, 1.0, header_radius)
+  if is_focused {
+    self.draw_list.add_rect_stroke(
+      rect.expand(2.0 * scale),
+      @color.Color::border_focus(),
+      1.5,
+      header_radius + 2.0 * scale,
+    )
+  }
 
-  let arrow_color = if resp.hovered() {
+  let arrow_color = if is_focused || resp.hovered() {
     @color.Color::accent_primary()
   } else {
     @color.Color::text_muted()
@@ -79,7 +99,7 @@ pub fn UIContext::collapsing_header(
   if is_open {
     let prev_cursor = self.cursor
     let prev_avail_w = self.available_width
-    let indent = 16.0
+    let indent = self.style.collapsing_header_indent * scale
 
     self.cursor = @math.Vec2::new(prev_cursor.x + indent, prev_cursor.y)
     self.available_width = prev_avail_w - indent
@@ -105,15 +125,16 @@ pub fn UIContext::combo_box(
   options : Array[String],
 ) -> (Int, Response) {
   let combo_id = self.id_stack.derive_id(id_salt)
-  let combo_font_sz = self.style.font_normal
+  let scale = self.style.scale
+  let combo_font_sz = self.style.font_normal * scale
   let label_size = if !label.is_empty() {
-    self.measure_text(label, combo_font_sz).x + 8.0
+    self.measure_text(label, combo_font_sz).x + 8.0 * scale
   } else {
     0.0
   }
-  let box_w = 140.0
+  let box_w = self.style.combo_box_w * scale
   let total_w = label_size + box_w
-  let h = 28.0
+  let h = self.style.combo_box_h * scale
 
   self.push_id(id_salt)
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
@@ -379,22 +400,50 @@ pub fn UIContext::tab_bar(
   tabs : Array[String],
   selected_idx : Int,
 ) -> (Int, Response) {
-  let font_size = self.style.font_normal
+  let scale = self.style.scale
+  let font_size = self.style.font_normal * scale
+  let tab_pad = self.style.tab_bar_pad_x * scale
   let mut total_w = 0.0
   for tab in tabs {
-    total_w = total_w + self.measure_text(tab, font_size).x + 24.0
+    total_w = total_w + self.measure_text(tab, font_size).x + tab_pad * 2.0
   }
-  let h = 28.0
-  let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
-  let mut current_selected = selected_idx
+  let h = self.style.tab_bar_h * scale
+  let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
+  self.register_focusable(id)
 
-  let container_radius = self.style.radius_md
-  let tab_radius = self.style.radius_sm
+  let mut current_selected = selected_idx
+  let is_focused = resp.has_focus() || self.has_focus(id)
+
+  if is_focused && tabs.length() > 0 {
+    if self.input.key_pressed(Key::ArrowLeft) {
+      current_selected = if current_selected > 0 {
+        current_selected - 1
+      } else {
+        tabs.length() - 1
+      }
+      self.input.consume_key(Key::ArrowLeft)
+    }
+    if self.input.key_pressed(Key::ArrowRight) {
+      current_selected = if current_selected < tabs.length() - 1 {
+        current_selected + 1
+      } else {
+        0
+      }
+      self.input.consume_key(Key::ArrowRight)
+    }
+  }
+
+  let container_radius = self.style.radius_md * scale
+  let tab_radius = self.style.radius_sm * scale
   // Draw recessed groove container
   self.draw_list.add_rect(rect, @color.Color::bg_surface(), container_radius)
   self.draw_list.add_rect_stroke(
     rect,
-    @color.Color::border_muted(),
+    if is_focused {
+      @color.Color::border_focus()
+    } else {
+      @color.Color::border_muted()
+    },
     1.0,
     container_radius,
   )
@@ -403,7 +452,7 @@ pub fn UIContext::tab_bar(
   for i = 0; i < tabs.length(); i = i + 1 {
     let tab_text = tabs[i]
     let text_w = self.measure_text(tab_text, font_size).x
-    let tab_w = text_w + 24.0
+    let tab_w = text_w + tab_pad * 2.0
     let tab_rect = @math.Rect::new(cur_x, rect.y, tab_w, h)
     let is_hovered = self.is_hovered(tab_rect)
     let is_selected = i == current_selected

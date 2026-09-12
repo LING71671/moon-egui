@@ -138,7 +138,7 @@ pub fn UIContext::sparkline(
     self.draw_list.add_line(
       @math.Vec2::new(pt.x, rect.y + pad_y),
       @math.Vec2::new(pt.x, base_y),
-      color.with_alpha(80),
+      @color.Color::guideline_wash(color),
       1.0,
     )
 

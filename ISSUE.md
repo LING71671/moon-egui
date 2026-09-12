@@ -454,15 +454,12 @@ Items in this section describe high-value architectural capabilities and showcas
 
 ---
 
-### FEAT-CORE-05 (Low): Immediate-Mode Plotting & Charting Suite (`plot`, `bar_chart`)
+### FEAT-CORE-05 (Low) [RESOLVED]: Immediate-Mode Plotting & Charting Suite (`plot`, `bar_chart`)
+- **Location**: [src/core/plot.mbt](file:///a:/moonbit-project/src/core/plot.mbt), [src/core/plot_wbtest.mbt](file:///a:/moonbit-project/src/core/plot_wbtest.mbt), [examples/canvas/gallery_stage.mbt](file:///a:/moonbit-project/examples/canvas/gallery_stage.mbt)
+- **Status**: **RESOLVED** (Phase 7). Implemented `UIContext::plot` (multi-series line, scatter, and area plotting with automatic bounds, adaptive grid subdivisions, numeric coordinate tick labels, hover crosshairs, and data tooltips) and `UIContext::bar_chart` (adaptive column widths, category labels, hover pill indicators, and value displays).
 - **Category**: Data Visualization
 - **Description**:
-  The engine currently only has a micro `sparkline`. It lacks standard coordinate plotting.
-- **Proposed Capability**:
-  Implement a dedicated plotting widget:
-  - Coordinate axes with tick marks, labels, and auto-scaling.
-  - Multiple series plotting (line, scatter, bar).
-  - Cursor hover crosshair with coordinate tooltip.
+  The engine provides full immediate-mode coordinate plotting and category bar charting.
 
 ---
 
@@ -501,3 +498,4 @@ Items in this section describe high-value architectural capabilities and showcas
 | **feat** | `FEAT-SHOWCASE-02`| Live Interactive Sandboxes in Docs | **P2** | Backlog |
 | **feat** | `FEAT-SHOWCASE-03`| Native In-Canvas Studio Header Bar in Benchmark | **P3** | Backlog |
 | **feat** | `FEAT-CORE-01` | Multi-Window Docking Layout System (`DockArea`) | **P3** | Backlog |
+| **feat** | `FEAT-CORE-05` | Immediate-Mode Plotting & Charting Suite (`plot`, `bar_chart`) | **P3** | Resolved (Phase 7) |

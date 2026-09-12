@@ -261,12 +261,22 @@ pub fn UIContext::drag_value(
   min : Double,
   max : Double,
 ) -> (Double, Response) {
-  let label_size = self.measure_text(label, 13.0)
-  let label_w = if label.length() > 0 { label_size.x + 8.0 } else { 0.0 }
-  let box_w = 64.0
+  let scale = self.style.scale
+  let font_nm = self.style.font_normal * scale
+  let font_sm = self.style.font_small * scale
+  let radius_sm = self.style.radius_sm * scale
+  let box_w = self.style.drag_value_w * scale
+  let h = self.style.drag_value_h * scale
+
+  let label_size = self.measure_text(label, font_nm)
+  let label_w = if label.length() > 0 {
+    label_size.x + 8.0 * scale
+  } else {
+    0.0
+  }
   let total_w = label_w + box_w
-  let h = 22.0
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
+  self.register_focusable(id)
 
   let box_rect = @math.Rect::new(rect.x + label_w, rect.y, box_w, h)
   let is_hovered = self.is_hovered(box_rect)
@@ -280,17 +290,43 @@ pub fn UIContext::drag_value(
   }
   let mut new_val = value
 
+  let base_speed = if speed > 0.0001 { speed } else { 1.0 }
+  let multiplier = if self.input.modifiers.shift {
+    0.1
+  } else if self.input.modifiers.ctrl {
+    10.0
+  } else {
+    1.0
+  }
+  let step = base_speed * multiplier
+
+  // 1. Keyboard navigation when focused
+  let is_focused = resp.has_focus() || self.has_focus(id)
+  if is_focused {
+    if self.input.key_pressed(Key::ArrowLeft) ||
+      self.input.key_pressed(Key::ArrowDown) {
+      new_val = new_val - step
+      self.input.consume_key(Key::ArrowLeft)
+      self.input.consume_key(Key::ArrowDown)
+    }
+    if self.input.key_pressed(Key::ArrowRight) ||
+      self.input.key_pressed(Key::ArrowUp) {
+      new_val = new_val + step
+      self.input.consume_key(Key::ArrowRight)
+      self.input.consume_key(Key::ArrowUp)
+    }
+    if min < max {
+      if new_val < min {
+        new_val = min
+      } else if new_val > max {
+        new_val = max
+      }
+    }
+  }
+
+  // 2. Pointer drag tracking
   if is_active && self.input.mouse_down {
     let delta_x = self.input.mouse_delta.x
-    let base_speed = if speed > 0.0001 { speed } else { 1.0 }
-    let multiplier = if self.input.modifiers.shift {
-      0.1
-    } else if self.input.modifiers.ctrl {
-      10.0
-    } else {
-      1.0
-    }
-    let step = base_speed * multiplier
     new_val = new_val + delta_x * step
     if min < max {
       if new_val < min {
@@ -301,17 +337,17 @@ pub fn UIContext::drag_value(
     }
   }
 
-  // Draw Label
+  // 3. Draw Label
   if label.length() > 0 {
     self.draw_list.add_text(
-      @math.Vec2::new(rect.x, rect.y + (h - 13.0) * 0.5),
+      @math.Vec2::new(rect.x, rect.y + (h - font_nm) * 0.5),
       label,
-      13.0,
+      font_nm,
       @color.Color::text_primary(),
     )
   }
 
-  // Draw Box Background & Mercury Progress Fill
+  // 4. Draw Box Background & Mercury Progress Fill
   let bg_color = if is_active {
     @color.Color::bg_surface()
   } else if is_hovered {
@@ -320,15 +356,13 @@ pub fn UIContext::drag_value(
     @color.Color::bg_subtle()
   }
 
-  let border_color = if is_active || is_hovered {
+  let border_color = if is_focused {
+    @color.Color::border_focus()
+  } else if is_active || is_hovered {
     @color.Color::accent_primary()
   } else {
     @color.Color::border_default()
   }
-
-  let scale = self.style.scale
-  let font_nm = self.style.font_normal * scale
-  let radius_sm = self.style.radius_sm * scale
 
   self.draw_list.add_rect(box_rect, bg_color, radius_sm)
 
@@ -354,6 +388,14 @@ pub fn UIContext::drag_value(
   }
 
   self.draw_list.add_rect_stroke(box_rect, border_color, 1.0, radius_sm)
+  if is_focused {
+    self.draw_list.add_rect_stroke(
+      box_rect.expand(2.0 * scale),
+      @color.Color::border_focus(),
+      1.5,
+      radius_sm + 2.0 * scale,
+    )
+  }
 
   // Format value to 1 decimal place or integer
   let rounded_int = (new_val * 10.0).to_int()
@@ -361,13 +403,13 @@ pub fn UIContext::drag_value(
   let frac = (rounded_int % 10).abs()
   let val_str = whole.to_string() + "." + frac.to_string()
 
-  let val_size = self.measure_text(val_str, font_nm)
+  let val_size = self.measure_text(val_str, font_sm)
   let text_x = box_rect.x + (box_w - val_size.x) * 0.5
-  let text_y = box_rect.y + (h - font_nm) * 0.5
+  let text_y = box_rect.y + (h - font_sm) * 0.5
   self.draw_list.add_text(
     @math.Vec2::new(text_x, text_y),
     val_str,
-    font_nm,
+    font_sm,
     if is_active {
       @color.Color::accent_primary()
     } else {

@@ -318,6 +318,12 @@ pub fn Color::area_wash(base : Color) -> Color {
 }
 
 ///|
+/// Guideline stroke wash for sparkline crosshairs.
+pub fn Color::guideline_wash(base : Color) -> Color {
+  { r: base.r, g: base.g, b: base.b, a: 80, }
+}
+
+///|
 pub fn Color::badge_success_bg() -> Color {
   Color::hex(0xF0FDF4)
 }
@@ -368,4 +374,16 @@ pub fn Color::badge_info_text() -> Color {
 /// Subtle wash for tag and badge close button hover.
 pub fn Color::tag_close_hover() -> Color {
   Color::rgba(15, 23, 42, 25)
+}
+
+///|
+/// Subtle background grid or coordinate axis line.
+pub fn Color::grid_line() -> Color {
+  Color::rgba(203, 213, 225, 90)
+}
+
+///|
+/// Interactive coordinate crosshair or tracking indicator.
+pub fn Color::plot_crosshair() -> Color {
+  Color::rgba(37, 99, 235, 180)
 }

@@ -169,6 +169,16 @@ pub fn get_gallery_component_info(comp_id : String) -> (String, String, String) 
       (
         "Toast 全局通知", "ui.toast_stack(toasts, screen_size) -> Unit", "///| Toast 状态通知条示例\npub fn draw_toasts(ui : @core.UIContext, state : AppState) -> Unit {\n  ui.toast_stack(state.toasts, ui.screen_rect().size())\n}",
       )
+    "plot" =>
+      (
+        "Plot 交互图表", "ui.plot(id_salt, series, size~, show_legend~, show_grid~) -> (PlotPoint?, Response)",
+        "///| Plot 交互图表示例\npub fn draw_plot(ui : @core.UIContext) -> Unit {\n  let line_pts = [\n    @core.PlotPoint::new(0.0, 10.0),\n    @core.PlotPoint::new(20.0, 45.0),\n    @core.PlotPoint::new(40.0, 30.0),\n    @core.PlotPoint::new(60.0, 80.0),\n    @core.PlotPoint::new(80.0, 65.0),\n    @core.PlotPoint::new(100.0, 95.0),\n  ]\n  let s_line = @core.PlotSeries::line(\"Trend Line\", line_pts)\n  let (hover_pt, resp) = ui.plot(\"metrics_plot\", [s_line], size=@math.Vec2::new(320.0, 180.0))\n  if hover_pt is Some(pt) {\n    println(\"Hovered: X=\" + pt.x.to_string() + \", Y=\" + pt.y.to_string())\n  }\n}",
+      )
+    "bar_chart" =>
+      (
+        "BarChart 柱状统计图", "ui.bar_chart(id_salt, labels, values, size~, bar_color~, gap~) -> (Int?, Response)",
+        "///| BarChart 柱状图示例\npub fn draw_bar_chart(ui : @core.UIContext) -> Unit {\n  let labels = [\"Q1\", \"Q2\", \"Q3\", \"Q4\"]\n  let values = [125.0, 240.0, 180.0, 310.0]\n  let (hover_idx, resp) = ui.bar_chart(\n    \"quarterly_revenue\",\n    labels,\n    values,\n    size=@math.Vec2::new(300.0, 160.0),\n  )\n  if hover_idx is Some(idx) {\n    println(\"Hovered Quarter: \" + labels[idx])\n  }\n}",
+      )
     _ =>
       (
         "MoonBit 基础组件: " + comp_id,

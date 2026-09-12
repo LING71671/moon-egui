@@ -5,8 +5,9 @@ pub fn UIContext::progress_bar(
   fraction : Double,
   text : String,
 ) -> Response {
+  let scale = self.style.scale
   let w = self.available_width
-  let h = 18.0
+  let h = self.style.progress_bar_h * scale
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
 
   let clamped_pct = if fraction < 0.0 {
@@ -17,7 +18,7 @@ pub fn UIContext::progress_bar(
     fraction
   }
 
-  let bar_radius = self.style.radius_sm
+  let bar_radius = self.style.radius_sm * scale
   self.draw_list.add_rect(rect, @color.Color::bg_surface(), bar_radius)
   self.draw_list.add_rect_stroke(
     rect,
@@ -42,7 +43,7 @@ pub fn UIContext::progress_bar(
     text
   }
 
-  let font_sz = self.style.font_small
+  let font_sz = self.style.font_small * scale
   let text_size = self.measure_text(display_text, font_sz)
   let text_x = rect.x + (rect.w - text_size.x) * 0.5
   let text_y = rect.y + (rect.h - font_sz) * 0.5
@@ -66,33 +67,36 @@ pub fn UIContext::progress_bar(
 /// Drawn on the foreground layer so it is never clipped away by the container
 /// that owns the hovered widget.
 pub fn UIContext::tooltip(self : UIContext, text : String) -> Unit {
-  let font_size = self.style.font_small
-  let pad_x = 8.0
-  let pad_y = 4.0
+  let scale = self.style.scale
+  let font_size = self.style.font_small * scale
+  let pad_x = self.style.tooltip_pad_x * scale
+  let pad_y = self.style.tooltip_pad_y * scale
   let text_size = self.measure_text(text, font_size)
   let tip_w = text_size.x + pad_x * 2.0
   let tip_h = text_size.y + pad_y * 2.0
 
   let mouse = self.input.mouse_pos
-  let mut tip_x = mouse.x + 12.0
-  let tip_y = mouse.y + 12.0
+  let mut tip_x = mouse.x + 12.0 * scale
+  let tip_y = mouse.y + 12.0 * scale
 
-  let vp_w = if self.available_width > 0.0 {
+  let vp_w = if self.clip_stack.length() > 0 {
+    self.clip_stack[0].w
+  } else if self.available_width > 0.0 {
     self.available_width
   } else {
     800.0
   }
   if tip_x + tip_w > vp_w {
-    tip_x = mouse.x - tip_w - 4.0
-    if tip_x < 4.0 {
-      tip_x = 4.0
+    tip_x = mouse.x - tip_w - 4.0 * scale
+    if tip_x < 4.0 * scale {
+      tip_x = 4.0 * scale
     }
   }
   let tip_rect = @math.Rect::new(tip_x, tip_y, tip_w, tip_h)
 
   self.begin_foreground()
 
-  let tip_radius = self.style.radius_sm
+  let tip_radius = self.style.tooltip_radius * scale
   // Floating bubble with dark background & subtle border
   self.draw_list.add_rect(tip_rect, @color.Color::bg_inverse(), tip_radius)
   self.draw_list.add_rect_stroke(

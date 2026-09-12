@@ -386,7 +386,8 @@ pub fn UIContext::color_picker_button(
   color : @color.Color,
   show_alpha? : Bool = true,
 ) -> (@color.Color, Response) {
-  let font_sz = self.style.font_small
+  let scale = self.style.scale
+  let font_sz = self.style.font_small * scale
   let hex_text = if show_alpha {
     "#" +
     hex_byte(color.r) +
@@ -398,30 +399,51 @@ pub fn UIContext::color_picker_button(
   }
 
   let txt_sz = self.measure_text(hex_text, font_sz)
-  let btn_w = 20.0 + 8.0 + txt_sz.x + 16.0
-  let btn_h = 28.0
+  let btn_w = (20.0 + 8.0 + 16.0) * scale + txt_sz.x
+  let btn_h = self.style.color_picker_btn_h * scale
 
   self.push_id(id_salt)
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(btn_w, btn_h))
   self.pop_id()
+  self.register_focusable(id)
 
+  let is_focused = resp.has_focus() || self.has_focus(id)
   let is_hovered = self.is_hovered(rect)
   let btn_bg = if is_hovered {
     @color.Color::bg_hover()
   } else {
     @color.Color::bg_surface()
   }
-  let btn_radius = self.style.radius_sm
+  let btn_radius = self.style.radius_sm * scale
   self.draw_list.add_rect(rect, btn_bg, btn_radius)
   self.draw_list.add_rect_stroke(
     rect,
-    @color.Color::border_default(),
+    if is_focused {
+      @color.Color::border_focus()
+    } else {
+      @color.Color::border_default()
+    },
     1.0,
     btn_radius,
   )
+  if is_focused {
+    self.draw_list.add_rect_stroke(
+      rect.expand(2.0 * scale),
+      @color.Color::border_focus(),
+      1.5,
+      btn_radius + 2.0 * scale,
+    )
+  }
 
   // Color Swatch Pill
-  let swatch_rect = @math.Rect::new(rect.x + 6.0, rect.y + 6.0, 16.0, 16.0)
+  let swatch_size = 16.0 * scale
+  let swatch_pad = 6.0 * scale
+  let swatch_rect = @math.Rect::new(
+    rect.x + swatch_pad,
+    rect.y + (btn_h - swatch_size) * 0.5,
+    swatch_size,
+    swatch_size,
+  )
   self.draw_list.add_rect(swatch_rect, color, btn_radius)
   self.draw_list.add_rect_stroke(
     swatch_rect,
@@ -433,7 +455,7 @@ pub fn UIContext::color_picker_button(
   // Hex Text
   let text_y = rect.y + (btn_h - font_sz) * 0.5
   self.draw_list.add_text(
-    @math.Vec2::new(rect.x + 28.0, text_y),
+    @math.Vec2::new(rect.x + swatch_pad * 2.0 + swatch_size, text_y),
     hex_text,
     font_sz,
     @color.Color::text_body(),
@@ -442,7 +464,14 @@ pub fn UIContext::color_picker_button(
   let is_open = self.open_combo_id == id
   let mut next_color = color
 
-  if resp.clicked {
+  let key_toggle = is_focused &&
+    (self.input.key_pressed(Key::Space) || self.input.key_pressed(Key::Enter))
+  if key_toggle {
+    self.input.consume_key(Key::Space)
+    self.input.consume_key(Key::Enter)
+  }
+
+  if resp.clicked || key_toggle {
     if is_open {
       self.open_combo_id = Id::zero()
     } else {
@@ -452,7 +481,7 @@ pub fn UIContext::color_picker_button(
 
   if is_open {
     self.begin_foreground()
-    let popup_pos = @math.Vec2::new(rect.x, rect.y + btn_h + 4.0)
+    let popup_pos = @math.Vec2::new(rect.x, rect.y + btn_h + 4.0 * scale)
     let prev_cursor = self.cursor
     self.cursor = popup_pos
     let (c, _) = self.color_picker(id_salt + "::popup", color, show_alpha~)
@@ -462,6 +491,7 @@ pub fn UIContext::color_picker_button(
 
     if self.input.key_pressed(Key::Escape) {
       self.open_combo_id = Id::zero()
+      self.input.consume_key(Key::Escape)
     }
   }
 

@@ -249,6 +249,28 @@ pub fn Modifiers::new(Bool, Bool, Bool, Bool) -> Self
 pub fn Modifiers::none() -> Self
 pub fn Modifiers::shift() -> Self
 
+pub struct PlotPoint {
+  x : Double
+  y : Double
+} derive(Eq, @debug.Debug)
+pub fn PlotPoint::new(Double, Double) -> Self
+
+pub struct PlotSeries {
+  name : String
+  points : Array[PlotPoint]
+  color : @color.Color
+  kind : PlotSeriesKind
+} derive(Eq, @debug.Debug)
+pub fn PlotSeries::area(String, Array[PlotPoint], color? : @color.Color) -> Self
+pub fn PlotSeries::line(String, Array[PlotPoint], color? : @color.Color) -> Self
+pub fn PlotSeries::scatter(String, Array[PlotPoint], color? : @color.Color) -> Self
+
+pub enum PlotSeriesKind {
+  Line
+  Scatter
+  Area
+} derive(Eq, @debug.Debug)
+
 pub struct RawInput {
   mouse_pos : @math.Vec2
   mouse_down : Bool
@@ -471,6 +493,7 @@ pub fn UIContext::animate_bool(Self, Id, Bool, Double) -> Double
 pub fn UIContext::animate_float(Self, Id, Double, Double) -> Double
 pub fn UIContext::available_width(Self) -> Double
 pub fn UIContext::badge(Self, String, kind? : BadgeKind, dot? : Bool, pill? : Bool) -> Response
+pub fn UIContext::bar_chart(Self, String, Array[String], Array[Double], size? : @math.Vec2, bar_color? : @color.Color) -> (Int?, Response)
 pub fn UIContext::begin_foreground(Self) -> Unit
 pub fn UIContext::begin_frame(Self, RawInput) -> Unit
 pub fn UIContext::block_hover(Self, @math.Rect) -> Unit
@@ -526,6 +549,7 @@ pub fn UIContext::menu_separator(Self) -> Unit
 pub fn UIContext::new() -> Self
 pub fn UIContext::open_combo_id(Self) -> Id
 pub fn UIContext::open_menu_id(Self) -> Id
+pub fn UIContext::plot(Self, String, Array[PlotSeries], size? : @math.Vec2, show_grid? : Bool, show_crosshair? : Bool, show_legend? : Bool) -> (@math.Vec2?, Response)
 pub fn UIContext::pop_clip(Self) -> Unit
 pub fn UIContext::pop_id(Self) -> Unit
 pub fn UIContext::progress_bar(Self, Double, String) -> Response
@@ -654,6 +678,32 @@ pub struct WidgetStyle {
   menu_bar_btn_h : Double
   menu_bar_popup_w : Double
   menu_bar_radius : Double
+  progress_bar_h : Double
+  tooltip_pad_x : Double
+  tooltip_pad_y : Double
+  tooltip_radius : Double
+  window_title_bar_h : Double
+  combo_box_w : Double
+  combo_box_h : Double
+  collapsing_header_h : Double
+  collapsing_header_indent : Double
+  tab_bar_h : Double
+  tab_bar_pad_x : Double
+  drag_value_w : Double
+  drag_value_h : Double
+  color_picker_w : Double
+  color_picker_btn_h : Double
+  breadcrumb_h : Double
+  breadcrumb_sep_gap : Double
+  plot_default_w : Double
+  plot_default_h : Double
+  plot_pad_left : Double
+  plot_pad_right : Double
+  plot_pad_top : Double
+  plot_pad_bottom : Double
+  bar_chart_default_w : Double
+  bar_chart_default_h : Double
+  bar_chart_gap : Double
 } derive(Eq, @debug.Debug)
 pub fn WidgetStyle::default() -> Self
 

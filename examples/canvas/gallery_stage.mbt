@@ -1481,6 +1481,124 @@ fn draw_sparkline_showcase(ui : @core.UIContext) -> Unit {
 }
 
 ///|
+fn draw_plot_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "高性能即时交互图表 (Interactive Plot)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "支持折线 (Line)、散点 (Scatter) 与面积 (Area) 多系列同图混排，网格辅助线、数值刻度、准心十字光标与数据浮窗。",
+  )
+  ui.spacer(12.0)
+
+  let line_pts = [
+    @core.PlotPoint::new(0.0, 15.0),
+    @core.PlotPoint::new(20.0, 42.0),
+    @core.PlotPoint::new(40.0, 35.0),
+    @core.PlotPoint::new(60.0, 78.0),
+    @core.PlotPoint::new(80.0, 60.0),
+    @core.PlotPoint::new(100.0, 92.0),
+    @core.PlotPoint::new(120.0, 85.0),
+    @core.PlotPoint::new(140.0, 110.0),
+  ]
+  let scatter_pts = [
+    @core.PlotPoint::new(10.0, 25.0),
+    @core.PlotPoint::new(30.0, 50.0),
+    @core.PlotPoint::new(50.0, 45.0),
+    @core.PlotPoint::new(70.0, 85.0),
+    @core.PlotPoint::new(90.0, 70.0),
+    @core.PlotPoint::new(110.0, 98.0),
+    @core.PlotPoint::new(130.0, 90.0),
+  ]
+  let area_pts = [
+    @core.PlotPoint::new(0.0, 8.0),
+    @core.PlotPoint::new(20.0, 20.0),
+    @core.PlotPoint::new(40.0, 18.0),
+    @core.PlotPoint::new(60.0, 35.0),
+    @core.PlotPoint::new(80.0, 30.0),
+    @core.PlotPoint::new(100.0, 48.0),
+    @core.PlotPoint::new(120.0, 42.0),
+    @core.PlotPoint::new(140.0, 55.0),
+  ]
+
+  let s_area = @core.PlotSeries::area(
+    "Baseline",
+    area_pts,
+    color=@color.Color::accent_primary(),
+  )
+  let s_line = @core.PlotSeries::line(
+    "Throughput",
+    line_pts,
+    color=@color.Color::success(),
+  )
+  let s_scatter = @core.PlotSeries::scatter(
+    "Samples",
+    scatter_pts,
+    color=@color.Color::warning(),
+  )
+
+  let plot_w = if ui.available_width > 200.0 {
+    ui.available_width
+  } else {
+    480.0
+  }
+  let (hover_pt, _) = ui.plot(
+    "gal_plot_main",
+    [s_area, s_line, s_scatter],
+    size=@math.Vec2::new(plot_w, 220.0),
+    show_legend=true,
+    show_grid=true,
+  )
+
+  if hover_pt is Some(pt) {
+    let x_int = pt.x.to_int()
+    let y_int = pt.y.to_int()
+    gallery_state.status_text = "Plot Crosshair: X=" +
+      x_int.to_string() +
+      ", Y=" +
+      y_int.to_string()
+  }
+}
+
+///|
+fn draw_bar_chart_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "交互式柱状统计图 (Bar Chart)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "柱条自适应宽度与间隙，悬停高亮色彩微过渡，顶部即时数值指示胶囊与分类标签。",
+  )
+  ui.spacer(12.0)
+
+  let labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"]
+  let values = [45.0, 78.0, 62.0, 95.0, 84.0, 110.0, 92.0, 130.0]
+
+  let chart_w = if ui.available_width > 200.0 {
+    ui.available_width
+  } else {
+    480.0
+  }
+  let (hover_bar, _) = ui.bar_chart(
+    "gal_bar_main",
+    labels,
+    values,
+    size=@math.Vec2::new(chart_w, 210.0),
+  )
+
+  if hover_bar is Some(idx) {
+    if idx >= 0 && idx < labels.length() {
+      gallery_state.status_text = "Bar Hovered: " +
+        labels[idx] +
+        " = " +
+        values[idx].to_int().to_string()
+    }
+  }
+}
+
+///|
 fn draw_segmented_control_showcase(ui : @core.UIContext) -> Unit {
   let _ = ui.label_colored(
     "分段控制器 (SegmentedControl)",
@@ -1763,6 +1881,8 @@ fn draw_component_preview(
     "dialog" => draw_dialog_showcase(ui, cur_w, cur_h)
     "spinner" => draw_spinner_showcase(ui)
     "sparkline" => draw_sparkline_showcase(ui)
+    "plot" => draw_plot_showcase(ui)
+    "bar_chart" => draw_bar_chart_showcase(ui)
     "segmented_control" => draw_segmented_control_showcase(ui)
     "badge" => draw_badge_showcase(ui)
     "breadcrumb" => draw_breadcrumb_showcase(ui)

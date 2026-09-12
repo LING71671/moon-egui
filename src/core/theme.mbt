@@ -81,6 +81,32 @@ pub struct WidgetStyle {
   menu_bar_btn_h : Double
   menu_bar_popup_w : Double
   menu_bar_radius : Double
+  progress_bar_h : Double
+  tooltip_pad_x : Double
+  tooltip_pad_y : Double
+  tooltip_radius : Double
+  window_title_bar_h : Double
+  combo_box_w : Double
+  combo_box_h : Double
+  collapsing_header_h : Double
+  collapsing_header_indent : Double
+  tab_bar_h : Double
+  tab_bar_pad_x : Double
+  drag_value_w : Double
+  drag_value_h : Double
+  color_picker_w : Double
+  color_picker_btn_h : Double
+  breadcrumb_h : Double
+  breadcrumb_sep_gap : Double
+  plot_default_w : Double
+  plot_default_h : Double
+  plot_pad_left : Double
+  plot_pad_right : Double
+  plot_pad_top : Double
+  plot_pad_bottom : Double
+  bar_chart_default_w : Double
+  bar_chart_default_h : Double
+  bar_chart_gap : Double
 } derive(Eq, Debug)
 
 ///|
@@ -153,6 +179,32 @@ pub fn WidgetStyle::default() -> WidgetStyle {
     menu_bar_btn_h: 22.0,
     menu_bar_popup_w: 170.0,
     menu_bar_radius: 4.0,
+    progress_bar_h: 18.0,
+    tooltip_pad_x: 8.0,
+    tooltip_pad_y: 4.0,
+    tooltip_radius: 4.0,
+    window_title_bar_h: 28.0,
+    combo_box_w: 140.0,
+    combo_box_h: 28.0,
+    collapsing_header_h: 26.0,
+    collapsing_header_indent: 16.0,
+    tab_bar_h: 28.0,
+    tab_bar_pad_x: 12.0,
+    drag_value_w: 64.0,
+    drag_value_h: 22.0,
+    color_picker_w: 220.0,
+    color_picker_btn_h: 28.0,
+    breadcrumb_h: 26.0,
+    breadcrumb_sep_gap: 6.0,
+    plot_default_w: 280.0,
+    plot_default_h: 150.0,
+    plot_pad_left: 38.0,
+    plot_pad_right: 14.0,
+    plot_pad_top: 14.0,
+    plot_pad_bottom: 24.0,
+    bar_chart_default_w: 280.0,
+    bar_chart_default_h: 150.0,
+    bar_chart_gap: 8.0,
   }
 }
 

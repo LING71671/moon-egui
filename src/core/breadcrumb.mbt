@@ -28,9 +28,11 @@ pub fn UIContext::breadcrumb(
     return (None, resp)
   }
 
-  let font_sz = self.style.font_normal
+  let scale = self.style.scale
+  let font_sz = self.style.font_normal * scale
   let sep_sz = self.measure_text(separator, font_sz)
-  let sep_gap = 6.0
+  let sep_gap = self.style.breadcrumb_sep_gap * scale
+  let pad_x = 8.0 * scale
 
   // Fold middle items into "..." if exceeding max_visible
   let display_items : Array[(String, Int)] = []
@@ -54,13 +56,13 @@ pub fn UIContext::breadcrumb(
   let num_display = display_items.length()
   for i = 0; i < num_display; i = i + 1 {
     let item_sz = self.measure_text(display_items[i].0, font_sz)
-    total_w = total_w + item_sz.x + 8.0 // item width + pad
+    total_w = total_w + item_sz.x + pad_x // item width + pad
     if i < num_display - 1 {
       total_w = total_w + sep_sz.x + sep_gap * 2.0
     }
   }
 
-  let h = 26.0
+  let h = self.style.breadcrumb_h * scale
   self.push_id(id_salt)
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
   self.pop_id()
@@ -72,7 +74,7 @@ pub fn UIContext::breadcrumb(
     let (label, orig_idx) = display_items[i]
     let item_sz = self.measure_text(label, font_sz)
     let is_last = i == num_display - 1
-    let item_w = item_sz.x + 8.0
+    let item_w = item_sz.x + pad_x
     let item_rect = @math.Rect::new(current_x, rect.y, item_w, h)
 
     let is_hovered = item_rect.contains(self.input.mouse_pos)
@@ -84,7 +86,7 @@ pub fn UIContext::breadcrumb(
         self.draw_list.add_rect(
           item_rect,
           @color.Color::bg_hover(),
-          self.style.radius_sm,
+          self.style.radius_sm * scale,
         )
         if self.input.mouse_pressed {
           clicked_idx = Some(orig_idx)
