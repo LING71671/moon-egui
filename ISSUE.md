@@ -609,9 +609,9 @@ Items in this section address foundational decoupling across the engine: modular
 
 ---
 
-### ARCH-07 (P2): Showcase Stage Modularization (Splitting 2088-Line `gallery_stage.mbt` Monolith)
+### ARCH-07 (P2) [RESOLVED]: Showcase Stage Modularization (Splitting 2088-Line `gallery_stage.mbt` Monolith)
 - **Location**: [examples/canvas/gallery_stage.mbt](file:///a:/moonbit-project/examples/canvas/gallery_stage.mbt)
-- **Status**: Backlog
+- **Status**: **RESOLVED** (Phase 6). Decomposed 2088-line monolithic `gallery_stage.mbt` into 6 dedicated domain stage modules (`gallery_basic_stages.mbt`, `gallery_editor_stages.mbt`, `gallery_audio_stages.mbt`, `gallery_data_stages.mbt`, `gallery_nav_stages.mbt`, `gallery_container_stages.mbt`), reducing `gallery_stage.mbt` to ~300 lines of pure frame lifecycle and dispatcher harness.
 - **Category**: Showcase Architecture
 - **Description**:
   `gallery_stage.mbt` contains 2088 lines of code in a single file, encompassing all 32 component gallery stages, porcelain card framing, telemetry, host input conversion, and view-mode layout switching.
@@ -620,11 +620,12 @@ Items in this section address foundational decoupling across the engine: modular
   2. Monolithic `match comp_id { "button" => ..., "slider" => ..., ... }` pattern matching with 32 branches hinders modular additions.
 - **Remediation**:
   - Decompose `gallery_stage.mbt` into modular stage units:
-    - `examples/canvas/stages/basic_stages.mbt` (`button`, `slider`, `toggle`, `checkbox`, `radio`, `badge`)
-    - `examples/canvas/stages/editor_stages.mbt` (`text_edit`, `code_editor`, `rich_text`)
-    - `examples/canvas/stages/data_stages.mbt` (`table`, `tree_view`, `plot`, `sparkline`)
-    - `examples/canvas/stages/audio_stages.mbt` (`knob`, `fader`)
-    - `examples/canvas/stages/nav_stages.mbt` (`tabs`, `breadcrumb`, `segmented`, `menu_bar`)
+    - `examples/canvas/gallery_basic_stages.mbt` (`button`, `slider`, `toggle`, `checkbox`, `radio`, `badge`, `progress_bar`, `spinner`)
+    - `examples/canvas/gallery_editor_stages.mbt` (`text_edit`, `code_editor`, `rich_text`)
+    - `examples/canvas/gallery_data_stages.mbt` (`table`, `tree_view`, `plot`, `bar_chart`, `sparkline`)
+    - `examples/canvas/gallery_audio_stages.mbt` (`knob`, `fader`)
+    - `examples/canvas/gallery_nav_stages.mbt` (`tab_bar`, `breadcrumb`, `segmented_control`, `menu_bar`)
+    - `examples/canvas/gallery_container_stages.mbt` (`window`, `dialog`, `toast`, `splitter`, `scroll_area`, `command_palette`, `context_menu`, `tooltip`, `color_picker`, `combo_box`, `color_button`, `collapsing_header`)
     - `examples/canvas/gallery_stage.mbt` (retains only frame harness, porcelain shell, and dispatcher)
 
 ---
@@ -672,4 +673,4 @@ Items in this section address foundational decoupling across the engine: modular
 | **arch** | `ARCH-04` | First-Class Widget Structs & Fluent Builder Protocol | **P1** | Resolved (Phase 5) |
 | **arch** | `ARCH-05` | `Painter` Rendering & Scissor Coordinate Abstraction | **P2** | Resolved (Phase 3) |
 | **arch** | `ARCH-06` | Multi-Package Hierarchy (Decompose `src/core` Monolith) | **P2** | Backlog |
-| **arch** | `ARCH-07` | Showcase Stage Modularization (`gallery_stage.mbt`) | **P2** | Backlog |
+| **arch** | `ARCH-07` | Showcase Stage Modularization (`gallery_stage.mbt`) | **P2** | Resolved (Phase 6) |
