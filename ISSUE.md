@@ -473,9 +473,9 @@ Items in this section address foundational decoupling across the engine: modular
 
 ## 8. Architectural Decoupling Initiatives (`arch`)
 
-### ARCH-01 (P1): `UIContext` God-Object Subsystem Modularization (`Layout`, `Focus`, `Window`, `Layer`)
+### ARCH-01 (P1) [RESOLVED]: `UIContext` God-Object Subsystem Modularization (`Layout`, `Focus`, `Window`, `Layer`)
 - **Location**: [src/core/context.mbt#L21-L71](file:///a:/moonbit-project/src/core/context.mbt#L21-L71)
-- **Status**: Backlog
+- **Status**: **RESOLVED** (Phase 2). Decomposed `UIContext` into dedicated `LayoutEngine`, `FocusManager`, `WindowManager`, and `LayerManager` sub-engines with facade delegation.
 - **Category**: Context Architecture
 - **Description**:
   `UIContext` contains 46 fields spanning five distinct subsystems (spatial layout stack, focus/hit-testing ring, scissor clipping/layer composition, window z-compositing, and persistent storage).
@@ -492,9 +492,9 @@ Items in this section address foundational decoupling across the engine: modular
 
 ---
 
-### ARCH-02 (P1): Generic Keyed State Storage (`Memory` / `IdMap`) Decoupling Widget Persistence
+### ARCH-02 (P1) [RESOLVED]: Generic Keyed State Storage (`Memory` / `IdMap`) Decoupling Widget Persistence
 - **Location**: [src/core/context.mbt#L38-L54](file:///a:/moonbit-project/src/core/context.mbt#L38-L54), [src/core/text_edit.mbt](file:///a:/moonbit-project/src/core/text_edit.mbt), [src/core/scroll_area.mbt](file:///a:/moonbit-project/src/core/scroll_area.mbt), [src/core/code_editor.mbt](file:///a:/moonbit-project/src/core/code_editor.mbt), [src/core/containers.mbt](file:///a:/moonbit-project/src/core/containers.mbt)
-- **Status**: Backlog
+- **Status**: **RESOLVED** (Phase 1). Introduced generic `Memory` / `IdMap` subsystem with generational eviction, decoupled all 8 widget storage tables out of `UIContext`.
 - **Category**: State Management Decoupling
 - **Description**:
   `UIContext` hardcodes 8 widget-specific storage tables:
@@ -523,9 +523,9 @@ Items in this section address foundational decoupling across the engine: modular
 
 ---
 
-### ARCH-03 (P1): `WidgetStyle` Token Decoupling (System Design Tokens vs. Component Configuration)
+### ARCH-03 (P1) [RESOLVED]: `WidgetStyle` Token Decoupling (System Design Tokens vs. Component Configuration)
 - **Location**: [src/core/theme.mbt#L17-L116](file:///a:/moonbit-project/src/core/theme.mbt#L17-L116)
-- **Status**: Backlog
+- **Status**: **RESOLVED** (Phase 4). Stratified `WidgetStyle` into foundational systemic tokens (`control_h_sm/md/lg`, `font_*`, `spacing_*`, `radius_*`, `scale`, `elevation`) and dedicated component style descriptors (`CodeEditorStyle`, `PlotStyle`, `TableStyle`, `FaderStyle`, `KnobStyle`).
 - **Category**: Design System Decoupling
 - **Description**:
   `WidgetStyle` is a flat structure containing 70+ fields enumerating specific geometric metrics for 32 widgets (`button_h`, `button_pad_x`, `slider_track_w`, `knob_r`, `fader_cap_w`, `dialog_btn_w`, `code_editor_gutter_w`, `table_row_h`, etc.).
@@ -568,9 +568,9 @@ Items in this section address foundational decoupling across the engine: modular
 
 ---
 
-### ARCH-05 (P2): `Painter` Rendering Abstraction Decoupling Widgets from Screen Coordinates and Global `DrawList`
+### ARCH-05 (P2) [RESOLVED]: `Painter` Rendering Abstraction Decoupling Widgets from Screen Coordinates and Global `DrawList`
 - **Location**: [src/core/context.mbt#L23](file:///a:/moonbit-project/src/core/context.mbt#L23), [src/draw/draw_cmd.mbt](file:///a:/moonbit-project/src/draw/draw_cmd.mbt), all widget files
-- **Status**: Backlog
+- **Status**: **RESOLVED** (Phase 3). Introduced scoped `Painter` abstraction (`painter.add_rect`, `painter.add_text`, `painter.with_offset`, etc.) and migrated all 29 widget files.
 - **Category**: Rendering Subsystem Decoupling
 - **Description**:
   All widgets directly access `self.draw_list` and manually perform global coordinate offsets and scissor stack management (`push_clip` / `pop_clip`).
@@ -666,10 +666,10 @@ Items in this section address foundational decoupling across the engine: modular
 | **feat** | `FEAT-SHOWCASE-03`| Native In-Canvas Studio Header Bar in Benchmark | **P3** | Backlog |
 | **feat** | `FEAT-CORE-01` | Multi-Window Docking Layout System (`DockArea`) | **P3** | Backlog |
 | **feat** | `FEAT-CORE-05` | Immediate-Mode Plotting & Charting Suite (`plot`, `bar_chart`) | **P3** | Resolved (Phase 7) |
-| **arch** | `ARCH-01` | `UIContext` God-Object Subsystem Modularization | **P1** | Backlog |
-| **arch** | `ARCH-02` | Generic Keyed State Storage (`Memory` / `IdMap`) | **P1** | Backlog |
-| **arch** | `ARCH-03` | `WidgetStyle` Token Decoupling (System vs Component) | **P1** | Backlog |
+| **arch** | `ARCH-01` | `UIContext` God-Object Subsystem Modularization | **P1** | Resolved (Phase 2) |
+| **arch** | `ARCH-02` | Generic Keyed State Storage (`Memory` / `IdMap`) | **P1** | Resolved (Phase 1) |
+| **arch** | `ARCH-03` | `WidgetStyle` Token Decoupling (System vs Component) | **P1** | Resolved (Phase 4) |
 | **arch** | `ARCH-04` | First-Class Widget Structs & Fluent Builder Protocol | **P1** | Backlog |
-| **arch** | `ARCH-05` | `Painter` Rendering & Scissor Coordinate Abstraction | **P2** | Backlog |
+| **arch** | `ARCH-05` | `Painter` Rendering & Scissor Coordinate Abstraction | **P2** | Resolved (Phase 3) |
 | **arch** | `ARCH-06` | Multi-Package Hierarchy (Decompose `src/core` Monolith) | **P2** | Backlog |
 | **arch** | `ARCH-07` | Showcase Stage Modularization (`gallery_stage.mbt`) | **P2** | Backlog |
