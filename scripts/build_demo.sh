@@ -24,7 +24,9 @@ if [ ! -f "$BUILD" ]; then
   exit 1
 fi
 
-STEP=$(grep -oE 'function (_M0[A-Za-z0-9_]*4step)\(' "$BUILD" |
+# Match the module-qualified mangled name of `examples/canvas.step`; the bare
+# `4step` suffix also matches widget methods such as `Knob::step`.
+STEP=$(grep -oE 'function (_M0[A-Za-z0-9_]*8examples6canvas4step)\(' "$BUILD" |
   head -n 1 |
   sed -e 's/^function //' -e 's/($//')
 

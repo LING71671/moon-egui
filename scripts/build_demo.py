@@ -21,8 +21,8 @@ def main():
     with open(build_file, "r", encoding="utf-8") as f:
         content = f.read()
 
-    step_match = re.search(r'function (_M0[A-Za-z0-9_]*4step)\(', content)
-    gallery_step_match = re.search(r'function (_M0[A-Za-z0-9_]*13gallery__step)\(', content)
+    step_match = re.search(r'function (_M0[A-Za-z0-9_]*8examples6canvas4step)\(', content)
+    gallery_step_match = re.search(r'function (_M0[A-Za-z0-9_]*gallery__step[A-Za-z0-9_]*\)\(', content)
 
     if not step_match:
         print("Error: could not locate canvas.step entry point", file=sys.stderr)

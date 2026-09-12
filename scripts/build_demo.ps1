@@ -17,7 +17,7 @@ if (-not (Test-Path $BUILD)) {
 }
 
 $content = Get-Content $BUILD -Raw
-$step = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*4step)\(').Groups[1].Value
+$step = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*8examples6canvas4step)\(').Groups[1].Value
 $gallery_step = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*gallery__step[A-Za-z0-9_]*)\(').Groups[1].Value
 $status = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*get__gallery__status)\(').Groups[1].Value
 $cursor = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*get__gallery__cursor)\(').Groups[1].Value
