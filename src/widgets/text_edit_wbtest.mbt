@@ -57,3 +57,62 @@ test "widgets: text_edit ref binding and interaction" {
   assert_eq(str_ref.val, "AB")
   assert_eq(ctx.get_text_cursor_pos(id, 2), 1)
 }
+
+///|
+test "text_edit: caret line rendered when visible and omitted when blinking off" {
+  let ctx = @core.UIContext::new()
+
+  // Frame 1: mouse down on field at time 0.0
+  let raw1 = @core.RawInput::from_mouse(@math.Vec2::new(30.0, 15.0), true)
+  ctx.begin_frame(raw1)
+  let _ = text_edit_val(ctx, "email", "dev@moonbitlang.com")
+  let dl1 = ctx.end_frame()
+  let mut has_line1 = false
+  for i = 0; i < dl1.len(); i = i + 1 {
+    if dl1.get_command(i) is Some(@draw.DrawCmd::Line(_)) {
+      has_line1 = true
+    }
+  }
+  assert_true(has_line1)
+
+  // Frame 2: mouse released to complete click at time 0.05
+  ctx.set_time(0.05)
+  let raw2 = @core.RawInput::from_mouse(@math.Vec2::new(30.0, 15.0), false)
+  ctx.begin_frame(raw2)
+  let _ = text_edit_val(ctx, "email", "dev@moonbitlang.com")
+  let _ = ctx.end_frame()
+
+  // Frame 3: idle for 0.6s (time = 0.65s) -> caret enters off phase (hidden)
+  ctx.set_time(0.65)
+  let raw3 = @core.RawInput::from_mouse(@math.Vec2::new(-100.0, -100.0), false)
+  ctx.begin_frame(raw3)
+  let _ = text_edit_val(ctx, "email", "dev@moonbitlang.com")
+  let dl3 = ctx.end_frame()
+  let mut has_line3 = false
+  for i = 0; i < dl3.len(); i = i + 1 {
+    if dl3.get_command(i) is Some(@draw.DrawCmd::Line(_)) {
+      has_line3 = true
+    }
+  }
+  assert_false(has_line3)
+
+  // Frame 4: user types a key -> caret immediately solid (visible)
+  let raw4 = @core.RawInput::with_events(
+    @math.Vec2::new(-100.0, -100.0),
+    false,
+    @math.Vec2::zero(),
+    [],
+    "x",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw4)
+  let _ = text_edit_val(ctx, "email", "dev@moonbitlang.com")
+  let dl4 = ctx.end_frame()
+  let mut has_line4 = false
+  for i = 0; i < dl4.len(); i = i + 1 {
+    if dl4.get_command(i) is Some(@draw.DrawCmd::Line(_)) {
+      has_line4 = true
+    }
+  }
+  assert_true(has_line4)
+}

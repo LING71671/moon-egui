@@ -79,3 +79,60 @@ test "widgets: splitter vertical layout and ratio" {
   assert_eq(bottom_h, 180.0)
   assert_eq(ratio, 0.4)
 }
+
+///|
+test "splitter: split_horizontal enforces physical min_px bounds" {
+  let ctx = @core.UIContext::new()
+  ctx.begin_frame(@core.RawInput::new())
+
+  let mut actual_left_w = 0.0
+  // Trying to set 0.02 on a 400px width would be 8px, but min_px is 60px
+  let ratio = split_horizontal(
+    ctx,
+    "extreme_split",
+    0.02,
+    @math.Vec2::new(400.0, 200.0),
+    fn(_ui, rect) { actual_left_w = rect.w },
+    fn(_ui, _rect) { () },
+    min_px=60.0,
+  )
+
+  let _ = ctx.end_frame()
+  // 60 / 400 = 0.15
+  assert_eq(ratio, 0.15)
+  assert_true(actual_left_w >= 60.0)
+}
+
+///|
+test "splitter: split_horizontal dragging updates ratio" {
+  let ctx = @core.UIContext::new()
+
+  // Frame 1: Mouse at divider bar (x = 120.0, y = 50.0), press down
+  let raw1 = @core.RawInput::from_mouse(@math.Vec2::new(120.0, 50.0), true)
+  ctx.begin_frame(raw1)
+  let ratio1 = split_horizontal(
+    ctx,
+    "drag_split",
+    0.3,
+    @math.Vec2::new(400.0, 200.0),
+    fn(_ui, _r) { () },
+    fn(_ui, _r) { () },
+  )
+  assert_eq(ratio1, 0.3)
+  let _ = ctx.end_frame()
+
+  // Frame 2: Drag mouse to x = 200.0 (middle)
+  let raw2 = @core.RawInput::from_mouse(@math.Vec2::new(200.0, 50.0), true)
+  ctx.begin_frame(raw2)
+  let ratio2 = split_horizontal(
+    ctx,
+    "drag_split",
+    0.3,
+    @math.Vec2::new(400.0, 200.0),
+    fn(_ui, _r) { () },
+    fn(_ui, _r) { () },
+  )
+  let _ = ctx.end_frame()
+  // 200 / 400 = 0.5
+  assert_eq(ratio2, 0.5)
+}
