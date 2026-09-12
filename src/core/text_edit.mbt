@@ -13,20 +13,6 @@
 // limitations under the License.
 
 ///|
-fn string_slice(s : String, start : Int, end : Int) -> String {
-  let len = s.length()
-  let safe_start = if start < 0 { 0 } else if start > len { len } else { start }
-  let safe_end = if end < safe_start {
-    safe_start
-  } else if end > len {
-    len
-  } else {
-    end
-  }
-  s[safe_start:safe_end].to_owned()
-}
-
-///|
 pub fn UIContext::text_edit_sized(
   self : UIContext,
   id_salt : String,
@@ -67,7 +53,8 @@ pub fn UIContext::text_edit_sized(
     } else {
       let mut best_i = 0
       let mut best_dist = click_x
-      for i = 1; i <= current_text.length(); i = i + 1 {
+      let mut i = 0
+      while i <= current_text.length() {
         let sub = string_slice(current_text, 0, i)
         let w = measure_text_size(sub, font_size).x
         let dist = if click_x > w { click_x - w } else { w - click_x }
@@ -75,6 +62,10 @@ pub fn UIContext::text_edit_sized(
           best_dist = dist
           best_i = i
         }
+        if i >= current_text.length() {
+          break
+        }
+        i = next_char_boundary(current_text, i)
       }
       cursor_pos = best_i
     }
@@ -94,14 +85,10 @@ pub fn UIContext::text_edit_sized(
 
     // Navigation keys
     if self.input.key_pressed(Key::ArrowLeft) {
-      if cursor_pos > 0 {
-        cursor_pos = cursor_pos - 1
-      }
+      cursor_pos = prev_char_boundary(current_text, cursor_pos)
     }
     if self.input.key_pressed(Key::ArrowRight) {
-      if cursor_pos < current_text.length() {
-        cursor_pos = cursor_pos + 1
-      }
+      cursor_pos = next_char_boundary(current_text, cursor_pos)
     }
     if self.input.key_pressed(Key::Home) {
       cursor_pos = 0
@@ -113,27 +100,16 @@ pub fn UIContext::text_edit_sized(
     // Backspace deletion
     if self.input.key_pressed(Key::Backspace) {
       if cursor_pos > 0 && current_text.length() > 0 {
-        let left = string_slice(current_text, 0, cursor_pos - 1)
-        let right = string_slice(
-          current_text,
-          cursor_pos,
-          current_text.length(),
-        )
-        current_text = left + right
-        cursor_pos = cursor_pos - 1
+        let (new_text, new_pos) = delete_prev_char(current_text, cursor_pos)
+        current_text = new_text
+        cursor_pos = new_pos
       }
     }
 
     // Delete key deletion
     if self.input.key_pressed(Key::Delete) {
       if cursor_pos < current_text.length() {
-        let left = string_slice(current_text, 0, cursor_pos)
-        let right = string_slice(
-          current_text,
-          cursor_pos + 1,
-          current_text.length(),
-        )
-        current_text = left + right
+        current_text = delete_next_char(current_text, cursor_pos)
       }
     }
 

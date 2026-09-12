@@ -32,6 +32,14 @@ test "theme: default WidgetStyle values" {
   assert_eq(style.code_editor_font_size, 12.5)
   assert_eq(style.command_palette_w, 540.0)
   assert_eq(style.table_header_h, 32.0)
+  assert_eq(style.checkbox_size, 18.0)
+  assert_eq(style.checkbox_h, 22.0)
+  assert_eq(style.radio_r, 7.0)
+  assert_eq(style.radio_h, 22.0)
+  assert_eq(style.badge_h, 22.0)
+  assert_eq(style.badge_radius, 4.0)
+  assert_eq(style.menu_bar_h, 28.0)
+  assert_eq(style.menu_bar_popup_w, 170.0)
 }
 
 ///|
@@ -146,4 +154,58 @@ test "text_edit: caret line rendered when visible and omitted when blinking off"
     }
   }
   assert_true(has_line4)
+}
+
+///|
+test "theme: runtime dynamic theme switching" {
+  let ctx = UIContext::new()
+  assert_eq(ctx.theme().name, "studio_light")
+  assert_eq(ctx.theme().bg_window, @color.Color::hex(0xFFFFFF))
+
+  ctx.set_theme(Theme::slate_dark())
+  assert_eq(ctx.theme().name, "slate_dark")
+  assert_eq(ctx.theme().bg_window, @color.Color::hex(0x111827))
+
+  ctx.set_theme(Theme::high_contrast())
+  assert_eq(ctx.theme().name, "high_contrast")
+  assert_eq(ctx.theme().bg_window, @color.Color::hex(0x000000))
+}
+
+///|
+test "theme: animate_bool and animate_float immediate-mode transitions" {
+  let ctx = UIContext::new()
+  let id = Id::from_int(101)
+
+  // Frame 1: start at false (0.0) with 0.1s duration
+  ctx.begin_frame(RawInput::new())
+  let v0 = ctx.animate_bool(id, false, 0.1)
+  assert_eq(v0, 0.0)
+  let _ = ctx.end_frame()
+
+  // Frame 2: target becomes true, advance dt=0.05s (50% progress)
+  let raw2 = RawInput::from_mouse(@math.Vec2::zero(), false, dt=0.05)
+  ctx.begin_frame(raw2)
+  let v1 = ctx.animate_bool(id, true, 0.1)
+  assert_true(v1 >= 0.49 && v1 <= 0.51)
+  let _ = ctx.end_frame()
+
+  // Frame 3: advance another 0.05s (reaches 100% = 1.0)
+  let raw3 = RawInput::from_mouse(@math.Vec2::zero(), false, dt=0.05)
+  ctx.begin_frame(raw3)
+  let v2 = ctx.animate_bool(id, true, 0.1)
+  assert_eq(v2, 1.0)
+  let _ = ctx.end_frame()
+
+  // Test animate_float
+  let id_f = Id::from_int(202)
+  ctx.begin_frame(RawInput::new())
+  let f0 = ctx.animate_float(id_f, 100.0, 0.1)
+  assert_eq(f0, 100.0)
+  let _ = ctx.end_frame()
+
+  let raw_f = RawInput::from_mouse(@math.Vec2::zero(), false, dt=0.05)
+  ctx.begin_frame(raw_f)
+  let f1 = ctx.animate_float(id_f, 200.0, 0.1)
+  assert_true(f1 > 100.0 && f1 < 200.0)
+  let _ = ctx.end_frame()
 }

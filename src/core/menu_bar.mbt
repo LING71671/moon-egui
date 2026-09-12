@@ -19,7 +19,8 @@ pub fn UIContext::menu_bar(
   self : UIContext,
   content : (UIContext) -> Unit,
 ) -> Unit {
-  let bar_h = 28.0
+  let scale = self.style.scale
+  let bar_h = self.style.menu_bar_h * scale
   let bar_w = self.available_width
   let bar_pos = self.cursor
   let bar_rect = @math.Rect::new(bar_pos.x, bar_pos.y, bar_w, bar_h)
@@ -33,14 +34,17 @@ pub fn UIContext::menu_bar(
     1.0,
   )
 
-  // 2. Lay out items horizontally inside the 28px bar
+  // 2. Lay out items horizontally inside the menu bar
   let prev_cursor = self.cursor
   let prev_avail_w = self.available_width
   let prev_spacing = self.item_spacing
 
-  self.cursor = @math.Vec2::new(bar_pos.x + 8.0, bar_pos.y + 3.0)
-  self.available_width = bar_w - 16.0
-  self.item_spacing = @math.Vec2::new(4.0, 0.0)
+  self.cursor = @math.Vec2::new(
+    bar_pos.x + 8.0 * scale,
+    bar_pos.y + 3.0 * scale,
+  )
+  self.available_width = bar_w - 16.0 * scale
+  self.item_spacing = @math.Vec2::new(4.0 * scale, 0.0)
 
   // Horizontal layout scope for menu triggers
   self.horizontal(content)
@@ -59,10 +63,12 @@ pub fn UIContext::menu(
   title : String,
   content : (UIContext) -> Unit,
 ) -> Unit {
+  let scale = self.style.scale
+  let font_nm = self.style.font_normal * scale
   let menu_id = self.id_stack.derive_id("menu::" + title)
-  let text_size = self.measure_text(title, 13.0)
-  let btn_w = text_size.x + 16.0
-  let btn_h = 22.0
+  let text_size = self.measure_text(title, font_nm)
+  let btn_w = text_size.x + 16.0 * scale
+  let btn_h = self.style.menu_bar_btn_h * scale
 
   self.push_id(title)
   let (_id, btn_rect, _) = self.allocate_space(@math.Vec2::new(btn_w, btn_h))
@@ -105,13 +111,17 @@ pub fn UIContext::menu(
     @color.Color::text_body()
   }
 
+  let radius = self.style.menu_bar_radius * scale
   if currently_open || hovered {
-    self.draw_list.add_rect(btn_rect, btn_bg, 4.0)
+    self.draw_list.add_rect(btn_rect, btn_bg, radius)
   }
   self.draw_list.add_text(
-    @math.Vec2::new(btn_rect.x + 8.0, btn_rect.y + (btn_h - 13.0) * 0.5),
+    @math.Vec2::new(
+      btn_rect.x + 8.0 * scale,
+      btn_rect.y + (btn_h - font_nm) * 0.5,
+    ),
     title,
-    13.0,
+    font_nm,
     btn_text_col,
   )
 
@@ -119,15 +129,15 @@ pub fn UIContext::menu(
   if currently_open {
     self.begin_foreground()
 
-    let pad = 4.0
-    let popup_w = 170.0
+    let pad = 4.0 * scale
+    let popup_w = self.style.menu_bar_popup_w * scale
     let mut popup_x = btn_rect.x
-    let popup_y = btn_rect.y + btn_rect.h + 3.0
+    let popup_y = btn_rect.y + btn_rect.h + 3.0 * scale
 
     // Prevent spilling off-screen to the right if near viewport edge
     if popup_x + popup_w > self.available_width {
-      let clamped = self.available_width - popup_w - 4.0
-      if clamped > 4.0 {
+      let clamped = self.available_width - popup_w - 4.0 * scale
+      if clamped > 4.0 * scale {
         popup_x = clamped
       }
     }
@@ -138,7 +148,7 @@ pub fn UIContext::menu(
 
     self.cursor = @math.Vec2::new(popup_x + pad, popup_y + pad)
     self.available_width = popup_w - pad * 2.0
-    self.item_spacing = @math.Vec2::new(0.0, 2.0)
+    self.item_spacing = @math.Vec2::new(0.0, 2.0 * scale)
 
     // Temporary draw list to capture items while determining exact height
     let item_draw_list = @draw.DrawList::new()
@@ -205,7 +215,8 @@ pub fn UIContext::menu_item(
   shortcut? : String = "",
   disabled? : Bool = false,
 ) -> Response {
-  let item_h = 24.0
+  let scale = self.style.scale
+  let item_h = 24.0 * scale
   let item_w = self.available_width
 
   self.push_id(label)
@@ -214,9 +225,9 @@ pub fn UIContext::menu_item(
 
   let is_hovered = self.is_hovered(rect) && !disabled
 
-  let item_radius = self.style.radius_sm
-  let font_nm = self.style.font_normal
-  let font_sm = self.style.font_small
+  let item_radius = self.style.radius_sm * scale
+  let font_nm = self.style.font_normal * scale
+  let font_sm = self.style.font_small * scale
   if is_hovered {
     self.set_cursor_icon("pointer")
     self.draw_list.add_rect(rect, @color.Color::bg_surface(), item_radius)
@@ -242,7 +253,7 @@ pub fn UIContext::menu_item(
   // Left-aligned label
   let text_y = rect.y + (item_h - font_nm) * 0.5
   self.draw_list.add_text(
-    @math.Vec2::new(rect.x + 8.0, text_y),
+    @math.Vec2::new(rect.x + 8.0 * scale, text_y),
     label,
     font_nm,
     text_col,
@@ -251,7 +262,7 @@ pub fn UIContext::menu_item(
   // Right-aligned shortcut badge
   if !shortcut.is_empty() {
     let sc_size = self.measure_text(shortcut, font_sm)
-    let sc_x = rect.x + item_w - sc_size.x - 8.0
+    let sc_x = rect.x + item_w - sc_size.x - 8.0 * scale
     let sc_y = rect.y + (item_h - font_sm) * 0.5
     let sc_col = if disabled {
       @color.Color::text_disabled()

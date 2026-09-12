@@ -107,6 +107,7 @@ test "knob: mouse vertical dragging increments value" {
     events: [],
     text_input: "",
     modifiers: Modifiers::none(),
+    mouse_secondary_down: false,
   }
   ctx.begin_frame(raw2)
   let (v2, _) = ctx.knob("gain", "GAIN", v1, min_val=0.0, max_val=1.0, step=0.0)
@@ -141,6 +142,7 @@ test "knob: shift key scales drag sensitivity to fine tuning" {
     events: [],
     text_input: "",
     modifiers: { ctrl: false, shift: true, alt: false, meta: false, },
+    mouse_secondary_down: false,
   }
   ctx.begin_frame(raw2)
   let (v2, _) = ctx.knob("tune", "TUNE", v1, min_val=0.0, max_val=1.0, step=0.0)
@@ -163,6 +165,7 @@ test "knob: mouse scroll wheel step advancement" {
     events: [Event::PointerWheel(@math.Vec2::new(0.0, 1.0))],
     text_input: "",
     modifiers: Modifiers::none(),
+    mouse_secondary_down: false,
   }
   ctx.begin_frame(raw)
   let (val, _) = ctx.knob(
@@ -196,6 +199,7 @@ test "knob: keyboard arrows and home/end navigation" {
     events: [Event::Key(Key::ArrowUp, true, Modifiers::none())],
     text_input: "",
     modifiers: Modifiers::none(),
+    mouse_secondary_down: false,
   }
   ctx.begin_frame(raw2)
   let (v2, _) = ctx.knob("res", "RES", 0.5, min_val=0.0, max_val=1.0, step=0.1)
@@ -211,6 +215,7 @@ test "knob: keyboard arrows and home/end navigation" {
     events: [Event::Key(Key::End, true, Modifiers::none())],
     text_input: "",
     modifiers: Modifiers::none(),
+    mouse_secondary_down: false,
   }
   ctx.begin_frame(raw3)
   let (v3, _) = ctx.knob("res", "RES", 0.6, min_val=0.0, max_val=1.0, step=0.1)
@@ -226,6 +231,7 @@ test "knob: keyboard arrows and home/end navigation" {
     events: [Event::Key(Key::Home, true, Modifiers::none())],
     text_input: "",
     modifiers: Modifiers::none(),
+    mouse_secondary_down: false,
   }
   ctx.begin_frame(raw4)
   let (v4, _) = ctx.knob("res", "RES", 1.0, min_val=0.0, max_val=1.0, step=0.1)
@@ -246,6 +252,7 @@ test "knob: alt+click and backspace reset to default_val" {
     events: [],
     text_input: "",
     modifiers: { ctrl: false, shift: false, alt: true, meta: false, },
+    mouse_secondary_down: false,
   }
   ctx.begin_frame(raw1)
   let (v1, _) = ctx.knob(
@@ -268,6 +275,7 @@ test "knob: alt+click and backspace reset to default_val" {
     events: [Event::Key(Key::Backspace, true, Modifiers::none())],
     text_input: "",
     modifiers: Modifiers::none(),
+    mouse_secondary_down: false,
   }
   ctx.begin_frame(raw2)
   let (v2, _) = ctx.knob(

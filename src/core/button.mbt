@@ -42,7 +42,8 @@ pub fn UIContext::button(
   let w = if size.x > 0.0 { size.x } else { auto_w }
   let h = if size.y > 0.0 { size.y } else { self.style.button_h * scale }
 
-  let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
+  let (id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
+  self.register_focusable(id)
   if resp.hovered {
     self.set_cursor_icon("pointer")
   }
@@ -73,7 +74,9 @@ pub fn UIContext::button(
     @color.Color::bg_window() // Pure bone porcelain surface
   }
 
-  let border_color = if primary {
+  let border_color = if resp.has_focus() {
+    @color.Color::border_focus()
+  } else if primary {
     if resp.pressed {
       @color.Color::accent_deep()
     } else {
@@ -99,7 +102,8 @@ pub fn UIContext::button(
 
   let radius = self.style.button_radius * scale
   self.draw_list.add_rect(draw_rect, bg_color, radius)
-  self.draw_list.add_rect_stroke(draw_rect, border_color, 1.0, radius)
+  let stroke_w = if resp.has_focus() { 1.5 * scale } else { 1.0 }
+  self.draw_list.add_rect_stroke(draw_rect, border_color, stroke_w, radius)
 
   if has_shortcut {
     // Left-align text when shortcut badge exists

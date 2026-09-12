@@ -332,7 +332,6 @@ pub fn UIContext::table(
       let col = columns[c]
       let cell_rect = @math.Rect::new(cell_x, row_y, col.width, eff_row_h)
 
-      self.push_clip(cell_rect)
       let prev_cursor = self.cursor
       let prev_avail = self.available_width
 
@@ -343,7 +342,6 @@ pub fn UIContext::table(
 
       self.set_cursor(prev_cursor)
       self.set_available_width(prev_avail)
-      self.pop_clip()
 
       cell_x = cell_x + col.width
     }

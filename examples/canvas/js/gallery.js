@@ -92,9 +92,18 @@ const appState = {
 
 
     // Presets
-    document.getElementById('btnPresetUI').onclick = () => setCurtain(0);
-    document.getElementById('btnPresetSplit').onclick = () => setCurtain(50);
-    document.getElementById('btnPresetCode').onclick = () => setCurtain(100);
+    document.getElementById('btnPresetUI').onclick = () => {
+      setCurtain(0);
+      if (window.setGalleryViewMode) window.setGalleryViewMode(0);
+    };
+    document.getElementById('btnPresetSplit').onclick = () => {
+      setCurtain(50);
+      if (window.setGalleryViewMode) window.setGalleryViewMode(1);
+    };
+    document.getElementById('btnPresetCode').onclick = () => {
+      setCurtain(100);
+      if (window.setGalleryViewMode) window.setGalleryViewMode(2);
+    };
 
     curtainDivider.ondblclick = () => {
       if (appState.curtainPct < 25) setCurtain(50);

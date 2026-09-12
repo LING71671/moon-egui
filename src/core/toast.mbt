@@ -192,6 +192,14 @@ pub fn UIContext::toast_stack(
     }
   }
 
+  // Block hover on underlying widgets for all placed toast regions
+  for rect in placed_rects {
+    self.block_hover(rect)
+    if rect.contains(self.input.mouse_pos) {
+      self.wants_capture_mouse = true
+    }
+  }
+
   // 4. Render to Foreground
   self.begin_foreground()
 

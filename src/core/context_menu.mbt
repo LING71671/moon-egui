@@ -13,12 +13,15 @@
 // limitations under the License.
 
 ///|
+
+///|
 pub struct ContextMenuItem {
   id : String
   label : String
   shortcut : String
   disabled : Bool
   is_separator : Bool
+  children : Array[ContextMenuItem]
 } derive(Eq, Debug)
 
 ///|
@@ -27,13 +30,31 @@ pub fn ContextMenuItem::new(
   label : String,
   shortcut? : String = "",
   disabled? : Bool = false,
+  children? : Array[ContextMenuItem] = [],
 ) -> ContextMenuItem {
-  { id, label, shortcut, disabled, is_separator: false, }
+  { id, label, shortcut, disabled, is_separator: false, children, }
+}
+
+///|
+pub fn ContextMenuItem::submenu(
+  id : String,
+  label : String,
+  children : Array[ContextMenuItem],
+  disabled? : Bool = false,
+) -> ContextMenuItem {
+  { id, label, shortcut: "", disabled, is_separator: false, children, }
 }
 
 ///|
 pub fn ContextMenuItem::separator() -> ContextMenuItem {
-  { id: "", label: "", shortcut: "", disabled: true, is_separator: true, }
+  {
+    id: "",
+    label: "",
+    shortcut: "",
+    disabled: true,
+    is_separator: true,
+    children: [],
+  }
 }
 
 ///|
@@ -81,9 +102,31 @@ fn calculate_context_menu_pos(
 }
 
 ///|
+fn compute_menu_content_height(
+  items : Array[ContextMenuItem],
+  item_h : Double,
+  sep_h : Double,
+  pad_y : Double,
+) -> Double {
+  let mut h = 0.0
+  for item in items {
+    if item.is_separator {
+      h = h + sep_h
+    } else {
+      h = h + item_h
+    }
+  }
+  if h > 0.0 {
+    h + pad_y * 2.0
+  } else {
+    32.0
+  }
+}
+
+///|
 /// Render a right-click context menu modal in Studio Light porcelain style.
 /// Anchors to the specified pointer position with boundary collision detection,
-/// outside-click dismissal, and keyboard Escape cancellation.
+/// outside-click dismissal, cascading submenus, and keyboard Escape cancellation.
 pub fn UIContext::context_menu_items(
   self : UIContext,
   id_salt : String,
@@ -95,28 +138,20 @@ pub fn UIContext::context_menu_items(
 ) -> ContextMenuResponse {
   let _ = id_salt
   if !open {
+    self.set_active_submenu_id("")
     return { open: false, selected_id: None, pos, size: @math.Vec2::zero(), }
   }
 
-  // 1. Calculate menu dimensions
-  let item_h = 24.0
-  let sep_h = 7.0
-  let pad_y = 4.0
-  let mut content_h = 0.0
+  let scale = self.style.scale
+  let item_h = 24.0 * scale
+  let sep_h = 7.0 * scale
+  let pad_y = 4.0 * scale
 
-  for item in items {
-    if item.is_separator {
-      content_h = content_h + sep_h
-    } else {
-      content_h = content_h + item_h
-    }
-  }
-
-  let total_w = menu_width
-  let total_h = if content_h > 0.0 { content_h + pad_y * 2.0 } else { 32.0 }
+  let total_w = menu_width * scale
+  let total_h = compute_menu_content_height(items, item_h, sep_h, pad_y)
   let menu_size = @math.Vec2::new(total_w, total_h)
 
-  // 2. Viewport dimensions and collision flip calculation
+  // Viewport dimensions and collision flip calculation
   let viewport = match viewport_size {
     Some(vp) => vp
     None => {
@@ -132,45 +167,127 @@ pub fn UIContext::context_menu_items(
   let placed_pos = calculate_context_menu_pos(pos, menu_size, viewport)
   let menu_rect = @math.Rect::new(placed_pos.x, placed_pos.y, total_w, total_h)
 
-  // 3. Occlusion and hover blocking
+  // Occlusion and hover blocking
   self.block_hover(menu_rect)
 
-  // 4. Escape dismissal
+  // Escape dismissal
   if self.input.key_pressed(Key::Escape) {
+    self.set_active_submenu_id("")
     return { open: false, selected_id: None, pos: placed_pos, size: menu_size, }
   }
 
-  // 5. Outside click dismissal
-  if self.input.mouse_pressed && !menu_rect.contains(self.input.mouse_pos) {
-    return { open: false, selected_id: None, pos: placed_pos, size: menu_size, }
-  }
-
-  // 6. Item hit-testing
+  // Identify hovered item and active submenu
+  let mut cur_y = placed_pos.y + pad_y
+  let mut active_sub_item : ContextMenuItem? = None
+  let mut active_sub_row_y = 0.0
   let mut selected_id : String? = None
-  let mut cur_hit_y = placed_pos.y + pad_y
 
   for item in items {
     if item.is_separator {
-      cur_hit_y = cur_hit_y + sep_h
+      cur_y = cur_y + sep_h
     } else {
       let row_rect = @math.Rect::new(
-        placed_pos.x + 4.0,
-        cur_hit_y,
-        total_w - 8.0,
+        placed_pos.x + 4.0 * scale,
+        cur_y,
+        total_w - 8.0 * scale,
         item_h,
       )
       let hovered = row_rect.contains(self.input.mouse_pos) && !item.disabled
       if hovered {
         self.set_cursor_icon("pointer")
+        if item.children.length() > 0 {
+          self.set_active_submenu_id(item.id)
+        } else if self.active_submenu_id() != "" &&
+          !item.children.is_empty() == false {
+          self.set_active_submenu_id("")
+        }
       }
-      if hovered && self.input.mouse_pressed {
+
+      if self.active_submenu_id() == item.id && item.children.length() > 0 {
+        active_sub_item = Some(item)
+        active_sub_row_y = cur_y
+      }
+
+      if hovered && self.input.mouse_pressed && item.children.is_empty() {
         selected_id = Some(item.id)
       }
-      cur_hit_y = cur_hit_y + item_h
+      cur_y = cur_y + item_h
+    }
+  }
+
+  // Submenu placement, hover blocking, and hit testing
+  let mut sub_rect_opt : @math.Rect? = None
+  if active_sub_item is Some(sub_item) {
+    let sub_w = total_w
+    let sub_h = compute_menu_content_height(
+      sub_item.children,
+      item_h,
+      sep_h,
+      pad_y,
+    )
+    let mut sub_x = placed_pos.x + total_w - 2.0 * scale
+    if sub_x + sub_w > viewport.x {
+      sub_x = placed_pos.x - sub_w + 2.0 * scale
+    }
+    if sub_x < 4.0 {
+      sub_x = 4.0
+    }
+    let mut sub_y = active_sub_row_y - pad_y
+    if sub_y + sub_h > viewport.y {
+      sub_y = viewport.y - sub_h - 4.0
+    }
+    if sub_y < 4.0 {
+      sub_y = 4.0
+    }
+    let sub_rect = @math.Rect::new(sub_x, sub_y, sub_w, sub_h)
+    sub_rect_opt = Some(sub_rect)
+    self.block_hover(sub_rect)
+
+    // Submenu item hit-testing
+    let mut sub_cur_y = sub_y + pad_y
+    for child in sub_item.children {
+      if child.is_separator {
+        sub_cur_y = sub_cur_y + sep_h
+      } else {
+        let child_row = @math.Rect::new(
+          sub_x + 4.0 * scale,
+          sub_cur_y,
+          sub_w - 8.0 * scale,
+          item_h,
+        )
+        let child_hovered = child_row.contains(self.input.mouse_pos) &&
+          !child.disabled
+        if child_hovered {
+          self.set_cursor_icon("pointer")
+          if self.input.mouse_pressed {
+            selected_id = Some(child.id)
+          }
+        }
+        sub_cur_y = sub_cur_y + item_h
+      }
+    }
+  }
+
+  // Outside click dismissal
+  if self.input.mouse_pressed {
+    let in_main = menu_rect.contains(self.input.mouse_pos)
+    let in_sub = match sub_rect_opt {
+      Some(sr) => sr.contains(self.input.mouse_pos)
+      None => false
+    }
+    if !in_main && !in_sub {
+      self.set_active_submenu_id("")
+      return {
+        open: false,
+        selected_id: None,
+        pos: placed_pos,
+        size: menu_size,
+      }
     }
   }
 
   if selected_id is Some(id) {
+    self.set_active_submenu_id("")
     return {
       open: false,
       selected_id: Some(id),
@@ -179,21 +296,22 @@ pub fn UIContext::context_menu_items(
     }
   }
 
-  // 7. Render into foreground layer
+  // Render into foreground layer
   self.begin_foreground()
 
-  // Dual-layer Elevation Shadow
-  let menu_radius = self.style.radius_md
-  let row_radius = self.style.radius_sm
-  let font_nm = self.style.font_normal
-  let font_sm = self.style.font_small
+  let menu_radius = self.style.radius_md * scale
+  let row_radius = self.style.radius_sm * scale
+  let font_nm = self.style.font_normal * scale
+  let font_sm = self.style.font_small * scale
+
+  // 1. Dual-layer Elevation Shadow for main menu
   self.draw_list.add_rect(
-    @math.Rect::new(placed_pos.x, placed_pos.y + 4.0, total_w, total_h),
+    @math.Rect::new(placed_pos.x, placed_pos.y + 4.0 * scale, total_w, total_h),
     @color.Color::shadow_ambient(),
     menu_radius,
   )
   self.draw_list.add_rect(
-    @math.Rect::new(placed_pos.x, placed_pos.y + 1.0, total_w, total_h),
+    @math.Rect::new(placed_pos.x, placed_pos.y + 1.0 * scale, total_w, total_h),
     @color.Color::shadow_key(),
     menu_radius,
   )
@@ -207,27 +325,30 @@ pub fn UIContext::context_menu_items(
     menu_radius,
   )
 
-  // Render Items
+  // Render main menu items
   let mut cur_draw_y = placed_pos.y + pad_y
-
   for item in items {
     if item.is_separator {
-      let line_y = cur_draw_y + 3.0
+      let line_y = cur_draw_y + 3.0 * scale
       self.draw_list.add_line(
-        @math.Vec2::new(placed_pos.x + 8.0, line_y),
-        @math.Vec2::new(placed_pos.x + total_w - 8.0, line_y),
+        @math.Vec2::new(placed_pos.x + 8.0 * scale, line_y),
+        @math.Vec2::new(placed_pos.x + total_w - 8.0 * scale, line_y),
         @color.Color::border_muted(),
         1.0,
       )
       cur_draw_y = cur_draw_y + sep_h
     } else {
       let row_rect = @math.Rect::new(
-        placed_pos.x + 4.0,
+        placed_pos.x + 4.0 * scale,
         cur_draw_y,
-        total_w - 8.0,
+        total_w - 8.0 * scale,
         item_h,
       )
-      let hovered = row_rect.contains(self.input.mouse_pos) && !item.disabled
+      let hovered = (
+          row_rect.contains(self.input.mouse_pos) ||
+          self.active_submenu_id() == item.id
+        ) &&
+        !item.disabled
 
       if hovered {
         self.draw_list.add_rect(
@@ -247,15 +368,28 @@ pub fn UIContext::context_menu_items(
 
       let text_y = cur_draw_y + (item_h - font_nm) * 0.5
       self.draw_list.add_text(
-        @math.Vec2::new(placed_pos.x + 12.0, text_y),
+        @math.Vec2::new(placed_pos.x + 12.0 * scale, text_y),
         item.label,
         font_nm,
         text_col,
       )
 
-      if !item.shortcut.is_empty() {
+      if item.children.length() > 0 {
+        // Render cascading chevron indicator
+        let chev_col = if hovered {
+          @color.Color::accent_primary()
+        } else {
+          @color.Color::text_muted()
+        }
+        self.draw_list.add_text(
+          @math.Vec2::new(placed_pos.x + total_w - 18.0 * scale, text_y),
+          ">",
+          font_sm,
+          chev_col,
+        )
+      } else if !item.shortcut.is_empty() {
         let sc_size = self.measure_text(item.shortcut, font_sm)
-        let sc_x = placed_pos.x + total_w - sc_size.x - 12.0
+        let sc_x = placed_pos.x + total_w - sc_size.x - 12.0 * scale
         let sc_col = if item.disabled {
           @color.Color::text_disabled()
         } else if hovered {
@@ -264,7 +398,7 @@ pub fn UIContext::context_menu_items(
           @color.Color::text_muted()
         }
         self.draw_list.add_text(
-          @math.Vec2::new(sc_x, text_y + 1.0),
+          @math.Vec2::new(sc_x, text_y + 1.0 * scale),
           item.shortcut,
           font_sm,
           sc_col,
@@ -272,6 +406,103 @@ pub fn UIContext::context_menu_items(
       }
 
       cur_draw_y = cur_draw_y + item_h
+    }
+  }
+
+  // 2. Render cascading Submenu if active
+  if active_sub_item is Some(sub_item) && sub_rect_opt is Some(sub_rect) {
+    self.draw_list.add_rect(
+      @math.Rect::new(
+        sub_rect.x,
+        sub_rect.y + 4.0 * scale,
+        sub_rect.w,
+        sub_rect.h,
+      ),
+      @color.Color::shadow_ambient(),
+      menu_radius,
+    )
+    self.draw_list.add_rect(
+      @math.Rect::new(
+        sub_rect.x,
+        sub_rect.y + 1.0 * scale,
+        sub_rect.w,
+        sub_rect.h,
+      ),
+      @color.Color::shadow_key(),
+      menu_radius,
+    )
+    self.draw_list.add_rect(sub_rect, @color.Color::bg_window(), menu_radius)
+    self.draw_list.add_rect_stroke(
+      sub_rect,
+      @color.Color::border_default(),
+      1.0,
+      menu_radius,
+    )
+
+    let mut sub_draw_y = sub_rect.y + pad_y
+    for child in sub_item.children {
+      if child.is_separator {
+        let line_y = sub_draw_y + 3.0 * scale
+        self.draw_list.add_line(
+          @math.Vec2::new(sub_rect.x + 8.0 * scale, line_y),
+          @math.Vec2::new(sub_rect.x + sub_rect.w - 8.0 * scale, line_y),
+          @color.Color::border_muted(),
+          1.0,
+        )
+        sub_draw_y = sub_draw_y + sep_h
+      } else {
+        let child_row = @math.Rect::new(
+          sub_rect.x + 4.0 * scale,
+          sub_draw_y,
+          sub_rect.w - 8.0 * scale,
+          item_h,
+        )
+        let child_hovered = child_row.contains(self.input.mouse_pos) &&
+          !child.disabled
+        if child_hovered {
+          self.draw_list.add_rect(
+            child_row,
+            @color.Color::bg_surface(),
+            row_radius,
+          )
+        }
+
+        let text_col = if child.disabled {
+          @color.Color::text_disabled()
+        } else if child_hovered {
+          @color.Color::accent_primary()
+        } else {
+          @color.Color::text_primary()
+        }
+
+        let text_y = sub_draw_y + (item_h - font_nm) * 0.5
+        self.draw_list.add_text(
+          @math.Vec2::new(sub_rect.x + 12.0 * scale, text_y),
+          child.label,
+          font_nm,
+          text_col,
+        )
+
+        if !child.shortcut.is_empty() {
+          let sc_size = self.measure_text(child.shortcut, font_sm)
+          let sc_x = sub_rect.x + sub_rect.w - sc_size.x - 12.0 * scale
+          let sc_col = if child.disabled {
+            @color.Color::text_disabled()
+          } else if child_hovered {
+            @color.Color::accent_primary()
+          } else {
+            @color.Color::text_muted()
+          }
+          self.draw_list.add_text(
+            @math.Vec2::new(sc_x, text_y + 1.0 * scale),
+            child.shortcut,
+            font_sm,
+            sc_col,
+          )
+        }
+
+        sub_draw_y = sub_draw_y + item_h
+      }
     }
   }
 

@@ -95,7 +95,7 @@ pub fn UIContext::sparkline(
 
   // 4. Subtle Area Wash Fill
   if fill {
-    let fill_col = color.with_alpha(30)
+    let fill_col = @color.Color::area_wash(color)
     for i = 0; i < count - 1; i = i + 1 {
       let p1 = points[i]
       let p2 = points[i + 1]

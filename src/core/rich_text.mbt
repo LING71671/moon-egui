@@ -56,6 +56,68 @@ pub struct RichTextResponse {
 } derive(Eq, Debug)
 
 ///|
+priv struct RichToken {
+  text : String
+  kind : TextSpanKind
+  is_cjk : Bool
+  has_trailing_space : Bool
+}
+
+///|
+fn tokenize_text_span(span : TextSpan) -> Array[RichToken] {
+  let tokens : Array[RichToken] = []
+  let text = span.text
+  let len = text.length()
+  let mut i = 0
+
+  while i < len {
+    let ch = text[i]
+    let code = ch.to_int()
+    if code == 32 || code == 9 || code == 10 {
+      if tokens.length() > 0 {
+        let last_idx = tokens.length() - 1
+        let last = tokens[last_idx]
+        tokens[last_idx] = { ..last, has_trailing_space: true, }
+      }
+      i = i + 1
+    } else if is_cjk_char(code) {
+      let char_end = next_char_boundary(text, i)
+      let char_str = string_slice(text, i, char_end)
+      tokens.push({
+        text: char_str,
+        kind: span.kind,
+        is_cjk: true,
+        has_trailing_space: false,
+      })
+      i = char_end
+    } else {
+      let word_start = i
+      while i < len {
+        let cur_ch = text[i]
+        let cur_code = cur_ch.to_int()
+        if cur_code == 32 ||
+          cur_code == 9 ||
+          cur_code == 10 ||
+          is_cjk_char(cur_code) {
+          break
+        }
+        i = next_char_boundary(text, i)
+      }
+      let word_str = string_slice(text, word_start, i)
+      if word_str.length() > 0 {
+        tokens.push({
+          text: word_str,
+          kind: span.kind,
+          is_cjk: false,
+          has_trailing_space: false,
+        })
+      }
+    }
+  }
+  tokens
+}
+
+///|
 /// Render inline rich text with word-wrapping, mixed formatting (normal, bold,
 /// inline code pills, hyperlinks), and link click detection.
 pub fn UIContext::rich_text(
@@ -64,9 +126,10 @@ pub fn UIContext::rich_text(
   spans : Array[TextSpan],
   wrap_width? : Double = 0.0,
 ) -> RichTextResponse {
-  let font_sz = self.style.font_normal
-  let line_h = 22.0
+  let font_sz = self.style.font_normal * self.style.scale
+  let line_h = self.style.rich_text_line_h * self.style.scale
   let max_w = if wrap_width > 0.0 { wrap_width } else { self.available_width }
+  let space_w = self.measure_text(" ", font_sz).x
 
   // Pre-calculate line breaking and item positioning
   let mut current_x = 0.0
@@ -77,16 +140,17 @@ pub fn UIContext::rich_text(
   let layout_items : Array[(String, TextSpanKind, @math.Rect)] = []
 
   for span in spans {
-    let words = span.text.split(" ")
-    for word in words {
-      let word_str = word.to_owned()
-      if word_str == "" {
-        continue
-      }
-      let sz = self.measure_text(word_str, font_sz)
-      let word_w = sz.x + (if span.kind == Code { 6.0 } else { 0.0 })
+    let tokens = tokenize_text_span(span)
+    for token in tokens {
+      let sz = self.measure_text(token.text, font_sz)
+      let token_w = sz.x +
+        (if token.kind == Code { 6.0 * self.style.scale } else { 0.0 })
+      let trailing_w = if token.has_trailing_space { space_w } else { 0.0 }
 
-      if current_x + word_w > max_w && current_x > 0.0 {
+      let is_closing = token.is_cjk &&
+        token.text.length() > 0 &&
+        is_cjk_closing_punct(token.text[0].to_int())
+      if current_x + token_w > max_w && current_x > 0.0 && !is_closing {
         current_line = current_line + 1
         current_x = 0.0
       }
@@ -94,12 +158,12 @@ pub fn UIContext::rich_text(
       let rel_rect = @math.Rect::new(
         current_x,
         current_line.to_double() * line_h,
-        word_w,
+        token_w,
         line_h,
       )
-      layout_items.push((word_str, span.kind, rel_rect))
+      layout_items.push((token.text, token.kind, rel_rect))
 
-      current_x = current_x + word_w + 6.0 // word spacing
+      current_x = current_x + token_w + trailing_w
       if current_x > measured_max_w {
         measured_max_w = current_x
       }

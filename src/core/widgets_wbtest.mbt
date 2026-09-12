@@ -164,6 +164,7 @@ test "widgets: scroll_area content measurement, wheel scrolling and clamping" {
   let raw2 = {
     mouse_pos: @math.Vec2::new(50.0, 50.0),
     mouse_down: false,
+    mouse_secondary_down: false,
     scroll_delta: @math.Vec2::zero(),
     dt: 0.0166,
     events: [Event::PointerWheel(@math.Vec2::new(0.0, -40.0))],
@@ -198,6 +199,7 @@ test "widgets: text_edit typing, backspace, and cursor navigation" {
   let raw2 = {
     mouse_pos: @math.Vec2::zero(),
     mouse_down: false,
+    mouse_secondary_down: false,
     scroll_delta: @math.Vec2::zero(),
     dt: 0.0166,
     events: [Event::Key(Key::Backspace, true, Modifiers::none())],
@@ -213,6 +215,7 @@ test "widgets: text_edit typing, backspace, and cursor navigation" {
   let raw3 = {
     mouse_pos: @math.Vec2::zero(),
     mouse_down: false,
+    mouse_secondary_down: false,
     scroll_delta: @math.Vec2::zero(),
     dt: 0.0166,
     events: [Event::TextInput("o World")],
@@ -228,6 +231,7 @@ test "widgets: text_edit typing, backspace, and cursor navigation" {
   let raw4 = {
     mouse_pos: @math.Vec2::zero(),
     mouse_down: false,
+    mouse_secondary_down: false,
     scroll_delta: @math.Vec2::zero(),
     dt: 0.0166,
     events: [Event::Key(Key::Home, true, Modifiers::none())],
@@ -243,6 +247,7 @@ test "widgets: text_edit typing, backspace, and cursor navigation" {
   let raw5 = {
     mouse_pos: @math.Vec2::zero(),
     mouse_down: false,
+    mouse_secondary_down: false,
     scroll_delta: @math.Vec2::zero(),
     dt: 0.0166,
     events: [Event::TextInput(">>> ")],
@@ -578,4 +583,159 @@ test "widgets: tab_bar sizes each tab by its measured text width" {
   // The groove spans the sum of the individual tabs
   let (_, resp_mixed) = ctx.tab_bar("tabs_mixed", ["A", "月兔"], 0)
   assert_eq(resp_mixed.rect.w, ascii_w + cjk_w)
+}
+
+///|
+test "widgets: button and checkbox keyboard activation via Space and Enter" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Tab key in end_frame navigates focus to the first focusable widget (Button)
+  let raw1 = {
+    ..RawInput::new(),
+    events: [Event::Key(Key::Tab, true, Modifiers::none())],
+  }
+  ctx.begin_frame(raw1)
+  let _ = ctx.button("Submit")
+  let (chk_val1, _) = ctx.checkbox("Agree", false)
+  let _ = ctx.end_frame()
+  assert_true(!chk_val1)
+
+  // Frame 2: Button now has focus from Frame 1 Tab traversal. Press Space -> Button triggers click
+  let raw2 = {
+    ..RawInput::new(),
+    events: [Event::Key(Key::Space, true, Modifiers::none())],
+  }
+  ctx.begin_frame(raw2)
+  let btn_resp2 = ctx.button("Submit")
+  let _ = ctx.checkbox("Agree", false)
+  let _ = ctx.end_frame()
+
+  assert_true(btn_resp2.has_focus())
+  assert_true(btn_resp2.clicked())
+
+  // Frame 3: Button is still focused. Press Enter -> Button triggers click
+  let raw3 = {
+    ..RawInput::new(),
+    events: [Event::Key(Key::Enter, true, Modifiers::none())],
+  }
+  ctx.begin_frame(raw3)
+  let btn_resp3 = ctx.button("Submit")
+  let _ = ctx.checkbox("Agree", false)
+  let _ = ctx.end_frame()
+
+  assert_true(btn_resp3.has_focus())
+  assert_true(btn_resp3.clicked())
+
+  // Frame 4: Tab navigates focus to next widget (Checkbox)
+  let raw4 = {
+    ..RawInput::new(),
+    events: [Event::Key(Key::Tab, true, Modifiers::none())],
+  }
+  ctx.begin_frame(raw4)
+  let _ = ctx.button("Submit")
+  let _ = ctx.checkbox("Agree", false)
+  let _ = ctx.end_frame()
+
+  // Frame 5: Checkbox is now focused. Press Space on focused Checkbox -> toggles state
+  let raw5 = {
+    ..RawInput::new(),
+    events: [Event::Key(Key::Space, true, Modifiers::none())],
+  }
+  ctx.begin_frame(raw5)
+  let _ = ctx.button("Submit")
+  let (chk_val5, chk_resp5) = ctx.checkbox("Agree", false)
+  let _ = ctx.end_frame()
+
+  assert_true(chk_resp5.has_focus())
+  assert_true(chk_resp5.clicked())
+  assert_true(chk_val5)
+}
+
+///|
+test "widgets: slider keyboard arrow keys stepping when focused" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Tab to focus the slider
+  let raw1 = {
+    ..RawInput::new(),
+    events: [Event::Key(Key::Tab, true, Modifiers::none())],
+  }
+  ctx.begin_frame(raw1)
+  let (val1, _) = ctx.slider("Volume", 50.0, 0.0, 100.0)
+  let _ = ctx.end_frame()
+  assert_eq(val1, 50.0)
+
+  // Frame 2: Slider has focus. ArrowRight increments value by step (1.0 for range >= 100)
+  let raw2 = {
+    ..RawInput::new(),
+    events: [Event::Key(Key::ArrowRight, true, Modifiers::none())],
+  }
+  ctx.begin_frame(raw2)
+  let (val2, resp2) = ctx.slider("Volume", 50.0, 0.0, 100.0)
+  let _ = ctx.end_frame()
+
+  assert_true(resp2.has_focus())
+  assert_eq(val2, 51.0)
+
+  // Frame 3: ArrowDown decrements value by step
+  let raw3 = {
+    ..RawInput::new(),
+    events: [Event::Key(Key::ArrowDown, true, Modifiers::none())],
+  }
+  ctx.begin_frame(raw3)
+  let (val3, _) = ctx.slider("Volume", val2, 0.0, 100.0)
+  let _ = ctx.end_frame()
+
+  assert_eq(val3, 50.0)
+}
+
+///|
+test "input: code_editor tab indentation consumes key and prevents focus escape" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Click directly on code editor at (100.0, 50.0)
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(100.0, 50.0), true)
+  ctx.begin_frame(raw1)
+  let _ = ctx.button("Before")
+  let (t1, resp1) = ctx.code_editor("editor", "fn main() {\n}")
+  let _ = ctx.button("After")
+  let _ = ctx.end_frame()
+
+  assert_true(resp1.has_focus())
+
+  // Frame 2: Press Tab inside code editor -> adds two spaces and keeps focus
+  let raw2 = {
+    ..RawInput::new(),
+    events: [Event::Key(Key::Tab, true, Modifiers::none())],
+  }
+  ctx.begin_frame(raw2)
+  let btn_before = ctx.button("Before")
+  let (t2, resp2) = ctx.code_editor("editor", t1)
+  let btn_after = ctx.button("After")
+  let _ = ctx.end_frame()
+
+  // Tab key was consumed by code_editor, so focus did not escape to "After" button
+  assert_true(t2.contains("  "))
+  assert_true(resp2.has_focus())
+  assert_true(!btn_after.has_focus())
+  assert_true(!btn_before.has_focus())
+}
+
+///|
+test "input: secondary mouse click sets secondary_clicked on response" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Press secondary mouse button (right-click) over button rect
+  let raw1 = RawInput::from_mouse(
+    @math.Vec2::new(50.0, 15.0),
+    false,
+    mouse_secondary_down=true,
+  )
+  ctx.begin_frame(raw1)
+  let resp1 = ctx.button("RightClickMe")
+  let _ = ctx.end_frame()
+
+  assert_true(resp1.hovered())
+  assert_true(resp1.secondary_clicked())
+  assert_true(!resp1.clicked())
 }

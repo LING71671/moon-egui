@@ -22,6 +22,7 @@ pub fn Color::accent_hover() -> Self
 pub fn Color::accent_pressed() -> Self
 pub fn Color::accent_primary() -> Self
 pub fn Color::accent_soft() -> Self
+pub fn Color::area_wash(Self) -> Self
 pub fn Color::badge_danger_bg() -> Self
 pub fn Color::badge_danger_border() -> Self
 pub fn Color::badge_danger_text() -> Self

@@ -51,6 +51,7 @@ fn host_raw_input(
   keys_released : Array[String],
   mod_flags : Int,
   scroll_dy? : Double = 0.0,
+  mouse_secondary_down? : Bool = false,
 ) -> @core.RawInput {
   // mod_flags: bit 0 shift, bit 1 ctrl, bit 2 alt, bit 3 meta
   let mods = @core.Modifiers::new(
@@ -87,6 +88,7 @@ fn host_raw_input(
     events,
     text_input,
     mods,
+    mouse_secondary_down~,
   )
 }
 

@@ -9,6 +9,7 @@ pub struct Response {
   has_focus : Bool
   gained_focus : Bool
   lost_focus : Bool
+  secondary_clicked : Bool
 } derive(Eq, Debug, Default)
 
 ///|
@@ -19,6 +20,7 @@ pub fn Response::new(
   clicked : Bool,
   pressed : Bool,
   dragged : Bool,
+  secondary_clicked? : Bool = false,
 ) -> Response {
   {
     id,
@@ -30,6 +32,7 @@ pub fn Response::new(
     has_focus: false,
     gained_focus: false,
     lost_focus: false,
+    secondary_clicked,
   }
 }
 
@@ -44,6 +47,7 @@ pub fn Response::with_focus(
   has_focus : Bool,
   gained_focus : Bool,
   lost_focus : Bool,
+  secondary_clicked? : Bool = false,
 ) -> Response {
   {
     id,
@@ -55,6 +59,7 @@ pub fn Response::with_focus(
     has_focus,
     gained_focus,
     lost_focus,
+    secondary_clicked,
   }
 }
 
@@ -101,4 +106,9 @@ pub fn Response::gained_focus(self : Response) -> Bool {
 ///|
 pub fn Response::lost_focus(self : Response) -> Bool {
   self.lost_focus
+}
+
+///|
+pub fn Response::secondary_clicked(self : Response) -> Bool {
+  self.secondary_clicked
 }

@@ -21,6 +21,7 @@ pub fn UIContext::slider(
   let total_w = label_w + track_w + val_w + 8.0 * scale
   let h = self.style.slider_h * scale
   let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
+  self.register_focusable(id)
 
   let track_h = 6.0 * scale
   let track_rect = @math.Rect::new(
@@ -61,6 +62,36 @@ pub fn UIContext::slider(
       pct = 1.0
     }
     new_val = clamped_min + pct * safe_range
+  }
+
+  // Keyboard navigation when focused
+  let is_focused = resp.has_focus()
+  if is_focused {
+    let step = if safe_range >= 100.0 {
+      1.0
+    } else if safe_range >= 10.0 {
+      0.5
+    } else {
+      0.05
+    }
+    if self.input.key_pressed(Key::ArrowLeft) ||
+      self.input.key_pressed(Key::ArrowDown) {
+      new_val = new_val - step
+      if new_val < clamped_min {
+        new_val = clamped_min
+      }
+      self.input.consume_key(Key::ArrowLeft)
+      self.input.consume_key(Key::ArrowDown)
+    }
+    if self.input.key_pressed(Key::ArrowRight) ||
+      self.input.key_pressed(Key::ArrowUp) {
+      new_val = new_val + step
+      if new_val > clamped_max {
+        new_val = clamped_max
+      }
+      self.input.consume_key(Key::ArrowRight)
+      self.input.consume_key(Key::ArrowUp)
+    }
   }
 
   // Draw Label
@@ -133,7 +164,7 @@ pub fn UIContext::slider(
 
   let thumb_r = if is_active {
     7.0 * scale
-  } else if is_hovered {
+  } else if is_hovered || is_focused {
     6.5 * scale
   } else {
     5.5 * scale
@@ -143,11 +174,17 @@ pub fn UIContext::slider(
     thumb_r,
     @color.Color::bg_window(),
   )
+  let thumb_stroke = if is_focused {
+    @color.Color::border_focus()
+  } else {
+    @color.Color::accent_primary()
+  }
+  let thumb_stroke_w = if is_focused { 2.0 * scale } else { 1.5 }
   self.draw_list.add_circle_stroke(
     @math.Vec2::new(thumb_cx, thumb_cy),
     thumb_r,
-    @color.Color::accent_primary(),
-    1.5,
+    thumb_stroke,
+    thumb_stroke_w,
   )
 
   // Draw Floating HUD Bubble above Thumb when active

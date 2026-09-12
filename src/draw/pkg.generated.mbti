@@ -21,6 +21,7 @@ pub enum DrawCmd {
   Text(@math.Vec2, String, Double, @color.Color)
   Clip(@math.Rect)
   ResetClip
+  LinearGradient(@math.Rect, @math.Vec2, @math.Vec2, @color.Color, @color.Color, Double)
 } derive(Eq, @debug.Debug)
 
 pub struct DrawList {
@@ -29,6 +30,7 @@ pub struct DrawList {
 pub fn DrawList::add_circle(Self, @math.Vec2, Double, @color.Color) -> Unit
 pub fn DrawList::add_circle_stroke(Self, @math.Vec2, Double, @color.Color, Double) -> Unit
 pub fn DrawList::add_line(Self, @math.Vec2, @math.Vec2, @color.Color, Double) -> Unit
+pub fn DrawList::add_linear_gradient(Self, @math.Rect, @math.Vec2, @math.Vec2, @color.Color, @color.Color, Double) -> Unit
 pub fn DrawList::add_rect(Self, @math.Rect, @color.Color, Double) -> Unit
 pub fn DrawList::add_rect_stroke(Self, @math.Rect, @color.Color, Double, Double) -> Unit
 pub fn DrawList::add_text(Self, @math.Vec2, String, Double, @color.Color) -> Unit

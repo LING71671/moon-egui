@@ -167,3 +167,42 @@ test "context_menu: outside click cancels and dismisses" {
   assert_eq(res.selected_id, None)
   let _ = ctx.end_frame()
 }
+
+///|
+test "context_menu: cascading submenu hover and child item selection" {
+  let ctx = UIContext::new()
+  let menu = [
+    ContextMenuItem::new("edit", "Edit"),
+    ContextMenuItem::submenu("export", "Export", [
+      ContextMenuItem::new("export_png", "Export as PNG"),
+      ContextMenuItem::new("export_svg", "Export as SVG"),
+    ]),
+  ]
+
+  // Frame 1: Hover over "Export" item to open submenu
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(120.0, 134.0), false)
+  ctx.begin_frame(raw1)
+  let res1 = ctx.context_menu_items(
+    "node_ctx",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  assert_eq(res1.open, true)
+  assert_eq(ctx.active_submenu_id(), "export")
+  let dl1 = ctx.end_frame()
+  assert_true(dl1.len() > 10)
+
+  // Frame 2: Click on "Export as PNG" inside the submenu
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(300.0, 134.0), true)
+  ctx.begin_frame(raw2)
+  let res2 = ctx.context_menu_items(
+    "node_ctx",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  assert_eq(res2.open, false)
+  assert_eq(res2.selected_id, Some("export_png"))
+  let _ = ctx.end_frame()
+}

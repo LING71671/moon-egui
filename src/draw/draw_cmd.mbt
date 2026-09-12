@@ -8,6 +8,14 @@ pub enum DrawCmd {
   Text(@math.Vec2, String, Double, @color.Color)
   Clip(@math.Rect)
   ResetClip
+  LinearGradient(
+    @math.Rect,
+    @math.Vec2,
+    @math.Vec2,
+    @color.Color,
+    @color.Color,
+    Double
+  )
 } derive(Eq, Debug)
 
 ///|
@@ -104,6 +112,23 @@ pub fn DrawList::add_text(
   color : @color.Color,
 ) -> Unit {
   self.commands.push(DrawCmd::Text(pos, text, font_size, color))
+}
+
+///|
+pub fn DrawList::add_linear_gradient(
+  self : DrawList,
+  rect : @math.Rect,
+  start_pt : @math.Vec2,
+  end_pt : @math.Vec2,
+  start_color : @color.Color,
+  end_color : @color.Color,
+  corner_radius : Double,
+) -> Unit {
+  self.commands.push(
+    DrawCmd::LinearGradient(
+      rect, start_pt, end_pt, start_color, end_color, corner_radius,
+    ),
+  )
 }
 
 ///|

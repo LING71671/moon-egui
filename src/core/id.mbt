@@ -1,7 +1,7 @@
 ///|
 pub struct Id {
   val : UInt64
-} derive(Eq, Debug, Default)
+} derive(Eq, Debug, Default, Hash)
 
 ///|
 pub fn Id::new(val : UInt64) -> Id {
@@ -76,4 +76,27 @@ pub fn IdStack::pop(self : IdStack) -> Unit {
 ///|
 pub fn IdStack::derive_id(self : IdStack, str : String) -> Id {
   Id::with_seed(self.current_seed(), str)
+}
+
+///|
+pub fn IdStack::derive_int(self : IdStack, index : Int) -> Id {
+  Id::with_int(self.current_seed(), index)
+}
+
+///|
+pub fn Id::from_int(val : Int) -> Id {
+  Id::with_int(14695981039346656037UL, val)
+}
+
+///|
+pub fn Id::with_int(seed : UInt64, index : Int) -> Id {
+  let prime = 1099511628211UL
+  let mut hash = seed
+  let mut u = index.to_uint64()
+  for _ in 0..<8 {
+    let byte_val = u & 0xFFUL
+    hash = (hash ^ byte_val) * prime
+    u = u >> 8
+  }
+  { val: hash, }
 }

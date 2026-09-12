@@ -50,6 +50,47 @@ pub(all) enum DialogResult {
 } derive(Eq, Debug)
 
 ///|
+fn wrap_dialog_message(
+  ctx : UIContext,
+  message : String,
+  max_w : Double,
+  font_size : Double,
+) -> Array[String] {
+  let lines : Array[String] = []
+  let raw_paragraphs = message.split("\n")
+  for p in raw_paragraphs {
+    let p_str = p.to_owned()
+    if p_str.is_empty() {
+      lines.push("")
+      continue
+    }
+    let mut cur = ""
+    let mut i = 0
+    let len = p_str.length()
+    while i < len {
+      let boundary = next_char_boundary(p_str, i)
+      let ch_str = string_slice(p_str, i, boundary)
+      let test_str = cur + ch_str
+      let sz = ctx.measure_text(test_str, font_size)
+      if sz.x > max_w && !cur.is_empty() {
+        lines.push(cur)
+        cur = ch_str
+      } else {
+        cur = test_str
+      }
+      i = boundary
+    }
+    if !cur.is_empty() {
+      lines.push(cur)
+    }
+  }
+  if lines.is_empty() {
+    lines.push("")
+  }
+  lines
+}
+
+///|
 /// Render a modal dialog overlay with backdrop blocking, semantic header styling,
 /// Esc/Enter keyboard shortcuts, and Cancel/Confirm action buttons.
 pub fn UIContext::dialog(
@@ -76,13 +117,61 @@ pub fn UIContext::dialog(
   let scrim_rect = @math.Rect::new(0.0, 0.0, vp_w, vp_h)
   self.block_hover(scrim_rect)
 
-  let card_h = self.style.dialog_min_h * scale
-  let card_radius = self.style.dialog_radius * scale
+  let cancel_id = self.id_stack.derive_id(_id_salt + "::cancel")
+  let confirm_id = self.id_stack.derive_id(_id_salt + "::confirm")
+
+  // Modal focus trapping: clear previous background focusable IDs and constrain to dialog buttons
+  self.focusable_ids.clear()
+  self.register_focusable(cancel_id)
+  self.register_focusable(confirm_id)
+
+  if self.focused_id != cancel_id && self.focused_id != confirm_id {
+    self.request_focus(confirm_id)
+  }
+
+  let text_max_w = eff_w - 84.0 * scale
+  let msg_font_sz = self.style.font_normal * scale
+  let msg_lines = wrap_dialog_message(self, message, text_max_w, msg_font_sz)
+  let msg_line_h = 20.0 * scale
+  let msg_total_h = msg_lines.length().to_double() * msg_line_h
+  let pad_top = 24.0 * scale
+  let title_sz = self.measure_text(title, self.style.font_large * scale)
+  let title_h = if title_sz.y > 0.0 {
+    title_sz.y
+  } else {
+    self.style.font_large * scale
+  }
+  let msg_gap = 10.0 * scale
   let btn_radius = self.style.button_radius * scale
   let btn_h = self.style.button_h * scale
   let btn_w = self.style.dialog_btn_w * scale
   let btn_pad_right = 16.0 * scale
   let btn_gap = 8.0 * scale
+  let btn_margin_top = 18.0 * scale
+  let btn_pad_y = 16.0 * scale
+
+  let content_needed_h = pad_top +
+    title_h +
+    msg_gap +
+    msg_total_h +
+    btn_margin_top +
+    btn_h +
+    btn_pad_y
+  let min_h = self.style.dialog_min_h * scale
+  let max_allowed_h = if vp_h > 80.0 * scale {
+    vp_h - 40.0 * scale
+  } else {
+    min_h
+  }
+  let card_h = if content_needed_h < min_h {
+    min_h
+  } else if content_needed_h > max_allowed_h {
+    max_allowed_h
+  } else {
+    content_needed_h
+  }
+
+  let card_radius = self.style.dialog_radius * scale
   let card_x = (vp_w - eff_w) * 0.5
   let card_y = (vp_h - card_h) * 0.5
   let card_rect = @math.Rect::new(card_x, card_y, eff_w, card_h)
@@ -140,7 +229,7 @@ pub fn UIContext::dialog(
   )
 
   // 5. Title & Message Text
-  let title_pos = @math.Vec2::new(card_x + 60.0 * scale, card_y + 24.0 * scale)
+  let title_pos = @math.Vec2::new(card_x + 60.0 * scale, card_y + pad_top)
   self.draw_list.add_text(
     title_pos,
     title,
@@ -148,17 +237,21 @@ pub fn UIContext::dialog(
     @color.Color::text_strong(),
   )
 
-  let msg_pos = @math.Vec2::new(card_x + 60.0 * scale, card_y + 50.0 * scale)
-  self.draw_list.add_text(
-    msg_pos,
-    message,
-    self.style.font_normal * scale,
-    @color.Color::text_secondary(),
-  )
+  let btn_y = card_y + card_h - btn_h - btn_pad_y
+  let msg_start_y = card_y + pad_top + title_h + msg_gap
+  for idx = 0; idx < msg_lines.length(); idx = idx + 1 {
+    let line_y = msg_start_y + idx.to_double() * msg_line_h
+    if line_y + msg_line_h <= btn_y - 6.0 * scale {
+      self.draw_list.add_text(
+        @math.Vec2::new(card_x + 60.0 * scale, line_y),
+        msg_lines[idx],
+        msg_font_sz,
+        @color.Color::text_secondary(),
+      )
+    }
+  }
 
   // 6. Action Footer Buttons
-  let btn_pad_y = 14.0 * scale
-  let btn_y = card_y + card_h - btn_h - btn_pad_y
   let confirm_rect = @math.Rect::new(
     card_x + eff_w - btn_w - btn_pad_right,
     btn_y,
@@ -189,6 +282,14 @@ pub fn UIContext::dialog(
     1.0,
     btn_radius,
   )
+  if self.has_focus(cancel_id) {
+    self.draw_list.add_rect_stroke(
+      cancel_rect.expand(2.0),
+      @color.Color::border_focus(),
+      1.5,
+      btn_radius + 2.0,
+    )
+  }
   let cancel_sz = self.measure_text(
     cancel_label,
     self.style.font_normal * scale,
@@ -219,6 +320,14 @@ pub fn UIContext::dialog(
       }
   }
   self.draw_list.add_rect(confirm_rect, confirm_bg, btn_radius)
+  if self.has_focus(confirm_id) {
+    self.draw_list.add_rect_stroke(
+      confirm_rect.expand(2.0),
+      @color.Color::border_focus(),
+      1.5,
+      btn_radius + 2.0,
+    )
+  }
   let confirm_sz = self.measure_text(
     confirm_label,
     self.style.font_normal * scale,
@@ -238,12 +347,19 @@ pub fn UIContext::dialog(
   // 7. Interaction and Result Decision
   let esc_pressed = self.input.key_pressed(Key::Escape)
   let enter_pressed = self.input.key_pressed(Key::Enter)
+  let space_pressed = self.input.key_pressed(Key::Space)
   let backdrop_clicked = self.input.mouse_pressed &&
     !card_rect.contains(self.input.mouse_pos)
 
-  let result = if confirm_clicked || enter_pressed {
+  let cancel_key = self.has_focus(cancel_id) && (enter_pressed || space_pressed)
+  let confirm_key = self.has_focus(confirm_id) &&
+    (enter_pressed || space_pressed)
+
+  let result = if confirm_clicked ||
+    confirm_key ||
+    (enter_pressed && !self.has_focus(cancel_id)) {
     DialogResult::Confirmed
-  } else if cancel_clicked || esc_pressed || backdrop_clicked {
+  } else if cancel_clicked || cancel_key || esc_pressed || backdrop_clicked {
     DialogResult::Cancelled
   } else {
     DialogResult::Open

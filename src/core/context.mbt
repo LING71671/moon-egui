@@ -2,6 +2,7 @@
 pub enum LayoutDirection {
   TopDown
   LeftToRight
+  LeftToRightWrapped
 } derive(Eq, Debug)
 
 ///|
@@ -10,6 +11,8 @@ pub struct LayoutScope {
   start_x : Double
   start_y : Double
   mut max_cross_size : Double
+  mut current_row_h : Double
+  wrap_width : Double
 } derive(Eq, Debug)
 
 ///|
@@ -32,19 +35,23 @@ pub struct UIContext {
   clip_stack : Array[@math.Rect]
   mut auto_id_counter : Int
   layout_stack : Array[LayoutScope]
-  scroll_offsets : Array[(Id, Double)]
-  scroll_content_heights : Array[(Id, Double)]
-  window_positions : Array[(Id, @math.Vec2)]
+  scroll_offsets : @hashmap.HashMap[Id, Double]
+  scroll_content_heights : @hashmap.HashMap[Id, Double]
+  window_positions : @hashmap.HashMap[Id, @math.Vec2]
   window_batches : Array[(Id, @draw.DrawList)]
   window_drawn : Array[Id]
   window_focus : Array[Id]
   mut win_active_z : Int
   window_rects : Array[(@math.Rect, Int)]
   prev_window_rects : Array[(@math.Rect, Int)]
-  text_cursor_positions : Array[(Id, Int)]
-  open_collapsing_ids : Array[(Id, Bool)]
+  text_cursor_positions : @hashmap.HashMap[Id, Int]
+  open_collapsing_ids : @hashmap.HashMap[Id, Bool]
+  last_active_frame : @hashmap.HashMap[Id, Int]
+  mut frame_counter : Int
   mut open_combo_id : Id
   mut open_menu_id : Id
+  mut active_submenu_id : String
+  text_selection_anchors : @hashmap.HashMap[Id, Int]
   mut wants_capture_mouse : Bool
   mut prev_wants_capture_mouse : Bool
   fg_draw_list : @draw.DrawList
@@ -54,9 +61,12 @@ pub struct UIContext {
   blocking_rects : Array[@math.Rect]
   prev_blocking_rects : Array[@math.Rect]
   mut style : WidgetStyle
+  mut theme : Theme
   mut cursor_icon : String
   mut time : Double
   mut last_caret_activity : Double
+  text_measure_cache : @hashmap.HashMap[String, Double]
+  animation_states : @hashmap.HashMap[Id, Double]
 } derive(Eq, Debug)
 
 ///|
@@ -78,21 +88,32 @@ pub fn UIContext::new() -> UIContext {
     clip_stack: [],
     auto_id_counter: 0,
     layout_stack: [
-      { dir: TopDown, start_x: 0.0, start_y: 0.0, max_cross_size: 0.0, },
+      {
+        dir: TopDown,
+        start_x: 0.0,
+        start_y: 0.0,
+        max_cross_size: 0.0,
+        current_row_h: 0.0,
+        wrap_width: 0.0,
+      },
     ],
-    scroll_offsets: [],
-    scroll_content_heights: [],
-    window_positions: [],
+    scroll_offsets: @hashmap.HashMap([], capacity=64),
+    scroll_content_heights: @hashmap.HashMap([], capacity=64),
+    window_positions: @hashmap.HashMap([], capacity=32),
     window_batches: [],
     window_drawn: [],
     window_focus: [],
     win_active_z: -1,
     window_rects: [],
     prev_window_rects: [],
-    text_cursor_positions: [],
-    open_collapsing_ids: [],
+    text_cursor_positions: @hashmap.HashMap([], capacity=64),
+    open_collapsing_ids: @hashmap.HashMap([], capacity=64),
+    last_active_frame: @hashmap.HashMap([], capacity=128),
+    frame_counter: 0,
     open_combo_id: Id::zero(),
     open_menu_id: Id::zero(),
+    active_submenu_id: "",
+    text_selection_anchors: @hashmap.HashMap([], capacity=64),
     wants_capture_mouse: false,
     prev_wants_capture_mouse: false,
     fg_draw_list: @draw.DrawList::new(),
@@ -102,15 +123,19 @@ pub fn UIContext::new() -> UIContext {
     blocking_rects: [],
     prev_blocking_rects: [],
     style: WidgetStyle::default(),
+    theme: Theme::studio_light(),
     cursor_icon: "default",
     time: 0.0,
     last_caret_activity: 0.0,
+    text_measure_cache: @hashmap.HashMap([], capacity=256),
+    animation_states: @hashmap.HashMap([], capacity=64),
   }
 }
 
 ///|
 pub fn UIContext::begin_frame(self : UIContext, raw_input : RawInput) -> Unit {
   self.cursor_icon = "default"
+  self.frame_counter = self.frame_counter + 1
   self.input.update(raw_input)
   self.time = self.time + self.input.dt
   self.draw_list.clear()
@@ -151,13 +176,17 @@ pub fn UIContext::begin_frame(self : UIContext, raw_input : RawInput) -> Unit {
     start_x: 0.0,
     start_y: 0.0,
     max_cross_size: 0.0,
+    current_row_h: 0.0,
+    wrap_width: 0.0,
   })
 }
 
 ///|
 pub fn UIContext::end_frame(self : UIContext) -> @draw.DrawList {
-  // Process Tab key focus traversal
-  if self.input.key_pressed(Key::Tab) && !self.focusable_ids.is_empty() {
+  // Process Tab key focus traversal (skip if consumed by an active widget like CodeEditor)
+  if self.input.key_pressed(Key::Tab) &&
+    !self.input.is_key_consumed(Key::Tab) &&
+    !self.focusable_ids.is_empty() {
     let count = self.focusable_ids.length()
     let mut current_idx = -1
     for i = 0; i < count; i = i + 1 {
@@ -195,6 +224,12 @@ pub fn UIContext::end_frame(self : UIContext) -> @draw.DrawList {
     }
   }
   self.draw_list.append(self.fg_draw_list)
+
+  // Periodic generational cleanup every 300 frames (~5 seconds at 60 FPS)
+  if self.frame_counter % 300 == 0 {
+    self.prune_stale_state(600)
+  }
+
   self.draw_list
 }
 
@@ -305,12 +340,34 @@ pub fn UIContext::allocate_space(
   size : @math.Vec2,
 ) -> (Id, @math.Rect, Response) {
   self.auto_id_counter = self.auto_id_counter + 1
-  let id = self.id_stack.derive_id(self.auto_id_counter.to_string())
+  let id = self.id_stack.derive_int(self.auto_id_counter)
   // Layout advancement based on current layout direction
   let current_scope = if self.layout_stack.is_empty() {
     None
   } else {
     Some(self.layout_stack[self.layout_stack.length() - 1])
+  }
+
+  // Pre-allocation check for wrapping in LeftToRightWrapped flow
+  match current_scope {
+    Some(scope) =>
+      if scope.dir == LeftToRightWrapped {
+        let wrap_w = if scope.wrap_width > 0.0 {
+          scope.wrap_width
+        } else {
+          self.available_width
+        }
+        if self.cursor.x > scope.start_x &&
+          self.cursor.x + size.x > scope.start_x + wrap_w {
+          let next_y = self.cursor.y + scope.current_row_h + self.item_spacing.y
+          scope.max_cross_size = scope.max_cross_size +
+            scope.current_row_h +
+            self.item_spacing.y
+          scope.current_row_h = 0.0
+          self.cursor = @math.Vec2::new(scope.start_x, next_y)
+        }
+      }
+    None => ()
   }
 
   let item_y = match current_scope {
@@ -345,6 +402,15 @@ pub fn UIContext::allocate_space(
             scope.start_y,
           )
         }
+        LeftToRightWrapped => {
+          if size.y > scope.current_row_h {
+            scope.current_row_h = size.y
+          }
+          self.cursor = @math.Vec2::new(
+            self.cursor.x + size.x + self.item_spacing.x,
+            self.cursor.y,
+          )
+        }
       }
     None =>
       self.cursor = @math.Vec2::new(
@@ -370,7 +436,7 @@ pub fn UIContext::allocate_space(
     self.wants_capture_mouse = true
   }
   let pressed = is_active && self.input.mouse_down
-  let clicked = is_active && self.input.mouse_released && hovered
+  let mouse_clicked = is_active && self.input.mouse_released && hovered
   let dragged = is_active &&
     self.input.mouse_down &&
     self.input.mouse_delta.length_sq() > 0.0
@@ -384,12 +450,34 @@ pub fn UIContext::allocate_space(
   let lost_focus = self.lost_focus_id == id ||
     (self.pending_lost_focus_id == id && !is_focused)
 
+  // Keyboard activation (Space or Enter on focused control)
+  let key_activated = is_focused &&
+    !self.input.is_key_consumed(Key::Space) &&
+    !self.input.is_key_consumed(Key::Enter) &&
+    (self.input.key_pressed(Key::Space) || self.input.key_pressed(Key::Enter))
+  if key_activated {
+    self.input.consume_key(Key::Space)
+    self.input.consume_key(Key::Enter)
+  }
+
+  let clicked = mouse_clicked || key_activated
+  let secondary_clicked = hovered && self.input.mouse_secondary_pressed
+
   if clicked {
     self.request_focus(id)
   }
 
   let response = Response::with_focus(
-    id, rect, hovered, clicked, pressed, dragged, is_focused, gained_focus, lost_focus,
+    id,
+    rect,
+    hovered,
+    clicked,
+    pressed,
+    dragged,
+    is_focused,
+    gained_focus,
+    lost_focus,
+    secondary_clicked~,
   )
   (id, rect, response)
 }
@@ -429,6 +517,8 @@ pub fn UIContext::horizontal(
     start_x,
     start_y,
     max_cross_size: 0.0,
+    current_row_h: 0.0,
+    wrap_width: 0.0,
   }
   self.layout_stack.push(scope)
   content(self)
@@ -438,6 +528,43 @@ pub fn UIContext::horizontal(
     None => 0.0
   }
   self.cursor = @math.Vec2::new(start_x, start_y + max_h + self.item_spacing.y)
+}
+
+///|
+/// Scoped horizontal layout with automatic line wrapping.
+/// Arranges child widgets horizontally, wrapping to the next line when
+/// the row exceeds `wrap_width` (defaults to `available_width`).
+pub fn UIContext::horizontal_wrapped(
+  self : UIContext,
+  content : (UIContext) -> Unit,
+  wrap_width? : Double,
+) -> Unit {
+  let start_x = self.cursor.x
+  let start_y = self.cursor.y
+  let w = match wrap_width {
+    Some(val) => val
+    None => self.available_width
+  }
+  let scope : LayoutScope = {
+    dir: LeftToRightWrapped,
+    start_x,
+    start_y,
+    max_cross_size: 0.0,
+    current_row_h: 0.0,
+    wrap_width: w,
+  }
+  self.layout_stack.push(scope)
+  content(self)
+  let popped = self.layout_stack.pop()
+  let (total_cross, last_row_h) = match popped {
+    Some(s) => (s.max_cross_size, s.current_row_h)
+    None => (0.0, 0.0)
+  }
+  let total_h = total_cross + last_row_h
+  self.cursor = @math.Vec2::new(
+    start_x,
+    start_y + total_h + self.item_spacing.y,
+  )
 }
 
 ///|
@@ -453,6 +580,8 @@ pub fn UIContext::vertical(
     start_x,
     start_y,
     max_cross_size: 0.0,
+    current_row_h: 0.0,
+    wrap_width: 0.0,
   }
   self.layout_stack.push(scope)
   content(self)
@@ -692,16 +821,73 @@ fn ascii_char_ratio(code : Int) -> Double {
 }
 
 ///|
+fn char_width_ratio(code : Int) -> Double {
+  if code <= 127 {
+    ascii_char_ratio(code)
+  } else if code <= 0x024F {
+    // Latin-1 Supplement and Latin Extended-A/B (e.g. é, à, ü, ø, ñ, ç, ß)
+    match code {
+      160 => 0.26 // non-breaking space
+      161 => 0.28 // ¡
+      171 | 187 => 0.48 // « »
+      191 => 0.53 // ¿
+      223 => 0.64 // ß
+      _ => if code >= 192 && code <= 222 { 0.68 } else { 0.58 }
+    }
+  } else if code >= 0x0370 && code <= 0x04FF {
+    // Greek and Cyrillic
+    0.62
+  } else if code >= 0x2000 && code <= 0x206F {
+    // General Punctuation
+    match code {
+      0x2000 | 0x2001 | 0x2002 | 0x2003 => 0.50
+      0x2004 | 0x2005 | 0x2006 | 0x2007 | 0x2008 | 0x2009 | 0x200A => 0.26
+      0x2013 => 0.55 // en-dash
+      0x2014 => 0.85 // em-dash
+      0x2018 | 0x2019 | 0x201A => 0.28 // single quotes
+      0x201C | 0x201D | 0x201E => 0.45 // double quotes
+      0x2026 => 0.75 // ellipsis …
+      _ => 0.50
+    }
+  } else if code >= 0x2200 && code <= 0x22FF {
+    // Mathematical Operators
+    0.68
+  } else if code >= 0xFF61 && code <= 0xFF9F {
+    // Halfwidth CJK Katakana
+    0.50
+  } else if (code >= 0x4E00 && code <= 0x9FFF) ||
+    (code >= 0x3400 && code <= 0x4DBF) ||
+    (code >= 0xF900 && code <= 0xFAFF) ||
+    (code >= 0x3000 && code <= 0x303F) ||
+    (code >= 0x3040 && code <= 0x309F) ||
+    (code >= 0x30A0 && code <= 0x30FF) ||
+    (code >= 0xAC00 && code <= 0xD7AF) ||
+    (code >= 0xFF01 && code <= 0xFF60) ||
+    (code >= 0xFFE0 && code <= 0xFFEE) {
+    // Fullwidth CJK ideographs, kana, punctuation, and fullwidth forms
+    1.05
+  } else {
+    0.65
+  }
+}
+
+///|
 pub fn measure_text_size(text : String, font_size : Double) -> @math.Vec2 {
   let mut total_w = 0.0
-  let cjk_w = font_size * 1.05
-  for i = 0; i < text.length(); i = i + 1 {
+  let mut i = 0
+  let len = text.length()
+  while i < len {
     let ch = text[i]
     let code = ch.to_int()
-    if code > 255 {
-      total_w = total_w + cjk_w
+    if is_leading_surrogate(code) &&
+      i + 1 < len &&
+      is_trailing_surrogate(text[i + 1].to_int()) {
+      // 4-byte UTF-16 surrogate pair (e.g. Emoji / Supplementary CJK)
+      total_w = total_w + font_size * 1.05
+      i = i + 2
     } else {
-      total_w = total_w + ascii_char_ratio(code) * font_size
+      total_w = total_w + char_width_ratio(code) * font_size
+      i = i + 1
     }
   }
   let h = font_size * 1.25
@@ -714,8 +900,37 @@ pub fn UIContext::measure_text(
   text : String,
   font_size : Double,
 ) -> @math.Vec2 {
-  let _ = self
-  measure_text_size(text, font_size)
+  if text.is_empty() {
+    return @math.Vec2::new(0.0, font_size * 1.25)
+  }
+  let key = text + "@" + font_size.to_int().to_string()
+  let w = match self.text_measure_cache.get(key) {
+    Some(cached) => cached
+    None => {
+      let measured = measure_text_size(text, font_size).x
+      if self.text_measure_cache.length() > 2048 {
+        self.text_measure_cache.clear()
+      }
+      self.text_measure_cache.set(key, measured)
+      measured
+    }
+  }
+  let h = font_size * 1.25
+  @math.Vec2::new(w, h)
+}
+
+///|
+pub fn UIContext::set_cached_text_width(
+  self : UIContext,
+  text : String,
+  font_size : Double,
+  width : Double,
+) -> Unit {
+  let key = text + "@" + font_size.to_int().to_string()
+  if self.text_measure_cache.length() > 2048 {
+    self.text_measure_cache.clear()
+  }
+  self.text_measure_cache.set(key, width)
 }
 
 ///|
@@ -727,12 +942,11 @@ pub fn UIContext::get_window_pos(
   id : Id,
   fallback : @math.Vec2,
 ) -> @math.Vec2 {
-  for item in self.window_positions {
-    if item.0 == id {
-      return item.1
-    }
+  self.last_active_frame.set(id, self.frame_counter)
+  match self.window_positions.get(id) {
+    Some(pos) => pos
+    None => fallback
   }
-  fallback
 }
 
 ///|
@@ -741,23 +955,17 @@ pub fn UIContext::set_window_pos(
   id : Id,
   pos : @math.Vec2,
 ) -> Unit {
-  for i = 0; i < self.window_positions.length(); i = i + 1 {
-    if self.window_positions[i].0 == id {
-      self.window_positions[i] = (id, pos)
-      return
-    }
-  }
-  self.window_positions.push((id, pos))
+  self.last_active_frame.set(id, self.frame_counter)
+  self.window_positions.set(id, pos)
 }
 
 ///|
 pub fn UIContext::get_scroll_offset(self : UIContext, id : Id) -> Double {
-  for item in self.scroll_offsets {
-    if item.0 == id {
-      return item.1
-    }
+  self.last_active_frame.set(id, self.frame_counter)
+  match self.scroll_offsets.get(id) {
+    Some(offset) => offset
+    None => 0.0
   }
-  0.0
 }
 
 ///|
@@ -766,13 +974,8 @@ pub fn UIContext::set_scroll_offset(
   id : Id,
   offset : Double,
 ) -> Unit {
-  for i = 0; i < self.scroll_offsets.length(); i = i + 1 {
-    if self.scroll_offsets[i].0 == id {
-      self.scroll_offsets[i] = (id, offset)
-      return
-    }
-  }
-  self.scroll_offsets.push((id, offset))
+  self.last_active_frame.set(id, self.frame_counter)
+  self.scroll_offsets.set(id, offset)
 }
 
 ///|
@@ -780,12 +983,11 @@ pub fn UIContext::get_scroll_content_height(
   self : UIContext,
   id : Id,
 ) -> Double {
-  for item in self.scroll_content_heights {
-    if item.0 == id {
-      return item.1
-    }
+  self.last_active_frame.set(id, self.frame_counter)
+  match self.scroll_content_heights.get(id) {
+    Some(height) => height
+    None => 0.0
   }
-  0.0
 }
 
 ///|
@@ -794,13 +996,8 @@ pub fn UIContext::set_scroll_content_height(
   id : Id,
   height : Double,
 ) -> Unit {
-  for i = 0; i < self.scroll_content_heights.length(); i = i + 1 {
-    if self.scroll_content_heights[i].0 == id {
-      self.scroll_content_heights[i] = (id, height)
-      return
-    }
-  }
-  self.scroll_content_heights.push((id, height))
+  self.last_active_frame.set(id, self.frame_counter)
+  self.scroll_content_heights.set(id, height)
 }
 
 ///|
@@ -809,16 +1006,11 @@ pub fn UIContext::get_text_cursor_pos(
   id : Id,
   max_len : Int,
 ) -> Int {
-  for item in self.text_cursor_positions {
-    if item.0 == id {
-      let p = item.1
-      if p > max_len {
-        return max_len
-      }
-      return if p < 0 { 0 } else { p }
-    }
+  self.last_active_frame.set(id, self.frame_counter)
+  match self.text_cursor_positions.get(id) {
+    Some(p) => if p > max_len { max_len } else if p < 0 { 0 } else { p }
+    None => max_len
   }
-  max_len
 }
 
 ///|
@@ -827,13 +1019,8 @@ pub fn UIContext::set_text_cursor_pos(
   id : Id,
   pos : Int,
 ) -> Unit {
-  for i = 0; i < self.text_cursor_positions.length(); i = i + 1 {
-    if self.text_cursor_positions[i].0 == id {
-      self.text_cursor_positions[i] = (id, pos)
-      return
-    }
-  }
-  self.text_cursor_positions.push((id, pos))
+  self.last_active_frame.set(id, self.frame_counter)
+  self.text_cursor_positions.set(id, pos)
 }
 
 ///|
@@ -842,12 +1029,11 @@ pub fn UIContext::is_collapsing_open(
   id : Id,
   default_open : Bool,
 ) -> Bool {
-  for item in self.open_collapsing_ids {
-    if item.0 == id {
-      return item.1
-    }
+  self.last_active_frame.set(id, self.frame_counter)
+  match self.open_collapsing_ids.get(id) {
+    Some(open) => open
+    None => default_open
   }
-  default_open
 }
 
 ///|
@@ -856,13 +1042,64 @@ pub fn UIContext::set_collapsing_open(
   id : Id,
   is_open : Bool,
 ) -> Unit {
-  for i = 0; i < self.open_collapsing_ids.length(); i = i + 1 {
-    if self.open_collapsing_ids[i].0 == id {
-      self.open_collapsing_ids[i] = (id, is_open)
-      return
+  self.last_active_frame.set(id, self.frame_counter)
+  self.open_collapsing_ids.set(id, is_open)
+}
+
+///|
+/// Prune persistent widget states that have not been active for more than `ttl_frames` frames.
+pub fn UIContext::prune_stale_state(self : UIContext, ttl_frames : Int) -> Unit {
+  let stale_ids : Array[Id] = []
+  self.last_active_frame.each(fn(id, last_frame) {
+    if self.frame_counter - last_frame > ttl_frames {
+      stale_ids.push(id)
+    }
+  })
+  for id in stale_ids {
+    self.last_active_frame.remove(id)
+    self.scroll_offsets.remove(id)
+    self.scroll_content_heights.remove(id)
+    self.text_cursor_positions.remove(id)
+    self.text_selection_anchors.remove(id)
+    self.open_collapsing_ids.remove(id)
+    self.animation_states.remove(id)
+    if !self.window_drawn.contains(id) {
+      self.window_positions.remove(id)
     }
   }
-  self.open_collapsing_ids.push((id, is_open))
+}
+
+///|
+pub fn UIContext::active_submenu_id(self : UIContext) -> String {
+  self.active_submenu_id
+}
+
+///|
+pub fn UIContext::set_active_submenu_id(self : UIContext, id : String) -> Unit {
+  self.active_submenu_id = id
+}
+
+///|
+pub fn UIContext::get_text_selection_anchor(self : UIContext, id : Id) -> Int? {
+  self.text_selection_anchors.get(id)
+}
+
+///|
+pub fn UIContext::set_text_selection_anchor(
+  self : UIContext,
+  id : Id,
+  anchor : Int?,
+) -> Unit {
+  self.last_active_frame.set(id, self.frame_counter)
+  match anchor {
+    Some(a) => self.text_selection_anchors.set(id, a)
+    None => self.text_selection_anchors.remove(id)
+  }
+}
+
+///|
+pub fn UIContext::clear_text_selection(self : UIContext, id : Id) -> Unit {
+  self.text_selection_anchors.remove(id)
 }
 
 ///|
@@ -909,5 +1146,103 @@ pub fn UIContext::is_caret_visible(self : UIContext) -> Bool {
     // 500ms on, 500ms off period (1.0s cycle)
     let half_seconds = ((elapsed - 0.5) * 2.0).to_int()
     half_seconds % 2 == 1
+  }
+}
+
+///|
+pub fn UIContext::theme(self : UIContext) -> Theme {
+  self.theme
+}
+
+///|
+pub fn UIContext::set_theme(self : UIContext, theme : Theme) -> Unit {
+  self.theme = theme
+}
+
+///|
+/// Smooth immediate-mode boolean animation tweening over `duration` seconds.
+/// Returns a scalar factor in `[0.0, 1.0]` that transitions smoothly when `target` changes.
+pub fn UIContext::animate_bool(
+  self : UIContext,
+  id : Id,
+  target : Bool,
+  duration : Double,
+) -> Double {
+  let target_val = if target { 1.0 } else { 0.0 }
+  let current = match self.animation_states.get(id) {
+    Some(v) => v
+    None => {
+      self.animation_states.set(id, target_val)
+      target_val
+    }
+  }
+  self.last_active_frame.set(id, self.frame_counter)
+  if current == target_val || duration <= 0.0 {
+    current
+  } else {
+    let dt = self.input.dt
+    let step = dt / duration
+    let next_val = if current < target_val {
+      let v = current + step
+      if v > target_val {
+        target_val
+      } else {
+        v
+      }
+    } else {
+      let v = current - step
+      if v < target_val {
+        target_val
+      } else {
+        v
+      }
+    }
+    self.animation_states.set(id, next_val)
+    next_val
+  }
+}
+
+///|
+/// Smooth immediate-mode float animation tweening towards `target` over `duration` seconds.
+pub fn UIContext::animate_float(
+  self : UIContext,
+  id : Id,
+  target : Double,
+  duration : Double,
+) -> Double {
+  let current = match self.animation_states.get(id) {
+    Some(v) => v
+    None => {
+      self.animation_states.set(id, target)
+      target
+    }
+  }
+  self.last_active_frame.set(id, self.frame_counter)
+  if current == target || duration <= 0.0 {
+    current
+  } else {
+    let dt = self.input.dt
+    let diff = target - current
+    let abs_diff = if diff < 0.0 { -diff } else { diff }
+    let step = abs_diff * (dt / duration)
+    let min_step = 0.001
+    let actual_step = if step < min_step { min_step } else { step }
+    let next_val = if diff > 0.0 {
+      let v = current + actual_step
+      if v > target {
+        target
+      } else {
+        v
+      }
+    } else {
+      let v = current - actual_step
+      if v < target {
+        target
+      } else {
+        v
+      }
+    }
+    self.animation_states.set(id, next_val)
+    next_val
   }
 }

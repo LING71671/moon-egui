@@ -74,7 +74,21 @@ pub fn UIContext::tooltip(self : UIContext, text : String) -> Unit {
   let tip_h = text_size.y + pad_y * 2.0
 
   let mouse = self.input.mouse_pos
-  let tip_rect = @math.Rect::new(mouse.x + 12.0, mouse.y + 12.0, tip_w, tip_h)
+  let mut tip_x = mouse.x + 12.0
+  let tip_y = mouse.y + 12.0
+
+  let vp_w = if self.available_width > 0.0 {
+    self.available_width
+  } else {
+    800.0
+  }
+  if tip_x + tip_w > vp_w {
+    tip_x = mouse.x - tip_w - 4.0
+    if tip_x < 4.0 {
+      tip_x = 4.0
+    }
+  }
+  let tip_rect = @math.Rect::new(tip_x, tip_y, tip_w, tip_h)
 
   self.begin_foreground()
 

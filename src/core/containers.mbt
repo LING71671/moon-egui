@@ -116,8 +116,9 @@ pub fn UIContext::combo_box(
   let h = 28.0
 
   self.push_id(id_salt)
-  let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
+  let (id, rect, resp) = self.allocate_space(@math.Vec2::new(total_w, h))
   self.pop_id()
+  self.register_focusable(id)
 
   let box_rect = @math.Rect::new(rect.x + label_size, rect.y, box_w, h)
   let box_hovered = self.is_hovered(box_rect)
@@ -127,12 +128,43 @@ pub fn UIContext::combo_box(
 
   let mut current_idx = selected_index
   let is_open = self.open_combo_id() == combo_id
+  let is_focused = resp.has_focus() || self.has_focus(id)
 
-  if box_hovered && self.input.mouse_pressed() {
+  let key_toggle = is_focused &&
+    (self.input.key_pressed(Key::Space) || self.input.key_pressed(Key::Enter))
+  if key_toggle {
+    self.input.consume_key(Key::Space)
+    self.input.consume_key(Key::Enter)
+  }
+
+  if (box_hovered && self.input.mouse_pressed()) || key_toggle {
     if is_open {
       self.set_open_combo_id(Id::zero())
     } else {
       self.set_open_combo_id(combo_id)
+    }
+  }
+
+  if is_open {
+    if self.input.key_pressed(Key::Escape) {
+      self.set_open_combo_id(Id::zero())
+      self.input.consume_key(Key::Escape)
+    }
+    if self.input.key_pressed(Key::ArrowDown) {
+      if current_idx < options.length() - 1 {
+        current_idx = current_idx + 1
+      }
+      self.input.consume_key(Key::ArrowDown)
+    }
+    if self.input.key_pressed(Key::ArrowUp) {
+      if current_idx > 0 {
+        current_idx = current_idx - 1
+      }
+      self.input.consume_key(Key::ArrowUp)
+    }
+    if self.input.key_pressed(Key::Enter) {
+      self.set_open_combo_id(Id::zero())
+      self.input.consume_key(Key::Enter)
     }
   }
 
@@ -151,7 +183,9 @@ pub fn UIContext::combo_box(
   } else {
     @color.Color::bg_window()
   }
-  let border_color = if is_open || box_hovered {
+  let border_color = if is_focused || is_open {
+    @color.Color::border_focus()
+  } else if box_hovered {
     @color.Color::accent_primary()
   } else {
     @color.Color::border_default()
@@ -159,7 +193,8 @@ pub fn UIContext::combo_box(
 
   let box_radius = self.style.radius_sm
   self.draw_list.add_rect(box_rect, bg_color, box_radius)
-  self.draw_list.add_rect_stroke(box_rect, border_color, 1.0, box_radius)
+  let stroke_w = if is_focused || is_open { 1.5 } else { 1.0 }
+  self.draw_list.add_rect_stroke(box_rect, border_color, stroke_w, box_radius)
 
   let selected_str = if current_idx >= 0 && current_idx < options.length() {
     options[current_idx]
@@ -200,19 +235,45 @@ pub fn UIContext::combo_box(
 
   if is_open {
     let item_h = 24.0
-    let menu_h = item_h * options.length().to_double()
-    let menu_rect = @math.Rect::new(
-      box_rect.x,
-      box_rect.y + box_rect.h + 2.0,
-      box_w,
-      menu_h,
-    )
+    let total_options_h = item_h * options.length().to_double()
+    let max_menu_h = 240.0
+    let menu_h = if total_options_h > max_menu_h {
+      max_menu_h
+    } else {
+      total_options_h
+    }
+
+    // Screen collision flipping: if menu extends past bottom, flip above trigger
+    let mut menu_y = box_rect.y + box_rect.h + 2.0
+    if menu_y + menu_h > 600.0 && box_rect.y - menu_h - 2.0 >= 0.0 {
+      menu_y = box_rect.y - menu_h - 2.0
+    }
+    let menu_rect = @math.Rect::new(box_rect.x, menu_y, box_w, menu_h)
 
     // The popup lives on the foreground layer: it must not be clipped by the
     // container that hosts the combo box, and it must swallow pointer input
     // for the widgets drawn underneath it.
     self.begin_foreground()
     self.block_hover(menu_rect)
+
+    // Handle scroll wheel inside dropdown if options exceed max menu height
+    let combo_scroll_id = self.id_stack.derive_id(id_salt + "::combo_scroll")
+    let mut combo_scroll_y = self.get_scroll_offset(combo_scroll_id)
+    let max_scroll = if total_options_h > menu_h {
+      total_options_h - menu_h
+    } else {
+      0.0
+    }
+    if self.is_hovered(menu_rect) && self.input.scroll_delta.y != 0.0 {
+      combo_scroll_y = combo_scroll_y - self.input.scroll_delta.y
+    }
+    if combo_scroll_y < 0.0 {
+      combo_scroll_y = 0.0
+    }
+    if combo_scroll_y > max_scroll {
+      combo_scroll_y = max_scroll
+    }
+    self.set_scroll_offset(combo_scroll_id, combo_scroll_y)
 
     // A press outside both the box and the popup dismisses the dropdown. The
     // popup itself is already on the foreground layer, so its rect is tested
@@ -247,10 +308,12 @@ pub fn UIContext::combo_box(
       item_radius,
     )
 
+    self.push_clip(menu_rect)
+
     for i = 0; i < options.length(); i = i + 1 {
       let item_rect = @math.Rect::new(
         menu_rect.x,
-        menu_rect.y + item_h * i.to_double(),
+        menu_rect.y + item_h * i.to_double() - combo_scroll_y,
         box_w,
         item_h,
       )
@@ -296,6 +359,7 @@ pub fn UIContext::combo_box(
       }
     }
 
+    self.pop_clip()
     self.end_foreground()
   }
 

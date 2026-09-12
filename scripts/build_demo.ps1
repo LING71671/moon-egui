@@ -18,9 +18,13 @@ if (-not (Test-Path $BUILD)) {
 
 $content = Get-Content $BUILD -Raw
 $step = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*4step)\(').Groups[1].Value
-$gallery_step = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*13gallery__step)\(').Groups[1].Value
+$gallery_step = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*gallery__step[A-Za-z0-9_]*)\(').Groups[1].Value
 $status = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*get__gallery__status)\(').Groups[1].Value
 $cursor = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*get__gallery__cursor)\(').Groups[1].Value
+$set_vm = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*set__gallery__view__mode)\(').Groups[1].Value
+$get_vm = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*get__gallery__view__mode)\(').Groups[1].Value
+$set_theme = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*set__gallery__theme)\(').Groups[1].Value
+$get_theme = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*get__gallery__theme)\(').Groups[1].Value
 
 if (-not $step) {
   Write-Error "Could not locate step entry point"
@@ -52,6 +56,38 @@ if ($cursor) {
 
 if (typeof window !== 'undefined') window.moon_gallery_cursor = $cursor;
 if (typeof globalThis !== 'undefined') globalThis.moon_gallery_cursor = $cursor;
+"@
+}
+
+if ($set_vm) {
+  $exports += @"
+
+if (typeof window !== 'undefined') window.moon_set_gallery_view_mode = $set_vm;
+if (typeof globalThis !== 'undefined') globalThis.moon_set_gallery_view_mode = $set_vm;
+"@
+}
+
+if ($get_vm) {
+  $exports += @"
+
+if (typeof window !== 'undefined') window.moon_get_gallery_view_mode = $get_vm;
+if (typeof globalThis !== 'undefined') globalThis.moon_get_gallery_view_mode = $get_vm;
+"@
+}
+
+if ($set_theme) {
+  $exports += @"
+
+if (typeof window !== 'undefined') window.moon_set_gallery_theme = $set_theme;
+if (typeof globalThis !== 'undefined') globalThis.moon_set_gallery_theme = $set_theme;
+"@
+}
+
+if ($get_theme) {
+  $exports += @"
+
+if (typeof window !== 'undefined') window.moon_get_gallery_theme = $get_theme;
+if (typeof globalThis !== 'undefined') globalThis.moon_get_gallery_theme = $get_theme;
 "@
 }
 

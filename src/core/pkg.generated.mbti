@@ -6,14 +6,33 @@ import {
   "LING71671/moon-egui/src/draw",
   "LING71671/moon-egui/src/math",
   "moonbitlang/core/debug",
+  "moonbitlang/core/hashmap",
 }
 
 // Values
+pub fn delete_next_char(String, Int) -> String
+
+pub fn delete_prev_char(String, Int) -> (String, Int)
+
 pub fn hsv_to_rgb(Double, Double, Double) -> (Int, Int, Int)
+
+pub fn is_cjk_char(Int) -> Bool
+
+pub fn is_cjk_closing_punct(Int) -> Bool
+
+pub fn is_leading_surrogate(Int) -> Bool
+
+pub fn is_trailing_surrogate(Int) -> Bool
 
 pub fn measure_text_size(String, Double) -> @math.Vec2
 
+pub fn next_char_boundary(String, Int) -> Int
+
+pub fn prev_char_boundary(String, Int) -> Int
+
 pub fn rgb_to_hsv(Int, Int, Int) -> (Double, Double, Double)
+
+pub fn string_slice(String, Int, Int) -> String
 
 // Errors
 
@@ -52,9 +71,11 @@ pub struct ContextMenuItem {
   shortcut : String
   disabled : Bool
   is_separator : Bool
+  children : Array[ContextMenuItem]
 } derive(Eq, @debug.Debug)
-pub fn ContextMenuItem::new(String, String, shortcut? : String, disabled? : Bool) -> Self
+pub fn ContextMenuItem::new(String, String, shortcut? : String, disabled? : Bool, children? : Array[Self]) -> Self
 pub fn ContextMenuItem::separator() -> Self
+pub fn ContextMenuItem::submenu(String, String, Array[Self], disabled? : Bool) -> Self
 
 pub struct ContextMenuResponse {
   open : Bool
@@ -88,11 +109,13 @@ pub(all) enum Event {
 
 pub struct Id {
   val : UInt64
-} derive(Default, Eq, @debug.Debug)
+} derive(Default, Eq, Hash, @debug.Debug)
 pub fn Id::combine(Self, Self) -> Self
+pub fn Id::from_int(Int) -> Self
 pub fn Id::from_string(String) -> Self
 pub fn Id::is_valid(Self) -> Bool
 pub fn Id::new(UInt64) -> Self
+pub fn Id::with_int(UInt64, Int) -> Self
 pub fn Id::with_seed(UInt64, String) -> Self
 pub fn Id::zero() -> Self
 
@@ -101,6 +124,7 @@ pub struct IdStack {
 } derive(Eq, @debug.Debug)
 pub fn IdStack::current_seed(Self) -> UInt64
 pub fn IdStack::derive_id(Self, String) -> Id
+pub fn IdStack::derive_int(Self, Int) -> Id
 pub fn IdStack::new() -> Self
 pub fn IdStack::pop(Self) -> Unit
 pub fn IdStack::push(Self, String) -> Unit
@@ -112,17 +136,23 @@ pub struct InputState {
   mut mouse_down : Bool
   mut mouse_pressed : Bool
   mut mouse_released : Bool
+  mut mouse_secondary_down : Bool
+  mut mouse_secondary_pressed : Bool
+  mut mouse_secondary_released : Bool
   mut scroll_delta : @math.Vec2
   mut dt : Double
   keys_down : Array[Key]
   keys_pressed : Array[Key]
   keys_released : Array[Key]
+  consumed_keys : Array[Key]
   mut text_input : String
   mut modifiers : Modifiers
   events : Array[Event]
 } derive(Default, Eq, @debug.Debug)
+pub fn InputState::consume_key(Self, Key) -> Unit
 pub fn InputState::dt(Self) -> Double
 pub fn InputState::events(Self) -> Array[Event]
+pub fn InputState::is_key_consumed(Self, Key) -> Bool
 pub fn InputState::key_down(Self, Key) -> Bool
 pub fn InputState::key_pressed(Self, Key) -> Bool
 pub fn InputState::key_released(Self, Key) -> Bool
@@ -132,6 +162,9 @@ pub fn InputState::mouse_down(Self) -> Bool
 pub fn InputState::mouse_pos(Self) -> @math.Vec2
 pub fn InputState::mouse_pressed(Self) -> Bool
 pub fn InputState::mouse_released(Self) -> Bool
+pub fn InputState::mouse_secondary_down(Self) -> Bool
+pub fn InputState::mouse_secondary_pressed(Self) -> Bool
+pub fn InputState::mouse_secondary_released(Self) -> Bool
 pub fn InputState::new() -> Self
 pub fn InputState::scroll_delta(Self) -> @math.Vec2
 pub fn InputState::text_input(Self) -> String
@@ -193,6 +226,7 @@ pub(all) enum Key {
 pub enum LayoutDirection {
   TopDown
   LeftToRight
+  LeftToRightWrapped
 } derive(Eq, @debug.Debug)
 
 pub struct LayoutScope {
@@ -200,6 +234,8 @@ pub struct LayoutScope {
   start_x : Double
   start_y : Double
   mut max_cross_size : Double
+  mut current_row_h : Double
+  wrap_width : Double
 } derive(Eq, @debug.Debug)
 
 pub struct Modifiers {
@@ -208,8 +244,10 @@ pub struct Modifiers {
   alt : Bool
   meta : Bool
 } derive(Default, Eq, @debug.Debug)
+pub fn Modifiers::ctrl() -> Self
 pub fn Modifiers::new(Bool, Bool, Bool, Bool) -> Self
 pub fn Modifiers::none() -> Self
+pub fn Modifiers::shift() -> Self
 
 pub struct RawInput {
   mouse_pos : @math.Vec2
@@ -219,10 +257,11 @@ pub struct RawInput {
   events : Array[Event]
   text_input : String
   modifiers : Modifiers
+  mouse_secondary_down : Bool
 } derive(Eq, @debug.Debug)
-pub fn RawInput::from_mouse(@math.Vec2, Bool) -> Self
+pub fn RawInput::from_mouse(@math.Vec2, Bool, mouse_secondary_down? : Bool, dt? : Double) -> Self
 pub fn RawInput::new() -> Self
-pub fn RawInput::with_events(@math.Vec2, Bool, @math.Vec2, Array[Event], String, Modifiers) -> Self
+pub fn RawInput::with_events(@math.Vec2, Bool, @math.Vec2, Array[Event], String, Modifiers, mouse_secondary_down? : Bool, dt? : Double) -> Self
 
 pub struct Response {
   id : Id
@@ -234,6 +273,7 @@ pub struct Response {
   has_focus : Bool
   gained_focus : Bool
   lost_focus : Bool
+  secondary_clicked : Bool
 } derive(Default, Eq, @debug.Debug)
 pub fn Response::clicked(Self) -> Bool
 pub fn Response::dragged(Self) -> Bool
@@ -242,10 +282,11 @@ pub fn Response::has_focus(Self) -> Bool
 pub fn Response::hovered(Self) -> Bool
 pub fn Response::id(Self) -> Id
 pub fn Response::lost_focus(Self) -> Bool
-pub fn Response::new(Id, @math.Rect, Bool, Bool, Bool, Bool) -> Self
+pub fn Response::new(Id, @math.Rect, Bool, Bool, Bool, Bool, secondary_clicked? : Bool) -> Self
 pub fn Response::pressed(Self) -> Bool
 pub fn Response::rect(Self) -> @math.Rect
-pub fn Response::with_focus(Id, @math.Rect, Bool, Bool, Bool, Bool, Bool, Bool, Bool) -> Self
+pub fn Response::secondary_clicked(Self) -> Bool
+pub fn Response::with_focus(Id, @math.Rect, Bool, Bool, Bool, Bool, Bool, Bool, Bool, secondary_clicked? : Bool) -> Self
 
 pub struct RichTextResponse {
   clicked_url : String?
@@ -290,6 +331,37 @@ pub(all) enum TextSpanKind {
   Code
   Link(String)
 } derive(Eq, @debug.Debug)
+
+pub struct Theme {
+  name : String
+  bg_app : @color.Color
+  bg_window : @color.Color
+  bg_surface : @color.Color
+  bg_subtle : @color.Color
+  bg_hover : @color.Color
+  bg_active : @color.Color
+  bg_inverse : @color.Color
+  border_muted : @color.Color
+  border_default : @color.Color
+  border_strong : @color.Color
+  border_focus : @color.Color
+  text_primary : @color.Color
+  text_strong : @color.Color
+  text_body : @color.Color
+  text_secondary : @color.Color
+  text_muted : @color.Color
+  text_disabled : @color.Color
+  text_inverse : @color.Color
+  accent_primary : @color.Color
+  accent_hover : @color.Color
+  accent_pressed : @color.Color
+  accent_deep : @color.Color
+  accent_soft : @color.Color
+  accent_light : @color.Color
+} derive(Eq, @debug.Debug)
+pub fn Theme::high_contrast() -> Self
+pub fn Theme::slate_dark() -> Self
+pub fn Theme::studio_light() -> Self
 
 pub struct Toast {
   id : String
@@ -358,19 +430,23 @@ pub struct UIContext {
   clip_stack : Array[@math.Rect]
   mut auto_id_counter : Int
   layout_stack : Array[LayoutScope]
-  scroll_offsets : Array[(Id, Double)]
-  scroll_content_heights : Array[(Id, Double)]
-  window_positions : Array[(Id, @math.Vec2)]
+  scroll_offsets : @hashmap.HashMap[Id, Double]
+  scroll_content_heights : @hashmap.HashMap[Id, Double]
+  window_positions : @hashmap.HashMap[Id, @math.Vec2]
   window_batches : Array[(Id, @draw.DrawList)]
   window_drawn : Array[Id]
   window_focus : Array[Id]
   mut win_active_z : Int
   window_rects : Array[(@math.Rect, Int)]
   prev_window_rects : Array[(@math.Rect, Int)]
-  text_cursor_positions : Array[(Id, Int)]
-  open_collapsing_ids : Array[(Id, Bool)]
+  text_cursor_positions : @hashmap.HashMap[Id, Int]
+  open_collapsing_ids : @hashmap.HashMap[Id, Bool]
+  last_active_frame : @hashmap.HashMap[Id, Int]
+  mut frame_counter : Int
   mut open_combo_id : Id
   mut open_menu_id : Id
+  mut active_submenu_id : String
+  text_selection_anchors : @hashmap.HashMap[Id, Int]
   mut wants_capture_mouse : Bool
   mut prev_wants_capture_mouse : Bool
   fg_draw_list : @draw.DrawList
@@ -380,13 +456,19 @@ pub struct UIContext {
   blocking_rects : Array[@math.Rect]
   prev_blocking_rects : Array[@math.Rect]
   mut style : WidgetStyle
+  mut theme : Theme
   mut cursor_icon : String
   mut time : Double
   mut last_caret_activity : Double
+  text_measure_cache : @hashmap.HashMap[String, Double]
+  animation_states : @hashmap.HashMap[Id, Double]
 } derive(Eq, @debug.Debug)
 pub fn UIContext::active_id(Self) -> Id
+pub fn UIContext::active_submenu_id(Self) -> String
 pub fn UIContext::advance_cursor(Self, @math.Vec2) -> Unit
 pub fn UIContext::allocate_space(Self, @math.Vec2) -> (Id, @math.Rect, Response)
+pub fn UIContext::animate_bool(Self, Id, Bool, Double) -> Double
+pub fn UIContext::animate_float(Self, Id, Double, Double) -> Double
 pub fn UIContext::available_width(Self) -> Double
 pub fn UIContext::badge(Self, String, kind? : BadgeKind, dot? : Bool, pill? : Bool) -> Response
 pub fn UIContext::begin_foreground(Self) -> Unit
@@ -399,6 +481,7 @@ pub fn UIContext::button_primary_sized(Self, String, @math.Vec2) -> Response
 pub fn UIContext::button_sized(Self, String, @math.Vec2) -> Response
 pub fn UIContext::button_with_shortcut(Self, String, String) -> Response
 pub fn UIContext::checkbox(Self, String, Bool) -> (Bool, Response)
+pub fn UIContext::clear_text_selection(Self, Id) -> Unit
 pub fn UIContext::code_editor(Self, String, String, size? : @math.Vec2, show_line_numbers? : Bool, read_only? : Bool) -> (String, Response)
 pub fn UIContext::collapsing_header(Self, String, String, Bool, (Self) -> Unit) -> Response
 pub fn UIContext::color_button(Self, String, @color.Color) -> (Bool, Response)
@@ -420,9 +503,11 @@ pub fn UIContext::focused_id(Self) -> Id
 pub fn UIContext::get_scroll_content_height(Self, Id) -> Double
 pub fn UIContext::get_scroll_offset(Self, Id) -> Double
 pub fn UIContext::get_text_cursor_pos(Self, Id, Int) -> Int
+pub fn UIContext::get_text_selection_anchor(Self, Id) -> Int?
 pub fn UIContext::get_window_pos(Self, Id, @math.Vec2) -> @math.Vec2
 pub fn UIContext::has_focus(Self, Id) -> Bool
 pub fn UIContext::horizontal(Self, (Self) -> Unit) -> Unit
+pub fn UIContext::horizontal_wrapped(Self, (Self) -> Unit, wrap_width? : Double) -> Unit
 pub fn UIContext::hot_id(Self) -> Id
 pub fn UIContext::hyperlink(Self, String, String) -> (Bool, Response)
 pub fn UIContext::input(Self) -> InputState
@@ -444,6 +529,7 @@ pub fn UIContext::open_menu_id(Self) -> Id
 pub fn UIContext::pop_clip(Self) -> Unit
 pub fn UIContext::pop_id(Self) -> Unit
 pub fn UIContext::progress_bar(Self, Double, String) -> Response
+pub fn UIContext::prune_stale_state(Self, Int) -> Unit
 pub fn UIContext::push_clip(Self, @math.Rect) -> Unit
 pub fn UIContext::push_id(Self, String) -> Unit
 pub fn UIContext::radio(Self, String, Bool) -> (Bool, Response)
@@ -456,7 +542,9 @@ pub fn UIContext::scroll_area(Self, String, @math.Vec2, (Self) -> Unit) -> Unit
 pub fn UIContext::segmented_control(Self, String, Array[String], Int, height? : Double, width? : Double) -> (Int, Response)
 pub fn UIContext::separator(Self) -> Unit
 pub fn UIContext::set_active_id(Self, Id) -> Unit
+pub fn UIContext::set_active_submenu_id(Self, String) -> Unit
 pub fn UIContext::set_available_width(Self, Double) -> Unit
+pub fn UIContext::set_cached_text_width(Self, String, Double, Double) -> Unit
 pub fn UIContext::set_collapsing_open(Self, Id, Bool) -> Unit
 pub fn UIContext::set_cursor(Self, @math.Vec2) -> Unit
 pub fn UIContext::set_cursor_icon(Self, String) -> Unit
@@ -468,6 +556,8 @@ pub fn UIContext::set_scroll_content_height(Self, Id, Double) -> Unit
 pub fn UIContext::set_scroll_offset(Self, Id, Double) -> Unit
 pub fn UIContext::set_style(Self, WidgetStyle) -> Unit
 pub fn UIContext::set_text_cursor_pos(Self, Id, Int) -> Unit
+pub fn UIContext::set_text_selection_anchor(Self, Id, Int?) -> Unit
+pub fn UIContext::set_theme(Self, Theme) -> Unit
 pub fn UIContext::set_time(Self, Double) -> Unit
 pub fn UIContext::set_wants_capture_mouse(Self, Bool) -> Unit
 pub fn UIContext::set_window_pos(Self, Id, @math.Vec2) -> Unit
@@ -486,6 +576,7 @@ pub fn UIContext::table(Self, String, @math.Vec2, Array[TableColumn], Int, (Self
 pub fn UIContext::tag(Self, String, String, kind? : BadgeKind, closable? : Bool) -> (Bool, Response)
 pub fn UIContext::text_edit(Self, String, String, String) -> (String, Response)
 pub fn UIContext::text_edit_sized(Self, String, String, String, @math.Vec2) -> (String, Response)
+pub fn UIContext::theme(Self) -> Theme
 pub fn UIContext::time(Self) -> Double
 pub fn UIContext::toast_stack(Self, Array[Toast], anchor? : ToastAnchor, viewport_size? : @math.Vec2) -> ToastResponse
 pub fn UIContext::toggle(Self, String, Bool) -> (Bool, Response)
@@ -547,6 +638,22 @@ pub struct WidgetStyle {
   table_radius : Double
   tree_view_row_h : Double
   tree_view_radius : Double
+  rich_text_line_h : Double
+  checkbox_size : Double
+  checkbox_gap : Double
+  checkbox_h : Double
+  checkbox_radius : Double
+  radio_r : Double
+  radio_gap : Double
+  radio_h : Double
+  badge_dot_w : Double
+  badge_pad_x : Double
+  badge_h : Double
+  badge_radius : Double
+  menu_bar_h : Double
+  menu_bar_btn_h : Double
+  menu_bar_popup_w : Double
+  menu_bar_radius : Double
 } derive(Eq, @debug.Debug)
 pub fn WidgetStyle::default() -> Self
 

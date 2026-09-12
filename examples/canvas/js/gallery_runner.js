@@ -23,6 +23,7 @@
   let mouseX = -100;
   let mouseY = -100;
   let isMouseDown = false;
+  let isSecondaryMouseDown = false;
   let scrollDy = 0.0;
   let pendingText = '';
   let keysPressed = [];
@@ -127,39 +128,41 @@
   function bindEvents() {
     if (!canvas) return;
 
-    canvas.addEventListener('mousemove', (e) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
-    }, { passive: true });
+    // Off-screen hidden text input element for native browser IME composition (CJK, accents)
+    let imeInput = document.getElementById('canvasImeInput');
+    if (!imeInput) {
+      imeInput = document.createElement('textarea');
+      imeInput.id = 'canvasImeInput';
+      imeInput.setAttribute('autocomplete', 'off');
+      imeInput.setAttribute('autocorrect', 'off');
+      imeInput.setAttribute('autocapitalize', 'off');
+      imeInput.setAttribute('spellcheck', 'false');
+      imeInput.style.cssText = 'position:fixed; opacity:0; pointer-events:none; left:0; top:0; width:1px; height:1px; z-index:-1; border:none; outline:none; background:transparent; resize:none; overflow:hidden;';
+      document.body.appendChild(imeInput);
+    }
 
-    canvas.addEventListener('mousedown', (e) => {
-      if (e.button === 0) {
-        isMouseDown = true;
-        const rect = canvas.getBoundingClientRect();
-        mouseX = e.clientX - rect.left;
-        mouseY = e.clientY - rect.top;
-        canvas.focus();
+    let isComposing = false;
+
+    imeInput.addEventListener('compositionstart', () => {
+      isComposing = true;
+    });
+
+    imeInput.addEventListener('compositionend', (e) => {
+      isComposing = false;
+      if (e.data) {
+        pendingText += e.data;
+      }
+      imeInput.value = '';
+    });
+
+    imeInput.addEventListener('input', (e) => {
+      if (!isComposing && imeInput.value) {
+        pendingText += imeInput.value;
+        imeInput.value = '';
       }
     });
 
-    window.addEventListener('mouseup', (e) => {
-      if (e.button === 0) {
-        isMouseDown = false;
-      }
-    });
-
-    canvas.addEventListener('mouseleave', () => {
-      mouseX = -100;
-      mouseY = -100;
-    });
-
-    canvas.addEventListener('wheel', (e) => {
-      scrollDy += e.deltaY;
-      e.preventDefault();
-    }, { passive: false });
-
-    canvas.addEventListener('keydown', (e) => {
+    function handleKeyDown(e) {
       modFlags = 0;
       if (e.shiftKey) modFlags |= 2;
       if (e.ctrlKey) modFlags |= 1;
@@ -168,20 +171,100 @@
 
       if (e.key.length > 1) {
         keysPressed.push(e.key);
-        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', 'Backspace', 'Delete'].includes(e.key)) {
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', 'Backspace', 'Delete', 'Escape', 'Home', 'End'].includes(e.key)) {
           e.preventDefault();
         }
-      } else if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+      } else if (!isComposing && !e.ctrlKey && !e.metaKey && !e.altKey && e.target !== imeInput) {
         pendingText += e.key;
         if (e.key === ' ') e.preventDefault();
       }
-    }, { passive: false });
+    }
 
-    canvas.addEventListener('keyup', (e) => {
+    function handleKeyUp(e) {
       if (e.key.length > 1) {
         keysReleased.push(e.key);
       }
+    }
+
+    canvas.addEventListener('keydown', handleKeyDown, { passive: false });
+    canvas.addEventListener('keyup', handleKeyUp);
+    imeInput.addEventListener('keydown', handleKeyDown, { passive: false });
+    imeInput.addEventListener('keyup', handleKeyUp);
+
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    }, { passive: true });
+
+    canvas.addEventListener('mousedown', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      if (e.button === 0) {
+        isMouseDown = true;
+        canvas.focus();
+        if (imeInput) imeInput.focus();
+      } else if (e.button === 2) {
+        isSecondaryMouseDown = true;
+        canvas.focus();
+      }
     });
+
+    window.addEventListener('mouseup', (e) => {
+      if (e.button === 0) {
+        isMouseDown = false;
+      } else if (e.button === 2) {
+        isSecondaryMouseDown = false;
+      }
+    });
+
+    // Touch gesture support for mobile and stylus pointers
+    function updateTouchPointer(e) {
+      if (!canvas || !e.touches || e.touches.length === 0) return;
+      const t = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      mouseX = t.clientX - rect.left;
+      mouseY = t.clientY - rect.top;
+    }
+
+    canvas.addEventListener('touchstart', (e) => {
+      updateTouchPointer(e);
+      isMouseDown = true;
+      if (imeInput) imeInput.focus();
+      if (e.cancelable) e.preventDefault();
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', (e) => {
+      updateTouchPointer(e);
+      if (e.cancelable) e.preventDefault();
+    }, { passive: false });
+
+    window.addEventListener('touchend', () => {
+      isMouseDown = false;
+    });
+
+    window.addEventListener('touchcancel', () => {
+      isMouseDown = false;
+    });
+
+    canvas.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      mouseX = -100;
+      mouseY = -100;
+    });
+
+    // Trackpad and wheel scrolling supporting vertical and horizontal delta
+    canvas.addEventListener('wheel', (e) => {
+      scrollDy += e.deltaY;
+      if (Math.abs(e.deltaX) > 0.01 && Math.abs(e.deltaY) < 0.01) {
+        scrollDy += e.deltaX;
+      }
+      e.preventDefault();
+    }, { passive: false });
 
     window.addEventListener('resize', resizeCanvas);
   }
@@ -291,6 +374,25 @@
           cachedLineWidth = -1;
           break;
         }
+        case 8: { // LinearGradient: cmd._0: rect, cmd._1: p1, cmd._2: p2, cmd._3: col1, cmd._4: col2, cmd._5: radius
+          const rect = cmd._0;
+          const p1 = cmd._1;
+          const p2 = cmd._2;
+          const grad = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+          grad.addColorStop(0, getColorStr(cmd._3));
+          grad.addColorStop(1, getColorStr(cmd._4));
+          ctx.fillStyle = grad;
+          cachedFillStyle = '';
+          const radius = cmd._5 || 0;
+          if (radius > 1 && ctx.roundRect) {
+            ctx.beginPath();
+            ctx.roundRect(rect.x, rect.y, rect.w, rect.h, radius);
+            ctx.fill();
+          } else {
+            ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+          }
+          break;
+        }
       }
     }
   }
@@ -320,7 +422,8 @@
         pendingText,
         keysPressed,
         keysReleased,
-        modFlags
+        modFlags,
+        isSecondaryMouseDown
       );
       const kTime = (performance.now() - t0).toFixed(2);
 
@@ -361,6 +464,22 @@
   window.setGalleryActiveComp = function (compId) {
     currentCompId = compId;
     resizeCanvas();
+  };
+
+  window.setGalleryViewMode = function (mode) {
+    if (window.moon_set_gallery_view_mode) {
+      try {
+        window.moon_set_gallery_view_mode(mode);
+      } catch (e) {}
+    }
+  };
+
+  window.setGalleryTheme = function (themeIdx) {
+    if (window.moon_set_gallery_theme) {
+      try {
+        window.moon_set_gallery_theme(themeIdx);
+      } catch (e) {}
+    }
   };
 
   window.initNativeGallery = initCanvas;

@@ -312,6 +312,12 @@ pub fn Color::sparkline_wash() -> Color {
 }
 
 ///|
+/// Area wash overlay for charts and sparkline plots.
+pub fn Color::area_wash(base : Color) -> Color {
+  { r: base.r, g: base.g, b: base.b, a: 30, }
+}
+
+///|
 pub fn Color::badge_success_bg() -> Color {
   Color::hex(0xF0FDF4)
 }

@@ -92,3 +92,25 @@ test "dialog: clicking backdrop outside card cancels dialog" {
 
   assert_eq(res, DialogResult::Cancelled)
 }
+
+///|
+test "dialog: multiline message dynamic height and Tab focus trapping" {
+  let ctx = UIContext::new()
+  let bg_btn_id = Id::from_string("background_button")
+  ctx.begin_frame(RawInput::new())
+  ctx.register_focusable(bg_btn_id)
+
+  let long_msg = "This is a long multiline message designed to test the dynamic card height calculation.\nSecond paragraph with additional details that wraps across multiple lines safely."
+  let _ = ctx.dialog("wrap_dlg", "Dynamic Title", long_msg)
+
+  // Verify background button was evicted from focus chain by dialog modal focus trapping
+  assert_false(ctx.focusable_ids.contains(bg_btn_id))
+  let cancel_id = ctx.id_stack.derive_id("wrap_dlg::cancel")
+  let confirm_id = ctx.id_stack.derive_id("wrap_dlg::confirm")
+  assert_true(ctx.focusable_ids.contains(cancel_id))
+  assert_true(ctx.focusable_ids.contains(confirm_id))
+  assert_true(ctx.has_focus(confirm_id))
+
+  let dl = ctx.end_frame()
+  assert_true(dl.len() > 10)
+}

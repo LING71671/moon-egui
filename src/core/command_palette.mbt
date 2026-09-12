@@ -211,8 +211,45 @@ pub fn UIContext::command_palette(
     }
   }
 
-  let card_h = header_h + content_h + footer_h + 12.0 * scale
+  let max_content_h = 320.0 * scale
+  let visible_content_h = if content_h > max_content_h {
+    max_content_h
+  } else {
+    content_h
+  }
+  let card_h = header_h + visible_content_h + footer_h + 12.0 * scale
   let card_rect = @math.Rect::new(card_x, card_y, card_w, card_h)
+
+  // Scroll offset tracking
+  let content_clip_rect = @math.Rect::new(
+    card_x,
+    card_y + header_h,
+    card_w,
+    visible_content_h + 12.0 * scale,
+  )
+  let scroll_id = self.id_stack.derive_id("cmd_palette_scroll")
+  let mut scroll_y = self.get_scroll_offset(scroll_id)
+  let max_scroll = if content_h > visible_content_h {
+    content_h - visible_content_h
+  } else {
+    0.0
+  }
+  if self.is_hovered(content_clip_rect) && self.input.scroll_delta.y != 0.0 {
+    scroll_y = scroll_y - self.input.scroll_delta.y
+  }
+  let selected_top = new_selected_index.to_double() * row_h
+  if selected_top < scroll_y {
+    scroll_y = selected_top
+  } else if selected_top + row_h > scroll_y + visible_content_h {
+    scroll_y = selected_top + row_h - visible_content_h
+  }
+  if scroll_y < 0.0 {
+    scroll_y = 0.0
+  }
+  if scroll_y > max_scroll {
+    scroll_y = max_scroll
+  }
+  self.set_scroll_offset(scroll_id, scroll_y)
 
   // Block hover on underlying canvas
   self.block_hover(scrim_rect)
@@ -234,7 +271,7 @@ pub fn UIContext::command_palette(
   let elevation_ambient_y = 2.0 * scale
 
   // Mouse hover & click on item rows
-  let mut cur_row_y = card_y + header_h + row_pad_x
+  let mut cur_row_y = card_y + header_h + row_pad_x - scroll_y
   let mut prev_row_cat = ""
   let mut clicked_id : String? = None
 
@@ -245,7 +282,8 @@ pub fn UIContext::command_palette(
       prev_row_cat = item.category
     }
     let row_rect = @math.Rect::new(card_x + row_pad_x, cur_row_y, row_w, row_h)
-    if row_rect.contains(self.input.mouse_pos) {
+    if content_clip_rect.contains(self.input.mouse_pos) &&
+      row_rect.contains(self.input.mouse_pos) {
       self.set_cursor_icon("pointer")
       new_selected_index = idx
       if self.input.mouse_pressed {
@@ -355,7 +393,8 @@ pub fn UIContext::command_palette(
   )
 
   // Results Stream
-  let mut draw_y = card_y + header_h + row_pad_x
+  self.push_clip(content_clip_rect)
+  let mut draw_y = card_y + header_h + row_pad_x - scroll_y
   let mut prev_draw_cat = ""
 
   if filtered_count == 0 {
@@ -436,6 +475,7 @@ pub fn UIContext::command_palette(
       draw_y = draw_y + row_h
     }
   }
+  self.pop_clip()
 
   // Footer bar
   let footer_y = card_y + card_h - footer_h

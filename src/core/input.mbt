@@ -66,6 +66,16 @@ pub fn Modifiers::none() -> Modifiers {
 }
 
 ///|
+pub fn Modifiers::ctrl() -> Modifiers {
+  { ctrl: true, shift: false, alt: false, meta: false, }
+}
+
+///|
+pub fn Modifiers::shift() -> Modifiers {
+  { ctrl: false, shift: true, alt: false, meta: false, }
+}
+
+///|
 pub fn Modifiers::new(
   ctrl : Bool,
   shift : Bool,
@@ -91,6 +101,7 @@ pub struct RawInput {
   events : Array[Event]
   text_input : String
   modifiers : Modifiers
+  mouse_secondary_down : Bool
 } derive(Eq, Debug)
 
 ///|
@@ -103,6 +114,7 @@ pub fn RawInput::new() -> RawInput {
     events: [],
     text_input: "",
     modifiers: Modifiers::none(),
+    mouse_secondary_down: false,
   }
 }
 
@@ -110,15 +122,18 @@ pub fn RawInput::new() -> RawInput {
 pub fn RawInput::from_mouse(
   mouse_pos : @math.Vec2,
   mouse_down : Bool,
+  mouse_secondary_down? : Bool = false,
+  dt? : Double = 0.0166,
 ) -> RawInput {
   {
     mouse_pos,
     mouse_down,
     scroll_delta: @math.Vec2::zero(),
-    dt: 0.0166,
+    dt,
     events: [],
     text_input: "",
     modifiers: Modifiers::none(),
+    mouse_secondary_down,
   }
 }
 
@@ -134,15 +149,18 @@ pub fn RawInput::with_events(
   events : Array[Event],
   text_input : String,
   modifiers : Modifiers,
+  mouse_secondary_down? : Bool = false,
+  dt? : Double = 0.0166,
 ) -> RawInput {
   {
     mouse_pos,
     mouse_down,
     scroll_delta,
-    dt: 0.0166,
+    dt,
     events,
     text_input,
     modifiers,
+    mouse_secondary_down,
   }
 }
 
@@ -154,11 +172,15 @@ pub struct InputState {
   mut mouse_down : Bool
   mut mouse_pressed : Bool
   mut mouse_released : Bool
+  mut mouse_secondary_down : Bool
+  mut mouse_secondary_pressed : Bool
+  mut mouse_secondary_released : Bool
   mut scroll_delta : @math.Vec2
   mut dt : Double
   keys_down : Array[Key]
   keys_pressed : Array[Key]
   keys_released : Array[Key]
+  consumed_keys : Array[Key]
   mut text_input : String
   mut modifiers : Modifiers
   events : Array[Event]
@@ -173,11 +195,15 @@ pub fn InputState::new() -> InputState {
     mouse_down: false,
     mouse_pressed: false,
     mouse_released: false,
+    mouse_secondary_down: false,
+    mouse_secondary_pressed: false,
+    mouse_secondary_released: false,
     scroll_delta: @math.Vec2::zero(),
     dt: 0.0166,
     keys_down: [],
     keys_pressed: [],
     keys_released: [],
+    consumed_keys: [],
     text_input: "",
     modifiers: Modifiers::none(),
     events: [],
@@ -193,11 +219,18 @@ pub fn InputState::update(self : InputState, raw : RawInput) -> Unit {
   self.mouse_down = raw.mouse_down
   self.mouse_pressed = raw.mouse_down && !was_down
   self.mouse_released = !raw.mouse_down && was_down
+
+  let was_sec_down = self.mouse_secondary_down
+  self.mouse_secondary_down = raw.mouse_secondary_down
+  self.mouse_secondary_pressed = raw.mouse_secondary_down && !was_sec_down
+  self.mouse_secondary_released = !raw.mouse_secondary_down && was_sec_down
+
   self.scroll_delta = raw.scroll_delta
   self.dt = if raw.dt > 0.0 { raw.dt } else { 0.0166 }
 
   self.keys_pressed.clear()
   self.keys_released.clear()
+  self.consumed_keys.clear()
   self.text_input = raw.text_input
   self.modifiers = raw.modifiers
   self.events.clear()
@@ -254,6 +287,33 @@ pub fn InputState::mouse_pressed(self : InputState) -> Bool {
 ///|
 pub fn InputState::mouse_released(self : InputState) -> Bool {
   self.mouse_released
+}
+
+///|
+pub fn InputState::mouse_secondary_down(self : InputState) -> Bool {
+  self.mouse_secondary_down
+}
+
+///|
+pub fn InputState::mouse_secondary_pressed(self : InputState) -> Bool {
+  self.mouse_secondary_pressed
+}
+
+///|
+pub fn InputState::mouse_secondary_released(self : InputState) -> Bool {
+  self.mouse_secondary_released
+}
+
+///|
+pub fn InputState::consume_key(self : InputState, key : Key) -> Unit {
+  if !self.consumed_keys.contains(key) {
+    self.consumed_keys.push(key)
+  }
+}
+
+///|
+pub fn InputState::is_key_consumed(self : InputState, key : Key) -> Bool {
+  self.consumed_keys.contains(key)
 }
 
 ///|

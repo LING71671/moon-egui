@@ -153,6 +153,7 @@ test "tree_view: keyboard ArrowDown and ArrowUp navigate visible items" {
   let raw2 = {
     mouse_pos: @math.Vec2::new(0.0, 0.0),
     mouse_down: false,
+    mouse_secondary_down: false,
     scroll_delta: @math.Vec2::zero(),
     dt: 0.0166,
     events: [Event::Key(Key::ArrowDown, true, Modifiers::none())],
@@ -173,6 +174,7 @@ test "tree_view: keyboard ArrowDown and ArrowUp navigate visible items" {
   let raw3 = {
     mouse_pos: @math.Vec2::new(0.0, 0.0),
     mouse_down: false,
+    mouse_secondary_down: false,
     scroll_delta: @math.Vec2::zero(),
     dt: 0.0166,
     events: [Event::Key(Key::ArrowUp, true, Modifiers::none())],
@@ -209,6 +211,7 @@ test "tree_view: keyboard ArrowRight expands and ArrowLeft collapses node" {
   let raw2 = {
     mouse_pos: @math.Vec2::new(0.0, 0.0),
     mouse_down: false,
+    mouse_secondary_down: false,
     scroll_delta: @math.Vec2::zero(),
     dt: 0.0166,
     events: [Event::Key(Key::ArrowRight, true, Modifiers::none())],
@@ -230,6 +233,7 @@ test "tree_view: keyboard ArrowRight expands and ArrowLeft collapses node" {
   let raw3 = {
     mouse_pos: @math.Vec2::new(0.0, 0.0),
     mouse_down: false,
+    mouse_secondary_down: false,
     scroll_delta: @math.Vec2::zero(),
     dt: 0.0166,
     events: [Event::Key(Key::ArrowLeft, true, Modifiers::none())],

@@ -93,16 +93,17 @@ pub fn UIContext::badge(
   dot? : Bool = false,
   pill? : Bool = false,
 ) -> Response {
-  let font_sz = self.style.font_small
+  let scale = self.style.scale
+  let font_sz = self.style.font_small * scale
   let text_sz = self.measure_text(text, font_sz)
 
-  let dot_w = if dot { 12.0 } else { 0.0 }
-  let pad_x = 8.0
-  let h = 22.0
+  let dot_w = if dot { self.style.badge_dot_w * scale } else { 0.0 }
+  let pad_x = self.style.badge_pad_x * scale
+  let h = self.style.badge_h * scale
   let w = pad_x * 2.0 + dot_w + text_sz.x
 
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
-  let radius = if pill { h * 0.5 } else { 4.0 }
+  let radius = if pill { h * 0.5 } else { self.style.badge_radius * scale }
 
   let (bg, border, fg) = badge_colors(kind)
 
@@ -113,8 +114,9 @@ pub fn UIContext::badge(
 
   // Status dot
   if dot {
-    let dot_center = @math.Vec2::new(current_x + 3.0, rect.y + h * 0.5)
-    self.draw_list.add_circle(dot_center, 3.0, fg)
+    let dot_r = 3.0 * scale
+    let dot_center = @math.Vec2::new(current_x + dot_r, rect.y + h * 0.5)
+    self.draw_list.add_circle(dot_center, dot_r, fg)
     current_x = current_x + dot_w
   }
 

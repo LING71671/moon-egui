@@ -43,13 +43,18 @@ pub fn UIContext::split_horizontal(
     split_ratio
   }
 
-  // Enforce physical pixel bounds
-  let mut left_w = w * raw_ratio
-  if left_w < min_px {
-    left_w = min_px
+  if w <= 0.0 || h <= 0.0 {
+    return raw_ratio
   }
-  if w - left_w < min_px {
-    left_w = w - min_px
+
+  // Enforce physical pixel bounds safely
+  let safe_min_px = if min_px * 2.0 > w { w * 0.5 } else { min_px }
+  let mut left_w = w * raw_ratio
+  if left_w < safe_min_px {
+    left_w = safe_min_px
+  }
+  if w - left_w < safe_min_px {
+    left_w = w - safe_min_px
   }
   let mut effective_ratio = left_w / w
 
@@ -80,11 +85,11 @@ pub fn UIContext::split_horizontal(
     if self.input.mouse_down {
       let mouse_rel_x = self.input.mouse_pos.x - container_rect.x
       let mut clamped_x = mouse_rel_x
-      if clamped_x < min_px {
-        clamped_x = min_px
+      if clamped_x < safe_min_px {
+        clamped_x = safe_min_px
       }
-      if w - clamped_x < min_px {
-        clamped_x = w - min_px
+      if w - clamped_x < safe_min_px {
+        clamped_x = w - safe_min_px
       }
       effective_ratio = clamped_x / w
       if effective_ratio < min_ratio {
@@ -197,12 +202,17 @@ pub fn UIContext::split_vertical(
     split_ratio
   }
 
-  let mut top_h = h * raw_ratio
-  if top_h < min_px {
-    top_h = min_px
+  if w <= 0.0 || h <= 0.0 {
+    return raw_ratio
   }
-  if h - top_h < min_px {
-    top_h = h - min_px
+
+  let safe_min_px = if min_px * 2.0 > h { h * 0.5 } else { min_px }
+  let mut top_h = h * raw_ratio
+  if top_h < safe_min_px {
+    top_h = safe_min_px
+  }
+  if h - top_h < safe_min_px {
+    top_h = h - safe_min_px
   }
   let mut effective_ratio = top_h / h
 
@@ -232,11 +242,11 @@ pub fn UIContext::split_vertical(
     if self.input.mouse_down {
       let mouse_rel_y = self.input.mouse_pos.y - container_rect.y
       let mut clamped_y = mouse_rel_y
-      if clamped_y < min_px {
-        clamped_y = min_px
+      if clamped_y < safe_min_px {
+        clamped_y = safe_min_px
       }
-      if h - clamped_y < min_px {
-        clamped_y = h - min_px
+      if h - clamped_y < safe_min_px {
+        clamped_y = h - safe_min_px
       }
       effective_ratio = clamped_y / h
       if effective_ratio < min_ratio {

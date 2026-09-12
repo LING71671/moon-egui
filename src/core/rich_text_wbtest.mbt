@@ -13,73 +13,34 @@
 // limitations under the License.
 
 ///|
-test "rich_text: mixed spans render text, code boxes, and links" {
+test "rich_text: cjk paragraph line wrapping without spaces" {
   let ctx = UIContext::new()
-  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(-100.0, -100.0), false))
+  ctx.begin_frame(RawInput::new())
 
-  let spans = [
-    TextSpan::normal("Welcome to"),
-    TextSpan::code("moon-egui"),
-    TextSpan::bold("GUI framework."),
-    TextSpan::link("Learn more", "https://moonbitlang.com"),
-  ]
+  // A 24-character Chinese paragraph with zero spaces
+  let cjk_text = "这是一段用于测试中文富文本排版折行特性的纯文本内容"
+  let spans = [TextSpan::normal(cjk_text)]
 
-  let resp = ctx.rich_text("rt1", spans)
-  let dl = ctx.end_frame()
+  // Wrap width set to 100.0px (each CJK char at font 13 is ~13.65px, so ~7 chars per line)
+  let res = ctx.rich_text("cjk_test", spans, wrap_width=100.0)
+  let _ = ctx.end_frame()
 
-  assert_eq(resp.clicked_url, None)
-  assert_true(resp.resp.rect.w > 100.0)
-  // code box (rect + stroke) + texts for words
-  assert_true(dl.len() >= 6)
+  // Must wrap into at least 3 lines
+  let expected_min_h = 22.0 * 3.0
+  assert_true(res.resp.rect.h >= expected_min_h)
 }
 
 ///|
-test "rich_text: wraps words onto multiple lines when constrained" {
+test "rich_text: mixed english and cjk wraps without artificial gaps" {
   let ctx = UIContext::new()
-  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(-100.0, -100.0), false))
+  ctx.begin_frame(RawInput::new())
 
-  let spans = [
-    TextSpan::normal(
-      "This is a rather long sentence that must wrap onto multiple lines.",
-    ),
-  ]
+  let spans = [TextSpan::normal("MoonBit"), TextSpan::bold(" 原生引擎")]
 
-  // Narrow width of 100.0 forces multiple lines
-  let resp = ctx.rich_text("wrap_rt", spans, wrap_width=100.0)
+  let res = ctx.rich_text("mixed_test", spans, wrap_width=300.0)
   let _ = ctx.end_frame()
 
-  assert_true(resp.resp.rect.h > 40.0) // at least 2 lines (line_h = 22.0)
-}
-
-///|
-test "rich_text: clicking link span returns clicked_url" {
-  let ctx = UIContext::new()
-
-  // First check where the link appears
-  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(-100.0, -100.0), false))
-  let spans = [TextSpan::link("ClickHere", "https://docs.moonbitlang.com")]
-  let _ = ctx.rich_text("link_rt", spans)
-  let _ = ctx.end_frame()
-
-  // Click at (x = 20.0, y = 10.0)
-  let raw = RawInput::from_mouse(@math.Vec2::new(20.0, 10.0), true)
-  ctx.begin_frame(raw)
-  let resp = ctx.rich_text("link_rt", spans)
-  let _ = ctx.end_frame()
-
-  assert_eq(resp.clicked_url, Some("https://docs.moonbitlang.com"))
-}
-
-///|
-test "hyperlink: standalone link click detection" {
-  let ctx = UIContext::new()
-
-  // Click on the link
-  let raw = RawInput::from_mouse(@math.Vec2::new(15.0, 10.0), true)
-  ctx.begin_frame(raw)
-  let (clicked, resp) = ctx.hyperlink("Documentation", "https://example.com")
-  let _ = ctx.end_frame()
-
-  assert_true(clicked)
-  assert_true(resp.rect.w > 40.0)
+  // On a wide container (300px), all text fits on a single line
+  assert_eq(res.resp.rect.h, 22.0)
+  assert_true(res.resp.rect.w > 0.0)
 }

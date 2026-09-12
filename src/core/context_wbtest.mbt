@@ -159,6 +159,7 @@ test "keyboard input events, text input, and modifiers" {
     ],
     text_input: "",
     modifiers: Modifiers::new(true, false, false, false),
+    mouse_secondary_down: false,
   }
 
   ctx.begin_frame(raw)
@@ -181,6 +182,7 @@ test "keyboard input events, text input, and modifiers" {
     events: [Event::Key(Key::Tab, false, Modifiers::none())],
     text_input: "",
     modifiers: Modifiers::none(),
+    mouse_secondary_down: false,
   }
   ctx.begin_frame(raw2)
   assert_true(!ctx.input().key_down(Key::Tab))
@@ -252,6 +254,7 @@ test "tab key navigation cycles through registered focusable widgets" {
     events: [Event::Key(Key::Tab, true, Modifiers::none())],
     text_input: "",
     modifiers: Modifiers::none(),
+    mouse_secondary_down: false,
   }
   ctx.begin_frame(raw_tab)
   ctx.register_focusable(id_a)
@@ -287,6 +290,7 @@ test "tab key navigation cycles through registered focusable widgets" {
     ],
     text_input: "",
     modifiers: Modifiers::new(false, true, false, false),
+    mouse_secondary_down: false,
   }
   ctx.begin_frame(raw_shift_tab)
   ctx.register_focusable(id_a)
@@ -606,4 +610,124 @@ test "a window declared inside a clip stack ignores that clip" {
   // ignore the clip too, and the caller's clip stack must come back intact.
   assert_true(resp.hovered())
   assert_true(ctx.current_clip() is None)
+}
+
+///|
+test "id: integer derivation produces deterministic distinct IDs without string allocation" {
+  let stack = IdStack::new()
+  let id1 = stack.derive_int(1)
+  let id2 = stack.derive_int(2)
+  let id1_repeat = stack.derive_int(1)
+
+  assert_eq(id1, id1_repeat)
+  assert_true(id1 != id2)
+  assert_true(id1.is_valid())
+  assert_true(id2.is_valid())
+
+  // Stacked integer derivation
+  stack.push("sub_container")
+  let id_sub1 = stack.derive_int(1)
+  assert_true(id_sub1 != id1)
+  stack.pop()
+  let id1_after_pop = stack.derive_int(1)
+  assert_eq(id1, id1_after_pop)
+}
+
+///|
+test "context: generational state management prunes stale entries while preserving active widgets" {
+  let ctx = UIContext::new()
+  let id_active = Id::from_int(101)
+  let id_stale = Id::from_int(202)
+
+  // Frame 1: Register state for both active and stale widgets
+  ctx.begin_frame(RawInput::new())
+  ctx.set_scroll_offset(id_active, 120.0)
+  ctx.set_scroll_offset(id_stale, 250.0)
+  ctx.set_text_cursor_pos(id_active, 5)
+  ctx.set_text_cursor_pos(id_stale, 12)
+  ctx.set_collapsing_open(id_active, true)
+  ctx.set_collapsing_open(id_stale, true)
+  let _ = ctx.end_frame()
+
+  assert_eq(ctx.get_scroll_offset(id_active), 120.0)
+  assert_eq(ctx.get_scroll_offset(id_stale), 250.0)
+
+  // Simulate advancing 605 frames where id_active is touched each frame but id_stale is unmounted
+  for _ in 0..<605 {
+    ctx.begin_frame(RawInput::new())
+    // Touch active widget
+    let _ = ctx.get_scroll_offset(id_active)
+    let _ = ctx.end_frame()
+  }
+
+  // Explicitly trigger generational prune (ttl = 600 frames)
+  ctx.prune_stale_state(600)
+
+  // Active widget retained its state
+  assert_eq(ctx.get_scroll_offset(id_active), 120.0)
+  assert_eq(ctx.get_text_cursor_pos(id_active, 10), 5)
+  assert_eq(ctx.is_collapsing_open(id_active, false), true)
+
+  // Stale widget was pruned and returns default fallback
+  assert_eq(ctx.get_scroll_offset(id_stale), 0.0)
+  assert_eq(ctx.get_text_cursor_pos(id_stale, 10), 10)
+  assert_eq(ctx.is_collapsing_open(id_stale, false), false)
+}
+
+///|
+test "context: typographical measurement caching and emoji surrogate measurement" {
+  let ctx = UIContext::new()
+  ctx.begin_frame(RawInput::new())
+
+  // Single emoji surrogate pair (4 UTF-16 code units for 2 emojis)
+  let emojis = "\u{1F600}\u{1F680}"
+  let size1 = ctx.measure_text(emojis, 10.0)
+  // Each emoji is 1.05 * 10.0 = 10.5, total 21.0
+  assert_eq(size1.x, 21.0)
+
+  // Verify cache hit by checking text_measure_cache directly
+  assert_eq(ctx.text_measure_cache.get(emojis + "@10"), Some(21.0))
+
+  // Override via set_cached_text_width
+  ctx.set_cached_text_width(emojis, 10.0, 25.0)
+  let size2 = ctx.measure_text(emojis, 10.0)
+  assert_eq(size2.x, 25.0)
+
+  let _ = ctx.end_frame()
+}
+
+///|
+test "context: horizontal_wrapped flow layout" {
+  let ctx = UIContext::new()
+  ctx.begin_frame(RawInput::new())
+
+  let mut p1 = @math.Vec2::zero()
+  let mut p2 = @math.Vec2::zero()
+  let mut p3 = @math.Vec2::zero()
+
+  ctx.horizontal_wrapped(
+    fn(ui) {
+      let (_, r1, _) = ui.allocate_space(@math.Vec2::new(40.0, 20.0))
+      p1 = @math.Vec2::new(r1.x, r1.y)
+      let (_, r2, _) = ui.allocate_space(@math.Vec2::new(40.0, 20.0))
+      p2 = @math.Vec2::new(r2.x, r2.y)
+      // Third item exceeds wrap_width=100 (48 + 40 + 8 = 96, 96 + 40 > 100), wraps to next row
+      let (_, r3, _) = ui.allocate_space(@math.Vec2::new(40.0, 20.0))
+      p3 = @math.Vec2::new(r3.x, r3.y)
+    },
+    wrap_width=100.0,
+  )
+
+  assert_eq(p1.x, 0.0)
+  assert_eq(p1.y, 0.0)
+  assert_eq(p2.x, 48.0)
+  assert_eq(p2.y, 0.0)
+  assert_eq(p3.x, 0.0)
+  assert_eq(p3.y, 28.0) // 0 + 20 + 8
+
+  // Cursor returns to start_x = 0, y = 28 + 20 + 8 = 56.0
+  assert_eq(ctx.cursor().x, 0.0)
+  assert_eq(ctx.cursor().y, 56.0)
+
+  let _ = ctx.end_frame()
 }

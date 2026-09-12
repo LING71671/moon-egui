@@ -66,6 +66,9 @@ pub struct GalleryState {
   mut color_picker_val : @color.Color
   mut breadcrumb_last_clicked : String
   mut rich_text_last_url : String
+  mut view_mode : Int
+  mut curtain_ratio : Double
+  mut theme_idx : Int
 }
 
 ///|
@@ -129,6 +132,9 @@ let gallery_state : GalleryState = {
   color_picker_val: @color.Color::rgb(79, 70, 229),
   breadcrumb_last_clicked: "None",
   rich_text_last_url: "None",
+  view_mode: 0,
+  curtain_ratio: 0.50,
+  theme_idx: 0,
 }
 
 ///|
@@ -1123,10 +1129,24 @@ fn draw_context_menu_showcase(
   )
   ui.spacer(10.0)
 
-  if ui.button_sized("点击弹出右键菜单", @math.Vec2::new(150.0, 30.0)).clicked {
+  let trigger_resp = ui.button_sized(
+    "点击或直接右键弹出菜单",
+    @math.Vec2::new(170.0, 30.0),
+  )
+  if trigger_resp.clicked ||
+    trigger_resp.secondary_clicked ||
+    (
+      ui.input().mouse_secondary_pressed() &&
+      ui.is_hovered(@math.Rect::new(0.0, 0.0, vp_w, vp_h))
+    ) {
     gallery_state.ctx_menu_open = true
-    gallery_state.ctx_menu_pos = @math.Vec2::new(180.0, 120.0)
-    gallery_state.status_text = "Context Menu Opened"
+    gallery_state.ctx_menu_pos = if trigger_resp.secondary_clicked ||
+      ui.input().mouse_secondary_pressed() {
+      ui.input().mouse_pos()
+    } else {
+      @math.Vec2::new(180.0, 120.0)
+    }
+    gallery_state.status_text = "Context Menu Opened at Cursor"
   }
 
   let items = [
@@ -1702,6 +1722,88 @@ fn draw_rich_text_showcase(ui : @core.UIContext) -> Unit {
 // ----------------------------------------------------------------------
 
 ///|
+fn draw_component_preview(
+  ui : @core.UIContext,
+  comp_id : String,
+  cur_w : Double,
+  cur_h : Double,
+) -> Unit {
+  match comp_id {
+    // Basic Input
+    "button" => draw_button_showcase(ui)
+    "text_edit" => draw_text_edit_showcase(ui)
+    "code_editor" => draw_code_editor_showcase(ui)
+
+    // Values & Selection
+    "checkbox" => draw_checkbox_showcase(ui)
+    "toggle" => draw_toggle_showcase(ui)
+    "radio" => draw_radio_showcase(ui)
+    "slider" => draw_slider_showcase(ui)
+    "drag_value" => draw_drag_value_showcase(ui)
+    "knob" => draw_knob_showcase(ui)
+    "combo_box" => draw_combo_box_showcase(ui)
+    "color_button" => draw_color_button_showcase(ui)
+
+    // Feedback & Presentation
+    "progress_bar" => draw_progress_bar_showcase(ui)
+    "collapsing_header" => draw_collapsing_header_showcase(ui)
+    "tree_view" => draw_tree_view_showcase(ui)
+    "tooltip" => draw_tooltip_showcase(ui)
+
+    // Containers & Layout
+    "tab_bar" => draw_tab_bar_showcase(ui)
+    "menu_bar" => draw_menu_bar_showcase(ui)
+    "scroll_area" => draw_scroll_area_showcase(ui)
+    "window" => draw_window_showcase(ui, cur_w, cur_h)
+    "command_palette" => draw_command_palette_showcase(ui)
+    "context_menu" => draw_context_menu_showcase(ui, cur_w, cur_h)
+    "toast" => draw_toast_showcase(ui, cur_w, cur_h)
+    "splitter" => draw_splitter_showcase(ui)
+    "table" => draw_table_showcase(ui)
+    "dialog" => draw_dialog_showcase(ui, cur_w, cur_h)
+    "spinner" => draw_spinner_showcase(ui)
+    "sparkline" => draw_sparkline_showcase(ui)
+    "segmented_control" => draw_segmented_control_showcase(ui)
+    "badge" => draw_badge_showcase(ui)
+    "breadcrumb" => draw_breadcrumb_showcase(ui)
+    "color_picker" => draw_color_picker_showcase(ui)
+    "rich_text" => draw_rich_text_showcase(ui)
+    _ => {
+      let _ = ui.label_colored(
+        "MoonBit 原生组件: " + comp_id,
+        @color.Color::accent_primary(),
+      )
+      ui.spacer(10.0)
+      draw_button_showcase(ui)
+    }
+  }
+}
+
+///|
+pub fn set_gallery_view_mode(mode : Int) -> Unit {
+  if mode >= 0 && mode <= 2 {
+    gallery_state.view_mode = mode
+  }
+}
+
+///|
+pub fn get_gallery_view_mode() -> Int {
+  gallery_state.view_mode
+}
+
+///|
+pub fn set_gallery_theme(theme_idx : Int) -> Unit {
+  if theme_idx >= 0 && theme_idx <= 2 {
+    gallery_state.theme_idx = theme_idx
+  }
+}
+
+///|
+pub fn get_gallery_theme() -> Int {
+  gallery_state.theme_idx
+}
+
+///|
 /// Native MoonBit Component Showcase Frame Entry Point.
 /// Evaluates native widgets and returns pure @draw.DrawList to JavaScript.
 pub fn gallery_step(
@@ -1716,11 +1818,24 @@ pub fn gallery_step(
   keys_pressed : Array[String],
   keys_released : Array[String],
   mod_flags : Int,
+  mouse_secondary_down? : Bool = false,
 ) -> @draw.DrawList {
   let cur_w = if vp_w > 100.0 { vp_w } else { 800.0 }
   let cur_h = if vp_h > 100.0 { vp_h } else { 500.0 }
 
-  // 1. Convert host inputs to RawInput
+  // 1. Sync theme if selected in Studio
+  if gallery_state.theme_idx == 0 && gallery_ctx.theme().name != "studio_light" {
+    gallery_ctx.set_theme(@core.Theme::studio_light())
+  } else if gallery_state.theme_idx == 1 &&
+    gallery_ctx.theme().name != "slate_dark" {
+    gallery_ctx.set_theme(@core.Theme::slate_dark())
+  } else if gallery_state.theme_idx == 2 &&
+    gallery_ctx.theme().name != "high_contrast" {
+    gallery_ctx.set_theme(@core.Theme::high_contrast())
+  }
+  let theme = gallery_ctx.theme()
+
+  // 2. Convert host inputs to RawInput
   let raw = host_raw_input(
     mouse_x,
     mouse_y,
@@ -1730,9 +1845,10 @@ pub fn gallery_step(
     keys_released,
     mod_flags,
     scroll_dy~,
+    mouse_secondary_down~,
   )
 
-  // 2. Begin Frame
+  // 3. Begin Frame
   if comp_id != gallery_state.active_comp_id {
     gallery_state.active_comp_id = comp_id
     gallery_state.cmd_open = false
@@ -1741,86 +1857,190 @@ pub fn gallery_step(
     gallery_ctx.set_open_menu_id(@core.Id::zero())
   }
   gallery_ctx.begin_frame(raw)
-
-  // 3. Render Subtle Studio Light Grid Background
   let dl = gallery_ctx.draw_list
-  dl.add_rect(
-    @math.Rect::new(0.0, 0.0, cur_w, cur_h),
-    @color.Color::bg_subtle(),
-    0.0,
+
+  // 4. Studio Background Wash
+  dl.add_rect(@math.Rect::new(0.0, 0.0, cur_w, cur_h), theme.bg_app, 0.0)
+
+  // 5. In-Canvas Studio Header Bar
+  let header_h = 42.0
+  let header_rect = @math.Rect::new(0.0, 0.0, cur_w, header_h)
+  dl.add_rect(header_rect, theme.bg_surface, 0.0)
+  dl.add_line(
+    @math.Vec2::new(0.0, header_h),
+    @math.Vec2::new(cur_w, header_h),
+    theme.border_muted,
+    1.0,
   )
 
-  // 4. Centered White Porcelain Card Container
-  let pad_x = if cur_w > 560.0 { 32.0 } else { 12.0 }
-  let pad_y = 24.0
-  let card_w = cur_w - pad_x * 2.0
-  let card_h = cur_h - pad_y * 2.0
-  let card_rect = @math.Rect::new(pad_x, pad_y, card_w, card_h)
+  // Window control dots (porcelain decoration)
+  dl.add_circle(@math.Vec2::new(18.0, 21.0), 5.0, @color.Color::hex(0xEF4444))
+  dl.add_circle(@math.Vec2::new(32.0, 21.0), 5.0, @color.Color::hex(0xF59E0B))
+  dl.add_circle(@math.Vec2::new(46.0, 21.0), 5.0, @color.Color::hex(0x10B981))
 
-  // Porcelain Card Disc & Border Shadow
-  dl.add_rect(
-    @math.Rect::new(pad_x, pad_y + 2.0, card_w, card_h),
-    @color.Color::shadow(),
-    8.0,
-  )
-  dl.add_rect(card_rect, @color.Color::bg_window(), 8.0)
-  dl.add_rect_stroke(card_rect, @color.Color::border_default(), 1.0, 8.0)
-
-  // Layout Cursor within Porcelain Card
-  gallery_ctx.set_cursor(@math.Vec2::new(pad_x + 20.0, pad_y + 18.0))
-  gallery_ctx.set_available_width(card_w - 40.0)
-
-  // 5. Component Showcase Dispatcher for ALL 22 components
-  match comp_id {
-    // Basic Input
-    "button" => draw_button_showcase(gallery_ctx)
-    "text_edit" => draw_text_edit_showcase(gallery_ctx)
-    "code_editor" => draw_code_editor_showcase(gallery_ctx)
-
-    // Values & Selection
-    "checkbox" => draw_checkbox_showcase(gallery_ctx)
-    "toggle" => draw_toggle_showcase(gallery_ctx)
-    "radio" => draw_radio_showcase(gallery_ctx)
-    "slider" => draw_slider_showcase(gallery_ctx)
-    "drag_value" => draw_drag_value_showcase(gallery_ctx)
-    "knob" => draw_knob_showcase(gallery_ctx)
-    "combo_box" => draw_combo_box_showcase(gallery_ctx)
-    "color_button" => draw_color_button_showcase(gallery_ctx)
-
-    // Feedback & Presentation
-    "progress_bar" => draw_progress_bar_showcase(gallery_ctx)
-    "collapsing_header" => draw_collapsing_header_showcase(gallery_ctx)
-    "tree_view" => draw_tree_view_showcase(gallery_ctx)
-    "tooltip" => draw_tooltip_showcase(gallery_ctx)
-
-    // Containers & Layout
-    "tab_bar" => draw_tab_bar_showcase(gallery_ctx)
-    "menu_bar" => draw_menu_bar_showcase(gallery_ctx)
-    "scroll_area" => draw_scroll_area_showcase(gallery_ctx)
-    "window" => draw_window_showcase(gallery_ctx, cur_w, cur_h)
-    "command_palette" => draw_command_palette_showcase(gallery_ctx)
-    "context_menu" => draw_context_menu_showcase(gallery_ctx, cur_w, cur_h)
-    "toast" => draw_toast_showcase(gallery_ctx, cur_w, cur_h)
-    "splitter" => draw_splitter_showcase(gallery_ctx)
-    "table" => draw_table_showcase(gallery_ctx)
-    "dialog" => draw_dialog_showcase(gallery_ctx, cur_w, cur_h)
-    "spinner" => draw_spinner_showcase(gallery_ctx)
-    "sparkline" => draw_sparkline_showcase(gallery_ctx)
-    "segmented_control" => draw_segmented_control_showcase(gallery_ctx)
-    "badge" => draw_badge_showcase(gallery_ctx)
-    "breadcrumb" => draw_breadcrumb_showcase(gallery_ctx)
-    "color_picker" => draw_color_picker_showcase(gallery_ctx)
-    "rich_text" => draw_rich_text_showcase(gallery_ctx)
-    _ => {
-      let _ = gallery_ctx.label_colored(
-        "MoonBit 原生组件: " + comp_id,
-        @color.Color::accent_primary(),
-      )
-      gallery_ctx.spacer(10.0)
-      draw_button_showcase(gallery_ctx)
-    }
+  // Component Title & Signature
+  let (comp_title, comp_sig, code_text) = get_gallery_component_info(comp_id)
+  dl.add_text(@math.Vec2::new(64.0, 14.0), comp_title, 13.5, theme.text_strong)
+  if cur_w > 720.0 {
+    dl.add_text(@math.Vec2::new(210.0, 15.0), comp_sig, 11.5, theme.text_muted)
   }
 
-  // 6. End Frame & Output DrawList
+  // Right Header Controls: Theme & View Mode
+  if cur_w > 580.0 {
+    let tm_x = cur_w - 170.0
+    gallery_ctx.set_cursor(@math.Vec2::new(tm_x, 5.0))
+    let (new_tm, _) = gallery_ctx.segmented_control(
+      "studio_theme_seg",
+      ["浅色", "深色", "对比"],
+      gallery_state.theme_idx,
+    )
+    gallery_state.theme_idx = new_tm
+
+    let vm_x = tm_x - 170.0
+    gallery_ctx.set_cursor(@math.Vec2::new(vm_x, 5.0))
+    let (new_vm, _) = gallery_ctx.segmented_control(
+      "studio_view_seg",
+      ["UI", "50/50", "代码"],
+      gallery_state.view_mode,
+    )
+    gallery_state.view_mode = new_vm
+  }
+
+  // 6. Workbench Layout by View Mode
+  let footer_h = 30.0
+  let body_y = header_h
+  let body_h = cur_h - header_h - footer_h
+
+  if gallery_state.view_mode == 0 {
+    // Mode 0: UI Only (100%)
+    let pad_x = if cur_w > 560.0 { 24.0 } else { 12.0 }
+    let pad_y = 16.0
+    let card_w = cur_w - pad_x * 2.0
+    let card_h = body_h - pad_y * 2.0
+    let card_rect = @math.Rect::new(pad_x, body_y + pad_y, card_w, card_h)
+
+    dl.add_rect(
+      @math.Rect::new(pad_x, body_y + pad_y + 2.0, card_w, card_h),
+      @color.Color::shadow(),
+      8.0,
+    )
+    dl.add_rect(card_rect, theme.bg_window, 8.0)
+    dl.add_rect_stroke(card_rect, theme.border_default, 1.0, 8.0)
+
+    gallery_ctx.set_cursor(@math.Vec2::new(pad_x + 18.0, body_y + pad_y + 16.0))
+    gallery_ctx.set_available_width(card_w - 36.0)
+    draw_component_preview(gallery_ctx, comp_id, card_w, card_h)
+  } else if gallery_state.view_mode == 2 {
+    // Mode 2: Code Only (100%)
+    let pad_x = if cur_w > 560.0 { 24.0 } else { 12.0 }
+    let pad_y = 16.0
+    let code_w = cur_w - pad_x * 2.0
+    let code_h = body_h - pad_y * 2.0
+    gallery_ctx.set_cursor(@math.Vec2::new(pad_x, body_y + pad_y))
+    let _ = gallery_ctx.code_editor(
+      "studio_code_editor_full",
+      code_text,
+      size=@math.Vec2::new(code_w, code_h),
+      show_line_numbers=true,
+      read_only=true,
+    )
+  } else {
+    // Mode 1: 50/50 Split Curtain
+    gallery_ctx.set_cursor(@math.Vec2::new(0.0, body_y))
+    let split_size = @math.Vec2::new(cur_w, body_h)
+    let new_ratio = gallery_ctx.split_horizontal(
+      "studio_curtain_split",
+      gallery_state.curtain_ratio,
+      split_size,
+      fn(ui_left, left_rect) {
+        let pad = 12.0
+        let preview_rect = @math.Rect::new(
+          left_rect.x + pad,
+          left_rect.y + pad,
+          left_rect.w - pad * 2.0,
+          left_rect.h - pad * 2.0,
+        )
+        ui_left.draw_list.add_rect(preview_rect, theme.bg_window, 8.0)
+        ui_left.draw_list.add_rect_stroke(
+          preview_rect,
+          theme.border_default,
+          1.0,
+          8.0,
+        )
+        ui_left.set_cursor(
+          @math.Vec2::new(preview_rect.x + 16.0, preview_rect.y + 16.0),
+        )
+        ui_left.set_available_width(preview_rect.w - 32.0)
+        draw_component_preview(ui_left, comp_id, preview_rect.w, preview_rect.h)
+      },
+      fn(ui_right, right_rect) {
+        let pad = 12.0
+        let code_w = right_rect.w - pad * 2.0
+        let code_h = right_rect.h - pad * 2.0
+        ui_right.set_cursor(
+          @math.Vec2::new(right_rect.x + pad, right_rect.y + pad),
+        )
+        let _ = ui_right.code_editor(
+          "studio_code_editor_split",
+          code_text,
+          size=@math.Vec2::new(code_w, code_h),
+          show_line_numbers=true,
+          read_only=true,
+        )
+      },
+      min_px=180.0,
+    )
+    gallery_state.curtain_ratio = new_ratio
+  }
+
+  // 7. Studio Footer Bar
+  let footer_y = cur_h - footer_h
+  dl.add_rect(
+    @math.Rect::new(0.0, footer_y, cur_w, footer_h),
+    theme.bg_surface,
+    0.0,
+  )
+  dl.add_line(
+    @math.Vec2::new(0.0, footer_y),
+    @math.Vec2::new(cur_w, footer_y),
+    theme.border_muted,
+    1.0,
+  )
+
+  dl.add_text(
+    @math.Vec2::new(16.0, footer_y + 8.0),
+    "状态响应: " + gallery_state.status_text,
+    11.5,
+    theme.text_secondary,
+  )
+
+  let code_pct = (gallery_state.curtain_ratio * 100.0).to_int()
+  let ui_pct = 100 - code_pct
+  let ratio_str = if gallery_state.view_mode == 0 {
+    "视图: 纯 UI (0%)"
+  } else if gallery_state.view_mode == 2 {
+    "视图: 源码 (100%)"
+  } else {
+    "视图: 50/50 对比 (代码 " +
+    code_pct.to_string() +
+    "% | UI " +
+    ui_pct.to_string() +
+    "%)"
+  }
+  dl.add_text(
+    @math.Vec2::new(cur_w * 0.5 - 75.0, footer_y + 8.0),
+    ratio_str,
+    11.5,
+    theme.text_muted,
+  )
+
+  dl.add_text(
+    @math.Vec2::new(cur_w - 180.0, footer_y + 8.0),
+    "内核刷新率: 60 FPS (Wasm-GC)",
+    11.5,
+    theme.text_muted,
+  )
+
+  // 8. End Frame & Output DrawList
   gallery_ctx.end_frame()
 }

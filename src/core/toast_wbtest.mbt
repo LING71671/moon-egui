@@ -81,6 +81,7 @@ test "toast: time decay advances elapsed and expires" {
     events: [],
     text_input: "",
     modifiers: Modifiers::none(),
+    mouse_secondary_down: false,
   }
   ctx.begin_frame(raw1)
 
@@ -100,6 +101,7 @@ test "toast: time decay advances elapsed and expires" {
     events: [],
     text_input: "",
     modifiers: Modifiers::none(),
+    mouse_secondary_down: false,
   }
   ctx2.begin_frame(raw2)
   let res2 = ctx2.toast_stack(res1.active_toasts)
