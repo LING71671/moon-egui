@@ -16,7 +16,7 @@
 /// Core dispatch trait for first-class widgets that return a Response.
 /// Implementing this trait allows any widget to be added to a UIContext
 /// via `ui.add(widget)`.
-pub trait Widget {
+pub(open) trait Widget {
   fn ui(Self, UIContext) -> Response
 }
 
