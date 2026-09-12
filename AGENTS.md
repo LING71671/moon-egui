@@ -87,3 +87,34 @@ Hardcoding arbitrary constants (magic numbers, raw color literals, fixed layout 
 5. **Showcase and Demo Layouts**:
    - Example stages in `examples/canvas/` must use structured container queries and `available_width` instead of arbitrary manual subtractions (e.g. `card_w - 32.0`, `card_w - 40.0`).
 
+## Synchronous Release and Publishing Standard (Mandatory)
+
+Every version release of this library **MUST** execute a synchronized dual-channel release across MoonBit Mooncake Registry and Git remote repository in strict lockstep. Releasing to one channel without the other is strictly prohibited.
+
+The canonical release procedure is defined as follows:
+
+1. **Version Declaration**:
+   - Bump `version = "X.Y.Z"` in `moon.mod` adhering to Semantic Versioning (`MAJOR.MINOR.PATCH`).
+   - If public API changes occur, reflect breaking or additive changes in package documentation.
+
+2. **Interface Generation and Code Formatting**:
+   - Execute `moon info && moon fmt`.
+   - Review package `.mbti` diffs to ensure no unintended breaking changes or interface drift.
+
+3. **Compilation and Test Suite Verification**:
+   - Execute `moon test` and ensure 100% test pass rate across all unit and whitebox tests.
+   - Verify Wasm-GC compatibility via `moon check --target wasm-gc`.
+   - Rebuild demo bundle via `pwsh scripts/build_demo.ps1` to keep runtime assets in sync.
+
+4. **Mooncake Central Registry Publishing**:
+   - Run `moon publish --dry-run` to validate package archive construction and server pre-flight checks (verifying `Server status: 202 Accepted`).
+   - Run `moon publish` to formally upload the package archive. Verify `Server status: 200 OK`.
+   - Run `moon update` to refresh the local registry index and verify that the new version appears in `$env:USERPROFILE\.moon\registry\index\user\LING71671\moon-egui.index`.
+
+5. **Git Commit, Tagging, and Synchronous Remote Push**:
+   - Stage all modified files (`moon.mod`, `.mbti`, source files, demo bundles, issue trackers).
+   - Commit using Conventional Commits: `release: vX.Y.Z - <summary>`.
+   - Create an annotated Git tag: `git tag -a vX.Y.Z -m "<release-notes>"`.
+   - Push both the main branch and release tags synchronously: `git push origin main && git push origin vX.Y.Z` (or `git push && git push --tags`).
+   - Ensure working tree is clean and `origin/main` is in lockstep with local HEAD.
+
