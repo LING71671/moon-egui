@@ -58,25 +58,33 @@ MoonBit 拥有极其独特且清晰的工程范式，提交代码需严格遵守
 
 ---
 
-## 4. Git 提交信息规范 (Conventional Commits)
+## 4. Git 提交信息规范与细粒度准则 (Conventional Commits)
 
-本项目严格遵循 [Conventional Commits](https://www.conventionalcommits.org/) 规范：
+本项目严格遵循 [Conventional Commits](https://www.conventionalcommits.org/) 规范与原子化细粒度提交原则：
 
 格式要求：`<type>(<scope>): <简要描述>`
+
+提交核心原则：
+- **单一职责与原子化 (Atomic Scope)**：每次提交仅覆盖一个逻辑职责。严禁将内核实现、样式令牌、测试套件、编译产物与文档混杂在单次大提交中。
+- **阶段性流水线拆分**：大型任务按逻辑依赖拆分为有序提交链（`feat(core)` 核心图元 -> `style(theme)` 样式令牌 -> `test(core)` 测试用例 -> `build(demo)` 编译产物 -> `docs` 文档与路线图）。
+- **控制提交规模 (Size Guardrails)**：保持提交小巧清晰、易于审查与精确回溯（单个提交涉及跨领域文件建议控制在 5-8 个以内）。
 
 标准类型：
 - `feat`：新增用户可见的功能或控件套件
 - `fix`：修复 Bug 缺陷
-- `docs`：文档增补或设计白皮书更新
-- `test`：新增或重构测试用例
+- `style`：设计令牌、排版度量或格式整理
+- `docs`：文档增补、更新日志或路线图更新
+- `test`：新增或重构白盒/黑盒测试用例
 - `refactor`：非功能性重构代码
 - `perf`：性能调优与零分配优化
-- `chore`：构建脚本、依赖配置或工程维护
+- `build`：编译构建脚本、编译目标配置或画板打包产物
+- `chore`：依赖配置或工程维护
 
 示例：
-- `feat(widget): add SliderFloat and DragValue controls`
+- `feat(core): add Plot and BarChart chart widgets`
+- `style(theme): normalize widget sizing tokens in WidgetStyle`
+- `test(core): add whitebox test suite for PlotPoint`
 - `fix(window): correct Z-index focus sorting on pointer down`
-- `test(geom): add AABB boundary intersection edge case tests`
 
 ---
 

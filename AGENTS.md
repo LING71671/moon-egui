@@ -135,3 +135,34 @@ The canonical release procedure is defined as follows:
      `gh release create vX.Y.Z -t "vX.Y.Z — <Title>" -F scratch/release_notes_vX.Y.Z.md`
    - Verify that the release displays as `Latest` on `https://github.com/LING71671/moon-egui/releases`.
 
+## Commit Granularity and Categorization Standard (Mandatory)
+
+All commits in this repository must strictly adhere to fine-grained categorization and size constraints. Monolithic, omnibus, or catch-all commits are strictly prohibited:
+
+1. **Single Concern & Atomic Scope**:
+   - Each commit must encapsulate exactly one logical concern or architectural layer.
+   - Forbid mixing unrelated changes into a single commit (e.g. core widget implementations, style token normalization, test suites, compiled runtime bundles, and documentation updates must never be merged into one commit).
+
+2. **Sequential Multi-Stage Commit Pipeline**:
+   When implementing features or refactoring, break the work down into a logical sequence of small, atomic commits:
+   - **Step 1 (Core)**: `feat(core): ...` or `refactor(core): ...` — pure MoonBit engine primitives, structs, or layout logic.
+   - **Step 2 (Styles & Tokens)**: `style(theme): ...` or `style(core): ...` — design tokens, sizing metrics, or palette extensions.
+   - **Step 3 (Automated Tests)**: `test(core): ...` — whitebox (`_wbtest.mbt`) and blackbox (`_test.mbt`) suites with 100% pass verification.
+   - **Step 4 (Showcase & Bundles)**: `build(demo): ...` or `feat(gallery): ...` — example gallery integration and synchronized runtime assets (`canvas.js`).
+   - **Step 5 (Documentation)**: `docs: ...` — updates to READMEs, ROADMAP, CHANGELOG, or ISSUE tracking.
+
+3. **Conventional Commits Categorization**:
+   - `feat(<scope>)`: New widget or public API capability.
+   - `fix(<scope>)`: Bug fixes or edge-case handling.
+   - `refactor(<scope>)`: Structural cleanup without behavioral changes.
+   - `style(<scope>)`: Theme tokens, formatting, or metric definitions.
+   - `test(<scope>)`: Test suite additions, snapshots, or coverage improvements.
+   - `build(<scope>)`: Build scripts, compiler targets, or compiled demo assets.
+   - `docs(<scope>)`: Technical documentation, changelogs, roadmaps, or specifications.
+   - `chore(<scope>)`: Minor maintenance or configuration updates.
+
+4. **Commit Size Guardrails**:
+   - Keep commits small, readable, and easily bisectable.
+   - If a change touches more than ~5-8 files across different directory domains (e.g. `src/core`, `examples/`, `docs/`), it MUST be decomposed by domain into separate atomic commits.
+
+

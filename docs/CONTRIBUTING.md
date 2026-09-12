@@ -58,25 +58,33 @@ High test coverage is mandatory for all core geometric, layout, and state machin
 
 ---
 
-## 4. Git Commit Message Conventions
+## 4. Git Commit Conventions & Granularity
 
-We strictly enforce [Conventional Commits](https://www.conventionalcommits.org/):
+We strictly enforce [Conventional Commits](https://www.conventionalcommits.org/) and atomic, fine-grained commit scopes:
 
 Format: `<type>(<scope>): <short summary>`
+
+Principles:
+- **Atomic Commits**: Each commit must address a single logical concern. Never combine engine primitives, design tokens, test suites, compiled runtime bundles, and documentation updates into one monolithic commit.
+- **Sequential Pipeline**: Break large features down sequentially (`feat(core)` -> `style(theme)` -> `test(core)` -> `build(demo)` -> `docs`).
+- **Size Guardrails**: Keep commits small, focused, and easily reviewable.
 
 Common types:
 - `feat`: A new user-facing feature or widget
 - `fix`: A bug fix
-- `docs`: Documentation updates or design specs
-- `test`: Adding or refactoring unit tests
+- `style`: Design tokens, formatting, or metric definitions
+- `docs`: Documentation updates, changelogs, or roadmaps
+- `test`: Adding or refactoring unit and whitebox tests
 - `refactor`: Code restructuring without functional change
 - `perf`: Performance optimizations
+- `build`: Compiler targets, scripts, or synchronized demo bundles
 - `chore`: Tooling, build system, or dependency updates
 
 Examples:
-- `feat(widget): add SliderFloat and DragValue controls`
+- `feat(core): add Plot and BarChart chart widgets`
+- `style(theme): normalize widget sizing tokens in WidgetStyle`
+- `test(core): add whitebox test suite for PlotPoint`
 - `fix(window): correct Z-index focus sorting on pointer down`
-- `test(geom): add AABB boundary intersection edge case tests`
 
 ---
 
