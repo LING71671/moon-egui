@@ -21,6 +21,7 @@ test "theme: default WidgetStyle values" {
   assert_eq(style.text_edit_h, 32.0)
   assert_eq(style.text_edit_pad_x, 10.0)
   assert_eq(style.caret_h, 16.0)
+  assert_eq(style.caret_blink_interval, 0.53)
   assert_eq(style.slider_h, 24.0)
   assert_eq(style.slider_track_w, 120.0)
   assert_eq(style.toggle_w, 36.0)
@@ -94,6 +95,25 @@ test "theme: caret blinking and interaction reset" {
 
   // User types or clicks: caret immediately resets to visible
   ctx.reset_caret_blink()
+  assert_true(ctx.is_caret_visible())
+}
+
+///|
+test "theme: custom caret blink interval is honored" {
+  let ctx = UIContext::new()
+  let custom_style = { ..WidgetStyle::default(), caret_blink_interval: 0.8, }
+  ctx.set_style(custom_style)
+
+  // At 0.7s (< 0.8s), should still be visible
+  ctx.set_time(0.7)
+  assert_true(ctx.is_caret_visible())
+
+  // At 0.9s (in [0.8, 1.6)), should be off
+  ctx.set_time(0.9)
+  assert_false(ctx.is_caret_visible())
+
+  // At 1.7s (in [1.6, 2.4)), should be on again
+  ctx.set_time(1.7)
   assert_true(ctx.is_caret_visible())
 }
 

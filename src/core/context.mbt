@@ -1140,12 +1140,16 @@ pub fn UIContext::reset_caret_blink(self : UIContext) -> Unit {
 ///|
 pub fn UIContext::is_caret_visible(self : UIContext) -> Bool {
   let elapsed = self.time - self.last_caret_activity
-  if elapsed < 0.5 {
+  let interval = if self.style.caret_blink_interval > 0.0 {
+    self.style.caret_blink_interval
+  } else {
+    0.53
+  }
+  if elapsed < interval {
     true
   } else {
-    // 500ms on, 500ms off period (1.0s cycle)
-    let half_seconds = ((elapsed - 0.5) * 2.0).to_int()
-    half_seconds % 2 == 1
+    let half_cycles = ((elapsed - interval) / interval).to_int()
+    half_cycles % 2 == 1
   }
 }
 

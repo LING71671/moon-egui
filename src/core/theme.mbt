@@ -24,6 +24,7 @@ pub struct WidgetStyle {
   text_edit_pad_x : Double
   text_edit_radius : Double
   caret_h : Double
+  caret_blink_interval : Double
   slider_h : Double
   slider_track_w : Double
   slider_track_h : Double
@@ -128,6 +129,7 @@ pub fn WidgetStyle::default() -> WidgetStyle {
     text_edit_pad_x: 10.0,
     text_edit_radius: 5.0,
     caret_h: 16.0,
+    caret_blink_interval: 0.53,
     slider_h: 24.0,
     slider_track_w: 120.0,
     slider_track_h: 4.0,

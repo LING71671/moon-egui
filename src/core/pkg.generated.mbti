@@ -623,6 +623,7 @@ pub struct WidgetStyle {
   text_edit_pad_x : Double
   text_edit_radius : Double
   caret_h : Double
+  caret_blink_interval : Double
   slider_h : Double
   slider_track_w : Double
   slider_track_h : Double

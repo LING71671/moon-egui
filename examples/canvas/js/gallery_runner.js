@@ -405,10 +405,20 @@
   }
 
   let lastTime = performance.now();
+  let lastFrameTime = 0;
+  const targetFrameInterval = 1000 / 60; // 16.67ms
   let frameCount = 0;
   let fps = 60.0;
 
   function renderLoop(now) {
+    requestAnimationFrame(renderLoop);
+
+    const elapsed = now - lastFrameTime;
+    if (elapsed < targetFrameInterval - 1.5) {
+      return;
+    }
+    lastFrameTime = now;
+
     frameCount++;
     if (now - lastTime >= 1000) {
       fps = ((frameCount * 1000) / (now - lastTime)).toFixed(0);
@@ -464,8 +474,6 @@
         }
       }
     }
-
-    requestAnimationFrame(renderLoop);
   }
 
   window.setGalleryActiveComp = function (compId) {
