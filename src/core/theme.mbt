@@ -107,6 +107,12 @@ pub struct WidgetStyle {
   bar_chart_default_w : Double
   bar_chart_default_h : Double
   bar_chart_gap : Double
+  fader_w : Double
+  fader_h : Double
+  fader_track_w : Double
+  fader_cap_w : Double
+  fader_cap_h : Double
+  fader_cap_radius : Double
 } derive(Eq, Debug)
 
 ///|
@@ -205,6 +211,12 @@ pub fn WidgetStyle::default() -> WidgetStyle {
     bar_chart_default_w: 280.0,
     bar_chart_default_h: 150.0,
     bar_chart_gap: 8.0,
+    fader_w: 44.0,
+    fader_h: 150.0,
+    fader_track_w: 6.0,
+    fader_cap_w: 32.0,
+    fader_cap_h: 20.0,
+    fader_cap_radius: 3.0,
   }
 }
 

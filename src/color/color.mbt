@@ -387,3 +387,21 @@ pub fn Color::grid_line() -> Color {
 pub fn Color::plot_crosshair() -> Color {
   Color::rgba(37, 99, 235, 180)
 }
+
+///|
+/// Dark recessed groove fill for vertical fader channels.
+pub fn Color::fader_track_bg() -> Color {
+  Color::rgba(15, 23, 42, 35)
+}
+
+///|
+/// Tick markings and decibel scale indicators along fader channels.
+pub fn Color::fader_tick() -> Color {
+  Color::rgba(148, 163, 184, 160)
+}
+
+///|
+/// Center indicator index line on the tactile fader cap.
+pub fn Color::fader_cap_line() -> Color {
+  Color::hex(0x2563EB)
+}

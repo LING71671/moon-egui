@@ -522,6 +522,8 @@ pub fn UIContext::drag_value(Self, String, Double, Double, Double, Double) -> (D
 pub fn UIContext::draw_list(Self) -> @draw.DrawList
 pub fn UIContext::end_foreground(Self) -> Unit
 pub fn UIContext::end_frame(Self) -> @draw.DrawList
+pub fn UIContext::fader(Self, String, String, Double, min_val? : Double, max_val? : Double, step? : Double, default_val? : Double, unit? : String, show_ticks? : Bool, size? : @math.Vec2) -> (Double, Response)
+pub fn UIContext::fader_int(Self, String, String, Int, min_val? : Int, max_val? : Int, step? : Int, default_val? : Int, unit? : String, show_ticks? : Bool, size? : @math.Vec2) -> (Int, Response)
 pub fn UIContext::focused_id(Self) -> Id
 pub fn UIContext::get_scroll_content_height(Self, Id) -> Double
 pub fn UIContext::get_scroll_offset(Self, Id) -> Double
@@ -704,6 +706,12 @@ pub struct WidgetStyle {
   bar_chart_default_w : Double
   bar_chart_default_h : Double
   bar_chart_gap : Double
+  fader_w : Double
+  fader_h : Double
+  fader_track_w : Double
+  fader_cap_w : Double
+  fader_cap_h : Double
+  fader_cap_radius : Double
 } derive(Eq, @debug.Debug)
 pub fn WidgetStyle::default() -> Self
 

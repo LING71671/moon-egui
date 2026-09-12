@@ -51,6 +51,9 @@ pub fn Color::border_strong() -> Self
 pub fn Color::border_track() -> Self
 pub fn Color::danger() -> Self
 pub fn Color::danger_hover() -> Self
+pub fn Color::fader_cap_line() -> Self
+pub fn Color::fader_tick() -> Self
+pub fn Color::fader_track_bg() -> Self
 pub fn Color::grid_line() -> Self
 pub fn Color::guideline_wash(Self) -> Self
 pub fn Color::hex(Int) -> Self
