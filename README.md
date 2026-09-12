@@ -52,7 +52,11 @@
 ## 安装
 
 ```bash
-moon add ling71671/moon-egui
+# 安装最新稳定版本
+moon add LING71671/moon-egui
+
+# 或指定锁定版本
+moon add LING71671/moon-egui@0.2.0
 ```
 
 安装后在 `moon.pkg` 中引入即可使用：

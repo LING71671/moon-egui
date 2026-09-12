@@ -52,7 +52,11 @@ When building interactive user interfaces within WebAssembly and HTML5 Canvas en
 ## Installation
 
 ```bash
-moon add ling71671/moon-egui
+# Install the latest stable release
+moon add LING71671/moon-egui
+
+# Or pin to an exact version
+moon add LING71671/moon-egui@0.2.0
 ```
 
 Then import the packages in your `moon.pkg`:

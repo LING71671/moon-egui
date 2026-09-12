@@ -197,11 +197,11 @@
             <pre><code>moon add LING71671/moon-egui</code></pre>
           </div>
 
-          <p>在你的模块 <code>moon.pkg.json</code> 中声明对 <code>moon-egui/core</code> 的导入：</p>
+          <p>在你的模块 <code>moon.pkg</code> 中声明对 <code>moon-egui</code> 子包的导入：</p>
 
           <div class="code-wrapper">
             <div class="code-header">
-              <span class="code-lang-tag">JSON · moon.pkg.json</span>
+              <span class="code-lang-tag">JSON · moon.pkg</span>
               <button class="code-copy-btn">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                 <span>Copy</span>
@@ -209,7 +209,10 @@
             </div>
             <pre><code>{
   <span class="syn-kw">"import"</span>: [
-    <span class="syn-str">"LING71671/moon-egui/core"</span>
+    <span class="syn-str">"LING71671/moon-egui/src/core"</span>,
+    <span class="syn-str">"LING71671/moon-egui/src/draw"</span>,
+    <span class="syn-str">"LING71671/moon-egui/src/math"</span>,
+    <span class="syn-str">"LING71671/moon-egui/src/color"</span>
   ]
 }</code></pre>
           </div>
