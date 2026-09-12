@@ -139,6 +139,7 @@ pub struct GalleryState {
   mut color_picker_val : @color.Color
   mut breadcrumb_last_clicked : String
   mut rich_text_last_url : String
+  mut dock_tree : @core.DockTree
 }
 
 // Type aliases

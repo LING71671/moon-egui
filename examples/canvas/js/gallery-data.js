@@ -916,6 +916,62 @@ pub fn draw_splitters(ui : @core.UIContext, state : AppState) -> Unit {
 }`
     }
   },
+  dock_area: {
+    titleKey: 'comp.dock_area.title',
+    signature: "ui.dock_area(id, size, tree, render_tab) -> DockResponse",
+    code: {
+      zh: `///|
+pub fn draw_workbench(ui : @core.UIContext, state : AppState) -> Unit {
+  // 构建分栏工作台停靠树：左侧资源管理器，右侧视口与运行日志
+  let tree = @core.DockTree::split(
+    @core.DockSplitDirection::Horizontal,
+    0.3,
+    @core.DockTree::leaf([@core.DockTab::new("explorer", "资源管理器")]),
+    @core.DockTree::split(
+      @core.DockSplitDirection::Vertical,
+      0.65,
+      @core.DockTree::leaf([@core.DockTab::new("canvas", "CAD 视口")]),
+      @core.DockTree::leaf([@core.DockTab::new("console", "运行日志")]),
+    ),
+  )
+
+  // 渲染多视窗工作台，每个面板自带 Scissor 剪裁与标签页切换
+  let resp = ui.dock_area(
+    "workbench_dock",
+    @math.Vec2::new(640.0, 320.0),
+    tree,
+    fn(pane_ui, tab_id, rect) {
+      pane_ui.label("当前激活工作面板: \{tab_id}")
+    },
+  )
+}`,
+      en: `///|
+pub fn draw_workbench(ui : @core.UIContext, state : AppState) -> Unit {
+  // Construct hierarchical multi-window docking tree
+  let tree = @core.DockTree::split(
+    @core.DockSplitDirection::Horizontal,
+    0.3,
+    @core.DockTree::leaf([@core.DockTab::new("explorer", "Explorer")]),
+    @core.DockTree::split(
+      @core.DockSplitDirection::Vertical,
+      0.65,
+      @core.DockTree::leaf([@core.DockTab::new("canvas", "CAD Viewport")]),
+      @core.DockTree::leaf([@core.DockTab::new("console", "Console Logs")]),
+    ),
+  )
+
+  // Render multi-pane dock area with tab bars, dragging splitters, and Scissor clipping
+  let resp = ui.dock_area(
+    "workbench_dock",
+    @math.Vec2::new(640.0, 320.0),
+    tree,
+    fn(pane_ui, tab_id, rect) {
+      pane_ui.label("Active Dock Panel: \{tab_id}")
+    },
+  )
+}`
+    }
+  },
   table: {
     titleKey: 'comp.table.title',
     signature: "ui.table(id, size, columns, row_count, render_cell, ...) -> TableResponse",

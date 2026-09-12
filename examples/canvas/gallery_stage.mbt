@@ -70,6 +70,7 @@ pub struct GalleryState {
   mut color_picker_val : @color.Color
   mut breadcrumb_last_clicked : String
   mut rich_text_last_url : String
+  mut dock_tree : @core.DockTree
 }
 
 ///|
@@ -137,6 +138,26 @@ let gallery_state : GalleryState = {
   color_picker_val: @color.Color::rgb(79, 70, 229),
   breadcrumb_last_clicked: "None",
   rich_text_last_url: "None",
+  dock_tree: @core.DockTree::split(
+    @core.DockSplitDirection::Horizontal,
+    0.28,
+    @core.DockTree::leaf([
+      @core.DockTab::new("explorer", "资源管理器"),
+      @core.DockTab::new("outline", "大纲视图"),
+    ]),
+    @core.DockTree::split(
+      @core.DockSplitDirection::Vertical,
+      0.62,
+      @core.DockTree::leaf([
+        @core.DockTab::new("canvas", "CAD 视口", closable=false),
+        @core.DockTab::new("shader", "着色器源码", closable=true),
+      ]),
+      @core.DockTree::leaf([
+        @core.DockTab::new("console", "运行日志 (Output)", closable=true),
+        @core.DockTab::new("terminal", "终端 (Terminal)", closable=true),
+      ]),
+    ),
+  ),
 }
 
 ///|
@@ -200,6 +221,7 @@ fn draw_component_preview(
     "context_menu" => draw_context_menu_showcase(ui, cur_w, cur_h)
     "toast" => draw_toast_showcase(ui, cur_w, cur_h)
     "splitter" => draw_splitter_showcase(ui)
+    "dock_area" => draw_dock_area_showcase(ui, cur_w, cur_h)
     "table" => draw_table_showcase(ui)
     "dialog" => draw_dialog_showcase(ui, cur_w, cur_h)
     "spinner" => draw_spinner_showcase(ui)

@@ -575,3 +575,164 @@ fn draw_color_picker_showcase(ui : @core.UIContext) -> Unit {
     gallery_state.color_picker_val = c2
   })
 }
+
+///|
+fn draw_dock_area_showcase(
+  ui : @core.UIContext,
+  _cur_w : Double,
+  _cur_h : Double,
+) -> Unit {
+  let _ = ui.label_colored(
+    "多视窗磁吸与分栏排版系统 (DockArea Workbench)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "基于递归 DockTree 的工作台排版：支持横向/纵向弹性分栏拖拽、标签栏切换与关闭、局部视口 Scissor 裁剪保护。",
+  )
+  ui.spacer(10.0)
+
+  ui.horizontal(fn(row) {
+    if row.button_sized("重置工作区布局", @math.Vec2::new(110.0, 26.0)).clicked {
+      gallery_state.dock_tree = @core.DockTree::split(
+        @core.DockSplitDirection::Horizontal,
+        0.28,
+        @core.DockTree::leaf([
+          @core.DockTab::new("explorer", "资源管理器"),
+          @core.DockTab::new("outline", "大纲视图"),
+        ]),
+        @core.DockTree::split(
+          @core.DockSplitDirection::Vertical,
+          0.62,
+          @core.DockTree::leaf([
+            @core.DockTab::new("canvas", "CAD 视口", closable=false),
+            @core.DockTab::new("shader", "着色器源码", closable=true),
+          ]),
+          @core.DockTree::leaf([
+            @core.DockTab::new(
+              "console",
+              "运行日志 (Output)",
+              closable=true,
+            ),
+            @core.DockTab::new("terminal", "终端 (Terminal)", closable=true),
+          ]),
+        ),
+      )
+      gallery_state.status_text = "DockArea Layout Reset"
+    }
+    row.spacer(10.0)
+    let _ = row.label_colored(
+      "拖拽中缝发丝线可实时缩放分栏比例；点击标签可切换激活面板；点击 × 可关闭面板",
+      @color.Color::text_muted(),
+    )
+  })
+
+  ui.spacer(10.0)
+
+  let dock_size = @math.Vec2::new(ui.available_width(), 260.0)
+  let d_resp = ui.dock_area("gal_dock", dock_size, gallery_state.dock_tree, fn(
+    pane_ui,
+    tab_id,
+    rect,
+  ) {
+    pane_ui.set_cursor(@math.Vec2::new(rect.x + 12.0, rect.y + 10.0))
+    match tab_id {
+      "explorer" => {
+        let _ = pane_ui.label_colored(
+          "项目资源",
+          @color.Color::accent_primary(),
+        )
+        pane_ui.spacer(4.0)
+        let _ = pane_ui.label("📁 src/core/")
+        let _ = pane_ui.label("  📄 context.mbt")
+        let _ = pane_ui.label("  📄 dock.mbt")
+        let _ = pane_ui.label("📁 assets/")
+        let _ = pane_ui.label("  🖼️ logo.png")
+      }
+      "outline" => {
+        let _ = pane_ui.label_colored(
+          "符号大纲",
+          @color.Color::accent_primary(),
+        )
+        pane_ui.spacer(4.0)
+        let _ = pane_ui.label("⚡ pub enum DockSplitDirection")
+        let _ = pane_ui.label("⚡ pub struct DockTab")
+        let _ = pane_ui.label("⚡ pub enum DockNode")
+        let _ = pane_ui.label("⚡ pub struct DockTree")
+      }
+      "canvas" => {
+        let _ = pane_ui.label_colored(
+          "CAD 视口工作台 (Viewport)",
+          @color.Color::accent_primary(),
+        )
+        pane_ui.spacer(8.0)
+        pane_ui.horizontal(fn(r) {
+          let _ = r.badge("60 FPS", kind=@core.BadgeKind::success())
+          r.spacer(8.0)
+          let _ = r.badge("Wasm-GC", kind=@core.BadgeKind::info())
+          r.spacer(8.0)
+          if r.button_sized("刷新着色", @math.Vec2::new(76.0, 24.0)).clicked {
+            gallery_state.status_text = "Viewport Shaders Recompiled"
+          }
+        })
+        pane_ui.spacer(8.0)
+        let (z, _) = pane_ui.slider(
+          "视口缩放",
+          gallery_state.slider_zoom,
+          0.1,
+          5.0,
+        )
+        gallery_state.slider_zoom = z
+      }
+      "shader" => {
+        let _ = pane_ui.label_colored(
+          "WGSL 着色器",
+          @color.Color::text_strong(),
+        )
+        pane_ui.spacer(4.0)
+        let _ = pane_ui.label("@vertex fn vs_main() -> VertexOutput")
+        let _ = pane_ui.label("@fragment fn fs_main() -> @location(0) vec4f")
+        let _ = pane_ui.label("return vec4f(0.145, 0.388, 0.921, 1.0);")
+      }
+      "console" => {
+        let _ = pane_ui.label_colored(
+          "系统运行日志",
+          @color.Color::text_muted(),
+        )
+        pane_ui.spacer(4.0)
+        let _ = pane_ui.label("[00:01:23] [INFO] DockArea frame initialized.")
+        let _ = pane_ui.label(
+          "[00:01:24] [INFO] Scissor clip applied to 3 panes.",
+        )
+        let _ = pane_ui.label(
+          "[00:01:25] [OK] Layout split ratio stable at 60 FPS.",
+        )
+      }
+      "terminal" => {
+        let _ = pane_ui.label_colored(
+          "zsh - moonbit",
+          @color.Color::accent_primary(),
+        )
+        pane_ui.spacer(4.0)
+        let _ = pane_ui.label("$ moon test --target wasm-gc")
+        let _ = pane_ui.label("Total tests: 195, passed: 195, failed: 0.")
+      }
+      _ => {
+        let _ = pane_ui.label("Panel: " + tab_id)
+      }
+    }
+  })
+
+  if d_resp.ratio_changed {
+    gallery_state.status_text = "Dock Splitter Dragged"
+  }
+  match d_resp.active_tab_changed {
+    Some((old_id, new_id)) =>
+      gallery_state.status_text = "Tab Switched: " + old_id + " -> " + new_id
+    None => ()
+  }
+  match d_resp.tab_closed {
+    Some(cid) => gallery_state.status_text = "Tab Closed: " + cid
+    None => ()
+  }
+}
