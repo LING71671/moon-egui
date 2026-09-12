@@ -5,7 +5,7 @@ pub enum DrawCmd {
   Circle(@math.Vec2, Double, @color.Color)
   CircleStroke(@math.Vec2, Double, @color.Color, Double)
   Line(@math.Vec2, @math.Vec2, @color.Color, Double)
-  Text(@math.Vec2, String, Double, @color.Color)
+  Text(@math.Vec2, String, Double, @color.Color, String, Int)
   Clip(@math.Rect)
   ResetClip
   LinearGradient(
@@ -110,8 +110,12 @@ pub fn DrawList::add_text(
   text : String,
   font_size : Double,
   color : @color.Color,
+  font_family? : String = "",
+  font_weight? : Int = 500,
 ) -> Unit {
-  self.commands.push(DrawCmd::Text(pos, text, font_size, color))
+  self.commands.push(
+    DrawCmd::Text(pos, text, font_size, color, font_family, font_weight),
+  )
 }
 
 ///|

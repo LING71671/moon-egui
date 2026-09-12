@@ -18,7 +18,7 @@ pub enum DrawCmd {
   Circle(@math.Vec2, Double, @color.Color)
   CircleStroke(@math.Vec2, Double, @color.Color, Double)
   Line(@math.Vec2, @math.Vec2, @color.Color, Double)
-  Text(@math.Vec2, String, Double, @color.Color)
+  Text(@math.Vec2, String, Double, @color.Color, String, Int)
   Clip(@math.Rect)
   ResetClip
   LinearGradient(@math.Rect, @math.Vec2, @math.Vec2, @color.Color, @color.Color, Double)
@@ -33,7 +33,7 @@ pub fn DrawList::add_line(Self, @math.Vec2, @math.Vec2, @color.Color, Double) ->
 pub fn DrawList::add_linear_gradient(Self, @math.Rect, @math.Vec2, @math.Vec2, @color.Color, @color.Color, Double) -> Unit
 pub fn DrawList::add_rect(Self, @math.Rect, @color.Color, Double) -> Unit
 pub fn DrawList::add_rect_stroke(Self, @math.Rect, @color.Color, Double, Double) -> Unit
-pub fn DrawList::add_text(Self, @math.Vec2, String, Double, @color.Color) -> Unit
+pub fn DrawList::add_text(Self, @math.Vec2, String, Double, @color.Color, font_family? : String, font_weight? : Int) -> Unit
 pub fn DrawList::append(Self, Self) -> Unit
 pub fn DrawList::clear(Self) -> Unit
 pub fn DrawList::get_command(Self, Int) -> DrawCmd?

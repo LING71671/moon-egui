@@ -378,7 +378,7 @@ test "foreground layer composites after the main layer and escapes clipping" {
   assert_true(dl.get_command(1) is Some(@draw.DrawCmd::ResetClip))
   assert_true(dl.get_command(2) is Some(@draw.DrawCmd::Rect(_, _, _)))
   assert_true(dl.get_command(3) is Some(@draw.DrawCmd::RectStroke(_, _, _, _)))
-  assert_true(dl.get_command(4) is Some(@draw.DrawCmd::Text(_, _, _, _)))
+  assert_true(dl.get_command(4) is Some(@draw.DrawCmd::Text(_)))
 
   // The main layer's clip stack is restored after the foreground pass
   assert_true(ctx.current_clip() is None)
@@ -480,7 +480,8 @@ fn window_title_order(dl : @draw.DrawList) -> Array[String] {
   let titles : Array[String] = []
   for i = 0; i < dl.len(); i = i + 1 {
     match dl.get_command(i) {
-      Some(@draw.DrawCmd::Text(_pos, text, _size, _color)) => titles.push(text)
+      Some(@draw.DrawCmd::Text(_pos, text, _size, _color, _, _)) =>
+        titles.push(text)
       _ => ()
     }
   }

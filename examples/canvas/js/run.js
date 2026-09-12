@@ -219,11 +219,16 @@
   }
 
   const fontMap = new Map();
-  function getFontStr(fontSize) {
-    let f = fontMap.get(fontSize);
+  function getFontStr(fontSize, fontFamily, fontWeight) {
+    const weight = fontWeight || 500;
+    const family = (fontFamily && fontFamily.length > 0)
+      ? (fontFamily.includes('monospace') ? 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' : fontFamily)
+      : '"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    const key = `${weight}_${fontSize}_${family}`;
+    let f = fontMap.get(key);
     if (!f) {
-      f = `600 ${fontSize}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`;
-      fontMap.set(fontSize, f);
+      f = `${weight} ${fontSize}px ${family}`;
+      fontMap.set(key, f);
     }
     return f;
   }
@@ -561,14 +566,16 @@
           ctx.stroke();
           break;
         }
-        case 5: { // Text: cmd._0: pos, cmd._1: text, cmd._2: fontSize, cmd._3: color
+        case 5: { // Text: cmd._0: pos, cmd._1: text, cmd._2: fontSize, cmd._3: color, cmd._4: fontFamily, cmd._5: fontWeight
           const pos = cmd._0;
           const text = cmd._1;
           const fontSize = cmd._2 || 14;
           const color = cmd._3;
+          const fontFamily = cmd._4;
+          const fontWeight = cmd._5;
           const colorStr = getColorStr(color);
           setFill(colorStr);
-          setFont(getFontStr(fontSize));
+          setFont(getFontStr(fontSize, fontFamily, fontWeight));
           ctx.textBaseline = 'top';
           ctx.fillText(text, pos.x, pos.y);
           break;

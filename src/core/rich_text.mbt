@@ -220,6 +220,7 @@ pub fn UIContext::rich_text(
           text,
           font_sz,
           @color.Color::text_strong(),
+          font_weight=700,
         )
       }
       Code => {
@@ -252,6 +253,8 @@ pub fn UIContext::rich_text(
           text,
           font_sz,
           @color.Color::accent_deep(),
+          font_family="monospace",
+          font_weight=500,
         )
       }
       Link(url) => {

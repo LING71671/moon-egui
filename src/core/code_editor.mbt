@@ -606,6 +606,7 @@ pub fn UIContext::code_editor(
         num_str,
         gutter_font_sz,
         num_col,
+        font_family="monospace",
       )
     }
 
@@ -621,6 +622,7 @@ pub fn UIContext::code_editor(
       line_text,
       code_font_sz,
       text_col,
+      font_family="monospace",
     )
   }
 
