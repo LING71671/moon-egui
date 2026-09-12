@@ -25,22 +25,23 @@ fn draw_tree_view_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(6.0)
 
   let tree_data = [
-    @core.TreeNode::new("src", "src", children=[], icon="folder"),
-    @core.TreeNode::new(
+    @composite.TreeNode::new("src", "src", children=[], icon="folder"),
+    @composite.TreeNode::new(
       "assets",
       "assets",
       children=[
-        @core.TreeNode::leaf("logo_png", "logo.png", icon="img"),
-        @core.TreeNode::leaf("shader_wgsl", "shader.wgsl", icon="code"),
-        @core.TreeNode::leaf("theme_json", "theme.json", icon="json"),
+        @composite.TreeNode::leaf("logo_png", "logo.png", icon="img"),
+        @composite.TreeNode::leaf("shader_wgsl", "shader.wgsl", icon="code"),
+        @composite.TreeNode::leaf("theme_json", "theme.json", icon="json"),
       ],
       icon="folder",
     ),
-    @core.TreeNode::leaf("moon_mod", "moon.mod", icon="doc"),
-    @core.TreeNode::leaf("readme_md", "README.md", icon="doc"),
+    @composite.TreeNode::leaf("moon_mod", "moon.mod", icon="doc"),
+    @composite.TreeNode::leaf("readme_md", "README.md", icon="doc"),
   ]
 
-  let tree_resp = ui.tree_view(
+  let tree_resp = @composite.tree_view(
+    ui,
     "gallery_tree",
     tree_data,
     selected_id=gallery_state.tree_selected,
@@ -67,7 +68,8 @@ fn draw_table_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(10.0)
 
-  let resp = ui.table(
+  let resp = @composite.table(
+    ui,
     "gal_table",
     @math.Vec2::new(ui.available_width(), 220.0),
     gallery_state.table_columns,
@@ -122,20 +124,23 @@ fn draw_sparkline_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(12.0)
 
   ui.horizontal(fn(row) {
-    let (h1, _) = row.sparkline(
+    let (h1, _) = @composite.sparkline(
+      row,
       "spk_cpu",
       gallery_state.sparkline_data,
       size=@math.Vec2::new(140.0, 42.0),
     )
     row.spacer(16.0)
-    let (h2, _) = row.sparkline(
+    let (h2, _) = @composite.sparkline(
+      row,
       "spk_fps",
       [58.0, 59.0, 60.0, 60.0, 59.0, 60.0, 60.0, 60.0, 59.0, 60.0],
       size=@math.Vec2::new(140.0, 42.0),
       color=@color.Color::success(),
     )
     row.spacer(16.0)
-    let (h3, _) = row.sparkline(
+    let (h3, _) = @composite.sparkline(
+      row,
       "spk_mem",
       [120.0, 125.0, 130.0, 140.0, 142.0, 138.0, 145.0, 150.0],
       size=@math.Vec2::new(140.0, 42.0),
@@ -175,46 +180,46 @@ fn draw_plot_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(12.0)
 
   let line_pts = [
-    @core.PlotPoint::new(0.0, 15.0),
-    @core.PlotPoint::new(20.0, 42.0),
-    @core.PlotPoint::new(40.0, 35.0),
-    @core.PlotPoint::new(60.0, 78.0),
-    @core.PlotPoint::new(80.0, 60.0),
-    @core.PlotPoint::new(100.0, 92.0),
-    @core.PlotPoint::new(120.0, 85.0),
-    @core.PlotPoint::new(140.0, 110.0),
+    @composite.PlotPoint::new(0.0, 15.0),
+    @composite.PlotPoint::new(20.0, 42.0),
+    @composite.PlotPoint::new(40.0, 35.0),
+    @composite.PlotPoint::new(60.0, 78.0),
+    @composite.PlotPoint::new(80.0, 60.0),
+    @composite.PlotPoint::new(100.0, 92.0),
+    @composite.PlotPoint::new(120.0, 85.0),
+    @composite.PlotPoint::new(140.0, 110.0),
   ]
   let scatter_pts = [
-    @core.PlotPoint::new(10.0, 25.0),
-    @core.PlotPoint::new(30.0, 50.0),
-    @core.PlotPoint::new(50.0, 45.0),
-    @core.PlotPoint::new(70.0, 85.0),
-    @core.PlotPoint::new(90.0, 70.0),
-    @core.PlotPoint::new(110.0, 98.0),
-    @core.PlotPoint::new(130.0, 90.0),
+    @composite.PlotPoint::new(10.0, 25.0),
+    @composite.PlotPoint::new(30.0, 50.0),
+    @composite.PlotPoint::new(50.0, 45.0),
+    @composite.PlotPoint::new(70.0, 85.0),
+    @composite.PlotPoint::new(90.0, 70.0),
+    @composite.PlotPoint::new(110.0, 98.0),
+    @composite.PlotPoint::new(130.0, 90.0),
   ]
   let area_pts = [
-    @core.PlotPoint::new(0.0, 8.0),
-    @core.PlotPoint::new(20.0, 20.0),
-    @core.PlotPoint::new(40.0, 18.0),
-    @core.PlotPoint::new(60.0, 35.0),
-    @core.PlotPoint::new(80.0, 30.0),
-    @core.PlotPoint::new(100.0, 48.0),
-    @core.PlotPoint::new(120.0, 42.0),
-    @core.PlotPoint::new(140.0, 55.0),
+    @composite.PlotPoint::new(0.0, 8.0),
+    @composite.PlotPoint::new(20.0, 20.0),
+    @composite.PlotPoint::new(40.0, 18.0),
+    @composite.PlotPoint::new(60.0, 35.0),
+    @composite.PlotPoint::new(80.0, 30.0),
+    @composite.PlotPoint::new(100.0, 48.0),
+    @composite.PlotPoint::new(120.0, 42.0),
+    @composite.PlotPoint::new(140.0, 55.0),
   ]
 
-  let s_area = @core.PlotSeries::area(
+  let s_area = @composite.PlotSeries::area(
     "Baseline",
     area_pts,
     color=@color.Color::accent_primary(),
   )
-  let s_line = @core.PlotSeries::line(
+  let s_line = @composite.PlotSeries::line(
     "Throughput",
     line_pts,
     color=@color.Color::success(),
   )
-  let s_scatter = @core.PlotSeries::scatter(
+  let s_scatter = @composite.PlotSeries::scatter(
     "Samples",
     scatter_pts,
     color=@color.Color::warning(),
@@ -225,7 +230,8 @@ fn draw_plot_showcase(ui : @core.UIContext) -> Unit {
   } else {
     480.0
   }
-  let (hover_pt, _) = ui.plot(
+  let (hover_pt, _) = @composite.plot(
+    ui,
     "gal_plot_main",
     [s_area, s_line, s_scatter],
     size=@math.Vec2::new(plot_w, 220.0),
@@ -263,7 +269,8 @@ fn draw_bar_chart_showcase(ui : @core.UIContext) -> Unit {
   } else {
     480.0
   }
-  let (hover_bar, _) = ui.bar_chart(
+  let (hover_bar, _) = @composite.bar_chart(
+    ui,
     "gal_bar_main",
     labels,
     values,

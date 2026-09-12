@@ -191,6 +191,14 @@ pub(all) enum DialogResult {
   Open
 } derive(Eq, @debug.Debug)
 
+pub struct Label {
+  text : String
+  color : @color.Color?
+} derive(Eq, @debug.Debug)
+pub fn Label::color(Self, @color.Color) -> Self
+pub fn Label::new(String) -> Self
+pub impl @core.Widget for Label
+
 pub struct ProgressBar {
   fraction : Double
   text : String
@@ -224,6 +232,11 @@ pub fn SegmentedControl::height(Self, Double) -> Self
 pub fn SegmentedControl::new(String, Array[String], Int) -> Self
 pub fn SegmentedControl::show(Self, @core.UIContext) -> (Int, @core.Response)
 pub fn SegmentedControl::width(Self, Double) -> Self
+
+pub struct Separator {
+} derive(Eq, @debug.Debug)
+pub fn Separator::new() -> Self
+pub impl @core.Widget for Separator
 
 pub struct Slider {
   label : String

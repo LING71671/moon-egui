@@ -84,6 +84,14 @@ pub fn WidgetStyle::default() -> WidgetStyle {
 }
 
 ///|
+/// Return a copy of this style with its global scale factor multiplied.
+/// Downstream packages cannot mutate `WidgetStyle` fields directly, so this
+/// fluent builder is the supported way to derive density variants.
+pub fn WidgetStyle::scaled(self : WidgetStyle, factor : Double) -> WidgetStyle {
+  { ..self, scale: self.scale * factor, }
+}
+
+///|
 /// Runtime semantic theme profile holding color slots for all UI elements.
 pub struct Theme {
   name : String

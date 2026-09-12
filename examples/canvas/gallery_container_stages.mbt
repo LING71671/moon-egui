@@ -28,7 +28,8 @@ fn draw_combo_box_showcase(ui : @core.UIContext) -> Unit {
   let formats = [
     "PNG 无损位图", "SVG 矢量图形", "WebP 高效压缩", "PDF 文档格式",
   ]
-  let (f, _) = ui.combo_box(
+  let (f, _) = @widgets.combo_box(
+    ui,
     "fmt",
     "导出格式",
     gallery_state.combo_format,
@@ -44,7 +45,8 @@ fn draw_combo_box_showcase(ui : @core.UIContext) -> Unit {
   let spaces = [
     "sRGB (标准色彩)", "Display P3 (广色域)", "Adobe RGB (专业印刷)",
   ]
-  let (c, _) = ui.combo_box(
+  let (c, _) = @widgets.combo_box(
+    ui,
     "color_space",
     "色彩空间",
     gallery_state.combo_color,
@@ -80,7 +82,11 @@ fn draw_color_button_showcase(ui : @core.UIContext) -> Unit {
 
   ui.horizontal(fn(row) {
     for i = 0; i < palette.length(); i = i + 1 {
-      let (clicked, _) = row.color_button("pal_" + i.to_string(), palette[i])
+      let (clicked, _) = @widgets.color_button(
+        row,
+        "pal_" + i.to_string(),
+        palette[i],
+      )
       if clicked {
         gallery_state.color_idx = i
         gallery_state.status_text = "Selected Color: " + names[i]
@@ -105,48 +111,60 @@ fn draw_collapsing_header_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(8.0)
 
-  let _ = ui.collapsing_header("sec_render", "图形着色管线配置", true, fn(
-    sec,
-  ) {
-    sec.spacer(4.0)
-    let (g, _) = sec.checkbox(
-      "开启矢量纹理多级渐远 (Mipmapping)",
-      gallery_state.checkbox_gpu,
-    )
-    gallery_state.checkbox_gpu = g
-    sec.spacer(4.0)
-    let (z, _) = sec.slider(
-      "视口平移阻尼系数",
-      gallery_state.slider_zoom,
-      0.1,
-      3.0,
-    )
-    gallery_state.slider_zoom = z
-    sec.spacer(4.0)
-  })
+  let _ = @widgets.collapsing_header(
+    ui,
+    "sec_render",
+    "图形着色管线配置",
+    true,
+    fn(sec) {
+      sec.spacer(4.0)
+      let (g, _) = @widgets.checkbox(
+        sec,
+        "开启矢量纹理多级渐远 (Mipmapping)",
+        gallery_state.checkbox_gpu,
+      )
+      gallery_state.checkbox_gpu = g
+      sec.spacer(4.0)
+      let (z, _) = @widgets.slider(
+        sec,
+        "视口平移阻尼系数",
+        gallery_state.slider_zoom,
+        0.1,
+        3.0,
+      )
+      gallery_state.slider_zoom = z
+      sec.spacer(4.0)
+    },
+  )
 
   ui.spacer(8.0)
 
-  let _ = ui.collapsing_header("sec_grid", "辅助网格剖分参数", false, fn(
-    sec,
-  ) {
-    sec.spacer(4.0)
-    let (x, _) = sec.drag_value(
-      "网格间距",
-      gallery_state.drag_x,
-      1.0,
-      5.0,
-      100.0,
-    )
-    gallery_state.drag_x = x
-    sec.spacer(4.0)
-    let (gr, _) = sec.checkbox(
-      "开启极简背景",
-      gallery_state.checkbox_grid,
-    )
-    gallery_state.checkbox_grid = gr
-    sec.spacer(4.0)
-  })
+  let _ = @widgets.collapsing_header(
+    ui,
+    "sec_grid",
+    "辅助网格剖分参数",
+    false,
+    fn(sec) {
+      sec.spacer(4.0)
+      let (x, _) = @widgets.drag_value(
+        sec,
+        "网格间距",
+        gallery_state.drag_x,
+        speed=1.0,
+        min=5.0,
+        max=100.0,
+      )
+      gallery_state.drag_x = x
+      sec.spacer(4.0)
+      let (gr, _) = @widgets.checkbox(
+        sec,
+        "开启极简背景",
+        gallery_state.checkbox_grid,
+      )
+      gallery_state.checkbox_grid = gr
+      sec.spacer(4.0)
+    },
+  )
 }
 
 ///|
@@ -162,29 +180,39 @@ fn draw_tooltip_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(12.0)
 
   ui.horizontal(fn(row) {
-    let r1 = row.button_sized(
+    let r1 = @widgets.button_sized(
+      row,
       "图元渲染统计",
       @math.Vec2::new(110.0, 28.0),
     )
     if r1.hovered {
-      row.tooltip("当前视口活跃图元: 1,024 Rects, 32 Texts")
+      @widgets.tooltip(row, "当前视口活跃图元: 1,024 Rects, 32 Texts")
     }
 
     row.spacer(10.0)
 
-    let r2 = row.button_sized("GC 运行状态", @math.Vec2::new(110.0, 28.0))
+    let r2 = @widgets.button_sized(
+      row,
+      "GC 运行状态",
+      @math.Vec2::new(110.0, 28.0),
+    )
     if r2.hovered {
-      row.tooltip("MoonBit 自动内存管理正常，零垃圾回收卡顿")
+      @widgets.tooltip(
+        row, "MoonBit 自动内存管理正常，零垃圾回收卡顿",
+      )
     }
 
     row.spacer(10.0)
 
-    let r3 = row.button_sized(
+    let r3 = @widgets.button_sized(
+      row,
       "导出设计令牌",
       @math.Vec2::new(110.0, 28.0),
     )
     if r3.hovered {
-      row.tooltip("导出符合 Studio Light 规范的标准 Token JSON")
+      @widgets.tooltip(
+        row, "导出符合 Studio Light 规范的标准 Token JSON",
+      )
     }
   })
 
@@ -204,7 +232,8 @@ fn draw_scroll_area_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(6.0)
 
-  ui.scroll_area(
+  @widgets.scroll_area(
+    ui,
     "gallery_scroll",
     @math.Vec2::new(ui.available_width(), 200.0),
     fn(sa) {
@@ -240,17 +269,24 @@ fn draw_window_showcase(
 
   let win_pos = @math.Vec2::new(80.0, 80.0)
   let win_size = @math.Vec2::new(260.0, 180.0)
-  let _ = ui.window(
+  let _ = @widgets.window(
+    ui,
     "CAD 属性面板 (Window)",
     win_pos,
     win_size,
     fn(w) {
       let _ = w.label("即时模式浮动视窗")
       w.spacer(4.0)
-      let (z, _) = w.slider("缩放", gallery_state.slider_zoom, 0.1, 5.0)
+      let (z, _) = @widgets.slider(
+        w,
+        "缩放",
+        gallery_state.slider_zoom,
+        0.1,
+        5.0,
+      )
       gallery_state.slider_zoom = z
       w.spacer(4.0)
-      if w.button("置中镜头").clicked {
+      if @widgets.button(w, "置中镜头").clicked {
         gallery_state.status_text = "Window Action: Recenter"
       }
     },
@@ -267,7 +303,8 @@ fn draw_command_palette_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(10.0)
 
-  if ui.button_primary_sized(
+  if @widgets.button_primary_sized(
+      ui,
       "唤起命令面板 (⌘K)",
       @math.Vec2::new(160.0, 32.0),
     ).clicked {
@@ -276,30 +313,30 @@ fn draw_command_palette_showcase(ui : @core.UIContext) -> Unit {
   }
 
   let commands = [
-    @core.CommandItem::new(
+    @composite.CommandItem::new(
       "new_file",
       "新建工程图纸 (New Canvas)",
       category="文件",
       shortcut="⌘N",
     ),
-    @core.CommandItem::new(
+    @composite.CommandItem::new(
       "save",
       "保存当前工程 (Save Project)",
       category="文件",
       shortcut="⌘S",
     ),
-    @core.CommandItem::new(
+    @composite.CommandItem::new(
       "zoom_fit",
       "全景自适应视图 (Fit All)",
       category="视图",
       shortcut="⌘0",
     ),
-    @core.CommandItem::new(
+    @composite.CommandItem::new(
       "theme_light",
       "切换白瓷工件风格 (Porcelain Theme)",
       category="外观",
     ),
-    @core.CommandItem::new(
+    @composite.CommandItem::new(
       "export_svg",
       "导出矢量 SVG 绘图 (Export Vector)",
       category="导出",
@@ -307,7 +344,8 @@ fn draw_command_palette_showcase(ui : @core.UIContext) -> Unit {
     ),
   ]
 
-  let resp = ui.command_palette(
+  let resp = @composite.command_palette(
+    ui,
     gallery_state.cmd_open,
     gallery_state.cmd_query,
     commands,
@@ -338,7 +376,8 @@ fn draw_context_menu_showcase(
   )
   ui.spacer(10.0)
 
-  let trigger_resp = ui.button_sized(
+  let trigger_resp = @widgets.button_sized(
+    ui,
     "点击或直接右键弹出菜单",
     @math.Vec2::new(170.0, 30.0),
   )
@@ -359,18 +398,27 @@ fn draw_context_menu_showcase(
   }
 
   let items = [
-    @core.ContextMenuItem::new(
+    @composite.ContextMenuItem::new(
       "copy",
       "复制当前组件代码",
       shortcut="⌘C",
     ),
-    @core.ContextMenuItem::new("paste", "粘贴图元属性", shortcut="⌘V"),
-    @core.ContextMenuItem::separator(),
-    @core.ContextMenuItem::new("inspect", "审查图元层级", shortcut="F12"),
-    @core.ContextMenuItem::new("delete", "重置控件状态"),
+    @composite.ContextMenuItem::new(
+      "paste",
+      "粘贴图元属性",
+      shortcut="⌘V",
+    ),
+    @composite.ContextMenuItem::separator(),
+    @composite.ContextMenuItem::new(
+      "inspect",
+      "审查图元层级",
+      shortcut="F12",
+    ),
+    @composite.ContextMenuItem::new("delete", "重置控件状态"),
   ]
 
-  let resp = ui.context_menu_items(
+  let resp = @composite.context_menu_items(
+    ui,
     "demo_ctx",
     gallery_state.ctx_menu_open,
     gallery_state.ctx_menu_pos,
@@ -398,8 +446,12 @@ fn draw_toast_showcase(
   ui.spacer(10.0)
 
   ui.horizontal(fn(row) {
-    if row.button_sized("触发信息通知", @math.Vec2::new(104.0, 28.0)).clicked {
-      let t = @core.Toast::info(
+    if @widgets.button_sized(
+        row,
+        "触发信息通知",
+        @math.Vec2::new(104.0, 28.0),
+      ).clicked {
+      let t = @widgets.Toast::info(
         "工程提示",
         message="Canvas 2D 光栅化管线就绪",
         duration=4.0,
@@ -408,8 +460,12 @@ fn draw_toast_showcase(
       gallery_state.status_text = "Triggered: Info Toast"
     }
     row.spacer(8.0)
-    if row.button_sized("触发成功通知", @math.Vec2::new(104.0, 28.0)).clicked {
-      let t = @core.Toast::success(
+    if @widgets.button_sized(
+        row,
+        "触发成功通知",
+        @math.Vec2::new(104.0, 28.0),
+      ).clicked {
+      let t = @widgets.Toast::success(
         "编译完成",
         message="Wasm 内核输出 0 警告",
         duration=4.0,
@@ -418,8 +474,12 @@ fn draw_toast_showcase(
       gallery_state.status_text = "Triggered: Success Toast"
     }
     row.spacer(8.0)
-    if row.button_sized("触发警告通知", @math.Vec2::new(104.0, 28.0)).clicked {
-      let t = @core.Toast::warning(
+    if @widgets.button_sized(
+        row,
+        "触发警告通知",
+        @math.Vec2::new(104.0, 28.0),
+      ).clicked {
+      let t = @widgets.Toast::warning(
         "内存警告",
         message="视口包含超过 65,536 节点",
         duration=4.0,
@@ -428,8 +488,12 @@ fn draw_toast_showcase(
       gallery_state.status_text = "Triggered: Warning Toast"
     }
     row.spacer(8.0)
-    if row.button_sized("触发错误通知", @math.Vec2::new(104.0, 28.0)).clicked {
-      let t = @core.Toast::danger(
+    if @widgets.button_sized(
+        row,
+        "触发错误通知",
+        @math.Vec2::new(104.0, 28.0),
+      ).clicked {
+      let t = @widgets.Toast::danger(
         "连接中断",
         message="WebSocket 帧丢失",
         duration=4.0,
@@ -446,9 +510,10 @@ fn draw_toast_showcase(
     "通知将自动悬浮在右上方，带有时间进度衰减条与手动关闭按钮。",
   )
 
-  let _ = ui.toast_stack(
+  let _ = @widgets.toast_stack(
+    ui,
     gallery_state.toasts,
-    anchor=@core.ToastAnchor::TopRight,
+    anchor=@widgets.ToastAnchor::TopRight,
     viewport_size=@math.Vec2::new(vp_w, vp_h),
   )
 }
@@ -466,7 +531,8 @@ fn draw_splitter_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(10.0)
 
   let split_size = @math.Vec2::new(ui.available_width(), 220.0)
-  let new_ratio = ui.split_horizontal(
+  let new_ratio = @widgets.split_horizontal(
+    ui,
     "gal_split_h",
     gallery_state.splitter_ratio,
     split_size,
@@ -515,7 +581,7 @@ fn draw_dialog_showcase(
   )
   ui.spacer(12.0)
 
-  if ui.button_primary("触发警示对话框 (Open Dialog)").clicked {
+  if @widgets.button_primary(ui, "触发警示对话框 (Open Dialog)").clicked {
     gallery_state.dialog_open = true
     gallery_state.status_text = "Dialog Opened"
   }
@@ -524,11 +590,12 @@ fn draw_dialog_showcase(
   let _ = ui.label("最后交互状态: " + gallery_state.dialog_last_result)
 
   if gallery_state.dialog_open {
-    let res = ui.dialog(
+    let res = @widgets.dialog(
+      ui,
       "gal_confirm_dlg",
       "重置工程配置文件？",
       "此操作将清除所有自定义键位绑定并恢复出厂默认值。",
-      kind=@core.DialogKind::Warning,
+      kind=@widgets.DialogKind::Warning,
       viewport_size=@math.Vec2::new(cur_w, cur_h),
     )
     match res {
@@ -560,14 +627,16 @@ fn draw_color_picker_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(12.0)
 
   ui.horizontal(fn(row) {
-    let (c1, _) = row.color_picker(
+    let (c1, _) = @composite.color_picker(
+      row,
       "gal_cp",
       gallery_state.color_picker_val,
       show_alpha=true,
     )
     gallery_state.color_picker_val = c1
     row.spacer(24.0)
-    let (c2, _) = row.color_picker_button(
+    let (c2, _) = @composite.color_picker_button(
+      row,
       "gal_cp_btn",
       gallery_state.color_picker_val,
       show_alpha=true,
@@ -593,28 +662,36 @@ fn draw_dock_area_showcase(
   ui.spacer(10.0)
 
   ui.horizontal(fn(row) {
-    if row.button_sized("重置工作区布局", @math.Vec2::new(110.0, 26.0)).clicked {
-      gallery_state.dock_tree = @core.DockTree::split(
-        @core.DockSplitDirection::Horizontal,
+    if @widgets.button_sized(
+        row,
+        "重置工作区布局",
+        @math.Vec2::new(110.0, 26.0),
+      ).clicked {
+      gallery_state.dock_tree = @composite.DockTree::split(
+        @composite.DockSplitDirection::Horizontal,
         0.28,
-        @core.DockTree::leaf([
-          @core.DockTab::new("explorer", "资源管理器"),
-          @core.DockTab::new("outline", "大纲视图"),
+        @composite.DockTree::leaf([
+          @composite.DockTab::new("explorer", "资源管理器"),
+          @composite.DockTab::new("outline", "大纲视图"),
         ]),
-        @core.DockTree::split(
-          @core.DockSplitDirection::Vertical,
+        @composite.DockTree::split(
+          @composite.DockSplitDirection::Vertical,
           0.62,
-          @core.DockTree::leaf([
-            @core.DockTab::new("canvas", "CAD 视口", closable=false),
-            @core.DockTab::new("shader", "着色器源码", closable=true),
+          @composite.DockTree::leaf([
+            @composite.DockTab::new("canvas", "CAD 视口", closable=false),
+            @composite.DockTab::new("shader", "着色器源码", closable=true),
           ]),
-          @core.DockTree::leaf([
-            @core.DockTab::new(
+          @composite.DockTree::leaf([
+            @composite.DockTab::new(
               "console",
               "运行日志 (Output)",
               closable=true,
             ),
-            @core.DockTab::new("terminal", "终端 (Terminal)", closable=true),
+            @composite.DockTab::new(
+              "terminal",
+              "终端 (Terminal)",
+              closable=true,
+            ),
           ]),
         ),
       )
@@ -630,98 +707,113 @@ fn draw_dock_area_showcase(
   ui.spacer(10.0)
 
   let dock_size = @math.Vec2::new(ui.available_width(), 260.0)
-  let d_resp = ui.dock_area("gal_dock", dock_size, gallery_state.dock_tree, fn(
-    pane_ui,
-    tab_id,
-    rect,
-  ) {
-    pane_ui.set_cursor(@math.Vec2::new(rect.x + 12.0, rect.y + 10.0))
-    match tab_id {
-      "explorer" => {
-        let _ = pane_ui.label_colored(
-          "项目资源",
-          @color.Color::accent_primary(),
-        )
-        pane_ui.spacer(4.0)
-        let _ = pane_ui.label("📁 src/core/")
-        let _ = pane_ui.label("  📄 context.mbt")
-        let _ = pane_ui.label("  📄 dock.mbt")
-        let _ = pane_ui.label("📁 assets/")
-        let _ = pane_ui.label("  🖼️ logo.png")
+  let d_resp = @composite.dock_area(
+    ui,
+    "gal_dock",
+    dock_size,
+    gallery_state.dock_tree,
+    fn(pane_ui, tab_id, rect) {
+      pane_ui.set_cursor(@math.Vec2::new(rect.x + 12.0, rect.y + 10.0))
+      match tab_id {
+        "explorer" => {
+          let _ = pane_ui.label_colored(
+            "项目资源",
+            @color.Color::accent_primary(),
+          )
+          pane_ui.spacer(4.0)
+          let _ = pane_ui.label("📁 src/core/")
+          let _ = pane_ui.label("  📄 context.mbt")
+          let _ = pane_ui.label("  📄 dock.mbt")
+          let _ = pane_ui.label("📁 assets/")
+          let _ = pane_ui.label("  🖼️ logo.png")
+        }
+        "outline" => {
+          let _ = pane_ui.label_colored(
+            "符号大纲",
+            @color.Color::accent_primary(),
+          )
+          pane_ui.spacer(4.0)
+          let _ = pane_ui.label("⚡ pub enum DockSplitDirection")
+          let _ = pane_ui.label("⚡ pub struct DockTab")
+          let _ = pane_ui.label("⚡ pub enum DockNode")
+          let _ = pane_ui.label("⚡ pub struct DockTree")
+        }
+        "canvas" => {
+          let _ = pane_ui.label_colored(
+            "CAD 视口工作台 (Viewport)",
+            @color.Color::accent_primary(),
+          )
+          pane_ui.spacer(8.0)
+          pane_ui.horizontal(fn(r) {
+            let _ = @widgets.badge(
+              r,
+              "60 FPS",
+              kind=@widgets.BadgeKind::success(),
+            )
+            r.spacer(8.0)
+            let _ = @widgets.badge(
+              r,
+              "Wasm-GC",
+              kind=@widgets.BadgeKind::info(),
+            )
+            r.spacer(8.0)
+            if @widgets.button_sized(
+                r,
+                "刷新着色",
+                @math.Vec2::new(76.0, 24.0),
+              ).clicked {
+              gallery_state.status_text = "Viewport Shaders Recompiled"
+            }
+          })
+          pane_ui.spacer(8.0)
+          let (z, _) = @widgets.slider(
+            pane_ui,
+            "视口缩放",
+            gallery_state.slider_zoom,
+            0.1,
+            5.0,
+          )
+          gallery_state.slider_zoom = z
+        }
+        "shader" => {
+          let _ = pane_ui.label_colored(
+            "WGSL 着色器",
+            @color.Color::text_strong(),
+          )
+          pane_ui.spacer(4.0)
+          let _ = pane_ui.label("@vertex fn vs_main() -> VertexOutput")
+          let _ = pane_ui.label("@fragment fn fs_main() -> @location(0) vec4f")
+          let _ = pane_ui.label("return vec4f(0.145, 0.388, 0.921, 1.0);")
+        }
+        "console" => {
+          let _ = pane_ui.label_colored(
+            "系统运行日志",
+            @color.Color::text_muted(),
+          )
+          pane_ui.spacer(4.0)
+          let _ = pane_ui.label("[00:01:23] [INFO] DockArea frame initialized.")
+          let _ = pane_ui.label(
+            "[00:01:24] [INFO] Scissor clip applied to 3 panes.",
+          )
+          let _ = pane_ui.label(
+            "[00:01:25] [OK] Layout split ratio stable at 60 FPS.",
+          )
+        }
+        "terminal" => {
+          let _ = pane_ui.label_colored(
+            "zsh - moonbit",
+            @color.Color::accent_primary(),
+          )
+          pane_ui.spacer(4.0)
+          let _ = pane_ui.label("$ moon test --target wasm-gc")
+          let _ = pane_ui.label("Total tests: 195, passed: 195, failed: 0.")
+        }
+        _ => {
+          let _ = pane_ui.label("Panel: " + tab_id)
+        }
       }
-      "outline" => {
-        let _ = pane_ui.label_colored(
-          "符号大纲",
-          @color.Color::accent_primary(),
-        )
-        pane_ui.spacer(4.0)
-        let _ = pane_ui.label("⚡ pub enum DockSplitDirection")
-        let _ = pane_ui.label("⚡ pub struct DockTab")
-        let _ = pane_ui.label("⚡ pub enum DockNode")
-        let _ = pane_ui.label("⚡ pub struct DockTree")
-      }
-      "canvas" => {
-        let _ = pane_ui.label_colored(
-          "CAD 视口工作台 (Viewport)",
-          @color.Color::accent_primary(),
-        )
-        pane_ui.spacer(8.0)
-        pane_ui.horizontal(fn(r) {
-          let _ = r.badge("60 FPS", kind=@core.BadgeKind::success())
-          r.spacer(8.0)
-          let _ = r.badge("Wasm-GC", kind=@core.BadgeKind::info())
-          r.spacer(8.0)
-          if r.button_sized("刷新着色", @math.Vec2::new(76.0, 24.0)).clicked {
-            gallery_state.status_text = "Viewport Shaders Recompiled"
-          }
-        })
-        pane_ui.spacer(8.0)
-        let (z, _) = pane_ui.slider(
-          "视口缩放",
-          gallery_state.slider_zoom,
-          0.1,
-          5.0,
-        )
-        gallery_state.slider_zoom = z
-      }
-      "shader" => {
-        let _ = pane_ui.label_colored(
-          "WGSL 着色器",
-          @color.Color::text_strong(),
-        )
-        pane_ui.spacer(4.0)
-        let _ = pane_ui.label("@vertex fn vs_main() -> VertexOutput")
-        let _ = pane_ui.label("@fragment fn fs_main() -> @location(0) vec4f")
-        let _ = pane_ui.label("return vec4f(0.145, 0.388, 0.921, 1.0);")
-      }
-      "console" => {
-        let _ = pane_ui.label_colored(
-          "系统运行日志",
-          @color.Color::text_muted(),
-        )
-        pane_ui.spacer(4.0)
-        let _ = pane_ui.label("[00:01:23] [INFO] DockArea frame initialized.")
-        let _ = pane_ui.label(
-          "[00:01:24] [INFO] Scissor clip applied to 3 panes.",
-        )
-        let _ = pane_ui.label(
-          "[00:01:25] [OK] Layout split ratio stable at 60 FPS.",
-        )
-      }
-      "terminal" => {
-        let _ = pane_ui.label_colored(
-          "zsh - moonbit",
-          @color.Color::accent_primary(),
-        )
-        pane_ui.spacer(4.0)
-        let _ = pane_ui.label("$ moon test --target wasm-gc")
-        let _ = pane_ui.label("Total tests: 195, passed: 195, failed: 0.")
-      }
-      _ => {
-        let _ = pane_ui.label("Panel: " + tab_id)
-      }
-    }
-  })
+    },
+  )
 
   if d_resp.ratio_changed {
     gallery_state.status_text = "Dock Splitter Dragged"

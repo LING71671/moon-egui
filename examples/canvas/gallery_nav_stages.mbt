@@ -27,7 +27,12 @@ fn draw_tab_bar_showcase(ui : @core.UIContext) -> Unit {
   let tabs = [
     "规范概览 Overview", "内核性能 Metrics", "运行日志 Logs",
   ]
-  let (cur, _) = ui.tab_bar("demo_tab", tabs, gallery_state.tab_selected)
+  let (cur, _) = @widgets.tab_bar(
+    ui,
+    "demo_tab",
+    tabs,
+    gallery_state.tab_selected,
+  )
   if cur != gallery_state.tab_selected {
     gallery_state.tab_selected = cur
     gallery_state.status_text = "Tab switched: " + tabs[cur]
@@ -76,50 +81,50 @@ fn draw_menu_bar_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(8.0)
 
-  ui.menu_bar(fn(bar) {
-    bar.menu("文件 (File)", fn(m) {
-      if m.menu_item("新建图纸", shortcut="⌘N").clicked {
+  @composite.menu_bar(ui, fn(bar) {
+    @composite.menu(bar, "文件 (File)", fn(m) {
+      if @composite.menu_item(m, "新建图纸", shortcut="⌘N").clicked {
         gallery_state.status_text = "Menu: New File"
       }
-      if m.menu_item("保存图元", shortcut="⌘S").clicked {
+      if @composite.menu_item(m, "保存图元", shortcut="⌘S").clicked {
         gallery_state.status_text = "Menu: Save File"
       }
-      m.menu_separator()
-      if m.menu_item("退出", shortcut="⌘Q").clicked {
+      @composite.menu_separator(m)
+      if @composite.menu_item(m, "退出", shortcut="⌘Q").clicked {
         gallery_state.status_text = "Menu: Quit"
       }
     })
 
-    bar.menu("编辑 (Edit)", fn(m) {
-      if m.menu_item("撤销", shortcut="⌘Z").clicked {
+    @composite.menu(bar, "编辑 (Edit)", fn(m) {
+      if @composite.menu_item(m, "撤销", shortcut="⌘Z").clicked {
         gallery_state.status_text = "Menu: Undo"
       }
-      if m.menu_item("重做", shortcut="⌘Y").clicked {
+      if @composite.menu_item(m, "重做", shortcut="⌘Y").clicked {
         gallery_state.status_text = "Menu: Redo"
       }
-      m.menu_separator()
-      if m.menu_item("复制", shortcut="⌘C").clicked {
+      @composite.menu_separator(m)
+      if @composite.menu_item(m, "复制", shortcut="⌘C").clicked {
         gallery_state.status_text = "Menu: Copy"
       }
-      if m.menu_item("粘贴", shortcut="⌘V").clicked {
+      if @composite.menu_item(m, "粘贴", shortcut="⌘V").clicked {
         gallery_state.status_text = "Menu: Paste"
       }
     })
 
-    bar.menu("视图 (View)", fn(m) {
-      if m.menu_item("全景自适应", shortcut="⌘0").clicked {
+    @composite.menu(bar, "视图 (View)", fn(m) {
+      if @composite.menu_item(m, "全景自适应", shortcut="⌘0").clicked {
         gallery_state.status_text = "Menu: Fit All"
       }
-      if m.menu_item("网格吸附").clicked {
+      if @composite.menu_item(m, "网格吸附").clicked {
         gallery_state.status_text = "Menu: Snap to Grid"
       }
     })
 
-    bar.menu("帮助 (Help)", fn(m) {
-      if m.menu_item("关于 moon-egui").clicked {
+    @composite.menu(bar, "帮助 (Help)", fn(m) {
+      if @composite.menu_item(m, "关于 moon-egui").clicked {
         gallery_state.status_text = "Menu: About moon-egui"
       }
-      if m.menu_item("MoonBit 官方文档").clicked {
+      if @composite.menu_item(m, "MoonBit 官方文档").clicked {
         gallery_state.status_text = "Menu: MoonBit Docs"
       }
     })
@@ -148,7 +153,8 @@ fn draw_segmented_control_showcase(ui : @core.UIContext) -> Unit {
   let views = [
     "日视图 (Day)", "周视图 (Week)", "月视图 (Month)", "年趋势 (Year)",
   ]
-  let (sel, _) = ui.segmented_control(
+  let (sel, _) = @widgets.segmented_control(
+    ui,
     "gal_seg",
     views,
     gallery_state.segmented_sel,
@@ -174,7 +180,7 @@ fn draw_breadcrumb_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(12.0)
 
   let path1 = ["工作区", "moon-egui", "src", "core", "table.mbt"]
-  let (c1, _) = ui.breadcrumb("gal_bc1", path1)
+  let (c1, _) = @widgets.breadcrumb(ui, "gal_bc1", path1)
   match c1 {
     Some(idx) => {
       gallery_state.breadcrumb_last_clicked = path1[idx]
@@ -189,7 +195,8 @@ fn draw_breadcrumb_showcase(ui : @core.UIContext) -> Unit {
     "Root", "Volumes", "ling71671", "Projects", "moon-egui", "examples", "canvas",
     "gallery.html",
   ]
-  let (c2, _) = ui.breadcrumb(
+  let (c2, _) = @widgets.breadcrumb(
+    ui,
     "gal_bc2",
     long_path,
     separator=">",

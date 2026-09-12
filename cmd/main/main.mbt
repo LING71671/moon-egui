@@ -9,9 +9,11 @@ fn main {
   // Declarative immediate-mode UI frame
   let _ = ctx.label("=== Moon-EGUI Control Panel ===")
   ctx.separator()
-  let btn = ctx.button("Launch System")
-  let pbtn = ctx.button_primary("Deploy Wasm")
-  let (fullscreen, chk_resp) = ctx.checkbox("Enable Fullscreen", false)
+  let btn = @widgets.button(ctx, "Launch System")
+  let pbtn = @widgets.button_primary(ctx, "Deploy Wasm")
+  let (fullscreen, chk_resp) = @widgets.checkbox(
+    ctx, "Enable Fullscreen", false,
+  )
   let dl = ctx.end_frame()
 
   println("=== Moon-EGUI v0.2.0 Interactive Frame ===")

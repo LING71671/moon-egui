@@ -70,12 +70,12 @@ test "integration: high-level widget composition lifecycle" {
   ctx.separator()
 
   // 3. Button
-  let resp_btn = ctx.button("Launch")
+  let resp_btn = @widgets.button(ctx, "Launch")
   assert_eq(resp_btn.rect.y, 43.0)
   assert_true(resp_btn.hovered())
 
   // 4. Checkbox
-  let (new_chk, resp_chk) = ctx.checkbox("Fullscreen", false)
+  let (new_chk, resp_chk) = @widgets.checkbox(ctx, "Fullscreen", false)
   assert_eq(resp_chk.rect.y, 83.0)
   assert_true(!resp_chk.hovered())
   assert_true(!new_chk)
@@ -125,4 +125,72 @@ test "integration: color palette and hex parsing" {
   assert_eq(blended.r, 157)
   assert_eq(blended.g, 192)
   assert_eq(blended.b, 250)
+}
+
+///|
+test "integration: layered packages compose through the facade and ui.add" {
+  let ctx = @core.UIContext::new()
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(20.0, 10.0), false),
+  )
+
+  // Standard widget reached through the facade type alias and Widget dispatch
+  let b : @gui.Button = @gui.Button::new("Layer Check").primary(true)
+  let resp_b = ctx.add(b)
+  assert_true(resp_b.hovered())
+
+  // Composite component from the third layer
+  let tree : @gui.DockTree = @gui.DockTree::leaf([
+    @gui.DockTab::new("viewport", "Viewport"),
+  ])
+  let dock : @gui.DockArea = @gui.DockArea::new(
+    "smoke_dock",
+    @math.Vec2::new(240.0, 120.0),
+    tree,
+    fn(pane_ui, tab_id, _rect) { let _ = pane_ui.label("dock pane: " + tab_id) },
+  )
+  let _ = ctx.add(dock)
+
+  // Engine-only primitive: available without any widget package
+  let resp_lbl = ctx.label("core primitive")
+  assert_true(resp_lbl.rect.h > 0.0)
+
+  let dl = ctx.end_frame()
+  assert_true(dl.len() > 0)
+}
+
+///|
+test "integration: code editor consumes Tab so focus does not escape" {
+  let ctx = @core.UIContext::new()
+
+  // Frame 1: Click directly on code editor at (100.0, 50.0)
+  let raw1 = @core.RawInput::from_mouse(@math.Vec2::new(100.0, 50.0), true)
+  ctx.begin_frame(raw1)
+  let _ = @widgets.button(ctx, "Before")
+  let (t1, resp1) = @composite.code_editor(ctx, "editor", "fn main() {\n}")
+  let _ = @widgets.button(ctx, "After")
+  let _ = ctx.end_frame()
+
+  assert_true(resp1.has_focus())
+
+  // Frame 2: Press Tab inside code editor -> adds two spaces and keeps focus
+  let raw2 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Tab, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw2)
+  let btn_before = @widgets.button(ctx, "Before")
+  let (t2, resp2) = @composite.code_editor(ctx, "editor", t1)
+  let btn_after = @widgets.button(ctx, "After")
+  let _ = ctx.end_frame()
+
+  // Tab key was consumed by code_editor, so focus did not escape to "After" button
+  assert_true(t2.contains("  "))
+  assert_true(resp2.has_focus())
+  assert_true(!btn_after.has_focus())
+  assert_true(!btn_before.has_focus())
 }

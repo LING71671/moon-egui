@@ -38,58 +38,6 @@ test "theme: default WidgetStyle values" {
   assert_eq(style.radius_lg, 10.0)
   assert_eq(style.radius_xl, 12.0)
   assert_eq(style.caret_blink_interval, 0.53)
-
-  // Component style descriptors
-  let code_style = CodeEditorStyle::default()
-  assert_eq(code_style.font_size, 12.5)
-  assert_eq(code_style.gutter_w, 44.0)
-
-  let plot_style = PlotStyle::default()
-  assert_eq(plot_style.default_w, 280.0)
-  assert_eq(plot_style.default_h, 150.0)
-
-  let table_style = TableStyle::default()
-  assert_eq(table_style.header_h, 32.0)
-  assert_eq(table_style.row_h, 30.0)
-
-  let fader_style = FaderStyle::default()
-  assert_eq(fader_style.width, 44.0)
-  assert_eq(fader_style.height, 150.0)
-
-  let knob_style = KnobStyle::default()
-  assert_eq(knob_style.radius, 20.0)
-}
-
-///|
-test "theme: scale multiplier scales widget dimensions" {
-  let ctx = UIContext::new()
-  let scaled_style = { ..WidgetStyle::default(), scale: 1.5, }
-  ctx.set_style(scaled_style)
-  assert_eq(ctx.style().scale, 1.5)
-
-  ctx.begin_frame(RawInput::new())
-  let resp = ctx.button("Scaled Action")
-  assert_eq(resp.rect.h, 48.0) // 32.0 * 1.5
-}
-
-///|
-test "theme: cursor_icon reporting on hover" {
-  let ctx = UIContext::new()
-
-  // Frame 1: Mouse hovering over button at (30.0, 15.0)
-  let raw1 = RawInput::from_mouse(@math.Vec2::new(30.0, 15.0), false)
-  ctx.begin_frame(raw1)
-  let resp_btn = ctx.button("Action")
-  assert_true(resp_btn.hovered())
-  assert_eq(ctx.cursor_icon(), "pointer")
-
-  // Frame 2: Mouse hovering over text_edit at (30.0, 15.0)
-  let ctx2 = UIContext::new()
-  let raw2 = RawInput::from_mouse(@math.Vec2::new(30.0, 15.0), false)
-  ctx2.begin_frame(raw2)
-  let (_, resp_txt) = ctx2.text_edit("input_name", "Hello", "Enter...")
-  assert_true(resp_txt.hovered())
-  assert_eq(ctx2.cursor_icon(), "text")
 }
 
 ///|
@@ -132,65 +80,6 @@ test "theme: custom caret blink interval is honored" {
   // At 1.7s (in [1.6, 2.4)), should be on again
   ctx.set_time(1.7)
   assert_true(ctx.is_caret_visible())
-}
-
-///|
-test "text_edit: caret line rendered when visible and omitted when blinking off" {
-  let ctx = UIContext::new()
-
-  // Frame 1: mouse down on field at time 0.0
-  let raw1 = RawInput::from_mouse(@math.Vec2::new(30.0, 15.0), true)
-  ctx.begin_frame(raw1)
-  let _ = ctx.text_edit("email", "dev@moonbitlang.com", "")
-  let dl1 = ctx.end_frame()
-  let mut has_line1 = false
-  for i = 0; i < dl1.len(); i = i + 1 {
-    if dl1.get_command(i) is Some(@draw.DrawCmd::Line(_)) {
-      has_line1 = true
-    }
-  }
-  assert_true(has_line1)
-
-  // Frame 2: mouse released to complete click at time 0.05
-  ctx.set_time(0.05)
-  let raw2 = RawInput::from_mouse(@math.Vec2::new(30.0, 15.0), false)
-  ctx.begin_frame(raw2)
-  let _ = ctx.text_edit("email", "dev@moonbitlang.com", "")
-  let _ = ctx.end_frame()
-
-  // Frame 3: idle for 0.6s (time = 0.65s) -> caret enters off phase (hidden)
-  ctx.set_time(0.65)
-  let raw3 = RawInput::from_mouse(@math.Vec2::new(-100.0, -100.0), false)
-  ctx.begin_frame(raw3)
-  let _ = ctx.text_edit("email", "dev@moonbitlang.com", "")
-  let dl3 = ctx.end_frame()
-  let mut has_line3 = false
-  for i = 0; i < dl3.len(); i = i + 1 {
-    if dl3.get_command(i) is Some(@draw.DrawCmd::Line(_)) {
-      has_line3 = true
-    }
-  }
-  assert_false(has_line3)
-
-  // Frame 4: user types a key -> caret immediately solid (visible)
-  let raw4 = RawInput::with_events(
-    @math.Vec2::new(-100.0, -100.0),
-    false,
-    @math.Vec2::zero(),
-    [],
-    "x",
-    Modifiers::none(),
-  )
-  ctx.begin_frame(raw4)
-  let _ = ctx.text_edit("email", "dev@moonbitlang.com", "")
-  let dl4 = ctx.end_frame()
-  let mut has_line4 = false
-  for i = 0; i < dl4.len(); i = i + 1 {
-    if dl4.get_command(i) is Some(@draw.DrawCmd::Line(_)) {
-      has_line4 = true
-    }
-  }
-  assert_true(has_line4)
 }
 
 ///|

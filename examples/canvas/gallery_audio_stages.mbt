@@ -24,7 +24,8 @@ fn draw_knob_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(8.0)
   ui.horizontal(fn(row) {
-    let (c, _) = row.knob(
+    let (c, _) = @composite.knob(
+      row,
       "cutoff",
       "CUTOFF",
       gallery_state.knob_cutoff,
@@ -42,7 +43,8 @@ fn draw_knob_showcase(ui : @core.UIContext) -> Unit {
 
     row.spacer(16.0)
 
-    let (r, _) = row.knob(
+    let (r, _) = @composite.knob(
+      row,
       "res",
       "RESONANCE",
       gallery_state.knob_res,
@@ -60,7 +62,8 @@ fn draw_knob_showcase(ui : @core.UIContext) -> Unit {
 
     row.spacer(16.0)
 
-    let (p, _) = row.knob(
+    let (p, _) = @composite.knob(
+      row,
       "pan",
       "PAN",
       gallery_state.knob_pan,
@@ -79,7 +82,8 @@ fn draw_knob_showcase(ui : @core.UIContext) -> Unit {
 
     row.spacer(16.0)
 
-    let (d, _) = row.knob(
+    let (d, _) = @composite.knob(
+      row,
       "drive",
       "DRIVE",
       gallery_state.knob_drive,
@@ -99,7 +103,7 @@ fn draw_knob_showcase(ui : @core.UIContext) -> Unit {
   ui.separator()
   ui.spacer(8.0)
   ui.horizontal(fn(row) {
-    if row.button_sized("默认预设", @math.Vec2::new(84.0, 26.0)).clicked {
+    if @widgets.button_sized(row, "默认预设", @math.Vec2::new(84.0, 26.0)).clicked {
       gallery_state.knob_cutoff = 1200.0
       gallery_state.knob_res = 25.0
       gallery_state.knob_pan = 0.0
@@ -107,7 +111,7 @@ fn draw_knob_showcase(ui : @core.UIContext) -> Unit {
       gallery_state.status_text = "Preset applied: Default"
     }
     row.spacer(10.0)
-    if row.button_sized("暖调低音", @math.Vec2::new(84.0, 26.0)).clicked {
+    if @widgets.button_sized(row, "暖调低音", @math.Vec2::new(84.0, 26.0)).clicked {
       gallery_state.knob_cutoff = 380.0
       gallery_state.knob_res = 45.0
       gallery_state.knob_pan = 0.0
@@ -115,7 +119,7 @@ fn draw_knob_showcase(ui : @core.UIContext) -> Unit {
       gallery_state.status_text = "Preset applied: Warm Bass"
     }
     row.spacer(10.0)
-    if row.button_sized("亮音主导", @math.Vec2::new(84.0, 26.0)).clicked {
+    if @widgets.button_sized(row, "亮音主导", @math.Vec2::new(84.0, 26.0)).clicked {
       gallery_state.knob_cutoff = 8500.0
       gallery_state.knob_res = 65.0
       gallery_state.knob_pan = 20.0
@@ -133,7 +137,8 @@ fn draw_fader_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(8.0)
   ui.horizontal(fn(row) {
-    let (v, _) = row.fader(
+    let (v, _) = @composite.fader(
+      row,
       "master_vol",
       "MASTER",
       gallery_state.fader_vol,
@@ -153,7 +158,8 @@ fn draw_fader_showcase(ui : @core.UIContext) -> Unit {
 
     row.spacer(14.0)
 
-    let (g, _) = row.fader(
+    let (g, _) = @composite.fader(
+      row,
       "channel_gain",
       "GAIN",
       gallery_state.fader_gain,
@@ -171,7 +177,8 @@ fn draw_fader_showcase(ui : @core.UIContext) -> Unit {
 
     row.spacer(14.0)
 
-    let (fl, _) = row.fader(
+    let (fl, _) = @composite.fader(
+      row,
       "ch_left",
       "LEFT",
       gallery_state.fader_l,
@@ -191,7 +198,8 @@ fn draw_fader_showcase(ui : @core.UIContext) -> Unit {
 
     row.spacer(8.0)
 
-    let (fr, _) = row.fader(
+    let (fr, _) = @composite.fader(
+      row,
       "ch_right",
       "RIGHT",
       gallery_state.fader_r,
@@ -214,7 +222,11 @@ fn draw_fader_showcase(ui : @core.UIContext) -> Unit {
   ui.separator()
   ui.spacer(8.0)
   ui.horizontal(fn(row) {
-    if row.button_sized("复位默认值", @math.Vec2::new(88.0, 26.0)).clicked {
+    if @widgets.button_sized(
+        row,
+        "复位默认值",
+        @math.Vec2::new(88.0, 26.0),
+      ).clicked {
       gallery_state.fader_vol = 0.75
       gallery_state.fader_gain = 0.0
       gallery_state.fader_l = 0.65

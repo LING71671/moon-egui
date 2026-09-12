@@ -25,19 +25,19 @@ fn draw_button_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(10.0)
 
   ui.horizontal(fn(row) {
-    if row.button_primary("主要按钮 (Primary)").clicked {
+    if @widgets.button_primary(row, "主要按钮 (Primary)").clicked {
       gallery_state.button_clicks = gallery_state.button_clicks + 1
       gallery_state.status_text = "Primary Button clicked: " +
         gallery_state.button_clicks.to_string()
     }
     row.spacer(10.0)
-    if row.button("次级按钮 (Normal)").clicked {
+    if @widgets.button(row, "次级按钮 (Normal)").clicked {
       gallery_state.button_clicks = gallery_state.button_clicks + 1
       gallery_state.status_text = "Normal Button clicked: " +
         gallery_state.button_clicks.to_string()
     }
     row.spacer(10.0)
-    if row.button_with_shortcut("保存工程", "⌘S").clicked {
+    if @widgets.button_with_shortcut(row, "保存工程", "⌘S").clicked {
       gallery_state.button_clicks = gallery_state.button_clicks + 1
       gallery_state.status_text = "Shortcut Button (⌘S) clicked!"
     }
@@ -59,7 +59,8 @@ fn draw_checkbox_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(10.0)
 
-  let (g, r1) = ui.checkbox(
+  let (g, r1) = @widgets.checkbox(
+    ui,
     "启用 GPU WebGL 2.0 硬件加速",
     gallery_state.checkbox_gpu,
   )
@@ -70,7 +71,8 @@ fn draw_checkbox_showcase(ui : @core.UIContext) -> Unit {
 
   ui.spacer(8.0)
 
-  let (grid, r2) = ui.checkbox(
+  let (grid, r2) = @widgets.checkbox(
+    ui,
     "显示对齐辅助参考网格 (Align Grid)",
     gallery_state.checkbox_grid,
   )
@@ -81,7 +83,8 @@ fn draw_checkbox_showcase(ui : @core.UIContext) -> Unit {
 
   ui.spacer(8.0)
 
-  let (dark, r3) = ui.checkbox(
+  let (dark, r3) = @widgets.checkbox(
+    ui,
     "视网膜高对比度强化 (High Contrast)",
     gallery_state.checkbox_dark_contrast,
   )
@@ -92,7 +95,8 @@ fn draw_checkbox_showcase(ui : @core.UIContext) -> Unit {
 
   ui.spacer(8.0)
 
-  let (aa, r4) = ui.checkbox(
+  let (aa, r4) = @widgets.checkbox(
+    ui,
     "高品质矢量抗锯齿 (Subpixel AA)",
     gallery_state.checkbox_antialiasing,
   )
@@ -110,7 +114,8 @@ fn draw_toggle_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(10.0)
 
-  let (min, r1) = ui.toggle(
+  let (min, r1) = @widgets.toggle(
+    ui,
     "极简专注模式 (Zen Mode)",
     gallery_state.toggle_minimal,
   )
@@ -121,7 +126,8 @@ fn draw_toggle_showcase(ui : @core.UIContext) -> Unit {
 
   ui.spacer(8.0)
 
-  let (auto, r2) = ui.toggle(
+  let (auto, r2) = @widgets.toggle(
+    ui,
     "云端自动同步保存 (Cloud Sync)",
     gallery_state.toggle_autosave,
   )
@@ -132,7 +138,8 @@ fn draw_toggle_showcase(ui : @core.UIContext) -> Unit {
 
   ui.spacer(8.0)
 
-  let (retina, r3) = ui.toggle(
+  let (retina, r3) = @widgets.toggle(
+    ui,
     "视网膜高分屏自适应 (Retina High-DPR)",
     gallery_state.toggle_retina,
   )
@@ -143,7 +150,8 @@ fn draw_toggle_showcase(ui : @core.UIContext) -> Unit {
 
   ui.spacer(8.0)
 
-  let (hap, r4) = ui.toggle(
+  let (hap, r4) = @widgets.toggle(
+    ui,
     "微触觉反馈模拟 (Micro-haptics)",
     gallery_state.toggle_haptics,
   )
@@ -163,7 +171,8 @@ fn draw_radio_showcase(ui : @core.UIContext) -> Unit {
   let _ = ui.label("选择当前图层渲染引擎管线：")
   ui.spacer(8.0)
 
-  let (_, r0) = ui.radio(
+  let (_, r0) = @widgets.radio(
+    ui,
     "高性能光栅化模式 (WebGL 2.0 Direct Raster)",
     gallery_state.radio_quality == 0,
   )
@@ -174,7 +183,8 @@ fn draw_radio_showcase(ui : @core.UIContext) -> Unit {
 
   ui.spacer(6.0)
 
-  let (_, r1) = ui.radio(
+  let (_, r1) = @widgets.radio(
+    ui,
     "平衡矢量渲染模式 (Canvas 2D Batch)",
     gallery_state.radio_quality == 1,
   )
@@ -185,7 +195,8 @@ fn draw_radio_showcase(ui : @core.UIContext) -> Unit {
 
   ui.spacer(6.0)
 
-  let (_, r2) = ui.radio(
+  let (_, r2) = @widgets.radio(
+    ui,
     "纯 Wasm 软件像素保真 (Pure Software Wasm)",
     gallery_state.radio_quality == 2,
   )
@@ -213,7 +224,8 @@ fn draw_slider_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(10.0)
 
-  let (z, _) = ui.slider(
+  let (z, _) = @widgets.slider(
+    ui,
     "缩放倍率 (Zoom)",
     gallery_state.slider_zoom,
     0.1,
@@ -226,7 +238,8 @@ fn draw_slider_showcase(ui : @core.UIContext) -> Unit {
 
   ui.spacer(10.0)
 
-  let (op, _) = ui.slider(
+  let (op, _) = @widgets.slider(
+    ui,
     "图层透明度 (Opacity)",
     gallery_state.slider_opacity,
     0.0,
@@ -246,12 +259,13 @@ fn draw_drag_value_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(10.0)
 
-  let (x, _) = ui.drag_value(
+  let (x, _) = @widgets.drag_value(
+    ui,
     "X 轴坐标",
     gallery_state.drag_x,
-    0.5,
-    -1000.0,
-    1000.0,
+    speed=0.5,
+    min=-1000.0,
+    max=1000.0,
   )
   if x != gallery_state.drag_x {
     gallery_state.drag_x = x
@@ -260,12 +274,13 @@ fn draw_drag_value_showcase(ui : @core.UIContext) -> Unit {
 
   ui.spacer(8.0)
 
-  let (y, _) = ui.drag_value(
+  let (y, _) = @widgets.drag_value(
+    ui,
     "Y 轴坐标",
     gallery_state.drag_y,
-    0.5,
-    -1000.0,
-    1000.0,
+    speed=0.5,
+    min=-1000.0,
+    max=1000.0,
   )
   if y != gallery_state.drag_y {
     gallery_state.drag_y = y
@@ -274,12 +289,13 @@ fn draw_drag_value_showcase(ui : @core.UIContext) -> Unit {
 
   ui.spacer(8.0)
 
-  let (s, _) = ui.drag_value(
+  let (s, _) = @widgets.drag_value(
+    ui,
     "比例系数",
     gallery_state.drag_scale,
-    0.02,
-    0.1,
-    10.0,
+    speed=0.02,
+    min=0.1,
+    max=10.0,
   )
   if s != gallery_state.drag_scale {
     gallery_state.drag_scale = s
@@ -296,14 +312,15 @@ fn draw_progress_bar_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(10.0)
 
   let pct_text = (gallery_state.progress_val * 100.0).to_int().to_string() + "%"
-  let _ = ui.progress_bar(
+  let _ = @widgets.progress_bar(
+    ui,
     gallery_state.progress_val,
-    "渲染合成进度 " + pct_text,
+    text="渲染合成进度 " + pct_text,
   )
 
   ui.spacer(16.0)
   ui.horizontal(fn(row) {
-    if row.button_sized("步进 +10%", @math.Vec2::new(80.0, 26.0)).clicked {
+    if @widgets.button_sized(row, "步进 +10%", @math.Vec2::new(80.0, 26.0)).clicked {
       let mut nv = gallery_state.progress_val + 0.1
       if nv > 1.0 {
         nv = 1.0
@@ -314,7 +331,7 @@ fn draw_progress_bar_showcase(ui : @core.UIContext) -> Unit {
         "%"
     }
     row.spacer(8.0)
-    if row.button_sized("倒退 -10%", @math.Vec2::new(80.0, 26.0)).clicked {
+    if @widgets.button_sized(row, "倒退 -10%", @math.Vec2::new(80.0, 26.0)).clicked {
       let mut nv = gallery_state.progress_val - 0.1
       if nv < 0.0 {
         nv = 0.0
@@ -325,7 +342,7 @@ fn draw_progress_bar_showcase(ui : @core.UIContext) -> Unit {
         "%"
     }
     row.spacer(8.0)
-    if row.button_sized("重置为 0", @math.Vec2::new(80.0, 26.0)).clicked {
+    if @widgets.button_sized(row, "重置为 0", @math.Vec2::new(80.0, 26.0)).clicked {
       gallery_state.progress_val = 0.0
       gallery_state.status_text = "Progress reset to 0%"
     }
@@ -345,11 +362,12 @@ fn draw_spinner_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(14.0)
 
   ui.horizontal(fn(row) {
-    let _ = row.spinner(size=18.0)
+    let _ = @widgets.spinner(row, size=18.0)
     row.spacer(16.0)
-    let _ = row.spinner(size=24.0, color=@color.Color::success())
+    let _ = @widgets.spinner(row, size=24.0, color=@color.Color::success())
     row.spacer(16.0)
-    let _ = row.spinner(
+    let _ = @widgets.spinner(
+      row,
       size=32.0,
       color=@color.Color::danger(),
       stroke_width=3.0,
@@ -357,7 +375,8 @@ fn draw_spinner_showcase(ui : @core.UIContext) -> Unit {
   })
 
   ui.spacer(16.0)
-  let _ = ui.spinner_with_label(
+  let _ = @widgets.spinner_with_label(
+    ui,
     "正在同步远程 MoonBit 模块索引...",
     size=18.0,
   )
@@ -377,17 +396,33 @@ fn draw_badge_showcase(ui : @core.UIContext) -> Unit {
 
   // Badges row
   ui.horizontal(fn(row) {
-    let _ = row.badge("Default", kind=@core.BadgeKind::default())
+    let _ = @widgets.badge(row, "Default", kind=@widgets.BadgeKind::default())
     row.spacer(8.0)
-    let _ = row.badge("Success", kind=@core.BadgeKind::success(), dot=true)
+    let _ = @widgets.badge(
+      row,
+      "Success",
+      kind=@widgets.BadgeKind::success(),
+      dot=true,
+    )
     row.spacer(8.0)
-    let _ = row.badge("Warning", kind=@core.BadgeKind::warning(), dot=true)
+    let _ = @widgets.badge(
+      row,
+      "Warning",
+      kind=@widgets.BadgeKind::warning(),
+      dot=true,
+    )
     row.spacer(8.0)
-    let _ = row.badge("Danger", kind=@core.BadgeKind::danger(), pill=true)
+    let _ = @widgets.badge(
+      row,
+      "Danger",
+      kind=@widgets.BadgeKind::danger(),
+      pill=true,
+    )
     row.spacer(8.0)
-    let _ = row.badge(
+    let _ = @widgets.badge(
+      row,
       "Beta v0.2.0",
-      kind=@core.BadgeKind::info(),
+      kind=@widgets.BadgeKind::info(),
       dot=true,
       pill=true,
     )
@@ -398,10 +433,11 @@ fn draw_badge_showcase(ui : @core.UIContext) -> Unit {
   // Tags row
   ui.horizontal(fn(row) {
     if gallery_state.tag1_open {
-      let (c1, _) = row.tag(
+      let (c1, _) = @widgets.tag(
+        row,
         "tag1",
         "Wasm 32",
-        kind=@core.BadgeKind::info(),
+        kind=@widgets.BadgeKind::info(),
         closable=true,
       )
       if c1 {
@@ -411,10 +447,11 @@ fn draw_badge_showcase(ui : @core.UIContext) -> Unit {
       row.spacer(8.0)
     }
     if gallery_state.tag2_open {
-      let (c2, _) = row.tag(
+      let (c2, _) = @widgets.tag(
+        row,
         "tag2",
         "Production",
-        kind=@core.BadgeKind::success(),
+        kind=@widgets.BadgeKind::success(),
         closable=true,
       )
       if c2 {
@@ -424,10 +461,11 @@ fn draw_badge_showcase(ui : @core.UIContext) -> Unit {
       row.spacer(8.0)
     }
     if gallery_state.tag3_open {
-      let (c3, _) = row.tag(
+      let (c3, _) = @widgets.tag(
+        row,
         "tag3",
         "Deprecated",
-        kind=@core.BadgeKind::warning(),
+        kind=@widgets.BadgeKind::warning(),
         closable=true,
       )
       if c3 {
@@ -439,7 +477,11 @@ fn draw_badge_showcase(ui : @core.UIContext) -> Unit {
     if !gallery_state.tag1_open ||
       !gallery_state.tag2_open ||
       !gallery_state.tag3_open {
-      if row.button_sized("恢复所有标签", @math.Vec2::new(96.0, 24.0)).clicked {
+      if @widgets.button_sized(
+          row,
+          "恢复所有标签",
+          @math.Vec2::new(96.0, 24.0),
+        ).clicked {
         gallery_state.tag1_open = true
         gallery_state.tag2_open = true
         gallery_state.tag3_open = true

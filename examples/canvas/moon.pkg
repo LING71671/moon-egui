@@ -3,6 +3,8 @@ import {
   "LING71671/moon-egui/src/draw",
   "LING71671/moon-egui/src/core",
   "LING71671/moon-egui/src/color",
+  "LING71671/moon-egui/src/widgets",
+  "LING71671/moon-egui/src/composite",
 }
 
 pkgtype(kind: "executable")

@@ -1,3 +1,7 @@
+// Layer 3: advanced composite components. Depends on the engine runtime
+// (src/core). The layer boundary also permits depending on src/widgets; the
+// import is declared here only once production code embeds a standard control,
+// because whitebox tests alone do not count as usage.
 import {
   "LING71671/moon-egui/src/math",
   "LING71671/moon-egui/src/color",

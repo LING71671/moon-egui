@@ -7,15 +7,12 @@ import {
   "LING71671/moon-egui/src/math",
   "moonbitlang/core/debug",
   "moonbitlang/core/hashmap",
-  "moonbitlang/core/ref",
 }
 
 // Values
 pub fn delete_next_char(String, Int) -> String
 
 pub fn delete_prev_char(String, Int) -> (String, Int)
-
-pub fn hsv_to_rgb(Double, Double, Double) -> (Int, Int, Int)
 
 pub fn is_cjk_char(Int) -> Bool
 
@@ -31,235 +28,16 @@ pub fn next_char_boundary(String, Int) -> Int
 
 pub fn prev_char_boundary(String, Int) -> Int
 
-pub fn rgb_to_hsv(Int, Int, Int) -> (Double, Double, Double)
-
 pub fn string_slice(String, Int, Int) -> String
 
 // Errors
 
 // Types and methods
-pub struct Badge {
-  text : String
-  kind : BadgeKind
-  dot : Bool
-  pill : Bool
-} derive(Eq, @debug.Debug)
-pub fn Badge::dot(Self, Bool) -> Self
-pub fn Badge::kind(Self, BadgeKind) -> Self
-pub fn Badge::new(String) -> Self
-pub fn Badge::pill(Self, Bool) -> Self
-pub impl Widget for Badge
-
-pub(all) enum BadgeKind {
-  Default
-  Success
-  Warning
-  Danger
-  Info
-} derive(Eq, @debug.Debug)
-pub fn BadgeKind::danger() -> Self
-pub fn BadgeKind::default() -> Self
-pub fn BadgeKind::info() -> Self
-pub fn BadgeKind::success() -> Self
-pub fn BadgeKind::warning() -> Self
-
-pub struct BarChart {
-  id_salt : String
-  labels : Array[String]
-  values : Array[Double]
-  size : @math.Vec2?
-  bar_color : @color.Color
-}
-pub fn BarChart::bar_color(Self, @color.Color) -> Self
-pub fn BarChart::new(String, Array[String], Array[Double]) -> Self
-pub fn BarChart::show(Self, UIContext) -> (Int?, Response)
-pub fn BarChart::size(Self, @math.Vec2) -> Self
-
-pub struct Button {
-  text : String
-  shortcut : String
-  primary : Bool
-  size : @math.Vec2
-} derive(Eq, @debug.Debug)
-pub fn Button::new(String) -> Self
-pub fn Button::primary(Self, Bool) -> Self
-pub fn Button::shortcut(Self, String) -> Self
-pub fn Button::size(Self, @math.Vec2) -> Self
-pub impl Widget for Button
-
-pub struct Checkbox {
-  text : String
-  checked : Bool
-} derive(Eq, @debug.Debug)
-pub fn Checkbox::from_ref(String, @ref.Ref[Bool]) -> CheckboxRef
-pub fn Checkbox::new(String, Bool) -> Self
-pub fn Checkbox::show(Self, UIContext) -> (Bool, Response)
-
-pub struct CheckboxRef {
-  text : String
-  target : @ref.Ref[Bool]
-}
-pub impl Widget for CheckboxRef
-
-pub struct CodeEditorStyle {
-  font_size : Double
-  gutter_font_size : Double
-  line_h : Double
-  gutter_w : Double
-  radius : Double
-} derive(Eq, @debug.Debug)
-pub fn CodeEditorStyle::default() -> Self
-
-pub struct CommandItem {
-  id : String
-  title : String
-  category : String
-  shortcut : String
-} derive(Eq, @debug.Debug)
-pub fn CommandItem::new(String, String, category? : String, shortcut? : String) -> Self
-
-pub struct CommandPaletteResponse {
-  open : Bool
-  selected_id : String?
-  query : String
-  selected_index : Int
-} derive(Eq, @debug.Debug)
-
-pub struct ContextMenuItem {
-  id : String
-  label : String
-  shortcut : String
-  disabled : Bool
-  is_separator : Bool
-  children : Array[ContextMenuItem]
-} derive(Eq, @debug.Debug)
-pub fn ContextMenuItem::new(String, String, shortcut? : String, disabled? : Bool, children? : Array[Self]) -> Self
-pub fn ContextMenuItem::separator() -> Self
-pub fn ContextMenuItem::submenu(String, String, Array[Self], disabled? : Bool) -> Self
-
-pub struct ContextMenuResponse {
-  open : Bool
-  selected_id : String?
-  pos : @math.Vec2
-  size : @math.Vec2
-} derive(Eq, @debug.Debug)
-
-pub(all) enum DialogKind {
-  Info
-  Warning
-  Danger
-  Confirm
-} derive(Eq, @debug.Debug)
-pub fn DialogKind::confirm() -> Self
-pub fn DialogKind::danger() -> Self
-pub fn DialogKind::info() -> Self
-pub fn DialogKind::warning() -> Self
-
-pub(all) enum DialogResult {
-  Confirmed
-  Cancelled
-  Open
-} derive(Eq, @debug.Debug)
-
-pub struct DockArea {
-  id_salt : String
-  size : @math.Vec2
-  tree : DockTree
-  render_tab : (UIContext, String, @math.Rect) -> Unit
-}
-pub fn DockArea::new(String, @math.Vec2, DockTree, (UIContext, String, @math.Rect) -> Unit) -> Self
-pub fn DockArea::show(Self, UIContext) -> DockResponse
-pub impl Widget for DockArea
-
-pub(all) enum DockNode {
-  Leaf(Array[DockTab], Int)
-  Split(DockSplitDirection, Double, DockNode, DockNode)
-  Empty
-} derive(Eq, @debug.Debug)
-
-pub struct DockResponse {
-  resp : Response
-  active_tab_changed : (String, String)?
-  tab_closed : String?
-  ratio_changed : Bool
-} derive(Eq, @debug.Debug)
-
-pub(all) enum DockSplitDirection {
-  Horizontal
-  Vertical
-} derive(Eq, @debug.Debug)
-pub fn DockSplitDirection::horizontal() -> Self
-pub fn DockSplitDirection::vertical() -> Self
-
-pub struct DockTab {
-  id : String
-  title : String
-  closable : Bool
-} derive(Eq, @debug.Debug)
-pub fn DockTab::new(String, String, closable? : Bool) -> Self
-
-pub struct DockTree {
-  mut root : DockNode
-} derive(Eq, @debug.Debug)
-pub fn DockTree::close_tab(Self, String) -> Bool
-pub fn DockTree::find_tab(Self, String) -> (DockTab, Int)?
-pub fn DockTree::leaf(Array[DockTab], active_tab? : Int) -> Self
-pub fn DockTree::new(DockNode) -> Self
-pub fn DockTree::root(Self) -> DockNode
-pub fn DockTree::set_active_tab(Self, String) -> Bool
-pub fn DockTree::split(DockSplitDirection, Double, Self, Self) -> Self
-
 pub(all) enum Event {
   Key(Key, Bool, Modifiers)
   TextInput(String)
   PointerWheel(@math.Vec2)
 } derive(Eq, @debug.Debug)
-
-pub struct Fader {
-  id_salt : String
-  label : String
-  value : Double
-  min_val : Double
-  max_val : Double
-  step : Double
-  default_val : Double
-  unit : String
-  show_ticks : Bool
-  size : @math.Vec2?
-} derive(Eq, @debug.Debug)
-pub fn Fader::default_val(Self, Double) -> Self
-pub fn Fader::from_ref(String, String, @ref.Ref[Double]) -> FaderRef
-pub fn Fader::max(Self, Double) -> Self
-pub fn Fader::min(Self, Double) -> Self
-pub fn Fader::new(String, String, Double) -> Self
-pub fn Fader::show(Self, UIContext) -> (Double, Response)
-pub fn Fader::show_ticks(Self, Bool) -> Self
-pub fn Fader::size(Self, @math.Vec2) -> Self
-pub fn Fader::step(Self, Double) -> Self
-pub fn Fader::unit(Self, String) -> Self
-
-pub struct FaderRef {
-  fader : Fader
-  target : @ref.Ref[Double]
-}
-pub fn FaderRef::default_val(Self, Double) -> Self
-pub fn FaderRef::max(Self, Double) -> Self
-pub fn FaderRef::min(Self, Double) -> Self
-pub fn FaderRef::show_ticks(Self, Bool) -> Self
-pub fn FaderRef::size(Self, @math.Vec2) -> Self
-pub fn FaderRef::step(Self, Double) -> Self
-pub fn FaderRef::unit(Self, String) -> Self
-pub impl Widget for FaderRef
-
-pub struct FaderStyle {
-  width : Double
-  height : Double
-  track_w : Double
-  cap_w : Double
-  cap_h : Double
-  cap_radius : Double
-} derive(Eq, @debug.Debug)
-pub fn FaderStyle::default() -> Self
 
 pub struct FocusManager {
   mut hot_id : Id
@@ -411,55 +189,6 @@ pub(all) enum Key {
   Num9
 } derive(Eq, Hash, @debug.Debug)
 
-pub struct Knob {
-  id_salt : String
-  label : String
-  value : Double
-  min_val : Double
-  max_val : Double
-  step : Double
-  default_val : Double
-  unit : String
-  radius : Double
-  bipolar : Bool
-} derive(Eq, @debug.Debug)
-pub fn Knob::bipolar(Self, Bool) -> Self
-pub fn Knob::default_val(Self, Double) -> Self
-pub fn Knob::from_ref(String, String, @ref.Ref[Double]) -> KnobRef
-pub fn Knob::max(Self, Double) -> Self
-pub fn Knob::min(Self, Double) -> Self
-pub fn Knob::new(String, String, Double) -> Self
-pub fn Knob::radius(Self, Double) -> Self
-pub fn Knob::show(Self, UIContext) -> (Double, Response)
-pub fn Knob::step(Self, Double) -> Self
-pub fn Knob::unit(Self, String) -> Self
-
-pub struct KnobRef {
-  knob : Knob
-  target : @ref.Ref[Double]
-}
-pub fn KnobRef::bipolar(Self, Bool) -> Self
-pub fn KnobRef::default_val(Self, Double) -> Self
-pub fn KnobRef::max(Self, Double) -> Self
-pub fn KnobRef::min(Self, Double) -> Self
-pub fn KnobRef::radius(Self, Double) -> Self
-pub fn KnobRef::step(Self, Double) -> Self
-pub fn KnobRef::unit(Self, String) -> Self
-pub impl Widget for KnobRef
-
-pub struct KnobStyle {
-  radius : Double
-} derive(Eq, @debug.Debug)
-pub fn KnobStyle::default() -> Self
-
-pub struct Label {
-  text : String
-  color : @color.Color?
-} derive(Eq, @debug.Debug)
-pub fn Label::color(Self, @color.Color) -> Self
-pub fn Label::new(String) -> Self
-pub impl Widget for Label
-
 pub struct LayerManager {
   mut draw_list : @draw.DrawList
   fg_draw_list : @draw.DrawList
@@ -582,71 +311,6 @@ pub fn Painter::pop_clip(Self) -> Unit
 pub fn Painter::push_clip(Self, @math.Rect) -> Unit
 pub fn Painter::sub_painter(Self, @math.Vec2, sub_clip? : @math.Rect?) -> Self
 
-pub struct Plot {
-  id_salt : String
-  series : Array[PlotSeries]
-  size : @math.Vec2?
-  show_grid : Bool
-  show_crosshair : Bool
-  show_legend : Bool
-}
-pub fn Plot::new(String, Array[PlotSeries]) -> Self
-pub fn Plot::show(Self, UIContext) -> (@math.Vec2?, Response)
-pub fn Plot::show_crosshair(Self, Bool) -> Self
-pub fn Plot::show_grid(Self, Bool) -> Self
-pub fn Plot::show_legend(Self, Bool) -> Self
-pub fn Plot::size(Self, @math.Vec2) -> Self
-
-pub struct PlotPoint {
-  x : Double
-  y : Double
-} derive(Eq, @debug.Debug)
-pub fn PlotPoint::new(Double, Double) -> Self
-
-pub struct PlotSeries {
-  name : String
-  points : Array[PlotPoint]
-  color : @color.Color
-  kind : PlotSeriesKind
-} derive(Eq, @debug.Debug)
-pub fn PlotSeries::area(String, Array[PlotPoint], color? : @color.Color) -> Self
-pub fn PlotSeries::line(String, Array[PlotPoint], color? : @color.Color) -> Self
-pub fn PlotSeries::scatter(String, Array[PlotPoint], color? : @color.Color) -> Self
-
-pub enum PlotSeriesKind {
-  Line
-  Scatter
-  Area
-} derive(Eq, @debug.Debug)
-
-pub struct PlotStyle {
-  default_w : Double
-  default_h : Double
-  pad_left : Double
-  pad_right : Double
-  pad_top : Double
-  pad_bottom : Double
-  bar_chart_default_w : Double
-  bar_chart_default_h : Double
-  bar_chart_gap : Double
-} derive(Eq, @debug.Debug)
-pub fn PlotStyle::default() -> Self
-
-pub struct ProgressBar {
-  fraction : Double
-  text : String
-} derive(Eq, @debug.Debug)
-pub fn ProgressBar::new(Double) -> Self
-pub fn ProgressBar::text(Self, String) -> Self
-pub impl Widget for ProgressBar
-
-pub struct Radio {
-  label : String
-  selected : Bool
-} derive(Eq, @debug.Debug)
-pub fn Radio::new(String, Bool) -> Self
-pub fn Radio::show(Self, UIContext) -> (Bool, Response)
-
 pub struct RawInput {
   mouse_pos : @math.Vec2
   mouse_down : Bool
@@ -686,104 +350,6 @@ pub fn Response::rect(Self) -> @math.Rect
 pub fn Response::secondary_clicked(Self) -> Bool
 pub fn Response::with_focus(Id, @math.Rect, Bool, Bool, Bool, Bool, Bool, Bool, Bool, secondary_clicked? : Bool) -> Self
 
-pub struct RichTextResponse {
-  clicked_url : String?
-  resp : Response
-} derive(Eq, @debug.Debug)
-
-pub struct Separator {
-} derive(Eq, @debug.Debug)
-pub fn Separator::new() -> Self
-pub impl Widget for Separator
-
-pub struct Slider {
-  label : String
-  value : Double
-  min : Double
-  max : Double
-  step : Double?
-} derive(Eq, @debug.Debug)
-pub fn Slider::from_ref(String, @ref.Ref[Double], Double, Double) -> SliderRef
-pub fn Slider::new(String, Double, Double, Double) -> Self
-pub fn Slider::show(Self, UIContext) -> (Double, Response)
-pub fn Slider::step(Self, Double) -> Self
-
-pub struct SliderRef {
-  label : String
-  target : @ref.Ref[Double]
-  min : Double
-  max : Double
-  step : Double?
-}
-pub fn SliderRef::step(Self, Double) -> Self
-pub impl Widget for SliderRef
-
-pub struct Table {
-  id_salt : String
-  size : @math.Vec2
-  columns : Array[TableColumn]
-  row_count : Int
-  render_cell : (UIContext, Int, Int, @math.Rect) -> Unit
-  row_height : Double
-  header_height : Double
-  selected_row : Int
-  sort_column : String
-  sort_direction : TableSortDirection
-}
-pub fn Table::header_height(Self, Double) -> Self
-pub fn Table::new(String, @math.Vec2, Array[TableColumn], Int, (UIContext, Int, Int, @math.Rect) -> Unit) -> Self
-pub fn Table::row_height(Self, Double) -> Self
-pub fn Table::selected_row(Self, Int) -> Self
-pub fn Table::show(Self, UIContext) -> TableResponse
-pub fn Table::sort_column(Self, String) -> Self
-pub fn Table::sort_direction(Self, TableSortDirection) -> Self
-
-pub struct TableColumn {
-  id : String
-  title : String
-  mut width : Double
-  min_width : Double
-  sortable : Bool
-} derive(Eq, @debug.Debug)
-pub fn TableColumn::new(String, String, Double, min_width? : Double, sortable? : Bool) -> Self
-
-pub struct TableResponse {
-  sort_changed : Bool
-  sort_column : String
-  sort_direction : TableSortDirection
-  hovered_row : Int?
-  clicked_row : Int?
-} derive(Eq, @debug.Debug)
-
-pub(all) enum TableSortDirection {
-  Ascending
-  Descending
-  NoSort
-} derive(Eq, @debug.Debug)
-
-pub struct TableStyle {
-  header_h : Double
-  row_h : Double
-  radius : Double
-} derive(Eq, @debug.Debug)
-pub fn TableStyle::default() -> Self
-
-pub struct TextSpan {
-  text : String
-  kind : TextSpanKind
-} derive(Eq, @debug.Debug)
-pub fn TextSpan::bold(String) -> Self
-pub fn TextSpan::code(String) -> Self
-pub fn TextSpan::link(String, String) -> Self
-pub fn TextSpan::normal(String) -> Self
-
-pub(all) enum TextSpanKind {
-  Normal
-  Bold
-  Code
-  Link(String)
-} derive(Eq, @debug.Debug)
-
 pub struct Theme {
   name : String
   bg_app : @color.Color
@@ -815,70 +381,6 @@ pub fn Theme::high_contrast() -> Self
 pub fn Theme::slate_dark() -> Self
 pub fn Theme::studio_light() -> Self
 
-pub struct Toast {
-  id : String
-  title : String
-  message : String
-  kind : ToastKind
-  mut elapsed : Double
-  duration : Double
-} derive(Eq, @debug.Debug)
-pub fn Toast::danger(String, message? : String, duration? : Double) -> Self
-pub fn Toast::info(String, message? : String, duration? : Double) -> Self
-pub fn Toast::new(String, String, message? : String, kind? : ToastKind, duration? : Double) -> Self
-pub fn Toast::success(String, message? : String, duration? : Double) -> Self
-pub fn Toast::warning(String, message? : String, duration? : Double) -> Self
-
-pub(all) enum ToastAnchor {
-  TopRight
-  BottomRight
-  BottomCenter
-} derive(Eq, @debug.Debug)
-
-pub(all) enum ToastKind {
-  Info
-  Success
-  Warning
-  Danger
-} derive(Eq, @debug.Debug)
-
-pub struct ToastResponse {
-  active_toasts : Array[Toast]
-  dismissed_id : String?
-} derive(Eq, @debug.Debug)
-
-pub struct Toggle {
-  text : String
-  checked : Bool
-} derive(Eq, @debug.Debug)
-pub fn Toggle::from_ref(String, @ref.Ref[Bool]) -> ToggleRef
-pub fn Toggle::new(String, Bool) -> Self
-pub fn Toggle::show(Self, UIContext) -> (Bool, Response)
-
-pub struct ToggleRef {
-  text : String
-  target : @ref.Ref[Bool]
-}
-pub impl Widget for ToggleRef
-
-pub struct TreeNode {
-  id : String
-  label : String
-  icon : String
-  children : Array[TreeNode]
-} derive(Eq, @debug.Debug)
-pub fn TreeNode::is_leaf(Self) -> Bool
-pub fn TreeNode::leaf(String, String, icon? : String) -> Self
-pub fn TreeNode::new(String, String, children? : Array[Self], icon? : String) -> Self
-
-pub struct TreeViewResponse {
-  selected_id : String?
-  expanded_ids : Array[String]
-  clicked_id : String?
-  toggled_id : String?
-  response : Response
-} derive(Eq, @debug.Debug)
-
 pub struct UIContext {
   input : InputState
   id_stack : IdStack
@@ -906,40 +408,17 @@ pub fn UIContext::allocate_space(Self, @math.Vec2) -> (Id, @math.Rect, Response)
 pub fn UIContext::animate_bool(Self, Id, Bool, Double) -> Double
 pub fn UIContext::animate_float(Self, Id, Double, Double) -> Double
 pub fn UIContext::available_width(Self) -> Double
-pub fn UIContext::badge(Self, String, kind? : BadgeKind, dot? : Bool, pill? : Bool) -> Response
-pub fn UIContext::bar_chart(Self, String, Array[String], Array[Double], size? : @math.Vec2, bar_color? : @color.Color) -> (Int?, Response)
 pub fn UIContext::begin_foreground(Self) -> Unit
 pub fn UIContext::begin_frame(Self, RawInput) -> Unit
 pub fn UIContext::block_hover(Self, @math.Rect) -> Unit
-pub fn UIContext::breadcrumb(Self, String, Array[String], separator? : String, max_visible? : Int) -> (Int?, Response)
-pub fn UIContext::button(Self, String, shortcut? : String, primary? : Bool, size? : @math.Vec2) -> Response
-pub fn UIContext::button_primary(Self, String) -> Response
-pub fn UIContext::button_primary_sized(Self, String, @math.Vec2) -> Response
-pub fn UIContext::button_sized(Self, String, @math.Vec2) -> Response
-pub fn UIContext::button_with_shortcut(Self, String, String) -> Response
-pub fn UIContext::checkbox(Self, String, Bool) -> (Bool, Response)
 pub fn UIContext::clear_focusable(Self) -> Unit
 pub fn UIContext::clear_text_selection(Self, Id) -> Unit
-pub fn UIContext::code_editor(Self, String, String, size? : @math.Vec2, show_line_numbers? : Bool, read_only? : Bool) -> (String, Response)
-pub fn UIContext::collapsing_header(Self, String, String, Bool, (Self) -> Unit) -> Response
-pub fn UIContext::color_button(Self, String, @color.Color) -> (Bool, Response)
-pub fn UIContext::color_picker(Self, String, @color.Color, show_alpha? : Bool) -> (@color.Color, Response)
-pub fn UIContext::color_picker_button(Self, String, @color.Color, show_alpha? : Bool) -> (@color.Color, Response)
-pub fn UIContext::combo_box(Self, String, String, Int, Array[String]) -> (Int, Response)
-pub fn UIContext::command_palette(Self, Bool, String, Array[CommandItem], selected_index? : Int) -> CommandPaletteResponse
-pub fn UIContext::context_menu(Self, String, Bool, @math.Vec2, (Self) -> Unit, menu_width? : Double, viewport_size? : @math.Vec2) -> ContextMenuResponse
-pub fn UIContext::context_menu_items(Self, String, Bool, @math.Vec2, Array[ContextMenuItem], menu_width? : Double, viewport_size? : @math.Vec2) -> ContextMenuResponse
 pub fn UIContext::current_clip(Self) -> @math.Rect?
 pub fn UIContext::cursor(Self) -> @math.Vec2
 pub fn UIContext::cursor_icon(Self) -> String
-pub fn UIContext::dialog(Self, String, String, String, kind? : DialogKind, confirm_label? : String, cancel_label? : String, width? : Double, viewport_size? : @math.Vec2) -> DialogResult
-pub fn UIContext::dock_area(Self, String, @math.Vec2, DockTree, (Self, String, @math.Rect) -> Unit) -> DockResponse
-pub fn UIContext::drag_value(Self, String, Double, Double, Double, Double) -> (Double, Response)
 pub fn UIContext::draw_list(Self) -> @draw.DrawList
 pub fn UIContext::end_foreground(Self) -> Unit
 pub fn UIContext::end_frame(Self) -> @draw.DrawList
-pub fn UIContext::fader(Self, String, String, Double, min_val? : Double, max_val? : Double, step? : Double, default_val? : Double, unit? : String, show_ticks? : Bool, size? : @math.Vec2) -> (Double, Response)
-pub fn UIContext::fader_int(Self, String, String, Int, min_val? : Int, max_val? : Int, step? : Int, default_val? : Int, unit? : String, show_ticks? : Bool, size? : @math.Vec2) -> (Int, Response)
 pub fn UIContext::fg_painter(Self) -> Painter
 pub fn UIContext::focus(Self) -> FocusManager
 pub fn UIContext::focusable_ids(Self) -> Array[Id]
@@ -953,13 +432,11 @@ pub fn UIContext::has_focus(Self, Id) -> Bool
 pub fn UIContext::horizontal(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::horizontal_wrapped(Self, (Self) -> Unit, wrap_width? : Double) -> Unit
 pub fn UIContext::hot_id(Self) -> Id
-pub fn UIContext::hyperlink(Self, String, String) -> (Bool, Response)
 pub fn UIContext::input(Self) -> InputState
 pub fn UIContext::is_caret_visible(Self) -> Bool
 pub fn UIContext::is_collapsing_open(Self, Id, Bool) -> Bool
 pub fn UIContext::is_hovered(Self, @math.Rect) -> Bool
 pub fn UIContext::item_spacing(Self) -> @math.Vec2
-pub fn UIContext::knob(Self, String, String, Double, min_val? : Double, max_val? : Double, step? : Double, default_val? : Double, unit? : String, radius? : Double, bipolar? : Bool) -> (Double, Response)
 pub fn UIContext::label(Self, String) -> Response
 pub fn UIContext::label_colored(Self, String, @color.Color) -> Response
 pub fn UIContext::layers(Self) -> LayerManager
@@ -967,31 +444,21 @@ pub fn UIContext::layout(Self) -> LayoutEngine
 pub fn UIContext::lost_focus(Self, Id) -> Bool
 pub fn UIContext::measure_text(Self, String, Double) -> @math.Vec2
 pub fn UIContext::memory(Self) -> Memory
-pub fn UIContext::menu(Self, String, (Self) -> Unit) -> Unit
-pub fn UIContext::menu_bar(Self, (Self) -> Unit) -> Unit
-pub fn UIContext::menu_item(Self, String, shortcut? : String, disabled? : Bool) -> Response
-pub fn UIContext::menu_separator(Self) -> Unit
 pub fn UIContext::new() -> Self
 pub fn UIContext::next_auto_id(Self) -> Id
 pub fn UIContext::open_combo_id(Self) -> Id
 pub fn UIContext::open_menu_id(Self) -> Id
 pub fn UIContext::painter(Self) -> Painter
-pub fn UIContext::plot(Self, String, Array[PlotSeries], size? : @math.Vec2, show_grid? : Bool, show_crosshair? : Bool, show_legend? : Bool) -> (@math.Vec2?, Response)
 pub fn UIContext::pop_clip(Self) -> Unit
 pub fn UIContext::pop_id(Self) -> Unit
 pub fn UIContext::prev_focused_id(Self) -> Id
-pub fn UIContext::progress_bar(Self, Double, String) -> Response
 pub fn UIContext::prune_stale_state(Self, Int) -> Unit
 pub fn UIContext::push_clip(Self, @math.Rect) -> Unit
 pub fn UIContext::push_id(Self, String) -> Unit
-pub fn UIContext::radio(Self, String, Bool) -> (Bool, Response)
 pub fn UIContext::raise_window(Self, Id) -> Unit
 pub fn UIContext::register_focusable(Self, Id) -> Unit
 pub fn UIContext::request_focus(Self, Id) -> Unit
 pub fn UIContext::reset_caret_blink(Self) -> Unit
-pub fn UIContext::rich_text(Self, String, Array[TextSpan], wrap_width? : Double) -> RichTextResponse
-pub fn UIContext::scroll_area(Self, String, @math.Vec2, (Self) -> Unit) -> Unit
-pub fn UIContext::segmented_control(Self, String, Array[String], Int, height? : Double, width? : Double) -> (Int, Response)
 pub fn UIContext::separator(Self) -> Unit
 pub fn UIContext::set_active_id(Self, Id) -> Unit
 pub fn UIContext::set_active_submenu_id(Self, String) -> Unit
@@ -1015,30 +482,13 @@ pub fn UIContext::set_theme(Self, Theme) -> Unit
 pub fn UIContext::set_time(Self, Double) -> Unit
 pub fn UIContext::set_wants_capture_mouse(Self, Bool) -> Unit
 pub fn UIContext::set_window_pos(Self, Id, @math.Vec2) -> Unit
-pub fn UIContext::slider(Self, String, Double, Double, Double) -> (Double, Response)
-pub fn UIContext::slider_int(Self, String, Int, Int, Int) -> (Int, Response)
 pub fn UIContext::spacer(Self, Double) -> Unit
-pub fn UIContext::sparkline(Self, String, Array[Double], size? : @math.Vec2, color? : @color.Color, fill? : Bool, show_hover? : Bool) -> (Int?, Response)
-pub fn UIContext::spinner(Self, size? : Double, color? : @color.Color, stroke_width? : Double) -> Response
-pub fn UIContext::spinner_with_label(Self, String, size? : Double, color? : @color.Color, stroke_width? : Double) -> Response
-pub fn UIContext::split_horizontal(Self, String, Double, @math.Vec2, (Self, @math.Rect) -> Unit, (Self, @math.Rect) -> Unit, min_ratio? : Double, max_ratio? : Double, min_px? : Double) -> Double
-pub fn UIContext::split_vertical(Self, String, Double, @math.Vec2, (Self, @math.Rect) -> Unit, (Self, @math.Rect) -> Unit, min_ratio? : Double, max_ratio? : Double, min_px? : Double) -> Double
 pub fn UIContext::style(Self) -> WidgetStyle
 pub fn UIContext::surrender_focus(Self, Id) -> Unit
-pub fn UIContext::tab_bar(Self, String, Array[String], Int) -> (Int, Response)
-pub fn UIContext::table(Self, String, @math.Vec2, Array[TableColumn], Int, (Self, Int, Int, @math.Rect) -> Unit, row_height? : Double, header_height? : Double, selected_row? : Int, sort_column? : String, sort_direction? : TableSortDirection) -> TableResponse
-pub fn UIContext::tag(Self, String, String, kind? : BadgeKind, closable? : Bool) -> (Bool, Response)
-pub fn UIContext::text_edit(Self, String, String, String) -> (String, Response)
-pub fn UIContext::text_edit_sized(Self, String, String, String, @math.Vec2) -> (String, Response)
 pub fn UIContext::theme(Self) -> Theme
 pub fn UIContext::time(Self) -> Double
-pub fn UIContext::toast_stack(Self, Array[Toast], anchor? : ToastAnchor, viewport_size? : @math.Vec2) -> ToastResponse
-pub fn UIContext::toggle(Self, String, Bool) -> (Bool, Response)
-pub fn UIContext::tooltip(Self, String) -> Unit
-pub fn UIContext::tree_view(Self, String, Array[TreeNode], selected_id? : String?, expanded_ids? : Array[String], indent_step? : Double, item_height? : Double, size? : @math.Vec2) -> TreeViewResponse
 pub fn UIContext::vertical(Self, (Self) -> Unit) -> Unit
 pub fn UIContext::wants_capture_mouse(Self) -> Bool
-pub fn UIContext::window(Self, String, @math.Vec2, @math.Vec2, (Self) -> Unit, id_salt? : String, constrain_to? : @math.Rect) -> Response
 pub fn UIContext::window_batch(Self, Id) -> @draw.DrawList
 pub fn UIContext::window_z(Self, Id) -> Int
 pub fn UIContext::windows(Self) -> WindowManager
@@ -1069,6 +519,7 @@ pub struct WidgetStyle {
   caret_blink_interval : Double
 } derive(Eq, @debug.Debug)
 pub fn WidgetStyle::default() -> Self
+pub fn WidgetStyle::scaled(Self, Double) -> Self
 
 pub struct WindowManager {
   positions : @hashmap.HashMap[Id, @math.Vec2]

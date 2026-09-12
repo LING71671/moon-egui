@@ -47,7 +47,7 @@ pub struct GalleryState {
   mut text_name : String
   mut text_email : String
   mut code_buffer : String
-  toasts : Array[@core.Toast]
+  toasts : Array[@widgets.Toast]
   mut cmd_open : Bool
   mut cmd_query : String
   mut cmd_idx : Int
@@ -57,8 +57,8 @@ pub struct GalleryState {
   mut active_comp_id : String
   mut splitter_ratio : Double
   mut table_sort_col : String
-  mut table_sort_dir : @core.TableSortDirection
-  table_columns : Array[@core.TableColumn]
+  mut table_sort_dir : @composite.TableSortDirection
+  table_columns : Array[@composite.TableColumn]
   mut table_selected_row : Int
   mut dialog_open : Bool
   mut dialog_last_result : String
@@ -70,7 +70,7 @@ pub struct GalleryState {
   mut color_picker_val : @color.Color
   mut breadcrumb_last_clicked : String
   mut rich_text_last_url : String
-  mut dock_tree : @core.DockTree
+  mut dock_tree : @composite.DockTree
 }
 
 ///|
@@ -107,7 +107,7 @@ let gallery_state : GalleryState = {
   tab_selected: 0,
   text_name: "MoonBit Developer",
   text_email: "dev@moonbitlang.com",
-  code_buffer: "///| Welcome to moon-egui native CodeEditor\npub fn render(ui : @core.UIContext) -> Unit {\n  ui.label(\"Pure MoonBit Wasm Engine!\")\n  ui.button(\"Live Immediate-Mode\")\n}",
+  code_buffer: "///| Welcome to moon-egui native CodeEditor\npub fn render(ui : @core.UIContext) -> Unit {\n  ui.label(\"Pure MoonBit Wasm Engine!\")\n  @widgets.button(ui, \"Live Immediate-Mode\")\n}",
   toasts: [],
   cmd_open: false,
   cmd_query: "",
@@ -118,12 +118,12 @@ let gallery_state : GalleryState = {
   active_comp_id: "",
   splitter_ratio: 0.45,
   table_sort_col: "id",
-  table_sort_dir: @core.TableSortDirection::Ascending,
+  table_sort_dir: @composite.TableSortDirection::Ascending,
   table_columns: [
-    @core.TableColumn::new("id", "ID", 60.0, min_width=50.0),
-    @core.TableColumn::new("name", "Name", 140.0, min_width=80.0),
-    @core.TableColumn::new("role", "Role", 110.0, min_width=70.0),
-    @core.TableColumn::new("score", "Score", 80.0, min_width=60.0),
+    @composite.TableColumn::new("id", "ID", 60.0, min_width=50.0),
+    @composite.TableColumn::new("name", "Name", 140.0, min_width=80.0),
+    @composite.TableColumn::new("role", "Role", 110.0, min_width=70.0),
+    @composite.TableColumn::new("score", "Score", 80.0, min_width=60.0),
   ],
   table_selected_row: 1,
   dialog_open: false,
@@ -138,23 +138,27 @@ let gallery_state : GalleryState = {
   color_picker_val: @color.Color::rgb(79, 70, 229),
   breadcrumb_last_clicked: "None",
   rich_text_last_url: "None",
-  dock_tree: @core.DockTree::split(
-    @core.DockSplitDirection::Horizontal,
+  dock_tree: @composite.DockTree::split(
+    @composite.DockSplitDirection::Horizontal,
     0.28,
-    @core.DockTree::leaf([
-      @core.DockTab::new("explorer", "资源管理器"),
-      @core.DockTab::new("outline", "大纲视图"),
+    @composite.DockTree::leaf([
+      @composite.DockTab::new("explorer", "资源管理器"),
+      @composite.DockTab::new("outline", "大纲视图"),
     ]),
-    @core.DockTree::split(
-      @core.DockSplitDirection::Vertical,
+    @composite.DockTree::split(
+      @composite.DockSplitDirection::Vertical,
       0.62,
-      @core.DockTree::leaf([
-        @core.DockTab::new("canvas", "CAD 视口", closable=false),
-        @core.DockTab::new("shader", "着色器源码", closable=true),
+      @composite.DockTree::leaf([
+        @composite.DockTab::new("canvas", "CAD 视口", closable=false),
+        @composite.DockTab::new("shader", "着色器源码", closable=true),
       ]),
-      @core.DockTree::leaf([
-        @core.DockTab::new("console", "运行日志 (Output)", closable=true),
-        @core.DockTab::new("terminal", "终端 (Terminal)", closable=true),
+      @composite.DockTree::leaf([
+        @composite.DockTab::new(
+          "console",
+          "运行日志 (Output)",
+          closable=true,
+        ),
+        @composite.DockTab::new("terminal", "终端 (Terminal)", closable=true),
       ]),
     ),
   ),

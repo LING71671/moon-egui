@@ -3,9 +3,11 @@ package "LING71671/moon-egui/src"
 
 import {
   "LING71671/moon-egui/src/color",
+  "LING71671/moon-egui/src/composite",
   "LING71671/moon-egui/src/core",
   "LING71671/moon-egui/src/draw",
   "LING71671/moon-egui/src/math",
+  "LING71671/moon-egui/src/widgets",
 }
 
 // Values
@@ -15,11 +17,69 @@ import {
 // Types and methods
 
 // Type aliases
+pub using @widgets {type Badge}
+
+pub using @widgets {type BadgeKind}
+
+pub using @composite {type BarChart}
+
+pub using @widgets {type Breadcrumb}
+
+pub using @widgets {type Button}
+
+pub using @widgets {type Checkbox}
+
+pub using @widgets {type CheckboxRef}
+
+pub using @composite {type CodeEditor}
+
+pub using @composite {type CodeEditorRef}
+
+pub using @composite {type CodeEditorStyle}
+
+pub using @widgets {type CollapsingHeader}
+
 pub using @color {type Color}
+
+pub using @widgets {type ComboBox}
+
+pub using @composite {type CommandItem}
+
+pub using @composite {type CommandPaletteResponse}
+
+pub using @composite {type ContextMenuItem}
+
+pub using @composite {type ContextMenuResponse}
+
+pub using @widgets {type Dialog}
+
+pub using @widgets {type DialogKind}
+
+pub using @widgets {type DialogResult}
+
+pub using @composite {type DockArea}
+
+pub using @composite {type DockNode}
+
+pub using @composite {type DockResponse}
+
+pub using @composite {type DockSplitDirection}
+
+pub using @composite {type DockTab}
+
+pub using @composite {type DockTree}
 
 pub using @draw {type DrawCmd}
 
 pub using @draw {type DrawList}
+
+pub using @core {type Event}
+
+pub using @composite {type Fader}
+
+pub using @composite {type FaderRef}
+
+pub using @composite {type FaderStyle}
 
 pub using @core {type Id}
 
@@ -27,14 +87,106 @@ pub using @core {type IdStack}
 
 pub using @core {type InputState}
 
+pub using @core {type Key}
+
+pub using @composite {type Knob}
+
+pub using @composite {type KnobRef}
+
+pub using @composite {type KnobStyle}
+
+pub using @widgets {type Label}
+
+pub using @core {type Memory}
+
+pub using @core {type Modifiers}
+
+pub using @core {type Painter}
+
+pub using @composite {type Plot}
+
+pub using @composite {type PlotPoint}
+
+pub using @composite {type PlotSeries}
+
+pub using @composite {type PlotSeriesKind}
+
+pub using @composite {type PlotStyle}
+
+pub using @widgets {type ProgressBar}
+
+pub using @widgets {type Radio}
+
 pub using @core {type RawInput}
 
 pub using @math {type Rect}
 
 pub using @core {type Response}
 
+pub using @composite {type RichTextResponse}
+
+pub using @widgets {type ScrollArea}
+
+pub using @widgets {type SegmentedControl}
+
+pub using @widgets {type Separator}
+
+pub using @widgets {type Slider}
+
+pub using @widgets {type SliderRef}
+
+pub using @composite {type Sparkline}
+
+pub using @widgets {type Splitter}
+
+pub using @widgets {type TabBar}
+
+pub using @composite {type Table}
+
+pub using @composite {type TableColumn}
+
+pub using @composite {type TableResponse}
+
+pub using @composite {type TableSortDirection}
+
+pub using @composite {type TableStyle}
+
+pub using @widgets {type TextEdit}
+
+pub using @widgets {type TextEditRef}
+
+pub using @composite {type TextSpan}
+
+pub using @composite {type TextSpanKind}
+
+pub using @core {type Theme}
+
+pub using @widgets {type Toast}
+
+pub using @widgets {type ToastAnchor}
+
+pub using @widgets {type ToastKind}
+
+pub using @widgets {type ToastResponse}
+
+pub using @widgets {type Toggle}
+
+pub using @widgets {type ToggleRef}
+
+pub using @widgets {type Tooltip}
+
+pub using @composite {type TreeNode}
+
+pub using @composite {type TreeViewResponse}
+
 pub using @core {type UIContext}
 
 pub using @math {type Vec2}
+
+pub using @core {type WidgetStyle}
+
+pub using @widgets {type Window}
+
+pub using @core {trait Widget}
 
 // Traits

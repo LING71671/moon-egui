@@ -3,9 +3,10 @@ package "LING71671/moon-egui/examples/canvas"
 
 import {
   "LING71671/moon-egui/src/color",
-  "LING71671/moon-egui/src/core",
+  "LING71671/moon-egui/src/composite",
   "LING71671/moon-egui/src/draw",
   "LING71671/moon-egui/src/math",
+  "LING71671/moon-egui/src/widgets",
 }
 
 // Values
@@ -116,7 +117,7 @@ pub struct GalleryState {
   mut text_name : String
   mut text_email : String
   mut code_buffer : String
-  toasts : Array[@core.Toast]
+  toasts : Array[@widgets.Toast]
   mut cmd_open : Bool
   mut cmd_query : String
   mut cmd_idx : Int
@@ -126,8 +127,8 @@ pub struct GalleryState {
   mut active_comp_id : String
   mut splitter_ratio : Double
   mut table_sort_col : String
-  mut table_sort_dir : @core.TableSortDirection
-  table_columns : Array[@core.TableColumn]
+  mut table_sort_dir : @composite.TableSortDirection
+  table_columns : Array[@composite.TableColumn]
   mut table_selected_row : Int
   mut dialog_open : Bool
   mut dialog_last_result : String
@@ -139,7 +140,7 @@ pub struct GalleryState {
   mut color_picker_val : @color.Color
   mut breadcrumb_last_clicked : String
   mut rich_text_last_url : String
-  mut dock_tree : @core.DockTree
+  mut dock_tree : @composite.DockTree
 }
 
 // Type aliases

@@ -24,10 +24,11 @@ fn draw_text_edit_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(10.0)
 
-  let (n, r1) = ui.text_edit(
+  let (n, r1) = @widgets.text_edit_val(
+    ui,
     "name_input",
     gallery_state.text_name,
-    "请输入开发者姓名",
+    placeholder="请输入开发者姓名",
   )
   gallery_state.text_name = n
   if r1.has_focus {
@@ -36,10 +37,11 @@ fn draw_text_edit_showcase(ui : @core.UIContext) -> Unit {
 
   ui.spacer(10.0)
 
-  let (e, r2) = ui.text_edit(
+  let (e, r2) = @widgets.text_edit_val(
+    ui,
     "email_input",
     gallery_state.text_email,
-    "dev@moonbitlang.com",
+    placeholder="dev@moonbitlang.com",
   )
   gallery_state.text_email = e
   if r2.has_focus {
@@ -62,7 +64,8 @@ fn draw_code_editor_showcase(ui : @core.UIContext) -> Unit {
   )
   ui.spacer(6.0)
 
-  let (new_code, resp) = ui.code_editor(
+  let (new_code, resp) = @composite.code_editor(
+    ui,
     "gallery_code",
     gallery_state.code_buffer,
     size=@math.Vec2::new(ui.available_width(), 210.0),
@@ -87,19 +90,26 @@ fn draw_rich_text_showcase(ui : @core.UIContext) -> Unit {
   ui.spacer(12.0)
 
   let spans = [
-    @core.TextSpan::normal("当前运行环境为"),
-    @core.TextSpan::code("MoonBit Wasm"),
-    @core.TextSpan::bold("即时模式渲染管线。"),
-    @core.TextSpan::normal(
+    @composite.TextSpan::normal("当前运行环境为"),
+    @composite.TextSpan::code("MoonBit Wasm"),
+    @composite.TextSpan::bold("即时模式渲染管线。"),
+    @composite.TextSpan::normal(
       "它直接向原生 HTML5 Canvas 提交绘制指令。欲了解更多细节，请访问",
     ),
-    @core.TextSpan::link("MoonBit 官方主页", "https://www.moonbitlang.cn"),
-    @core.TextSpan::normal("或查看"),
-    @core.TextSpan::link("API 手册", "https://docs.moonbitlang.com"),
-    @core.TextSpan::normal("。"),
+    @composite.TextSpan::link(
+      "MoonBit 官方主页", "https://www.moonbitlang.cn",
+    ),
+    @composite.TextSpan::normal("或查看"),
+    @composite.TextSpan::link("API 手册", "https://docs.moonbitlang.com"),
+    @composite.TextSpan::normal("。"),
   ]
 
-  let resp = ui.rich_text("gal_rt", spans, wrap_width=ui.available_width())
+  let resp = @composite.rich_text(
+    ui,
+    "gal_rt",
+    spans,
+    wrap_width=ui.available_width(),
+  )
   match resp.clicked_url {
     Some(url) => {
       gallery_state.rich_text_last_url = url
@@ -109,8 +119,8 @@ fn draw_rich_text_showcase(ui : @core.UIContext) -> Unit {
   }
 
   ui.spacer(16.0)
-  let (clicked, _) = ui.hyperlink(
-    "独立超链接组件: moon-egui GitHub Repository", "https://github.com/LING71671/moon-egui",
+  let (clicked, _) = @composite.hyperlink(
+    ui, "独立超链接组件: moon-egui GitHub Repository", "https://github.com/LING71671/moon-egui",
   )
   if clicked {
     gallery_state.rich_text_last_url = "https://github.com/LING71671/moon-egui"

@@ -42,19 +42,19 @@ fn panel_view_tab(
 ) -> Unit {
   let _ = ui.label_colored("矩阵规格", @color.Color::accent_primary())
   ui.horizontal(fn(row) {
-    if row.button_sized("128", @math.Vec2::new(54.0, 24.0)).clicked {
+    if @widgets.button_sized(row, "128", @math.Vec2::new(54.0, 24.0)).clicked {
       state.grid_dim = 128
       state.selected_id = -1
     }
-    if row.button_sized("256", @math.Vec2::new(54.0, 24.0)).clicked {
+    if @widgets.button_sized(row, "256", @math.Vec2::new(54.0, 24.0)).clicked {
       state.grid_dim = 256
       state.selected_id = -1
     }
-    if row.button_sized("512", @math.Vec2::new(54.0, 24.0)).clicked {
+    if @widgets.button_sized(row, "512", @math.Vec2::new(54.0, 24.0)).clicked {
       state.grid_dim = 512
       state.selected_id = -1
     }
-    if row.button_sized("1024", @math.Vec2::new(54.0, 24.0)).clicked {
+    if @widgets.button_sized(row, "1024", @math.Vec2::new(54.0, 24.0)).clicked {
       state.grid_dim = 1024
       state.selected_id = -1
     }
@@ -62,19 +62,21 @@ fn panel_view_tab(
 
   ui.separator()
 
-  let (new_zoom, _) = ui.slider("缩放比例", state.zoom, 0.02, 3.0)
+  let (new_zoom, _) = @widgets.slider(ui, "缩放比例", state.zoom, 0.02, 3.0)
   state.zoom = new_zoom
 
   ui.separator()
 
-  let (new_pulse, pulse_resp) = ui.checkbox(
+  let (new_pulse, pulse_resp) = @widgets.checkbox(
+    ui,
     "水波动态物理",
     state.wave_pulse,
   )
   if pulse_resp.clicked {
     state.wave_pulse = new_pulse
   }
-  let (new_repel, repel_resp) = ui.checkbox(
+  let (new_repel, repel_resp) = @widgets.checkbox(
+    ui,
     "光标磁力斥力",
     state.magnetic_repel,
   )
@@ -85,18 +87,22 @@ fn panel_view_tab(
   ui.separator()
 
   ui.horizontal(fn(row) {
-    if row.button_sized("全景自适应", @math.Vec2::new(74.0, 24.0)).clicked {
+    if @widgets.button_sized(
+        row,
+        "全景自适应",
+        @math.Vec2::new(74.0, 24.0),
+      ).clicked {
       let min_dim = if cur_w < cur_h { cur_w } else { cur_h }
       let fit_z = (min_dim - 60.0) / 10500.0
       state.zoom = if fit_z > 0.01 { fit_z } else { 0.075 }
       state.cam_x = 5000.0
       state.cam_y = 5000.0
     }
-    if row.button_sized("居中", @math.Vec2::new(74.0, 24.0)).clicked {
+    if @widgets.button_sized(row, "居中", @math.Vec2::new(74.0, 24.0)).clicked {
       state.cam_x = 5000.0
       state.cam_y = 5000.0
     }
-    if row.button_sized("1:1 像素", @math.Vec2::new(74.0, 24.0)).clicked {
+    if @widgets.button_sized(row, "1:1 像素", @math.Vec2::new(74.0, 24.0)).clicked {
       state.zoom = 1.0
     }
   })
@@ -108,10 +114,11 @@ fn panel_view_tab(
 /// that exercises the library's keyboard and text-input path end to end.
 fn panel_input_tab(ui : @core.UIContext, state : BenchmarkState) -> Unit {
   let _ = ui.label_colored("跳转节点序号", @color.Color::accent_primary())
-  let (new_text, field_resp) = ui.text_edit(
+  let (new_text, field_resp) = @widgets.text_edit_val(
+    ui,
     "jump_field",
     state.jump_text,
-    "例如 4321",
+    placeholder="例如 4321",
   )
   state.jump_text = new_text
   if field_resp.has_focus() && ui.input().key_pressed(@core.Key::Enter) {
@@ -121,12 +128,13 @@ fn panel_input_tab(ui : @core.UIContext, state : BenchmarkState) -> Unit {
     }
   }
   if field_resp.hovered() {
-    ui.tooltip("输入序号后按回车，选中该节点")
+    @widgets.tooltip(ui, "输入序号后按回车，选中该节点")
   }
 
   ui.separator()
 
-  let (new_after, _) = ui.combo_box(
+  let (new_after, _) = @widgets.combo_box(
+    ui,
     "jump_after",
     "跳转后",
     state.jump_after,
@@ -136,7 +144,11 @@ fn panel_input_tab(ui : @core.UIContext, state : BenchmarkState) -> Unit {
 
   ui.separator()
 
-  let (new_grid, grid_resp) = ui.toggle("显示网格", state.show_grid)
+  let (new_grid, grid_resp) = @widgets.toggle(
+    ui,
+    "显示网格",
+    state.show_grid,
+  )
   if grid_resp.clicked {
     state.show_grid = new_grid
   }
@@ -191,12 +203,14 @@ fn render_studio_window(
   )
   let viewport = @math.Rect::new(0.0, 0.0, cur_w, cur_h)
 
-  let _ = ctx.window(
+  let _ = @widgets.window(
+    ctx,
     "控制面板",
     initial,
     @math.Vec2::new(win_w, win_h),
     fn(ui) {
-      let (new_tab, _) = ui.tab_bar(
+      let (new_tab, _) = @widgets.tab_bar(
+        ui,
         "panel_tabs",
         ["视图", "输入"],
         state.panel_tab,
