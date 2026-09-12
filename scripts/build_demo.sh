@@ -28,7 +28,7 @@ STEP=$(grep -oE 'function (_M0[A-Za-z0-9_]*4step)\(' "$BUILD" |
   head -n 1 |
   sed -e 's/^function //' -e 's/($//')
 
-GALLERY_STEP=$(grep -oE 'function (_M0[A-Za-z0-9_]*13gallery__step)\(' "$BUILD" |
+GALLERY_STEP=$(grep -oE 'function (_M0[A-Za-z0-9_]*gallery__step[A-Za-z0-9_]*)\(' "$BUILD" |
   head -n 1 |
   sed -e 's/^function //' -e 's/($//')
 
@@ -50,6 +50,22 @@ CURSOR=$(grep -oE 'function (_M0[A-Za-z0-9_]*get__gallery__cursor)\(' "$BUILD" |
   head -n 1 |
   sed -e 's/^function //' -e 's/($//' || true)
 
+SET_VM=$(grep -oE 'function (_M0[A-Za-z0-9_]*set__gallery__view__mode)\(' "$BUILD" |
+  head -n 1 |
+  sed -e 's/^function //' -e 's/($//' || true)
+
+GET_VM=$(grep -oE 'function (_M0[A-Za-z0-9_]*get__gallery__view__mode)\(' "$BUILD" |
+  head -n 1 |
+  sed -e 's/^function //' -e 's/($//' || true)
+
+SET_THEME=$(grep -oE 'function (_M0[A-Za-z0-9_]*set__gallery__theme)\(' "$BUILD" |
+  head -n 1 |
+  sed -e 's/^function //' -e 's/($//' || true)
+
+GET_THEME=$(grep -oE 'function (_M0[A-Za-z0-9_]*get__gallery__theme)\(' "$BUILD" |
+  head -n 1 |
+  sed -e 's/^function //' -e 's/($//' || true)
+
 cp "$BUILD" "$OUT"
 {
   echo
@@ -65,6 +81,22 @@ cp "$BUILD" "$OUT"
     echo "if (typeof window !== 'undefined') window.moon_gallery_cursor = $CURSOR;"
     echo "if (typeof globalThis !== 'undefined') globalThis.moon_gallery_cursor = $CURSOR;"
   fi
+  if [ -n "$SET_VM" ]; then
+    echo "if (typeof window !== 'undefined') window.moon_set_gallery_view_mode = $SET_VM;"
+    echo "if (typeof globalThis !== 'undefined') globalThis.moon_set_gallery_view_mode = $SET_VM;"
+  fi
+  if [ -n "$GET_VM" ]; then
+    echo "if (typeof window !== 'undefined') window.moon_get_gallery_view_mode = $GET_VM;"
+    echo "if (typeof globalThis !== 'undefined') globalThis.moon_get_gallery_view_mode = $GET_VM;"
+  fi
+  if [ -n "$SET_THEME" ]; then
+    echo "if (typeof window !== 'undefined') window.moon_set_gallery_theme = $SET_THEME;"
+    echo "if (typeof globalThis !== 'undefined') globalThis.moon_set_gallery_theme = $SET_THEME;"
+  fi
+  if [ -n "$GET_THEME" ]; then
+    echo "if (typeof window !== 'undefined') window.moon_get_gallery_theme = $GET_THEME;"
+    echo "if (typeof globalThis !== 'undefined') globalThis.moon_get_gallery_theme = $GET_THEME;"
+  fi
 } >> "$OUT"
 
-echo "wrote $OUT (entry points: $STEP, $GALLERY_STEP, status, cursor)"
+echo "wrote $OUT (entry points: $STEP, $GALLERY_STEP, status, cursor, view_mode, theme)"

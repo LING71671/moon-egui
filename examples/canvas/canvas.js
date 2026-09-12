@@ -1,4 +1,4 @@
-﻿function _M0TP49LING7167111moon_2degui3src5color5Color(param0, param1, param2, param3) {
+function _M0TP49LING7167111moon_2degui3src5color5Color(param0, param1, param2, param3) {
   this.r = param0;
   this.g = param1;
   this.b = param2;
@@ -12144,7 +12144,6 @@ function _M0FP49LING7167111moon_2degui8examples6canvas24set__gallery__view__mode
   _M0MPB13StringBuilder13write__objectGdE(_string_builder, frame.zoom);
   _M0FPB7printlnGsE(_string_builder.val);
 })();
-
 
 if (typeof window !== 'undefined') window.moon_step = _M0FP49LING7167111moon_2degui8examples6canvas4step;
 if (typeof globalThis !== 'undefined') globalThis.moon_step = _M0FP49LING7167111moon_2degui8examples6canvas4step;
