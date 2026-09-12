@@ -161,6 +161,54 @@ pub(all) enum DialogResult {
   Open
 } derive(Eq, @debug.Debug)
 
+pub struct DockArea {
+  id_salt : String
+  size : @math.Vec2
+  tree : DockTree
+  render_tab : (UIContext, String, @math.Rect) -> Unit
+}
+pub fn DockArea::new(String, @math.Vec2, DockTree, (UIContext, String, @math.Rect) -> Unit) -> Self
+pub fn DockArea::show(Self, UIContext) -> DockResponse
+pub impl Widget for DockArea
+
+pub(all) enum DockNode {
+  Leaf(Array[DockTab], Int)
+  Split(DockSplitDirection, Double, DockNode, DockNode)
+  Empty
+} derive(Eq, @debug.Debug)
+
+pub struct DockResponse {
+  resp : Response
+  active_tab_changed : (String, String)?
+  tab_closed : String?
+  ratio_changed : Bool
+} derive(Eq, @debug.Debug)
+
+pub(all) enum DockSplitDirection {
+  Horizontal
+  Vertical
+} derive(Eq, @debug.Debug)
+pub fn DockSplitDirection::horizontal() -> Self
+pub fn DockSplitDirection::vertical() -> Self
+
+pub struct DockTab {
+  id : String
+  title : String
+  closable : Bool
+} derive(Eq, @debug.Debug)
+pub fn DockTab::new(String, String, closable? : Bool) -> Self
+
+pub struct DockTree {
+  mut root : DockNode
+} derive(Eq, @debug.Debug)
+pub fn DockTree::close_tab(Self, String) -> Bool
+pub fn DockTree::find_tab(Self, String) -> (DockTab, Int)?
+pub fn DockTree::leaf(Array[DockTab], active_tab? : Int) -> Self
+pub fn DockTree::new(DockNode) -> Self
+pub fn DockTree::root(Self) -> DockNode
+pub fn DockTree::set_active_tab(Self, String) -> Bool
+pub fn DockTree::split(DockSplitDirection, Double, Self, Self) -> Self
+
 pub(all) enum Event {
   Key(Key, Bool, Modifiers)
   TextInput(String)
@@ -885,6 +933,7 @@ pub fn UIContext::current_clip(Self) -> @math.Rect?
 pub fn UIContext::cursor(Self) -> @math.Vec2
 pub fn UIContext::cursor_icon(Self) -> String
 pub fn UIContext::dialog(Self, String, String, String, kind? : DialogKind, confirm_label? : String, cancel_label? : String, width? : Double, viewport_size? : @math.Vec2) -> DialogResult
+pub fn UIContext::dock_area(Self, String, @math.Vec2, DockTree, (Self, String, @math.Rect) -> Unit) -> DockResponse
 pub fn UIContext::drag_value(Self, String, Double, Double, Double, Double) -> (Double, Response)
 pub fn UIContext::draw_list(Self) -> @draw.DrawList
 pub fn UIContext::end_foreground(Self) -> Unit
