@@ -206,6 +206,7 @@
   const elRevealed = document.getElementById('stat-revealed');
   const elFlags = document.getElementById('stat-flags');
   const elCascade = document.getElementById('stat-cascade');
+  const elHits = document.getElementById('stat-hits');
   const elCoords = document.getElementById('stat-coords');
 
   let lastFpsTime = performance.now();
@@ -242,6 +243,7 @@
     }
     if (elRevealed) elRevealed.textContent = res.revealed.toLocaleString();
     if (elFlags) elFlags.textContent = res.flagged.toLocaleString();
+    if (elHits) elHits.textContent = res.hits.toLocaleString();
     if (elCascade) elCascade.textContent = res.pending ? '连锁展开中…' : (res.boom ? '踩雷！' : '完成');
     if (elCoords) {
       elCoords.textContent = '(' + Math.floor(mouseX) + ', ' + Math.floor(mouseY) + ') px';

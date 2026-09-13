@@ -19,7 +19,7 @@ pub struct MinesFrame {
   revealed : Int
   flagged : Int
   density : Int
-  boom : Bool
+  hits : Int
   pending : Bool
   flag_mode : Bool
   cursor : String
@@ -136,9 +136,17 @@ pub fn mines_step(
   let pressed = mouse_down && !st.prev_down
   let released = !mouse_down && st.prev_down
   let secondary_pressed = mouse_secondary_down && !st.prev_secondary
-  if pressed {
+  let secondary_released = !mouse_secondary_down && st.prev_secondary
+  if pressed || secondary_pressed {
     st.drag_move = false
     st.gesture_flag = st.flag_mode || mouse_secondary_down
+  }
+  // The right button plants a flag the moment it goes down (no right-drag
+  // gesture exists, so there is nothing to disambiguate).
+  if secondary_pressed && !st.drag_move {
+    let wx = st.cam_x + mouse_x / st.cell
+    let wy = st.cam_y + mouse_y / st.cell
+    st.world.toggle_flag(wx.floor().to_int(), wy.floor().to_int())
   }
   if mouse_down && (pan_dx != 0.0 || pan_dy != 0.0) {
     st.drag_move = true
@@ -162,29 +170,22 @@ pub fn mines_step(
 
   // 3. click resolution on release (a dragged gesture is a pan, not a click)
   let world = st.world
-  let cursor = if world.status() is Playing {
-    let tx = (st.cam_x + mouse_x / st.cell).floor().to_int()
-    let ty = (st.cam_y + mouse_y / st.cell).floor().to_int()
-    if !world.is_revealed(tx, ty) {
-      "pointer"
-    } else {
-      "default"
-    }
-  } else {
-    "default"
-  }
+  let tx = (st.cam_x + mouse_x / st.cell).floor().to_int()
+  let ty = (st.cam_y + mouse_y / st.cell).floor().to_int()
+  let cursor = if !world.is_revealed(tx, ty) { "pointer" } else { "default" }
+  // Left gesture: release reveals - or flags while the flag mode is on
   if released && !st.drag_move {
     let wx = st.cam_x + mouse_x / st.cell
     let wy = st.cam_y + mouse_y / st.cell
     let cx = wx.floor().to_int()
     let cy = wy.floor().to_int()
-    if st.gesture_flag || secondary_pressed {
+    if st.gesture_flag {
       world.toggle_flag(cx, cy)
     } else {
       world.reveal(cx, cy)
     }
   }
-  if released {
+  if released || secondary_released {
     st.drag_move = false
   }
   st.prev_down = mouse_down
@@ -221,7 +222,7 @@ pub fn mines_step(
       let tile = @math.Rect::new(sx, sy, cell - 1.0, cell - 1.0)
       if world.is_revealed(c, r) {
         painter.add_rect(tile, @color.Color::bg_window(), 0.0)
-        if world.status() is Boom && world.is_mine(c, r) {
+        if world.is_mine(c, r) {
           painter.add_rect(tile, @color.Color::danger(), 0.0)
           painter.add_line(
             @math.Vec2::new(sx + cell * 0.3, sy + cell * 0.3),
@@ -287,27 +288,12 @@ pub fn mines_step(
     }
   }
 
-  // 6. boom banner
-  if world.status() is Boom {
-    painter.add_rect(
-      @math.Rect::new(0.0, vp_h - 64.0, vp_w, 40.0),
-      @color.Color::bg_window(),
-      mines_ctx.style.radius_md,
-    )
-    painter.add_text(
-      @math.Vec2::new(16.0, vp_h - 64.0 + 13.0),
-      "踩雷！点顶栏「新雷区」重开 — 已翻开区域保留",
-      mines_ctx.style.font_normal,
-      @color.Color::danger(),
-    )
-  }
-
   {
     draw_list: mines_ctx.end_frame(),
     revealed: world.revealed_count(),
     flagged: world.flagged_count(),
     density: st.density,
-    boom: world.status() is Boom,
+    hits: world.hits(),
     pending: world.is_cascade_pending(),
     flag_mode: st.flag_mode,
     cursor,

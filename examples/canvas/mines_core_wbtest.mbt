@@ -184,30 +184,37 @@ test "mines: flags block the cascade and survive re-planting" {
 }
 
 ///|
-test "mines: revealing a mine ends the run and freezes the pump" {
+test "mines: revealing a mine marks it, counts a hit and the world goes on" {
   let w = MineWorld::new(2024UL, 200)
   let mut mine : (Int, Int)? = None
+  let mut safe : (Int, Int)? = None
   for y = 0; y < 40; y = y + 1 {
     for x = 0; x < 40; x = x + 1 {
       if w.is_mine(x, y) {
         mine = Some((x, y))
-        break
+      } else if w.adjacent(x, y) == 0 && safe is None {
+        safe = Some((x, y))
       }
-    }
-    if mine is Some(_) {
-      break
     }
   }
   let (mx, my) = match mine {
     Some(p) => p
     None => (0, 0)
   }
-  let before = w.revealed_count()
   w.reveal(mx, my)
-  assert_eq(w.status(), Boom)
+  assert_eq(w.hits(), 1)
+  assert_true(w.is_revealed(mx, my))
+
+  // the world is still alive: a flood reveal afterwards works normally
+  let (sx, sy) = match safe {
+    Some(p) => p
+    None => (0, 0)
+  }
+  w.reveal(sx, sy)
   let _ = w.pump(1_000_000)
-  assert_eq(w.revealed_count(), before + 1)
-  assert_false(w.is_cascade_pending())
+  let expected = reference_flood(w, sx, sy)
+  assert_eq(w.revealed_count(), expected.length() + 1)
+  assert_eq(w.hits(), 1)
 }
 
 ///|

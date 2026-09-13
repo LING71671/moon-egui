@@ -47,13 +47,6 @@ struct MineChunk {
 }
 
 ///|
-/// Game lifecycle state.
-pub(all) enum MineStatus {
-  Playing
-  Boom
-} derive(Eq, Debug)
-
-///|
 /// Deterministic, effectively infinite minesweeper world.
 ///
 /// Mine positions are derived from `mine_cell_hash(x, y, seed)`, so nothing
@@ -68,7 +61,7 @@ struct MineWorld {
   mut queue_head : Int
   mut revealed_count : Int
   mut flagged_count : Int
-  mut status : MineStatus
+  mut hits : Int
 }
 
 ///|
@@ -90,7 +83,7 @@ fn MineWorld::new(seed : UInt64, density_permille : Int) -> MineWorld {
     queue_head: 0,
     revealed_count: 0,
     flagged_count: 0,
-    status: Playing,
+    hits: 0,
   }
 }
 
@@ -174,17 +167,16 @@ fn MineWorld::set_flagged(
 ///|
 /// Left-click a tile: a mine ends the run, anything else enqueues the flood
 /// reveal that `pump` then drains frame by frame.
+/// Revealing a mine marks the tile and counts a hit - the world never ends.
+/// This is a shared digging field, not a lose state.
 fn MineWorld::reveal(self : MineWorld, x : Int, y : Int) -> Unit {
-  if !(self.status is Playing) {
-    return
-  }
   if self.is_flagged(x, y) || self.is_revealed(x, y) {
     return
   }
   if self.is_mine(x, y) {
-    self.status = Boom
     self.set_revealed(x, y)
     self.revealed_count = self.revealed_count + 1
+    self.hits = self.hits + 1
     return
   }
   self.enqueue(x, y)
@@ -202,9 +194,6 @@ fn MineWorld::enqueue(self : MineWorld, x : Int, y : Int) -> Unit {
 /// tiles revealed in this call - the caller pumps once per frame, which turns
 /// a million-tile flood into an animated ripple instead of a freeze.
 fn MineWorld::pump(self : MineWorld, budget : Int) -> Int {
-  if !(self.status is Playing) {
-    return 0
-  }
   let mut processed = 0
   while processed < budget && self.queue_head < self.queue.length() {
     let (x, y) = self.queue[self.queue_head]
@@ -240,7 +229,7 @@ fn MineWorld::pump(self : MineWorld, budget : Int) -> Int {
 ///|
 /// Right-click a tile: toggles the flag. Revealed tiles never take flags.
 fn MineWorld::toggle_flag(self : MineWorld, x : Int, y : Int) -> Unit {
-  if !(self.status is Playing) || self.is_revealed(x, y) {
+  if self.is_revealed(x, y) {
     return
   }
   let was = self.is_flagged(x, y)
@@ -250,6 +239,11 @@ fn MineWorld::toggle_flag(self : MineWorld, x : Int, y : Int) -> Unit {
   } else {
     self.flagged_count + 1
   }
+}
+
+///|
+fn MineWorld::hits(self : MineWorld) -> Int {
+  self.hits
 }
 
 ///|
@@ -263,9 +257,6 @@ fn MineWorld::flagged_count(self : MineWorld) -> Int {
 }
 
 ///|
-fn MineWorld::status(self : MineWorld) -> MineStatus {
-  self.status
-}
 
 ///|
 fn MineWorld::is_cascade_pending(self : MineWorld) -> Bool {
