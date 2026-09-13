@@ -93,8 +93,12 @@ fn MineWorld::new(seed : UInt64) -> MineWorld {
 
 ///|
 fn MineWorld::chunk(self : MineWorld, x : Int, y : Int) -> MineChunk {
-  let key = (x.to_uint64() & 0xFFFFFFFF00000000UL) |
-    (y.to_uint64() & 0xFFFFFFFFUL)
+  // The key must carry the FULL x and enough y: the previous formulation
+  // (x's high half | y's low half) dropped x's low 32 bits entirely, so
+  // every positive x shared one key per y and revealed/flagged state
+  // collided with a period of 64 tiles - clicking one tile also "opened"
+  // the tile 64 columns over.
+  let key = (x.to_uint64() << 32) | (y.to_uint64() & 0xFFFFFFFFUL)
   match self.chunks.get(key) {
     Some(c) => c
     None => {

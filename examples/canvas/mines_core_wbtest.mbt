@@ -284,3 +284,32 @@ test "mines: the first reveal of a session can never hit a mine" {
   let _ = w.pump(1_000_000)
   assert_true(w.revealed_count() > 1)
 }
+
+///|
+test "mines: revealed state does not collide across a 64-tile period" {
+  let w = MineWorld::new(20260913UL)
+  // dig at x=5 (a single tile in the void-free band; any safe tile works)
+  let mut dug = false
+  for y = 200; y < 240 && !dug; y = y + 1 {
+    for x = 0; x < 64; x = x + 1 {
+      if !w.is_mine(x, y) {
+        w.reveal(x, y)
+        dug = true
+        break
+      }
+    }
+  }
+  let _ = w.pump(1_000_000)
+  // every tile 64 / 128 columns over with the same x mod 64 must be untouched
+  let mut collided = 0
+  for y = 200; y < 240; y = y + 1 {
+    for x2 = 64; x2 < 192; x2 = x2 + 1 {
+      if w.is_revealed(x2, y) {
+        collided = collided + 1
+      }
+    }
+  }
+  assert_eq(collided, 0)
+  // and the revealed set is stable: the state lives in distinct chunks now
+  assert_true(w.revealed_count() >= 1)
+}

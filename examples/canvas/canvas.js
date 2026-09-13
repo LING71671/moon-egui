@@ -13232,7 +13232,7 @@ function _M0MP49LING7167111moon_2degui8examples6canvas9MineWorld8adjacent(self, 
   return n;
 }
 function _M0MP49LING7167111moon_2degui8examples6canvas9MineWorld5chunk(self, x, y) {
-  const key = BigInt.asUintN(64, BigInt.asUintN(64, BigInt.asUintN(64, BigInt(x)) & 18446744069414584320n) | BigInt.asUintN(64, BigInt.asUintN(64, BigInt(y)) & 4294967295n));
+  const key = BigInt.asUintN(64, BigInt.asUintN(64, BigInt.asUintN(64, BigInt(x)) << BigInt(32 & 63)) | BigInt.asUintN(64, BigInt.asUintN(64, BigInt(y)) & 4294967295n));
   const _bind = _M0MPB3Map3getGmRP49LING7167111moon_2degui8examples6canvas9MineChunkE(self.chunks, key);
   if (_bind === undefined) {
     const c = new _M0TP49LING7167111moon_2degui8examples6canvas9MineChunk(_M0MPC15array5Array4makeGmE(64, 0n), _M0MPC15array5Array4makeGmE(64, 0n));
