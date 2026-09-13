@@ -33,7 +33,6 @@
   let downY = 0;
   let moved = false;
   let pendingAction = -1;
-  const DENSITY_PERMILLE = 156;
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -214,7 +213,10 @@
     const res = window.moon_mines_step(
       mouseX, mouseY, isMouseDown, secondaryDown,
       panDX, panDY, zoomDelta,
-      pendingAction, DENSITY_PERMILLE,
+      // keep this list in lockstep with mines_step's signature: a stale
+      // extra arg shifts every later parameter one slot left (a leftover
+      // density arg made vp_w = 156 -> a 156px-wide world)
+      pendingAction,
       width, height
     );
     panDX = 0;
