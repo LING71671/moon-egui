@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.3.1] - 2026-09-13
+
+### Added
+- **Keyboard reachability (FEAT-A11Y-01)**: menu bar (trigger toggle, dropdown item traversal, Escape close), data table (arrow-key row highlight with auto-scroll, Enter to activate), context menu (arrow navigation while open, disabled rows skipped, Enter opens submenus), DockArea (tab switching, arrow-resizable dividers) plus standalone splitter, scroll_area, tag, breadcrumb and window. 15 new frame-sequence tests.
+- **Interaction test infrastructure**: drag-sequence (press -> drag -> release) and controlled-component feed-back tests; `AGENTS.md` now codifies the Widget Interaction Standard (cursor contract, hit testing, popup foreground scope, global scale, keyboard reachability, controlled widgets, multi-frame test patterns).
+
+### Fixed
+- None (accessibility and test-coverage hardening release).
+
+### Other
+- **README restructure**: the primary `README.md` is now English (what mooncakes.io and GitHub display by default); the Chinese version moved to `README_zh.md` with the language switcher preserved.
+- Test count 246 -> 263 (100% passing).
+
 ## [0.3.0] - 2026-09-13
 
 ### Breaking Changes

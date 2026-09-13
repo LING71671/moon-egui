@@ -173,7 +173,7 @@ The canonical release procedure is defined as follows:
    - **Module Manifest**: Bump `version = "X.Y.Z"` in `moon.mod` adhering to Semantic Versioning (`MAJOR.MINOR.PATCH`).
    - **CLI Console Output**: Update version string in `cmd/main/main.mbt` (`println("=== Moon-EGUI vX.Y.Z Interactive Frame ===")`) to prevent drift.
    - **Release Changelog**: Insert new release section `## [X.Y.Z] - YYYY-MM-DD` in `docs/CHANGELOG.md` with complete Added/Fixed/Changed entries.
-   - **Project READMEs**: In both `README.md` and `README_en.md`, update:
+   - **Project READMEs**: In `README.md` (English, primary) and `README_zh.md` (Chinese), update:
      - Versioned installation commands (`moon add LING71671/moon-egui@X.Y.Z`).
      - Delivered widget count (e.g. 32 Available Widgets) and automated test count.
      - Milestone checklist status in the Development Roadmap section.
