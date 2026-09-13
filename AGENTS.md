@@ -116,6 +116,8 @@ Every interactive surface (anything that responds to hover, clicks, or drags) mu
 
 6. **Interaction Test Pattern**:
    - Script multi-frame sequences: `ctx.begin_frame(RawInput::with_events(...))` with explicit pointer / key events per frame, then assert state (`cursor_icon()`, memory-backed values, returned responses).
+   - `ctx.end_frame()` returns the *shared* frame draw list - it is cleared and refilled by the next `begin_frame`. Capture per-frame results as scalars (`let n = dl.len()`) immediately; never hold a `DrawList` reference across frames, or every frame will compare equal.
+   - Controlled widgets (slider, combo_box) need their returned value fed back as the next frame's argument; a constant argument silently freezes them.
    - For cursor and hit-zone coverage on the real bundle, prefer the headless grid sweep over `moon_gallery_step` + `moon_gallery_cursor()` with a 2px step (thin 6px hit bands defeat coarse grids). Screenshots and synthetic `MouseEvent`s are the tools of last resort.
 
 7. **Controlled Widgets vs Ref Targets**:
