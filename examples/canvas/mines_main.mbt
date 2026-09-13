@@ -107,8 +107,11 @@ pub fn mines_step(
 
   if !st.inited {
     st.inited = true
-    st.cam_x = -vp_w * 0.5 / st.cell
-    st.cam_y = -vp_h * 0.5 / st.cell
+    // Camera is in PIXELS: world tile t renders at t * cell - cam, so the
+    // inverse map for hit testing is (screen + cam) / cell. Both sides must
+    // agree or clicks land off the tile they visually target.
+    st.cam_x = -vp_w * 0.5
+    st.cam_y = -vp_h * 0.5
   }
 
   // 1. HTML controls -> world actions
@@ -144,8 +147,8 @@ pub fn mines_step(
   // The right button plants a flag the moment it goes down (no right-drag
   // gesture exists, so there is nothing to disambiguate).
   if secondary_pressed && !st.drag_move {
-    let wx = st.cam_x + mouse_x / st.cell
-    let wy = st.cam_y + mouse_y / st.cell
+    let wx = (mouse_x + st.cam_x) / st.cell
+    let wy = (mouse_y + st.cam_y) / st.cell
     st.world.toggle_flag(wx.floor().to_int(), wy.floor().to_int())
   }
   if mouse_down && (pan_dx != 0.0 || pan_dy != 0.0) {
@@ -161,24 +164,22 @@ pub fn mines_step(
     } else {
       old_cell * factor
     }
-    let wx = st.cam_x + mouse_x / old_cell
-    let wy = st.cam_y + mouse_y / old_cell
+    let wx = (mouse_x + st.cam_x) / old_cell
+    let wy = (mouse_y + st.cam_y) / old_cell
     st.cell = new_cell
-    st.cam_x = wx - mouse_x / new_cell
-    st.cam_y = wy - mouse_y / new_cell
+    st.cam_x = wx * new_cell - mouse_x
+    st.cam_y = wy * new_cell - mouse_y
   }
 
   // 3. click resolution on release (a dragged gesture is a pan, not a click)
   let world = st.world
-  let tx = (st.cam_x + mouse_x / st.cell).floor().to_int()
-  let ty = (st.cam_y + mouse_y / st.cell).floor().to_int()
+  let tx = ((mouse_x + st.cam_x) / st.cell).floor().to_int()
+  let ty = ((mouse_y + st.cam_y) / st.cell).floor().to_int()
   let cursor = if !world.is_revealed(tx, ty) { "pointer" } else { "default" }
   // Left gesture: release reveals - or flags while the flag mode is on
   if released && !st.drag_move {
-    let wx = st.cam_x + mouse_x / st.cell
-    let wy = st.cam_y + mouse_y / st.cell
-    let cx = wx.floor().to_int()
-    let cy = wy.floor().to_int()
+    let cx = ((mouse_x + st.cam_x) / st.cell).floor().to_int()
+    let cy = ((mouse_y + st.cam_y) / st.cell).floor().to_int()
     if st.gesture_flag {
       world.toggle_flag(cx, cy)
     } else {
@@ -252,14 +253,14 @@ pub fn mines_step(
           }
         }
       } else if lod_min {
-        let is_hover = (mouse_x / cell).floor().to_int() == c &&
-          (mouse_y / cell).floor().to_int() == r
+        let is_hover = ((mouse_x + st.cam_x) / cell).floor().to_int() == c &&
+          ((mouse_y + st.cam_y) / cell).floor().to_int() == r
         painter.add_rect(
           tile,
           if is_hover {
-            @color.Color::bg_hover()
+            @color.Color::bg_surface()
           } else {
-            @color.Color::bg_subtle()
+            @color.Color::bg_active()
           },
           0.0,
         )

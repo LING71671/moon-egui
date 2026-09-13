@@ -33,7 +33,7 @@
   let downY = 0;
   let moved = false;
   let pendingAction = -1;
-  let densityPermille = 156;
+  const DENSITY_PERMILLE = 156;
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -93,10 +93,6 @@
   window.minesSetAction = function (a) {
     pendingAction = a;
     window.minesPendingAction = a;
-  };
-  window.minesSetDensity = function (v) {
-    densityPermille = v;
-    document.getElementById('density-value').textContent = v + '‰';
   };
 
   function getColorStr(color) {
@@ -218,7 +214,7 @@
     const res = window.moon_mines_step(
       mouseX, mouseY, isMouseDown, secondaryDown,
       panDX, panDY, zoomDelta,
-      pendingAction, densityPermille,
+      pendingAction, DENSITY_PERMILLE,
       width, height
     );
     panDX = 0;

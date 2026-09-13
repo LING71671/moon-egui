@@ -91,24 +91,6 @@
       color: #fff;
     }
 
-    .ms-density {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-    .ms-density input[type="range"] {
-      width: 120px;
-      accent-color: var(--brand-cyan);
-    }
-    .ms-density .val {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--text-main);
-      min-width: 38px;
-    }
-
     .ms-footer-pill {
       position: fixed;
       bottom: 14px;
@@ -154,12 +136,6 @@
     <span class="ms-title">程序化扫雷 · 无限雷区</span>
     <button class="ms-btn" id="btn-new" onclick="window.minesSetAction(0)">新雷区</button>
     <button class="ms-btn" id="btn-flag-mode" onclick="window.minesSetAction(1)">插旗模式：关</button>
-    <div class="ms-density">
-      密度
-      <input type="range" min="30" max="300" step="6" value="156"
-             oninput="window.minesSetDensity(parseInt(this.value, 10))">
-      <span class="val" id="density-value">156‰</span>
-    </div>
   </header>
 
   <div class="ms-footer-pill">
