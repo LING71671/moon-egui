@@ -183,6 +183,7 @@ The canonical release procedure is defined as follows:
      - `examples/canvas/gallery.html`: Update navigation `<span class="brand-tag">vX.Y.Z</span>` and script/CSS query strings (`canvas.js?v=X.Y.Z`, `css/gallery.css?v=X.Y.Z`).
      - `examples/canvas/docs.html`: Update navigation `<span class="brand-tag">vX.Y.Z</span>` and page header `<span class="page-badge">MOON-EGUI API REFERENCE · vX.Y.Z</span>`.
      - `examples/canvas/benchmark.html`: Update script query strings (`canvas.js?v=X.Y.Z`, `js/run.js?v=X.Y.Z`).
+     - `examples/canvas/minesweeper.html`: Update script query strings too (`canvas.js?v=...`, `js/mines_run.js?v=...`). 2026-09-13 lesson: between releases the engine changes many times while the query string stays put, so browsers keep running a stale engine and the page looks broken. When ANY file under `examples/canvas` changes outside a release, bump the date-stamped query string (`?v=YYYYMMDDx`) in every page that loads it - do not wait for the next version bump.
      - `examples/canvas/gallery_basic_stages.mbt`: Update the hard-coded version badge string ("vX.Y.Z") and rebuild the demo bundle (`sh scripts/build_demo.sh`), or the showcase keeps advertising the previous release.
 
 2. **Interface Generation and Code Formatting**:
