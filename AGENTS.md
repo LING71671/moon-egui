@@ -118,6 +118,11 @@ Every interactive surface (anything that responds to hover, clicks, or drags) mu
    - Script multi-frame sequences: `ctx.begin_frame(RawInput::with_events(...))` with explicit pointer / key events per frame, then assert state (`cursor_icon()`, memory-backed values, returned responses).
    - For cursor and hit-zone coverage on the real bundle, prefer the headless grid sweep over `moon_gallery_step` + `moon_gallery_cursor()` with a 2px step (thin 6px hit bands defeat coarse grids). Screenshots and synthetic `MouseEvent`s are the tools of last resort.
 
+7. **Controlled Widgets vs Ref Targets**:
+   - Free functions and plain builders are *controlled*: they return the new value for the current frame and the caller must feed it back next frame. A host or test that keeps passing a constant silently disables drag and keyboard interaction.
+   - `*::from_ref` builders (`Slider`, `TextEdit`, `Checkbox`, `Toggle`, `Knob`, `Fader`, `CodeEditor`) write straight into their `Ref` target during the frame and need no feed-back loop.
+   - Frame-sequence tests for controlled widgets must feed returned values forward - see the slider and combo_box cases in `src/widgets/fluent_keyboard_wbtest.mbt`.
+
 ## Low-Coupling Architecture & Structural Decoupling Standard (Mandatory)
 
 All structural and component implementations in this repository **MUST** strictly adhere to low-coupling, high-cohesion architectural principles. Anti-patterns such as God Objects, leaking widget-private state into central contexts, flat monolithic style tokens, and unconstrained coordinate mutation are strictly forbidden.

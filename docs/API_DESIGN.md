@@ -354,3 +354,13 @@ fn render_frame(ctx : @core.UIContext, state : GameTelemetry) {
   })
 }
 ```
+
+### State Binding Contract: Controlled Values vs Ref Targets
+
+Immediate-mode widgets are pure functions of the arguments passed each frame. Two equivalent binding styles exist, and mixing them up is the most common integration mistake:
+
+- **Controlled** (free functions and plain builders): `@widgets.slider(win, "Speed (m/s)", state.speed, 0.0, 120.0)` returns the new value for *this* frame. The caller writes it back into their state and passes it again next frame. Keyboard and pointer changes only surface through that returned value - passing a constant silently disables drag and keyboard interaction.
+- **Ref-bound** (`*::from_ref` builders): `Slider::from_ref`, `TextEdit::from_ref`, `Checkbox::from_ref`, `Toggle::from_ref`, `Knob::from_ref`, `Fader::from_ref` and `CodeEditor::from_ref` write changes directly into their `Ref` target during the frame. No feed-back loop is required.
+
+Rule of thumb: one-off examples use the controlled form; application state binds through `from_ref`.
+

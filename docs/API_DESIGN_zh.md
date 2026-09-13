@@ -357,3 +357,13 @@ fn render_frame(ctx : @core.UIContext, state : GameTelemetry) {
   })
 }
 ```
+
+### 状态绑定契约：受控值与 Ref 自动写回
+
+即时模式控件是「每帧入参的纯函数」。存在两种等价的绑定方式，混用它们是最常见的集成错误：
+
+- **受控**（自由函数与普通构建器）：`@widgets.slider(win, "运行速度 (m/s)", state.speed, 0.0, 120.0)` 返回**当帧**的新值，调用方必须写回自己的状态并在下一帧传入。键盘与拖拽的变更只通过该返回值体现——如果调用方每帧传常量，拖拽与键盘导航会静默失效。
+- **Ref 自动写回**（`*::from_ref` 构建器）：`Slider::from_ref`、`TextEdit::from_ref`、`Checkbox::from_ref`、`Toggle::from_ref`、`Knob::from_ref`、`Fader::from_ref`、`CodeEditor::from_ref` 在帧内直接把变更写入 `Ref` 目标，无需回喂循环。
+
+经验法则：一次性示例用受控形式；应用状态通过 `from_ref` 绑定。
+
