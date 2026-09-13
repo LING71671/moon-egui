@@ -43,6 +43,7 @@ so the palette cannot drift.
 | `BG_SUBTLE` | `#F8FAFC` | Hover wash and row highlight |
 | `BG_HOVER` | `#F8FAFC` | Semantic alias for hover (same value as `BG_SUBTLE`) |
 | `BG_ACTIVE` | `#E2E8F0` | Pressed state, deeper recess |
+| `MINES_GROUND` | `#94A3B8` | Minesweeper digging ground (unopened earth of the demo board) |
 | `BG_INVERSE` | `#1A1B23` | Inverted overlays: tooltips (pair with `TEXT_INVERSE`) |
 | **Borders** | | |
 | `BORDER_MUTED` | `#E2E8F0` | Inner hairline dividers and control grooves |

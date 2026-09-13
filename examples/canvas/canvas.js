@@ -3706,6 +3706,9 @@ function _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover() {
 function _M0MP49LING7167111moon_2degui3src5color5Color10bg__active() {
   return _M0MP49LING7167111moon_2degui3src5color5Color3hex(14870768);
 }
+function _M0MP49LING7167111moon_2degui3src5color5Color13mines__ground() {
+  return _M0MP49LING7167111moon_2degui3src5color5Color3hex(9741240);
+}
 function _M0MP49LING7167111moon_2degui3src5color5Color11bg__inverse() {
   return _M0MP49LING7167111moon_2degui3src5color5Color3hex(1710883);
 }
@@ -13418,7 +13421,7 @@ function _M0FP49LING7167111moon_2degui8examples6canvas11mines__step(mouse_x, mou
   _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.prev_secondary = mouse_secondary_down;
   _M0MP49LING7167111moon_2degui8examples6canvas9MineWorld4pump(world, 8000);
   const painter = _M0MP49LING7167111moon_2degui3src4core9UIContext7painter(_M0FP49LING7167111moon_2degui8examples6canvas10mines__ctx);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, _M0MP49LING7167111moon_2degui3src4math4Rect3new(0, 0, vp_w, vp_h), _M0MP49LING7167111moon_2degui3src5color5Color10bg__active(), 0);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, _M0MP49LING7167111moon_2degui3src4math4Rect3new(0, 0, vp_w, vp_h), _M0MP49LING7167111moon_2degui3src5color5Color13mines__ground(), 0);
   const cell = _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.cell;
   const lod_min = cell >= 12;
   const col0 = _M0MPC16double6Double7to__int(_M0MPC16double6Double5floor(_M0FP49LING7167111moon_2degui8examples6canvas9mines__st.cam_x / cell));

@@ -39,6 +39,7 @@
 | `BG_SUBTLE` | `#F8FAFC` | 悬浮浅色底纹、列表行划过高亮 |
 | `BG_HOVER` | `#F8FAFC` | 悬浮态语义别名（与 `BG_SUBTLE` 同值） |
 | `BG_ACTIVE` | `#E2E8F0` | 按下态、更深的凹陷底色 |
+| `MINES_GROUND` | `#94A3B8` | 扫雷挖掘地面（演示棋盘的未挖土层） |
 | `BG_INVERSE` | `#1A1B23` | 反色浮层：tooltip 气泡（配 `TEXT_INVERSE`） |
 | **描边** | | |
 | `BORDER_MUTED` | `#E2E8F0` | 内部发丝分割线、控件凹槽 |

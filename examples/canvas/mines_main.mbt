@@ -189,7 +189,7 @@ pub fn mines_step(
   // white screen.
   painter.add_rect(
     @math.Rect::new(0.0, 0.0, vp_w, vp_h),
-    @color.Color::bg_active(),
+    @color.Color::mines_ground(),
     0.0,
   )
   let cell = st.cell

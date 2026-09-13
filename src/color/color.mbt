@@ -104,6 +104,14 @@ pub fn Color::bg_active() -> Color {
 }
 
 ///|
+/// Minesweeper digging ground: the unopened earth of the demo board. Must
+/// read clearly darker than every surface so dug-out white pits contrast at
+/// a glance, even zoomed far out.
+pub fn Color::mines_ground() -> Color {
+  Color::hex(0x94A3B8)
+}
+
+///|
 /// Inverse surface for overlays that sit on top of light content: tooltips and
 /// floating hints, which pair with `text_inverse`.
 pub fn Color::bg_inverse() -> Color {
