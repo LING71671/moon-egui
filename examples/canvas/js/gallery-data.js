@@ -1272,4 +1272,5 @@ pub fn draw_rich_text(ui : @core.UIContext) -> Unit {
 }`
     }
   },
+  },
 };

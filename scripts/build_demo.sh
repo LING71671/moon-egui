@@ -44,6 +44,15 @@ if [ -z "$GALLERY_STEP" ]; then
   exit 1
 fi
 
+MINES_STEP=$(grep -oE 'function (_M0[A-Za-z0-9_]*8examples6canvas11mines__step)\(' "$BUILD" |
+  head -n 1 |
+  sed -e 's/^function //' -e 's/($//')
+
+if [ -z "$MINES_STEP" ]; then
+  echo "error: could not locate the canvas.mines_step entry point in the build output" >&2
+  exit 1
+fi
+
 STATUS=$(grep -oE 'function (_M0[A-Za-z0-9_]*get__gallery__status)\(' "$BUILD" |
   head -n 1 |
   sed -e 's/^function //' -e 's/($//' || true)
@@ -75,6 +84,8 @@ cp "$BUILD" "$OUT"
   echo "if (typeof globalThis !== 'undefined') globalThis.moon_step = $STEP;"
   echo "if (typeof window !== 'undefined') window.moon_gallery_step = $GALLERY_STEP;"
   echo "if (typeof globalThis !== 'undefined') globalThis.moon_gallery_step = $GALLERY_STEP;"
+  echo "if (typeof window !== 'undefined') window.moon_mines_step = $MINES_STEP;"
+  echo "if (typeof globalThis !== 'undefined') globalThis.moon_mines_step = $MINES_STEP;"
   if [ -n "$STATUS" ]; then
     echo "if (typeof window !== 'undefined') window.moon_gallery_status = $STATUS;"
     echo "if (typeof globalThis !== 'undefined') globalThis.moon_gallery_status = $STATUS;"
@@ -101,4 +112,4 @@ cp "$BUILD" "$OUT"
   fi
 } >> "$OUT"
 
-echo "wrote $OUT (entry points: $STEP, $GALLERY_STEP, status, cursor, view_mode, theme)"
+echo "wrote $OUT (entry points: $STEP, $GALLERY_STEP, $MINES_STEP, status, cursor, view_mode, theme)"

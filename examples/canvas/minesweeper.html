@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>moon-egui | 程序化扫雷 · 无限雷区</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: rgba(255, 255, 255, 0.96);
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --brand-cyan: #0284c7;
+      --danger: #ef4444;
+      --segment-bg: #f1f5f9;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    #mines-canvas {
+      position: fixed;
+      inset: 0;
+      display: block;
+      touch-action: none;
+    }
+
+    .ms-header {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 8px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+      white-space: nowrap;
+    }
+
+    .ms-header a.back {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .ms-header a.back:hover { color: var(--brand-cyan); }
+
+    .ms-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .ms-btn {
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text-main);
+      background: var(--segment-bg);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .ms-btn:hover { border-color: var(--brand-cyan); color: var(--brand-cyan); }
+    .ms-btn.primary {
+      background: var(--brand-cyan);
+      border-color: var(--brand-cyan);
+      color: #fff;
+    }
+
+    .ms-density {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .ms-density input[type="range"] {
+      width: 120px;
+      accent-color: var(--brand-cyan);
+    }
+    .ms-density .val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-main);
+      min-width: 38px;
+    }
+
+    .ms-footer-pill {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 7px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .ms-footer-pill .mono {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-main);
+    }
+    .ms-footer-pill .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: ms-pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes ms-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.82); }
+    }
+
+    .ms-tip { font-size: 11.5px; }
+  </style>
+</head>
+<body>
+  <canvas id="mines-canvas"></canvas>
+
+  <header class="ms-header">
+    <a href="gallery.html" class="back" title="返回组件展厅">← 展厅</a>
+    <span class="ms-title">程序化扫雷 · 无限雷区</span>
+    <button class="ms-btn" id="btn-new" onclick="window.minesSetAction(0)">新雷区</button>
+    <button class="ms-btn" id="btn-flag-mode" onclick="window.minesSetAction(1)">插旗模式：关</button>
+    <div class="ms-density">
+      密度
+      <input type="range" min="30" max="300" step="6" value="156"
+             oninput="window.minesSetDensity(parseInt(this.value, 10))">
+      <span class="val" id="density-value">156‰</span>
+    </div>
+  </header>
+
+  <div class="ms-footer-pill">
+    <span class="live-dot"></span>
+    <span><span class="mono" id="stat-fps">60</span> fps</span>
+    <span>·</span>
+    <span>已翻开 <span class="mono" id="stat-revealed">0</span> 格</span>
+    <span>·</span>
+    <span>旗 <span class="mono" id="stat-flags">0</span></span>
+    <span>·</span>
+    <span id="stat-cascade">连锁完成</span>
+    <span>·</span>
+    <span class="mono" id="stat-coords">(0, 0) px</span>
+    <span class="ms-tip">左键翻开 · 右键插旗 · 拖拽平移 · 滚轮缩放</span>
+  </div>
+
+  <script>
+    // 顶栏按钮的插旗模式状态回显由引擎帧数据驱动
+    window.addEventListener('load', () => {
+      const btn = document.getElementById('btn-flag-mode');
+      const sync = () => {
+        const on = window.minesLastFrame && window.minesLastFrame.flag_mode;
+        btn.textContent = '插旗模式：' + (on ? '开' : '关');
+        btn.classList.toggle('primary', !!on);
+        requestAnimationFrame(sync);
+      };
+      sync();
+    });
+  </script>
+  <script src="canvas.js?v=0.3.1"></script>
+  <script src="js/mines_run.js?v=0.3.1"></script>
+</body>
+</html>

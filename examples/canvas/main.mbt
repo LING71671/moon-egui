@@ -172,6 +172,10 @@ fn main {
     [],
     0,
   )
+  // keep mines_step reachable so the JS build emits it for minesweeper.html
+  let _ = mines_step(
+    0.0, 0.0, false, false, 0.0, 0.0, 0.0, -1, 156, 920.0, 540.0,
+  )
   let _ = gallery_step(
     "knob",
     0.0,
