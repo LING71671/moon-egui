@@ -13,6 +13,22 @@
 // limitations under the License.
 
 ///|
+/// The world is a bounded domain of DOMAIN_SIZE x DOMAIN_SIZE tiles holding
+/// TARGET_MINES mines in total (the quantified identity of the shared field).
+/// Outside the domain there are no mines at all.
+pub const DOMAIN_SIZE = 25600
+
+///|
+pub const TARGET_MINES = 100_000_000
+
+///|
+/// Calibrated threshold: the domain contains EXACTLY TARGET_MINES mines at
+/// this value (verified by the numpy calibration in scratch/calibrate.py,
+/// cross-checkable via cmd/mines_calibrate). Never change it casually - it
+/// is part of the quantified identity of the shared world.
+pub const MINES_THRESHOLD = 655384180UL
+
+///|
 /// splitmix64 finalizer - the whole minefield derives from this hash, so the
 /// board stores no mine data at all: a cell is a mine iff its hash falls
 /// below the density threshold.
@@ -32,13 +48,6 @@ fn mine_cell_hash(x : Int, y : Int, seed : UInt64) -> UInt64 {
 }
 
 ///|
-/// Density is expressed in permille (1..999). The threshold maps it onto the
-/// upper 32 bits of the hash space.
-fn mine_threshold(permille : Int) -> UInt64 {
-  permille.to_uint64() * 4294967296UL / 1000UL
-}
-
-///|
 /// One 64x64 tile of the world holding the revealed / flagged bitmaps.
 /// Only touched tiles ever allocate - the board is effectively infinite.
 struct MineChunk {
@@ -55,35 +64,30 @@ struct MineChunk {
 /// variant nearly free to synchronise.
 struct MineWorld {
   seed : UInt64
-  threshold : UInt64
   chunks : Map[UInt64, MineChunk]
   mut queue : Array[(Int, Int)]
   mut queue_head : Int
   mut revealed_count : Int
   mut flagged_count : Int
   mut hits : Int
+  /// The first reveal of a session. The 5x5 area around it is mine-free, so
+  /// nobody's very first dig can hit anything.
+  mut safe_origin : (Int, Int)?
 }
 
 ///|
-/// Create a world from a seed and a mine density in permille (mines per
-/// thousand tiles). 150 is a classic expert-ish density.
-fn MineWorld::new(seed : UInt64, density_permille : Int) -> MineWorld {
-  let density_permille = if density_permille < 1 {
-    1
-  } else if density_permille > 999 {
-    999
-  } else {
-    density_permille
-  }
+/// Create a world from a seed. The mine count is a property of the shared
+/// domain (DOMAIN_SIZE x DOMAIN_SIZE, MINES_THRESHOLD), not a per-world knob.
+fn MineWorld::new(seed : UInt64) -> MineWorld {
   {
     seed,
-    threshold: mine_threshold(density_permille),
     chunks: Map([], capacity=64),
     queue: [],
     queue_head: 0,
     revealed_count: 0,
     flagged_count: 0,
     hits: 0,
+    safe_origin: None,
   }
 }
 
@@ -102,11 +106,22 @@ fn MineWorld::chunk(self : MineWorld, x : Int, y : Int) -> MineChunk {
 }
 
 ///|
-/// Is the tile at world coordinates (x, y) a mine? Pure - safe to call for
-/// any coordinates, including negatives.
+/// Is the tile at world coordinates (x, y) a mine? Pure with respect to the
+/// world state (seed + first-reveal safe zone). Mines only exist inside the
+/// domain, and never within the 5x5 area around the session's first reveal.
 fn MineWorld::is_mine(self : MineWorld, x : Int, y : Int) -> Bool {
-  // compare the upper 32 bits of the hash against the threshold
-  mine_cell_hash(x, y, self.seed) >> 32 < self.threshold
+  if x < 0 || y < 0 || x >= DOMAIN_SIZE || y >= DOMAIN_SIZE {
+    return false
+  }
+  match self.safe_origin {
+    Some((fx, fy)) =>
+      if (x - fx).abs() <= 2 && (y - fy).abs() <= 2 {
+        return false
+      }
+    None => ()
+  }
+  // compare the upper 32 bits of the hash against the calibrated threshold
+  mine_cell_hash(x, y, self.seed) >> 32 < MINES_THRESHOLD
 }
 
 ///|
@@ -173,18 +188,40 @@ fn MineWorld::reveal(self : MineWorld, x : Int, y : Int) -> Unit {
   if self.is_flagged(x, y) || self.is_revealed(x, y) {
     return
   }
+  // First dig of a session: carve the 5x5 safe zone around it before any
+  // mine classification happens, so the very first reveal can never hit.
+  if self.safe_origin is None {
+    self.safe_origin = Some((x, y))
+  }
   if self.is_mine(x, y) {
     self.set_revealed(x, y)
     self.revealed_count = self.revealed_count + 1
     self.hits = self.hits + 1
     return
   }
+  // Outside the domain a dig opens just the single tile - there are no
+  // numbers or cascades in the void.
+  if x < 0 || y < 0 || x >= DOMAIN_SIZE || y >= DOMAIN_SIZE {
+    self.set_revealed(x, y)
+    self.revealed_count = self.revealed_count + 1
+    return
+  }
   self.enqueue(x, y)
 }
 
 ///|
+/// Cascade tiles are queued here. The flood propagates ONLY inside the
+/// domain: beyond its bounds there are no mines, so an unchecked flood would
+/// pour into the infinite mine-free void and never terminate. Tiles outside
+/// the domain can still be revealed individually, just never through a
+/// cascade.
 fn MineWorld::enqueue(self : MineWorld, x : Int, y : Int) -> Unit {
-  if !self.is_revealed(x, y) && !self.is_flagged(x, y) {
+  if x >= 0 &&
+    y >= 0 &&
+    x < DOMAIN_SIZE &&
+    y < DOMAIN_SIZE &&
+    !self.is_revealed(x, y) &&
+    !self.is_flagged(x, y) {
     self.queue.push((x, y))
   }
 }
@@ -261,6 +298,49 @@ fn MineWorld::flagged_count(self : MineWorld) -> Int {
 ///|
 fn MineWorld::is_cascade_pending(self : MineWorld) -> Bool {
   self.queue_head < self.queue.length()
+}
+
+///|
+/// Raw hash classification without world state - the calibration tool and
+/// the sampling test both count through this.
+pub fn mines_is_mine_raw(x : Int, y : Int) -> Bool {
+  x >= 0 &&
+  y >= 0 &&
+  x < DOMAIN_SIZE &&
+  y < DOMAIN_SIZE &&
+  mine_cell_hash(x, y, 20260913UL) >> 32 < MINES_THRESHOLD
+}
+
+///|
+/// Count mines over the whole domain for a given threshold (calibration).
+pub fn mines_count_for_threshold(threshold : UInt64) -> Int {
+  let mut n = 0
+  for y = 0; y < DOMAIN_SIZE; y = y + 1 {
+    for x = 0; x < DOMAIN_SIZE; x = x + 1 {
+      if mine_cell_hash(x, y, 20260913UL) >> 32 < threshold {
+        n = n + 1
+      }
+    }
+  }
+  n
+}
+
+///|
+/// Binary-search the smallest threshold whose domain holds at least
+/// `target` mines. Runs once at development time (cmd/mines_calibrate).
+pub fn mines_calibrate_threshold(target : Int) -> UInt64 {
+  let mut lo = 1UL
+  let mut hi = 0xFFFFFFFFUL
+  // invariant: count(hi) >= target, count(lo) < target
+  while lo + 1UL < hi {
+    let mid = (lo + hi) >> 1
+    if mines_count_for_threshold(mid) >= target {
+      hi = mid
+    } else {
+      lo = mid
+    }
+  }
+  hi
 }
 
 ///|

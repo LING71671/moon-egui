@@ -134,13 +134,14 @@
   <header class="ms-header">
     <a href="gallery.html" class="back" title="返回组件展厅">← 展厅</a>
     <span class="ms-title">程序化扫雷 · 无限雷区</span>
-    <button class="ms-btn" id="btn-new" onclick="window.minesSetAction(0)">新雷区</button>
     <button class="ms-btn" id="btn-flag-mode" onclick="window.minesSetAction(1)">插旗模式：关</button>
   </header>
 
   <div class="ms-footer-pill">
     <span class="live-dot"></span>
     <span><span class="mono" id="stat-fps">60</span> fps</span>
+    <span>·</span>
+    <span>雷 <span class="mono" id="stat-total">100,000,000</span></span>
     <span>·</span>
     <span>已翻开 <span class="mono" id="stat-revealed">0</span> 格</span>
     <span>·</span>
@@ -151,7 +152,7 @@
     <span id="stat-cascade">连锁完成</span>
     <span>·</span>
     <span class="mono" id="stat-coords">(0, 0) px</span>
-    <span class="ms-tip">左键翻开 · 右键插旗 · 拖拽平移 · 滚轮缩放</span>
+    <span class="ms-tip">首翻必安全 · 左键翻开 · 右键插旗 · 拖拽平移 · 滚轮缩放</span>
   </div>
 
   <script>

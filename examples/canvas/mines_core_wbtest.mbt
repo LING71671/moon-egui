@@ -14,9 +14,9 @@
 
 ///|
 test "mines: same seed produces the same board, different seed differs" {
-  let a = MineWorld::new(987654321UL, 150)
-  let b = MineWorld::new(987654321UL, 150)
-  let c = MineWorld::new(12345UL, 150)
+  let a = MineWorld::new(987654321UL)
+  let b = MineWorld::new(987654321UL)
+  let c = MineWorld::new(12345UL)
   let mut same = true
   let mut diff = false
   for y = 0; y < 30; y = y + 1 {
@@ -34,18 +34,20 @@ test "mines: same seed produces the same board, different seed differs" {
 }
 
 ///|
-test "mines: sampled density tracks the configured permille" {
-  let w = MineWorld::new(42UL, 150)
+test "mines: sampled strip density tracks the calibrated threshold" {
+  // expected strip density = TARGET_MINES / DOMAIN_SIZE^2 (~152.6 permille);
+  // a generous +/- 20% band keeps this stable without pinning the hash.
+  // divide first: TARGET_MINES * 1000 would overflow Int32
+  let expected = TARGET_MINES / (DOMAIN_SIZE * DOMAIN_SIZE / 1000)
   let mut mines = 0
   for y = 0; y < 200; y = y + 1 {
     for x = 0; x < 100; x = x + 1 {
-      if w.is_mine(x, y) {
+      if mines_is_mine_raw(x, y) {
         mines = mines + 1
       }
     }
   }
-  // expected 3000 (15% of 20000); generous +/- 20% band keeps this stable
-  assert_true(mines > 2400 && mines < 3600)
+  assert_true(mines * 5 > expected * 80 && mines * 5 < expected * 120)
 }
 
 ///|
@@ -72,7 +74,13 @@ fn reference_flood(w : MineWorld, sx : Int, sy : Int) -> Set[(Int, Int)] {
         }
         let nx = x + dx
         let ny = y + dy
-        if !w.is_mine(nx, ny) && !visited.contains((nx, ny)) {
+        // mirror the engine: the reference flood also stops at the domain
+        // bounds - outside there are no mines and the flood would never end
+        let in_domain = nx >= 0 &&
+          ny >= 0 &&
+          nx < DOMAIN_SIZE &&
+          ny < DOMAIN_SIZE
+        if in_domain && !w.is_mine(nx, ny) && !visited.contains((nx, ny)) {
           visited.add((nx, ny))
           queue.push((nx, ny))
         }
@@ -84,7 +92,7 @@ fn reference_flood(w : MineWorld, sx : Int, sy : Int) -> Set[(Int, Int)] {
 
 ///|
 test "mines: flood reveal matches the reference traversal" {
-  let w = MineWorld::new(20260913UL, 156)
+  let w = MineWorld::new(20260913UL)
   let mut start : (Int, Int)? = None
   for y in 0..<60 {
     for x in 0..<60 {
@@ -115,7 +123,7 @@ test "mines: flood reveal matches the reference traversal" {
 
 ///|
 test "mines: pump budget spreads the cascade across frames" {
-  let full = MineWorld::new(777UL, 140)
+  let full = MineWorld::new(777UL)
   let mut start : (Int, Int)? = None
   for y in 0..<60 {
     for x in 0..<60 {
@@ -133,14 +141,14 @@ test "mines: pump budget spreads the cascade across frames" {
     None => (0, 0)
   }
 
-  let stepwise = MineWorld::new(777UL, 140)
+  let stepwise = MineWorld::new(777UL)
   stepwise.reveal(sx, sy)
   let mut frames = 0
   while stepwise.is_cascade_pending() && frames < 10_000 {
     let _ = stepwise.pump(3)
     frames = frames + 1
   }
-  let all_at_once = MineWorld::new(777UL, 140)
+  let all_at_once = MineWorld::new(777UL)
   all_at_once.reveal(sx, sy)
   let _ = all_at_once.pump(1_000_000)
   assert_eq(stepwise.revealed_count(), all_at_once.revealed_count())
@@ -149,7 +157,7 @@ test "mines: pump budget spreads the cascade across frames" {
 
 ///|
 test "mines: flags block the cascade and survive re-planting" {
-  let w = MineWorld::new(55UL, 120)
+  let w = MineWorld::new(55UL)
   let mut safe : (Int, Int)? = None
   for y in 0..<60 {
     for x in 0..<60 {
@@ -185,7 +193,7 @@ test "mines: flags block the cascade and survive re-planting" {
 
 ///|
 test "mines: revealing a mine marks it, counts a hit and the world goes on" {
-  let w = MineWorld::new(2024UL, 200)
+  let w = MineWorld::new(2024UL)
   let mut mine : (Int, Int)? = None
   let mut safe : (Int, Int)? = None
   for y = 0; y < 40; y = y + 1 {
@@ -201,8 +209,15 @@ test "mines: revealing a mine marks it, counts a hit and the world goes on" {
     Some(p) => p
     None => (0, 0)
   }
+  // the very first dig of a session is protected, so open a harmless tile
+  // far away first to establish the safe zone elsewhere
+  w.reveal(1000, 1000)
+  let _ = w.pump(1_000_000)
+  let before = w.revealed_count()
+  let safe_zone_hits = w.hits()
+  // now stepping on a real mine counts a hit
   w.reveal(mx, my)
-  assert_eq(w.hits(), 1)
+  assert_eq(w.hits(), safe_zone_hits + 1)
   assert_true(w.is_revealed(mx, my))
 
   // the world is still alive: a flood reveal afterwards works normally
@@ -213,40 +228,59 @@ test "mines: revealing a mine marks it, counts a hit and the world goes on" {
   w.reveal(sx, sy)
   let _ = w.pump(1_000_000)
   let expected = reference_flood(w, sx, sy)
-  assert_eq(w.revealed_count(), expected.length() + 1)
-  assert_eq(w.hits(), 1)
+  assert_eq(w.revealed_count(), before + expected.length() + 1)
+  assert_eq(w.hits(), safe_zone_hits + 1)
 }
 
 ///|
-test "mines: negative coordinates are first-class citizens" {
-  let w = MineWorld::new(31337UL, 150)
-  // deterministic across identical calls on negative tiles
-  assert_eq(w.is_mine(-1, -1), w.is_mine(-1, -1))
-  assert_eq(w.is_mine(-33, 12), w.is_mine(-33, 12))
-  // and a reveal there just works
+test "mines: outside the domain there are no mines, but digging works" {
+  let w = MineWorld::new(31337UL)
+  // the void beyond the domain is deterministic and mine-free
+  assert_false(w.is_mine(-1, -1))
+  assert_false(w.is_mine(-33, 12))
+  assert_false(w.is_mine(DOMAIN_SIZE, 0))
+  assert_false(w.is_mine(0, DOMAIN_SIZE + 5))
+  // a reveal in the void opens that single tile - no cascade out there
   w.reveal(-1, -1)
   let _ = w.pump(1_000_000)
-  assert_true(w.revealed_count() >= 1)
+  assert_true(w.is_revealed(-1, -1))
+  assert_eq(w.hits(), 0)
 }
 
 ///|
-test "mines: density is clamped into the playable band" {
-  let low = MineWorld::new(1UL, 0)
-  let high = MineWorld::new(1UL, 5000)
-  let mut low_mines = 0
-  let mut high_mines = 0
-  for y = 0; y < 50; y = y + 1 {
-    for x = 0; x < 50; x = x + 1 {
-      if low.is_mine(x, y) {
-        low_mines = low_mines + 1
-      }
-      if high.is_mine(x, y) {
-        high_mines = high_mines + 1
+test "mines: the first reveal of a session can never hit a mine" {
+  // find a tile that is a raw mine and dig it FIRST - the 5x5 safe zone
+  // carved by the first reveal must extinguish it
+  let w = MineWorld::new(777UL)
+  let mut raw_mine : (Int, Int)? = None
+  for y = 0; y < 64 && raw_mine is None; y = y + 1 {
+    for x = 0; x < 64; x = x + 1 {
+      if mines_is_mine_raw(x, y) {
+        raw_mine = Some((x, y))
+        break
       }
     }
   }
-  // clamped to 1 permille: ~2.5 expected in 2500 tiles
-  assert_true(low_mines < 15)
-  // clamped to 999 permille: only a handful of safe tiles remain
-  assert_true(high_mines > 2400)
+  let (mx, my) = match raw_mine {
+    Some(p) => p
+    None => (0, 0)
+  }
+  assert_true(mines_is_mine_raw(mx, my)) // it was a mine before the dig
+  w.reveal(mx, my)
+  assert_eq(w.hits(), 0)
+  let _ = w.pump(1_000_000)
+  assert_true(w.is_revealed(mx, my))
+  assert_false(w.is_mine(mx, my)) // extinguished by the safe zone
+  // and the world keeps working normally afterwards
+  let mut digs = 0
+  for y = 100; y < 140; y = y + 1 {
+    for x = 100; x < 140; x = x + 1 {
+      if !w.is_revealed(x, y) && digs == 0 {
+        w.reveal(x, y)
+        digs = digs + 1
+      }
+    }
+  }
+  let _ = w.pump(1_000_000)
+  assert_true(w.revealed_count() > 1)
 }

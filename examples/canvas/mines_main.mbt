@@ -18,7 +18,6 @@ pub struct MinesFrame {
   draw_list : @draw.DrawList
   revealed : Int
   flagged : Int
-  density : Int
   hits : Int
   pending : Bool
   flag_mode : Bool
@@ -31,7 +30,6 @@ struct MinesState {
   mut cam_x : Double
   mut cam_y : Double
   mut cell : Double
-  mut density : Int
   mut flag_mode : Bool
   mut prev_down : Bool
   mut prev_secondary : Bool
@@ -42,11 +40,10 @@ struct MinesState {
 
 ///|
 let mines_st : MinesState = {
-  world: MineWorld::new(20260913UL, 156),
+  world: MineWorld::new(20260913UL),
   cam_x: -14.0,
   cam_y: -12.0,
   cell: 22.0,
-  density: 156,
   flag_mode: false,
   prev_down: false,
   prev_secondary: false,
@@ -93,7 +90,6 @@ pub fn mines_step(
   pan_dy : Double,
   zoom_delta : Double,
   action_switch : Int,
-  density_permille : Int,
   vp_w : Double,
   vp_h : Double,
 ) -> MinesFrame {
@@ -116,21 +112,10 @@ pub fn mines_step(
 
   // 1. HTML controls -> world actions
   if action_switch == 0 {
-    st.world = MineWorld::new(mines_next_seed(st.world.seed()), st.density)
+    st.world = MineWorld::new(mines_next_seed(st.world.seed()))
   }
   if action_switch == 1 {
     st.flag_mode = !st.flag_mode
-  }
-  let density_in = if density_permille < 1 {
-    1
-  } else if density_permille > 999 {
-    999
-  } else {
-    density_permille
-  }
-  if density_in != st.density {
-    st.density = density_in
-    st.world = MineWorld::new(mines_next_seed(st.world.seed()), st.density)
   }
 
   // 2. camera: pan + zoom anchored at the pointer
@@ -198,9 +183,13 @@ pub fn mines_step(
   // 5. render the visible window of the board (LOD: below 12px per tile the
   // unopened mass is drawn as a single background pass)
   let painter = mines_ctx.painter()
+  // The backdrop is the UNOPENED ground; revealed tiles paint over it. At
+  // low LOD the unopened mass simply stays as the backdrop, so zooming far
+  // out shows dark earth with white pits and red mines instead of a blank
+  // white screen.
   painter.add_rect(
     @math.Rect::new(0.0, 0.0, vp_w, vp_h),
-    @color.Color::bg_window(),
+    @color.Color::bg_active(),
     0.0,
   )
   let cell = st.cell
@@ -253,17 +242,12 @@ pub fn mines_step(
           }
         }
       } else if lod_min {
+        // unopened tile: same ground colour as the backdrop, lighter on hover
         let is_hover = ((mouse_x + st.cam_x) / cell).floor().to_int() == c &&
           ((mouse_y + st.cam_y) / cell).floor().to_int() == r
-        painter.add_rect(
-          tile,
-          if is_hover {
-            @color.Color::bg_surface()
-          } else {
-            @color.Color::bg_active()
-          },
-          0.0,
-        )
+        if is_hover {
+          painter.add_rect(tile, @color.Color::bg_surface(), 0.0)
+        }
         if world.is_flagged(c, r) {
           let pole_x = sx + cell * 0.62
           painter.add_line(
@@ -293,7 +277,6 @@ pub fn mines_step(
     draw_list: mines_ctx.end_frame(),
     revealed: world.revealed_count(),
     flagged: world.flagged_count(),
-    density: st.density,
     hits: world.hits(),
     pending: world.is_cascade_pending(),
     flag_mode: st.flag_mode,
