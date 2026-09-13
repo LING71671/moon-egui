@@ -187,3 +187,113 @@ test "context_menu: arrows and Enter drive the open menu" {
   assert_eq(r3.open, true)
   assert_eq(ctx.active_submenu_id(), "export")
 }
+
+///|
+test "dock: keyboard switches tabs inside a pane" {
+  let ctx = @core.UIContext::new()
+  let tree = DockTree::leaf([
+    DockTab::new("t1", "Tab 1"),
+    DockTab::new("t2", "Tab 2"),
+  ])
+
+  // Frame 1: Tab focuses the first tab (the current one; Enter is a no-op)
+  ctx.begin_frame(kb_key_input(@core.Key::Tab))
+  let r1 = dock_area(ctx, "kb_dock", @math.Vec2::new(800.0, 500.0), tree, fn(
+    _ui,
+    _id,
+    _rect,
+  ) {
+
+  })
+  let _ = ctx.end_frame()
+  assert_eq(r1.active_tab_changed, None)
+
+  // Frame 2: Tab reaches the second tab
+  ctx.begin_frame(kb_key_input(@core.Key::Tab))
+  let r2 = dock_area(ctx, "kb_dock", @math.Vec2::new(800.0, 500.0), tree, fn(
+    _ui,
+    _id,
+    _rect,
+  ) {
+
+  })
+  let _ = ctx.end_frame()
+  assert_eq(r2.active_tab_changed, None)
+
+  // Frame 3: Enter switches to it
+  ctx.begin_frame(kb_key_input(@core.Key::Enter))
+  let r3 = dock_area(ctx, "kb_dock", @math.Vec2::new(800.0, 500.0), tree, fn(
+    _ui,
+    _id,
+    _rect,
+  ) {
+
+  })
+  let _ = ctx.end_frame()
+  assert_eq(r3.active_tab_changed, Some(("t1", "t2")))
+}
+
+///|
+test "dock: keyboard resizes the focused divider" {
+  let ctx = @core.UIContext::new()
+  let tree = DockTree::split(
+    DockSplitDirection::Horizontal,
+    0.5,
+    DockTree::leaf([DockTab::new("t1", "Tab 1")]),
+    DockTree::leaf([DockTab::new("t2", "Tab 2")]),
+  )
+
+  // Frames 1-4: the handle registers before the child tabs, so Tab cycles
+  // divider -> t1 -> t2 -> back to the divider
+  ctx.begin_frame(kb_key_input(@core.Key::Tab))
+  let _ = dock_area(ctx, "kb_dock_split", @math.Vec2::new(800.0, 500.0), tree, fn(
+    _ui,
+    _id,
+    _rect,
+  ) {
+
+  })
+  let _ = ctx.end_frame()
+
+  ctx.begin_frame(kb_key_input(@core.Key::Tab))
+  let _ = dock_area(ctx, "kb_dock_split", @math.Vec2::new(800.0, 500.0), tree, fn(
+    _ui,
+    _id,
+    _rect,
+  ) {
+
+  })
+  let _ = ctx.end_frame()
+
+  ctx.begin_frame(kb_key_input(@core.Key::Tab))
+  let _ = dock_area(ctx, "kb_dock_split", @math.Vec2::new(800.0, 500.0), tree, fn(
+    _ui,
+    _id,
+    _rect,
+  ) {
+
+  })
+  let _ = ctx.end_frame()
+
+  ctx.begin_frame(kb_key_input(@core.Key::Tab))
+  let _ = dock_area(ctx, "kb_dock_split", @math.Vec2::new(800.0, 500.0), tree, fn(
+    _ui,
+    _id,
+    _rect,
+  ) {
+
+  })
+  let _ = ctx.end_frame()
+
+  // Frame 5: ArrowRight nudges the divider ratio
+  ctx.begin_frame(kb_key_input(@core.Key::ArrowRight))
+  let r4 = dock_area(
+    ctx,
+    "kb_dock_split",
+    @math.Vec2::new(800.0, 500.0),
+    tree,
+    fn(_ui, _id, _rect) {  },
+  )
+  let _ = ctx.end_frame()
+  assert_true(r4.ratio_changed)
+}

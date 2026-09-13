@@ -323,6 +323,19 @@ fn render_dock_node(
 
         let is_current = i == valid_active
         let is_hovered = ctx.is_hovered(tab_rect)
+        let tab_focus_id = ctx.id_stack.derive_id(path + "_tab::" + tab.id)
+        ctx.register_focusable(tab_focus_id)
+        let tab_focused = ctx.has_focus(tab_focus_id)
+        let key_switch = tab_focused &&
+          !is_current &&
+          (
+            ctx.input().key_pressed(Key::Enter) ||
+            ctx.input().key_pressed(Key::Space)
+          )
+        if key_switch {
+          ctx.input().consume_key(Key::Enter)
+          ctx.input().consume_key(Key::Space)
+        }
 
         // A tab is a click target as a whole; the close cross overrides this
         // with its own pointer further down.
@@ -352,6 +365,15 @@ fn render_dock_node(
           )
         } else if is_hovered {
           painter.add_rect(tab_rect, @color.Color::bg_hover(), 4.0 * scale)
+        }
+
+        if tab_focused {
+          painter.add_rect_stroke(
+            tab_rect,
+            @color.Color::border_focus(),
+            1.0,
+            4.0 * scale,
+          )
         }
 
         // Tab title text
@@ -401,8 +423,9 @@ fn render_dock_node(
           }
         }
 
-        // Click to switch tab
-        if is_hovered && ctx.input().mouse_released && closed_tab_id is None {
+        // Click or keyboard to switch tab
+        if (is_hovered && ctx.input().mouse_released && closed_tab_id is None) ||
+          (key_switch && closed_tab_id is None) {
           if i != valid_active {
             tab_switched = Some((tabs[valid_active].id, tab.id))
             new_active_idx = i
@@ -501,6 +524,8 @@ fn render_dock_node(
       // Handle hit-testing and dragging
       let handle_hovered = ctx.is_hovered(handle_rect)
       let handle_id = ctx.id_stack.derive_id(path + "_spl")
+      ctx.register_focusable(handle_id)
+      let handle_focused = ctx.has_focus(handle_id)
 
       let cursor_icon = match direction {
         Horizontal => "col-resize"
@@ -560,6 +585,37 @@ fn render_dock_node(
         }
       }
 
+      // Keyboard resize: Tab-focus the divider and nudge the ratio.
+      if handle_focused {
+        let kb_step = 0.02
+        let grow_key = match direction {
+          Horizontal => Key::ArrowRight
+          Vertical => Key::ArrowDown
+        }
+        let shrink_key = match direction {
+          Horizontal => Key::ArrowLeft
+          Vertical => Key::ArrowUp
+        }
+        if ctx.input().key_pressed(grow_key) {
+          ctx.input().consume_key(grow_key)
+          cur_ratio = if cur_ratio + kb_step > 0.95 {
+            0.95
+          } else {
+            cur_ratio + kb_step
+          }
+          ratio_changed = true
+        }
+        if ctx.input().key_pressed(shrink_key) {
+          ctx.input().consume_key(shrink_key)
+          cur_ratio = if cur_ratio - kb_step < 0.05 {
+            0.05
+          } else {
+            cur_ratio - kb_step
+          }
+          ratio_changed = true
+        }
+      }
+
       // Render splitter handle bar
       let painter = ctx.painter()
       let handle_col = if is_active {
@@ -570,6 +626,15 @@ fn render_dock_node(
         @color.Color::border_muted()
       }
       painter.add_rect(handle_rect, handle_col, 0.0)
+
+      if handle_focused {
+        painter.add_rect_stroke(
+          handle_rect.expand(1.0),
+          @color.Color::border_focus(),
+          1.0,
+          0.0,
+        )
+      }
 
       // Recursively render child panes
       let (new_first, f_switched, f_closed, f_rc) = render_dock_node(
