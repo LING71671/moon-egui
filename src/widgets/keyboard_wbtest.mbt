@@ -203,3 +203,83 @@ test "window: keyboard arrows move the focused window" {
   assert_eq(moved.x, 58.0)
   assert_eq(moved.y, 50.0)
 }
+
+///|
+test "collapsing_header: builder default_open and Space toggling" {
+  let ctx = @core.UIContext::new()
+  let mut content_ran = 0
+  let render = fn() {
+    CollapsingHeader::new("fluent_coll", "Section")
+    .default_open(true)
+    .show(ctx, fn(panel) {
+      content_ran = content_ran + 1
+      let _ = panel.label("inner")
+    })
+  }
+
+  // default_open(true) runs the content on the very first frame
+  ctx.begin_frame(@core.RawInput::new())
+  let _ = render()
+  let _ = ctx.end_frame()
+  assert_eq(content_ran, 1)
+
+  // Tab focuses the header; Space toggles it closed
+  ctx.begin_frame(kb_key_input(@core.Key::Tab))
+  let _ = render()
+  let _ = ctx.end_frame()
+
+  ctx.begin_frame(kb_key_input(@core.Key::Space))
+  let _ = render()
+  let _ = ctx.end_frame()
+
+  // Re-open with Space; the content runs again
+  ctx.begin_frame(kb_key_input(@core.Key::Space))
+  let _ = render()
+  let _ = ctx.end_frame()
+  assert_true(content_ran >= 3)
+}
+
+///|
+test "combo_box: builder label, Escape close and ArrowUp clamp" {
+  let ctx = @core.UIContext::new()
+  let options = ["One", "Two", "Three"]
+  let mut sel = 0
+  let render = fn() {
+    let (s, _) = ComboBox::new("fluent_combo_b", sel, options)
+      .label("Choice")
+      .show(ctx)
+    sel = s
+    s
+  }
+
+  ctx.begin_frame(kb_key_input(@core.Key::Tab))
+  let _ = render()
+  let _ = ctx.end_frame()
+
+  // Enter opens, ArrowDown walks to index 1
+  ctx.begin_frame(kb_key_input(@core.Key::Enter))
+  let _ = render()
+  let _ = ctx.end_frame()
+  ctx.begin_frame(kb_key_input(@core.Key::ArrowDown))
+  assert_eq(render(), 1)
+
+  // ArrowUp walks back to index 0 and clamps there
+  ctx.begin_frame(kb_key_input(@core.Key::ArrowUp))
+  assert_eq(render(), 0)
+  ctx.begin_frame(kb_key_input(@core.Key::ArrowUp))
+  assert_eq(render(), 0)
+
+  // Escape closes the list without changing the selection
+  ctx.begin_frame(kb_key_input(@core.Key::Escape))
+  assert_eq(render(), 0)
+}
+
+///|
+test "combo_box: an empty label renders the box alone" {
+  let ctx = @core.UIContext::new()
+  ctx.begin_frame(@core.RawInput::new())
+  let (sel, resp) = ComboBox::new("fluent_combo_empty", 1, ["X", "Y"]).show(ctx)
+  let _ = ctx.end_frame()
+  assert_eq(sel, 1)
+  assert_true(resp.rect.w > 0.0)
+}

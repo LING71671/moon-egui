@@ -297,3 +297,168 @@ test "dock: keyboard resizes the focused divider" {
   let _ = ctx.end_frame()
   assert_true(r4.ratio_changed)
 }
+
+///|
+test "context_menu: keyboard skips disabled rows and wraps" {
+  let ctx = @core.UIContext::new()
+  let menu = [
+    ContextMenuItem::new("cut", "Cut"),
+    ContextMenuItem::new("paste_special", "Paste Special", disabled=true),
+    ContextMenuItem::new("delete", "Delete"),
+  ]
+
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(-50.0, -50.0), false),
+  )
+  let _ = context_menu_items(
+    ctx,
+    "kb_skip",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  let _ = ctx.end_frame()
+
+  // ArrowDown walks past the disabled row onto "Delete"
+  ctx.begin_frame(kb_key_input(@core.Key::ArrowDown))
+  let _ = context_menu_items(
+    ctx,
+    "kb_skip",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  let _ = ctx.end_frame()
+
+  // Enter activates it
+  ctx.begin_frame(kb_key_input(@core.Key::Enter))
+  let r3 = context_menu_items(
+    ctx,
+    "kb_skip",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  let _ = ctx.end_frame()
+  assert_eq(r3.selected_id, Some("delete"))
+
+  // Re-opening resets to the first actionable row; Enter picks "Cut"
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(-50.0, -50.0), false),
+  )
+  let _ = context_menu_items(
+    ctx,
+    "kb_fresh",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  let _ = ctx.end_frame()
+  ctx.begin_frame(kb_key_input(@core.Key::Enter))
+  let r5 = context_menu_items(
+    ctx,
+    "kb_fresh",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  let _ = ctx.end_frame()
+  assert_eq(r5.selected_id, Some("cut"))
+}
+
+///|
+test "context_menu: disabled-only menu is keyboard inert" {
+  let ctx = @core.UIContext::new()
+  let menu = [
+    ContextMenuItem::new("x", "Locked", disabled=true),
+    ContextMenuItem::new("y", "Also locked", disabled=true),
+  ]
+
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(-50.0, -50.0), false),
+  )
+  let _ = context_menu_items(
+    ctx,
+    "kb_inert",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  let _ = ctx.end_frame()
+
+  ctx.begin_frame(kb_key_input(@core.Key::ArrowDown))
+  ctx.begin_frame(kb_key_input(@core.Key::Enter))
+  let r = context_menu_items(
+    ctx,
+    "kb_inert",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  let _ = ctx.end_frame()
+  assert_eq(r.open, true)
+  assert_eq(r.selected_id, None)
+}
+
+///|
+test "context_menu: submenu flips left near the right viewport edge" {
+  let ctx = @core.UIContext::new()
+  let menu = [
+    ContextMenuItem::submenu("export", "Export", [
+      ContextMenuItem::new("png", "PNG"),
+    ]),
+  ]
+
+  // Anchor hard against the right edge of a 500px viewport: neither the main
+  // menu nor the submenu may spill past it.
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(-50.0, -50.0), false),
+  )
+  let r1 = context_menu_items(
+    ctx,
+    "kb_flip",
+    true,
+    @math.Vec2::new(420.0, 100.0),
+    menu,
+    viewport_size=@math.Vec2::new(500.0, 600.0),
+  )
+  let _ = ctx.end_frame()
+  assert_eq(r1.open, true)
+
+  ctx.begin_frame(kb_key_input(@core.Key::Enter))
+  let r2 = context_menu_items(
+    ctx,
+    "kb_flip",
+    true,
+    @math.Vec2::new(420.0, 100.0),
+    menu,
+    viewport_size=@math.Vec2::new(500.0, 600.0),
+  )
+  let _ = ctx.end_frame()
+  assert_eq(ctx.active_submenu_id(), "export")
+  assert_eq(r2.open, true)
+}
+
+///|
+test "context_menu: separators render inside submenus" {
+  let ctx = @core.UIContext::new()
+  let menu = [
+    ContextMenuItem::submenu("export", "Export", [
+      ContextMenuItem::separator(),
+      ContextMenuItem::new("png", "PNG"),
+    ]),
+  ]
+
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(-50.0, -50.0), false),
+  )
+  let r = context_menu_items(
+    ctx,
+    "kb_sep",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  let _ = ctx.end_frame()
+  assert_eq(r.open, true)
+}

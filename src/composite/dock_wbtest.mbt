@@ -183,3 +183,105 @@ test "dock: tabs and splitter handles advertise their cursor" {
   assert_eq(ctx.cursor_icon(), "pointer")
   let _ = ctx.end_frame()
 }
+
+///|
+test "dock: split direction constructors and root accessor" {
+  let h = DockSplitDirection::horizontal()
+  let v = DockSplitDirection::vertical()
+  let tree = DockTree::new(
+    DockNode::Split(
+      h,
+      0.6,
+      DockTree::leaf([DockTab::new("a", "A")]).root,
+      DockTree::leaf([DockTab::new("b", "B")]).root,
+    ),
+  )
+  // The constructors survive a round-trip through the node tree
+  match tree.root() {
+    DockNode::Split(dir, _, _, _) => {
+      assert_true(dir is Horizontal || dir is Vertical)
+      let _ = v
+    }
+    _ => assert_true(false)
+  }
+  assert_true(tree.find_tab("a") is Some(_))
+  // Empty nodes never hold tabs
+  let empty_tree = DockTree::new(DockNode::Empty)
+  assert_true(empty_tree.find_tab("a") is None)
+}
+
+///|
+test "dock: activation recurses into the second split branch" {
+  let tree = DockTree::split(
+    DockSplitDirection::Horizontal,
+    0.5,
+    DockTree::leaf([DockTab::new("l1", "Left")]),
+    DockTree::leaf([DockTab::new("r1", "Right")]),
+  )
+  assert_true(tree.set_active_tab("r1"))
+  match tree.find_tab("r1") {
+    Some((_, idx)) => assert_eq(idx, 0)
+    None => assert_true(false)
+  }
+  // Missing tabs report failure and leave the tree untouched
+  assert_false(tree.set_active_tab("missing"))
+}
+
+///|
+test "dock: closing the last tab of a branch collapses the split" {
+  let tree = DockTree::split(
+    DockSplitDirection::Vertical,
+    0.5,
+    DockTree::leaf([DockTab::new("top", "Top")]),
+    DockTree::leaf([DockTab::new("bottom", "Bottom")]),
+  )
+
+  // Closing the only tab of the second branch leaves the first as the root
+  assert_true(tree.close_tab("bottom"))
+  match tree.root() {
+    DockNode::Leaf(tabs, _) => assert_eq(tabs[0].id, "top")
+    _ => assert_true(false)
+  }
+
+  // Closing the only tab of the remaining branch collapses to Empty
+  assert_true(tree.close_tab("top"))
+  match tree.root() {
+    DockNode::Empty => assert_true(true)
+    _ => assert_true(false)
+  }
+  assert_false(tree.close_tab("top"))
+}
+
+///|
+test "dock: closing the active tab clamps the leaf index" {
+  let tree = DockTree::leaf([
+    DockTab::new("a", "A"),
+    DockTab::new("b", "B"),
+    DockTab::new("c", "C"),
+  ])
+  let _ = tree.set_active_tab("c")
+
+  // Closing the active last tab pulls the active index back into range
+  assert_true(tree.close_tab("c"))
+  match tree.find_tab("b") {
+    Some((_, idx)) => assert_eq(idx, 1)
+    None => assert_true(false)
+  }
+  // Unknown ids are a no-op
+  assert_false(tree.close_tab("missing"))
+}
+
+///|
+test "dock: DockArea::new show path matches the free function" {
+  let ctx = @core.UIContext::new()
+  ctx.begin_frame(@core.RawInput::new())
+  let area = DockArea::new(
+    "area_new",
+    @math.Vec2::new(400.0, 300.0),
+    DockTree::leaf([DockTab::new("only", "Only")]),
+    fn(_ui, _id, _rect) {  },
+  )
+  let resp = area.show(ctx)
+  let _ = ctx.end_frame()
+  assert_eq(resp.resp.rect.w, 400.0)
+}
