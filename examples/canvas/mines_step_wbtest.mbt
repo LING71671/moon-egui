@@ -73,6 +73,66 @@ test "mines_step: mines only count hits - the world cannot end" {
 }
 
 ///|
+fn mines_text_count(frame : MinesFrame) -> Int {
+  let mut n = 0
+  for i = 0; i < frame.draw_list.len(); i = i + 1 {
+    match frame.draw_list.get_command(i) {
+      Some(@draw.Text(_, _, _, _, _, _)) => n = n + 1
+      _ => ()
+    }
+  }
+  n
+}
+
+///|
+fn mines_color_count(frame : MinesFrame, want : @color.Color) -> Int {
+  let mut n = 0
+  for i = 0; i < frame.draw_list.len(); i = i + 1 {
+    match frame.draw_list.get_command(i) {
+      Some(@draw.Rect(_, color, _)) => if color == want { n = n + 1 }
+      _ => ()
+    }
+  }
+  n
+}
+
+///|
+test "mines_step: numbers and flag glyphs survive the far end of the zoom" {
+  // The zoom clamps at MIN_CELL, which is also the legibility floor. Before
+  // that, zooming out walked past a level-of-detail cutoff and the board
+  // turned into a blank white mass - no numbers, no flags, no hover - which
+  // is what the user reported as "it's all blank".
+  let vw = 1200.0
+  let vh = 800.0
+  let _ = mines_step(0.0, 0.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  // action 0 rolls a fresh field so the assertions do not depend on test order
+  let _ = mines_step(600.0, 400.0, false, false, 0.0, 0.0, 0.0, 0, vw, vh)
+  for z = 0; z < 40; z = z + 1 {
+    let _ = mines_step(600.0, 400.0, false, false, 0.0, 0.0, -1.0, -1, vw, vh)
+  }
+
+  // dig, drain, then look at the frame
+  let _ = mines_step(600.0, 400.0, true, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  let _ = mines_step(600.0, 400.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  let mut frame = mines_step(
+    600.0, 400.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh,
+  )
+  let mut spins = 0
+  while frame.pending && spins < 4000 {
+    frame = mines_step(600.0, 400.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh)
+    spins = spins + 1
+  }
+  assert_true(frame.revealed > 1)
+  assert_true(mines_text_count(frame) > 0)
+
+  // a right-press must still paint the pennant at the minimum zoom
+  let _ = mines_step(700.0, 300.0, false, true, 0.0, 0.0, 0.0, -1, vw, vh)
+  let flagged = mines_step(700.0, 300.0, false, true, 0.0, 0.0, 0.0, -1, vw, vh)
+  assert_true(flagged.flagged >= 1)
+  assert_true(mines_color_count(flagged, @color.Color::accent_primary()) >= 4)
+}
+
+///|
 test "mines_step: right button flags and the action switch re-rolls" {
   let _ = mines_step(0.0, 0.0, false, false, 0.0, 0.0, 0.0, -1, 1200.0, 800.0)
 

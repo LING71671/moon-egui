@@ -39,6 +39,28 @@ struct MinesState {
 }
 
 ///|
+/// Zoom bounds. MIN_CELL is also the legibility floor: a digit stops fitting
+/// its tile below it, so gating the zoom at the same value means the board
+/// can never reach an unreadable state (a blank white mass with no numbers).
+const MIN_CELL : Double = 12.0
+
+///|
+const MAX_CELL : Double = 56.0
+
+///|
+/// Number font, scaled with the tile so a digit always fits its cell.
+fn mines_number_font(cell : Double) -> Double {
+  let f = cell * 0.58
+  if f < 9.0 {
+    9.0
+  } else if f > 15.0 {
+    15.0
+  } else {
+    f
+  }
+}
+
+///|
 let mines_st : MinesState = {
   world: MineWorld::new(20260913UL),
   cam_x: -14.0,
@@ -75,6 +97,51 @@ fn mines_number_color(n : Int) -> @color.Color {
 ///|
 fn mines_next_seed(seed : UInt64) -> UInt64 {
   seed * 6364136223846793005UL + 1442695040888963407UL
+}
+
+///|
+/// A flag tile: a mast on the left third of the cell with a pennant hanging
+/// off its top. The previous glyph put the mast on the right with the
+/// triangle to its left, which at these sizes read as the letter N rather
+/// than a flag. The pennant is a filled triangle drawn as a few scanline
+/// rects (the painter has no polygon primitive); every coordinate is a
+/// fraction of the cell so the glyph holds up at every zoom level.
+fn mines_draw_flag(
+  painter : @core.Painter,
+  sx : Double,
+  sy : Double,
+  cell : Double,
+) -> Unit {
+  let raw_mast = cell * 0.075
+  let mast_w = if raw_mast < 1.2 {
+    1.2
+  } else if raw_mast > 3.0 {
+    3.0
+  } else {
+    raw_mast
+  }
+  let left = sx + cell * 0.25
+  // mast: a hair-thin rounded bar, dark so it reads against the ground
+  painter.add_rect(
+    @math.Rect::new(left, sy + cell * 0.14, mast_w, cell * 0.72),
+    @color.Color::text_secondary(),
+    mast_w * 0.5,
+  )
+  let steps = 4
+  let bar = cell * 0.42 / steps.to_double()
+  for k = 0; k < steps; k = k + 1 {
+    let t = k.to_double() / steps.to_double()
+    painter.add_rect(
+      @math.Rect::new(
+        left + mast_w,
+        sy + cell * (0.15 + 0.42 * t),
+        cell * (0.46 - 0.32 * t),
+        bar,
+      ),
+      @color.Color::accent_primary(),
+      0.0,
+    )
+  }
 }
 
 ///|
@@ -142,10 +209,10 @@ pub fn mines_step(
   if zoom_delta != 0.0 {
     let old_cell = st.cell
     let factor = if zoom_delta > 0.0 { 1.2 } else { 1.0 / 1.2 }
-    let new_cell = if old_cell * factor > 56.0 {
-      56.0
-    } else if old_cell * factor < 8.0 {
-      8.0
+    let new_cell = if old_cell * factor > MAX_CELL {
+      MAX_CELL
+    } else if old_cell * factor < MIN_CELL {
+      MIN_CELL
     } else {
       old_cell * factor
     }
@@ -193,18 +260,15 @@ pub fn mines_step(
     0.0,
   )
   let cell = st.cell
-  let lod_min = cell >= 12.0
   let col0 = (st.cam_x / cell).floor().to_int()
   let row0 = (st.cam_y / cell).floor().to_int()
   let cols = (vp_w / cell).to_int() + 2
   let rows = (vp_h / cell).to_int() + 2
-  let num_font = if cell >= 18.0 {
-    mines_ctx.style.font_normal
-  } else if cell >= 12.0 {
-    mines_ctx.style.font_small
-  } else {
-    mines_ctx.style.font_small
-  }
+  // Everything below the legibility floor is unreachable (the zoom clamps at
+  // MIN_CELL), so numbers, flags and the hover tile are drawn on every frame
+  // instead of being switched off by a level-of-detail test. A zoomed-out
+  // board stays readable instead of turning into a blank white mass.
+  let num_font = mines_number_font(cell)
   for r = row0; r < row0 + rows; r = r + 1 {
     for c = col0; c < col0 + cols; c = c + 1 {
       let sx = c.to_double() * cell - st.cam_x
@@ -228,20 +292,21 @@ pub fn mines_step(
           )
         } else {
           let adj = world.adjacent(c, r)
-          if adj > 0 && lod_min {
+          if adj > 0 {
+            let label = adj.to_string()
             let ty = sy + (cell - num_font) * 0.5
             let tx = sx +
-              (cell - mines_ctx.measure_text(adj.to_string(), num_font).x) * 0.5
+              (cell - mines_ctx.measure_text(label, num_font).x) * 0.5
             painter.add_text(
               @math.Vec2::new(tx, ty),
-              adj.to_string(),
+              label,
               num_font,
               mines_number_color(adj),
               font_family="monospace",
             )
           }
         }
-      } else if lod_min {
+      } else {
         // unopened tile: same ground colour as the backdrop, lighter on hover
         let is_hover = ((mouse_x + st.cam_x) / cell).floor().to_int() == c &&
           ((mouse_y + st.cam_y) / cell).floor().to_int() == r
@@ -249,25 +314,7 @@ pub fn mines_step(
           painter.add_rect(tile, @color.Color::bg_surface(), 0.0)
         }
         if world.is_flagged(c, r) {
-          let pole_x = sx + cell * 0.62
-          painter.add_line(
-            @math.Vec2::new(pole_x, sy + cell * 0.18),
-            @math.Vec2::new(pole_x, sy + cell * 0.78),
-            @color.Color::text_secondary(),
-            1.2,
-          )
-          painter.add_line(
-            @math.Vec2::new(sx + cell * 0.28, sy + cell * 0.2),
-            @math.Vec2::new(pole_x, sy + cell * 0.4),
-            @color.Color::accent_primary(),
-            2.4,
-          )
-          painter.add_line(
-            @math.Vec2::new(sx + cell * 0.28, sy + cell * 0.2),
-            @math.Vec2::new(sx + cell * 0.28, sy + cell * 0.55),
-            @color.Color::accent_primary(),
-            2.4,
-          )
+          mines_draw_flag(painter, sx, sy, cell)
         }
       }
     }

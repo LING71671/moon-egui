@@ -65,19 +65,37 @@
   let minesLastX = undefined;
   let minesLastY = undefined;
 
+  // A click whose press and release both land between two animation frames
+  // would never be seen by the engine: it samples the button once per frame,
+  // so a sub-frame click produced no press edge at all and the dig was
+  // silently dropped. Every press now also raises a one-frame latch, which
+  // keeps the button "down" for exactly the frame that consumes it and turns
+  // such a click into an ordinary press/release pair.
+  let leftPulse = false;
+  let rightPulse = false;
+
   canvas.addEventListener('mousedown', (e) => {
     minesLastX = e.clientX;
     minesLastY = e.clientY;
     moved = false;
     downX = e.clientX;
     downY = e.clientY;
-    if (e.button === 0) isMouseDown = true;
-    if (e.button === 2) secondaryDown = true;
+    if (e.button === 0) { isMouseDown = true; leftPulse = true; }
+    if (e.button === 2) { secondaryDown = true; rightPulse = true; }
   });
 
   window.addEventListener('mouseup', (e) => {
     if (e.button === 0) isMouseDown = false;
     if (e.button === 2) secondaryDown = false;
+  });
+
+  // A mouseup delivered outside the window never arrives, which would leave
+  // the board glued to the pointer; drop the drag state on focus loss.
+  window.addEventListener('blur', () => {
+    isMouseDown = false;
+    secondaryDown = false;
+    panDX = 0;
+    panDY = 0;
   });
 
   canvas.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -211,7 +229,7 @@
   function loop() {
     try {
     const res = window.moon_mines_step(
-      mouseX, mouseY, isMouseDown, secondaryDown,
+      mouseX, mouseY, isMouseDown || leftPulse, secondaryDown || rightPulse,
       panDX, panDY, zoomDelta,
       // keep this list in lockstep with mines_step's signature: a stale
       // extra arg shifts every later parameter one slot left (a leftover
@@ -219,6 +237,8 @@
       pendingAction,
       width, height
     );
+    leftPulse = false;
+    rightPulse = false;
     panDX = 0;
     panDY = 0;
     zoomDelta = 0;
