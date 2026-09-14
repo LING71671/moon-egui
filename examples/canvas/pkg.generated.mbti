@@ -10,6 +10,12 @@ import {
 }
 
 // Values
+pub const DOMAIN_SIZE : Int = 25600
+
+pub const MINES_THRESHOLD : UInt64 = 655384180
+
+pub const TARGET_MINES : Int = 100_000_000
+
 pub fn gallery_step(String, Double, Double, Bool, Double, Double, Double, String, Array[String], Array[String], Int, mouse_secondary_down? : Bool) -> @draw.DrawList
 
 pub fn get_cam_x() -> Double
@@ -37,6 +43,18 @@ pub fn is_magnetic_repel() -> Bool
 pub fn is_show_studio() -> Bool
 
 pub fn is_wave_pulse() -> Bool
+
+pub fn mines_calibrate_threshold(Int) -> UInt64
+
+pub fn mines_count_for_threshold(UInt64) -> Int
+
+pub fn mines_density_percent() -> Double
+
+pub fn mines_domain_tiles() -> Int
+
+pub fn mines_is_mine_raw(Int, Int) -> Bool
+
+pub fn mines_step(Double, Double, Bool, Bool, Double, Double, Double, Int, Double, Double) -> MinesFrame
 
 pub fn step(Double, Double, Bool, Double, Double, Double, Int, Double, Double, String, Array[String], Array[String], Int) -> FrameOutput
 
@@ -143,6 +161,31 @@ pub struct GalleryState {
   mut rich_text_last_url : String
   mut dock_tree : @composite.DockTree
 }
+
+type MineChunk
+
+type MineWorld
+
+pub struct MinesFrame {
+  draw_list : @draw.DrawList
+  revealed : Int
+  flagged : Int
+  hits : Int
+  pending : Bool
+  flag_mode : Bool
+  pan_mode : Bool
+  cursor : String
+  tile_x : Int
+  tile_y : Int
+  cell : Double
+  domain_size : Int
+  view_x : Int
+  view_y : Int
+  view_cols : Int
+  view_rows : Int
+}
+
+type MinesState
 
 // Type aliases
 
