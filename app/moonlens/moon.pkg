@@ -1,0 +1,17 @@
+import {
+  "LING71671/moon-egui/src/color",
+  "LING71671/moon-egui/src/core",
+  "LING71671/moon-egui/src/draw",
+  "LING71671/moon-egui/src/math",
+}
+
+supported_targets = "native"
+
+pkgtype(kind: "executable")
+
+options(
+  "native-stub": [ "native_runner.c" ],
+  link: {
+    "native": { "cc-link-flags": "gdi32.lib user32.lib msimg32.lib dwmapi.lib" },
+  },
+)
