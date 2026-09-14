@@ -305,6 +305,28 @@ fn MineWorld::flagged_count(self : MineWorld) -> Int {
 }
 
 ///|
+/// Total tiles in the shared domain: 25,600 x 25,600 = 655,360,000.
+///
+/// The number is the point of the demo and also its least believable claim,
+/// because it cannot be seen. The viewport holds a few thousand tiles at any
+/// zoom the board stays legible at, so "100 million mines" and "1 million
+/// mines" render identically. Anything that makes the scale visible - the
+/// overview map and the coverage figure - reads from here.
+pub fn mines_domain_tiles() -> Int {
+  DOMAIN_SIZE * DOMAIN_SIZE
+}
+
+///|
+/// The density the board is built with, as a percentage: a tile is a mine
+/// exactly when the top 32 bits of its hash fall below the calibrated
+/// threshold, so the threshold IS the per-tile mine probability. Multiplying
+/// it by the domain gives 100,003,690, against an exhaustively counted
+/// 100,000,000 - a 0.40 sigma draw.
+pub fn mines_density_percent() -> Double {
+  MINES_THRESHOLD.to_double() / 4294967296.0 * 100.0
+}
+
+///|
 
 ///|
 fn MineWorld::is_cascade_pending(self : MineWorld) -> Bool {

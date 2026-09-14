@@ -222,6 +222,16 @@
       'mines.cursor': '光标',
       'mines.zoom': '缩放',
       'mines.status': '状态',
+      'mines.viewport': '视口',
+      'mines.domain': '全场',
+      'mines.specTip':
+        '25,600 × 25,600 = 655,360,000 格；每格成为雷的概率 = 阈值 655384180 / 2³² = 15.2594%；' +
+        '对全量计数得到恰好 100,000,000 颗。棋盘太大，肉眼数不完，屏幕上也看不出——' +
+        '右下角的方块是整个雷区，其中那点青色就是你当前的视口。',
+      'mines.scaleTip':
+        '整个雷区 25,600 × 25,600 格；青色方块是当前视口。这个方块只是示意图——' +
+        '视口真实只占全场的 0.0003%，按真实比例画出来是 0.1 像素，看不见，所以标记被放大了。' +
+        '准确数字看右边的 视口 / 全场 两个格数。',
       'mines.legend': '左键翻开 · 右键插旗 · 拖拽平移 · 滚轮缩放'
     },
 
@@ -426,6 +436,19 @@
       'mines.cursor': 'Tile',
       'mines.zoom': 'Zoom',
       'mines.status': 'Status',
+      'mines.viewport': 'View',
+      'mines.domain': 'Field',
+      'mines.specTip':
+        '25,600 x 25,600 = 655,360,000 tiles; each tile is a mine with probability ' +
+        'threshold 655384180 / 2^32 = 15.2594%; counting the whole domain gives exactly ' +
+        '100,000,000. The board is far too big to count by eye - and it does not look big ' +
+        'either: the square at the bottom right is the whole field, and the speck in it is ' +
+        'everything you can see.',
+      'mines.scaleTip':
+        'The whole field is 25,600 x 25,600 tiles; the cyan square is your viewport. ' +
+        'The square is a schematic - the viewport really covers 0.0003% of the domain, ' +
+        'which at this size is 0.1px, so the marker is drawn enlarged. The two tile ' +
+        'counts beside it are the exact figures.',
       'mines.legend': 'Left click digs · Right click flags · Drag pans · Wheel zooms'
     }
   };

@@ -248,6 +248,60 @@
   const elZoom = document.getElementById('telemetry-zoom');
   const elResetZoom = document.getElementById('btn-zoom-reset');
   const elState = document.getElementById('telemetry-state');
+  const elView = document.getElementById('telemetry-view');
+  const elDomain = document.getElementById('telemetry-domain');
+  const elShare = document.getElementById('telemetry-share');
+
+  /* ---- overview map -------------------------------------------------
+     The domain is 25,600 x 25,600 = 655,360,000 tiles. At the default zoom
+     the viewport holds about 2,200 of them - 0.0003% - so the picture cannot
+     possibly convey the size of the board, and "100 million mines" looks
+     exactly like "a thousand mines". The map is 40px wide, which puts one
+     tile at 0.0016px: the entire screen collapses to a speck, and that speck
+     is the point. */
+
+  const MAP = 40;
+
+  const mapCanvas = document.getElementById('mines-minimap');
+  const mapCtx = mapCanvas ? mapCanvas.getContext('2d') : null;
+  const MAP_FIELD = '#94a3b8';   // mines_ground: the same earth the board uses
+  const MAP_VIEW = '#0284c7';
+  const MAP_EDGE = '#cbd5e1';
+  // The marker is a schematic, not to scale: the window really covers 0.26% of
+  // the domain, which is 0.1px here. It is floored well above that so it can
+  // be found at all, and the coverage text is what states the true figure.
+  const MAP_MARK_MIN = 3;
+
+  if (mapCanvas) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    mapCanvas.width = Math.round(MAP * dpr);
+    mapCanvas.height = Math.round(MAP * dpr);
+    mapCanvas.style.width = MAP + 'px';
+    mapCanvas.style.height = MAP + 'px';
+    mapCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function drawMinimap(res) {
+    if (!mapCtx) return;
+    const span = res.domain_size;
+    const s = MAP / span;
+    // The whole domain, in the same earth the board is painted with.
+    mapCtx.fillStyle = MAP_FIELD;
+    mapCtx.fillRect(0, 0, MAP, MAP);
+
+    // The window onto it, floored at MAP_MARK_MIN and clamped into the map
+    // because the camera can sit outside the domain, where nothing is mined.
+    const w = Math.min(Math.max(res.view_cols * s, MAP_MARK_MIN), MAP);
+    const h = Math.min(Math.max(res.view_rows * s, MAP_MARK_MIN), MAP);
+    const x = Math.min(Math.max(res.view_x * s, 0), MAP - w);
+    const y = Math.min(Math.max(res.view_y * s, 0), MAP - h);
+    mapCtx.fillStyle = MAP_VIEW;
+    mapCtx.fillRect(x, y, w, h);
+
+    mapCtx.strokeStyle = MAP_EDGE;
+    mapCtx.lineWidth = 1;
+    mapCtx.strokeRect(0.5, 0.5, MAP - 1, MAP - 1);
+  }
 
   const DEFAULT_CELL = 22;   // mirrors DEFAULT_CELL in mines_main.mbt
 
@@ -303,6 +357,19 @@
         elResetZoom.textContent = pct + '%';
       }
       if (elState) elState.textContent = res.pending ? T('连锁展开中', 'Cascading') : T('就绪', 'Ready');
+      // The scale readout. Two raw tile counts side by side make the point
+      // that no amount of zooming will: what is on screen is a rounding error
+      // of the board, and the ratio (1/297,000) is the honest way to say it.
+      const onScreen = res.view_cols * res.view_rows;
+      const domain = res.domain_size * res.domain_size;
+      if (elView) {
+        elView.textContent = res.view_cols + ' × ' + res.view_rows + ' = ' + onScreen.toLocaleString();
+      }
+      if (elDomain) elDomain.textContent = domain.toLocaleString();
+      if (elShare) {
+        elShare.textContent = onScreen > 0 ? '≈ 1/' + Math.round(domain / onScreen).toLocaleString() : '';
+      }
+      drawMinimap(res);
       if (elCoords) {
         elCoords.textContent = mouseX <= OFF / 2
           ? '\u2014'

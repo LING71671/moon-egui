@@ -338,3 +338,30 @@ test "mines: the shipped threshold is the calibrated one" {
   assert_eq(mines_window_count(0, 0, 1024), 160_273)
   assert_eq(mines_window_count(24_576, 24_576, 1024), 159_491)
 }
+
+///|
+test "mines: the density is the threshold over 2^32, and the scale is visible" {
+  // A tile is a mine exactly when the top 32 bits of its hash fall below the
+  // threshold, so the threshold IS the per-tile mine probability.
+  let d = mines_density_percent()
+  assert_true((d - 15.259352).abs() < 0.000_001)
+
+  // 655,360,000 tiles at that density predicts 100,003,690 mines. The
+  // exhaustive count is exactly 100,000,000, which sits 0.40 sigma below the
+  // prediction - an ordinary draw, not a discrepancy. The round number is
+  // exact because the threshold was calibrated to make it so, and the two
+  // statements have to be quoted together or the arithmetic looks wrong.
+  let tiles = mines_domain_tiles().to_double()
+  assert_eq(mines_domain_tiles(), 655_360_000)
+  let predicted = tiles * d / 100.0
+  assert_true((predicted - 100_003_689.58).abs() < 1.0)
+  let sigma = (tiles * (d / 100.0) * (1.0 - d / 100.0)).sqrt()
+  assert_true(((100_000_000.0 - predicted) / sigma).abs() < 1.0)
+
+  // The default viewport covers a rounding error's worth of the board. This is
+  // the number the page has to surface: at 22px a tile a 1440x800 window holds
+  // ~2,400 tiles, which is 0.0004% of the domain. Nothing about the picture
+  // itself can convey the scale of the field.
+  let viewport = 1440.0 * 800.0 / (22.0 * 22.0)
+  assert_true(viewport / tiles < 0.000_01)
+}

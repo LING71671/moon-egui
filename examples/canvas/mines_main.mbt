@@ -27,6 +27,16 @@ pub struct MinesFrame {
   tile_y : Int
   /// Current tile size in pixels - drives the host's zoom readout.
   cell : Double
+  /// The window of the domain currently on screen. The board is 655 million
+  /// tiles and the viewport holds a few thousand of them at any zoom the
+  /// board stays readable at, so the overview map and the coverage figure are
+  /// the only way a player can see how little of the field is in front of
+  /// them - without them, "100 million" and "1 million" look identical.
+  domain_size : Int
+  view_x : Int
+  view_y : Int
+  view_cols : Int
+  view_rows : Int
 }
 
 ///|
@@ -339,8 +349,14 @@ pub fn mines_step(
   let cell = st.cell
   let col0 = (st.cam_x / cell).floor().to_int()
   let row0 = (st.cam_y / cell).floor().to_int()
+  // The draw loop keeps two spare rows and columns so a tile straddling the
+  // edge is never dropped. The reported window is the honest one: those two
+  // spares are drawn but not visible, and padding the scale readout with them
+  // would overstate the coverage by ~9% at the default zoom.
   let cols = (vp_w / cell).to_int() + 2
   let rows = (vp_h / cell).to_int() + 2
+  let view_cols = (vp_w / cell).ceil().to_int()
+  let view_rows = (vp_h / cell).ceil().to_int()
   // Everything below the legibility floor is unreachable (the zoom clamps at
   // MIN_CELL), so numbers, flags and the hover tile are drawn on every frame
   // instead of being switched off by a level-of-detail test. A zoomed-out
@@ -416,5 +432,10 @@ pub fn mines_step(
     tile_x: tx,
     tile_y: ty,
     cell: st.cell,
+    domain_size: DOMAIN_SIZE,
+    view_x: col0,
+    view_y: row0,
+    view_cols,
+    view_rows,
   }
 }

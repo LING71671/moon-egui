@@ -67,9 +67,45 @@
       position: relative;
       padding: 0 16px;
       background: var(--bg);
+      gap: 16px;
     }
     .ms-dock--top { height: 64px; }
-    .ms-dock--bottom { height: 46px; }
+    .ms-dock--bottom { height: 56px; }
+
+    /* ---- overview map + coverage: the scale of the board ----
+       Nothing in the field itself can convey the size of a 25,600 x 25,600
+       domain: the viewport holds a few thousand tiles at any zoom the board
+       stays legible at, so "100 million mines" and "1 million mines" paint
+       the same picture. The map is the only thing that says where you are,
+       and the coverage text is the only thing that says how much is missing. */
+
+    .ms-scale {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 4px 10px 4px 6px;
+      background: var(--surface);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    #mines-minimap {
+      display: block;
+      width: 40px;
+      height: 40px;
+      border-radius: 3px;
+    }
+
+    .ms-scale-text { display: flex; align-items: center; gap: 5px; }
+    .ms-sep { color: var(--border-strong); }
+    .ms-share { color: var(--brand-violet); font-weight: 700; }
 
     /* ---- studio bar ---- */
 
@@ -239,18 +275,21 @@
 
     .ms-legend {
       position: absolute;
-      right: 16px;
+      left: 16px;
       font-size: 11px;
       color: var(--text-muted);
       opacity: 0.85;
     }
 
-    @media (max-width: 1024px) {
+    @media (max-width: 1180px) {
       .title-spec { display: none; }
       .ms-legend { display: none; }
     }
-    @media (max-width: 820px) {
+    @media (max-width: 900px) {
       .studio-right { display: none; }
+    }
+    @media (max-width: 760px) {
+      .ms-scale-text { display: none; }
     }
     @media (max-width: 640px) {
       .studio-header { gap: 8px; padding: 0 8px; }
@@ -277,7 +316,7 @@
           <img src="assets/logo.png" alt="moon-egui logo" class="studio-logo-img">
           <span data-i18n="mines.name">扫雷</span>
         </div>
-        <span class="title-spec" data-i18n="mines.spec">1 亿颗雷</span>
+        <span class="title-spec" data-i18n="mines.spec" data-i18n-attrs="title:mines.specTip">1 亿颗雷</span>
       </div>
 
       <div class="controls-center">
@@ -333,6 +372,18 @@
       <span data-i18n="mines.status">状态</span>:
       <span class="status-badge status-badge--muted" id="telemetry-state">就绪</span>
     </div>
+    <div class="ms-scale" title="整个雷区 25,600 × 25,600 格，青色方块是当前视口。"
+         data-i18n-attrs="title:mines.scaleTip">
+      <canvas id="mines-minimap" aria-hidden="true"></canvas>
+      <div class="ms-scale-text">
+        <span data-i18n="mines.viewport">视口</span>
+        <span class="status-badge" id="telemetry-view">&mdash;</span>
+        <span class="ms-sep">|</span>
+        <span data-i18n="mines.domain">全场</span>
+        <span class="status-badge" id="telemetry-domain">&mdash;</span>
+        <span class="ms-share" id="telemetry-share"></span>
+      </div>
+    </div>
     <div class="ms-legend" data-i18n="mines.legend">左键翻开 · 右键插旗 · 拖拽平移 · 滚轮缩放</div>
   </div>
 
@@ -367,7 +418,7 @@
       requestAnimationFrame(sync);
     })();
   </script>
-  <script src="canvas.js?v=20260914c"></script>
-  <script src="js/mines_run.js?v=20260914c"></script>
+  <script src="canvas.js?v=20260914"></script>
+  <script src="js/mines_run.js?v=20260914"></script>
 </body>
 </html>

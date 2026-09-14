@@ -70,6 +70,22 @@ test "mines_step: mines only count hits - the world cannot end" {
     px = px + 60.0
   }
   assert_true(clicks >= 8)
+
+  // The frame has to carry the window onto the domain: the board is far too
+  // large for the picture alone to convey its size, so the overview map and
+  // the coverage figure are built from these fields.
+  let frame = mines_step(
+    600.0, 400.0, false, false, 0.0, 0.0, 0.0, -1, 1200.0, 800.0,
+  )
+  assert_eq(frame.domain_size, 25_600)
+  assert_true(frame.view_cols > 0)
+  assert_true(frame.view_rows > 0)
+  // tiles on screen / tiles in the domain has to be a rounding error, or this
+  // page would not need an overview map at all
+  let on_screen = frame.view_cols.to_double() * frame.view_rows.to_double()
+  let total = frame.domain_size.to_double() * frame.domain_size.to_double()
+  assert_true(on_screen > 0.0)
+  assert_true(on_screen / total < 0.000_1)
 }
 
 ///|
