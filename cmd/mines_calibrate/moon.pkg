@@ -1,5 +1,0 @@
-import {
-  "LING71671/moon-egui/examples/canvas",
-}
-
-pkgtype(kind: "executable")
