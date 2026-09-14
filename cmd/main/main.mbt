@@ -16,7 +16,7 @@ fn main {
   )
   let dl = ctx.end_frame()
 
-  println("=== Moon-EGUI v0.2.0 Interactive Frame ===")
+  println("=== Moon-EGUI v0.3.2 Interactive Frame ===")
   println("Label rendered: Control Panel")
   println("Button 'Launch System' hovered: \{btn.hovered()}")
   println("Button 'Deploy Wasm' hovered: \{pbtn.hovered()}")

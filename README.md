@@ -56,7 +56,7 @@ When building interactive user interfaces within WebAssembly and HTML5 Canvas en
 moon add LING71671/moon-egui
 
 # Or pin to an exact version
-moon add LING71671/moon-egui@0.3.1
+moon add LING71671/moon-egui@0.3.2
 ```
 
 Import the layers you need in your `moon.pkg`: `src/core` is the bare immediate-mode runtime, `src/widgets` adds the standard controls, and `src/composite` the advanced components.
@@ -84,6 +84,25 @@ Experience the interactive capabilities and rendering performance of `moon-egui`
   Immediate-mode widgets showcase, application menu bar, floating inspector window, and lightweight canvas playground.
 - **[Canvas & Multi-Scale Matrix Benchmark](https://ling71671.github.io/moon-egui/benchmark.html)**
   128² to 1024² (16,384 to 1,048,576 nodes) multi-scale pixel matrix, CAD dual-axis rulers, viewport pan & zoom navigation, and CAD pixel grid lines.
+
+---
+
+## Standalone Native Desktop App: MoonLens
+
+`moon-egui` compiles directly to native desktop binaries via MoonBit's native backend. **MoonLens** (`app/moonlens`) is a standalone Windows data explorer and distribution visualizer built on top of `moon-egui`:
+
+- **Ultra-lightweight footprint**: 286 KB single executable, ~2.6 MB memory footprint, zero web runtime or Electron dependencies.
+- **Microsecond Ingestion & Virtualization**: Explores 50,000+ tabular rows with zero-copy index sorting, real-time substring filtering, and locked 60 FPS double-buffered GDI rendering.
+- **Interactive Insights**: Automatic column type inference, 24-bucket frequency distribution histogram, and percentiles summary (P25, P50, P75, P95).
+- **Windows System Polish**: Immersive dark mode via DWM API, procedural vector window/taskbar icons, and ClearType Segoe UI typography.
+
+```bash
+# Build standalone release native executable
+moon build --release --target native app/moonlens
+
+# Run MoonLens directly
+.\_build\native\release\build\app\moonlens\moonlens.exe
+```
 
 ---
 

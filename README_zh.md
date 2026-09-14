@@ -56,7 +56,7 @@
 moon add LING71671/moon-egui
 
 # 或指定锁定版本
-moon add LING71671/moon-egui@0.3.1
+moon add LING71671/moon-egui@0.3.2
 ```
 
 安装后在 `moon.pkg` 中按需引入分层包：只做自绘 HUD 时引入 `src/core`（纯即时模式运行时），需要内置控件时再叠加 `src/widgets`（标准控件）与 `src/composite`（高级组件）。
@@ -84,6 +84,25 @@ moon add LING71671/moon-egui@0.3.1
   包含即时模式基础控件展示、菜单栏、浮动窗口与轻量画板交互预览。
 - **[画板与多尺度矩阵测试 (Canvas & Multi-Scale Benchmark)](https://ling71671.github.io/moon-egui/benchmark.html)**
   包含 128² 至 1024²（16,384 ~ 1,048,576 节点）多尺度像素晶格阵列、CAD 双轴标尺、视口平移/缩放漫游、以及像素晶格分界线渲染。
+
+---
+
+## 独立原生桌面应用：MoonLens
+
+`moon-egui` 支持通过 MoonBit 原生后端直接编译为跨平台原生桌面程序。**MoonLens** (`app/moonlens`) 是基于 `moon-egui` 构建的独立 Windows 结构化数据探索与分布分析工具：
+
+- **轻量原生单文件**：286 KB 单一独立可执行程序，~2.6 MB 内存常驻，零 Web 运行时或 Electron 依赖。
+- **微秒级摄取与虚拟化表格**：支持 50,000+ 行结构化数据快速浏览，具备多列就地零拷贝快排、全局实时模糊匹配与 60 FPS 双缓冲无闪烁渲染。
+- **交互式分布洞察**：自动推断字段数据类型，实时计算 24 桶频率分布直方图与分位数统计（P25、P50、P75、P95）。
+- **Windows 系统级打磨**：DWM 沉浸式暗黑标题栏、动态矢量任务栏/标题栏图标，以及 ClearType 高分屏字体渲染。
+
+```bash
+# 编译原生 Release 单文件程序
+moon build --release --target native app/moonlens
+
+# 直接启动 MoonLens
+.\_build\native\release\build\app\moonlens\moonlens.exe
+```
 
 ---
 

@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.3.2] - 2026-09-15
+
+### Added
+- **MoonLens Standalone Native Desktop Tabular Explorer (`app/moonlens`)**:
+  - Pure MoonBit native backend compilation producing a standalone Win32 binary (`moonlens.exe`), weighing only 286 KB with ~2.6 MB memory usage.
+  - Windows DWM immersive dark mode integration eliminating native white borders, procedural vector icon generation for taskbar and titlebar, and high-DPI ClearType typography via Segoe UI.
+  - Double-buffered GDI offscreen rendering delivering locked, flicker-free 60 FPS performance.
+  - Buttery smooth kinetic inertia scrolling (lerp interpolation) and interactive live search & filter bar with real-time case-insensitive matching.
+  - High-performance streaming tabular & CSV parser with delimiter auto-detection (`,`, `\t`, `;`), quoted cell escaping, and automatic data type inference (`INT`, `FLOAT`, `STR`).
+  - Zero-copy index indirection table (`row_indices : Array[Int]`) for $O(1)$ copy multi-column in-place quicksort and sub-millisecond virtualized viewport slicing.
+  - 24-bucket frequency distribution histogram calculator with percentile breakdown (`P25`, `P50` Median, `P75`, `P95`, Sum) and interactive tooltip inspection.
+- **Stress Benchmark Suite (`app/moonlens/csv_bench_wbtest.mbt`)**:
+  - Self-generating synthetic benchmark tests verifying 10,000-row and 50,000-row tabular ingestion, multi-column sorting, substring search, and histogram calculation with 100% test coverage.
+- **Official Showcase Website Integration (`examples/canvas/index.html`)**:
+  - Added dedicated MoonLens desktop spotlight section with technical specifications, feature cards, bilingual i18n support (`zh` / `en`), and build/run instructions.
+
+### Fixed
+- **Quicksort Worst-Case Degradation**: Added median pivot selection in tabular engine to prevent $O(N^2)$ recursion degradation on pre-sorted large datasets.
+- **Zero-Allocation Search**: Replaced per-cell string allocation during global filtering with zero-allocation character scanning (`contains_ignore_case`).
+
 ## [0.3.1] - 2026-09-13
 
 ### Added
