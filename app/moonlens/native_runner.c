@@ -55,9 +55,9 @@ static int g_font_cache_count = 0;
 
 static HFONT get_cached_font(int size) {
     if (size <= 0) size = 13;
-    // Scale font size according to system DPI for crisp high-DPI legibility
-    int scaled_size = MulDiv(size, g_dpi, 72);
-    if (scaled_size <= 0) scaled_size = size;
+    // Size is already in device pixels from MoonBit layout
+    int scaled_size = size;
+    if (scaled_size <= 0) scaled_size = 13;
 
     for (int i = 0; i < g_font_cache_count; i++) {
         if (g_font_cache[i].size == scaled_size) {
@@ -254,13 +254,22 @@ int c_win32_init_window(int width, int height) {
     RECT rc = {0, 0, width, height};
     AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
+    int win_w = rc.right - rc.left;
+    int win_h = rc.bottom - rc.top;
+    int screen_w = GetSystemMetrics(SM_CXSCREEN);
+    int screen_h = GetSystemMetrics(SM_CYSCREEN);
+    int pos_x = (screen_w - win_w) / 2;
+    int pos_y = (screen_h - win_h) / 2;
+    if (pos_x < 0) pos_x = CW_USEDEFAULT;
+    if (pos_y < 0) pos_y = CW_USEDEFAULT;
+
     g_hwnd = CreateWindowExW(
         0,
         CLASS_NAME,
         L"MoonLens \u2014 Native High-Performance Data Explorer",
         WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT,
-        rc.right - rc.left, rc.bottom - rc.top,
+        pos_x, pos_y,
+        win_w, win_h,
         NULL,
         NULL,
         hInstance,

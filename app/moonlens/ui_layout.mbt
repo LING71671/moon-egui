@@ -82,28 +82,29 @@ pub fn render_moonlens_ui(
   )
 
   // Brand Name & Tag
-  dl.add_text(@math.Vec2::new(50.0, 16.0), "MoonLens", 18.0, c_text_strong)
+  dl.add_text(@math.Vec2::new(48.0, 16.0), "MoonLens", 17.0, c_text_strong)
   dl.add_rect(
-    @math.Rect::new(144.0, 19.0, 86.0, 20.0),
+    @math.Rect::new(134.0, 18.0, 52.0, 18.0),
     @color.Color::rgb(24, 30, 42),
     4.0,
   )
   dl.add_rect_stroke(
-    @math.Rect::new(144.0, 19.0, 86.0, 20.0),
+    @math.Rect::new(134.0, 18.0, 52.0, 18.0),
     @color.Color::rgb(40, 50, 70),
     1.0,
     4.0,
   )
-  dl.add_text(@math.Vec2::new(150.0, 22.0), "NATIVE v0.3.2", 10.0, c_text_muted)
+  dl.add_text(@math.Vec2::new(140.0, 20.0), "NATIVE", 9.5, c_text_muted)
 
   // Dataset Pill Selectors
-  let ds_btn_y = 12.0
+  let ds_btn_y = 11.0
   let ds_names = ["Server Logs", "Sensors", "Market", "Stress (10k)"]
-  let pill_w = 90.0
+  let pill_widths = [94.0, 74.0, 68.0, 96.0]
+  let mut pill_x = 196.0
   for i = 0; i < ds_names.length(); i = i + 1 {
-    let bx = 244.0 + i.to_double() * (pill_w + 6.0)
+    let pw = pill_widths[i]
     let is_active = state.active_dataset_id == i
-    let btn_rect = @math.Rect::new(bx, ds_btn_y, pill_w, 30.0)
+    let btn_rect = @math.Rect::new(pill_x, ds_btn_y, pw, 30.0)
     let hovered = ctx.is_hovered(btn_rect)
     if hovered {
       ctx.set_cursor_icon("pointer")
@@ -127,8 +128,9 @@ pub fn render_moonlens_ui(
       dl.add_rect_stroke(btn_rect, c_border, 1.0, 5.0)
     }
 
+    dl.push_clip(btn_rect)
     dl.add_text(
-      @math.Vec2::new(bx + 8.0, ds_btn_y + 8.0),
+      @math.Vec2::new(pill_x + 10.0, ds_btn_y + 8.0),
       ds_names[i],
       11.5,
       if is_active {
@@ -137,15 +139,23 @@ pub fn render_moonlens_ui(
         c_text_body
       },
     )
+    dl.pop_clip()
+
+    pill_x = pill_x + pw + 6.0
   }
 
-  // Interactive Live Search & Filter Bar
-  let search_start_x = 244.0 +
-    ds_names.length().to_double() * (pill_w + 6.0) +
-    14.0
-  let search_w = vp_w - search_start_x - 246.0 - 16.0
-  if search_w > 120.0 {
-    let s_rect = @math.Rect::new(search_start_x, 12.0, search_w, 30.0)
+  // View Mode Tabs: [Table Grid] vs [Insights] (Right Anchored)
+  let tab_names = ["Table Grid", "Insights"]
+  let tab_widths = [86.0, 74.0]
+  let total_tab_w = 86.0 + 74.0 + 6.0
+  let tabs_start_x = vp_w - total_tab_w - 16.0
+
+  // Interactive Live Search & Filter Bar (Flexible Center)
+  let search_start_x = pill_x + 10.0
+  let search_right = tabs_start_x - 12.0
+  let search_w = search_right - search_start_x
+  if search_w > 90.0 {
+    let s_rect = @math.Rect::new(search_start_x, 11.0, search_w, 30.0)
     let hovered = ctx.is_hovered(s_rect)
     if hovered {
       ctx.set_cursor_icon("text")
@@ -193,9 +203,9 @@ pub fn render_moonlens_ui(
       dl.add_rect_stroke(s_rect, c_border, 1.0, 5.0)
     }
 
-    // Search Label
+    // Search Icon
     dl.add_text(
-      @math.Vec2::new(search_start_x + 10.0, 19.0),
+      @math.Vec2::new(search_start_x + 10.0, 18.0),
       "Q",
       11.0,
       if state.is_search_focused {
@@ -205,18 +215,21 @@ pub fn render_moonlens_ui(
       },
     )
 
+    dl.push_clip(
+      @math.Rect::new(search_start_x + 26.0, 11.0, search_w - 48.0, 30.0),
+    )
     if state.search_query.is_empty() {
       dl.add_text(
-        @math.Vec2::new(search_start_x + 28.0, 19.0),
-        "Type to filter dataset...",
+        @math.Vec2::new(search_start_x + 28.0, 18.0),
+        "Filter rows...",
         12.0,
         c_text_dim,
       )
     } else {
       dl.add_text(
-        @math.Vec2::new(search_start_x + 28.0, 19.0),
+        @math.Vec2::new(search_start_x + 28.0, 18.0),
         state.search_query,
-        12.5,
+        12.0,
         c_text_strong,
       )
     }
@@ -229,12 +242,13 @@ pub fn render_moonlens_ui(
         search_start_x + 28.0 + state.search_query.length().to_double() * 7.5
       }
       dl.add_line(
-        @math.Vec2::new(cursor_x, 18.0),
-        @math.Vec2::new(cursor_x, 34.0),
+        @math.Vec2::new(cursor_x, 17.0),
+        @math.Vec2::new(cursor_x, 33.0),
         c_cyan,
         1.5,
       )
     }
+    dl.pop_clip()
 
     // Clear 'x' button when query is present
     if !state.search_query.is_empty() {
@@ -251,22 +265,20 @@ pub fn render_moonlens_ui(
         }
       }
       dl.add_text(
-        @math.Vec2::new(search_start_x + search_w - 20.0, 18.0),
+        @math.Vec2::new(search_start_x + search_w - 18.0, 17.0),
         "x",
-        12.0,
+        11.5,
         c_text_muted,
       )
     }
   }
 
-  // View Mode Tabs: [Table Grid] vs [Distribution Insights]
-  let tab_w = 110.0
-  let tab_x = vp_w - 246.0
-  let tab_names = ["Table Grid", "Distribution"]
+  // Render View Mode Tabs
+  let mut cur_tab_x = tabs_start_x
   for t = 0; t < 2; t = t + 1 {
-    let tx = tab_x + t.to_double() * tab_w
+    let tw = tab_widths[t]
     let is_active = state.active_tab == t
-    let t_rect = @math.Rect::new(tx, 12.0, tab_w - 6.0, 30.0)
+    let t_rect = @math.Rect::new(cur_tab_x, 11.0, tw, 30.0)
     let hovered = ctx.is_hovered(t_rect)
     if hovered {
       ctx.set_cursor_icon("pointer")
@@ -287,16 +299,19 @@ pub fn render_moonlens_ui(
     } else {
       dl.add_rect_stroke(t_rect, c_border, 1.0, 5.0)
     }
+    dl.push_clip(t_rect)
     dl.add_text(
-      @math.Vec2::new(tx + 16.0, 19.0),
+      @math.Vec2::new(cur_tab_x + 10.0, 18.0),
       tab_names[t],
-      12.5,
+      12.0,
       if is_active {
         c_cyan
       } else {
         c_text_muted
       },
     )
+    dl.pop_clip()
+    cur_tab_x = cur_tab_x + tw + 6.0
   }
 
   // 3. Left Sidebar: Schema Inspector & Column Summary (W = 260)
@@ -376,17 +391,21 @@ pub fn render_moonlens_ui(
     dl.add_rect(@math.Rect::new(18.0, col_item_y + 9.0, 36.0, 20.0), t_bg, 4.0)
     dl.add_text(@math.Vec2::new(23.0, col_item_y + 12.0), t_label, 10.5, t_fg)
 
-    // Column Name
+    // Column Name with Scissor Clip
+    dl.push_clip(
+      @math.Rect::new(60.0, col_item_y, sidebar_w - 96.0, col_item_h),
+    )
     dl.add_text(
       @math.Vec2::new(62.0, col_item_y + 11.0),
       col.name,
-      13.5,
+      13.0,
       if is_selected {
         c_text_strong
       } else {
         c_text_body
       },
     )
+    dl.pop_clip()
 
     // Sort Glyphs
     if state.sort_col_idx == c {
@@ -526,103 +545,62 @@ fn render_virtual_table(
   let header_row_h = 42.0
   let data_row_h = 36.0 // High-DPI comfortable row height
 
-  // Clip content to table viewport
+  // Clip content to table container viewport
   dl.push_clip(@math.Rect::new(x, y, w, h))
 
-  // Mouse wheel scrolling
+  // Compute total table width for horizontal boundary clamping
+  let mut total_table_w = 0.0
+  for cw in state.col_widths {
+    total_table_w = total_table_w + cw
+  }
+
+  // Mouse wheel scrolling: Vertical by default, Horizontal with Shift
   let table_rect = @math.Rect::new(x, y, w, h)
   if ctx.is_hovered(table_rect) {
     let wheel = ctx.input().scroll_delta.y
+    let is_shift = ctx.input().modifiers.shift
     if wheel != 0.0 {
-      state.target_scroll_y = state.target_scroll_y - wheel * 1.8
-      if state.target_scroll_y < 0.0 {
-        state.target_scroll_y = 0.0
-      }
-      let max_scroll = state.dataset.active_row_count().to_double() * data_row_h -
-        (h - header_row_h)
-      let limit = if max_scroll > 0.0 { max_scroll } else { 0.0 }
-      if state.target_scroll_y > limit {
-        state.target_scroll_y = limit
-      }
-    }
-  }
-
-  // Sticky Header Row
-  dl.add_rect(@math.Rect::new(x, y, w, header_row_h), c_header_bg, 0.0)
-  dl.add_line(
-    @math.Vec2::new(x, y + header_row_h),
-    @math.Vec2::new(x + w, y + header_row_h),
-    c_border,
-    1.0,
-  )
-
-  let mut cur_col_x = x - state.table_scroll_x
-  for c = 0; c < state.dataset.columns.length(); c = c + 1 {
-    let col = state.dataset.columns[c]
-    let cw = if c < state.col_widths.length() {
-      state.col_widths[c] + 20.0
-    } else {
-      150.0
-    }
-    let h_rect = @math.Rect::new(cur_col_x, y, cw, header_row_h)
-
-    let hovered = ctx.is_hovered(h_rect)
-    if hovered {
-      ctx.set_cursor_icon("pointer")
-      if ctx.input().mouse_pressed {
-        state.apply_sort(c)
-      }
-    }
-
-    if hovered {
-      dl.add_rect(h_rect, @color.Color::rgb(28, 34, 48), 0.0)
-    }
-
-    // Column Header Label
-    dl.add_text(
-      @math.Vec2::new(cur_col_x + 12.0, y + 13.0),
-      col.name,
-      13.5,
-      if state.sort_col_idx == c {
-        c_cyan
+      if is_shift {
+        state.table_scroll_x = state.table_scroll_x - wheel * 2.5
+        if state.table_scroll_x < 0.0 {
+          state.table_scroll_x = 0.0
+        }
+        let max_x = total_table_w - w + 60.0
+        let limit_x = if max_x > 0.0 { max_x } else { 0.0 }
+        if state.table_scroll_x > limit_x {
+          state.table_scroll_x = limit_x
+        }
       } else {
-        c_text_strong
-      },
-    )
-
-    // Sort Indicator
-    if state.sort_col_idx == c {
-      let arrow = if state.sort_ascending { "▲" } else { "▼" }
-      dl.add_text(
-        @math.Vec2::new(cur_col_x + cw - 20.0, y + 13.0),
-        arrow,
-        11.0,
-        c_cyan,
-      )
+        state.target_scroll_y = state.target_scroll_y - wheel * 1.8
+        if state.target_scroll_y < 0.0 {
+          state.target_scroll_y = 0.0
+        }
+        let max_scroll = state.dataset.active_row_count().to_double() *
+          data_row_h -
+          (h - header_row_h)
+        let limit = if max_scroll > 0.0 { max_scroll } else { 0.0 }
+        if state.target_scroll_y > limit {
+          state.target_scroll_y = limit
+        }
+      }
     }
-
-    // Column Divider
-    dl.add_line(
-      @math.Vec2::new(cur_col_x + cw, y),
-      @math.Vec2::new(cur_col_x + cw, y + h),
-      c_divider,
-      1.0,
-    )
-    cur_col_x = cur_col_x + cw
   }
+
+  // 1. Data Rows Viewport (Clipped below the header so rows never bleed into header)
+  let data_viewport_y = y + header_row_h
+  let data_viewport_h = h - header_row_h
+  dl.push_clip(@math.Rect::new(x, data_viewport_y, w, data_viewport_h))
 
   // Virtual Row Range Calculation
   let total_rows = state.dataset.active_row_count()
-  let visible_height = h - header_row_h
   let first_vis_row = (state.table_scroll_y / data_row_h).to_int()
-  let max_vis_rows = (visible_height / data_row_h).to_int() + 2
+  let max_vis_rows = (data_viewport_h / data_row_h).to_int() + 2
   let last_vis_row = if first_vis_row + max_vis_rows < total_rows {
     first_vis_row + max_vis_rows
   } else {
     total_rows
   }
 
-  let data_viewport_y = y + header_row_h
   for r = first_vis_row; r < last_vis_row; r = r + 1 {
     let ry = data_viewport_y + r.to_double() * data_row_h - state.table_scroll_y
     if ry + data_row_h < data_viewport_y || ry > y + h {
@@ -655,17 +633,18 @@ fn render_virtual_table(
       dl.add_rect(@math.Rect::new(x, ry, 3.0, data_row_h), c_cyan, 0.0)
     }
 
-    // Render cells in row
+    // Render cells in row with cell-level Scissor Clipping
     let mut cx = x - state.table_scroll_x
     for c = 0; c < state.dataset.columns.length(); c = c + 1 {
       let cw = if c < state.col_widths.length() {
-        state.col_widths[c] + 20.0
+        state.col_widths[c]
       } else {
-        150.0
+        140.0
       }
       let cell_val = state.dataset.get_cell(r, c)
+      dl.push_clip(@math.Rect::new(cx + 4.0, ry, cw - 8.0, data_row_h))
       dl.add_text(
-        @math.Vec2::new(cx + 12.0, ry + 10.0),
+        @math.Vec2::new(cx + 10.0, ry + 10.0),
         cell_val,
         13.0,
         if is_selected {
@@ -674,6 +653,7 @@ fn render_virtual_table(
           c_text_cell
         },
       )
+      dl.pop_clip()
       cx = cx + cw
     }
 
@@ -684,6 +664,74 @@ fn render_virtual_table(
       @color.Color::rgba(255, 255, 255, 8),
       1.0,
     )
+  }
+
+  dl.pop_clip()
+
+  // 2. Sticky Header Row (Rendered on top of data rows to guarantee z-order dominance)
+  dl.add_rect(@math.Rect::new(x, y, w, header_row_h), c_header_bg, 0.0)
+  dl.add_line(
+    @math.Vec2::new(x, y + header_row_h),
+    @math.Vec2::new(x + w, y + header_row_h),
+    c_border,
+    1.0,
+  )
+
+  let mut cur_col_x = x - state.table_scroll_x
+  for c = 0; c < state.dataset.columns.length(); c = c + 1 {
+    let col = state.dataset.columns[c]
+    let cw = if c < state.col_widths.length() {
+      state.col_widths[c]
+    } else {
+      140.0
+    }
+    let h_rect = @math.Rect::new(cur_col_x, y, cw, header_row_h)
+
+    let hovered = ctx.is_hovered(h_rect)
+    if hovered {
+      ctx.set_cursor_icon("pointer")
+      if ctx.input().mouse_pressed {
+        state.apply_sort(c)
+      }
+    }
+
+    if hovered {
+      dl.add_rect(h_rect, @color.Color::rgb(28, 34, 48), 0.0)
+    }
+
+    // Column Header Label with Scissor Clipping
+    dl.push_clip(@math.Rect::new(cur_col_x + 2.0, y, cw - 4.0, header_row_h))
+    dl.add_text(
+      @math.Vec2::new(cur_col_x + 12.0, y + 13.0),
+      col.name,
+      13.0,
+      if state.sort_col_idx == c {
+        c_cyan
+      } else {
+        c_text_strong
+      },
+    )
+
+    // Sort Indicator
+    if state.sort_col_idx == c {
+      let arrow = if state.sort_ascending { "▲" } else { "▼" }
+      dl.add_text(
+        @math.Vec2::new(cur_col_x + cw - 18.0, y + 14.0),
+        arrow,
+        10.5,
+        c_cyan,
+      )
+    }
+    dl.pop_clip()
+
+    // Column Divider
+    dl.add_line(
+      @math.Vec2::new(cur_col_x + cw, y),
+      @math.Vec2::new(cur_col_x + cw, y + h),
+      c_divider,
+      1.0,
+    )
+    cur_col_x = cur_col_x + cw
   }
 
   dl.pop_clip()

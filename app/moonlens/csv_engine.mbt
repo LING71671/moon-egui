@@ -604,3 +604,35 @@ pub fn compute_column_histogram(
 
   buckets
 }
+
+///|
+/// Computes optimal column widths dynamically based on header and cell content length
+pub fn Dataset::compute_column_widths(self : Dataset) -> Array[Double] {
+  let widths : Array[Double] = []
+  let sample_limit = if self.row_indices.length() < 60 {
+    self.row_indices.length()
+  } else {
+    60
+  }
+  for c = 0; c < self.columns.length(); c = c + 1 {
+    let col = self.columns[c]
+    let mut max_chars = col.name.length()
+    for r = 0; r < sample_limit; r = r + 1 {
+      let cell = self.get_cell(r, c)
+      if cell.length() > max_chars {
+        max_chars = cell.length()
+      }
+    }
+    // Base width: max_chars * 8.2 + 34px cell padding, clamped to [100.0, 320.0]
+    let w = max_chars.to_double() * 8.2 + 34.0
+    let clamped_w = if w < 100.0 {
+      100.0
+    } else if w > 320.0 {
+      320.0
+    } else {
+      w
+    }
+    widths.push(clamped_w)
+  }
+  widths
+}

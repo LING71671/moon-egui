@@ -24,16 +24,7 @@ pub struct AppState {
 ///|
 pub fn AppState::new() -> AppState {
   let initial_ds = load_server_logs_sample()
-  let widths : Array[Double] = []
-  for _ in initial_ds.columns {
-    widths.push(140.0)
-  }
-  if widths.length() > 0 {
-    widths[0] = 180.0 // timestamp
-  }
-  if widths.length() > 6 {
-    widths[6] = 220.0 // endpoint
-  }
+  let widths = initial_ds.compute_column_widths()
 
   {
     dataset: initial_ds,
@@ -66,11 +57,8 @@ pub fn AppState::switch_dataset(self : AppState, dataset_id : Int) -> Unit {
   }
 
   self.col_widths.clear()
-  for _ in self.dataset.columns {
-    self.col_widths.push(130.0)
-  }
-  if self.col_widths.length() > 0 {
-    self.col_widths[0] = 160.0
+  for w in self.dataset.compute_column_widths() {
+    self.col_widths.push(w)
   }
 
   self.selected_col_idx = if self.dataset.columns.length() > 1 { 1 } else { 0 }
