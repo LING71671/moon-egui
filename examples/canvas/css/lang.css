@@ -1,5 +1,5 @@
 /* moon-egui — language switcher
- * Shared by index.html, gallery.html and benchmark.html.
+ * Shared by index.html, gallery.html, benchmark.html and minesweeper.html.
  * Every value reads the host page's tokens with a safe fallback, so the
  * control inherits whichever design surface it is dropped into.
  */

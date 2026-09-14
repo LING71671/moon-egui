@@ -3,12 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>moon-egui | 程序化扫雷 · 1亿颗雷</title>
+  <title>moon-egui | 扫雷 · 1亿颗雷</title>
   <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="stylesheet" href="css/lang.css">
+  <script src="js/i18n.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* Same tokens and same chrome language as benchmark.html: a studio bar
+       (back link + title, segmented controls, telemetry capsule) over a
+       coords HUD. The one deliberate difference is that the bars are docked
+       to the top and bottom of the page instead of floating over the canvas:
+       floating chrome sits on top of tiles in the corners and swallows the
+       clicks on them, which is exactly what the page was asked to stop doing.
+       Docking keeps the look and makes the whole field reachable. */
     :root {
       --bg: #f8fafc;
       --surface: rgba(255, 255, 255, 0.96);
@@ -16,159 +25,349 @@
       --border-strong: #cbd5e1;
       --text-main: #0f172a;
       --text-muted: #64748b;
+      --brand-violet: #7c3aed;
+      --brand-emerald: #059669;
       --brand-cyan: #0284c7;
       --danger: #ef4444;
       --segment-bg: #f1f5f9;
+      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html, body {
-      width: 100vw;
-      height: 100vh;
-      margin: 0;
-      padding: 0;
+    html, body { height: 100%; }
+
+    body {
+      display: flex;
+      flex-direction: column;
       overflow: hidden;
-      font-family: 'Plus Jakarta Sans', 'Noto Sans SC', sans-serif;
       background: var(--bg);
       color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei",
+                   "Noto Sans SC", sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
 
+    /* ---- canvas: the field, between the two bars ---- */
+
     #mines-canvas {
-      position: fixed;
-      inset: 0;
+      flex: 1 1 auto;
+      min-height: 0;
       display: block;
+      width: 100%;
       touch-action: none;
     }
 
-    .ms-header {
-      position: fixed;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
+    .ms-dock {
+      flex: none;
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 8px 16px;
+      justify-content: center;
+      position: relative;
+      padding: 0 16px;
+      background: var(--bg);
+    }
+    .ms-dock--top { height: 64px; }
+    .ms-dock--bottom { height: 46px; }
+
+    /* ---- studio bar ---- */
+
+    .studio-header {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
-      white-space: nowrap;
-    }
-
-    .ms-header a.back {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .ms-header a.back:hover { color: var(--brand-cyan); }
-
-    .ms-title {
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
-
-    .ms-btn {
-      padding: 6px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: inherit;
-      color: var(--text-main);
-      background: var(--segment-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border);
       border-radius: 9px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .ms-btn:hover { border-color: var(--brand-cyan); color: var(--brand-cyan); }
-    .ms-btn.primary {
-      background: var(--brand-cyan);
-      border-color: var(--brand-cyan);
-      color: #fff;
-    }
-
-    .ms-footer-pill {
-      position: fixed;
-      bottom: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      align-items: center;
+      box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.06), 0 1px 4px -1px rgba(0, 0, 0, 0.03);
       gap: 12px;
-      padding: 7px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
-      font-size: 12px;
-      color: var(--text-muted);
+      max-width: 100%;
       white-space: nowrap;
     }
-    .ms-footer-pill .mono {
-      font-family: 'JetBrains Mono', monospace;
+
+    .studio-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 3px 6px;
+      border-radius: 5px;
+      transition: all 0.15s ease;
+    }
+    .back-btn:hover { color: var(--text-main); background: #f1f5f9; }
+    .back-btn:focus-visible { outline: 2px solid var(--brand-cyan); outline-offset: 1px; }
+
+    /* The studio bar on the sibling pages marks the component gallery in the
+       brand colour; keep that so the two bars read as the same control. */
+    .back-btn--brand { color: var(--brand-cyan); font-weight: 600; }
+    .back-btn--brand:hover { color: var(--brand-cyan); background: #f0f9ff; }
+
+    .studio-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
       color: var(--text-main);
     }
-    .ms-footer-pill .live-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #10b981;
-      animation: ms-pulse 1.6s ease-in-out infinite;
+    .studio-logo-img {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      object-fit: cover;
+      display: block;
     }
-    @keyframes ms-pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.45; transform: scale(0.82); }
+    .title-spec {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      color: var(--text-muted);
+      padding-left: 2px;
+      border-left: 1px solid var(--border-strong);
+      margin-left: 2px;
+      padding-left: 10px;
     }
 
-    .ms-tip { font-size: 11.5px; }
+    /* ---- segmented controls (identical to the studio bar) ---- */
+
+    .controls-center {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .segmented-control {
+      display: flex;
+      align-items: center;
+      background: var(--segment-bg);
+      padding: 2px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      gap: 1px;
+    }
+
+    .seg-btn {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      min-width: 26px;
+      text-align: center;
+    }
+    .seg-btn:hover { color: var(--text-main); }
+    .seg-btn:focus-visible { outline: 2px solid var(--brand-cyan); outline-offset: 1px; }
+    .seg-btn:active { transform: scale(0.96); }
+    .seg-btn.active {
+      background: #ffffff;
+      color: var(--text-main);
+      font-weight: 600;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+    .seg-btn--glyph { font-family: var(--mono); font-size: 13px; line-height: 1.1; }
+    .seg-btn--zoom { font-family: var(--mono); min-width: 52px; }
+
+    /* ---- telemetry capsule ---- */
+
+    .studio-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .telemetry-capsule {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--segment-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .fps-metric { color: var(--brand-emerald); font-weight: 700; }
+    .reveal-metric { color: var(--brand-cyan); font-weight: 700; }
+    .flag-metric { color: var(--brand-violet); font-weight: 700; }
+    .hits-metric { font-weight: 700; }
+    .hits-metric.is-hit { color: var(--danger); }
+
+    /* ---- bottom coords HUD ---- */
+
+    .studio-footer-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 12px;
+      background: var(--surface);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .status-badge { color: var(--brand-cyan); font-weight: 600; }
+    .status-badge--muted { color: var(--text-muted); font-weight: 500; }
+
+    .ms-legend {
+      position: absolute;
+      right: 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+      opacity: 0.85;
+    }
+
+    @media (max-width: 1024px) {
+      .title-spec { display: none; }
+      .ms-legend { display: none; }
+    }
+    @media (max-width: 820px) {
+      .studio-right { display: none; }
+    }
+    @media (max-width: 640px) {
+      .studio-header { gap: 8px; padding: 0 8px; }
+      .seg-btn--zoom { min-width: 40px; }
+      .studio-footer-pill { gap: 7px; font-size: 10.5px; }
+    }
   </style>
 </head>
-<body>
+<body data-i18n-title="mines.title">
+  <div class="ms-dock ms-dock--top">
+    <header class="studio-header">
+      <div class="studio-left">
+        <a href="index.html" class="back-btn" title="返回官网首页"
+           data-i18n-attrs="title:mines.backTitle">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+          <span data-i18n="mines.back">返回</span>
+        </a>
+        <a href="gallery.html" class="back-btn back-btn--brand" title="返回组件展厅"
+           data-i18n-attrs="title:mines.backTitle"><span data-i18n="nav.gallery">组件展厅</span></a>
+        <div class="studio-title">
+          <img src="assets/logo.png" alt="moon-egui logo" class="studio-logo-img">
+          <span data-i18n="mines.name">扫雷</span>
+        </div>
+        <span class="title-spec" data-i18n="mines.spec">1 亿颗雷</span>
+      </div>
+
+      <div class="controls-center">
+        <div class="segmented-control">
+          <button class="seg-btn seg-btn--glyph" id="btn-zoom-out" type="button"
+                  title="缩小（滚轮向下）" data-i18n-attrs="title:mines.tipZoomOut"
+                  onclick="minesAction(3)">&minus;</button>
+          <button class="seg-btn seg-btn--zoom" id="btn-zoom-reset" type="button"
+                  title="恢复默认缩放" data-i18n-attrs="title:mines.tipZoomReset"
+                  onclick="minesAction(4)">100%</button>
+          <button class="seg-btn seg-btn--glyph" id="btn-zoom-in" type="button"
+                  title="放大（滚轮向上）" data-i18n-attrs="title:mines.tipZoomIn"
+                  onclick="minesAction(2)">+</button>
+        </div>
+        <div class="segmented-control">
+          <button class="seg-btn" id="btn-center" type="button"
+                  title="把镜头移回雷区中心" data-i18n-attrs="title:mines.tipCenter"
+                  data-i18n="mines.center" onclick="minesAction(5)">居中</button>
+          <button class="seg-btn" id="btn-restart" type="button"
+                  title="换一片雷区" data-i18n-attrs="title:mines.tipRestart"
+                  data-i18n="mines.restart" onclick="minesAction(0)">重开</button>
+        </div>
+        <div class="segmented-control">
+          <button class="seg-btn" id="btn-flag-mode" type="button" aria-pressed="false"
+                  title="插旗模式：关（右键随时可插旗）" onclick="minesAction(1)"
+                  data-i18n="mines.flag">插旗</button>
+        </div>
+        <div data-lang-switch></div>
+      </div>
+
+      <div class="studio-right">
+        <div class="telemetry-capsule">
+          <span class="fps-metric"><span id="telemetry-fps">60</span> <span data-i18n="mines.fps">帧率</span></span>
+          <span>·</span>
+          <span><span data-i18n="mines.revealed">翻开</span> <span class="reveal-metric" id="telemetry-revealed">0</span></span>
+          <span>·</span>
+          <span><span data-i18n="mines.flags">旗</span> <span class="flag-metric" id="telemetry-flags">0</span></span>
+          <span>·</span>
+          <span><span data-i18n="mines.hits">踩雷</span> <span class="hits-metric" id="telemetry-hits">0</span></span>
+        </div>
+      </div>
+    </header>
+  </div>
+
   <canvas id="mines-canvas"></canvas>
 
-  <header class="ms-header">
-    <a href="gallery.html" class="back" title="返回组件展厅">← 展厅</a>
-    <span class="ms-title">程序化扫雷 · 1亿颗雷</span>
-    <button class="ms-btn" id="btn-flag-mode" onclick="window.minesSetAction(1)">插旗模式：关</button>
-  </header>
-
-  <div class="ms-footer-pill">
-    <span class="live-dot"></span>
-    <span><span class="mono" id="stat-fps">60</span> fps</span>
-    <span>·</span>
-    <span>雷 <span class="mono" id="stat-total">100,000,000</span></span>
-    <span>·</span>
-    <span>已翻开 <span class="mono" id="stat-revealed">0</span> 格</span>
-    <span>·</span>
-    <span>旗 <span class="mono" id="stat-flags">0</span></span>
-    <span>·</span>
-    <span>踩雷 <span class="mono" id="stat-hits">0</span></span>
-    <span>·</span>
-    <span id="stat-cascade">连锁完成</span>
-    <span>·</span>
-    <span class="mono" id="stat-coords">(0, 0) px</span>
-    <span class="ms-tip">左键翻开 · 右键插旗 · 拖拽平移 · 滚轮缩放</span>
+  <div class="ms-dock ms-dock--bottom">
+    <div class="studio-footer-pill">
+      <span data-i18n="mines.cursor">光标</span>:
+      <span class="status-badge" id="telemetry-coords">&mdash;</span>
+      <span data-i18n="mines.zoom">缩放</span>:
+      <span class="status-badge" id="telemetry-zoom">100%</span>
+      <span data-i18n="mines.status">状态</span>:
+      <span class="status-badge status-badge--muted" id="telemetry-state">就绪</span>
+    </div>
+    <div class="ms-legend" data-i18n="mines.legend">左键翻开 · 右键插旗 · 拖拽平移 · 滚轮缩放</div>
   </div>
 
   <script>
-    // 顶栏按钮的插旗模式状态回显由引擎帧数据驱动
-    window.addEventListener('load', () => {
+    // Button actions are queued and consumed by the next engine frame; the
+    // flag-mode button's look is read back from that frame so the control and
+    // the board can never disagree about the mode. The label is recomputed
+    // every frame rather than only when the mode flips, so a language change
+    // is picked up without needing a separate listener.
+    (function () {
+      'use strict';
+      window.minesAction = function (code) { window.minesSetAction(code); };
+
       const btn = document.getElementById('btn-flag-mode');
-      const sync = () => {
-        const on = window.minesLastFrame && window.minesLastFrame.flag_mode;
-        btn.textContent = '插旗模式：' + (on ? '开' : '关');
-        btn.classList.toggle('primary', !!on);
+
+      function sync() {
+        const frame = window.minesLastFrame;
+        const on = !!(frame && frame.flag_mode);
+        const pressed = String(on);
+        if (btn.getAttribute('aria-pressed') !== pressed) {
+          btn.setAttribute('aria-pressed', pressed);
+          btn.classList.toggle('active', on);
+        }
+        const title = on
+          ? T('插旗模式：开（左键插旗，右键随时可插旗）',
+              'Flag mode: on (left click flags, right click always flags)')
+          : T('插旗模式：关（右键随时可插旗）',
+              'Flag mode: off (right click to flag)');
+        if (btn.title !== title) btn.title = title;
         requestAnimationFrame(sync);
-      };
-      sync();
-    });
+      }
+      requestAnimationFrame(sync);
+    })();
   </script>
-  <script src="canvas.js?v=20260914a"></script>
-  <script src="js/mines_run.js?v=20260914a"></script>
+  <script src="canvas.js?v=20260914c"></script>
+  <script src="js/mines_run.js?v=20260914c"></script>
 </body>
 </html>

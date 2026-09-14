@@ -199,7 +199,30 @@
       'wiki.grpPipeline': '内核流水线与协议',
       'wiki.grpBridge': 'Wasm 宿主互操作',
       'wiki.grpPerf': '极限性能工程',
-      'wiki.grpQuality': '工程质量与贡献指南'
+      'wiki.grpQuality': '工程质量与贡献指南',
+
+      /* --- minesweeper.html --- */
+      'mines.title': 'moon-egui | 扫雷 · 1亿颗雷',
+      'mines.back': '返回',
+      'mines.backTitle': '返回官网首页',
+      'mines.name': '扫雷',
+      'mines.spec': '1 亿颗雷',
+      'mines.tipZoomOut': '缩小（滚轮向下）',
+      'mines.tipZoomIn': '放大（滚轮向上）',
+      'mines.tipZoomReset': '恢复默认缩放',
+      'mines.tipCenter': '把镜头移回雷区中心',
+      'mines.tipRestart': '换一片雷区（同一颗种子永远得到同一片）',
+      'mines.center': '居中',
+      'mines.restart': '重开',
+      'mines.flag': '插旗',
+      'mines.fps': '帧率',
+      'mines.revealed': '翻开',
+      'mines.flags': '旗',
+      'mines.hits': '踩雷',
+      'mines.cursor': '光标',
+      'mines.zoom': '缩放',
+      'mines.status': '状态',
+      'mines.legend': '左键翻开 · 右键插旗 · 拖拽平移 · 滚轮缩放'
     },
 
     en: {
@@ -380,7 +403,30 @@
       'wiki.grpPipeline': 'Frame Lifecycle & Protocol',
       'wiki.grpBridge': 'Wasm & Host Interop',
       'wiki.grpPerf': 'Extreme Performance',
-      'wiki.grpQuality': 'Quality & Contributing'
+      'wiki.grpQuality': 'Quality & Contributing',
+
+      /* --- minesweeper.html --- */
+      'mines.title': 'moon-egui | Minesweeper · 100M mines',
+      'mines.back': 'Home',
+      'mines.backTitle': 'Back to the home page',
+      'mines.name': 'Minesweeper',
+      'mines.spec': '100M mines',
+      'mines.tipZoomOut': 'Zoom out (wheel down)',
+      'mines.tipZoomIn': 'Zoom in (wheel up)',
+      'mines.tipZoomReset': 'Reset to the default zoom',
+      'mines.tipCenter': 'Bring the camera back to the middle of the field',
+      'mines.tipRestart': 'Open a new field (the same seed always yields the same field)',
+      'mines.center': 'Centre',
+      'mines.restart': 'New field',
+      'mines.flag': 'Flag',
+      'mines.fps': 'FPS',
+      'mines.revealed': 'Dug',
+      'mines.flags': 'Flags',
+      'mines.hits': 'Hits',
+      'mines.cursor': 'Tile',
+      'mines.zoom': 'Zoom',
+      'mines.status': 'Status',
+      'mines.legend': 'Left click digs · Right click flags · Drag pans · Wheel zooms'
     }
   };
 

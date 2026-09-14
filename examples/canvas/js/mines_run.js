@@ -13,17 +13,27 @@
 // limitations under the License.
 
 // Host driver for minesweeper.html - a slim loop that only forwards pointer
-// state to `window.moon_mines_step` and blits the returned DrawList.
+// state to `window.moon_mines_step`, blits the returned DrawList, and prints
+// the frame's telemetry into the chrome.
 (function () {
   'use strict';
 
   const canvas = document.getElementById('mines-canvas');
   const ctx = canvas.getContext('2d');
-  let width = window.innerWidth;
-  let height = window.innerHeight;
 
-  let mouseX = -1000;
-  let mouseY = -1000;
+  // The canvas is a flex item between the two chrome bars, so its drawing
+  // buffer follows its own box rather than the window, and pointer events are
+  // translated into canvas-local coordinates. Assuming the canvas covers the
+  // viewport would offset every hit test by the height of the top bar.
+  let width = 1;
+  let height = 1;
+  let originX = 0;
+  let originY = 0;
+
+  const OFF = -100000;
+
+  let mouseX = OFF;
+  let mouseY = OFF;
   let isMouseDown = false;
   let secondaryDown = false;
   let panDX = 0;
@@ -33,37 +43,50 @@
   let downY = 0;
   let moved = false;
   let pendingAction = -1;
+  let lastX = undefined;
+  let lastY = undefined;
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    width = window.innerWidth;
-    height = window.innerHeight;
+    const rect = canvas.getBoundingClientRect();
+    width = Math.max(1, Math.round(rect.width));
+    height = Math.max(1, Math.round(rect.height));
+    originX = rect.left;
+    originY = rect.top;
     canvas.width = Math.floor(width * dpr);
     canvas.height = Math.floor(height * dpr);
-    canvas.style.width = width + 'px';
-    canvas.style.height = height + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   window.addEventListener('resize', resize);
   resize();
 
+  function localX(e) {
+    return e.clientX - originX;
+  }
+  function localY(e) {
+    return e.clientY - originY;
+  }
+
   canvas.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+    mouseX = localX(e);
+    mouseY = localY(e);
     if (isMouseDown && !moved) {
       const dx = e.clientX - downX;
       const dy = e.clientY - downY;
       if (dx * dx + dy * dy > 16) moved = true;
     }
     if (isMouseDown && moved) {
-      panDX += e.clientX - (minesLastX === undefined ? e.clientX : minesLastX);
-      panDY += e.clientY - (minesLastY === undefined ? e.clientY : minesLastY);
+      panDX += e.clientX - (lastX === undefined ? e.clientX : lastX);
+      panDY += e.clientY - (lastY === undefined ? e.clientY : lastY);
     }
-    minesLastX = e.clientX;
-    minesLastY = e.clientY;
+    lastX = e.clientX;
+    lastY = e.clientY;
   });
-  let minesLastX = undefined;
-  let minesLastY = undefined;
+
+  canvas.addEventListener('mouseleave', () => {
+    mouseX = OFF;
+    mouseY = OFF;
+  });
 
   // A click whose press and release both land between two animation frames
   // would never be seen by the engine: it samples the button once per frame,
@@ -75,8 +98,8 @@
   let rightPulse = false;
 
   canvas.addEventListener('mousedown', (e) => {
-    minesLastX = e.clientX;
-    minesLastY = e.clientY;
+    lastX = e.clientX;
+    lastY = e.clientY;
     moved = false;
     downX = e.clientX;
     downY = e.clientY;
@@ -102,14 +125,15 @@
 
   canvas.addEventListener('wheel', (e) => {
     e.preventDefault();
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+    mouseX = localX(e);
+    mouseY = localY(e);
     zoomDelta += e.deltaY < 0 ? 1 : -1;
   }, { passive: false });
 
+  // Toolbar buttons queue an action code for the next frame:
+  // 0 new field, 1 flag mode, 2 zoom in, 3 zoom out, 4 default zoom, 5 recentre
   window.minesSetAction = function (a) {
     pendingAction = a;
-    window.minesPendingAction = a;
   };
 
   function getColorStr(color) {
@@ -216,58 +240,76 @@
     }
   }
 
-  const elRevealed = document.getElementById('stat-revealed');
-  const elFlags = document.getElementById('stat-flags');
-  const elCascade = document.getElementById('stat-cascade');
-  const elHits = document.getElementById('stat-hits');
-  const elCoords = document.getElementById('stat-coords');
+  const elFps = document.getElementById('telemetry-fps');
+  const elRevealed = document.getElementById('telemetry-revealed');
+  const elFlags = document.getElementById('telemetry-flags');
+  const elHits = document.getElementById('telemetry-hits');
+  const elCoords = document.getElementById('telemetry-coords');
+  const elZoom = document.getElementById('telemetry-zoom');
+  const elResetZoom = document.getElementById('btn-zoom-reset');
+  const elState = document.getElementById('telemetry-state');
+
+  const DEFAULT_CELL = 22;   // mirrors DEFAULT_CELL in mines_main.mbt
 
   let lastFpsTime = performance.now();
   let frames = 0;
-  let fps = 60;
 
   function loop() {
     try {
-    const res = window.moon_mines_step(
-      mouseX, mouseY, isMouseDown || leftPulse, secondaryDown || rightPulse,
-      panDX, panDY, zoomDelta,
-      // keep this list in lockstep with mines_step's signature: a stale
-      // extra arg shifts every later parameter one slot left (a leftover
-      // density arg made vp_w = 156 -> a 156px-wide world)
-      pendingAction,
-      width, height
-    );
-    leftPulse = false;
-    rightPulse = false;
-    panDX = 0;
-    panDY = 0;
-    zoomDelta = 0;
-    pendingAction = -1;
+      const res = window.moon_mines_step(
+        mouseX, mouseY, isMouseDown || leftPulse, secondaryDown || rightPulse,
+        panDX, panDY, zoomDelta,
+        // keep this list in lockstep with mines_step's signature: a stale
+        // extra arg shifts every later parameter one slot left (a leftover
+        // density arg made vp_w = 156 -> a 156px-wide world)
+        pendingAction,
+        width, height
+      );
+      panDX = 0;
+      panDY = 0;
+      zoomDelta = 0;
+      pendingAction = -1;
+      // The pulses are one-frame latches: clear them AFTER the frame that
+      // consumed them. Leaving them set kept the engine permanently "held
+      // down" - it saw a press once and then never a release, so `revealed`
+      // stayed 0 forever and a right click could plant exactly one flag.
+      leftPulse = false;
+      rightPulse = false;
 
-    window.minesLastFrame = res;
-    renderDrawList(res.draw_list);
-    if (canvas.style.cursor !== res.cursor) {
-      canvas.style.cursor = res.cursor;
-    }
+      window.minesLastFrame = res;
+      renderDrawList(res.draw_list);
+      // The engine owns the pointer feedback (pointer over unopened tiles,
+      // default over dug ground); the host only has to publish it.
+      if (canvas.style.cursor !== res.cursor) canvas.style.cursor = res.cursor;
 
-    frames++;
-    const now = performance.now();
-    if (now - lastFpsTime >= 500) {
-      fps = (frames * 1000) / (now - lastFpsTime);
-      frames = 0;
-      lastFpsTime = now;
-      const fpsEl = document.getElementById('stat-fps');
-      if (fpsEl) fpsEl.textContent = fps.toFixed(0);
-    }
-    if (elRevealed) elRevealed.textContent = res.revealed.toLocaleString();
-    if (elFlags) elFlags.textContent = res.flagged.toLocaleString();
-    if (elHits) elHits.textContent = res.hits.toLocaleString();
-    if (elCascade) elCascade.textContent = res.pending ? '连锁展开中…' : (res.boom ? '踩雷！' : '完成');
-    if (elCoords) {
-      elCoords.textContent = '(' + Math.floor(mouseX) + ', ' + Math.floor(mouseY) + ') px';
-    }
+      frames++;
+      const now = performance.now();
+      if (now - lastFpsTime >= 500) {
+        const fps = (frames * 1000) / (now - lastFpsTime);
+        frames = 0;
+        lastFpsTime = now;
+        if (elFps) elFps.textContent = fps.toFixed(0);
+      }
 
-    requestAnimationFrame(loop);
+      if (elRevealed) elRevealed.textContent = res.revealed.toLocaleString();
+      if (elFlags) elFlags.textContent = res.flagged.toLocaleString();
+      if (elHits) {
+        elHits.textContent = res.hits.toLocaleString();
+        elHits.classList.toggle('is-hit', res.hits > 0);
+      }
+      if (elZoom && elResetZoom) {
+        const pct = Math.round((res.cell / DEFAULT_CELL) * 100);
+        elZoom.textContent = pct + '%';
+        elResetZoom.textContent = pct + '%';
+      }
+      if (elState) elState.textContent = res.pending ? T('连锁展开中', 'Cascading') : T('就绪', 'Ready');
+      if (elCoords) {
+        elCoords.textContent = mouseX <= OFF / 2
+          ? '\u2014'
+          : '(' + res.tile_x + ', ' + res.tile_y + ')';
+      }
+
+      requestAnimationFrame(loop);
     } catch (e) {
       window.__loopErr = (e && e.message) || String(e);
       console.error('mines loop error:', e);
