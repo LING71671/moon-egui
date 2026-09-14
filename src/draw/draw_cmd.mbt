@@ -39,6 +39,11 @@ pub fn DrawList::len(self : DrawList) -> Int {
 }
 
 ///|
+pub fn DrawList::commands(self : DrawList) -> Array[DrawCmd] {
+  self.commands
+}
+
+///|
 pub fn DrawList::is_empty(self : DrawList) -> Bool {
   self.commands.is_empty()
 }

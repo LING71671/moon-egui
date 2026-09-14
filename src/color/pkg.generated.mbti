@@ -59,6 +59,9 @@ pub fn Color::guideline_wash(Self) -> Self
 pub fn Color::hex(Int) -> Self
 pub fn Color::hex_alpha(Int) -> Self
 pub fn Color::lerp(Self, Self, Double) -> Self
+pub fn Color::mines_grid() -> Self
+pub fn Color::mines_ground() -> Self
+pub fn Color::mines_ground_hover() -> Self
 pub fn Color::pill_active_bg() -> Self
 pub fn Color::pill_active_border() -> Self
 pub fn Color::pill_ambient_shadow() -> Self

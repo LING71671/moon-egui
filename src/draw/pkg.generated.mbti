@@ -36,6 +36,7 @@ pub fn DrawList::add_rect_stroke(Self, @math.Rect, @color.Color, Double, Double)
 pub fn DrawList::add_text(Self, @math.Vec2, String, Double, @color.Color, font_family? : String, font_weight? : Int) -> Unit
 pub fn DrawList::append(Self, Self) -> Unit
 pub fn DrawList::clear(Self) -> Unit
+pub fn DrawList::commands(Self) -> Array[DrawCmd]
 pub fn DrawList::get_command(Self, Int) -> DrawCmd?
 pub fn DrawList::is_empty(Self) -> Bool
 pub fn DrawList::len(Self) -> Int
