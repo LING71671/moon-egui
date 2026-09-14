@@ -112,6 +112,24 @@ pub fn Color::mines_ground() -> Color {
 }
 
 ///|
+/// The seam between two unopened tiles. Sits a step `mines_ground` darker
+/// (slate-400 -> between slate-400 and slate-500) so an untouched field reads
+/// as a grid of tiles instead of one flat slab: at the default zoom the field
+/// is almost entirely unopened, and with no seams at all it collapsed into a
+/// featureless grey mass that looked blank.
+pub fn Color::mines_grid() -> Color {
+  Color::hex(0x7C8CA1)
+}
+
+///|
+/// Unopened tile under the pointer. One step lighter than `mines_ground`
+/// (slate-300 vs slate-400) - deliberately not white, so "hovered earth" is
+/// never mistaken for a dug-out pit.
+pub fn Color::mines_ground_hover() -> Color {
+  Color::hex(0xCBD5E1)
+}
+
+///|
 /// Inverse surface for overlays that sit on top of light content: tooltips and
 /// floating hints, which pair with `text_inverse`.
 pub fn Color::bg_inverse() -> Color {

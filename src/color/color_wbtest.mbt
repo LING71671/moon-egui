@@ -99,4 +99,23 @@ test "theme design tokens" {
 
   let tag_hover = Color::tag_close_hover()
   assert_eq(tag_hover.a, 25)
+
+  // Minesweeper board: ground, seam and hover form an ordered trio - the
+  // seam is darker than the ground, the hover tile is lighter than it, and
+  // neither the hover nor the ground may reach white or a dug-out pit would
+  // be indistinguishable from untouched earth.
+  let ground = Color::mines_ground()
+  let seam = Color::mines_grid()
+  let hover = Color::mines_ground_hover()
+  assert_eq(ground.r, 0x94)
+  assert_eq(ground.g, 0xA3)
+  assert_eq(ground.b, 0xB8)
+  assert_eq(seam.r, 0x7C)
+  assert_eq(seam.g, 0x8C)
+  assert_eq(seam.b, 0xA1)
+  assert_eq(hover.r, 0xCB)
+  assert_eq(hover.g, 0xD5)
+  assert_eq(hover.b, 0xE1)
+  assert_true(seam.r < ground.r && ground.r < hover.r)
+  assert_true(hover.r < 0xFF)
 }

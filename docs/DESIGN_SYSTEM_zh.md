@@ -40,6 +40,8 @@
 | `BG_HOVER` | `#F8FAFC` | 悬浮态语义别名（与 `BG_SUBTLE` 同值） |
 | `BG_ACTIVE` | `#E2E8F0` | 按下态、更深的凹陷底色 |
 | `MINES_GROUND` | `#94A3B8` | 扫雷挖掘地面（演示棋盘的未挖土层） |
+| `MINES_GRID` | `#7C8CA1` | 未挖土层之间的缝隙（比 `MINES_GROUND` 深一档，让未翻开的棋盘呈现网格而非整片色块） |
+| `MINES_GROUND_HOVER` | `#CBD5E1` | 指针下的未挖地块（比 `MINES_GROUND` 浅一档，刻意不用白色，避免与已挖开的坑混淆） |
 | `BG_INVERSE` | `#1A1B23` | 反色浮层：tooltip 气泡（配 `TEXT_INVERSE`） |
 | **描边** | | |
 | `BORDER_MUTED` | `#E2E8F0` | 内部发丝分割线、控件凹槽 |

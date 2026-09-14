@@ -44,6 +44,8 @@ so the palette cannot drift.
 | `BG_HOVER` | `#F8FAFC` | Semantic alias for hover (same value as `BG_SUBTLE`) |
 | `BG_ACTIVE` | `#E2E8F0` | Pressed state, deeper recess |
 | `MINES_GROUND` | `#94A3B8` | Minesweeper digging ground (unopened earth of the demo board) |
+| `MINES_GRID` | `#7C8CA1` | Seam between unopened tiles - one step darker than `MINES_GROUND` so an untouched board reads as a grid of tiles instead of one flat slab |
+| `MINES_GROUND_HOVER` | `#CBD5E1` | Unopened tile under the pointer - one step lighter than `MINES_GROUND`, deliberately not white so hovered earth is never mistaken for a dug-out pit |
 | `BG_INVERSE` | `#1A1B23` | Inverted overlays: tooltips (pair with `TEXT_INVERSE`) |
 | **Borders** | | |
 | `BORDER_MUTED` | `#E2E8F0` | Inner hairline dividers and control grooves |

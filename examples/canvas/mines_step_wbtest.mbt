@@ -111,9 +111,16 @@ test "mines_step: numbers and flag glyphs survive the far end of the zoom" {
     let _ = mines_step(600.0, 400.0, false, false, 0.0, 0.0, -1.0, -1, vw, vh)
   }
 
-  // dig, drain, then look at the frame
-  let _ = mines_step(600.0, 400.0, true, false, 0.0, 0.0, 0.0, -1, vw, vh)
-  let _ = mines_step(600.0, 400.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  // Dig a run of tiles rather than a single one: one dig can land on an
+  // already-numbered tile, which legitimately reveals just that tile with no
+  // cascade. The assertions here are about the far end of the zoom range, not
+  // about that coin flip.
+  let mut px = 420.0
+  while px <= 780.0 {
+    let _ = mines_step(px, 400.0, true, false, 0.0, 0.0, 0.0, -1, vw, vh)
+    let _ = mines_step(px, 400.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh)
+    px = px + 60.0
+  }
   let mut frame = mines_step(
     600.0, 400.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh,
   )
@@ -125,11 +132,30 @@ test "mines_step: numbers and flag glyphs survive the far end of the zoom" {
   assert_true(frame.revealed > 1)
   assert_true(mines_text_count(frame) > 0)
 
-  // a right-press must still paint the pennant at the minimum zoom
-  let _ = mines_step(700.0, 300.0, false, true, 0.0, 0.0, 0.0, -1, vw, vh)
-  let flagged = mines_step(700.0, 300.0, false, true, 0.0, 0.0, 0.0, -1, vw, vh)
+  // a right-press must still paint the pennant at the minimum zoom. Flag a
+  // tile just above the dug row: a flagged tile is only painted while it is
+  // unopened, and the dug row is open.
+  let _ = mines_step(600.0, 340.0, false, true, 0.0, 0.0, 0.0, -1, vw, vh)
+  let flagged = mines_step(600.0, 340.0, false, true, 0.0, 0.0, 0.0, -1, vw, vh)
   assert_true(flagged.flagged >= 1)
   assert_true(mines_color_count(flagged, @color.Color::accent_primary()) >= 4)
+}
+
+///|
+test "mines_step: recentring puts the middle of the domain on screen" {
+  // The board only has mines for x, y >= 0, so a camera that frames the
+  // domain's corner leaves half the view (or, with the sign flipped, all of
+  // it) a mine-free void - no numbers, no cascade, and a page that looks like
+  // it holds no mines at all.
+  let vw = 1200.0
+  let vh = 800.0
+  let _ = mines_step(0.0, 0.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  // action 5 = recentre, so the assertion does not depend on test order
+  let _ = mines_step(600.0, 400.0, false, false, 0.0, 0.0, 0.0, 5, vw, vh)
+  let mid = mines_step(600.0, 400.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  let half = DOMAIN_SIZE / 2
+  assert_true((mid.tile_x - half).abs() <= 1)
+  assert_true((mid.tile_y - half).abs() <= 1)
 }
 
 ///|
