@@ -229,9 +229,13 @@
         '对全量计数得到恰好 100,000,000 颗。棋盘太大，肉眼数不完，屏幕上也看不出——' +
         '右下角的方块是整个雷区，其中那点青色就是你当前的视口。',
       'mines.scaleTip':
-        '整个雷区 25,600 × 25,600 格；青色方块是当前视口。这个方块只是示意图——' +
+        '整个雷区 25,600 × 25,600 格；青色方块是当前视口，点一下就能跳过去。这个方块只是示意图——' +
         '视口真实只占全场的 0.0003%，按真实比例画出来是 0.1 像素，看不见，所以标记被放大了。' +
         '准确数字看右边的 视口 / 全场 两个格数。',
+      'mines.minimapLabel': '小地图：点击跳到雷区任意位置',
+      'mines.tipPan': '手形工具：左键拖拽平移',
+      'mines.hintTitle': '拖拽平移',
+      'mines.hintBody': '按住左键拖动棋盘；也可以按工具栏的手形按钮，把左键整个交给镜头。',
       'mines.legend': '左键翻开 · 右键插旗 · 拖拽平移 · 滚轮缩放'
     },
 
@@ -445,10 +449,15 @@
         'either: the square at the bottom right is the whole field, and the speck in it is ' +
         'everything you can see.',
       'mines.scaleTip':
-        'The whole field is 25,600 x 25,600 tiles; the cyan square is your viewport. ' +
-        'The square is a schematic - the viewport really covers 0.0003% of the domain, ' +
-        'which at this size is 0.1px, so the marker is drawn enlarged. The two tile ' +
-        'counts beside it are the exact figures.',
+        'The whole field is 25,600 x 25,600 tiles; the cyan square is your viewport, and ' +
+        'clicking the map jumps there. The square is a schematic - the viewport really ' +
+        'covers 0.0003% of the domain, which at this size is 0.1px, so the marker is drawn ' +
+        'enlarged. The two tile counts beside it are the exact figures.',
+      'mines.minimapLabel': 'Overview map: click to jump anywhere in the field',
+      'mines.tipPan': 'Hand tool: drag with the left button to pan',
+      'mines.hintTitle': 'Drag to pan',
+      'mines.hintBody': 'Hold the left button and drag the board; or press the hand button ' +
+        'in the toolbar to hand the left button over to the camera entirely.',
       'mines.legend': 'Left click digs · Right click flags · Drag pans · Wheel zooms'
     }
   };

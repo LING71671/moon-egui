@@ -21,6 +21,9 @@ pub struct MinesFrame {
   hits : Int
   pending : Bool
   flag_mode : Bool
+  /// Hand tool: the left button drags the camera instead of digging. Read back
+  /// by the toolbar so the button and the board cannot disagree about the mode.
+  pan_mode : Bool
   cursor : String
   /// Tile under the pointer, so the host can print the cursor coordinate.
   tile_x : Int
@@ -46,6 +49,7 @@ struct MinesState {
   mut cam_y : Double
   mut cell : Double
   mut flag_mode : Bool
+  mut pan_mode : Bool
   mut prev_down : Bool
   mut prev_secondary : Bool
   mut gesture_flag : Bool
@@ -135,6 +139,7 @@ let mines_st : MinesState = {
   cam_y: -12.0,
   cell: 22.0,
   flag_mode: false,
+  pan_mode: false,
   prev_down: false,
   prev_secondary: false,
   gesture_flag: false,
@@ -254,6 +259,12 @@ pub fn mines_step(
   if action_switch == 1 {
     st.flag_mode = !st.flag_mode
   }
+  // Action 6: the hand tool. It only decides what the LEFT button does - the
+  // right button keeps flagging, because flagging is orthogonal to whether the
+  // camera is dragged or the tile is dug.
+  if action_switch == 6 {
+    st.pan_mode = !st.pan_mode
+  }
   // Toolbar zoom: 2 = in, 3 = out, 4 = back to DEFAULT_CELL, 5 = recentre.
   // Buttons have no pointer to anchor on, so they zoom about the middle of
   // the viewport.
@@ -304,19 +315,32 @@ pub fn mines_step(
   // than a flag, so it has to be range-checked - otherwise the off-canvas
   // sentinel lands on some unopened tile out in the void and the cursor keeps
   // claiming "pointer" while the mouse is nowhere near the board.
+  //
+  // The board is draggable in every mode, and a board that never says so is a
+  // board nobody pans. The hand tool makes it explicit (open hand over the
+  // board, closed hand while the camera is actually moving); in the default
+  // dig mode the open hand would fight the dig pointer, so the affordance
+  // there is the hint chip the host shows on the first visit.
   let inside = mouse_x >= 0.0 &&
     mouse_y >= 0.0 &&
     mouse_x <= vp_w &&
     mouse_y <= vp_h
   let cursor = if !inside {
     "default"
+  } else if st.drag_move {
+    "grabbing"
+  } else if st.pan_mode {
+    "grab"
   } else if !world.is_revealed(tx, ty) {
     "pointer"
   } else {
     "default"
   }
-  // Left gesture: release reveals - or flags while the flag mode is on
-  if released && !st.drag_move {
+  // Left gesture: release reveals - or flags while the flag mode is on. With
+  // the hand tool up the left button belongs to the camera, so a press and
+  // release that covered no distance does nothing at all: a pan mode that
+  // still opened a tile on a stray click would be worse than no pan mode.
+  if released && !st.drag_move && !st.pan_mode {
     let cx = ((mouse_x + st.cam_x) / st.cell).floor().to_int()
     let cy = ((mouse_y + st.cam_y) / st.cell).floor().to_int()
     if st.gesture_flag {
@@ -428,6 +452,7 @@ pub fn mines_step(
     hits: world.hits(),
     pending: world.is_cascade_pending(),
     flag_mode: st.flag_mode,
+    pan_mode: st.pan_mode,
     cursor,
     tile_x: tx,
     tile_y: ty,

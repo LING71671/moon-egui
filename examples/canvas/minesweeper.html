@@ -38,8 +38,6 @@
     html, body { height: 100%; }
 
     body {
-      display: flex;
-      flex-direction: column;
       overflow: hidden;
       background: var(--bg);
       color: var(--text-main);
@@ -49,28 +47,81 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ---- canvas: the field, between the two bars ---- */
+    /* ---- canvas: the field, full bleed ----
+       The chrome floats over the field instead of taking a strip out of it.
+       That only works because it hides itself (see `body.chrome-idle`) and
+       because the bars take no clicks themselves: pointer-events is off on
+       the strip and back on for the controls sitting in it, so the tiles under
+       an empty stretch of bar stay diggable. */
 
     #mines-canvas {
-      flex: 1 1 auto;
-      min-height: 0;
+      position: fixed;
+      inset: 0;
       display: block;
       width: 100%;
+      height: 100%;
       touch-action: none;
+      z-index: 0;
     }
 
     .ms-dock {
-      flex: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 10;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
       padding: 0 16px;
-      background: var(--bg);
+      background: transparent;
       gap: 16px;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
-    .ms-dock--top { height: 64px; }
-    .ms-dock--bottom { height: 56px; }
+    .ms-dock > * { pointer-events: auto; }
+    .ms-dock--top { top: 0; height: 64px; }
+    .ms-dock--bottom { bottom: 0; height: 56px; }
+
+    /* Auto-hide: the field is the page, the chrome is a guest. Any pointer
+       move, wheel or key brings it straight back, and it never leaves while
+       the pointer is on it. */
+    body.chrome-idle .ms-dock { opacity: 0; pointer-events: none; }
+    body.chrome-idle .ms-dock > * { pointer-events: none; }
+    body.chrome-idle .ms-dock--top { transform: translateY(-100%); }
+    body.chrome-idle .ms-dock--bottom { transform: translateY(100%); }
+
+    /* ---- first-visit hint ----
+       A grid of tiles does not say it can be dragged. This is the one-time
+       nudge for that, and it never takes a click - it is not chrome, it is a
+       note laid on top of the field. */
+
+    .ms-hint {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: #f8fafc;
+      border-radius: 9px;
+      box-shadow: 0 14px 36px -10px rgba(15, 23, 42, 0.5);
+      font-size: 12.5px;
+      line-height: 1.45;
+      max-width: min(420px, 78vw);
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.97);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .ms-hint.is-on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    .ms-hint svg { flex: none; opacity: 0.85; }
+    .ms-hint b { font-weight: 600; }
+    .ms-hint span { color: #cbd5e1; }
 
     /* ---- overview map + coverage: the scale of the board ----
        Nothing in the field itself can convey the size of a 25,600 x 25,600
@@ -98,10 +149,12 @@
 
     #mines-minimap {
       display: block;
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border-radius: 3px;
+      cursor: pointer;
     }
+    #mines-minimap:focus-visible { outline: 2px solid var(--brand-cyan); outline-offset: 1px; }
 
     .ms-scale-text { display: flex; align-items: center; gap: 5px; }
     .ms-sep { color: var(--border-strong); }
@@ -223,6 +276,12 @@
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
     }
     .seg-btn--glyph { font-family: var(--mono); font-size: 13px; line-height: 1.1; }
+    .seg-btn--icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 6px;
+    }
     .seg-btn--zoom { font-family: var(--mono); min-width: 52px; }
 
     /* ---- telemetry capsule ---- */
@@ -279,6 +338,7 @@
       font-size: 11px;
       color: var(--text-muted);
       opacity: 0.85;
+      pointer-events: none;
     }
 
     @media (max-width: 1180px) {
@@ -343,6 +403,18 @@
           <button class="seg-btn" id="btn-flag-mode" type="button" aria-pressed="false"
                   title="插旗模式：关（右键随时可插旗）" onclick="minesAction(1)"
                   data-i18n="mines.flag">插旗</button>
+          <button class="seg-btn seg-btn--icon" id="btn-pan-mode" type="button" aria-pressed="false"
+                  title="手形工具：左键拖拽平移"
+                  data-i18n-attrs="title:mines.tipPan;aria-label:mines.tipPan"
+                  aria-label="手形工具" onclick="minesPanToggle()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2"/>
+              <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"/>
+              <path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8"/>
+              <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+            </svg>
+          </button>
         </div>
         <div data-lang-switch></div>
       </div>
@@ -363,6 +435,20 @@
 
   <canvas id="mines-canvas"></canvas>
 
+  <div class="ms-hint" id="mines-hint" role="status">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2"/>
+      <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"/>
+      <path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8"/>
+      <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+    </svg>
+    <div>
+      <b data-i18n="mines.hintTitle">拖拽平移</b>
+      <span data-i18n="mines.hintBody">按住左键拖动棋盘；也可以按工具栏的手形按钮，把左键整个交给镜头。</span>
+    </div>
+  </div>
+
   <div class="ms-dock ms-dock--bottom">
     <div class="studio-footer-pill">
       <span data-i18n="mines.cursor">光标</span>:
@@ -372,9 +458,11 @@
       <span data-i18n="mines.status">状态</span>:
       <span class="status-badge status-badge--muted" id="telemetry-state">就绪</span>
     </div>
-    <div class="ms-scale" title="整个雷区 25,600 × 25,600 格，青色方块是当前视口。"
+    <div class="ms-scale" title="整个雷区 25,600 × 25,600 格，青色方块是当前视口，点击可跳转。"
          data-i18n-attrs="title:mines.scaleTip">
-      <canvas id="mines-minimap" aria-hidden="true"></canvas>
+      <canvas id="mines-minimap" role="button" tabindex="0"
+              aria-label="小地图：点击跳到雷区任意位置"
+              data-i18n-attrs="aria-label:mines.minimapLabel"></canvas>
       <div class="ms-scale-text">
         <span data-i18n="mines.viewport">视口</span>
         <span class="status-badge" id="telemetry-view">&mdash;</span>
@@ -388,37 +476,68 @@
   </div>
 
   <script>
-    // Button actions are queued and consumed by the next engine frame; the
-    // flag-mode button's look is read back from that frame so the control and
-    // the board can never disagree about the mode. The label is recomputed
-    // every frame rather than only when the mode flips, so a language change
-    // is picked up without needing a separate listener.
+    // Button actions are queued and consumed by the next engine frame; each
+    // mode button's look is read back from that frame, so a control and the
+    // board can never disagree about the mode. The labels are recomputed every
+    // frame rather than only when the mode flips, so a language change is
+    // picked up without needing a separate listener.
     (function () {
       'use strict';
       window.minesAction = function (code) { window.minesSetAction(code); };
 
-      const btn = document.getElementById('btn-flag-mode');
+      // Picking the hand tool is the user saying they found the drag
+      // affordance, so the first-visit hint can retire.
+      window.minesPanToggle = function () {
+        window.minesSetAction(6);
+        if (window.minesHint) window.minesHint.retire();
+      };
+
+      const modes = [
+        {
+          el: document.getElementById('btn-flag-mode'),
+          read: function (f) { return !!f.flag_mode; },
+          title: function (on) {
+            return on
+              ? T('插旗模式：开（左键插旗，右键随时可插旗）',
+                  'Flag mode: on (left click flags, right click always flags)')
+              : T('插旗模式：关（右键随时可插旗）',
+                  'Flag mode: off (right click to flag)');
+          },
+        },
+        {
+          el: document.getElementById('btn-pan-mode'),
+          read: function (f) { return !!f.pan_mode; },
+          title: function (on) {
+            return on
+              ? T('手形工具：开（左键拖拽平移，不再翻开格子）',
+                  'Hand tool: on (left drag pans, it no longer digs)')
+              : T('手形工具：关（左键翻开，按住拖拽同样可平移）',
+                  'Hand tool: off (left click digs, holding and dragging still pans)');
+          },
+        },
+      ];
 
       function sync() {
-        const frame = window.minesLastFrame;
-        const on = !!(frame && frame.flag_mode);
-        const pressed = String(on);
-        if (btn.getAttribute('aria-pressed') !== pressed) {
-          btn.setAttribute('aria-pressed', pressed);
-          btn.classList.toggle('active', on);
+        const frame = window.minesLastFrame || {};
+        for (let i = 0; i < modes.length; i++) {
+          const m = modes[i];
+          if (!m.el) continue;
+          const on = m.read(frame);
+          const pressed = String(on);
+          if (m.el.getAttribute('aria-pressed') !== pressed) {
+            m.el.setAttribute('aria-pressed', pressed);
+            m.el.classList.toggle('active', on);
+          }
+          const title = m.title(on);
+          if (m.el.title !== title) m.el.title = title;
+          if (m.el.getAttribute('aria-label') !== title) m.el.setAttribute('aria-label', title);
         }
-        const title = on
-          ? T('插旗模式：开（左键插旗，右键随时可插旗）',
-              'Flag mode: on (left click flags, right click always flags)')
-          : T('插旗模式：关（右键随时可插旗）',
-              'Flag mode: off (right click to flag)');
-        if (btn.title !== title) btn.title = title;
         requestAnimationFrame(sync);
       }
       requestAnimationFrame(sync);
     })();
   </script>
-  <script src="canvas.js?v=20260914"></script>
-  <script src="js/mines_run.js?v=20260914"></script>
+  <script src="canvas.js?v=20260914b"></script>
+  <script src="js/mines_run.js?v=20260914b"></script>
 </body>
 </html>

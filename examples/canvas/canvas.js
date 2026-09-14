@@ -75,17 +75,18 @@ function _M0TP49LING7167111moon_2degui8examples6canvas14BenchmarkState(param0, p
   this.jump_after = param23;
   this.show_grid = param24;
 }
-function _M0TP49LING7167111moon_2degui8examples6canvas10MinesState(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9) {
+function _M0TP49LING7167111moon_2degui8examples6canvas10MinesState(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10) {
   this.world = param0;
   this.cam_x = param1;
   this.cam_y = param2;
   this.cell = param3;
   this.flag_mode = param4;
-  this.prev_down = param5;
-  this.prev_secondary = param6;
-  this.gesture_flag = param7;
-  this.drag_move = param8;
-  this.inited = param9;
+  this.pan_mode = param5;
+  this.prev_down = param6;
+  this.prev_secondary = param7;
+  this.gesture_flag = param8;
+  this.drag_move = param9;
+  this.inited = param10;
 }
 function _M0TP49LING7167111moon_2degui8examples6canvas12GalleryState(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14, param15, param16, param17, param18, param19, param20, param21, param22, param23, param24, param25, param26, param27, param28, param29, param30, param31, param32, param33, param34, param35, param36, param37, param38, param39, param40, param41, param42, param43, param44, param45, param46, param47, param48, param49, param50, param51, param52, param53, param54, param55, param56) {
   this.button_clicks = param0;
@@ -814,22 +815,23 @@ function _M0TP49LING7167111moon_2degui8examples6canvas9MineChunk(param0, param1)
   this.revealed = param0;
   this.flagged = param1;
 }
-function _M0TP49LING7167111moon_2degui8examples6canvas10MinesFrame(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14) {
+function _M0TP49LING7167111moon_2degui8examples6canvas10MinesFrame(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14, param15) {
   this.draw_list = param0;
   this.revealed = param1;
   this.flagged = param2;
   this.hits = param3;
   this.pending = param4;
   this.flag_mode = param5;
-  this.cursor = param6;
-  this.tile_x = param7;
-  this.tile_y = param8;
-  this.cell = param9;
-  this.domain_size = param10;
-  this.view_x = param11;
-  this.view_y = param12;
-  this.view_cols = param13;
-  this.view_rows = param14;
+  this.pan_mode = param6;
+  this.cursor = param7;
+  this.tile_x = param8;
+  this.tile_y = param9;
+  this.cell = param10;
+  this.domain_size = param11;
+  this.view_x = param12;
+  this.view_y = param13;
+  this.view_cols = param14;
+  this.view_rows = param15;
 }
 function _M0DTP49LING7167111moon_2degui3src4core5Event3Key(param0, param1, param2) {
   this._0 = param0;
@@ -913,7 +915,7 @@ const _M0MP49LING7167111moon_2degui3src4core9UIContext3newN6constrS1518 = 256;
 const _M0FP49LING7167111moon_2degui8examples6canvas12gallery__ctx = _M0MP49LING7167111moon_2degui3src4core9UIContext3new();
 const _M0FP49LING7167111moon_2degui8examples6canvas3ctx = _M0MP49LING7167111moon_2degui3src4core9UIContext3new();
 const _M0MP49LING7167111moon_2degui8examples6canvas9MineWorld3newN6constrS1283 = 64;
-const _M0FP49LING7167111moon_2degui8examples6canvas9mines__st = new _M0TP49LING7167111moon_2degui8examples6canvas10MinesState(_M0MP49LING7167111moon_2degui8examples6canvas9MineWorld3new(20260913n), -14, -12, 22, false, false, false, false, false, false);
+const _M0FP49LING7167111moon_2degui8examples6canvas9mines__st = new _M0TP49LING7167111moon_2degui8examples6canvas10MinesState(_M0MP49LING7167111moon_2degui8examples6canvas9MineWorld3new(20260913n), -14, -12, 22, false, false, false, false, false, false, false);
 const _M0FP49LING7167111moon_2degui8examples6canvas10mines__ctx = _M0MP49LING7167111moon_2degui3src4core9UIContext3new();
 const _M0FP49LING7167111moon_2degui8examples6canvas14gallery__stateN6constrS1282 = "main_mbt";
 const _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state = new _M0TP49LING7167111moon_2degui8examples6canvas12GalleryState(0, true, false, false, true, true, false, true, false, 1, 1.25, 85, 120, 80, 1, 1200, 25, 0, 6, 0.75, 0, 0.65, 0.65, 0, 1, 0, 0.68, _M0FP49LING7167111moon_2degui8examples6canvas14gallery__stateN6constrS1282, ["src", "assets"], 0, "MoonBit Developer", "dev@moonbitlang.com", "///| Welcome to moon-egui native CodeEditor\npub fn render(ui : @core.UIContext) -> Unit {\n  ui.label(\"Pure MoonBit Wasm Engine!\")\n  @widgets.button(ui, \"Live Immediate-Mode\")\n}", [], false, "", 0, false, _M0MP49LING7167111moon_2degui3src4math4Vec23new(180, 140), "Ready", "", 0.45, "id", 0, [_M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner("id", "ID", 60, 50, true), _M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner("name", "Name", 140, 80, true), _M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner("role", "Role", 110, 70, true), _M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner("score", "Score", 80, 60, true)], 1, false, "None", 0, true, true, true, [12, 28, 19, 35, 22, 48, 38, 55, 42, 68, 60, 85], _M0MP49LING7167111moon_2degui3src5color5Color3rgb(79, 70, 229), "None", "None", _M0MP49LING7167111moon_2degui3src9composite8DockTree5split(0, 0.28, _M0MP49LING7167111moon_2degui3src9composite8DockTree12leaf_2einner([_M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("explorer", "资源管理器", false), _M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("outline", "大纲视图", false)], 0), _M0MP49LING7167111moon_2degui3src9composite8DockTree5split(1, 0.62, _M0MP49LING7167111moon_2degui3src9composite8DockTree12leaf_2einner([_M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("canvas", "CAD 视口", false), _M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("shader", "着色器源码", true)], 0), _M0MP49LING7167111moon_2degui3src9composite8DockTree12leaf_2einner([_M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("console", "运行日志 (Output)", true), _M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("terminal", "终端 (Terminal)", true)], 0))));
@@ -13436,6 +13438,9 @@ function _M0FP49LING7167111moon_2degui8examples6canvas11mines__step(mouse_x, mou
   if (action_switch === 1) {
     _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.flag_mode = !_M0FP49LING7167111moon_2degui8examples6canvas9mines__st.flag_mode;
   }
+  if (action_switch === 6) {
+    _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.pan_mode = !_M0FP49LING7167111moon_2degui8examples6canvas9mines__st.pan_mode;
+  }
   if (action_switch === 2 || action_switch === 3) {
     const factor = action_switch === 2 ? 1.2 : 0.83333333333333337;
     _M0FP49LING7167111moon_2degui8examples6canvas18mines__zoom__about(_M0FP49LING7167111moon_2degui8examples6canvas9mines__st, vp_w * 0.5, vp_h * 0.5, factor);
@@ -13472,8 +13477,8 @@ function _M0FP49LING7167111moon_2degui8examples6canvas11mines__step(mouse_x, mou
   const tx = _M0MPC16double6Double7to__int(_M0MPC16double6Double5floor((mouse_x + _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.cam_x) / _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.cell));
   const ty = _M0MPC16double6Double7to__int(_M0MPC16double6Double5floor((mouse_y + _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.cam_y) / _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.cell));
   const inside = mouse_x >= 0 && (mouse_y >= 0 && (mouse_x <= vp_w && mouse_y <= vp_h));
-  const cursor = !inside ? "default" : !_M0MP49LING7167111moon_2degui8examples6canvas9MineWorld12is__revealed(world, tx, ty) ? "pointer" : "default";
-  if (released && !_M0FP49LING7167111moon_2degui8examples6canvas9mines__st.drag_move) {
+  const cursor = !inside ? "default" : _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.drag_move ? "grabbing" : _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.pan_mode ? "grab" : !_M0MP49LING7167111moon_2degui8examples6canvas9MineWorld12is__revealed(world, tx, ty) ? "pointer" : "default";
+  if (released && (!_M0FP49LING7167111moon_2degui8examples6canvas9mines__st.drag_move && !_M0FP49LING7167111moon_2degui8examples6canvas9mines__st.pan_mode)) {
     const cx = _M0MPC16double6Double7to__int(_M0MPC16double6Double5floor((mouse_x + _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.cam_x) / _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.cell));
     const cy = _M0MPC16double6Double7to__int(_M0MPC16double6Double5floor((mouse_y + _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.cam_y) / _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.cell));
     if (_M0FP49LING7167111moon_2degui8examples6canvas9mines__st.gesture_flag) {
@@ -13543,7 +13548,7 @@ function _M0FP49LING7167111moon_2degui8examples6canvas11mines__step(mouse_x, mou
       break;
     }
   }
-  return new _M0TP49LING7167111moon_2degui8examples6canvas10MinesFrame(_M0MP49LING7167111moon_2degui3src4core9UIContext10end__frame(_M0FP49LING7167111moon_2degui8examples6canvas10mines__ctx), world.revealed_count, world.flagged_count, world.hits, world.queue_head < world.queue.length, _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.flag_mode, cursor, tx, ty, _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.cell, 25600, col0, row0, view_cols, view_rows);
+  return new _M0TP49LING7167111moon_2degui8examples6canvas10MinesFrame(_M0MP49LING7167111moon_2degui3src4core9UIContext10end__frame(_M0FP49LING7167111moon_2degui8examples6canvas10mines__ctx), world.revealed_count, world.flagged_count, world.hits, world.queue_head < world.queue.length, _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.flag_mode, _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.pan_mode, cursor, tx, ty, _M0FP49LING7167111moon_2degui8examples6canvas9mines__st.cell, 25600, col0, row0, view_cols, view_rows);
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas23handle__node__hit__test(state, ctx, mouse_down, in_canvas, mwx, mwy, pitch, grid_dim, matrix_world_size) {
   const can_hit_nodes = in_canvas && (!_M0MP49LING7167111moon_2degui3src4core9UIContext21wants__capture__mouse(ctx) && (mwx >= 0 && (mwx < matrix_world_size && (mwy >= 0 && mwy < matrix_world_size))));

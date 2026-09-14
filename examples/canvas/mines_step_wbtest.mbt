@@ -211,3 +211,61 @@ test "mines_step: right button flags and the action switch re-rolls" {
   )
   assert_false(toggled_back.flag_mode)
 }
+
+///|
+test "mines_step: the hand tool pans the camera and cannot dig" {
+  let vw = 1200.0
+  let vh = 800.0
+  let _ = mines_step(0.0, 0.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  // Guaranteed-fresh field: the module-level state carries over between tests
+  let _ = mines_step(600.0, 400.0, false, false, 0.0, 0.0, 0.0, 0, vw, vh)
+
+  // Action 6 raises the hand tool, and the frame reports it back so the
+  // toolbar can never show a mode the board is not in.
+  let on = mines_step(600.0, 400.0, false, false, 0.0, 0.0, 0.0, 6, vw, vh)
+  assert_true(on.pan_mode)
+
+  // An idle hover over the board offers the open hand, not the dig pointer:
+  // this is the only affordance that says the board is draggable at all.
+  let hover = mines_step(600.0, 400.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  assert_eq(hover.cursor, "grab")
+
+  // A press and release that covered no ground is a click, and in pan mode a
+  // click must not open a tile - otherwise the mode is a trap.
+  let _ = mines_step(600.0, 400.0, true, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  let click = mines_step(600.0, 400.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  assert_eq(click.revealed + click.hits, 0)
+
+  // Held and moved: the camera follows the pan delta (not the pointer), and
+  // the cursor closes to say the board is in hand.
+  let drag = mines_step(
+    600.0,
+    400.0,
+    true,
+    false,
+    hover.cell * 2.0,
+    0.0,
+    0.0,
+    -1,
+    vw,
+    vh,
+  )
+  assert_eq(drag.cursor, "grabbing")
+  assert_eq(drag.revealed + drag.hits, 0)
+  // The camera moved by exactly two cells, so the tile under the (unmoved)
+  // pointer stepped back by two - a pan that is off by a sign or a scale
+  // shows up here rather than as a board that slowly walks away from the
+  // pointer.
+  let released = mines_step(
+    600.0, 400.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh,
+  )
+  assert_eq(released.tile_x, hover.tile_x - 2)
+
+  // Action 6 lowers it again and the same click acts on the board: it either
+  // opens the tile or, if that tile is mined, counts a hit.
+  let _ = mines_step(600.0, 400.0, false, false, 0.0, 0.0, 0.0, 6, vw, vh)
+  let _ = mines_step(600.0, 400.0, true, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  let dig = mines_step(600.0, 400.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  assert_false(dig.pan_mode)
+  assert_true(dig.revealed + dig.hits >= 1)
+}

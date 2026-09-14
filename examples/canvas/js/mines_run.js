@@ -73,7 +73,7 @@
     if (isMouseDown && !moved) {
       const dx = e.clientX - downX;
       const dy = e.clientY - downY;
-      if (dx * dx + dy * dy > 16) moved = true;
+      if (dx * dx + dy * dy > 16) { moved = true; hintRetire(); }
     }
     if (isMouseDown && moved) {
       panDX += e.clientX - (lastX === undefined ? e.clientX : lastX);
@@ -130,8 +130,80 @@
     zoomDelta += e.deltaY < 0 ? 1 : -1;
   }, { passive: false });
 
+  /* ---- chrome auto-hide ---------------------------------------------
+     The field is the page and the chrome is a guest: it leaves after a couple
+     of quiet seconds and comes straight back on any pointer move, wheel or
+     key. It never leaves while the pointer is resting on it, because a bar
+     that vanishes from under the cursor is a bar you cannot click. */
+
+  const IDLE_MS = 3000;
+  let idleTimer = 0;
+  let overChrome = false;
+
+  function armIdle() {
+    window.clearTimeout(idleTimer);
+    idleTimer = window.setTimeout(function () {
+      if (!overChrome) document.body.classList.add('chrome-idle');
+    }, IDLE_MS);
+  }
+
+  function wake() {
+    document.body.classList.remove('chrome-idle');
+    armIdle();
+  }
+
+  document.addEventListener('mousemove', function (e) {
+    const t = e.target;
+    overChrome = !!(t && t.closest && t.closest('.ms-dock'));
+    wake();
+  }, true);
+  document.addEventListener('wheel', wake, { passive: true });
+  document.addEventListener('keydown', wake);
+  document.addEventListener('pointerdown', wake);
+  armIdle();
+
+  /* ---- first-visit drag hint ----------------------------------------
+     Nothing about a grid of tiles says it can be dragged, and the hand tool
+     only helps someone who already went looking for it. So the board gets one
+     nudge. It retires for good after the first real drag - or when the hand
+     tool is picked - and it never takes a click (pointer-events: none), so it
+     can never eat a dig. */
+
+  const HINT_KEY = 'moon-egui.mines.hint';
+  const hintEl = document.getElementById('mines-hint');
+  let hintDone = true;
+  let canStore = true;
+  try {
+    hintDone = window.localStorage.getItem(HINT_KEY) === '1';
+  } catch (e) {
+    // Private mode: the hint still helps, it just cannot be remembered, so it
+    // shows again next visit instead of never showing at all.
+    canStore = false;
+    hintDone = false;
+  }
+
+  function hintRetire() {
+    if (hintDone) return;
+    hintDone = true;
+    if (canStore) {
+      try { window.localStorage.setItem(HINT_KEY, '1'); } catch (e) { /* ignore */ }
+    }
+    if (hintEl) hintEl.classList.remove('is-on');
+  }
+
+  // The toolbar's hand button reports that the affordance was found.
+  window.minesHint = { retire: hintRetire };
+
+  if (hintEl && !hintDone) {
+    window.setTimeout(function () {
+      if (!hintDone) hintEl.classList.add('is-on');
+    }, 700);
+    window.setTimeout(hintRetire, 12000);
+  }
+
   // Toolbar buttons queue an action code for the next frame:
   // 0 new field, 1 flag mode, 2 zoom in, 3 zoom out, 4 default zoom, 5 recentre
+  // 6 hand tool
   window.minesSetAction = function (a) {
     pendingAction = a;
   };
@@ -256,11 +328,11 @@
      The domain is 25,600 x 25,600 = 655,360,000 tiles. At the default zoom
      the viewport holds about 2,200 of them - 0.0003% - so the picture cannot
      possibly convey the size of the board, and "100 million mines" looks
-     exactly like "a thousand mines". The map is 40px wide, which puts one
-     tile at 0.0016px: the entire screen collapses to a speck, and that speck
+     exactly like "a thousand mines". The map is 44px wide, which puts one
+     tile at 0.0017px: the entire screen collapses to a speck, and that speck
      is the point. */
 
-  const MAP = 40;
+  const MAP = 44;
 
   const mapCanvas = document.getElementById('mines-minimap');
   const mapCtx = mapCanvas ? mapCanvas.getContext('2d') : null;
@@ -304,6 +376,37 @@
   }
 
   const DEFAULT_CELL = 22;   // mirrors DEFAULT_CELL in mines_main.mbt
+
+  /* ---- the map is a control, not a picture --------------------------
+     Clicking the map sends the camera to that part of the field. The host
+     already owns panning, and a pan delta is exactly "move the camera", so a
+     jump needs no new engine action: work out where the camera has to be for
+     the clicked point of the domain to land in the middle of the viewport,
+     and hand the difference over as a pan. */
+
+  function jumpTo(fx, fy) {
+    const f = window.minesLastFrame;
+    if (!f || !f.domain_size || !f.cell) return;
+    const span = f.domain_size;
+    panDX += (f.view_x + f.view_cols * 0.5 - fx * span) * f.cell;
+    panDY += (f.view_y + f.view_rows * 0.5 - fy * span) * f.cell;
+  }
+
+  if (mapCanvas) {
+    mapCanvas.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      const r = mapCanvas.getBoundingClientRect();
+      jumpTo((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+    });
+    mapCanvas.addEventListener('keydown', (e) => {
+      // With no pointer to aim at, the keyboard fallback is the middle of the
+      // field - where the toolbar's recentre button already goes.
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        jumpTo(0.5, 0.5);
+      }
+    });
+  }
 
   let lastFpsTime = performance.now();
   let frames = 0;
