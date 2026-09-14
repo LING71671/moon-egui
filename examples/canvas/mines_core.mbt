@@ -23,9 +23,16 @@ pub const TARGET_MINES = 100_000_000
 
 ///|
 /// Calibrated threshold: the domain contains EXACTLY TARGET_MINES mines at
-/// this value (verified by the numpy calibration in scratch/calibrate.py,
-/// cross-checkable via cmd/mines_calibrate). Never change it casually - it
-/// is part of the quantified identity of the shared world.
+/// this value. Counting all 655,360,000 tiles through the hash above gives
+/// 100,000,000 exactly (scratch/verify_mine_count.py; the same number comes
+/// out of cmd/mines_calibrate). Never change it casually - it is part of the
+/// quantified identity of the shared world.
+///
+/// Verifying this is easy to get wrong: an earlier version of the checker
+/// hashed `mix64(x ^ seed)` instead of `mix64(x * GOLD ^ seed)` and reported
+/// 100,014,855 for this same constant. Cross-check any counter against the
+/// exact big-integer reference in scratch/probe_window.py on a small window
+/// before trusting a full-domain number.
 pub const MINES_THRESHOLD = 655384180UL
 
 ///|

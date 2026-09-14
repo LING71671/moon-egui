@@ -313,3 +313,28 @@ test "mines: revealed state does not collide across a 64-tile period" {
   // and the revealed set is stable: the state lives in distinct chunks now
   assert_true(w.revealed_count() >= 1)
 }
+
+///|
+/// Count mines in a window with the production hash and the shipped
+/// threshold. Counting the whole domain (655,360,000 tiles) is far too slow
+/// for a unit test, so the window counts below come from an independent numpy
+/// implementation of the same hash (scratch/probe_window_big.py). They pin
+/// the hash AND the threshold - drop the x*GOLD step, for instance, and both
+/// numbers move - which is what makes them a guard rather than a mirror.
+fn mines_window_count(x0 : Int, y0 : Int, size : Int) -> Int {
+  let mut n = 0
+  for y = y0; y < y0 + size; y = y + 1 {
+    for x = x0; x < x0 + size; x = x + 1 {
+      if mine_cell_hash(x, y, 20260913UL) >> 32 < MINES_THRESHOLD {
+        n = n + 1
+      }
+    }
+  }
+  n
+}
+
+///|
+test "mines: the shipped threshold is the calibrated one" {
+  assert_eq(mines_window_count(0, 0, 1024), 160_273)
+  assert_eq(mines_window_count(24_576, 24_576, 1024), 159_491)
+}
