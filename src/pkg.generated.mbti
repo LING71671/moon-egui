@@ -101,6 +101,26 @@ pub using @core {type Memory}
 
 pub using @core {type Modifiers}
 
+pub using @composite {type NodeConnection}
+
+pub using @composite {type NodeEditor}
+
+pub using @composite {type NodeEditorResponse}
+
+pub using @composite {type NodeEditorStyle}
+
+pub using @composite {type NodeItem}
+
+pub using @composite {type NodePort}
+
+pub using @composite {type NodePortKind}
+
+pub using @widgets {type Pagination}
+
+pub using @widgets {type PaginationItem}
+
+pub using @widgets {type PaginationRef}
+
 pub using @core {type Painter}
 
 pub using @composite {type Plot}
@@ -116,6 +136,10 @@ pub using @composite {type PlotStyle}
 pub using @widgets {type ProgressBar}
 
 pub using @widgets {type Radio}
+
+pub using @widgets {type Rating}
+
+pub using @widgets {type RatingRef}
 
 pub using @core {type RawInput}
 
@@ -138,6 +162,18 @@ pub using @widgets {type SliderRef}
 pub using @composite {type Sparkline}
 
 pub using @widgets {type Splitter}
+
+pub using @widgets {type StepItem}
+
+pub using @widgets {type StepStatus}
+
+pub using @widgets {type Stepper}
+
+pub using @widgets {type StepperRef}
+
+pub using @widgets {type Steps}
+
+pub using @widgets {type StepsRef}
 
 pub using @widgets {type TabBar}
 

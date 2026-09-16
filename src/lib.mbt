@@ -173,6 +173,39 @@ pub type ComboBox = @widgets.ComboBox
 ///|
 pub type TabBar = @widgets.TabBar
 
+///|
+pub type Stepper = @widgets.Stepper
+
+///|
+pub type StepperRef = @widgets.StepperRef
+
+///|
+pub type Rating = @widgets.Rating
+
+///|
+pub type RatingRef = @widgets.RatingRef
+
+///|
+pub type StepStatus = @widgets.StepStatus
+
+///|
+pub type StepItem = @widgets.StepItem
+
+///|
+pub type Steps = @widgets.Steps
+
+///|
+pub type StepsRef = @widgets.StepsRef
+
+///|
+pub type Pagination = @widgets.Pagination
+
+///|
+pub type PaginationRef = @widgets.PaginationRef
+
+///|
+pub type PaginationItem = @widgets.PaginationItem
+
 // Composite components (src/composite)
 
 ///|
@@ -282,3 +315,24 @@ pub type ContextMenuItem = @composite.ContextMenuItem
 
 ///|
 pub type ContextMenuResponse = @composite.ContextMenuResponse
+
+///|
+pub type NodeEditor = @composite.NodeEditor
+
+///|
+pub type NodeItem = @composite.NodeItem
+
+///|
+pub type NodePort = @composite.NodePort
+
+///|
+pub type NodePortKind = @composite.NodePortKind
+
+///|
+pub type NodeConnection = @composite.NodeConnection
+
+///|
+pub type NodeEditorStyle = @composite.NodeEditorStyle
+
+///|
+pub type NodeEditorResponse = @composite.NodeEditorResponse

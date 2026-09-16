@@ -56,6 +56,8 @@ pub fn menu_separator(@core.UIContext) -> Unit
 
 pub fn next_char_boundary(String, Int) -> Int
 
+pub fn node_editor(@core.UIContext, String, @math.Vec2, Array[NodeItem], Array[NodeConnection], custom_style? : NodeEditorStyle?, selected_node? : String?) -> NodeEditorResponse
+
 pub fn plot(@core.UIContext, String, Array[PlotSeries], size? : @math.Vec2, show_grid? : Bool, show_crosshair? : Bool, show_legend? : Bool) -> (@math.Vec2?, @core.Response)
 
 pub fn prev_char_boundary(String, Int) -> Int
@@ -287,6 +289,74 @@ pub struct KnobStyle {
   radius : Double
 } derive(Eq, @debug.Debug)
 pub fn KnobStyle::default() -> Self
+
+pub struct NodeConnection {
+  from_node : String
+  from_port : String
+  to_node : String
+  to_port : String
+} derive(Eq, @debug.Debug)
+pub fn NodeConnection::new(String, String, String, String) -> Self
+
+pub struct NodeEditor {
+  id_salt : String
+  size : @math.Vec2
+  nodes : Array[NodeItem]
+  connections : Array[NodeConnection]
+  custom_style : NodeEditorStyle?
+  selected_node : String?
+} derive(Eq, @debug.Debug)
+pub fn NodeEditor::new(String, @math.Vec2, Array[NodeItem], Array[NodeConnection]) -> Self
+pub fn NodeEditor::selected_node(Self, String?) -> Self
+pub fn NodeEditor::show(Self, @core.UIContext) -> NodeEditorResponse
+pub fn NodeEditor::style(Self, NodeEditorStyle) -> Self
+
+pub struct NodeEditorResponse {
+  rect : @math.Rect
+  nodes : Array[NodeItem]
+  connections : Array[NodeConnection]
+  selected_node : String?
+  dragged_node : String?
+  new_connection : NodeConnection?
+  changed : Bool
+} derive(Eq, @debug.Debug)
+
+pub struct NodeEditorStyle {
+  node_min_w : Double
+  node_header_h : Double
+  port_radius : Double
+  port_spacing : Double
+  card_radius : Double
+  wire_width : Double
+  grid_size : Double
+} derive(Eq, @debug.Debug)
+pub fn NodeEditorStyle::default() -> Self
+
+pub struct NodeItem {
+  id : String
+  title : String
+  mut pos : @math.Vec2
+  size : @math.Vec2?
+  inputs : Array[NodePort]
+  outputs : Array[NodePort]
+  accent_color : @color.Color?
+} derive(Eq, @debug.Debug)
+pub fn NodeItem::new(String, String, @math.Vec2, inputs? : Array[NodePort], outputs? : Array[NodePort], accent_color? : @color.Color, size? : @math.Vec2) -> Self
+pub fn NodeItem::set_pos(Self, @math.Vec2) -> Unit
+
+pub struct NodePort {
+  id : String
+  name : String
+  kind : NodePortKind
+  color : @color.Color?
+} derive(Eq, @debug.Debug)
+pub fn NodePort::input(String, String, color? : @color.Color) -> Self
+pub fn NodePort::output(String, String, color? : @color.Color) -> Self
+
+pub enum NodePortKind {
+  Input
+  Output
+} derive(Eq, @debug.Debug)
 
 pub struct Plot {
   id_salt : String
