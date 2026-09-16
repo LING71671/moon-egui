@@ -33,6 +33,15 @@ function _M0TP49LING7167111moon_2degui3src9composite9PlotStyle(param0, param1, p
   this.bar_chart_default_h = param7;
   this.bar_chart_gap = param8;
 }
+function _M0TP49LING7167111moon_2degui3src9composite15NodeEditorStyle(param0, param1, param2, param3, param4, param5, param6) {
+  this.node_min_w = param0;
+  this.node_header_h = param1;
+  this.port_radius = param2;
+  this.port_spacing = param3;
+  this.card_radius = param4;
+  this.wire_width = param5;
+  this.grid_size = param6;
+}
 function _M0TP49LING7167111moon_2degui3src9composite10FaderStyle(param0, param1, param2, param3, param4, param5) {
   this.width = param0;
   this.height = param1;
@@ -88,7 +97,7 @@ function _M0TP49LING7167111moon_2degui8examples6canvas10MinesState(param0, param
   this.drag_move = param9;
   this.inited = param10;
 }
-function _M0TP49LING7167111moon_2degui8examples6canvas12GalleryState(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14, param15, param16, param17, param18, param19, param20, param21, param22, param23, param24, param25, param26, param27, param28, param29, param30, param31, param32, param33, param34, param35, param36, param37, param38, param39, param40, param41, param42, param43, param44, param45, param46, param47, param48, param49, param50, param51, param52, param53, param54, param55, param56) {
+function _M0TP49LING7167111moon_2degui8examples6canvas12GalleryState(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14, param15, param16, param17, param18, param19, param20, param21, param22, param23, param24, param25, param26, param27, param28, param29, param30, param31, param32, param33, param34, param35, param36, param37, param38, param39, param40, param41, param42, param43, param44, param45, param46, param47, param48, param49, param50, param51, param52, param53, param54, param55, param56, param57, param58, param59, param60, param61, param62, param63) {
   this.button_clicks = param0;
   this.checkbox_gpu = param1;
   this.checkbox_grid = param2;
@@ -104,49 +113,63 @@ function _M0TP49LING7167111moon_2degui8examples6canvas12GalleryState(param0, par
   this.drag_x = param12;
   this.drag_y = param13;
   this.drag_scale = param14;
-  this.knob_cutoff = param15;
-  this.knob_res = param16;
-  this.knob_pan = param17;
-  this.knob_drive = param18;
-  this.fader_vol = param19;
-  this.fader_gain = param20;
-  this.fader_l = param21;
-  this.fader_r = param22;
-  this.combo_format = param23;
-  this.combo_color = param24;
-  this.color_idx = param25;
-  this.progress_val = param26;
-  this.tree_selected = param27;
-  this.tree_expanded = param28;
-  this.tab_selected = param29;
-  this.text_name = param30;
-  this.text_email = param31;
-  this.code_buffer = param32;
-  this.toasts = param33;
-  this.cmd_open = param34;
-  this.cmd_query = param35;
-  this.cmd_idx = param36;
-  this.ctx_menu_open = param37;
-  this.ctx_menu_pos = param38;
-  this.status_text = param39;
-  this.active_comp_id = param40;
-  this.splitter_ratio = param41;
-  this.table_sort_col = param42;
-  this.table_sort_dir = param43;
-  this.table_columns = param44;
-  this.table_selected_row = param45;
-  this.dialog_open = param46;
-  this.dialog_last_result = param47;
-  this.segmented_sel = param48;
-  this.tag1_open = param49;
-  this.tag2_open = param50;
-  this.tag3_open = param51;
-  this.sparkline_data = param52;
-  this.color_picker_val = param53;
-  this.breadcrumb_last_clicked = param54;
-  this.rich_text_last_url = param55;
-  this.dock_tree = param56;
+  this.stepper_count = param15;
+  this.stepper_gain = param16;
+  this.rating_val = param17;
+  this.steps_current = param18;
+  this.pagination_page = param19;
+  this.knob_cutoff = param20;
+  this.knob_res = param21;
+  this.knob_pan = param22;
+  this.knob_drive = param23;
+  this.fader_vol = param24;
+  this.fader_gain = param25;
+  this.fader_l = param26;
+  this.fader_r = param27;
+  this.combo_format = param28;
+  this.combo_color = param29;
+  this.color_idx = param30;
+  this.progress_val = param31;
+  this.tree_selected = param32;
+  this.tree_expanded = param33;
+  this.tab_selected = param34;
+  this.text_name = param35;
+  this.text_email = param36;
+  this.code_buffer = param37;
+  this.toasts = param38;
+  this.cmd_open = param39;
+  this.cmd_query = param40;
+  this.cmd_idx = param41;
+  this.ctx_menu_open = param42;
+  this.ctx_menu_pos = param43;
+  this.status_text = param44;
+  this.active_comp_id = param45;
+  this.splitter_ratio = param46;
+  this.table_sort_col = param47;
+  this.table_sort_dir = param48;
+  this.table_columns = param49;
+  this.table_selected_row = param50;
+  this.dialog_open = param51;
+  this.dialog_last_result = param52;
+  this.segmented_sel = param53;
+  this.tag1_open = param54;
+  this.tag2_open = param55;
+  this.tag3_open = param56;
+  this.sparkline_data = param57;
+  this.color_picker_val = param58;
+  this.breadcrumb_last_clicked = param59;
+  this.rich_text_last_url = param60;
+  this.dock_tree = param61;
+  this.node_items = param62;
+  this.node_conns = param63;
 }
+function _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite8NodePortEE4None() {}
+_M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite8NodePortEE4None.prototype.$tag = 0;
+const _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite8NodePortEE4None__ = new _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite8NodePortEE4None();
+function _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite8NodePortEE4Some(param0) {
+  this._0 = param0;
+}
+_M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite8NodePortEE4Some.prototype.$tag = 1;
 function _M0DTPC16option6OptionGdE4None() {}
 _M0DTPC16option6OptionGdE4None.prototype.$tag = 0;
 const _M0DTPC16option6OptionGdE4None__ = new _M0DTPC16option6OptionGdE4None();
@@ -154,6 +177,13 @@ function _M0DTPC16option6OptionGdE4Some(param0) {
   this._0 = param0;
 }
 _M0DTPC16option6OptionGdE4Some.prototype.$tag = 1;
+function _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(param0) {
+  this._0 = param0;
+}
+_M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page.prototype.$tag = 0;
+function _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem8Ellipsis() {}
+_M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem8Ellipsis.prototype.$tag = 1;
+const _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem8Ellipsis__ = new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem8Ellipsis();
 function _M0TPB13StringBuilder(param0) {
   this.val = param0;
 }
@@ -181,7 +211,7 @@ function _M0TPB6Hasher(param0) {
 const _M0FPB19int__to__string__js = (x, radix) => {
   return x.toString(radix);
 };
-function _M0TPB4IterGRPC16string10StringViewE(param0, param1) {
+function _M0TPB4IterGRP49LING7167111moon_2degui3src7widgets8StepItemE(param0, param1) {
   this.f = param0;
   this.size_hint = param1;
 }
@@ -201,8 +231,17 @@ function $make_array_len_and_init(a, b) {
   return arr;
 }
 const _M0MPB7JSArray4push = (arr, val) => { arr.push(val); };
+function _M0TPB4IterGRPC16string10StringViewE(param0, param1) {
+  this.f = param0;
+  this.size_hint = param1;
+}
 function _M0TPB8MutLocalGORPC16string10StringViewE(param0) {
   this.val = param0;
+}
+function _M0TPB9ArrayViewGRP49LING7167111moon_2degui3src7widgets8StepItemE(param0, param1, param2) {
+  this.buf = param0;
+  this.start = param1;
+  this.end = param2;
 }
 function _M0TPB3MapGmRP49LING7167111moon_2degui8examples6canvas9MineChunkE(param0, param1, param2, param3, param4, param5, param6) {
   this.entries = param0;
@@ -226,6 +265,9 @@ const _M0MPC16double6Double8mod__ffi = (a, b) => (a % b);
 const _M0MPB7JSArray11set__length = (arr, len) => { arr.length = len; };
 const _M0MPB7JSArray3pop = (arr) => arr.pop();
 const _M0MPB7JSArray6splice = (arr, idx, cnt) => arr.splice(idx, cnt);
+function _M0TPC13ref3RefGiE(param0) {
+  this.val = param0;
+}
 function _M0TPC17hashmap7HashMapGsdE(param0, param1, param2, param3) {
   this.entries = param0;
   this.capacity = param1;
@@ -680,6 +722,36 @@ function _M0TP49LING7167111moon_2degui3src9composite10PlotSeries(param0, param1,
 function _M0TPB8MutLocalGdE(param0) {
   this.val = param0;
 }
+function _M0TP49LING7167111moon_2degui3src9composite8NodePort(param0, param1, param2, param3) {
+  this.id = param0;
+  this.name = param1;
+  this.kind = param2;
+  this.color = param3;
+}
+function _M0TP49LING7167111moon_2degui3src9composite8NodeItem(param0, param1, param2, param3, param4, param5, param6) {
+  this.id = param0;
+  this.title = param1;
+  this.pos = param2;
+  this.size = param3;
+  this.inputs = param4;
+  this.outputs = param5;
+  this.accent_color = param6;
+}
+function _M0TP49LING7167111moon_2degui3src9composite14NodeConnection(param0, param1, param2, param3) {
+  this.from_node = param0;
+  this.from_port = param1;
+  this.to_node = param2;
+  this.to_port = param3;
+}
+function _M0TP49LING7167111moon_2degui3src9composite18NodeEditorResponse(param0, param1, param2, param3, param4, param5, param6) {
+  this.rect = param0;
+  this.nodes = param1;
+  this.connections = param2;
+  this.selected_node = param3;
+  this.dragged_node = param4;
+  this.new_connection = param5;
+  this.changed = param6;
+}
 function _M0TP49LING7167111moon_2degui3src9composite4Knob(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9) {
   this.id_salt = param0;
   this.label = param1;
@@ -783,12 +855,56 @@ function _M0TP49LING7167111moon_2degui3src7widgets13ToastResponse(param0, param1
   this.active_toasts = param0;
   this.dismissed_id = param1;
 }
+function _M0TP49LING7167111moon_2degui3src7widgets8StepItem(param0, param1, param2) {
+  this.title = param0;
+  this.description = param1;
+  this.status = param2;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets5Steps(param0, param1, param2, param3, param4) {
+  this.id_salt = param0;
+  this.current = param1;
+  this.items = param2;
+  this.clickable = param3;
+  this.width = param4;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets7Stepper(param0, param1, param2, param3, param4, param5, param6, param7, param8) {
+  this.id_salt = param0;
+  this.value = param1;
+  this.step = param2;
+  this.min = param3;
+  this.max = param4;
+  this.precision = param5;
+  this.prefix = param6;
+  this.suffix = param7;
+  this.width = param8;
+}
 function _M0TP49LING7167111moon_2degui3src7widgets6Slider(param0, param1, param2, param3, param4) {
   this.label = param0;
   this.value = param1;
   this.min = param2;
   this.max = param3;
   this.step = param4;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets6Rating(param0, param1, param2, param3, param4, param5, param6) {
+  this.id_salt = param0;
+  this.value = param1;
+  this.max_stars = param2;
+  this.allow_half = param3;
+  this.read_only = param4;
+  this.star_size = param5;
+  this.spacing = param6;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets10Pagination(param0, param1, param2, param3, param4, param5) {
+  this.id_salt = param0;
+  this.current_page = param1;
+  this.total_pages = param2;
+  this.item_size = param3;
+  this.spacing = param4;
+  this.show_prev_next = param5;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets13PaginationRef(param0, param1) {
+  this.pagination = param0;
+  this.target = param1;
 }
 function _M0TP49LING7167111moon_2degui3src7widgets6Button(param0, param1, param2, param3) {
   this.text = param0;
@@ -866,12 +982,26 @@ function _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composi
   this._0 = param0;
 }
 _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite15ContextMenuItemEE4Some.prototype.$tag = 1;
+function _M0DTPC16option6OptionGORP49LING7167111moon_2degui3src9composite15NodeEditorStyleE4None() {}
+_M0DTPC16option6OptionGORP49LING7167111moon_2degui3src9composite15NodeEditorStyleE4None.prototype.$tag = 0;
+const _M0DTPC16option6OptionGORP49LING7167111moon_2degui3src9composite15NodeEditorStyleE4None__ = new _M0DTPC16option6OptionGORP49LING7167111moon_2degui3src9composite15NodeEditorStyleE4None();
+function _M0DTPC16option6OptionGORP49LING7167111moon_2degui3src9composite15NodeEditorStyleE4Some(param0) {
+  this._0 = param0;
+}
+_M0DTPC16option6OptionGORP49LING7167111moon_2degui3src9composite15NodeEditorStyleE4Some.prototype.$tag = 1;
+function _M0DTPC16option6OptionGOsE4None() {}
+_M0DTPC16option6OptionGOsE4None.prototype.$tag = 0;
+const _M0DTPC16option6OptionGOsE4None__ = new _M0DTPC16option6OptionGOsE4None();
+function _M0DTPC16option6OptionGOsE4Some(param0) {
+  this._0 = param0;
+}
+_M0DTPC16option6OptionGOsE4Some.prototype.$tag = 1;
 const _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger = { method_0: _M0IPB13StringBuilderPB6Logger13write__string, method_1: _M0IP016_24default__implPB6Logger16write__substringGRPB13StringBuilderE, method_2: _M0IPB13StringBuilderPB6Logger11write__view, method_3: _M0IPB13StringBuilderPB6Logger11write__char, method_4: _M0IP016_24default__implPB6Logger28write__string__interpolationGRPB13StringBuilderE, method_5: _M0IP016_24default__implPB6Logger5writeGRPB13StringBuilderE };
 const _M0MPB4Iter4nextN6constrS9855GRPC16string10StringViewE = 0;
 const _M0MPB4Iter4nextN6constrS9856GRPC16string10StringViewE = 0;
 const _M0MPB4Iter4nextN6constrS9855GcE = 0;
 const _M0MPB4Iter4nextN6constrS9856GcE = 0;
-const _M0MPB4Iter3newN6constrS9863GRPC16string10StringViewE = 0;
+const _M0MPB4Iter3newN6constrS9863GRP49LING7167111moon_2degui3src7widgets8StepItemE = 0;
 const _M0MPB4Iter3newN6constrS9863GcE = 0;
 const _M0MP49LING7167111moon_2degui3src5color5Color11transparentN6recordS36 = new _M0TP49LING7167111moon_2degui3src5color5Color(0, 0, 0, 0);
 const _M0FP49LING7167111moon_2degui3src4math2pi = 3.1415926535897931;
@@ -881,27 +1011,33 @@ const _M0MP49LING7167111moon_2degui3src4core2Id10with__seedN5primeS291 = 1099511
 const _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1507 = new _M0TP49LING7167111moon_2degui3src4core2Id(0n);
 const _M0MP49LING7167111moon_2degui3src4core9Modifiers4noneN6recordS1515 = new _M0TP49LING7167111moon_2degui3src4core9Modifiers(false, false, false, false);
 const _M0FP49LING7167111moon_2degui3src9composite9hex__byteN11hex__digitsS294 = "0123456789ABCDEF";
-const _M0MP49LING7167111moon_2degui3src9composite10TableStyle7defaultN6recordS3034 = new _M0TP49LING7167111moon_2degui3src9composite10TableStyle(32, 30, 6);
-const _M0MP49LING7167111moon_2degui3src9composite9PlotStyle7defaultN6recordS3035 = new _M0TP49LING7167111moon_2degui3src9composite9PlotStyle(280, 150, 38, 14, 14, 24, 280, 150, 8);
-const _M0MP49LING7167111moon_2degui3src9composite10FaderStyle7defaultN6recordS3037 = new _M0TP49LING7167111moon_2degui3src9composite10FaderStyle(44, 150, 6, 32, 20, 3);
-const _M0MP49LING7167111moon_2degui3src9composite15CodeEditorStyle7defaultN6recordS3038 = new _M0TP49LING7167111moon_2degui3src9composite15CodeEditorStyle(12.5, 11, 20, 44, 6);
-const _M0FP49LING7167111moon_2degui3src7widgets21wrap__dialog__messageN7_2abindS1807 = "\n";
+const _M0MP49LING7167111moon_2degui3src9composite10TableStyle7defaultN6recordS3453 = new _M0TP49LING7167111moon_2degui3src9composite10TableStyle(32, 30, 6);
+const _M0MP49LING7167111moon_2degui3src9composite9PlotStyle7defaultN6recordS3454 = new _M0TP49LING7167111moon_2degui3src9composite9PlotStyle(280, 150, 38, 14, 14, 24, 280, 150, 8);
+const _M0MP49LING7167111moon_2degui3src9composite15NodeEditorStyle7defaultN6recordS3455 = new _M0TP49LING7167111moon_2degui3src9composite15NodeEditorStyle(160, 28, 5, 22, 6, 2, 24);
+const _M0MP49LING7167111moon_2degui3src9composite10FaderStyle7defaultN6recordS3457 = new _M0TP49LING7167111moon_2degui3src9composite10FaderStyle(44, 150, 6, 32, 20, 3);
+const _M0MP49LING7167111moon_2degui3src9composite15CodeEditorStyle7defaultN6recordS3458 = new _M0TP49LING7167111moon_2degui3src9composite15CodeEditorStyle(12.5, 11, 20, 44, 6);
+const _M0MP49LING7167111moon_2degui3src7widgets5Steps4showN3symS1185 = "✓";
+const _M0MP49LING7167111moon_2degui3src7widgets5Steps4showN3symS1194 = "✕";
+const _M0MP49LING7167111moon_2degui3src7widgets10Pagination4showN3symS525 = "‹";
+const _M0MP49LING7167111moon_2degui3src7widgets10Pagination4showN3symS541 = "...";
+const _M0MP49LING7167111moon_2degui3src7widgets10Pagination4showN3symS549 = "›";
+const _M0FP49LING7167111moon_2degui3src7widgets21wrap__dialog__messageN7_2abindS2467 = "\n";
 const _M0FP49LING7167111moon_2degui8examples6canvas5state = new _M0TP49LING7167111moon_2degui8examples6canvas14BenchmarkState(256, true, true, false, 5000, 5000, 0, 0, 0, 5000, 5000, 0.075, -1, -1, -1, 0, 0, 0, false, 0, false, 0, "", 1, true);
 const _M0FP49LING7167111moon_2degui8examples6canvas15logo__grid__128 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29041796, 29107075, 28976258, 28976258, 28910722, 28910466, 28910466, 28910723, 29042051, 29172870, 29172355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29304199, 29107076, 29041795, 28976258, 28910466, 28910466, 28976258, 28976258, 28976258, 29041795, 29107845, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29107076, 29107331, 29566601, 29763467, 29501064, 29238661, 29107588, 29107588, 29173125, 29304198, 29566601, 29763467, 29435527, 29172868, 29107332, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29173123, 29107333, 29435528, 29763467, 29566601, 29304198, 29173124, 29107588, 29107588, 29238661, 29501064, 29763467, 29566601, 29041795, 29238405, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29107332, 29172869, 29763467, 29173125, 28910721, 28844930, 28910722, 28910722, 28845185, 28845185, 28845185, 28910722, 28910721, 28844930, 28845186, 29304198, 29763467, 29238661, 28778879, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844931, 29303941, 29828747, 29304198, 28845186, 28844930, 28910721, 28910722, 28845185, 28845185, 28845185, 28910722, 28910722, 28844930, 28910721, 29173125, 29763467, 29238661, 29107331, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29172869, 29829004, 28976259, 28844930, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29369735, 29304198, 28844930, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910466, 29369735, 29304199, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 28844930, 29042051, 29829004, 29238405, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779904, 29304198, 29435528, 28779393, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 28910723, 29829004, 28845186, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779392, 29829004, 28910722, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 28779393, 29501064, 29303942, 28845185, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779392, 29501064, 29041795, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 28910722, 29763211, 28713855, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28713856, 29829004, 28910722, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29107588, 29435527, 28844928, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28648063, 29632138, 29041795, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29107331, 29238406, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29238661, 29041795, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 28976259, 29566601, 28648576, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779391, 29435527, 29041795, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29566601, 28779393, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910722, 29501064, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29107331, 29304198, 28582783, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29172868, 29107588, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29697674, 28844931, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910979, 29697931, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29173125, 29173124, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910722, 29501065, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29435272, 28779392, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779393, 29369735, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844929, 29566601, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28714112, 29829004, 28779393, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29304198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910207, 29369735, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28779393, 29829004, 28779136, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29172869, 29041795, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29763467, 28845186, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910466, 29763211, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29107331, 29173125, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28845184, 29632137, 28844929, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29632138, 28845185, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844929, 29632137, 28910721, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844929, 29697674, 28714112, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28975745, 29435272, 28910721, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29369735, 28910467, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844929, 29304198, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28976258, 29304198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28845185, 29566601, 28910721, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29041795, 28845185, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910466, 28976259, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910721, 29632138, 28779649, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29238662, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29369991, 28976769, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28976514, 29501064, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29173125, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910465, 29697675, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29763467, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910466, 29763467, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29763211, 28910465, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910722, 29107588, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29697675, 28845186, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910722, 29697674, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29173125, 28845185, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28713602, 29632138, 28844929, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29435528, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910721, 29369991, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29566601, 28844930, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779905, 29697674, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29107588, 28845186, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844930, 29041796, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29697675, 28910977, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779649, 29238662, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29173125, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29304198, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29304198, 28845185, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29041795, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29697674, 28910723, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844929, 29697931, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28976259, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910979, 29632138, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29763211, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844929, 29697675, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29632138, 28910210, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910722, 29763211, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29501065, 28844929, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844930, 29501064, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29763211, 28844930, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910464, 29632138, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29173125, 28910465, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779393, 29173125, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29697674, 28779393, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910465, 29501064, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29041795, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29107588, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910721, 29566601, 28844930, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910721, 29369735, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910721, 29632137, 28844928, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910208, 29697674, 28910721, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29435528, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28845185, 29369735, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29763211, 28845185, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844929, 29763467, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29435528, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910722, 29501064, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 28976258, 29304198, 28779649, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910721, 29566601, 28910466, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844930, 29501065, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29304199, 28910722, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29501065, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910722, 29632138, 28910721, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29107332, 28910466, 28910722, 29304198, 28779649, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29238662, 28844929, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844930, 29238661, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28779649, 29304198, 28910465, 28844930, 29041796, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844929, 29697674, 28910721, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844929, 29763211, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 28910466, 29894540, 28845185, 0, 29107332, 29238662, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 28976259, 28910466, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28976258, 28976258, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29369735, 29041794, 0, 28845185, 29894541, 28910466, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29763211, 28910466, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910722, 29632138, 28844929, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 28910723, 29894540, 28910465, 0, 0, 28975745, 29369735, 28976259, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29501064, 28975746, 0, 0, 0, 0, 0, 0, 0, 0, 28779906, 29566601, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28976259, 29304199, 0, 0, 0, 28910466, 29894540, 28910722, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844929, 29566601, 28779649, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910466, 28976259, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 28976258, 29697931, 28910723, 0, 0, 0, 0, 28713856, 29829004, 28844929, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29763467, 28910466, 0, 0, 0, 0, 0, 0, 0, 0, 28910466, 29763467, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28779394, 29829003, 28844928, 0, 0, 0, 0, 28910722, 29763467, 28976259, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29041795, 28845186, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844930, 29697674, 28779394, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 28844929, 29369735, 29238406, 28910721, 0, 0, 0, 0, 0, 0, 29041795, 29369734, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29632138, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 28845186, 29632138, 28910721, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29369735, 28910466, 0, 0, 0, 0, 0, 0, 28976258, 29304198, 29369735, 28779393, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28779393, 29697674, 28844929, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29238662, 29041795, 28844929, 28845186, 28845186, 28844929, 28844929, 29107589, 29829004, 29238405, 0, 0, 0, 0, 0, 0, 0, 0, 28648063, 29369735, 28976258, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29369735, 28910721, 0, 0, 0, 0, 0, 0, 0, 0, 28844930, 29304198, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28976258, 29304198, 0, 0, 0, 0, 0, 0, 0, 0, 28779391, 29238405, 29829004, 29107588, 28844930, 28910465, 28845186, 28845186, 28844929, 29107332, 29107333, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28714112, 29369735, 29697675, 29369735, 29369735, 29632138, 29697675, 29107333, 29042051, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844930, 29763467, 28844928, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29041796, 28844930, 0, 0, 0, 0, 0, 0, 0, 0, 28845186, 29041795, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844929, 29763468, 28845184, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29238404, 29173125, 29763211, 29632138, 29369735, 29369735, 29763211, 29435271, 28582782, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29238406, 28976515, 28976259, 29173124, 29107844, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29041796, 29304198, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29304199, 0, 0, 0, 0, 0, 0, 0, 28714115, 29435527, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29304199, 28976258, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29238661, 29107587, 28976003, 29042051, 29238406, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910209, 29435528, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29697931, 28910467, 0, 0, 0, 0, 0, 0, 28976002, 29763467, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29369735, 28910207, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779648, 29763467, 28844929, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29697675, 28910721, 0, 0, 0, 0, 0, 0, 28976003, 29697674, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29763211, 28713601, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29041795, 29238662, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29435528, 28910978, 0, 0, 0, 0, 0, 0, 28844929, 29369991, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29238661, 28976003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844928, 29632138, 28844929, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29107589, 28779393, 0, 0, 0, 0, 0, 0, 28844929, 29107588, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910721, 29566601, 28648319, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28845185, 29697674, 28844929, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29107588, 0, 0, 0, 0, 0, 0, 29238662, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844929, 29697675, 28845185, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29107588, 29172869, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910721, 29632138, 28910208, 0, 0, 0, 0, 28910466, 29697931, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29173125, 29107332, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28714113, 29763211, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29763467, 28844931, 0, 0, 0, 0, 28910465, 29763211, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29697675, 28845186, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844930, 29566601, 28844929, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910721, 29566601, 28845186, 0, 0, 0, 0, 28910721, 29501064, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844929, 29632137, 28844928, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29238661, 29041795, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29238661, 28844929, 0, 0, 0, 0, 28779649, 29173125, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29107332, 29172868, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779391, 29829003, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28976259, 28976258, 0, 0, 0, 0, 28976259, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29763211, 28714113, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910721, 29369735, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29566601, 28910980, 0, 0, 28845186, 29632138, 28910721, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910721, 29435272, 28910465, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29304198, 28976258, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844930, 29763467, 28910466, 0, 0, 28976514, 29763467, 28844930, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28976258, 29238662, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28714111, 29894540, 28844929, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910721, 29632138, 28976258, 0, 0, 28845186, 29566601, 28910721, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844929, 29960077, 28779137, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29041795, 29238662, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29107588, 28910722, 28910722, 28910465, 28845186, 29041796, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29304198, 28910723, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28845185, 29566601, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29041796, 29697674, 29697674, 29041795, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29501064, 29041794, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29041540, 29042051, 28976258, 28910722, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 28844930, 28844930, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29238661, 28976259, 29041795, 29107331, 29107588, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29107332, 29041796, 29107588, 29763467, 29566601, 29107588, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 28976259, 29369735, 29697675, 29566601, 29041795, 29107333, 29172870, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29238661, 29107588, 29763467, 29369735, 28845186, 28844930, 28910721, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 28844930, 28910721, 29107588, 29697674, 29435527, 29238404, 29172870, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29172869, 29238662, 29632138, 28976258, 28844930, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 28844929, 28845186, 29369735, 29697674, 29107332, 28976005, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29041796, 29238406, 29632138, 28845185, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 28844929, 29304199, 29632137, 29107333, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29173125, 29829004, 28910722, 28844929, 28910722, 28910722, 28976771, 28977028, 28977284, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977028, 28977284, 28977028, 28977027, 28910979, 28910722, 28845186, 28910721, 29697674, 29173124, 28779391, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29238661, 29566601, 28779393, 28845186, 28976515, 28977028, 28910722, 28712061, 28644986, 28578937, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28579193, 28578937, 28579193, 28645499, 28778367, 28976771, 28977028, 28910722, 28844930, 29173125, 29435527, 28779650, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29304197, 29238662, 28844930, 28910722, 28977028, 28778367, 28579193, 28910722, 29706391, 30502829, 31100093, 31365316, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431109, 31431365, 31298754, 30900407, 30170787, 29309069, 28711548, 28645242, 28910722, 28976772, 28844930, 29041795, 29763211, 28779904, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29173125, 29238662, 28844929, 28976771, 28910722, 28579193, 29374862, 31232191, 32758249, 33554174, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33288695, 32161241, 30370217, 28844416, 28711548, 28977028, 28845185, 28976259, 29632138, 28779392, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28976002, 29501065, 28844929, 28976771, 28844160, 28778367, 31033787, 33222903, 33554431, 33554431, 33554431, 33488125, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33487869, 33488125, 33488382, 33554431, 33554431, 33554431, 32493027, 29839772, 28579450, 28977028, 28845185, 29107332, 29173125, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28714112, 29894540, 28779393, 28976771, 28843903, 29043590, 32227803, 33554431, 33554431, 33488125, 33488382, 33554431, 33554431, 33554431, 33488125, 33488382, 33488382, 33488125, 33554431, 33554431, 33554431, 33554431, 33488382, 33488125, 33487869, 33554174, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554175, 33488125, 33554431, 33488382, 33488382, 33554431, 33554431, 33554431, 33554431, 33554431, 33554175, 33488125, 33488125, 33554431, 33488125, 30767795, 28644986, 28977028, 28844929, 29566601, 28845186, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29041795, 29041796, 28910978, 28910465, 28910722, 32426721, 33554431, 33487868, 33554175, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33488382, 33554431, 33554431, 33554431, 33554431, 33554431, 33488125, 33554175, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33488126, 33554174, 33554431, 30635953, 28579450, 28977028, 28844930, 29697931, 28779392, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844931, 29763467, 28844930, 28977028, 28579450, 31497927, 33554431, 33422076, 33554431, 33554431, 33554431, 33554431, 33554431, 33554174, 33554431, 31630539, 29972126, 29971870, 31498184, 33554174, 33554174, 33554431, 33421820, 32625381, 31564233, 30702259, 32890604, 33554431, 33488382, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554174, 33488126, 33554431, 33488125, 31696845, 33421307, 32095448, 32691687, 33554431, 33554431, 33488126, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33488382, 33488382, 33422076, 29640598, 28712061, 28976771, 29369735, 28845184, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28845185, 29173125, 28976515, 28777854, 29574036, 33487612, 33488382, 33554175, 33554431, 33554431, 33554431, 33554431, 33488382, 33554431, 31099837, 28446326, 31232192, 31299011, 28512631, 30900407, 33554431, 33554431, 32757993, 29706904, 29109895, 28313970, 32293596, 33554431, 33488126, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33488125, 33554431, 33554431, 32360415, 29507474, 28645755, 33554431, 30701489, 28380020, 31299011, 33422076, 33554431, 33488382, 33554175, 33554431, 33554431, 33554431, 33554431, 33554431, 33488125, 33554431, 32028887, 28645499, 28976771, 28845186, 29369735, 28844929, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29041539, 29435528, 28845186, 28977028, 28579193, 31232192, 33554431, 33488125, 33554431, 33554431, 33554431, 33554431, 33554174, 33554431, 33222390, 28778110, 30701489, 33554431, 33554431, 30966969, 28645242, 33089777, 33554431, 33421820, 33554431, 31564490, 28512631, 32426721, 33554431, 33488126, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554174, 33554431, 33023985, 30502829, 28446069, 29109639, 31696588, 33554174, 32757993, 30038945, 28379763, 29375375, 32161241, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554175, 33554175, 33355771, 29441168, 28778111, 28845443, 29763467, 28910209, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910466, 29763467, 28845186, 28976771, 28711548, 32227804, 33554431, 33488125, 33554431, 33554431, 33554431, 33554431, 33488382, 33554431, 32492770, 28446326, 31829456, 33488125, 33488125, 32028886, 28446069, 32227547, 33554431, 33421820, 33554431, 31497928, 28446069, 32426464, 33554431, 33488126, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554174, 33554174, 31697358, 29109639, 28777854, 31033531, 33223159, 33554431, 33554174, 33554431, 33554431, 32160985, 29442194, 28579193, 30502829, 33222389, 33554174, 33554175, 33554431, 33554431, 33554431, 33554431, 33488382, 33554431, 30303655, 28645243, 28911491, 29435528, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910466, 29632137, 28910721, 28910979, 28844160, 32559332, 33554431, 33488382, 33554431, 33554431, 33554431, 33554431, 33488125, 33554431, 32293340, 28380533, 31962324, 33554431, 33554431, 32161497, 28446326, 32028373, 33554431, 33421819, 33554175, 31497928, 28446069, 32426464, 33554431, 33488126, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554175, 29175432, 28910722, 32758762, 33554431, 33554431, 33422076, 33554431, 33488382, 33487612, 33554431, 33554431, 30502572, 28180590, 32359902, 33554431, 33488382, 33554431, 33554431, 33554431, 33554431, 33488125, 33554175, 30635697, 28644986, 28911491, 29107332, 28845185, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844930, 29369735, 28845186, 28976771, 28711805, 32294622, 33554431, 33488126, 33554431, 33554431, 33554431, 33554431, 33488382, 33554431, 32692200, 28446839, 31630283, 33554174, 33488382, 31896018, 28446069, 32492514, 33554431, 33421820, 33554175, 31497928, 28446069, 32426464, 33554175, 33488126, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554174, 33554175, 31099837, 28712062, 29441168, 31895506, 33554431, 33554431, 33554175, 33554431, 33554431, 32758506, 30369961, 28711548, 29773210, 33023472, 33554175, 33488638, 33554431, 33554431, 33554431, 33554431, 33488382, 33554431, 30370474, 28645243, 28977027, 28910722, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28845187, 29304198, 28910722, 28977284, 28579193, 31431878, 33554431, 33487869, 33554431, 33554431, 33554431, 33554431, 33554175, 33554174, 33421819, 29242251, 29839515, 33554431, 33554431, 30104738, 29043333, 33355257, 33554431, 33554431, 33554431, 31630283, 28512118, 32559075, 33554431, 33554175, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554175, 33554431, 32426721, 29640598, 28313714, 29905564, 32492770, 33488382, 33156340, 30967482, 28645755, 28777854, 31299267, 33422076, 33554431, 33554175, 33554431, 33554431, 33554431, 33554431, 33554431, 33554175, 33488125, 29574293, 28777853, 28911235, 28845185, 29173125, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910722, 29304198, 28910722, 28976771, 28711549, 29840028, 33554431, 33488126, 33554431, 33554431, 33554431, 33554431, 33554431, 33488382, 33554431, 32160985, 28778110, 29839259, 29905821, 28711805, 31962324, 33554431, 33554431, 31298241, 29441168, 29308812, 28578937, 29507217, 29508243, 32492771, 33554431, 33488381, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33488382, 33554431, 33554431, 31564490, 28778111, 28977285, 33554431, 31100093, 28049515, 30436523, 32957679, 33554431, 33554431, 33554175, 33554431, 33554431, 33554431, 33554431, 33554431, 33488125, 33554431, 32360928, 28777598, 28976515, 28910722, 28845185, 29238662, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779393, 29369735, 28845186, 28910722, 28976771, 28645756, 32028630, 33554431, 33487869, 33554431, 33554431, 33554431, 33554431, 33554431, 33554174, 33554431, 32956910, 31365060, 31299011, 32824812, 33554431, 33488382, 33554431, 32691687, 31896275, 32161241, 32293852, 32095192, 31962324, 33155827, 33488382, 33488125, 33488126, 33488125, 33488125, 33488125, 33488125, 33488126, 33488382, 33488382, 33554174, 33554175, 33554431, 33554431, 33488382, 33554175, 33554431, 33023728, 31034044, 33487869, 31829969, 31896275, 33554431, 33554431, 33488125, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554175, 33487869, 33554431, 30104481, 28645756, 28976771, 28910722, 28910722, 28910722, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910722, 29632138, 28910721, 28910722, 28910979, 28844160, 29176458, 32957423, 33554431, 33487869, 33554431, 33554431, 33554431, 33554431, 33554431, 33488382, 33554431, 33554431, 33554431, 33554431, 33488382, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33488382, 33488125, 33488125, 33488125, 33487869, 33554431, 33554431, 33554175, 33554431, 33554431, 33488382, 33554174, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33554174, 33487869, 33554431, 31365059, 28644986, 28977028, 28910722, 28845185, 29107588, 28844929, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910466, 29763211, 28844930, 28910722, 28910722, 28977028, 28711805, 29507730, 32890605, 33554431, 33488382, 33488125, 33554175, 33554431, 33554431, 33554431, 33488382, 33488125, 33487869, 33488125, 33488125, 33488125, 33554174, 33554431, 33554431, 33554431, 33554431, 33554431, 33487869, 33222902, 32891374, 32625638, 32360159, 32161498, 32094935, 32094679, 32161498, 32360672, 32625894, 32891374, 33223159, 33488382, 33554431, 33554431, 33554431, 33554431, 33554431, 33554174, 33422076, 33488125, 33488125, 33488125, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33553918, 33487869, 33554431, 33554431, 31497928, 28711805, 28910979, 28910722, 28910722, 28910721, 29566601, 28910465, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29107332, 28910722, 28910722, 28910722, 28910722, 28977028, 28711805, 29175945, 31829713, 33554431, 33554431, 33554431, 33488382, 33488125, 33488125, 33488125, 33488125, 33554174, 33554431, 33554431, 33554431, 33554431, 33156597, 32492770, 31696589, 30900919, 30171557, 29640342, 29242507, 28977284, 28844159, 28712061, 28711548, 28645499, 28645499, 28711548, 28777598, 28844160, 28977284, 29242507, 29640342, 30171043, 30834357, 31564233, 32294366, 33023729, 33554431, 33554431, 33554431, 33554431, 33554431, 33488125, 33488125, 33488125, 33488125, 33488125, 33554174, 33554431, 33554431, 33090035, 30569391, 28645499, 28910722, 28910978, 28910722, 28910722, 28844929, 29697675, 28976257, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28779649, 29501064, 28910721, 28910722, 28910722, 28910722, 28977028, 28844160, 28645500, 30038176, 32028117, 33288952, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 33089778, 32094936, 30901433, 29971870, 29241994, 28778110, 28579194, 28579193, 28645499, 28777598, 28844160, 28910465, 28910978, 28976771, 28976771, 28977027, 28977027, 28976771, 28911235, 28910978, 28910465, 28844160, 28777598, 28645499, 28579193, 28579193, 28711805, 29109383, 29706647, 30569391, 31630796, 32692200, 33487869, 33554431, 33554431, 33554431, 33554431, 33554431, 33554431, 32825068, 31166399, 29242251, 28579450, 28976771, 28910978, 28910722, 28910722, 28910722, 29107588, 28910466, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28910721, 29566601, 28844929, 28910722, 28910722, 28910722, 28910722, 28910979, 28976771, 28711292, 28645755, 29375119, 30370474, 31299011, 31896275, 32227291, 31431366, 30038432, 29109896, 28645500, 28579193, 28711548, 28844160, 28910979, 28977028, 28977028, 28977028, 28976771, 28910979, 28910978, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910978, 28910979, 28976771, 28977028, 28977028, 28977028, 28976771, 28844673, 28712061, 28644986, 28579450, 28910465, 29574035, 30701489, 31962324, 32161498, 31762894, 30967225, 29972126, 28977284, 28579193, 28844160, 28977028, 28910722, 28910722, 28910722, 28910722, 28779393, 29829004, 28910209, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28844929, 29632138, 28844929, 28910722, 28910722, 28910722, 28910722, 28910722, 28976771, 28976771, 28778367, 28645242, 28579193, 28645243, 28711548, 28579450, 28645756, 28844417, 28977027, 28977028, 28976771, 28910979, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910978, 28976771, 28977028, 28977028, 28910722, 28777854, 28579450, 28645499, 28711292, 28579450, 28579193, 28711548, 28910465, 28977028, 28910979, 28910722, 28910722, 28910722, 28910722, 28845185, 29501064, 28845185, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29173124, 29173125, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910979, 28977028, 28977284, 28977028, 28976771, 28977028, 28977027, 28910978, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28976771, 28977028, 28977028, 28976771, 28977028, 28977028, 28976771, 28910978, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29172869, 29173125, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28714109, 29369991, 29041795, 28779649, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29041795, 29435527, 28647809, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28713858, 29566601, 28976259, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845185, 29107332, 29369735, 28648319, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28714112, 29304198, 29173125, 28844929, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28779393, 29435527, 29303941, 28779135, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28648065, 29238662, 29632138, 28844930, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910721, 28910722, 29829003, 29238405, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29173125, 29763211, 29107589, 28844930, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 28845185, 29435528, 29304198, 29041796, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29041795, 29173125, 29763467, 29041795, 28844930, 28845185, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28844929, 29369735, 29632394, 29238661, 28910211, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29238405, 29172868, 29763467, 29173125, 28910721, 28910979, 28910978, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910979, 28845443, 28910722, 29501064, 29632138, 29172868, 29042052, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29174151, 29107845, 29697674, 29368964, 28910209, 28911235, 28911235, 28910978, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910979, 28911235, 28910979, 28843647, 29368452, 29041795, 29108101, 29240457, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29171584, 28981135, 28978055, 29039228, 29039485, 28975232, 28910722, 28845699, 28845699, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910979, 28911235, 28910465, 28974719, 29039228, 28909182, 29244818, 29379227, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28889329, 28826614, 28829951, 28827899, 28819429, 28805826, 28858274, 28914828, 28975745, 29104765, 29105021, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29039999, 29105022, 28846469, 28918934, 28798643, 29863897, 30926071, 31062015, 30929663, 30795000, 30793974, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28825333, 28694002, 28759539, 28759539, 28825331, 28824562, 28824563, 28761079, 28697596, 28762875, 28823279, 28813527, 28805826, 28860841, 28845955, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910209, 28925350, 28812499, 28818402, 28760822, 28960511, 30732799, 30927354, 30860535, 30861048, 30861305, 30861304, 30861305, 30861561, 30795769, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28890867, 28825331, 28825331, 28759539, 28825076, 28825075, 28825075, 28825075, 28759795, 28825075, 28824818, 28824305, 28824818, 28825075, 28765183, 28759025, 28923811, 28910466, 28910978, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910465, 28915599, 28810702, 28764927, 28693234, 29349617, 30992375, 30861560, 30927353, 30927353, 30927097, 30927097, 30993145, 30993145, 30927353, 30927352, 30926840, 30927097, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28824817, 28693748, 28759540, 28759795, 28759539, 28825332, 28890868, 28759796, 28759284, 28825075, 28759796, 28825075, 28890868, 28759796, 28759796, 28824049, 28828925, 28812756, 28912519, 29104765, 28910978, 28910722, 28910978, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910978, 28910722, 28910978, 28974975, 29104765, 28928687, 28631034, 29350646, 30992376, 31058169, 30992633, 30992633, 30992633, 30992633, 30992633, 30992633, 31058169, 30992633, 30992633, 31058681, 30729976, 28825333, 28759538, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28365556, 28628468, 28890868, 29087988, 29153780, 28825076, 28628466, 28825076, 28759539, 28825075, 28759540, 28825076, 28759540, 28759796, 28825076, 28759540, 28758769, 28763645, 28744911, 28976259, 28975232, 28845955, 28910722, 28910978, 28975745, 28975745, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29040769, 28910722, 28910722, 28910979, 28845443, 29170302, 28793509, 29090299, 30992375, 30992631, 31058681, 31058425, 31123961, 31123961, 31058425, 30992889, 31123961, 30992889, 30992888, 31189752, 29810422, 28628211, 28759539, 28759539, 28759795, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28496626, 28956661, 29810421, 30401783, 30927096, 30993144, 31124216, 30729975, 29022196, 28628210, 28825332, 28825587, 28759539, 28825331, 28825075, 28759539, 28759539, 28759026, 28828154, 28748503, 28976515, 28975489, 28845699, 28910722, 28910978, 29041025, 28848009, 28913288, 28975745, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845442, 28849806, 28975746, 28910722, 28910722, 28910722, 28845955, 29170302, 28730795, 30536703, 31189239, 31058424, 31124216, 31124216, 31058680, 31124216, 31058680, 31058679, 31058424, 31386872, 30533111, 28825076, 28759539, 28825331, 28759284, 28759539, 28759794, 28760051, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28825334, 28693748, 29876214, 30927096, 31321336, 31321338, 31124472, 31123960, 31123960, 31321080, 30795768, 28891123, 28759795, 28890611, 28759795, 28825075, 28825332, 28825332, 28825075, 28825846, 28823022, 28849292, 29106048, 28845699, 28910722, 28910722, 28976002, 28911493, 28811217, 28850061, 29040769, 28910978, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845442, 29171328, 28805571, 28857762, 29170816, 28845698, 28910722, 28910722, 28911235, 28973950, 29332167, 31193343, 31123190, 31124474, 31123960, 31123960, 31124474, 31058424, 31123960, 31321338, 30598903, 28891123, 28694003, 28759539, 28759539, 28759539, 28825331, 28825331, 28825076, 28825332, 28890613, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28759282, 28825333, 30598648, 31386617, 31321083, 31189753, 31255289, 31189753, 31189753, 31189753, 31189497, 31452153, 30270199, 28628211, 28825331, 28759538, 28825332, 28825588, 28759795, 28758769, 28698879, 28792995, 29236608, 28845698, 28910722, 28910722, 28845698, 29301632, 28733875, 28806340, 29301632, 28845442, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845442, 29171329, 28787348, 28752352, 28976515, 28976002, 28910722, 28910722, 28910978, 29041538, 28846469, 29804775, 31388157, 31255032, 31189753, 31255289, 31255545, 31387131, 31123961, 30007799, 28759795, 28759283, 28825076, 28825075, 28825075, 28759795, 28890868, 28759539, 28825331, 28825332, 28825332, 28825331, 28694004, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28825333, 28824818, 28824820, 30598648, 31518459, 31190009, 31321081, 31321081, 31255801, 31190009, 31321081, 31321081, 31255801, 31321081, 31190009, 29022197, 28759284, 28825333, 28759540, 28825076, 28824562, 28894717, 28809934, 29041025, 28910978, 28910722, 28910722, 28910722, 29041282, 28847496, 28754407, 28915341, 29106305, 28845442, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845442, 29236609, 28809419, 28862124, 29301889, 28845442, 28910722, 28910722, 28845699, 29236608, 28725407, 29748991, 31057911, 31321081, 31189753, 30861304, 30138871, 29087988, 28627955, 28759796, 28890868, 28759284, 28825076, 28759540, 28825075, 28825332, 28759796, 28825589, 28825077, 28759539, 28694259, 28760052, 28825332, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28759797, 28825331, 28562420, 29875958, 31517945, 31320825, 31321337, 31321337, 31321337, 31386873, 31321337, 31321337, 31321337, 31386873, 31321337, 31518201, 29548022, 28562674, 28759540, 28825076, 28825332, 28824563, 28828669, 28852885, 29171585, 28910979, 28910722, 28910722, 28910979, 29367425, 28800695, 28867257, 29367681, 28845442, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845442, 29171841, 28915855, 28818147, 28977286, 28976002, 28910722, 28910722, 28910722, 28910978, 29041538, 28614866, 29091067, 29350387, 29022452, 28759796, 28562675, 28694004, 28825076, 28825076, 28759796, 28759796, 28825333, 28825332, 28694003, 28759796, 28825332, 28825076, 28825332, 28759540, 28759796, 28825076, 28759539, 28825076, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28628208, 28759282, 28825076, 28891123, 28759796, 30992632, 31518201, 31452665, 31452665, 31452153, 31452665, 31452665, 31452665, 31452665, 31452152, 31452153, 31452665, 31649529, 29810165, 28628211, 28825075, 28825075, 28759026, 28762362, 28810704, 28975745, 28910978, 28910722, 28910722, 28845442, 29172098, 28914314, 28685792, 28978055, 29041282, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910979, 29367682, 28802748, 28798127, 29498498, 28910979, 28910722, 28910722, 28910979, 29302658, 28857503, 28765951, 28561392, 28628466, 28825587, 28890868, 28825075, 28825332, 28759540, 28694004, 28825331, 28759282, 28825075, 28694003, 28693747, 28759795, 28890867, 28759795, 28759795, 28759283, 28759795, 28694003, 28825331, 28824819, 28694003, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28825843, 28759796, 28825589, 28694003, 28628210, 29219060, 31321081, 31452409, 31452666, 31386873, 31452409, 31452409, 31452409, 31452409, 31452409, 31452409, 31452409, 31386873, 31583993, 29613557, 28628467, 28759538, 28759539, 28758768, 28764415, 28861611, 29236608, 28845698, 28910722, 28910722, 28910978, 29302915, 28803003, 28861355, 29433475, 28910979, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845442, 29106818, 28913802, 28880859, 28914059, 29106818, 28845186, 28910722, 28845186, 29106818, 28848009, 28756971, 28826103, 28759794, 28759282, 28759282, 28825075, 28825589, 28694003, 28759796, 28759282, 28759796, 28759539, 28759539, 28694003, 28825075, 28759539, 28759539, 28759539, 28759539, 28759539, 28759539, 28694003, 28759282, 28759796, 28825332, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28759795, 28759797, 28825846, 28759796, 28825588, 28628468, 29416438, 31518202, 31583738, 31583738, 31583738, 31518202, 31518202, 31583738, 31518202, 31518202, 31518202, 31583994, 31583740, 31518202, 29088244, 28759795, 28825076, 28825076, 28824563, 28763133, 28920731, 29105792, 28845442, 28910722, 28910722, 28976002, 28845700, 28849292, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29041282, 28847497, 28848265, 29041538, 28910722, 28910722, 28910722, 28910722, 28910979, 28812757, 28763391, 28758514, 28825332, 28825332, 28824820, 28824820, 28824820, 28825332, 28694004, 28694004, 28824820, 28824820, 28824820, 28694004, 28694004, 28825588, 28825334, 28759796, 28759284, 28890868, 28890868, 28825076, 28825846, 28825077, 28760053, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28759797, 28825332, 28825075, 28759795, 28890867, 28956403, 28759283, 29153781, 31452666, 31649530, 31649530, 31649530, 31649530, 31649530, 31649786, 31649530, 31649530, 31715322, 31649530, 31846650, 30664183, 28628468, 28890868, 28759796, 28825076, 28758513, 28829695, 28854425, 29302401, 28845699, 28845442, 28910722, 28910722, 28910722, 29172098, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910978, 28910978, 28910978, 28910978, 28910978, 28910978, 28910978, 28910978, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29106818, 29041282, 28910722, 28910722, 28845186, 28910978, 28910723, 28976259, 28879320, 28697340, 28759281, 28890867, 28759795, 28759795, 28759283, 28890867, 28759795, 28890867, 28759795, 28759795, 28759795, 28890867, 28759795, 28759281, 28759283, 28890867, 28759796, 29022196, 28759796, 28497137, 28627699, 28759795, 28825075, 28890868, 28759284, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28759539, 28890869, 28890868, 28694002, 28694002, 28759538, 28825589, 28824821, 28562675, 30993144, 31912442, 31715322, 31781370, 31781370, 31715322, 31781370, 31780858, 31780858, 31780858, 31780858, 31583992, 29153781, 28694260, 28825332, 28825332, 28825332, 28824306, 28697597, 28803516, 29107075, 29499781, 29434245, 28910722, 28910722, 28910722, 28845442, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29041539, 29434245, 29499781, 29434245, 29499781, 29499781, 29434245, 29434245, 29499781, 29237892, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 28910722, 28910722, 28845186, 29237892, 29434245, 29630597, 28787862, 28762876, 28759026, 28694002, 28825077, 28825589, 28825589, 28825589, 28694002, 28825589, 28694002, 28825589, 28825589, 28825074, 28825077, 28760053, 28824818, 28890613, 28694005, 30335735, 31583738, 31255800, 30926840, 29744887, 28562930, 28759285, 28759282, 28825077, 28759794, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28694005, 28890870, 28824820, 28759798, 28825588, 28825588, 28825588, 28890356, 28562675, 29810679, 31912442, 31912187, 31912187, 31846650, 31912187, 31846650, 31846650, 31846394, 32174843, 31846651, 29416437, 28694003, 28890867, 28825075, 28825075, 28759539, 28825332, 28824560, 28633855, 28742600, 28989347, 28794534, 28847496, 29107075, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28845442, 29172355, 28848523, 28796589, 28923041, 28922528, 28792225, 28858531, 28923041, 28922527, 28926633, 28855195, 29107075, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 29041540, 28855452, 29055396, 28995507, 28628212, 28695030, 28824820, 28824820, 28824820, 28759798, 28824820, 28824820, 28824820, 28628212, 28825588, 28824820, 28825588, 28825588, 28759796, 28759540, 28759794, 28627954, 29613301, 32043771, 32043771, 32043771, 32043771, 31912442, 30599160, 28693748, 28890870, 28890870, 28825077, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28693744, 28694003, 28694003, 28759795, 28890611, 28759795, 28890611, 28694003, 28759795, 28890611, 28562419, 30533111, 32175101, 31977723, 31912443, 31977979, 31977979, 32109051, 32109051, 31321082, 29284853, 28628209, 28825587, 28825587, 28825587, 28825587, 28759538, 28760051, 28825843, 28824048, 28633599, 28770303, 28770303, 28848778, 29303429, 28910723, 28910722, 28910722, 28910722, 28910722, 28910722, 28910978, 29434502, 28917393, 28770303, 28834047, 28901375, 28901375, 28704767, 28770303, 28834047, 28704767, 28803517, 29303428, 28845186, 28910722, 28910722, 28910722, 28910722, 28910722, 28910722, 28845186, 29303428, 28805057, 28639231, 28569599, 28694003, 28628208, 28759795, 28890611, 28890611, 28759795, 28759795, 28890611, 28694003, 28890611, 28759027, 28890611, 28759795, 28759795, 28759282, 28825587, 28825075, 28627955, 30795768, 32240637, 31912443, 31977981, 31912187, 31912187, 32174845, 30401785, 28431091, 28956403, 28694003, 28825076, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28891127, 28693493, 28824821, 28825845, 28694005, 28825077, 28694002, 28825077, 28825845, 28694002, 28890613, 28824817, 28693493, 30598903, 32043515, 32175099, 32306429, 31977979, 31255801, 29942008, 28694004, 28694004, 28825588, 28760052, 28760052, 28759539, 28694259, 28759794, 28694005, 28628466, 28825845, 28757999, 28952041, 28964863, 28790941, 29761928, 28845186, 28910722, 28910722, 28910722, 28845186, 28845186, 28910723, 29631111, 28861612, 28897535, 28952812, 28823023, 28823023, 28823020, 28823023, 28691180, 28693234, 28753124, 28912518, 29303684, 28779650, 28845186, 28910722, 28910722, 28845186, 28779650, 29369221, 28846982, 28820455, 28758002, 28823020, 28825077, 28694002, 28694002, 28694002, 28825077, 28825845, 28694005, 28694002, 28825077, 28825845, 28694002, 28825077, 28825845, 28824821, 28825075, 28759796, 28825332, 28694004, 30927097, 32175099, 32044027, 32043515, 31977979, 31977977, 32175101, 31517945, 28759283, 28759029, 28825077, 28759797, 28759540, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28760053, 28759028, 28891380, 28890356, 28825588, 28825591, 28825588, 28825588, 28825588, 28825588, 28825588, 28694004, 28759796, 28496884, 30072823, 30402041, 29810422, 29153268, 28628468, 28496882, 28825076, 28825332, 28759540, 28694260, 28694260, 28759797, 28825847, 28890867, 28956404, 28890356, 28825588, 28825588, 28890356, 28825588, 28890356, 28915598, 29696904, 29238149, 28976259, 28976258, 29041795, 29369221, 29696904, 28786836, 28896255, 28890356, 28825588, 28825588, 28825588, 28825588, 28890356, 28825588, 28955121, 0, 28866488, 29173125, 29565831, 29107332, 28976258, 28976258, 29107332, 29565831, 29173382, 28802234, 0, 28757745, 28825588, 28890356, 28628212, 28890356, 28825588, 28891380, 28825588, 28825588, 28825588, 28825588, 28825588, 28825588, 28825588, 28628212, 28694259, 28759797, 28825076, 28890868, 28562418, 30270199, 32371963, 32043259, 32043771, 32043771, 32109307, 32109307, 31714809, 29153782, 28825075, 28891380, 28759796, 28759029, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28890099, 0, 28824559, 0, 28825587, 0, 28824563, 28824563, 0, 0, 28824563, 0, 28825587, 28825587, 0, 28167920, 28365809, 28627953, 28825075, 28956659, 28825075, 28825075, 28825077, 28693745, 28759280, 28955891, 0, 28824563, 28824559, 28824563, 0, 28825587, 28825587, 28824559, 0, 0, 28988320, 29109898, 28976772, 28910722, 28976772, 29044618, 28925349, 0, 0, 28824563, 28825587, 0, 0, 28824563, 0, 0, 28825587, 28691691, 0, 28807109, 29113233, 29042823, 28910723, 28910723, 29042822, 29047954, 28677575, 0, 28691691, 0, 0, 28825587, 0, 0, 0, 0, 28824563, 28824563, 0, 0, 28824563, 0, 0, 28824563, 28824563, 28825587, 28694003, 28825076, 28693747, 28825332, 31715065, 32568827, 32175355, 32175355, 32175099, 32437757, 31321337, 28628467, 0, 28562419, 0, 28824563, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28825587, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29072080, 28805315, 28745426, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28818403, 28872135, 29002695, 28818403, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28759797, 28759538, 28759795, 28628467, 29285109, 31518457, 32635389, 32634875, 32569339, 31978233, 29745145, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28825332, 28825076, 28759795, 28628211, 28694003, 29745141, 30927095, 31517946, 29876213, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28694004, 28825073, 28891124, 28562417, 28299505, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1284 = 4;
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1285 = 2;
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1286 = 3;
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1287 = 5;
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1288 = 8;
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1289 = 9;
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1290 = 6;
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1291 = 7;
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1292 = 12;
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1293 = 13;
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1294 = 10;
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1295 = 11;
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1296 = 0;
-const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1297 = 1;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1346 = 4;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1347 = 2;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1348 = 3;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1349 = 5;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1350 = 8;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1351 = 9;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1352 = 6;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1353 = 7;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1354 = 12;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1355 = 13;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1356 = 10;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1357 = 11;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1358 = 0;
+const _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1359 = 1;
 const _M0FPB4seed = _M0FPB12random__seed();
 const _M0MP49LING7167111moon_2degui3src4core13WindowManager3newN6constrS1506 = 32;
 const _M0MP49LING7167111moon_2degui3src4core6Memory3newN6constrS1508 = 128;
@@ -914,21 +1050,37 @@ const _M0MP49LING7167111moon_2degui3src4core6Memory3newN6constrS1514 = 64;
 const _M0MP49LING7167111moon_2degui3src4core9UIContext3newN6constrS1518 = 256;
 const _M0FP49LING7167111moon_2degui8examples6canvas12gallery__ctx = _M0MP49LING7167111moon_2degui3src4core9UIContext3new();
 const _M0FP49LING7167111moon_2degui8examples6canvas3ctx = _M0MP49LING7167111moon_2degui3src4core9UIContext3new();
-const _M0MP49LING7167111moon_2degui8examples6canvas9MineWorld3newN6constrS1283 = 64;
+const _M0MP49LING7167111moon_2degui8examples6canvas9MineWorld3newN6constrS1345 = 64;
 const _M0FP49LING7167111moon_2degui8examples6canvas9mines__st = new _M0TP49LING7167111moon_2degui8examples6canvas10MinesState(_M0MP49LING7167111moon_2degui8examples6canvas9MineWorld3new(20260913n), -14, -12, 22, false, false, false, false, false, false, false);
 const _M0FP49LING7167111moon_2degui8examples6canvas10mines__ctx = _M0MP49LING7167111moon_2degui3src4core9UIContext3new();
-const _M0FP49LING7167111moon_2degui8examples6canvas14gallery__stateN6constrS1282 = "main_mbt";
-const _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state = new _M0TP49LING7167111moon_2degui8examples6canvas12GalleryState(0, true, false, false, true, true, false, true, false, 1, 1.25, 85, 120, 80, 1, 1200, 25, 0, 6, 0.75, 0, 0.65, 0.65, 0, 1, 0, 0.68, _M0FP49LING7167111moon_2degui8examples6canvas14gallery__stateN6constrS1282, ["src", "assets"], 0, "MoonBit Developer", "dev@moonbitlang.com", "///| Welcome to moon-egui native CodeEditor\npub fn render(ui : @core.UIContext) -> Unit {\n  ui.label(\"Pure MoonBit Wasm Engine!\")\n  @widgets.button(ui, \"Live Immediate-Mode\")\n}", [], false, "", 0, false, _M0MP49LING7167111moon_2degui3src4math4Vec23new(180, 140), "Ready", "", 0.45, "id", 0, [_M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner("id", "ID", 60, 50, true), _M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner("name", "Name", 140, 80, true), _M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner("role", "Role", 110, 70, true), _M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner("score", "Score", 80, 60, true)], 1, false, "None", 0, true, true, true, [12, 28, 19, 35, 22, 48, 38, 55, 42, 68, 60, 85], _M0MP49LING7167111moon_2degui3src5color5Color3rgb(79, 70, 229), "None", "None", _M0MP49LING7167111moon_2degui3src9composite8DockTree5split(0, 0.28, _M0MP49LING7167111moon_2degui3src9composite8DockTree12leaf_2einner([_M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("explorer", "资源管理器", false), _M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("outline", "大纲视图", false)], 0), _M0MP49LING7167111moon_2degui3src9composite8DockTree5split(1, 0.62, _M0MP49LING7167111moon_2degui3src9composite8DockTree12leaf_2einner([_M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("canvas", "CAD 视口", false), _M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("shader", "着色器源码", true)], 0), _M0MP49LING7167111moon_2degui3src9composite8DockTree12leaf_2einner([_M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("console", "运行日志 (Output)", true), _M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("terminal", "终端 (Terminal)", true)], 0))));
-const _M0FP49LING7167111moon_2degui3src7widgets15button__primaryN6constrS2037 = true;
-const _M0FP49LING7167111moon_2degui8examples6canvas22draw__window__showcaseN6constrS1303 = "gallery_win";
-const _M0FP49LING7167111moon_2degui3src7widgets18breadcrumb_2einnerN5tupleS2038 = { _0: "...", _1: -1 };
-const _M0FP49LING7167111moon_2degui8examples6canvas29draw__context__menu__showcaseN6constrS1298 = "⌘C";
-const _M0FP49LING7167111moon_2degui8examples6canvas29draw__context__menu__showcaseN6constrS1299 = "⌘V";
-const _M0FP49LING7167111moon_2degui8examples6canvas29draw__context__menu__showcaseN6constrS1300 = "F12";
+const _M0FP49LING7167111moon_2degui8examples6canvas14gallery__stateN6constrS1344 = "main_mbt";
+const _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state = new _M0TP49LING7167111moon_2degui8examples6canvas12GalleryState(0, true, false, false, true, true, false, true, false, 1, 1.25, 85, 120, 80, 1, 5, 0, 4.5, 1, 1, 1200, 25, 0, 6, 0.75, 0, 0.65, 0.65, 0, 1, 0, 0.68, _M0FP49LING7167111moon_2degui8examples6canvas14gallery__stateN6constrS1344, ["src", "assets"], 0, "MoonBit Developer", "dev@moonbitlang.com", "///| Welcome to moon-egui native CodeEditor\npub fn render(ui : @core.UIContext) -> Unit {\n  ui.label(\"Pure MoonBit Wasm Engine!\")\n  @widgets.button(ui, \"Live Immediate-Mode\")\n}", [], false, "", 0, false, _M0MP49LING7167111moon_2degui3src4math4Vec23new(180, 140), "Ready", "", 0.45, "id", 0, [_M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner("id", "ID", 60, 50, true), _M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner("name", "Name", 140, 80, true), _M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner("role", "Role", 110, 70, true), _M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner("score", "Score", 80, 60, true)], 1, false, "None", 0, true, true, true, [12, 28, 19, 35, 22, 48, 38, 55, 42, 68, 60, 85], _M0MP49LING7167111moon_2degui3src5color5Color3rgb(79, 70, 229), "None", "None", _M0MP49LING7167111moon_2degui3src9composite8DockTree5split(0, 0.28, _M0MP49LING7167111moon_2degui3src9composite8DockTree12leaf_2einner([_M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("explorer", "资源管理器", false), _M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("outline", "大纲视图", false)], 0), _M0MP49LING7167111moon_2degui3src9composite8DockTree5split(1, 0.62, _M0MP49LING7167111moon_2degui3src9composite8DockTree12leaf_2einner([_M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("canvas", "CAD 视口", false), _M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("shader", "着色器源码", true)], 0), _M0MP49LING7167111moon_2degui3src9composite8DockTree12leaf_2einner([_M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("console", "运行日志 (Output)", true), _M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner("terminal", "终端 (Terminal)", true)], 0))), [_M0MP49LING7167111moon_2degui3src9composite8NodeItem3new("audio_src", "音频源 (Audio Source)", _M0MP49LING7167111moon_2degui3src4math4Vec23new(30, 40), _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite8NodePortEE4None__, new _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite8NodePortEE4Some([_M0MP49LING7167111moon_2degui3src9composite8NodePort6output("out_wav", "PCM Wave", undefined)]), _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), undefined), _M0MP49LING7167111moon_2degui3src9composite8NodeItem11new_2einner("dsp_filter", "低通滤波 (LowPass DSP)", _M0MP49LING7167111moon_2degui3src4math4Vec23new(240, 40), [_M0MP49LING7167111moon_2degui3src9composite8NodePort5input("in_audio", "Input", undefined)], [_M0MP49LING7167111moon_2degui3src9composite8NodePort6output("out_filtered", "Filtered", undefined)], _M0MP49LING7167111moon_2degui3src5color5Color7success(), undefined), _M0MP49LING7167111moon_2degui3src9composite8NodeItem3new("sink_out", "扬声器输出 (Audio Sink)", _M0MP49LING7167111moon_2degui3src4math4Vec23new(450, 70), new _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite8NodePortEE4Some([_M0MP49LING7167111moon_2degui3src9composite8NodePort5input("in_sink", "Left / Right", undefined)]), _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite8NodePortEE4None__, _M0MP49LING7167111moon_2degui3src5color5Color7warning(), undefined)], [_M0MP49LING7167111moon_2degui3src9composite14NodeConnection3new("audio_src", "out_wav", "dsp_filter", "in_audio"), _M0MP49LING7167111moon_2degui3src9composite14NodeConnection3new("dsp_filter", "out_filtered", "sink_out", "in_sink")]);
+const _M0FP49LING7167111moon_2degui3src7widgets15button__primaryN6constrS2716 = true;
+const _M0FP49LING7167111moon_2degui8examples6canvas21draw__steps__showcaseN6constrS1372 = new _M0DTPC16option6OptionGdE4Some(560);
+const _M0FP49LING7167111moon_2degui8examples6canvas21draw__steps__showcaseN6constrS1373 = new _M0DTPC16option6OptionGdE4Some(560);
+const _M0FP49LING7167111moon_2degui8examples6canvas22draw__window__showcaseN6constrS1374 = "gallery_win";
+const _M0FP49LING7167111moon_2degui3src7widgets18breadcrumb_2einnerN5tupleS2717 = { _0: "...", _1: -1 };
+const _M0FP49LING7167111moon_2degui8examples6canvas22draw__rating__showcaseN6constrS1363 = new _M0DTPC16option6OptionGdE4Some(24);
+const _M0FP49LING7167111moon_2degui8examples6canvas22draw__rating__showcaseN6constrS1364 = new _M0DTPC16option6OptionGdE4Some(6);
+const _M0FP49LING7167111moon_2degui8examples6canvas22draw__rating__showcaseN6constrS1365 = new _M0DTPC16option6OptionGdE4Some(18);
+const _M0FP49LING7167111moon_2degui8examples6canvas29draw__context__menu__showcaseN6constrS1360 = "⌘C";
+const _M0FP49LING7167111moon_2degui8examples6canvas29draw__context__menu__showcaseN6constrS1361 = "⌘V";
+const _M0FP49LING7167111moon_2degui8examples6canvas29draw__context__menu__showcaseN6constrS1362 = "F12";
+const _M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2709 = new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(1);
+const _M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2710 = new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(2);
+const _M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2711 = new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(3);
+const _M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2712 = new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(4);
+const _M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2713 = new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(5);
+const _M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2714 = new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(1);
+const _M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2715 = new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(1);
 const _M0MPC16string10StringView4findN6constrS9865 = 0;
-const _M0FP49LING7167111moon_2degui8examples6canvas23draw__spinner__showcaseN6constrS1301 = new _M0DTPC16option6OptionGdE4Some(18);
-const _M0FP49LING7167111moon_2degui8examples6canvas23draw__spinner__showcaseN6constrS1302 = new _M0DTPC16option6OptionGdE4Some(18);
-const _M0FP49LING7167111moon_2degui3src9composite20code__editor_2einnerN6constrS3039 = 0;
+const _M0FP49LING7167111moon_2degui8examples6canvas23draw__spinner__showcaseN6constrS1366 = new _M0DTPC16option6OptionGdE4Some(18);
+const _M0FP49LING7167111moon_2degui8examples6canvas23draw__spinner__showcaseN6constrS1367 = new _M0DTPC16option6OptionGdE4Some(18);
+const _M0FP49LING7167111moon_2degui8examples6canvas23draw__stepper__showcaseN6constrS1368 = new _M0DTPC16option6OptionGdE4Some(0);
+const _M0FP49LING7167111moon_2degui8examples6canvas23draw__stepper__showcaseN6constrS1369 = new _M0DTPC16option6OptionGdE4Some(50);
+const _M0FP49LING7167111moon_2degui8examples6canvas23draw__stepper__showcaseN6constrS1370 = new _M0DTPC16option6OptionGdE4Some(-24);
+const _M0FP49LING7167111moon_2degui8examples6canvas23draw__stepper__showcaseN6constrS1371 = new _M0DTPC16option6OptionGdE4Some(24);
+const _M0FP49LING7167111moon_2degui3src9composite20code__editor_2einnerN6constrS3459 = 0;
 function _M0FPB13consume4__acc(acc, input) {
   const _p = (acc >>> 0) + ((Math.imul(input, -1028477379) | 0) >>> 0) | 0;
   const _p$2 = 17;
@@ -942,6 +1094,9 @@ function _M0MPB13StringBuilder13write__objectGiE(self, obj) {
 }
 function _M0MPB13StringBuilder13write__objectGdE(self, obj) {
   _M0IP016_24default__implPB4Show6outputGdE(obj, { self: self, method_table: _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger });
+}
+function _M0MPB13StringBuilder13write__objectGsE(self, obj) {
+  _M0IP016_24default__implPB4Show6outputGsE(obj, { self: self, method_table: _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger });
 }
 function _M0MPB13StringBuilder21StringBuilder_2einner(size_hint) {
   return new _M0TPB13StringBuilder("");
@@ -1056,6 +1211,9 @@ function _M0IP016_24default__implPB4Show6outputGiE(self, logger) {
 function _M0IP016_24default__implPB4Show6outputGdE(self, logger) {
   logger.method_table.method_0(logger.self, _M0IPC16double6DoublePB4Show10to__string(self));
 }
+function _M0IP016_24default__implPB4Show6outputGsE(self, logger) {
+  logger.method_table.method_0(logger.self, self);
+}
 function _M0MPB4Iter4nextGRPC16string10StringViewE(self) {
   const _func = self.f;
   const result = _func();
@@ -1091,16 +1249,16 @@ function _M0MPB4Iter4nextGcE(self) {
 function _M0MPC13int3Int18to__string_2einner(self, radix) {
   return _M0FPB19int__to__string__js(self, radix);
 }
-function _M0MPB4Iter3newGRPC16string10StringViewE(f, size_hint) {
+function _M0MPB4Iter3newGRP49LING7167111moon_2degui3src7widgets8StepItemE(f, size_hint) {
   let size_hint$2;
   if (size_hint === undefined) {
     size_hint$2 = undefined;
   } else {
     const _Some = size_hint;
     const _n = _Some;
-    size_hint$2 = _n > 0 ? _n : _M0MPB4Iter3newN6constrS9863GRPC16string10StringViewE;
+    size_hint$2 = _n > 0 ? _n : _M0MPB4Iter3newN6constrS9863GRP49LING7167111moon_2degui3src7widgets8StepItemE;
   }
-  return new _M0TPB4IterGRPC16string10StringViewE(f, size_hint$2);
+  return new _M0TPB4IterGRP49LING7167111moon_2degui3src7widgets8StepItemE(f, size_hint$2);
 }
 function _M0MPB4Iter3newGcE(f, size_hint) {
   let size_hint$2;
@@ -1386,7 +1544,7 @@ function _M0MPC16string10StringView5split(self, sep) {
     return _M0MPB4Iter3mapGcRPC16string10StringViewE(_M0MPC16string10StringView4iter(self), (c) => _M0MPC16string6String12view_2einner(_M0IPC14char4CharPB4Show10to__string(c), 0, undefined));
   }
   const remaining = new _M0TPB8MutLocalGORPC16string10StringViewE(self);
-  return _M0MPB4Iter3newGRPC16string10StringViewE(() => {
+  return _M0MPB4Iter3newGRP49LING7167111moon_2degui3src7widgets8StepItemE(() => {
     const _bind = remaining.val;
     if (_bind === undefined) {
       return undefined;
@@ -1411,6 +1569,22 @@ function _M0MPC16string6String5split(self, sep) {
 }
 function _M0IPC13int3IntPB4Show10to__string(self) {
   return _M0MPC13int3Int18to__string_2einner(self, 10);
+}
+function _M0MPC15array9ArrayView4iterGRP49LING7167111moon_2degui3src7widgets8StepItemE(self) {
+  const i = new _M0TPB8MutLocalGiE(0);
+  const len = self.end - self.start | 0;
+  return _M0MPB4Iter3newGRP49LING7167111moon_2degui3src7widgets8StepItemE(() => {
+    if (i.val < len) {
+      const elem = self.buf[self.start + i.val | 0];
+      i.val = i.val + 1 | 0;
+      return elem;
+    } else {
+      return undefined;
+    }
+  }, len);
+}
+function _M0MPC15array5Array4iterGRP49LING7167111moon_2degui3src7widgets8StepItemE(self) {
+  return _M0MPC15array9ArrayView4iterGRP49LING7167111moon_2degui3src7widgets8StepItemE(new _M0TPB9ArrayViewGRP49LING7167111moon_2degui3src7widgets8StepItemE(self, 0, self.length));
 }
 function _M0IPC16option6OptionPB2Eq5equalGsE(self, other) {
   if (self === undefined) {
@@ -1928,6 +2102,9 @@ function _M0MPC15array5Array8containsGsE(self, value) {
       return false;
     }
   }
+}
+function _M0MPC13ref3Ref3RefGiE(x) {
+  return new _M0TPC13ref3RefGiE(x);
 }
 function _M0MPC17hashmap7HashMap5clearGsdE(self) {
   _M0MPC15array10FixedArray12fill_2einnerGORPC17hashmap5EntryGsdEE(self.entries, undefined, 0, undefined);
@@ -3437,6 +3614,38 @@ function _M0MPC17hashmap7HashMap3getGRP49LING7167111moon_2degui3src4core2IdbE(se
     }
   }
 }
+function _M0MPC17hashmap7HashMap3getGRP49LING7167111moon_2degui3src4core2IdsE(self, key) {
+  const hash = _M0IP016_24default__implPB4Hash4hashGRP49LING7167111moon_2degui3src4core2IdE(key);
+  let _tmp = 0;
+  let _tmp$2 = hash & self.capacity_mask;
+  while (true) {
+    const i = _tmp;
+    const idx = _tmp$2;
+    const _bind = self.entries[idx];
+    if (_bind === undefined) {
+      return undefined;
+    } else {
+      const _Some = _bind;
+      const _entry = _Some;
+      let _tmp$3;
+      if (_entry.hash === hash) {
+        const _p = _entry.key;
+        _tmp$3 = BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, key.val);
+      } else {
+        _tmp$3 = false;
+      }
+      if (_tmp$3) {
+        return _entry.value;
+      }
+      if (i > _entry.psl) {
+        return undefined;
+      }
+      _tmp = i + 1 | 0;
+      _tmp$2 = idx + 1 & self.capacity_mask;
+      continue;
+    }
+  }
+}
 function _M0MPC17hashmap7HashMap18remove__with__hashGRP49LING7167111moon_2degui3src4core2IdRP49LING7167111moon_2degui3src4math4Vec2E(self, key, hash) {
   let _tmp = 0;
   let _tmp$2 = hash & self.capacity_mask;
@@ -3892,6 +4101,9 @@ function _M0MP49LING7167111moon_2degui3src4math4Vec23sub(self, other) {
 }
 function _M0MP49LING7167111moon_2degui3src4math4Rect3new(x, y, w, h) {
   return new _M0TP49LING7167111moon_2degui3src4math4Rect(x, y, w, h);
+}
+function _M0MP49LING7167111moon_2degui3src4math4Rect3min(self) {
+  return new _M0TP49LING7167111moon_2degui3src4math4Vec2(self.x, self.y);
 }
 function _M0MP49LING7167111moon_2degui3src4math4Rect6center(self) {
   return new _M0TP49LING7167111moon_2degui3src4math4Vec2(self.x + self.w * 0.5, self.y + self.h * 0.5);
@@ -4599,6 +4811,9 @@ function _M0MP49LING7167111moon_2degui3src4core13WindowManager12prune__stale(sel
 }
 function _M0MP49LING7167111moon_2degui3src4core13WindowManager14set__active__z(self, z) {
   self.active_z = z;
+}
+function _M0MP49LING7167111moon_2degui3src4core9UIContext3addGRP49LING7167111moon_2degui3src7widgets13PaginationRefE(self, widget) {
+  return _M0IP49LING7167111moon_2degui3src7widgets13PaginationRefP49LING7167111moon_2degui3src4core6Widget2ui(widget, self);
 }
 function _M0MP49LING7167111moon_2degui3src4core9UIContext3addGRP49LING7167111moon_2degui3src7widgets6ButtonE(self, widget) {
   return _M0IP49LING7167111moon_2degui3src7widgets6ButtonP49LING7167111moon_2degui3src4core6Widget2ui(widget, self);
@@ -5739,6 +5954,20 @@ function _M0MP49LING7167111moon_2degui3src4core6Memory17set__bool_2einner(self, 
   _M0MPC17hashmap7HashMap3setGRP49LING7167111moon_2degui3src4core2IdbE(self.booleans, key, value);
   _M0MP49LING7167111moon_2degui3src4core6Memory13track__access(self, id, key, tag, frame);
 }
+function _M0MP49LING7167111moon_2degui3src4core6Memory32get__string__or__default_2einner(self, id, default_, tag) {
+  const _bind = _M0MPC17hashmap7HashMap3getGRP49LING7167111moon_2degui3src4core2IdsE(self.strings, _M0MP49LING7167111moon_2degui3src4core6Memory12resolve__key(id, tag));
+  if (_bind === undefined) {
+    return default_;
+  } else {
+    const _Some = _bind;
+    return _Some;
+  }
+}
+function _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(self, id, value, tag, frame) {
+  const key = _M0MP49LING7167111moon_2degui3src4core6Memory12resolve__key(id, tag);
+  _M0MPC17hashmap7HashMap3setGRP49LING7167111moon_2degui3src4core2IdsE(self.strings, key, value);
+  _M0MP49LING7167111moon_2degui3src4core6Memory13track__access(self, id, key, tag, frame);
+}
 function _M0MP49LING7167111moon_2degui3src4core6Memory5touch(self, id, frame) {
   _M0MPC17hashmap7HashMap3setGRP49LING7167111moon_2degui3src4core2IdiE(self.last_accessed, id, frame);
 }
@@ -6373,36 +6602,36 @@ function _M0MP49LING7167111moon_2degui3src4core9UIContext18is__caret__visible(se
     return (half_cycles % 2 | 0) === 1;
   }
 }
-function _M0IP49LING7167111moon_2degui3src9composite12TextSpanKindPB2Eq5equal(_x_1653, _x_1654) {
-  switch (_x_1653.$tag) {
+function _M0IP49LING7167111moon_2degui3src9composite12TextSpanKindPB2Eq5equal(_x_1853, _x_1854) {
+  switch (_x_1853.$tag) {
     case 0: {
-      if (_x_1654.$tag === 0) {
+      if (_x_1854.$tag === 0) {
         return true;
       } else {
         return false;
       }
     }
     case 1: {
-      if (_x_1654.$tag === 1) {
+      if (_x_1854.$tag === 1) {
         return true;
       } else {
         return false;
       }
     }
     case 2: {
-      if (_x_1654.$tag === 2) {
+      if (_x_1854.$tag === 2) {
         return true;
       } else {
         return false;
       }
     }
     default: {
-      const _Link = _x_1653;
-      const _$42$x0_1655 = _Link._0;
-      if (_x_1654.$tag === 3) {
-        const _Link$2 = _x_1654;
-        const _$42$y0_1656 = _Link$2._0;
-        return _$42$x0_1655 === _$42$y0_1656;
+      const _Link = _x_1853;
+      const _$42$x0_1855 = _Link._0;
+      if (_x_1854.$tag === 3) {
+        const _Link$2 = _x_1854;
+        const _$42$y0_1856 = _Link$2._0;
+        return _$42$x0_1855 === _$42$y0_1856;
       } else {
         return false;
       }
@@ -6703,7 +6932,7 @@ function _M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner(i
 }
 function _M0FP49LING7167111moon_2degui3src9composite13table_2einner(ctx, id_salt, size, columns, row_count, render_cell, row_height, header_height, selected_row, sort_column, sort_direction) {
   const scale = ctx.style.scale;
-  const t_style = _M0MP49LING7167111moon_2degui3src9composite10TableStyle7defaultN6recordS3034;
+  const t_style = _M0MP49LING7167111moon_2degui3src9composite10TableStyle7defaultN6recordS3453;
   const eff_row_h = row_height > 0 ? row_height : t_style.row_h * scale;
   const eff_header_h = header_height > 0 ? header_height : t_style.header_h * scale;
   const table_radius = t_style.radius * scale;
@@ -7356,13 +7585,13 @@ function _M0FP49LING7167111moon_2degui3src9composite18format__coord__val(v) {
   const int_val = _M0MPC16double6Double7to__int(rounded);
   return Math.abs(rounded - (int_val + 0)) < 0.01 ? _M0MPC13int3Int18to__string_2einner(int_val, 10) : String(rounded);
 }
-function _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1192(_env, pt) {
-  const plot_bottom = _env._5;
-  const min_y = _env._4;
-  const span_x = _env._3;
+function _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1380(_env, pt) {
+  const plot_rect = _env._5;
+  const span_y = _env._4;
+  const min_y = _env._3;
   const min_x = _env._2;
-  const span_y = _env._1;
-  const plot_rect = _env._0;
+  const span_x = _env._1;
+  const plot_bottom = _env._0;
   const norm_x = (pt.x - min_x.val) / span_x;
   const norm_y = (pt.y - min_y.val) / span_y;
   const sx = plot_rect.x + norm_x * plot_rect.w;
@@ -7371,7 +7600,7 @@ function _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__
 }
 function _M0FP49LING7167111moon_2degui3src9composite12plot_2einner(ctx, id_salt, series, size, show_grid, show_crosshair, show_legend) {
   const scale = ctx.style.scale;
-  const p_style = _M0MP49LING7167111moon_2degui3src9composite9PlotStyle7defaultN6recordS3035;
+  const p_style = _M0MP49LING7167111moon_2degui3src9composite9PlotStyle7defaultN6recordS3454;
   const default_w = p_style.default_w * scale;
   const default_h = p_style.default_h * scale;
   let chosen_size;
@@ -7460,7 +7689,7 @@ function _M0FP49LING7167111moon_2degui3src9composite12plot_2einner(ctx, id_salt,
   }
   const span_x = max_x - min_x.val;
   const span_y = max_y - min_y.val;
-  const _env = { _0: plot_rect, _1: span_y, _2: min_x, _3: span_x, _4: min_y, _5: plot_bottom };
+  const _env = { _0: plot_bottom, _1: span_x, _2: min_x, _3: min_y, _4: span_y, _5: plot_rect };
   if (show_grid) {
     let _tmp$2 = 0;
     while (true) {
@@ -7513,12 +7742,12 @@ function _M0FP49LING7167111moon_2degui3src9composite12plot_2einner(ctx, id_salt,
         const _bind$4 = s.kind;
         switch (_bind$4) {
           case 0: {
-            let prev_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1192(_env, _M0MPC15array5Array2atGmE(pts, 0));
+            let prev_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1380(_env, _M0MPC15array5Array2atGmE(pts, 0));
             let _tmp$3 = 1;
             while (true) {
               const i = _tmp$3;
               if (i < count) {
-                const curr_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1192(_env, _M0MPC15array5Array2atGmE(pts, i));
+                const curr_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1380(_env, _M0MPC15array5Array2atGmE(pts, i));
                 _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), prev_screen, curr_screen, s.color, 2 * scale);
                 prev_screen = curr_screen;
                 _tmp$3 = i + 1 | 0;
@@ -7535,7 +7764,7 @@ function _M0FP49LING7167111moon_2degui3src9composite12plot_2einner(ctx, id_salt,
             while (true) {
               const i = _tmp$4;
               if (i < count) {
-                const pt_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1192(_env, _M0MPC15array5Array2atGmE(pts, i));
+                const pt_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1380(_env, _M0MPC15array5Array2atGmE(pts, i));
                 _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), pt_screen, r, s.color);
                 _tmp$4 = i + 1 | 0;
                 continue;
@@ -7546,12 +7775,12 @@ function _M0FP49LING7167111moon_2degui3src9composite12plot_2einner(ctx, id_salt,
             break;
           }
           default: {
-            let prev_screen$2 = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1192(_env, _M0MPC15array5Array2atGmE(pts, 0));
+            let prev_screen$2 = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1380(_env, _M0MPC15array5Array2atGmE(pts, 0));
             let _tmp$5 = 1;
             while (true) {
               const i = _tmp$5;
               if (i < count) {
-                const curr_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1192(_env, _M0MPC15array5Array2atGmE(pts, i));
+                const curr_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1380(_env, _M0MPC15array5Array2atGmE(pts, i));
                 const p_top = prev_screen$2.y < curr_screen.y ? prev_screen$2.y : curr_screen.y;
                 const seg_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(prev_screen$2.x, p_top, curr_screen.x - prev_screen$2.x, plot_bottom - p_top);
                 _M0MP49LING7167111moon_2degui3src4core7Painter21add__linear__gradient(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), seg_rect, _M0MP49LING7167111moon_2degui3src4math4Vec23new(seg_rect.x, seg_rect.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(seg_rect.x, seg_rect.y + seg_rect.h), _M0MP49LING7167111moon_2degui3src5color5Color11with__alpha(s.color, 100), _M0MP49LING7167111moon_2degui3src5color5Color11with__alpha(s.color, 15), 0);
@@ -7644,7 +7873,7 @@ function _M0FP49LING7167111moon_2degui3src9composite12plot_2einner(ctx, id_salt,
 }
 function _M0FP49LING7167111moon_2degui3src9composite18bar__chart_2einner(ctx, id_salt, labels, values, size, bar_color) {
   const scale = ctx.style.scale;
-  const p_style = _M0MP49LING7167111moon_2degui3src9composite9PlotStyle7defaultN6recordS3035;
+  const p_style = _M0MP49LING7167111moon_2degui3src9composite9PlotStyle7defaultN6recordS3454;
   const default_w = p_style.bar_chart_default_w * scale;
   const default_h = p_style.bar_chart_default_h * scale;
   let chosen_size;
@@ -7772,6 +8001,621 @@ function _M0FP49LING7167111moon_2degui3src9composite10bar__chart(ctx, id_salt, l
     bar_color = _Some;
   }
   return _M0FP49LING7167111moon_2degui3src9composite18bar__chart_2einner(ctx, id_salt, labels, values, size, bar_color);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8NodePort5input(id, name, color) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8NodePort(id, name, 0, color);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8NodePort6output(id, name, color) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8NodePort(id, name, 1, color);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8NodeItem8set__pos(self, pos) {
+  self.pos = pos;
+}
+function _M0MP49LING7167111moon_2degui3src9composite8NodeItem11new_2einner(id, title, pos, inputs, outputs, accent_color, size) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8NodeItem(id, title, pos, size, inputs, outputs, accent_color);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8NodeItem3new(id, title, pos, inputs$46$opt, outputs$46$opt, accent_color, size) {
+  let inputs;
+  if (inputs$46$opt.$tag === 1) {
+    const _Some = inputs$46$opt;
+    inputs = _Some._0;
+  } else {
+    inputs = [];
+  }
+  let outputs;
+  if (outputs$46$opt.$tag === 1) {
+    const _Some = outputs$46$opt;
+    outputs = _Some._0;
+  } else {
+    outputs = [];
+  }
+  return _M0MP49LING7167111moon_2degui3src9composite8NodeItem11new_2einner(id, title, pos, inputs, outputs, accent_color, size);
+}
+function _M0MP49LING7167111moon_2degui3src9composite14NodeConnection3new(from_node, from_port, to_node, to_port) {
+  return new _M0TP49LING7167111moon_2degui3src9composite14NodeConnection(from_node, from_port, to_node, to_port);
+}
+function _M0FP49LING7167111moon_2degui3src9composite33draw__cubic__bezier__wire_2einner(painter, p0, p3, color, width, steps) {
+  const dx = Math.abs(p3.x - p0.x) * 0.5;
+  const curvature = dx < 40 ? 40 : dx;
+  const p1 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(p0.x + curvature, p0.y);
+  const p2 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(p3.x - curvature, p3.y);
+  let prev_pt = p0;
+  const step_count = steps > 4 ? steps : 4;
+  let _tmp = 1;
+  while (true) {
+    const i = _tmp;
+    if (i <= step_count) {
+      const t = (i + 0) / (step_count + 0);
+      const inv_t = 1 - t;
+      const c0 = inv_t * inv_t * inv_t;
+      const c1 = 3 * inv_t * inv_t * t;
+      const c2 = 3 * inv_t * t * t;
+      const c3 = t * t * t;
+      const curr_pt = _M0MP49LING7167111moon_2degui3src4math4Vec23new(c0 * p0.x + c1 * p1.x + c2 * p2.x + c3 * p3.x, c0 * p0.y + c1 * p1.y + c2 * p2.y + c3 * p3.y);
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(painter, prev_pt, curr_pt, color, width);
+      prev_pt = curr_pt;
+      _tmp = i + 1 | 0;
+      continue;
+    } else {
+      return;
+    }
+  }
+}
+function _M0FP49LING7167111moon_2degui3src9composite20find__port__position(canvas_min, nodes, node_id, port_id, style, scale) {
+  const _bind = nodes.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind) {
+      const node = nodes[_];
+      if (node.id === node_id) {
+        const screen_x = canvas_min.x + node.pos.x;
+        const screen_y = canvas_min.y + node.pos.y;
+        const _bind$2 = node.size;
+        let node_w;
+        if (_bind$2 === undefined) {
+          node_w = style.node_min_w * scale;
+        } else {
+          const _Some = _bind$2;
+          const _sz = _Some;
+          node_w = _sz.x * scale;
+        }
+        const header_h = style.node_header_h * scale;
+        const port_spacing = style.port_spacing * scale;
+        const _bind$3 = node.inputs;
+        const _bind$4 = _bind$3.length;
+        let _tmp$2 = 0;
+        while (true) {
+          const i = _tmp$2;
+          if (i < _bind$4) {
+            const p = _bind$3[i];
+            if (p.id === port_id) {
+              const py = screen_y + header_h + 14 * scale + (i + 0) * port_spacing;
+              return _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x, py);
+            }
+            _tmp$2 = i + 1 | 0;
+            continue;
+          } else {
+            break;
+          }
+        }
+        const _bind$5 = node.outputs;
+        const _bind$6 = _bind$5.length;
+        let _tmp$3 = 0;
+        while (true) {
+          const j = _tmp$3;
+          if (j < _bind$6) {
+            const p = _bind$5[j];
+            if (p.id === port_id) {
+              const py = screen_y + header_h + 14 * scale + (j + 0) * port_spacing;
+              return _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + node_w, py);
+            }
+            _tmp$3 = j + 1 | 0;
+            continue;
+          } else {
+            break;
+          }
+        }
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return undefined;
+}
+function _M0FP49LING7167111moon_2degui3src9composite20node__editor_2einner(ctx, id_salt, size, nodes, connections, custom_style, selected_node) {
+  const scale = ctx.style.scale;
+  let style;
+  if (custom_style === undefined) {
+    style = _M0MP49LING7167111moon_2degui3src9composite15NodeEditorStyle7defaultN6recordS3455;
+  } else {
+    const _Some = custom_style;
+    style = _Some;
+  }
+  const node_min_w = style.node_min_w * scale;
+  const header_h = style.node_header_h * scale;
+  const port_r = style.port_radius * scale;
+  const port_spacing = style.port_spacing * scale;
+  const card_radius = style.card_radius * scale;
+  const wire_width = style.wire_width * scale;
+  const font_title = ctx.style.font_normal * scale;
+  const font_port = ctx.style.font_small * scale;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, size);
+  const _canvas_id = _bind._0;
+  const _canvas_rect = _bind._1;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  const painter = _M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, _canvas_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), card_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, _canvas_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, card_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter10push__clip(painter, _canvas_rect);
+  const grid_step = style.grid_size * scale;
+  let gx = _canvas_rect.x + grid_step * 0.5;
+  const canvas_right = _canvas_rect.x + _canvas_rect.w;
+  const canvas_bottom = _canvas_rect.y + _canvas_rect.h;
+  while (true) {
+    if (gx < canvas_right) {
+      let gy = _canvas_rect.y + grid_step * 0.5;
+      while (true) {
+        if (gy < canvas_bottom) {
+          _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, _M0MP49LING7167111moon_2degui3src4math4Vec23new(gx, gy), 1 * scale, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted());
+          gy = gy + grid_step;
+          continue;
+        } else {
+          break;
+        }
+      }
+      gx = gx + grid_step;
+      continue;
+    } else {
+      break;
+    }
+  }
+  let active_drag_node = _M0MP49LING7167111moon_2degui3src4core6Memory32get__string__or__default_2einner(ctx.memory, _canvas_id, "", "drag_node");
+  let active_conn_node = _M0MP49LING7167111moon_2degui3src4core6Memory32get__string__or__default_2einner(ctx.memory, _canvas_id, "", "conn_node");
+  let active_conn_port = _M0MP49LING7167111moon_2degui3src4core6Memory32get__string__or__default_2einner(ctx.memory, _canvas_id, "", "conn_port");
+  let cur_selected_node;
+  if (selected_node === undefined) {
+    cur_selected_node = _M0MP49LING7167111moon_2degui3src4core6Memory32get__string__or__default_2einner(ctx.memory, _canvas_id, "", "selected_node");
+  } else {
+    const _Some = selected_node;
+    cur_selected_node = _Some;
+  }
+  const mouse_pos = ctx.input.mouse_pos;
+  const mouse_down = ctx.input.mouse_down;
+  const mouse_pressed = ctx.input.mouse_pressed;
+  const is_canvas_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _canvas_rect);
+  let new_conn = undefined;
+  let changed = false;
+  const out_conns = [];
+  const _bind$2 = connections.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$2) {
+      const c = connections[_];
+      _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4core5EventE(out_conns, c);
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  if (!mouse_down) {
+    let _tmp$2;
+    const _p = active_conn_node;
+    const _p$2 = "";
+    if (!(_p === _p$2)) {
+      const _p$3 = active_conn_port;
+      const _p$4 = "";
+      _tmp$2 = !(_p$3 === _p$4);
+    } else {
+      _tmp$2 = false;
+    }
+    if (_tmp$2) {
+      const _bind$3 = nodes.length;
+      let _tmp$3 = 0;
+      while (true) {
+        const _ = _tmp$3;
+        if (_ < _bind$3) {
+          const node = nodes[_];
+          const _p$3 = node.id;
+          const _p$4 = active_conn_node;
+          if (!(_p$3 === _p$4)) {
+            const screen_x = _canvas_rect.x + node.pos.x;
+            const screen_y = _canvas_rect.y + node.pos.y;
+            const _bind$4 = node.inputs;
+            const _bind$5 = _bind$4.length;
+            let _tmp$4 = 0;
+            while (true) {
+              const i = _tmp$4;
+              if (i < _bind$5) {
+                const in_port = _bind$4[i];
+                const py = screen_y + header_h + 14 * scale + (i + 0) * port_spacing;
+                const port_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x, py);
+                const dist = Math.abs(mouse_pos.x - port_center.x) + Math.abs(mouse_pos.y - port_center.y);
+                if (dist <= port_r * 2.5 + 4 * scale) {
+                  const conn = _M0MP49LING7167111moon_2degui3src9composite14NodeConnection3new(active_conn_node, active_conn_port, node.id, in_port.id);
+                  _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4core5EventE(out_conns, conn);
+                  new_conn = conn;
+                  changed = true;
+                }
+                _tmp$4 = i + 1 | 0;
+                continue;
+              } else {
+                break;
+              }
+            }
+          }
+          _tmp$3 = _ + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, "", "conn_node", 0);
+      _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, "", "conn_port", 0);
+      active_conn_node = "";
+      active_conn_port = "";
+    }
+    const _p$3 = active_drag_node;
+    const _p$4 = "";
+    if (!(_p$3 === _p$4)) {
+      _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, "", "drag_node", 0);
+      active_drag_node = "";
+    }
+  }
+  let _tmp$2;
+  if (mouse_down) {
+    const _p = active_drag_node;
+    const _p$2 = "";
+    _tmp$2 = !(_p === _p$2);
+  } else {
+    _tmp$2 = false;
+  }
+  if (_tmp$2) {
+    const anchor_x = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, _canvas_id, 0, "drag_anchor_x");
+    const anchor_y = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, _canvas_id, 0, "drag_anchor_y");
+    const _bind$3 = nodes.length;
+    let _tmp$3 = 0;
+    while (true) {
+      const _ = _tmp$3;
+      if (_ < _bind$3) {
+        const node = nodes[_];
+        if (node.id === active_drag_node) {
+          const new_x = mouse_pos.x - _canvas_rect.x - anchor_x;
+          const new_y = mouse_pos.y - _canvas_rect.y - anchor_y;
+          if (node.pos.x !== new_x || node.pos.y !== new_y) {
+            node.pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(new_x, new_y);
+            changed = true;
+          }
+          _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "move");
+        }
+        _tmp$3 = _ + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+  }
+  if (is_canvas_hovered && (mouse_pressed && (active_drag_node === "" && active_conn_node === ""))) {
+    let handled = false;
+    const _bind$3 = nodes.length;
+    let _tmp$3 = 0;
+    while (true) {
+      const _ = _tmp$3;
+      if (_ < _bind$3) {
+        const node = nodes[_];
+        if (handled) {
+          break;
+        }
+        const screen_x = _canvas_rect.x + node.pos.x;
+        const screen_y = _canvas_rect.y + node.pos.y;
+        const _bind$4 = node.size;
+        let node_w;
+        if (_bind$4 === undefined) {
+          node_w = node_min_w;
+        } else {
+          const _Some = _bind$4;
+          const _sz = _Some;
+          node_w = _sz.x * scale;
+        }
+        const _bind$5 = node.outputs;
+        const _bind$6 = _bind$5.length;
+        let _tmp$4 = 0;
+        while (true) {
+          const j = _tmp$4;
+          if (j < _bind$6) {
+            const out_port = _bind$5[j];
+            const py = screen_y + header_h + 14 * scale + (j + 0) * port_spacing;
+            const port_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + node_w, py);
+            const dist = Math.abs(mouse_pos.x - port_center.x) + Math.abs(mouse_pos.y - port_center.y);
+            if (dist <= port_r * 2 + 3 * scale) {
+              active_conn_node = node.id;
+              active_conn_port = out_port.id;
+              _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, node.id, "conn_node", 0);
+              _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, out_port.id, "conn_port", 0);
+              handled = true;
+              break;
+            }
+            _tmp$4 = j + 1 | 0;
+            continue;
+          } else {
+            break;
+          }
+        }
+        _tmp$3 = _ + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+    if (!handled) {
+      let _tmp$4 = nodes.length - 1 | 0;
+      while (true) {
+        const k = _tmp$4;
+        if (k >= 0) {
+          const node = _M0MPC15array5Array2atGmE(nodes, k);
+          const screen_x = _canvas_rect.x + node.pos.x;
+          const screen_y = _canvas_rect.y + node.pos.y;
+          const _bind$4 = node.size;
+          let node_w;
+          if (_bind$4 === undefined) {
+            node_w = node_min_w;
+          } else {
+            const _Some = _bind$4;
+            const _sz = _Some;
+            node_w = _sz.x * scale;
+          }
+          const max_ports = node.inputs.length > node.outputs.length ? node.inputs.length : node.outputs.length;
+          const body_h = ((max_ports + 0) * style.port_spacing + 16) * scale;
+          const _bind$5 = node.size;
+          let total_h;
+          if (_bind$5 === undefined) {
+            total_h = header_h + body_h;
+          } else {
+            const _Some = _bind$5;
+            const _sz = _Some;
+            total_h = _sz.y * scale;
+          }
+          const node_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(screen_x, screen_y, node_w, total_h);
+          if (_M0MP49LING7167111moon_2degui3src4math4Rect8contains(node_rect, mouse_pos)) {
+            cur_selected_node = node.id;
+            active_drag_node = node.id;
+            _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, node.id, "selected_node", 0);
+            _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, node.id, "drag_node", 0);
+            _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, _canvas_id, mouse_pos.x - _canvas_rect.x - node.pos.x, "drag_anchor_x", 0);
+            _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, _canvas_id, mouse_pos.y - _canvas_rect.y - node.pos.y, "drag_anchor_y", 0);
+            handled = true;
+            break;
+          }
+          _tmp$4 = k - 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+    }
+  }
+  const canvas_min = _M0MP49LING7167111moon_2degui3src4math4Rect3min(_canvas_rect);
+  const _bind$3 = out_conns.length;
+  let _tmp$3 = 0;
+  while (true) {
+    const _ = _tmp$3;
+    if (_ < _bind$3) {
+      const conn = out_conns[_];
+      const p_start = _M0FP49LING7167111moon_2degui3src9composite20find__port__position(canvas_min, nodes, conn.from_node, conn.from_port, style, scale);
+      const p_end = _M0FP49LING7167111moon_2degui3src9composite20find__port__position(canvas_min, nodes, conn.to_node, conn.to_port, style, scale);
+      if (p_start === undefined) {
+      } else {
+        const _Some = p_start;
+        const _p0 = _Some;
+        if (p_end === undefined) {
+        } else {
+          const _Some$2 = p_end;
+          const _p3 = _Some$2;
+          _M0FP49LING7167111moon_2degui3src9composite33draw__cubic__bezier__wire_2einner(painter, _p0, _p3, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), wire_width, 20);
+        }
+      }
+      _tmp$3 = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  let _tmp$4;
+  const _p = active_conn_node;
+  const _p$2 = "";
+  if (!(_p === _p$2)) {
+    const _p$3 = active_conn_port;
+    const _p$4 = "";
+    _tmp$4 = !(_p$3 === _p$4);
+  } else {
+    _tmp$4 = false;
+  }
+  if (_tmp$4) {
+    const p_start = _M0FP49LING7167111moon_2degui3src9composite20find__port__position(canvas_min, nodes, active_conn_node, active_conn_port, style, scale);
+    if (p_start === undefined) {
+    } else {
+      const _Some = p_start;
+      const _p0 = _Some;
+      _M0FP49LING7167111moon_2degui3src9composite33draw__cubic__bezier__wire_2einner(painter, _p0, mouse_pos, _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover(), wire_width + 0.5, 20);
+      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
+    }
+  }
+  const _bind$4 = nodes.length;
+  let _tmp$5 = 0;
+  while (true) {
+    const _ = _tmp$5;
+    if (_ < _bind$4) {
+      const node = nodes[_];
+      const screen_x = _canvas_rect.x + node.pos.x;
+      const screen_y = _canvas_rect.y + node.pos.y;
+      const _bind$5 = node.size;
+      let node_w;
+      if (_bind$5 === undefined) {
+        node_w = node_min_w;
+      } else {
+        const _Some = _bind$5;
+        const _sz = _Some;
+        node_w = _sz.x * scale;
+      }
+      const max_ports = node.inputs.length > node.outputs.length ? node.inputs.length : node.outputs.length;
+      const body_h = ((max_ports + 0) * style.port_spacing + 16) * scale;
+      const _bind$6 = node.size;
+      let total_h;
+      if (_bind$6 === undefined) {
+        total_h = header_h + body_h;
+      } else {
+        const _Some = _bind$6;
+        const _sz = _Some;
+        total_h = _sz.y * scale;
+      }
+      const node_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(screen_x, screen_y, node_w, total_h);
+      const header_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(screen_x, screen_y, node_w, header_h);
+      const is_selected = cur_selected_node === node.id;
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, node_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), card_radius);
+      const _bind$7 = node.accent_color;
+      let header_color;
+      if (_bind$7 === undefined) {
+        header_color = _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface();
+      } else {
+        const _Some = _bind$7;
+        header_color = _Some;
+      }
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, header_rect, header_color, card_radius);
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, _M0MP49LING7167111moon_2degui3src4math4Rect3new(screen_x, screen_y + header_h - card_radius, node_w, card_radius), header_color, 0);
+      let border_col;
+      let stroke_w;
+      _L: {
+        if (is_selected) {
+          border_col = _M0MP49LING7167111moon_2degui3src5color5Color13border__focus();
+          stroke_w = 1.5 * scale;
+          break _L;
+        } else {
+          border_col = _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
+          stroke_w = 1;
+          break _L;
+        }
+      }
+      _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, node_rect, border_col, stroke_w, card_radius);
+      const _bind$8 = node.accent_color;
+      const title_color = _bind$8 === undefined ? _M0MP49LING7167111moon_2degui3src5color5Color12text__strong() : _M0MP49LING7167111moon_2degui3src5color5Color13text__inverse();
+      const title_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + 10 * scale, screen_y + (header_h - font_title) * 0.5);
+      _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(painter, title_pos, node.title, font_title, title_color, "", 500);
+      if (is_canvas_hovered && _M0MP49LING7167111moon_2degui3src4math4Rect8contains(header_rect, mouse_pos)) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "move");
+      }
+      const _bind$9 = node.inputs;
+      const _bind$10 = _bind$9.length;
+      let _tmp$6 = 0;
+      while (true) {
+        const i = _tmp$6;
+        if (i < _bind$10) {
+          const in_port = _bind$9[i];
+          const py = screen_y + header_h + 14 * scale + (i + 0) * port_spacing;
+          const port_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x, py);
+          const _bind$11 = in_port.color;
+          let p_col;
+          if (_bind$11 === undefined) {
+            p_col = _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
+          } else {
+            const _Some = _bind$11;
+            p_col = _Some;
+          }
+          const is_port_hovered = is_canvas_hovered && (Math.abs(mouse_pos.x - port_center.x) <= port_r * 2 && Math.abs(mouse_pos.y - port_center.y) <= port_r * 2);
+          if (is_port_hovered) {
+            _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
+            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, port_center, port_r + 2 * scale, p_col);
+          } else {
+            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, port_center, port_r, p_col);
+            _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(painter, port_center, port_r, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), 1.5);
+          }
+          const label_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + port_r + 6 * scale, py - font_port * 0.5);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(painter, label_pos, in_port.name, font_port, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary(), "", 500);
+          _tmp$6 = i + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      const _bind$11 = node.outputs;
+      const _bind$12 = _bind$11.length;
+      let _tmp$7 = 0;
+      while (true) {
+        const j = _tmp$7;
+        if (j < _bind$12) {
+          const out_port = _bind$11[j];
+          const py = screen_y + header_h + 14 * scale + (j + 0) * port_spacing;
+          const port_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + node_w, py);
+          const _bind$13 = out_port.color;
+          let p_col;
+          if (_bind$13 === undefined) {
+            p_col = _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
+          } else {
+            const _Some = _bind$13;
+            p_col = _Some;
+          }
+          const is_port_hovered = is_canvas_hovered && (Math.abs(mouse_pos.x - port_center.x) <= port_r * 2 && Math.abs(mouse_pos.y - port_center.y) <= port_r * 2);
+          if (is_port_hovered) {
+            _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
+            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, port_center, port_r + 2 * scale, p_col);
+          } else {
+            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, port_center, port_r, p_col);
+            _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(painter, port_center, port_r, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), 1.5);
+          }
+          const label_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, out_port.name, font_port);
+          const label_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + node_w - port_r - 6 * scale - label_sz.x, py - font_port * 0.5);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(painter, label_pos, out_port.name, font_port, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary(), "", 500);
+          _tmp$7 = j + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      _tmp$5 = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  _M0MP49LING7167111moon_2degui3src4core7Painter9pop__clip(painter);
+  let active_drag;
+  const _p$3 = active_drag_node;
+  const _p$4 = "";
+  if (!(_p$3 === _p$4)) {
+    active_drag = active_drag_node;
+  } else {
+    active_drag = undefined;
+  }
+  let sel_node;
+  const _p$5 = cur_selected_node;
+  const _p$6 = "";
+  if (!(_p$5 === _p$6)) {
+    sel_node = cur_selected_node;
+  } else {
+    sel_node = undefined;
+  }
+  return new _M0TP49LING7167111moon_2degui3src9composite18NodeEditorResponse(_canvas_rect, nodes, out_conns, sel_node, active_drag, new_conn, changed);
+}
+function _M0FP49LING7167111moon_2degui3src9composite12node__editor(ctx, id_salt, size, nodes, connections, custom_style$46$opt, selected_node$46$opt) {
+  let custom_style;
+  if (custom_style$46$opt.$tag === 1) {
+    const _Some = custom_style$46$opt;
+    custom_style = _Some._0;
+  } else {
+    custom_style = undefined;
+  }
+  let selected_node;
+  if (selected_node$46$opt.$tag === 1) {
+    const _Some = selected_node$46$opt;
+    selected_node = _Some._0;
+  } else {
+    selected_node = undefined;
+  }
+  return _M0FP49LING7167111moon_2degui3src9composite20node__editor_2einner(ctx, id_salt, size, nodes, connections, custom_style, selected_node);
 }
 function _M0FP49LING7167111moon_2degui3src9composite9menu__bar(ctx, content) {
   const scale = ctx.style.scale;
@@ -8132,7 +8976,7 @@ function _M0MP49LING7167111moon_2degui3src9composite5Fader4show(self, ctx) {
   const scale = ctx.style.scale;
   const font_nm = ctx.style.font_normal * scale;
   const font_sm = ctx.style.font_small * scale;
-  const f_style = _M0MP49LING7167111moon_2degui3src9composite10FaderStyle7defaultN6recordS3037;
+  const f_style = _M0MP49LING7167111moon_2degui3src9composite10FaderStyle7defaultN6recordS3457;
   const _bind = self.size;
   let total_w;
   if (_bind === undefined) {
@@ -9982,7 +10826,7 @@ function _M0FP49LING7167111moon_2degui3src9composite20code__editor_2einner(ctx, 
   let current_text = text;
   let lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
   const scale = ctx.style.scale;
-  const ce_style = _M0MP49LING7167111moon_2degui3src9composite15CodeEditorStyle7defaultN6recordS3038;
+  const ce_style = _M0MP49LING7167111moon_2degui3src9composite15CodeEditorStyle7defaultN6recordS3458;
   const code_font_sz = ce_style.font_size * scale;
   const gutter_font_sz = ce_style.gutter_font_size * scale;
   const gutter_w = show_line_numbers ? ce_style.gutter_w * scale : 0;
@@ -10101,7 +10945,7 @@ function _M0FP49LING7167111moon_2degui3src9composite20code__editor_2einner(ctx, 
     const ctrl_held = ctx.input.modifiers.ctrl || ctx.input.modifiers.meta;
     if (ctrl_held && _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 14)) {
       _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 14);
-      selection_anchor = _M0FP49LING7167111moon_2degui3src9composite20code__editor_2einnerN6constrS3039;
+      selection_anchor = _M0FP49LING7167111moon_2degui3src9composite20code__editor_2einnerN6constrS3459;
       cursor_pos = current_text.length;
     }
     const _bind$2 = _M0FP49LING7167111moon_2degui3src9composite21cursor__to__line__col(current_text, cursor_pos);
@@ -11232,6 +12076,450 @@ function _M0FP49LING7167111moon_2degui3src7widgets23text__edit__val_2einner(ctx,
   const h = ctx.style.control_h_md * ctx.style.scale;
   return _M0FP49LING7167111moon_2degui3src7widgets17text__edit__sized(ctx, id_salt, text, placeholder, _M0MP49LING7167111moon_2degui3src4math4Vec23new(w, h));
 }
+function _M0MP49LING7167111moon_2degui3src7widgets8StepItem11new_2einner(title, description) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets8StepItem(title, description, undefined);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets8StepItem20with__status_2einner(title, status, description) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets8StepItem(title, description, status);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets5Steps3new(id_salt, current, items) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets5Steps(id_salt, current, items, true, _M0DTPC16option6OptionGdE4None__);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets5Steps9clickable(self, clickable) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets5Steps(self.id_salt, self.current, self.items, clickable, self.width);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets5Steps5width(self, width) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets5Steps(self.id_salt, self.current, self.items, self.clickable, new _M0DTPC16option6OptionGdE4Some(width));
+}
+function _M0MP49LING7167111moon_2degui3src7widgets5Steps4show(self, ctx) {
+  const scale = ctx.style.scale;
+  const circle_r = 13 * scale;
+  const font_title = ctx.style.font_normal * scale;
+  const font_desc = ctx.style.font_small * scale;
+  const n = self.items.length;
+  const _p = _M0MPC15array5Array4iterGRP49LING7167111moon_2degui3src7widgets8StepItemE(self.items);
+  let has_desc;
+  while (true) {
+    const _p$2 = _M0MPB4Iter4nextGRPC16string10StringViewE(_p);
+    if (_p$2 === undefined) {
+      has_desc = false;
+      break;
+    } else {
+      const _p$3 = _p$2;
+      const _p$4 = _p$3;
+      if (_p$4.description.length > 0) {
+        has_desc = true;
+        break;
+      }
+      continue;
+    }
+  }
+  const h = has_desc ? 56 * scale : 38 * scale;
+  const default_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
+  const avail_w = default_w > 100 * scale ? default_w : 320 * scale;
+  const _bind = self.width;
+  let w;
+  if (_bind.$tag === 1) {
+    const _Some = _bind;
+    const _w_val = _Some._0;
+    w = _w_val * scale;
+  } else {
+    w = avail_w;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, self.id_salt);
+  const _bind$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(w, h));
+  const _id = _bind$2._0;
+  const _rect = _bind$2._1;
+  const _resp = _bind$2._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  if (self.clickable) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _id);
+  }
+  const is_focused = self.clickable && (_resp.has_focus || _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _id));
+  let new_current = self.current;
+  if (new_current < 0) {
+    new_current = 0;
+  }
+  if (n > 0 && new_current >= n) {
+    new_current = n - 1 | 0;
+  }
+  if (is_focused && n > 1) {
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
+      if (new_current > 0) {
+        new_current = new_current - 1 | 0;
+      }
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
+      if (new_current < (n - 1 | 0)) {
+        new_current = new_current + 1 | 0;
+      }
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 10)) {
+      new_current = 0;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 10);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 11)) {
+      new_current = n - 1 | 0;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 11);
+    }
+  }
+  if (n > 0) {
+    const step_w = _rect.w / (n + 0);
+    let _tmp = 0;
+    while (true) {
+      const i = _tmp;
+      if (i < n) {
+        const item_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + (i + 0) * step_w, _rect.y, step_w, h);
+        if (self.clickable && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, item_rect)) {
+          _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+          if (_resp.clicked) {
+            new_current = i;
+          }
+        }
+        _tmp = i + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+  }
+  if (is_focused) {
+    const radius = ctx.style.radius_md * scale;
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect6expand(_rect, 2 * scale), _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1.5, radius);
+  }
+  if (n > 0) {
+    const step_w = _rect.w / (n + 0);
+    const circle_y = _rect.y + circle_r + 2 * scale;
+    let _tmp = 0;
+    while (true) {
+      const i = _tmp;
+      if (i < (n - 1 | 0)) {
+        const c1_x = _rect.x + (i + 0 + 0.5) * step_w;
+        const c2_x = _rect.x + (i + 0 + 1.5) * step_w;
+        const rail_start_x = c1_x + circle_r + 6 * scale;
+        const rail_end_x = c2_x - circle_r - 6 * scale;
+        if (rail_end_x > rail_start_x) {
+          const rail_color = i < new_current ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color13border__muted();
+          _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(rail_start_x, circle_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(rail_end_x, circle_y), rail_color, 2 * scale);
+        }
+        _tmp = i + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+    let _tmp$2 = 0;
+    while (true) {
+      const i = _tmp$2;
+      if (i < n) {
+        const center_x = _rect.x + (i + 0 + 0.5) * step_w;
+        const center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(center_x, circle_y);
+        const item = _M0MPC15array5Array2atGmE(self.items, i);
+        const _bind$3 = item.status;
+        let status;
+        if (_bind$3 === undefined) {
+          status = i < new_current ? 2 : i === new_current ? 1 : 0;
+        } else {
+          const _Some = _bind$3;
+          status = _Some;
+        }
+        switch (status) {
+          case 2: {
+            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), center, circle_r, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());
+            const sym_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, _M0MP49LING7167111moon_2degui3src7widgets5Steps4showN3symS1185, font_title);
+            const sym_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(center_x - sym_sz.x * 0.5, circle_y - sym_sz.y * 0.5);
+            _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sym_pos, _M0MP49LING7167111moon_2degui3src7widgets5Steps4showN3symS1185, font_title, _M0MP49LING7167111moon_2degui3src5color5Color13text__inverse(), "", 500);
+            break;
+          }
+          case 1: {
+            _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), center, circle_r + 3 * scale, _M0MP49LING7167111moon_2degui3src5color5Color12accent__soft(), 2 * scale);
+            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), center, circle_r, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());
+            const num_str = _M0MPC13int3Int18to__string_2einner(i + 1 | 0, 10);
+            const num_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, num_str, font_title);
+            const num_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(center_x - num_sz.x * 0.5, circle_y - num_sz.y * 0.5);
+            _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), num_pos, num_str, font_title, _M0MP49LING7167111moon_2degui3src5color5Color13text__inverse(), "", 500);
+            break;
+          }
+          case 0: {
+            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), center, circle_r, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface());
+            _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), center, circle_r, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1);
+            const num_str$2 = _M0MPC13int3Int18to__string_2einner(i + 1 | 0, 10);
+            const num_sz$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, num_str$2, font_title);
+            const num_pos$2 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(center_x - num_sz$2.x * 0.5, circle_y - num_sz$2.y * 0.5);
+            _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), num_pos$2, num_str$2, font_title, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
+            break;
+          }
+          default: {
+            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), center, circle_r, _M0MP49LING7167111moon_2degui3src5color5Color6danger());
+            const sym_sz$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, _M0MP49LING7167111moon_2degui3src7widgets5Steps4showN3symS1194, font_title);
+            const sym_pos$2 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(center_x - sym_sz$2.x * 0.5, circle_y - sym_sz$2.y * 0.5);
+            _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sym_pos$2, _M0MP49LING7167111moon_2degui3src7widgets5Steps4showN3symS1194, font_title, _M0MP49LING7167111moon_2degui3src5color5Color13text__inverse(), "", 500);
+          }
+        }
+        let title_color;
+        switch (status) {
+          case 1: {
+            title_color = _M0MP49LING7167111moon_2degui3src5color5Color13text__primary();
+            break;
+          }
+          case 2: {
+            title_color = _M0MP49LING7167111moon_2degui3src5color5Color13text__primary();
+            break;
+          }
+          case 3: {
+            title_color = _M0MP49LING7167111moon_2degui3src5color5Color6danger();
+            break;
+          }
+          default: {
+            title_color = _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
+          }
+        }
+        const title_y = circle_y + circle_r + 4 * scale;
+        const title_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, item.title, font_title);
+        const title_x = center_x - title_sz.x * 0.5;
+        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(title_x, title_y), item.title, font_title, title_color, "", 500);
+        if (item.description.length > 0) {
+          const desc_y = title_y + font_title + 2 * scale;
+          const desc_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, item.description, font_desc);
+          const desc_x = center_x - desc_sz.x * 0.5;
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(desc_x, desc_y), item.description, font_desc, _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary(), "", 500);
+        }
+        _tmp$2 = i + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+  }
+  return { _0: new_current, _1: _resp };
+}
+function _M0FP49LING7167111moon_2degui3src7widgets13steps_2einner(ctx, id_salt, current, items, clickable, width) {
+  let s = _M0MP49LING7167111moon_2degui3src7widgets5Steps9clickable(_M0MP49LING7167111moon_2degui3src7widgets5Steps3new(id_salt, current, items), clickable);
+  if (width.$tag === 1) {
+    const _Some = width;
+    const _w = _Some._0;
+    s = _M0MP49LING7167111moon_2degui3src7widgets5Steps5width(s, _w);
+  }
+  return _M0MP49LING7167111moon_2degui3src7widgets5Steps4show(s, ctx);
+}
+function _M0FP49LING7167111moon_2degui3src7widgets22format__stepper__value(val, precision) {
+  if (precision <= 0) {
+    const rounded = val >= 0 ? _M0MPC16double6Double7to__int(val + 0.5) : _M0MPC16double6Double7to__int(val - 0.5);
+    return _M0MPC13int3Int18to__string_2einner(rounded, 10);
+  } else {
+    if (precision === 1) {
+      const rounded = val >= 0 ? _M0MPC16double6Double7to__int(val * 10 + 0.5) : _M0MPC16double6Double7to__int(val * 10 - 0.5);
+      const whole = rounded / 10 | 0;
+      const _p = rounded % 10 | 0;
+      const frac = _p < 0 ? -_p | 0 : _p;
+      const sign = val < 0 && whole === 0 ? "-" : "";
+      const _string_builder = _M0MPB13StringBuilder21StringBuilder_2einner(1);
+      _M0MPB13StringBuilder13write__objectGsE(_string_builder, sign);
+      _M0MPB13StringBuilder13write__objectGiE(_string_builder, whole);
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder, ".");
+      _M0MPB13StringBuilder13write__objectGiE(_string_builder, frac);
+      return _string_builder.val;
+    } else {
+      let factor = 1;
+      let _tmp = 0;
+      while (true) {
+        const i = _tmp;
+        if (i < precision) {
+          factor = factor * 10;
+          _tmp = i + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      const factor_int = _M0MPC16double6Double7to__int(factor);
+      const rounded = val >= 0 ? _M0MPC16double6Double7to__int(val * factor + 0.5) : _M0MPC16double6Double7to__int(val * factor - 0.5);
+      const whole = rounded / factor_int | 0;
+      const _p = rounded % factor_int | 0;
+      const frac = _p < 0 ? -_p | 0 : _p;
+      let frac_str = _M0MPC13int3Int18to__string_2einner(frac, 10);
+      while (true) {
+        if (frac_str.length < precision) {
+          frac_str = `0${frac_str}`;
+          continue;
+        } else {
+          break;
+        }
+      }
+      const sign = val < 0 && whole === 0 ? "-" : "";
+      const _string_builder = _M0MPB13StringBuilder21StringBuilder_2einner(1);
+      _M0MPB13StringBuilder13write__objectGsE(_string_builder, sign);
+      _M0MPB13StringBuilder13write__objectGiE(_string_builder, whole);
+      _M0IPB13StringBuilderPB6Logger13write__string(_string_builder, ".");
+      _M0MPB13StringBuilder13write__objectGsE(_string_builder, frac_str);
+      return _string_builder.val;
+    }
+  }
+}
+function _M0MP49LING7167111moon_2degui3src7widgets7Stepper3new(id_salt, value) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets7Stepper(id_salt, value, 1, _M0DTPC16option6OptionGdE4None__, _M0DTPC16option6OptionGdE4None__, 0, "", "", _M0DTPC16option6OptionGdE4None__);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets7Stepper4step(self, step) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets7Stepper(self.id_salt, self.value, step > 0 ? step : 1, self.min, self.max, self.precision, self.prefix, self.suffix, self.width);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets7Stepper3min(self, min) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets7Stepper(self.id_salt, self.value, self.step, new _M0DTPC16option6OptionGdE4Some(min), self.max, self.precision, self.prefix, self.suffix, self.width);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets7Stepper3max(self, max) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets7Stepper(self.id_salt, self.value, self.step, self.min, new _M0DTPC16option6OptionGdE4Some(max), self.precision, self.prefix, self.suffix, self.width);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets7Stepper9precision(self, precision) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets7Stepper(self.id_salt, self.value, self.step, self.min, self.max, precision < 0 ? 0 : precision, self.prefix, self.suffix, self.width);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets7Stepper6prefix(self, prefix) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets7Stepper(self.id_salt, self.value, self.step, self.min, self.max, self.precision, prefix, self.suffix, self.width);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets7Stepper6suffix(self, suffix) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets7Stepper(self.id_salt, self.value, self.step, self.min, self.max, self.precision, self.prefix, suffix, self.width);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets7Stepper5width(self, width) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets7Stepper(self.id_salt, self.value, self.step, self.min, self.max, self.precision, self.prefix, self.suffix, new _M0DTPC16option6OptionGdE4Some(width));
+}
+function _M0MP49LING7167111moon_2degui3src7widgets7Stepper4show(self, ctx) {
+  const scale = ctx.style.scale;
+  const h = (ctx.style.control_h_sm - ctx.style.radius_xs) * scale;
+  const radius = ctx.style.radius_sm * scale;
+  const font_sz = ctx.style.font_small * scale;
+  const default_w = 112 * scale;
+  const _bind = self.width;
+  let w;
+  if (_bind.$tag === 1) {
+    const _Some = _bind;
+    const _w_val = _Some._0;
+    w = _w_val * scale;
+  } else {
+    w = default_w;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, self.id_salt);
+  const _bind$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(w, h));
+  const _id = _bind$2._0;
+  const _rect = _bind$2._1;
+  const _resp = _bind$2._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _id);
+  const is_focused = _resp.has_focus || _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _id);
+  const btn_minus_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x, _rect.y, h, h);
+  const btn_plus_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + _rect.w - h, _rect.y, h, h);
+  const val_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + h, _rect.y, _rect.w - 2 * h, h);
+  const minus_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, btn_minus_rect);
+  const plus_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, btn_plus_rect);
+  const val_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, val_rect);
+  if (_resp.hovered) {
+    if (minus_hovered || plus_hovered) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+    } else {
+      if (val_hovered) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "ew-resize");
+      } else {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+      }
+    }
+  }
+  const multiplier = ctx.input.modifiers.shift ? 10 : ctx.input.modifiers.ctrl || ctx.input.modifiers.meta ? 0.1 : 1;
+  const effective_step = self.step * multiplier;
+  let new_val = self.value;
+  if (_resp.clicked) {
+    if (minus_hovered) {
+      new_val = new_val - effective_step;
+    } else {
+      if (plus_hovered) {
+        new_val = new_val + effective_step;
+      }
+    }
+  }
+  if (_resp.hovered && ctx.input.scroll_delta.y !== 0) {
+    if (ctx.input.scroll_delta.y > 0) {
+      new_val = new_val - effective_step;
+    } else {
+      new_val = new_val + effective_step;
+    }
+  }
+  if (is_focused) {
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
+      new_val = new_val - effective_step;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
+      new_val = new_val + effective_step;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
+    }
+  }
+  const _bind$3 = self.min;
+  if (_bind$3.$tag === 1) {
+    const _Some = _bind$3;
+    const _min_v = _Some._0;
+    if (new_val < _min_v) {
+      new_val = _min_v;
+    }
+  }
+  const _bind$4 = self.max;
+  if (_bind$4.$tag === 1) {
+    const _Some = _bind$4;
+    const _max_v = _Some._0;
+    if (new_val > _max_v) {
+      new_val = _max_v;
+    }
+  }
+  const base_bg = _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__window() : _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface();
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, base_bg, radius);
+  const minus_bg = minus_hovered && ctx.input.mouse_down ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__active() : minus_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle() : _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface();
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), btn_minus_rect, minus_bg, radius);
+  const plus_bg = plus_hovered && ctx.input.mouse_down ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__active() : plus_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle() : _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface();
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), btn_plus_rect, plus_bg, radius);
+  const sep_color = _M0MP49LING7167111moon_2degui3src5color5Color13border__muted();
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + h, _rect.y + 2 * scale), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + h, _rect.y + h - 2 * scale), sep_color, 1);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + _rect.w - h, _rect.y + 2 * scale), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + _rect.w - h, _rect.y + h - 2 * scale), sep_color, 1);
+  const border_color = is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color13border__focus() : _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, border_color, 1, radius);
+  if (is_focused) {
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect6expand(_rect, 2 * scale), _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1.5, radius + 2 * scale);
+  }
+  const icon_color = minus_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary();
+  const minus_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(btn_minus_rect.x + h * 0.5, btn_minus_rect.y + h * 0.5);
+  const icon_half_w = 4 * scale;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(minus_center.x - icon_half_w, minus_center.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(minus_center.x + icon_half_w, minus_center.y), icon_color, 1.5 * scale);
+  const plus_icon_color = plus_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary();
+  const plus_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(btn_plus_rect.x + h * 0.5, btn_plus_rect.y + h * 0.5);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plus_center.x - icon_half_w, plus_center.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plus_center.x + icon_half_w, plus_center.y), plus_icon_color, 1.5 * scale);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plus_center.x, plus_center.y - icon_half_w), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plus_center.x, plus_center.y + icon_half_w), plus_icon_color, 1.5 * scale);
+  const formatted_val = _M0FP49LING7167111moon_2degui3src7widgets22format__stepper__value(new_val, self.precision);
+  const display_text = `${self.prefix}${formatted_val}${self.suffix}`;
+  const text_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, display_text, font_sz);
+  const text_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(val_rect.x + (val_rect.w - text_sz.x) * 0.5, val_rect.y + (val_rect.h - font_sz) * 0.5);
+  const text_color = is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color13text__primary();
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), text_pos, display_text, font_sz, text_color, "", 500);
+  return { _0: new_val, _1: _resp };
+}
+function _M0FP49LING7167111moon_2degui3src7widgets15stepper_2einner(ctx, id_salt, value, step, min, max, precision, prefix, suffix, width) {
+  let s = _M0MP49LING7167111moon_2degui3src7widgets7Stepper6suffix(_M0MP49LING7167111moon_2degui3src7widgets7Stepper6prefix(_M0MP49LING7167111moon_2degui3src7widgets7Stepper9precision(_M0MP49LING7167111moon_2degui3src7widgets7Stepper4step(_M0MP49LING7167111moon_2degui3src7widgets7Stepper3new(id_salt, value), step), precision), prefix), suffix);
+  if (min.$tag === 1) {
+    const _Some = min;
+    const _m = _Some._0;
+    s = _M0MP49LING7167111moon_2degui3src7widgets7Stepper3min(s, _m);
+  }
+  if (max.$tag === 1) {
+    const _Some = max;
+    const _m = _Some._0;
+    s = _M0MP49LING7167111moon_2degui3src7widgets7Stepper3max(s, _m);
+  }
+  if (width.$tag === 1) {
+    const _Some = width;
+    const _w = _Some._0;
+    s = _M0MP49LING7167111moon_2degui3src7widgets7Stepper5width(s, _w);
+  }
+  return _M0MP49LING7167111moon_2degui3src7widgets7Stepper4show(s, ctx);
+}
 function _M0FP49LING7167111moon_2degui3src7widgets25split__horizontal_2einner(ctx, id_salt, split_ratio, size, left, right, min_ratio, max_ratio, min_px) {
   _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
   const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, size);
@@ -11948,6 +13236,393 @@ function _M0FP49LING7167111moon_2degui3src7widgets12scroll__area(ctx, id_salt, s
     return;
   }
 }
+function _M0MP49LING7167111moon_2degui3src7widgets6Rating3new(id_salt, value) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets6Rating(id_salt, value, 5, true, false, _M0DTPC16option6OptionGdE4None__, _M0DTPC16option6OptionGdE4None__);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets6Rating10max__stars(self, max_stars) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets6Rating(self.id_salt, self.value, max_stars > 0 ? max_stars : 5, self.allow_half, self.read_only, self.star_size, self.spacing);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets6Rating11allow__half(self, allow_half) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets6Rating(self.id_salt, self.value, self.max_stars, allow_half, self.read_only, self.star_size, self.spacing);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets6Rating10read__only(self, read_only) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets6Rating(self.id_salt, self.value, self.max_stars, self.allow_half, read_only, self.star_size, self.spacing);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets6Rating10star__size(self, star_size) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets6Rating(self.id_salt, self.value, self.max_stars, self.allow_half, self.read_only, new _M0DTPC16option6OptionGdE4Some(star_size), self.spacing);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets6Rating7spacing(self, spacing) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets6Rating(self.id_salt, self.value, self.max_stars, self.allow_half, self.read_only, self.star_size, new _M0DTPC16option6OptionGdE4Some(spacing));
+}
+function _M0MP49LING7167111moon_2degui3src7widgets6Rating4show(self, ctx) {
+  const scale = ctx.style.scale;
+  const _bind = self.star_size;
+  let star_sz;
+  if (_bind.$tag === 1) {
+    const _Some = _bind;
+    const _sz = _Some._0;
+    star_sz = _sz * scale;
+  } else {
+    star_sz = 18 * scale;
+  }
+  const _bind$2 = self.spacing;
+  let spacing;
+  if (_bind$2.$tag === 1) {
+    const _Some = _bind$2;
+    const _sp = _Some._0;
+    spacing = _sp * scale;
+  } else {
+    spacing = 4 * scale;
+  }
+  const max_stars = self.max_stars > 0 ? self.max_stars : 5;
+  const total_w = (max_stars + 0) * star_sz + ((max_stars - 1 | 0) + 0) * spacing;
+  const h = star_sz + 4 * scale;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, self.id_salt);
+  const _bind$3 = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(total_w, h));
+  const _id = _bind$3._0;
+  const _rect = _bind$3._1;
+  const _resp = _bind$3._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  if (!self.read_only) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _id);
+    if (_resp.hovered) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+    }
+  }
+  const is_focused = !self.read_only && (_resp.has_focus || _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _id));
+  let new_val = self.value;
+  let display_val = self.value;
+  if (!self.read_only && _resp.hovered) {
+    const mouse_x = ctx.input.mouse_pos.x;
+    const rel_x = mouse_x - _rect.x;
+    if (rel_x < 0) {
+      display_val = 0;
+    } else {
+      const star_idx = _M0MPC16double6Double7to__int(rel_x / (star_sz + spacing));
+      if (star_idx >= max_stars) {
+        display_val = max_stars + 0;
+      } else {
+        const star_start_x = _rect.x + (star_idx + 0) * (star_sz + spacing);
+        const inside_x = mouse_x - star_start_x;
+        if (inside_x <= 0) {
+          display_val = star_idx + 0;
+        } else {
+          if (inside_x >= star_sz) {
+            display_val = (star_idx + 1 | 0) + 0;
+          } else {
+            if (self.allow_half && inside_x < star_sz * 0.5) {
+              display_val = star_idx + 0 + 0.5;
+            } else {
+              display_val = (star_idx + 1 | 0) + 0;
+            }
+          }
+        }
+      }
+    }
+    if (_resp.clicked) {
+      new_val = display_val;
+    }
+  }
+  if (is_focused) {
+    const step = self.allow_half ? 0.5 : 1;
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
+      new_val = new_val - step;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
+      display_val = new_val;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
+      new_val = new_val + step;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
+      display_val = new_val;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 10)) {
+      new_val = 0;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 10);
+      display_val = new_val;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 11)) {
+      new_val = max_stars + 0;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 11);
+      display_val = new_val;
+    }
+  }
+  if (new_val < 0) {
+    new_val = 0;
+  }
+  if (new_val > max_stars + 0) {
+    new_val = max_stars + 0;
+  }
+  if (display_val < 0) {
+    display_val = 0;
+  }
+  if (display_val > max_stars + 0) {
+    display_val = max_stars + 0;
+  }
+  if (is_focused) {
+    const radius = ctx.style.radius_sm * scale;
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect6expand(_rect, 2 * scale), _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1.5, radius + 2 * scale);
+  }
+  const empty_color = _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
+  const active_color = _M0MP49LING7167111moon_2degui3src5color5Color7warning();
+  let _tmp = 0;
+  while (true) {
+    const i = _tmp;
+    if (i < max_stars) {
+      const star_x = _rect.x + (i + 0) * (star_sz + spacing);
+      const star_y = _rect.y + (h - star_sz) * 0.5;
+      const star_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(star_x, star_y);
+      const threshold = (i + 1 | 0) + 0;
+      const half_threshold = i + 0 + 0.5;
+      if (display_val >= threshold) {
+        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), star_pos, "★", star_sz, active_color, "", 500);
+      } else {
+        if (display_val >= half_threshold) {
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), star_pos, "★", star_sz, empty_color, "", 500);
+          const half_clip = _M0MP49LING7167111moon_2degui3src4math4Rect3new(star_x, star_y, star_sz * 0.5, star_sz);
+          _M0MP49LING7167111moon_2degui3src4core7Painter10push__clip(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), half_clip);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), star_pos, "★", star_sz, active_color, "", 500);
+          _M0MP49LING7167111moon_2degui3src4core7Painter9pop__clip(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx));
+        } else {
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), star_pos, "★", star_sz, empty_color, "", 500);
+        }
+      }
+      _tmp = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return { _0: new_val, _1: _resp };
+}
+function _M0FP49LING7167111moon_2degui3src7widgets14rating_2einner(ctx, id_salt, value, max_stars, allow_half, read_only, star_size, spacing) {
+  let r = _M0MP49LING7167111moon_2degui3src7widgets6Rating10read__only(_M0MP49LING7167111moon_2degui3src7widgets6Rating11allow__half(_M0MP49LING7167111moon_2degui3src7widgets6Rating10max__stars(_M0MP49LING7167111moon_2degui3src7widgets6Rating3new(id_salt, value), max_stars), allow_half), read_only);
+  if (star_size.$tag === 1) {
+    const _Some = star_size;
+    const _sz = _Some._0;
+    r = _M0MP49LING7167111moon_2degui3src7widgets6Rating10star__size(r, _sz);
+  }
+  if (spacing.$tag === 1) {
+    const _Some = spacing;
+    const _sp = _Some._0;
+    r = _M0MP49LING7167111moon_2degui3src7widgets6Rating7spacing(r, _sp);
+  }
+  return _M0MP49LING7167111moon_2degui3src7widgets6Rating4show(r, ctx);
+}
+function _M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__items(current, total) {
+  if (total <= 7) {
+    const res = [];
+    let _tmp = 1;
+    while (true) {
+      const p = _tmp;
+      if (p <= total) {
+        _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4core5EventE(res, new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(p));
+        _tmp = p + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+    return res;
+  } else {
+    return current <= 4 ? [_M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2709, _M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2710, _M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2711, _M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2712, _M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2713, _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem8Ellipsis__, new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(total)] : current >= (total - 3 | 0) ? [_M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2714, _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem8Ellipsis__, new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(total - 4 | 0), new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(total - 3 | 0), new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(total - 2 | 0), new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(total - 1 | 0), new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(total)] : [_M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__itemsN6constrS2715, _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem8Ellipsis__, new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(current - 1 | 0), new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(current), new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(current + 1 | 0), _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem8Ellipsis__, new _M0DTP49LING7167111moon_2degui3src7widgets14PaginationItem4Page(total)];
+  }
+}
+function _M0MP49LING7167111moon_2degui3src7widgets10Pagination3new(id_salt, current_page, total_pages) {
+  const total = total_pages > 0 ? total_pages : 1;
+  const current = current_page < 1 ? 1 : current_page > total ? total : current_page;
+  return new _M0TP49LING7167111moon_2degui3src7widgets10Pagination(id_salt, current, total, _M0DTPC16option6OptionGdE4None__, _M0DTPC16option6OptionGdE4None__, true);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets10Pagination10item__size(self, item_size) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets10Pagination(self.id_salt, self.current_page, self.total_pages, new _M0DTPC16option6OptionGdE4Some(item_size), self.spacing, self.show_prev_next);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets10Pagination7spacing(self, spacing) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets10Pagination(self.id_salt, self.current_page, self.total_pages, self.item_size, new _M0DTPC16option6OptionGdE4Some(spacing), self.show_prev_next);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets10Pagination16show__prev__next(self, show_prev_next) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets10Pagination(self.id_salt, self.current_page, self.total_pages, self.item_size, self.spacing, show_prev_next);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets10Pagination9from__ref(id_salt, target, total_pages) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets13PaginationRef(_M0MP49LING7167111moon_2degui3src7widgets10Pagination3new(id_salt, target.val, total_pages), target);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets13PaginationRef10item__size(self, item_size) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets13PaginationRef(_M0MP49LING7167111moon_2degui3src7widgets10Pagination10item__size(self.pagination, item_size), self.target);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets13PaginationRef7spacing(self, spacing) {
+  return new _M0TP49LING7167111moon_2degui3src7widgets13PaginationRef(_M0MP49LING7167111moon_2degui3src7widgets10Pagination7spacing(self.pagination, spacing), self.target);
+}
+function _M0MP49LING7167111moon_2degui3src7widgets10Pagination4show(self, ctx) {
+  const scale = ctx.style.scale;
+  const _bind = self.item_size;
+  let btn_sz;
+  if (_bind.$tag === 1) {
+    const _Some = _bind;
+    const _sz = _Some._0;
+    btn_sz = _sz * scale;
+  } else {
+    btn_sz = (ctx.style.control_h_sm - ctx.style.radius_xs) * scale;
+  }
+  const _bind$2 = self.spacing;
+  let spacing;
+  if (_bind$2.$tag === 1) {
+    const _Some = _bind$2;
+    const _sp = _Some._0;
+    spacing = _sp * scale;
+  } else {
+    spacing = ctx.style.spacing_xs * scale;
+  }
+  const radius = ctx.style.radius_sm * scale;
+  const font_sz = ctx.style.font_small * scale;
+  const total = self.total_pages > 0 ? self.total_pages : 1;
+  let new_page = self.current_page < 1 ? 1 : self.current_page > total ? total : self.current_page;
+  const items = _M0FP49LING7167111moon_2degui3src7widgets27generate__pagination__items(new_page, total);
+  const total_buttons = items.length + (self.show_prev_next ? 2 : 0) | 0;
+  const total_w = (total_buttons + 0) * btn_sz + ((total_buttons - 1 | 0) + 0) * spacing;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, self.id_salt);
+  const _bind$3 = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(total_w, btn_sz));
+  const _id = _bind$3._0;
+  const _rect = _bind$3._1;
+  const _resp = _bind$3._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _id);
+  const is_focused = _resp.has_focus || _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _id);
+  if (is_focused) {
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
+      if (new_page > 1) {
+        new_page = new_page - 1 | 0;
+      }
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
+      if (new_page < total) {
+        new_page = new_page + 1 | 0;
+      }
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 10)) {
+      new_page = 1;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 10);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 11)) {
+      new_page = total;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 11);
+    }
+  }
+  if (is_focused) {
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect6expand(_rect, 2 * scale), _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1.5, radius + 2 * scale);
+  }
+  let curr_x = _rect.x;
+  if (self.show_prev_next) {
+    const prev_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(curr_x, _rect.y, btn_sz, btn_sz);
+    const is_prev_enabled = new_page > 1;
+    const is_prev_hovered = is_prev_enabled && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, prev_rect);
+    if (is_prev_hovered) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+      if (_resp.clicked) {
+        new_page = new_page - 1 | 0;
+      }
+    }
+    const prev_bg = is_prev_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover() : _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface();
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), prev_rect, prev_bg, radius);
+    const prev_border = is_prev_enabled ? _M0MP49LING7167111moon_2degui3src5color5Color15border__default() : _M0MP49LING7167111moon_2degui3src5color5Color13border__muted();
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), prev_rect, prev_border, 1, radius);
+    const sym_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, _M0MP49LING7167111moon_2degui3src7widgets10Pagination4showN3symS525, font_sz);
+    const sym_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(curr_x + (btn_sz - sym_sz.x) * 0.5, _rect.y + (btn_sz - font_sz) * 0.5);
+    const sym_color = is_prev_enabled ? _M0MP49LING7167111moon_2degui3src5color5Color13text__primary() : _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled();
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sym_pos, _M0MP49LING7167111moon_2degui3src7widgets10Pagination4showN3symS525, font_sz, sym_color, "", 500);
+    curr_x = curr_x + btn_sz + spacing;
+  }
+  const _bind$4 = items.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$4) {
+      const item = items[_];
+      const item_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(curr_x, _rect.y, btn_sz, btn_sz);
+      if (item.$tag === 0) {
+        const _Page = item;
+        const _p = _Page._0;
+        const is_active = _p === new_page;
+        const is_hovered = !is_active && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, item_rect);
+        if (is_hovered) {
+          _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+          if (_resp.clicked) {
+            new_page = _p;
+          }
+        }
+        if (is_active) {
+          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), item_rect, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), radius);
+          const p_str = _M0MPC13int3Int18to__string_2einner(_p, 10);
+          const p_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, p_str, font_sz);
+          const p_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(curr_x + (btn_sz - p_sz.x) * 0.5, _rect.y + (btn_sz - font_sz) * 0.5);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), p_pos, p_str, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color13text__inverse(), "", 500);
+        } else {
+          const bg = is_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover() : _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface();
+          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), item_rect, bg, radius);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), item_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, radius);
+          const p_str = _M0MPC13int3Int18to__string_2einner(_p, 10);
+          const p_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, p_str, font_sz);
+          const p_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(curr_x + (btn_sz - p_sz.x) * 0.5, _rect.y + (btn_sz - font_sz) * 0.5);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), p_pos, p_str, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary(), "", 500);
+        }
+      } else {
+        const sym_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, _M0MP49LING7167111moon_2degui3src7widgets10Pagination4showN3symS541, font_sz);
+        const sym_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(curr_x + (btn_sz - sym_sz.x) * 0.5, _rect.y + (btn_sz - font_sz) * 0.5);
+        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sym_pos, _M0MP49LING7167111moon_2degui3src7widgets10Pagination4showN3symS541, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
+      }
+      curr_x = curr_x + btn_sz + spacing;
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  if (self.show_prev_next) {
+    const next_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(curr_x, _rect.y, btn_sz, btn_sz);
+    const is_next_enabled = new_page < total;
+    const is_next_hovered = is_next_enabled && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, next_rect);
+    if (is_next_hovered) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+      if (_resp.clicked) {
+        new_page = new_page + 1 | 0;
+      }
+    }
+    const next_bg = is_next_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover() : _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface();
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), next_rect, next_bg, radius);
+    const next_border = is_next_enabled ? _M0MP49LING7167111moon_2degui3src5color5Color15border__default() : _M0MP49LING7167111moon_2degui3src5color5Color13border__muted();
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), next_rect, next_border, 1, radius);
+    const sym_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, _M0MP49LING7167111moon_2degui3src7widgets10Pagination4showN3symS549, font_sz);
+    const sym_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(curr_x + (btn_sz - sym_sz.x) * 0.5, _rect.y + (btn_sz - font_sz) * 0.5);
+    const sym_color = is_next_enabled ? _M0MP49LING7167111moon_2degui3src5color5Color13text__primary() : _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled();
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sym_pos, _M0MP49LING7167111moon_2degui3src7widgets10Pagination4showN3symS549, font_sz, sym_color, "", 500);
+  }
+  return { _0: new_page, _1: _resp };
+}
+function _M0IP49LING7167111moon_2degui3src7widgets13PaginationRefP49LING7167111moon_2degui3src4core6Widget2ui(self, ctx) {
+  const _bind = self.pagination;
+  const _bind$2 = _M0MP49LING7167111moon_2degui3src7widgets10Pagination4show(new _M0TP49LING7167111moon_2degui3src7widgets10Pagination(_bind.id_salt, self.target.val, _bind.total_pages, _bind.item_size, _bind.spacing, _bind.show_prev_next), ctx);
+  const _new_page = _bind$2._0;
+  const _resp = _bind$2._1;
+  self.target.val = _new_page;
+  return _resp;
+}
+function _M0FP49LING7167111moon_2degui3src7widgets18pagination_2einner(ctx, id_salt, current_page, total_pages, item_size, spacing, show_prev_next) {
+  let p = _M0MP49LING7167111moon_2degui3src7widgets10Pagination16show__prev__next(_M0MP49LING7167111moon_2degui3src7widgets10Pagination3new(id_salt, current_page, total_pages), show_prev_next);
+  if (item_size.$tag === 1) {
+    const _Some = item_size;
+    const _sz = _Some._0;
+    p = _M0MP49LING7167111moon_2degui3src7widgets10Pagination10item__size(p, _sz);
+  }
+  if (spacing.$tag === 1) {
+    const _Some = spacing;
+    const _sp = _Some._0;
+    p = _M0MP49LING7167111moon_2degui3src7widgets10Pagination7spacing(p, _sp);
+  }
+  return _M0MP49LING7167111moon_2degui3src7widgets10Pagination4show(p, ctx);
+}
 function _M0FP49LING7167111moon_2degui3src7widgets21progress__bar_2einner(ctx, fraction, text) {
   const scale = ctx.style.scale;
   const w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
@@ -12011,7 +13686,7 @@ function _M0FP49LING7167111moon_2degui3src7widgets7tooltip(ctx, text) {
 }
 function _M0FP49LING7167111moon_2degui3src7widgets21wrap__dialog__message(ctx, message, max_w, font_size) {
   const lines = [];
-  const raw_paragraphs = _M0MPC16string6String5split(message, new _M0TPC16string10StringView(_M0FP49LING7167111moon_2degui3src7widgets21wrap__dialog__messageN7_2abindS1807, 0, _M0FP49LING7167111moon_2degui3src7widgets21wrap__dialog__messageN7_2abindS1807.length));
+  const raw_paragraphs = _M0MPC16string6String5split(message, new _M0TPC16string10StringView(_M0FP49LING7167111moon_2degui3src7widgets21wrap__dialog__messageN7_2abindS2467, 0, _M0FP49LING7167111moon_2degui3src7widgets21wrap__dialog__messageN7_2abindS2467.length));
   while (true) {
     const _bind = _M0MPB4Iter4nextGRPC16string10StringViewE(raw_paragraphs);
     if (_bind === undefined) {
@@ -12639,7 +14314,7 @@ function _M0FP49LING7167111moon_2degui3src7widgets22button__primary__sized(ctx, 
   return _M0FP49LING7167111moon_2degui3src7widgets14button_2einner(ctx, text, "", true, size);
 }
 function _M0FP49LING7167111moon_2degui3src7widgets15button__primary(ctx, text) {
-  return _M0FP49LING7167111moon_2degui3src7widgets6button(ctx, text, undefined, _M0FP49LING7167111moon_2degui3src7widgets15button__primaryN6constrS2037, undefined);
+  return _M0FP49LING7167111moon_2degui3src7widgets6button(ctx, text, undefined, _M0FP49LING7167111moon_2degui3src7widgets15button__primaryN6constrS2716, undefined);
 }
 function _M0FP49LING7167111moon_2degui3src7widgets22button__with__shortcut(ctx, text, shortcut) {
   return _M0FP49LING7167111moon_2degui3src7widgets6button(ctx, text, shortcut, -1, undefined);
@@ -12676,7 +14351,7 @@ function _M0FP49LING7167111moon_2degui3src7widgets18breadcrumb_2einner(ctx, id_s
   const should_fold = max_visible > 2 && count > max_visible;
   if (should_fold) {
     _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4core5EventE(display_items, { _0: _M0MPC15array5Array2atGmE(items, 0), _1: 0 });
-    _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4core5EventE(display_items, _M0FP49LING7167111moon_2degui3src7widgets18breadcrumb_2einnerN5tupleS2038);
+    _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4core5EventE(display_items, _M0FP49LING7167111moon_2degui3src7widgets18breadcrumb_2einnerN5tupleS2717);
     const tail_start = count - (max_visible - 2 | 0) | 0;
     let _tmp = tail_start;
     while (true) {
@@ -13203,7 +14878,7 @@ function _M0FP49LING7167111moon_2degui8examples6canvas19mines__number__font(cell
 }
 function _M0MP49LING7167111moon_2degui8examples6canvas9MineWorld3new(seed) {
   const _bind = [];
-  return new _M0TP49LING7167111moon_2degui8examples6canvas9MineWorld(seed, _M0MPB3Map3MapGmRP49LING7167111moon_2degui8examples6canvas9MineChunkE(new _M0TPB9ArrayViewGUmRP49LING7167111moon_2degui8examples6canvas9MineChunkEE(_bind, 0, 0), _M0MP49LING7167111moon_2degui8examples6canvas9MineWorld3newN6constrS1283), [], 0, 0, 0, 0, undefined);
+  return new _M0TP49LING7167111moon_2degui8examples6canvas9MineWorld(seed, _M0MPB3Map3MapGmRP49LING7167111moon_2degui8examples6canvas9MineChunkE(new _M0TPB9ArrayViewGUmRP49LING7167111moon_2degui8examples6canvas9MineChunkEE(_bind, 0, 0), _M0MP49LING7167111moon_2degui8examples6canvas9MineWorld3newN6constrS1345), [], 0, 0, 0, 0, undefined);
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas20mines__number__color(n) {
   return n === 1 ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : n === 2 ? _M0MP49LING7167111moon_2degui3src5color5Color7success() : n === 3 ? _M0MP49LING7167111moon_2degui3src5color5Color7warning() : n === 4 ? _M0MP49LING7167111moon_2degui3src5color5Color6danger() : n <= 7 ? _M0MP49LING7167111moon_2degui3src5color5Color12text__strong() : _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary();
@@ -13916,46 +15591,46 @@ function _M0FP49LING7167111moon_2degui8examples6canvas19apply__switch__mode(stat
 function _M0FP49LING7167111moon_2degui8examples6canvas9host__key(name) {
   switch (name) {
     case "Tab": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1284;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1346;
     }
     case "Enter": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1285;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1347;
     }
     case "Escape": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1286;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1348;
     }
     case " ": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1287;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1349;
     }
     case "ArrowUp": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1288;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1350;
     }
     case "ArrowDown": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1289;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1351;
     }
     case "ArrowLeft": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1290;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1352;
     }
     case "ArrowRight": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1291;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1353;
     }
     case "PageUp": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1292;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1354;
     }
     case "PageDown": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1293;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1355;
     }
     case "Home": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1294;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1356;
     }
     case "End": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1295;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1357;
     }
     case "Backspace": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1296;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1358;
     }
     case "Delete": {
-      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1297;
+      return _M0FP49LING7167111moon_2degui8examples6canvas9host__keyN6constrS1359;
     }
     default: {
       return undefined;
@@ -14131,7 +15806,7 @@ function _M0FP49LING7167111moon_2degui8examples6canvas21draw__badge__showcase(ui
     _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(row, 8);
     _M0FP49LING7167111moon_2degui3src7widgets13badge_2einner(row, "Danger", 3, false, true);
     _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(row, 8);
-    _M0FP49LING7167111moon_2degui3src7widgets13badge_2einner(row, "v0.3.1", 4, true, true);
+    _M0FP49LING7167111moon_2degui3src7widgets13badge_2einner(row, "v0.3.2", 4, true, true);
   });
   _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 14);
   _M0MP49LING7167111moon_2degui3src4core9UIContext10horizontal(ui, (row) => {
@@ -14470,7 +16145,7 @@ function _M0FP49LING7167111moon_2degui8examples6canvas29draw__context__menu__sho
     _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.ctx_menu_pos = _tmp$2;
     _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = "Context Menu Opened at Cursor";
   }
-  const items = [_M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem3new("copy", "复制当前组件代码", _M0FP49LING7167111moon_2degui8examples6canvas29draw__context__menu__showcaseN6constrS1298, -1, _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite15ContextMenuItemEE4None__), _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem3new("paste", "粘贴图元属性", _M0FP49LING7167111moon_2degui8examples6canvas29draw__context__menu__showcaseN6constrS1299, -1, _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite15ContextMenuItemEE4None__), _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem9separator(), _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem3new("inspect", "审查图元层级", _M0FP49LING7167111moon_2degui8examples6canvas29draw__context__menu__showcaseN6constrS1300, -1, _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite15ContextMenuItemEE4None__), _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem3new("delete", "重置控件状态", undefined, -1, _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite15ContextMenuItemEE4None__)];
+  const items = [_M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem3new("copy", "复制当前组件代码", _M0FP49LING7167111moon_2degui8examples6canvas29draw__context__menu__showcaseN6constrS1360, -1, _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite15ContextMenuItemEE4None__), _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem3new("paste", "粘贴图元属性", _M0FP49LING7167111moon_2degui8examples6canvas29draw__context__menu__showcaseN6constrS1361, -1, _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite15ContextMenuItemEE4None__), _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem9separator(), _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem3new("inspect", "审查图元层级", _M0FP49LING7167111moon_2degui8examples6canvas29draw__context__menu__showcaseN6constrS1362, -1, _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite15ContextMenuItemEE4None__), _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem3new("delete", "重置控件状态", undefined, -1, _M0DTPC16option6OptionGRPB5ArrayGRP49LING7167111moon_2degui3src9composite15ContextMenuItemEE4None__)];
   const resp = _M0FP49LING7167111moon_2degui3src9composite28context__menu__items_2einner(ui, "demo_ctx", _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.ctx_menu_open, _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.ctx_menu_pos, items, 180, _M0MP49LING7167111moon_2degui3src4math4Vec23new(vp_w, vp_h));
   _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.ctx_menu_open = resp.open;
   const _bind = resp.selected_id;
@@ -14835,6 +16510,99 @@ function _M0FP49LING7167111moon_2degui8examples6canvas25draw__menu__bar__showcas
   _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 8);
   _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "支持桌面原生 hover 联动切换下拉、快捷键标识与分割线。");
 }
+function _M0FP49LING7167111moon_2degui8examples6canvas28draw__node__editor__showcase(ui) {
+  _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "节点拓扑流连线编辑器 (NodeEditor)", _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 6);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "支持无极画布网格、节点卡片自由拖拽排布、输出/输入端口交互式连线与自适应平滑三次贝塞尔导线。");
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 12);
+  const editor_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ui) > 200 ? _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ui) : 560;
+  const resp = _M0FP49LING7167111moon_2degui3src9composite12node__editor(ui, "gal_node_editor", _M0MP49LING7167111moon_2degui3src4math4Vec23new(editor_w, 320), _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.node_items, _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.node_conns, _M0DTPC16option6OptionGORP49LING7167111moon_2degui3src9composite15NodeEditorStyleE4None__, _M0DTPC16option6OptionGOsE4None__);
+  const _bind = resp.new_connection;
+  if (_bind === undefined) {
+  } else {
+    const _Some = _bind;
+    const _conn = _Some;
+    _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4core5EventE(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.node_conns, _conn);
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = `New Connection: ${_conn.from_node}:${_conn.from_port} -> ${_conn.to_node}:${_conn.to_port}`;
+  }
+  const _bind$2 = resp.dragged_node;
+  if (_bind$2 === undefined) {
+    const _bind$3 = resp.selected_node;
+    if (_bind$3 === undefined) {
+    } else {
+      const _Some = _bind$3;
+      const _s_node = _Some;
+      _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = `Selected node: ${_s_node}`;
+    }
+  } else {
+    const _Some = _bind$2;
+    const _d_node = _Some;
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = `Dragging node: ${_d_node}`;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 10);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext10horizontal(ui, (row) => {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext5label(row, `当前节点数: ${_M0MPC13int3Int18to__string_2einner(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.node_items.length, 10)} | 拓扑连线数: ${_M0MPC13int3Int18to__string_2einner(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.node_conns.length, 10)}`);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(row, 16);
+    if (_M0FP49LING7167111moon_2degui3src7widgets13button__sized(row, "重置拓扑", _M0MP49LING7167111moon_2degui3src4math4Vec23new(80, 24)).clicked) {
+      if (_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.node_items.length >= 3) {
+        _M0MP49LING7167111moon_2degui3src9composite8NodeItem8set__pos(_M0MPC15array5Array2atGmE(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.node_items, 0), _M0MP49LING7167111moon_2degui3src4math4Vec23new(30, 40));
+        _M0MP49LING7167111moon_2degui3src9composite8NodeItem8set__pos(_M0MPC15array5Array2atGmE(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.node_items, 1), _M0MP49LING7167111moon_2degui3src4math4Vec23new(240, 40));
+        _M0MP49LING7167111moon_2degui3src9composite8NodeItem8set__pos(_M0MPC15array5Array2atGmE(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.node_items, 2), _M0MP49LING7167111moon_2degui3src4math4Vec23new(450, 70));
+      }
+      _M0MPC15array5Array5clearGRP49LING7167111moon_2degui3src4core5EventE(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.node_conns);
+      _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4core5EventE(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.node_conns, _M0MP49LING7167111moon_2degui3src9composite14NodeConnection3new("audio_src", "out_wav", "dsp_filter", "in_audio"));
+      _M0MPC15array5Array4pushGRP49LING7167111moon_2degui3src4core5EventE(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.node_conns, _M0MP49LING7167111moon_2degui3src9composite14NodeConnection3new("dsp_filter", "out_filtered", "sink_out", "in_sink"));
+      _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = "Topology Reset to Default";
+      return;
+    } else {
+      return;
+    }
+  });
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas26draw__pagination__showcase(ui) {
+  _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "数据分页控件 (Pagination)", _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 6);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "支持智能折叠省略号、前驱/后继步进翻页、全键盘方向键无障碍操作与双向状态绑定。");
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 14);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "1. 基础分页条 (Basic Pagination · 10 页):");
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 8);
+  const _bind = _M0FP49LING7167111moon_2degui3src7widgets18pagination_2einner(ui, "gal_pg_basic", _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.pagination_page, 10, _M0DTPC16option6OptionGdE4None__, _M0DTPC16option6OptionGdE4None__, true);
+  const _p1 = _bind._0;
+  if (_p1 !== _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.pagination_page) {
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.pagination_page = _p1;
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = `Page switched to: ${_M0MPC13int3Int18to__string_2einner(_p1, 10)}`;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 10);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext10horizontal(ui, (row) => {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext5label(row, `当前选中页码: ${_M0MPC13int3Int18to__string_2einner(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.pagination_page, 10)} / 10`);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(row, 16);
+    if (_M0FP49LING7167111moon_2degui3src7widgets13button__sized(row, "首页", _M0MP49LING7167111moon_2degui3src4math4Vec23new(56, 24)).clicked) {
+      _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.pagination_page = 1;
+      _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = "Jump to page 1";
+    }
+    _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(row, 6);
+    if (_M0FP49LING7167111moon_2degui3src7widgets13button__sized(row, "末页", _M0MP49LING7167111moon_2degui3src4math4Vec23new(56, 24)).clicked) {
+      _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.pagination_page = 10;
+      _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = "Jump to page 10";
+      return;
+    } else {
+      return;
+    }
+  });
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 20);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext9separator(ui);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 14);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "2. 多页智能折叠省略号 (Intelligent Ellipsis · 25 页):");
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 8);
+  const pg_ref = _M0MPC13ref3Ref3RefGiE(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.pagination_page);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext3addGRP49LING7167111moon_2degui3src7widgets13PaginationRefE(ui, _M0MP49LING7167111moon_2degui3src7widgets13PaginationRef7spacing(_M0MP49LING7167111moon_2degui3src7widgets13PaginationRef10item__size(_M0MP49LING7167111moon_2degui3src7widgets10Pagination9from__ref("gal_pg_multi", pg_ref, 25), 30), 4));
+  if (pg_ref.val !== _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.pagination_page) {
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.pagination_page = pg_ref.val;
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = `Page switched to: ${_M0MPC13int3Int18to__string_2einner(pg_ref.val, 10)}`;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 14);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "提示：支持 Tab 聚焦后使用 ArrowLeft / ArrowRight / Home / End 键盘无障碍导航。");
+}
 function _M0FP49LING7167111moon_2degui8examples6canvas20draw__plot__showcase(ui) {
   _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "高性能即时交互图表 (Interactive Plot)", _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());
   _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 6);
@@ -14938,6 +16706,28 @@ function _M0FP49LING7167111moon_2degui8examples6canvas21draw__radio__showcase(ui
     }
   }
   _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, mode_desc);
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas22draw__rating__showcase(ui) {
+  _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "交互式星标评分评级控件 (Rating Suite)", _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 6);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "支持 0.5 半星精细打分、就地悬停实时预览 (Hover Preview)、Tab 焦点环与左右方向键无障碍切换。");
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 14);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "1. 交互式评级 (支持半星与实时悬停预览):");
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 6);
+  const _bind = _M0FP49LING7167111moon_2degui3src7widgets14rating_2einner(ui, "gallery_rating_main", _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.rating_val, 5, true, false, _M0FP49LING7167111moon_2degui8examples6canvas22draw__rating__showcaseN6constrS1363, _M0FP49LING7167111moon_2degui8examples6canvas22draw__rating__showcaseN6constrS1364);
+  const _r_val = _bind._0;
+  if (_r_val !== _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.rating_val) {
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.rating_val = _r_val;
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = `Rating score: ${String(_r_val)} Stars`;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 16);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "2. 只读展示模式 (Read-Only Display):");
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 6);
+  _M0FP49LING7167111moon_2degui3src7widgets14rating_2einner(ui, "gallery_rating_ro", 4, 5, true, true, _M0FP49LING7167111moon_2degui8examples6canvas22draw__rating__showcaseN6constrS1365, _M0DTPC16option6OptionGdE4None__);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 16);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext9separator(ui);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 8);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, `当前已选星级得分: ${String(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.rating_val)} / 5.0 ★`);
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas26draw__rich__text__showcase(ui) {
   _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "流式排版富文本与超链接 (RichText & Hyperlink)", _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());
@@ -15065,14 +16855,14 @@ function _M0FP49LING7167111moon_2degui8examples6canvas23draw__spinner__showcase(
   _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "纯时间物理驱动的非对称伸缩公转弧线，60 FPS 平滑无卡顿，无额外定时器开销。");
   _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 14);
   _M0MP49LING7167111moon_2degui3src4core9UIContext10horizontal(ui, (row) => {
-    _M0FP49LING7167111moon_2degui3src7widgets7spinner(row, _M0FP49LING7167111moon_2degui8examples6canvas23draw__spinner__showcaseN6constrS1301, undefined, _M0DTPC16option6OptionGdE4None__);
+    _M0FP49LING7167111moon_2degui3src7widgets7spinner(row, _M0FP49LING7167111moon_2degui8examples6canvas23draw__spinner__showcaseN6constrS1366, undefined, _M0DTPC16option6OptionGdE4None__);
     _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(row, 16);
     _M0FP49LING7167111moon_2degui3src7widgets15spinner_2einner(row, 24, _M0MP49LING7167111moon_2degui3src5color5Color7success(), 2.5);
     _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(row, 16);
     _M0FP49LING7167111moon_2degui3src7widgets15spinner_2einner(row, 32, _M0MP49LING7167111moon_2degui3src5color5Color6danger(), 3);
   });
   _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 16);
-  _M0FP49LING7167111moon_2degui3src7widgets20spinner__with__label(ui, "正在同步远程 MoonBit 模块索引...", _M0FP49LING7167111moon_2degui8examples6canvas23draw__spinner__showcaseN6constrS1302, undefined, _M0DTPC16option6OptionGdE4None__);
+  _M0FP49LING7167111moon_2degui3src7widgets20spinner__with__label(ui, "正在同步远程 MoonBit 模块索引...", _M0FP49LING7167111moon_2degui8examples6canvas23draw__spinner__showcaseN6constrS1367, undefined, _M0DTPC16option6OptionGdE4None__);
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas24draw__splitter__showcase(ui) {
   _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "双向可拖拽分栏容器 (Splitter Panes)", _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());
@@ -15095,6 +16885,74 @@ function _M0FP49LING7167111moon_2degui8examples6canvas24draw__splitter__showcase
     _M0MP49LING7167111moon_2degui3src4core9UIContext5label(pane_ui, `实时分栏比例: ${_M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.splitter_ratio * 100), 10)}%`);
   }, 0.15, 0.85, 60);
   _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.splitter_ratio = new_ratio;
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas23draw__stepper__showcase(ui) {
+  _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "离散步进调节输入器 (Stepper Suite)", _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 6);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "支持点击 [+] / [-] 步进、Shift (×10) 与 Ctrl (×0.1) 修饰键加速、鼠标滚轮微调以及键盘左右键控制。");
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 14);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "1. 整数离散计数器 (0 ~ 50 项):");
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 6);
+  const _bind = _M0FP49LING7167111moon_2degui3src7widgets15stepper_2einner(ui, "gallery_step_count", _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.stepper_count, 1, _M0FP49LING7167111moon_2degui8examples6canvas23draw__stepper__showcaseN6constrS1368, _M0FP49LING7167111moon_2degui8examples6canvas23draw__stepper__showcaseN6constrS1369, 0, "", " 项", _M0DTPC16option6OptionGdE4None__);
+  const _cnt = _bind._0;
+  if (_cnt !== _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.stepper_count) {
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.stepper_count = _cnt;
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = `Stepper Count: ${_M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(_cnt), 10)}`;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 16);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "2. 浮点增益微调 (-24.0 ~ +24.0 dB):");
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 6);
+  const _bind$2 = _M0FP49LING7167111moon_2degui3src7widgets15stepper_2einner(ui, "gallery_step_gain", _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.stepper_gain, 0.5, _M0FP49LING7167111moon_2degui8examples6canvas23draw__stepper__showcaseN6constrS1370, _M0FP49LING7167111moon_2degui8examples6canvas23draw__stepper__showcaseN6constrS1371, 1, "Gain: ", " dB", _M0DTPC16option6OptionGdE4None__);
+  const _gain = _bind$2._0;
+  if (_gain !== _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.stepper_gain) {
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.stepper_gain = _gain;
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = `Gain: ${String(_gain)} dB`;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 16);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext9separator(ui);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 8);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, `当前计数值: ${_M0MPC13int3Int18to__string_2einner(_M0MPC16double6Double7to__int(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.stepper_count), 10)} | 当前增益: ${String(_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.stepper_gain)} dB`);
+}
+function _M0FP49LING7167111moon_2degui8examples6canvas21draw__steps__showcase(ui) {
+  _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "任务流步骤导航条 (Steps & Timeline)", _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 6);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "提供节点状态自动推导、导轨连线、节点图标、点击切换以及键盘左右方向键流转支持。");
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 14);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "1. 任务向导步骤流 (支持点击与左右键切换):");
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 8);
+  const items1 = [_M0MP49LING7167111moon_2degui3src7widgets8StepItem11new_2einner("1. 账号认证", "企业凭证校验"), _M0MP49LING7167111moon_2degui3src7widgets8StepItem11new_2einner("2. 资源配额", "选择算力节点"), _M0MP49LING7167111moon_2degui3src7widgets8StepItem11new_2einner("3. 编译发布", "构建 Wasm 产物"), _M0MP49LING7167111moon_2degui3src7widgets8StepItem11new_2einner("4. 运行上线", "服务健康检查")];
+  const _bind = _M0FP49LING7167111moon_2degui3src7widgets13steps_2einner(ui, "gallery_steps_wizard", _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.steps_current, items1, true, _M0FP49LING7167111moon_2degui8examples6canvas21draw__steps__showcaseN6constrS1372);
+  const _idx1 = _bind._0;
+  if (_idx1 !== _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.steps_current) {
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.steps_current = _idx1;
+    _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = `Step switched to: ${_M0MPC15array5Array2atGmE(items1, _idx1).title}`;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 16);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext10horizontal(ui, (row) => {
+    if (_M0FP49LING7167111moon_2degui3src7widgets13button__sized(row, "上一步", _M0MP49LING7167111moon_2degui3src4math4Vec23new(80, 26)).clicked) {
+      if (_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.steps_current > 0) {
+        _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.steps_current = _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.steps_current - 1 | 0;
+        _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = `Prev step: ${_M0MPC15array5Array2atGmE(items1, _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.steps_current).title}`;
+      }
+    }
+    _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(row, 10);
+    if (_M0FP49LING7167111moon_2degui3src7widgets22button__primary__sized(row, "下一步", _M0MP49LING7167111moon_2degui3src4math4Vec23new(80, 26)).clicked) {
+      if (_M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.steps_current < (items1.length - 1 | 0)) {
+        _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.steps_current = _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.steps_current + 1 | 0;
+        _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.status_text = `Next step: ${_M0MPC15array5Array2atGmE(items1, _M0FP49LING7167111moon_2degui8examples6canvas14gallery__state.steps_current).title}`;
+        return;
+      } else {
+        return;
+      }
+    } else {
+      return;
+    }
+  });
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 18);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext5label(ui, "2. 显式状态节点 (Explicit Status with Error):");
+  _M0MP49LING7167111moon_2degui3src4core9UIContext6spacer(ui, 8);
+  const items2 = [_M0MP49LING7167111moon_2degui3src7widgets8StepItem20with__status_2einner("代码扫描", 2, ""), _M0MP49LING7167111moon_2degui3src7widgets8StepItem20with__status_2einner("单元测试", 2, ""), _M0MP49LING7167111moon_2degui3src7widgets8StepItem20with__status_2einner("安全审计", 3, "存在潜在依赖告警"), _M0MP49LING7167111moon_2degui3src7widgets8StepItem20with__status_2einner("镜像打包", 0, "")];
+  _M0FP49LING7167111moon_2degui3src7widgets13steps_2einner(ui, "gallery_steps_explicit", 2, items2, false, _M0FP49LING7167111moon_2degui8examples6canvas21draw__steps__showcaseN6constrS1373);
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas24draw__tab__bar__showcase(ui) {
   _M0MP49LING7167111moon_2degui3src4core9UIContext14label__colored(ui, "分段式导航标签栏 (TabBar)", _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary());
@@ -15341,7 +17199,7 @@ function _M0FP49LING7167111moon_2degui8examples6canvas22draw__window__showcase(u
     } else {
       return;
     }
-  }, _M0FP49LING7167111moon_2degui8examples6canvas22draw__window__showcaseN6constrS1303, _M0MP49LING7167111moon_2degui3src4math4Rect3new(0, 0, vp_w, vp_h));
+  }, _M0FP49LING7167111moon_2degui8examples6canvas22draw__window__showcaseN6constrS1374, _M0MP49LING7167111moon_2degui3src4math4Rect3new(0, 0, vp_w, vp_h));
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas24draw__component__preview(ui, comp_id, cur_w, cur_h) {
   switch (comp_id) {
@@ -15375,6 +17233,14 @@ function _M0FP49LING7167111moon_2degui8examples6canvas24draw__component__preview
     }
     case "drag_value": {
       _M0FP49LING7167111moon_2degui8examples6canvas27draw__drag__value__showcase(ui);
+      return;
+    }
+    case "stepper": {
+      _M0FP49LING7167111moon_2degui8examples6canvas23draw__stepper__showcase(ui);
+      return;
+    }
+    case "rating": {
+      _M0FP49LING7167111moon_2degui8examples6canvas22draw__rating__showcase(ui);
       return;
     }
     case "knob": {
@@ -15411,6 +17277,14 @@ function _M0FP49LING7167111moon_2degui8examples6canvas24draw__component__preview
     }
     case "tab_bar": {
       _M0FP49LING7167111moon_2degui8examples6canvas24draw__tab__bar__showcase(ui);
+      return;
+    }
+    case "steps": {
+      _M0FP49LING7167111moon_2degui8examples6canvas21draw__steps__showcase(ui);
+      return;
+    }
+    case "pagination": {
+      _M0FP49LING7167111moon_2degui8examples6canvas26draw__pagination__showcase(ui);
       return;
     }
     case "menu_bar": {
@@ -15467,6 +17341,10 @@ function _M0FP49LING7167111moon_2degui8examples6canvas24draw__component__preview
     }
     case "bar_chart": {
       _M0FP49LING7167111moon_2degui8examples6canvas26draw__bar__chart__showcase(ui);
+      return;
+    }
+    case "node_editor": {
+      _M0FP49LING7167111moon_2degui8examples6canvas28draw__node__editor__showcase(ui);
       return;
     }
     case "segmented_control": {
