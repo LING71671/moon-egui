@@ -105,7 +105,7 @@
     canvas.style.outline = 'none';
     canvas.tabIndex = 0;
 
-    ctx = canvas.getContext('2d', { alpha: false });
+    ctx = canvas.getContext('2d');
     resizeCanvas();
     bindEvents();
     requestAnimationFrame(renderLoop);
@@ -114,12 +114,24 @@
   function resizeCanvas() {
     if (!canvas || !canvas.parentElement) return;
     const rect = canvas.parentElement.getBoundingClientRect();
-    width = Math.max(300, Math.floor(rect.width));
-    height = Math.max(260, Math.floor(rect.height));
-    dpr = window.devicePixelRatio || 1;
+    const newWidth = Math.max(300, Math.floor(rect.width));
+    const newHeight = Math.max(260, Math.floor(rect.height));
+    const newDpr = window.devicePixelRatio || 1;
 
-    canvas.width = Math.round(width * dpr);
-    canvas.height = Math.round(height * dpr);
+    const targetW = Math.round(newWidth * newDpr);
+    const targetH = Math.round(newHeight * newDpr);
+
+    // Skip reallocation if canvas physical dimensions did not change
+    if (canvas.width === targetW && canvas.height === targetH && dpr === newDpr) {
+      return;
+    }
+
+    width = newWidth;
+    height = newHeight;
+    dpr = newDpr;
+
+    canvas.width = targetW;
+    canvas.height = targetH;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
     ctx.imageSmoothingEnabled = true;
@@ -276,6 +288,7 @@
 
   function renderDrawList(dl) {
     if (!dl || !dl.commands) return;
+    ctx.save();
     cachedFont = '';
     cachedFillStyle = '';
     cachedStrokeStyle = '';
@@ -402,6 +415,7 @@
         }
       }
     }
+    ctx.restore();
   }
 
   let lastTime = performance.now();
@@ -409,6 +423,56 @@
   const targetFrameInterval = 1000 / 60; // 16.67ms
   let frameCount = 0;
   let fps = 60.0;
+
+  function renderFrame(now) {
+    if (!canvas || !ctx || !window.moon_gallery_step) return;
+    const t0 = performance.now();
+    const dl = window.moon_gallery_step(
+      currentCompId,
+      mouseX,
+      mouseY,
+      isMouseDown,
+      scrollDy,
+      width,
+      height,
+      pendingText,
+      keysPressed,
+      keysReleased,
+      modFlags,
+      isSecondaryMouseDown
+    );
+    const kTime = (performance.now() - t0).toFixed(2);
+
+    // Reset per-frame transient inputs
+    scrollDy = 0.0;
+    pendingText = '';
+    keysPressed = [];
+    keysReleased = [];
+
+    ctx.clearRect(0, 0, width, height);
+    renderDrawList(dl);
+
+    // Update dynamic canvas cursor based on MoonBit core interaction state
+    if (window.moon_gallery_cursor) {
+      try {
+        const cur = window.moon_gallery_cursor();
+        if (canvas.style.cursor !== cur) {
+          canvas.style.cursor = cur;
+        }
+      } catch (e) {}
+    }
+
+    // Update footer response
+    const statResp = document.getElementById('statResponse');
+    if (statResp && window.moon_gallery_status) {
+      try {
+        const status = window.moon_gallery_status();
+        statResp.textContent = status || `active: ${currentCompId} (${kTime}ms)`;
+      } catch (e) {
+        statResp.textContent = `active: ${currentCompId}`;
+      }
+    }
+  }
 
   function renderLoop(now) {
     requestAnimationFrame(renderLoop);
@@ -426,59 +490,12 @@
       lastTime = now;
     }
 
-    if (canvas && ctx && window.moon_gallery_step) {
-      const t0 = performance.now();
-      const dl = window.moon_gallery_step(
-        currentCompId,
-        mouseX,
-        mouseY,
-        isMouseDown,
-        scrollDy,
-        width,
-        height,
-        pendingText,
-        keysPressed,
-        keysReleased,
-        modFlags,
-        isSecondaryMouseDown
-      );
-      const kTime = (performance.now() - t0).toFixed(2);
-
-      // Reset per-frame transient inputs
-      scrollDy = 0.0;
-      pendingText = '';
-      keysPressed = [];
-      keysReleased = [];
-
-      ctx.clearRect(0, 0, width, height);
-      renderDrawList(dl);
-
-      // Update dynamic canvas cursor based on MoonBit core interaction state
-      if (window.moon_gallery_cursor) {
-        try {
-          const cur = window.moon_gallery_cursor();
-          if (canvas.style.cursor !== cur) {
-            canvas.style.cursor = cur;
-          }
-        } catch (e) {}
-      }
-
-      // Update footer response
-      const statResp = document.getElementById('statResponse');
-      if (statResp && window.moon_gallery_status) {
-        try {
-          const status = window.moon_gallery_status();
-          statResp.textContent = status || `active: ${currentCompId} (${kTime}ms)`;
-        } catch (e) {
-          statResp.textContent = `active: ${currentCompId}`;
-        }
-      }
-    }
+    renderFrame(now);
   }
 
   window.setGalleryActiveComp = function (compId) {
     currentCompId = compId;
-    resizeCanvas();
+    renderFrame(performance.now());
   };
 
   window.initNativeGallery = initCanvas;

@@ -44,10 +44,6 @@ const appState = {
       } else if (pct > 90) {
         document.getElementById('btnPresetCode').classList.add('active');
       }
-
-      if (window.resizeGalleryCanvas) {
-        window.resizeGalleryCanvas();
-      }
     }
 
     // Dragging Logic
