@@ -93,11 +93,12 @@
       <div class="sidebar-group">
         <div class="sidebar-group-title">
           <span data-i18n="docs.grpValues">选择与数值调节</span>
-          <span class="sidebar-group-count">6</span>
+          <span class="sidebar-group-count">7</span>
         </div>
         <ul class="sidebar-nav">
           <li><a href="#widget-slider" class="sidebar-link"><span>Slider 滑动条</span> <span class="sidebar-tag">Widget</span></a></li>
           <li><a href="#widget-drag-value" class="sidebar-link"><span>DragValue 数字微调</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-stepper" class="sidebar-link"><span>Stepper 步进微调</span> <span class="sidebar-tag">Widget</span></a></li>
           <li><a href="#widget-knob" class="sidebar-link"><span>Knob 360°旋钮</span> <span class="sidebar-tag">Widget</span></a></li>
           <li><a href="#widget-checkbox-toggle" class="sidebar-link"><span>Checkbox & Toggle 开关</span> <span class="sidebar-tag">Widget</span></a></li>
           <li><a href="#widget-radio" class="sidebar-link"><span>Radio 单选按钮组</span> <span class="sidebar-tag">Widget</span></a></li>
@@ -109,10 +110,11 @@
       <div class="sidebar-group">
         <div class="sidebar-group-title">
           <span data-i18n="docs.grpFeedback">反馈与展示</span>
-          <span class="sidebar-group-count">6</span>
+          <span class="sidebar-group-count">7</span>
         </div>
         <ul class="sidebar-nav">
           <li><a href="#widget-progress" class="sidebar-link"><span>ProgressBar 进度条</span> <span class="sidebar-tag">Widget</span></a></li>
+          <li><a href="#widget-rating" class="sidebar-link"><span>Rating 星级评分</span> <span class="sidebar-tag">Widget</span></a></li>
           <li><a href="#widget-spinner" class="sidebar-link"><span>Spinner 加载动效</span> <span class="sidebar-tag">Widget</span></a></li>
           <li><a href="#widget-badge-avatar" class="sidebar-link"><span>Badge & Avatar 头像徽章</span> <span class="sidebar-tag">Widget</span></a></li>
           <li><a href="#widget-tooltip" class="sidebar-link"><span>Tooltip 悬浮气泡</span> <span class="sidebar-tag">Widget</span></a></li>
@@ -124,11 +126,14 @@
       <div class="sidebar-group">
         <div class="sidebar-group-title">
           <span data-i18n="docs.grpContainers">容器与排版系统</span>
-          <span class="sidebar-group-count">5</span>
+          <span class="sidebar-group-count">8</span>
         </div>
         <ul class="sidebar-nav">
           <li><a href="#widget-window" class="sidebar-link"><span>Window 浮动视窗</span> <span class="sidebar-tag">Layout</span></a></li>
           <li><a href="#widget-collapsing" class="sidebar-link"><span>CollapsingHeader 折叠面板</span> <span class="sidebar-tag">Layout</span></a></li>
+          <li><a href="#widget-steps" class="sidebar-link"><span>Steps 步骤导航</span> <span class="sidebar-tag">Layout</span></a></li>
+          <li><a href="#widget-pagination" class="sidebar-link"><span>Pagination 数据分页</span> <span class="sidebar-tag">Layout</span></a></li>
+          <li><a href="#widget-node-editor" class="sidebar-link"><span>NodeEditor 节点图编辑器</span> <span class="sidebar-tag">Composite</span></a></li>
           <li><a href="#widget-tab-bar" class="sidebar-link"><span>TabBar 标签栏</span> <span class="sidebar-tag">Layout</span></a></li>
           <li><a href="#widget-tree-view" class="sidebar-link"><span>TreeView 树形视图</span> <span class="sidebar-tag">Layout</span></a></li>
           <li><a href="#widget-scroll-area" class="sidebar-link"><span>ScrollArea 滚动区域</span> <span class="sidebar-tag">Layout</span></a></li>
@@ -173,7 +178,7 @@
         <span class="page-badge">MOON-EGUI API REFERENCE · v0.3.2</span>
         <h1 class="page-title" data-i18n="docs.mainTitle">Moon-EGUI 开发者指南与 API 手册</h1>
         <p class="page-desc" data-i18n="docs.mainDesc">
-          MoonBit 原生即时模式 GUI 引擎完全开发手册。包含 32 个核心交互控件、流式排版布局、几何模型与宿主桥接协议规范。
+          MoonBit 原生即时模式 GUI 引擎完全开发手册。包含 40 个核心交互控件、流式排版布局、几何模型与宿主桥接协议规范。
         </p>
       </header>
 
@@ -473,6 +478,14 @@ state.backend_idx = selected_idx</code></pre>
 <span class="syn-kw">let</span> (pen, _) = @composite.color_picker_button(ctx, <span class="syn-str">"画笔颜色"</span>, state.pen_color)
 state.pen_color = pen</code></pre>
           </div>
+
+          <h3 id="widget-stepper">6.7 Stepper 离散步进调节器</h3>
+          <p>提供带加减步进按钮、边界约束、滚轮微调及修饰键倍率控制（Shift 10×，Ctrl 0.1×）的数值调节器：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> (val, resp) = @widgets.stepper(ctx, <span class="syn-str">"buffer_size"</span>, state.buffer_size, step=<span class="syn-num">1.0</span>, min=<span class="syn-num">1.0</span>, max=<span class="syn-num">100.0</span>)
+state.buffer_size = val</code></pre>
+          </div>
         </section>
 
         <!-- Feedback & Status -->
@@ -486,20 +499,28 @@ state.pen_color = pen</code></pre>
             <pre><code>@widgets.progress_bar(ctx, state.download_percent)</code></pre>
           </div>
 
-          <h3 id="widget-spinner">7.2 Spinner 加载动画</h3>
+          <h3 id="widget-rating">7.2 Rating 星级评分条</h3>
+          <p>支持 0.5 半星精度矢量裁剪、实时悬浮预览反馈及只读模式的交互式评分组件：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> (stars, resp) = @widgets.rating(ctx, <span class="syn-str">"app_rating"</span>, state.rating, allow_half=<span class="syn-kw">true</span>)
+state.rating = stars</code></pre>
+          </div>
+
+          <h3 id="widget-spinner">7.3 Spinner 加载动画</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
             <pre><code>@widgets.spinner(ctx, size=<span class="syn-num">18.0</span>)</code></pre>
           </div>
 
-          <h3 id="widget-badge-avatar">7.3 Badge 徽标与 Tag 可关闭标签</h3>
+          <h3 id="widget-badge-avatar">7.4 Badge 徽标与 Tag 可关闭标签</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
             <pre><code>@widgets.badge(ctx, <span class="syn-str">"PRO"</span>, kind=@widgets.<span class="syn-type">BadgeKind</span>::info(), dot=<span class="syn-kw">true</span>)
 <span class="syn-kw">let</span> (closed, resp) = @widgets.tag(ctx, <span class="syn-str">"build_tag"</span>, <span class="syn-str">"v0.3.1"</span>, closable=<span class="syn-kw">true</span>)</code></pre>
           </div>
 
-          <h3 id="widget-tooltip">7.4 Tooltip 悬浮信息提示</h3>
+          <h3 id="widget-tooltip">7.5 Tooltip 悬浮信息提示</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
             <pre><code><span class="syn-kw">let</span> resp = @widgets.button(ctx, <span class="syn-str">"危险操作"</span>)
@@ -508,7 +529,7 @@ state.pen_color = pen</code></pre>
 }</code></pre>
           </div>
 
-          <h3 id="widget-toast">7.5 Toast 瞬态全局消息通知</h3>
+          <h3 id="widget-toast">7.6 Toast 瞬态全局消息通知</h3>
           <div class="code-wrapper">
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
             <pre><code><span class="syn-kw">let</span> toast = @widgets.<span class="syn-type">Toast</span>::info(<span class="syn-str">"文件已成功导出至本地"</span>, duration=<span class="syn-num">3.0</span>)
@@ -575,6 +596,37 @@ state.current_tab = active_tab</code></pre>
     <span class="syn-kw">let</span> _ = scroll.label(<span class="syn-str">"数据项 #"</span> + i.to_string())
   }
 })</code></pre>
+          </div>
+
+          <h3 id="widget-steps">8.6 Steps 流程步骤导航</h3>
+          <p>工作流与引导步骤导航条，支持状态自动推导（Wait/Process/Finish/Error）与无障碍键盘切换：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> step_items = [
+  @widgets.<span class="syn-type">StepItem</span>::new(<span class="syn-str">"环境校验"</span>, desc=<span class="syn-str">"检测 Toolchain"</span>),
+  @widgets.<span class="syn-type">StepItem</span>::new(<span class="syn-str">"编译构建"</span>, desc=<span class="syn-str">"生成 Wasm 字节码"</span>),
+  @widgets.<span class="syn-type">StepItem</span>::new(<span class="syn-str">"打包分发"</span>, desc=<span class="syn-str">"生成发布资源"</span>),
+]
+<span class="syn-kw">let</span> (active_step, _) = @widgets.steps(ctx, <span class="syn-str">"build_flow"</span>, state.current_step, step_items, clickable=<span class="syn-kw">true</span>)
+state.current_step = active_step</code></pre>
+          </div>
+
+          <h3 id="widget-pagination">8.7 Pagination 数据分页控制器</h3>
+          <p>支持智能折叠省略号（如 <code>1 ... 4 [5] 6 ... 20</code>）与键盘左右/首尾无障碍跳转的数据分页条：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> (page, resp) = @widgets.pagination(ctx, <span class="syn-str">"table_pages"</span>, state.current_page, state.total_pages)
+state.current_page = page</code></pre>
+          </div>
+
+          <h3 id="widget-node-editor">8.8 NodeEditor 蓝图节点拓扑流连线编辑器</h3>
+          <p>支持无限/边界视口点阵背景、卡片平滑拖拽、端口吸附拾取与平滑三次贝塞尔曲线导线的复合拓扑图组件：</p>
+          <div class="code-wrapper">
+            <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
+            <pre><code><span class="syn-kw">let</span> res = @composite.node_editor(ctx, <span class="syn-str">"shader_graph"</span>, @math.<span class="syn-type">Vec2</span>::new(<span class="syn-num">640.0</span>, <span class="syn-num">420.0</span>), state.nodes, state.connections)
+<span class="syn-kw">if</span> res.new_connection is Some(conn) {
+  state.connections.push(conn)
+}</code></pre>
           </div>
         </section>
 

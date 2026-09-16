@@ -147,6 +147,7 @@ fn UIContext::toggle(self : UIContext, text : String, active : Bool) -> (Bool, R
 
 ### 3.5 数值调节与滑动条 (Value Selectors)
 * `slider` / `slider_int`：**[状态: ✅ 已实现 (Implemented)]**
+* `stepper`：**[状态: ✅ 已实现 (Implemented)]**
 * `drag_float`：**[状态: 🚧 规划中 (Proposed)]**
 
 ```moonbit
@@ -168,6 +169,18 @@ fn UIContext::slider_int(
   max : Int
 ) -> (Int, Response)
 
+// [已实现] 步进增减微调器 (支持 Shift/Ctrl 倍率与滚轮增减)
+pub fn @widgets.stepper(
+  ctx : UIContext,
+  id_salt : String,
+  value : Double,
+  step? : Double,
+  min? : Double?,
+  max? : Double?,
+  label? : String,
+  width? : Double,
+) -> (Double, Response)
+
 // [规划中] Blender 风格的数字微调滑轮（按住数值横向拖拽增减）
 fn UIContext::drag_float(
   self : UIContext, 
@@ -180,31 +193,48 @@ fn UIContext::drag_float(
 ```
 
 ### 3.6 文本输入 (Text Editing)
-* **[状态: 🚧 规划中 (Proposed)]**
+* `text_edit` / `code_editor`：**[状态: ✅ 已实现 (Implemented)]**
 
 ```moonbit
-// [规划中] 单行交互式文本输入框
-fn UIContext::text_input(
-  self : UIContext, 
-  placeholder : String, 
-  text : String
+// [已实现] 单行/多行交互式文本输入框
+pub fn @widgets.text_edit(
+  ctx : UIContext,
+  id_salt : String,
+  text : String,
+  placeholder? : String,
+  width? : Double,
+  password? : Bool,
 ) -> (String, Response)
 ```
 
 ### 3.7 遥测反馈与数据可视化 (Telemetry & Feedback)
-* **[状态: 🚧 规划中 (Proposed)]**
+* `rating`：**[状态: ✅ 已实现 (Implemented)]**
+* `progress_bar` / `sparkline`：**[状态: ✅ 已实现 (Implemented)]**
 
 ```moonbit
-// [规划中] 连续进度条指示器（取值范围 0.0 至 1.0）
-fn UIContext::progress_bar(self : UIContext, fraction : Double) -> Response
+// [已实现] 星级评分打分条 (支持 0.5 半星与悬浮预览反馈)
+pub fn @widgets.rating(
+  ctx : UIContext,
+  id_salt : String,
+  value : Double,
+  max_stars? : Int,
+  allow_half? : Bool,
+  star_size? : Double,
+  spacing? : Double,
+  read_only? : Bool,
+  color? : @color.Color,
+) -> (Double, Response)
 
-// [规划中] 历史波动数据实时折线图（Sparkline）
-fn UIContext::sparkline(
-  self : UIContext, 
-  label : String, 
+// [已实现] 连续进度条指示器（取值范围 0.0 至 1.0）
+pub fn @widgets.progress_bar(ctx : UIContext, fraction : Double, width? : Double, height? : Double) -> Response
+
+// [已实现] 历史波动数据实时折线图（Sparkline）
+pub fn @composite.sparkline(
+  ctx : UIContext, 
+  id_salt : String, 
   data : Array[Double], 
-  height : Double
-) -> Response
+  size? : @math.Vec2
+) -> (Int, Response)
 
 // [规划中] 悬浮气泡提示（挂载在任意控件响应对象之后）
 fn Response::on_hover_text(self : Response, ui : UIContext, tooltip : String) -> Unit
@@ -291,6 +321,49 @@ fn UIContext::scroll_area(
   max_height : Double, 
   content : (&mut UIContext) -> Unit
 )
+```
+
+### 4.5 流程与分页导航 (Steps & Pagination)
+* `steps`：**[状态: ✅ 已实现 (Implemented)]**
+* `pagination`：**[状态: ✅ 已实现 (Implemented)]**
+
+```moonbit
+// [已实现] 流程步骤导航条 (支持状态自动推导与键盘无障碍导航)
+pub fn @widgets.steps(
+  ctx : UIContext,
+  id_salt : String,
+  current : Int,
+  items : Array[StepItem],
+  clickable? : Bool,
+  width? : Double,
+) -> (Int, Response)
+
+// [已实现] 数据分页控制条 (支持智能折叠省略号与键盘无障碍翻页)
+pub fn @widgets.pagination(
+  ctx : UIContext,
+  id_salt : String,
+  current_page : Int,
+  total_pages : Int,
+  item_size? : Double,
+  spacing? : Double,
+  show_prev_next? : Bool,
+) -> (Int, Response)
+```
+
+### 4.6 节点拓扑流连线编辑器 (NodeEditor)
+* `node_editor`：**[状态: ✅ 已实现 (Implemented)]**
+
+```moonbit
+// [已实现] 节点拓扑流连线编辑器 (支持卡片拖拽、端口拉线与平滑三次贝塞尔导线)
+pub fn @composite.node_editor(
+  ctx : UIContext,
+  id_salt : String,
+  size : @math.Vec2,
+  nodes : Array[NodeItem],
+  connections : Array[NodeConnection],
+  custom_style? : NodeEditorStyle?,
+  selected_node? : String?,
+) -> NodeEditorResponse
 ```
 
 ---

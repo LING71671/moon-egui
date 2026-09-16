@@ -144,6 +144,7 @@ fn UIContext::toggle(self : UIContext, text : String, active : Bool) -> (Bool, R
 
 ### 3.5 Value Selectors & Sliders
 * `slider` / `slider_int`: **[Status: ✅ Implemented]**
+* `stepper`: **[Status: ✅ Implemented]**
 * `drag_float`: **[Status: 🚧 Proposed]**
 
 ```moonbit
@@ -165,6 +166,18 @@ fn UIContext::slider_int(
   max : Int
 ) -> (Int, Response)
 
+// [Implemented] Discrete step adjuster (Shift/Ctrl multipliers and mouse wheel scrubbing)
+pub fn @widgets.stepper(
+  ctx : UIContext,
+  id_salt : String,
+  value : Double,
+  step? : Double,
+  min? : Double?,
+  max? : Double?,
+  label? : String,
+  width? : Double,
+) -> (Double, Response)
+
 // [Proposed] Blender-style DragValue (horizontal scrub on number to adjust)
 fn UIContext::drag_float(
   self : UIContext, 
@@ -177,31 +190,48 @@ fn UIContext::drag_float(
 ```
 
 ### 3.6 Text Editing
-* **[Status: 🚧 Proposed]**
+* `text_edit` / `code_editor`: **[Status: ✅ Implemented]**
 
 ```moonbit
-// [Proposed] Single-line text input field
-fn UIContext::text_input(
-  self : UIContext, 
-  placeholder : String, 
-  text : String
+// [Implemented] Single-line/multi-line interactive text input field
+pub fn @widgets.text_edit(
+  ctx : UIContext,
+  id_salt : String,
+  text : String,
+  placeholder? : String,
+  width? : Double,
+  password? : Bool,
 ) -> (String, Response)
 ```
 
 ### 3.7 Telemetry & Visual Feedback
-* **[Status: 🚧 Proposed]**
+* `rating`: **[Status: ✅ Implemented]**
+* `progress_bar` / `sparkline`: **[Status: ✅ Implemented]**
 
 ```moonbit
-// [Proposed] Continuous progress indicator (0.0 to 1.0)
-fn UIContext::progress_bar(self : UIContext, fraction : Double) -> Response
+// [Implemented] Interactive star rating widget (0.5 half-star fractional evaluation & hover preview)
+pub fn @widgets.rating(
+  ctx : UIContext,
+  id_salt : String,
+  value : Double,
+  max_stars? : Int,
+  allow_half? : Bool,
+  star_size? : Double,
+  spacing? : Double,
+  read_only? : Bool,
+  color? : @color.Color,
+) -> (Double, Response)
 
-// [Proposed] Sparkline real-time plot from a history slice
-fn UIContext::sparkline(
-  self : UIContext, 
-  label : String, 
+// [Implemented] Continuous progress indicator (0.0 to 1.0)
+pub fn @widgets.progress_bar(ctx : UIContext, fraction : Double, width? : Double, height? : Double) -> Response
+
+// [Implemented] Sparkline real-time plot from a history slice
+pub fn @composite.sparkline(
+  ctx : UIContext, 
+  id_salt : String, 
   data : Array[Double], 
-  height : Double
-) -> Response
+  size? : @math.Vec2
+) -> (Int, Response)
 
 // [Proposed] Tooltip attached to the previous response
 fn Response::on_hover_text(self : Response, ui : UIContext, tooltip : String) -> Unit
@@ -288,6 +318,49 @@ fn UIContext::scroll_area(
   max_height : Double, 
   content : (&mut UIContext) -> Unit
 )
+```
+
+### 4.5 Steps & Pagination
+* `steps`: **[Status: ✅ Implemented]**
+* `pagination`: **[Status: ✅ Implemented]**
+
+```moonbit
+// [Implemented] Workflow process step indicator (auto status derivation and accessible keyboard navigation)
+pub fn @widgets.steps(
+  ctx : UIContext,
+  id_salt : String,
+  current : Int,
+  items : Array[StepItem],
+  clickable? : Bool,
+  width? : Double,
+) -> (Int, Response)
+
+// [Implemented] Data pagination controller (intelligent ellipsis folding and keyboard navigation)
+pub fn @widgets.pagination(
+  ctx : UIContext,
+  id_salt : String,
+  current_page : Int,
+  total_pages : Int,
+  item_size? : Double,
+  spacing? : Double,
+  show_prev_next? : Bool,
+) -> (Int, Response)
+```
+
+### 4.6 Node Flow Graph Editor (NodeEditor)
+* `node_editor`: **[Status: ✅ Implemented]**
+
+```moonbit
+// [Implemented] Blueprint node flow graph editor (draggable cards, port link wiring, and smooth cubic Bézier curves)
+pub fn @composite.node_editor(
+  ctx : UIContext,
+  id_salt : String,
+  size : @math.Vec2,
+  nodes : Array[NodeItem],
+  connections : Array[NodeConnection],
+  custom_style? : NodeEditorStyle?,
+  selected_node? : String?,
+) -> NodeEditorResponse
 ```
 
 ---
