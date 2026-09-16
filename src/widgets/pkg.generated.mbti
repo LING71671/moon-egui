@@ -36,9 +36,13 @@ pub fn dialog(@core.UIContext, String, String, String, kind? : DialogKind, confi
 
 pub fn drag_value(@core.UIContext, String, Double, speed? : Double, min? : Double, max? : Double) -> (Double, @core.Response)
 
+pub fn pagination(@core.UIContext, String, Int, Int, item_size? : Double, spacing? : Double, show_prev_next? : Bool) -> (Int, @core.Response)
+
 pub fn progress_bar(@core.UIContext, Double, text? : String) -> @core.Response
 
 pub fn radio(@core.UIContext, String, Bool) -> (Bool, @core.Response)
+
+pub fn rating(@core.UIContext, String, Double, max_stars? : Int, allow_half? : Bool, read_only? : Bool, star_size? : Double, spacing? : Double) -> (Double, @core.Response)
 
 pub fn scroll_area(@core.UIContext, String, @math.Vec2, (@core.UIContext) -> Unit) -> Unit
 
@@ -55,6 +59,10 @@ pub fn spinner_with_label(@core.UIContext, String, size? : Double, color? : @col
 pub fn split_horizontal(@core.UIContext, String, Double, @math.Vec2, (@core.UIContext, @math.Rect) -> Unit, (@core.UIContext, @math.Rect) -> Unit, min_ratio? : Double, max_ratio? : Double, min_px? : Double) -> Double
 
 pub fn split_vertical(@core.UIContext, String, Double, @math.Vec2, (@core.UIContext, @math.Rect) -> Unit, (@core.UIContext, @math.Rect) -> Unit, min_ratio? : Double, max_ratio? : Double, min_px? : Double) -> Double
+
+pub fn stepper(@core.UIContext, String, Double, step? : Double, min? : Double, max? : Double, precision? : Int, prefix? : String, suffix? : String, width? : Double) -> (Double, @core.Response)
+
+pub fn steps(@core.UIContext, String, Int, Array[StepItem], clickable? : Bool, width? : Double) -> (Int, @core.Response)
 
 pub fn tab_bar(@core.UIContext, String, Array[String], Int) -> (Int, @core.Response)
 
@@ -199,6 +207,35 @@ pub fn Label::color(Self, @color.Color) -> Self
 pub fn Label::new(String) -> Self
 pub impl @core.Widget for Label
 
+pub struct Pagination {
+  id_salt : String
+  current_page : Int
+  total_pages : Int
+  item_size : Double?
+  spacing : Double?
+  show_prev_next : Bool
+} derive(Eq, @debug.Debug)
+pub fn Pagination::from_ref(String, @ref.Ref[Int], Int) -> PaginationRef
+pub fn Pagination::item_size(Self, Double) -> Self
+pub fn Pagination::new(String, Int, Int) -> Self
+pub fn Pagination::show(Self, @core.UIContext) -> (Int, @core.Response)
+pub fn Pagination::show_prev_next(Self, Bool) -> Self
+pub fn Pagination::spacing(Self, Double) -> Self
+
+pub(all) enum PaginationItem {
+  Page(Int)
+  Ellipsis
+} derive(Eq, @debug.Debug)
+
+pub struct PaginationRef {
+  pagination : Pagination
+  target : @ref.Ref[Int]
+}
+pub fn PaginationRef::item_size(Self, Double) -> Self
+pub fn PaginationRef::show_prev_next(Self, Bool) -> Self
+pub fn PaginationRef::spacing(Self, Double) -> Self
+pub impl @core.Widget for PaginationRef
+
 pub struct ProgressBar {
   fraction : Double
   text : String
@@ -213,6 +250,35 @@ pub struct Radio {
 } derive(Eq, @debug.Debug)
 pub fn Radio::new(String, Bool) -> Self
 pub fn Radio::show(Self, @core.UIContext) -> (Bool, @core.Response)
+
+pub struct Rating {
+  id_salt : String
+  value : Double
+  max_stars : Int
+  allow_half : Bool
+  read_only : Bool
+  star_size : Double?
+  spacing : Double?
+} derive(Eq, @debug.Debug)
+pub fn Rating::allow_half(Self, Bool) -> Self
+pub fn Rating::from_ref(String, @ref.Ref[Double]) -> RatingRef
+pub fn Rating::max_stars(Self, Int) -> Self
+pub fn Rating::new(String, Double) -> Self
+pub fn Rating::read_only(Self, Bool) -> Self
+pub fn Rating::show(Self, @core.UIContext) -> (Double, @core.Response)
+pub fn Rating::spacing(Self, Double) -> Self
+pub fn Rating::star_size(Self, Double) -> Self
+
+pub struct RatingRef {
+  rating : Rating
+  target : @ref.Ref[Double]
+}
+pub fn RatingRef::allow_half(Self, Bool) -> Self
+pub fn RatingRef::max_stars(Self, Int) -> Self
+pub fn RatingRef::read_only(Self, Bool) -> Self
+pub fn RatingRef::spacing(Self, Double) -> Self
+pub fn RatingRef::star_size(Self, Double) -> Self
+pub impl @core.Widget for RatingRef
 
 pub struct ScrollArea {
   id_salt : String
@@ -275,6 +341,79 @@ pub fn Splitter::min_px(Self, Double) -> Self
 pub fn Splitter::min_ratio(Self, Double) -> Self
 pub fn Splitter::show(Self, @core.UIContext, (@core.UIContext, @math.Rect) -> Unit, (@core.UIContext, @math.Rect) -> Unit) -> Double
 pub fn Splitter::vertical(String, Double, @math.Vec2) -> Self
+
+pub struct StepItem {
+  title : String
+  description : String
+  status : StepStatus?
+} derive(Eq, @debug.Debug)
+pub fn StepItem::new(String, description? : String) -> Self
+pub fn StepItem::with_status(String, StepStatus, description? : String) -> Self
+
+pub(all) enum StepStatus {
+  Wait
+  Process
+  Finish
+  Error
+} derive(Eq, @debug.Debug)
+
+pub struct Stepper {
+  id_salt : String
+  value : Double
+  step : Double
+  min : Double?
+  max : Double?
+  precision : Int
+  prefix : String
+  suffix : String
+  width : Double?
+} derive(Eq, @debug.Debug)
+pub fn Stepper::from_ref(String, @ref.Ref[Double]) -> StepperRef
+pub fn Stepper::max(Self, Double) -> Self
+pub fn Stepper::min(Self, Double) -> Self
+pub fn Stepper::new(String, Double) -> Self
+pub fn Stepper::precision(Self, Int) -> Self
+pub fn Stepper::prefix(Self, String) -> Self
+pub fn Stepper::range(Self, Double, Double) -> Self
+pub fn Stepper::show(Self, @core.UIContext) -> (Double, @core.Response)
+pub fn Stepper::step(Self, Double) -> Self
+pub fn Stepper::suffix(Self, String) -> Self
+pub fn Stepper::width(Self, Double) -> Self
+
+pub struct StepperRef {
+  stepper : Stepper
+  target : @ref.Ref[Double]
+}
+pub fn StepperRef::max(Self, Double) -> Self
+pub fn StepperRef::min(Self, Double) -> Self
+pub fn StepperRef::precision(Self, Int) -> Self
+pub fn StepperRef::prefix(Self, String) -> Self
+pub fn StepperRef::range(Self, Double, Double) -> Self
+pub fn StepperRef::step(Self, Double) -> Self
+pub fn StepperRef::suffix(Self, String) -> Self
+pub fn StepperRef::width(Self, Double) -> Self
+pub impl @core.Widget for StepperRef
+
+pub struct Steps {
+  id_salt : String
+  current : Int
+  items : Array[StepItem]
+  clickable : Bool
+  width : Double?
+} derive(Eq, @debug.Debug)
+pub fn Steps::clickable(Self, Bool) -> Self
+pub fn Steps::from_ref(String, @ref.Ref[Int], Array[StepItem]) -> StepsRef
+pub fn Steps::new(String, Int, Array[StepItem]) -> Self
+pub fn Steps::show(Self, @core.UIContext) -> (Int, @core.Response)
+pub fn Steps::width(Self, Double) -> Self
+
+pub struct StepsRef {
+  steps : Steps
+  target : @ref.Ref[Int]
+}
+pub fn StepsRef::clickable(Self, Bool) -> Self
+pub fn StepsRef::width(Self, Double) -> Self
+pub impl @core.Widget for StepsRef
 
 pub struct TabBar {
   id_str : String
