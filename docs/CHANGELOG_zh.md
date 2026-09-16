@@ -9,6 +9,39 @@
 
 ---
 
+## [Unreleased]
+
+### 新增功能与优化
+- **离散步进调节输入器 (`Stepper`, `src/widgets/stepper.mbt`)**：
+  - 即时模式步进控件，具备 `[+]` 和 `[-]` 步进按钮、数值边界范围约束（`min`/`max`）、格式化精度输出、前缀/后缀文本与鼠标滚轮微调。
+  - 支持修饰键步长加速：按住 Shift 为 10× 步长，按住 Ctrl 为 0.1× 步长。
+  - 全键盘方向键无障碍操作（`ArrowLeft`, `ArrowRight`, `Home`, `End`）与焦点环指示。
+  - 提供 `StepperRef` 绑定器与链式流式 API（`Stepper::from_ref`）。
+- **星标评分评级控件 (`Rating`, `src/widgets/rating.mbt`)**：
+  - 星级评分控件，基于矢量局部 Scissor 剪裁实现 0.5 半星精细打分。
+  - 支持悬停实时预览（Live Hover Preview），在点击提交前直观预显分值。
+  - 提供只读展示模式、自定义星标尺寸、间隙与最大星数。
+  - 键盘方向键分值调节与 `RatingRef` 双向绑定支持。
+- **流程与步骤导航条 (`Steps`, `src/widgets/steps.mbt`)**：
+  - 方向性流程步骤导航控件，支持动态步骤标题、副描述文本与高亮连接轨道。
+  - 支持 `Wait`、`Process`、`Finish`、`Error` 四态自动推导与显式覆盖。
+  - 支持鼠标点击跳转步骤与键盘方向键无障碍导航。
+- **数据分页控制条 (`Pagination`, `src/widgets/pagination.mbt`)**：
+  - 数据分页控件，具备智能折叠省略号算法（如 `1 ... 4 [5] 6 ... 20`）。
+  - 前进/后退按钮步进翻页与极值边界自动禁用保护。
+  - 支持 Tab 聚焦后使用 `ArrowLeft`、`ArrowRight`、`Home`、`End` 键盘快捷翻页。
+- **节点拓扑流连线编辑器原型 (`NodeEditor`, `src/composite/node_editor.mbt`)**：
+  - 达成开发路线图里程碑 7 目标：无限/有界画布、细点阵网格光栅化与视口 Scissor 剪裁隔离。
+  - 可拖拽节点卡片，基于泛型 `Memory` 隔离记录位移锚点与选中状态。
+  - 独立的输入/输出端口系统，支持就近碰撞判定与 `"crosshair"` 十字光标反馈。
+  - 多步自适应平滑三次贝塞尔导线光栅化算法，支持从输出端口至输入端口的交互式实时拉线与连接。
+- **自动化测试套件扩充**：
+  - 新增 `stepper_wbtest.mbt`、`rating_wbtest.mbt`、`steps_wbtest.mbt`、`pagination_wbtest.mbt` 与 `node_editor_wbtest.mbt` 共 31 项多帧白盒/黑盒测试。
+  - 自动化测试用例总数由 280 项扩展至 **311 项**（**100% 通过率**）。
+- **Web 官方展厅全面集成 (`examples/canvas/`)**：
+  - 在 `gallery.html`、`js/gallery-data.js` 与 `js/i18n.js` 中新增上述 5 个组件的在线演示、交互逻辑与中英双语代码范例。
+  - 重新编译输出纯 MoonBit JavaScript 运行时 `examples/canvas/canvas.js`。
+
 ## [0.3.2] - 2026-09-15
 
 ### 新增功能与优化

@@ -185,24 +185,24 @@ fn update_ui(ctx : @core.UIContext, state : AppState) {
 ### Available Now
 - **Core Draw Engine**: Pure MoonBit implementation of `Vec2`, `Rect`, `Color`, and platform-agnostic `DrawCmd` stream, supporting rectangles, lines, circles, text, and nested scissor clip stacks.
 - **Layout & Space Allocation**: `UIContext` manages `hot_id` / `active_id` state machine and layout scope stacks, supporting vertical and horizontal flow layouts (`horizontal`). `allocate_space()` computes geometry bounds and automatic cursor placement.
-- **Core Widget Suite (35 Available Widgets)**:
-  - **Inputs & Editing**: `button` (with keyboard shortcuts, primary/default variants, and custom sizing), `text_edit` (single-line porcelain text entry with hidden IME bridge), `code_editor` (multi-line code editor with line numbers, syntax styling, selection highlight, caret scroll, select-all, and shortcuts), `label` / `label_colored`.
+- **Core Widget Suite (40 Available Widgets)**:
+  - **Inputs & Editing**: `button` (with keyboard shortcuts, primary/default variants, and custom sizing), `text_edit` (single-line porcelain text entry with hidden IME bridge), `code_editor` (multi-line code editor with line numbers, syntax styling, selection highlight, caret scroll, select-all, and shortcuts), `stepper` (discrete numeric step adjuster with [+] / [-] buttons, mouse wheel, and Shift/Ctrl acceleration), `rating` (interactive and read-only star score with 0.5 half-star precision and live hover preview), `label` / `label_colored`.
   - **Selection & Values**: `checkbox` (precision toggle box), `toggle` (bistable capsule switch), `radio` (concentric option button), `slider` / `slider_int` (continuous/stepped numeric scrubbers), `drag_value` (fine-grained numeric drag with arrow navigation), `knob` (270° arc rotary dial), `fader` / `fader_int` (vertical channel fader regulator), `combo_box` (adaptive upward-flipping dropdown), `color_button` / `color_picker` (HSV color picker and palette).
   - **Feedback & Notifications**: `progress_bar` (smooth progress indicator), `badge` (status badges and dot indicators), `toast` (floating notification toasts with hover occlusion blocking), `tooltip` (floating bubble hints with boundary clipping prevention), `spinner` (rotary loading indicator).
   - **Data Visualization & Plotting**: `sparkline` (real-time telemetry sparkline), `plot` (immediate-mode plotting with line, scatter, and area series, dual-axis ticks, and crosshairs), `bar_chart` (adaptive bar chart).
-  - **Advanced Navigation & Interactions**: `menu_bar` (desktop-grade menu bar), `context_menu` (recursive cascading multi-level right-click menu), `command_palette` (global fuzzy search palette), `tree_view` (hierarchical asset tree), `segmented_control` (pill segmented switcher), `breadcrumb` (hierarchical breadcrumb).
+  - **Advanced Navigation & Interactions**: `steps` (process and workflow navigation bar with auto-status derivation and keyboard traversal), `pagination` (data pagination bar with intelligent ellipsis folding and keyboard shortcuts), `node_editor` (blueprint node flow graph editor with card dragging, port connections, and smooth cubic Bézier wires), `menu_bar` (desktop-grade menu bar), `context_menu` (recursive cascading multi-level right-click menu), `command_palette` (global fuzzy search palette), `tree_view` (hierarchical asset tree), `segmented_control` (pill segmented switcher), `breadcrumb` (hierarchical breadcrumb).
   - **Layout Spacing & Flow**: `separator` (hairline divider), `spacer` (flexible spacing), `horizontal_wrapped` (auto-wrapping flow layout).
 - **Windows & Container Architecture**:
   - **Global Application Menu Bar**: `menu_bar`, `menu`, `menu_item`, `menu_separator` featuring isolated foreground layer projection, desktop-grade Hover-to-Switch transitions, and outside-click dismissal;
   - **Free-Floating Windows**: `window` supporting title-bar drag repositioning, dynamic Z-Index elevation, local coordinate scoping, and scissor clipping;
   - **Advanced Containers**: `splitter` (bidirectional draggable divider), `table` (high-performance virtualized data table with resizable columns), `collapsing_header` (tree groupings with persistent open memory), `scroll_area` (wheel and thumb draggable viewport scrolling), `tab_bar` (tab navigation), `dialog` (modal confirmation dialog with focus trap).
-- **Headless & Automated Testing**: Core logic produces pure `DrawCmd` streams without browser bindings, backed by 211 automated headless unit and integration tests (100% passing).
+- **Headless & Automated Testing**: Core logic produces pure `DrawCmd` streams without browser bindings, backed by 311 automated headless unit and integration tests (100% passing).
 - **Canvas 2D Host Driver**: Lightweight JavaScript bridge and 60 FPS rendering pipeline, coupled with O(1) viewport spatial culling and adaptive LOD architecture.
 
 ### Planned & In Roadmap
 - **Hardware-Accelerated Backends**: WebGL / WebGPU batched geometry rasterizers and custom shader pipelines.
 - **Cross-Platform Native Desktop**: Raylib / SDL3 windowing integration.
-- **Node Graph & Flow Editing**: Node graph pipeline editor (`NodeEditor`).
+- **Vector SVG Exporter**: Export active frame command streams into clean, standard `.svg` vector files.
 
 ---
 
@@ -217,8 +217,8 @@ fn update_ui(ctx : @core.UIContext, state : AppState) {
 ### Phase 2: Workstation & Industrial Capabilities (Sep 12 – Sep 25)
 - [x] **Milestone 5: Desktop Input System & Productivity Controls** (Fully Delivered): `CommandPalette` (`⌘K`), context menus (`ContextMenu`), code editor (`CodeEditor`), tree view (`TreeView`), rotary knob (`Knob`), vertical fader (`Fader`), pure Canvas Studio.
 - [x] **Milestone 6: Workstation Layout & Resilient Widgets** (Delivered): draggable splitter (`Splitter`), data table (`Table`), modal dialog (`Dialog`), notifications (`Toast`), flow layout (`horizontal_wrapped`), dynamic multi-theming (`Theme`).
-- [x] **Milestone 9: Verification, Benchmarking & Official Release** (Delivered): 167 automated unit tests (100% passing), Wasm-GC compatibility, published `v0.2.0`.
-- [ ] **Milestone 7: Data-Dense Components & Advanced Visualizations** (In Roadmap): node graph editor (`NodeEditor`), telemetry plots (`Plot` & `BarChart`) [Delivered], vector SVG exporter (`SvgExporter`).
+- [x] **Milestone 7: Data-Dense Components & Advanced Visualizations** (Delivered): node graph editor (`NodeEditor`) [Delivered], telemetry plots (`Plot` & `BarChart`) [Delivered], virtualized data table (`Table`) [Delivered].
+- [x] **Milestone 9: Verification, Benchmarking & Official Release** (Delivered): 311 automated unit and integration tests (100% passing), Wasm-GC compatibility, published `v0.3.2`.
 - [ ] **Milestone 8: Hardware-Accelerated Rendering & Production Scenarios** (In Roadmap): WebGL 2.0 batched geometry pipeline, integrated multi-scenario showcases.
 
 > For full milestone metrics and acceptance criteria, see **[ROADMAP.md](docs/ROADMAP.md)** ([English](docs/ROADMAP_en.md)).

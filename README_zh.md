@@ -184,24 +184,24 @@ fn update_ui(ctx : @core.UIContext, state : AppState) {
 ### 已交付可用特性 (Available Now)
 - **底层图形与绘制内核 (Core Draw Engine)**：纯 MoonBit 实现的 `Vec2`, `Rect`, `Color`, `DrawCmd` 平台无关指令流，支持矩形、线段、圆、文本与嵌套矩形裁剪栈（Scissor Clipping）。
 - **交互状态机与多向排版 (Layout & Space Allocation)**：`UIContext` 维护 `hot_id` / `active_id` 状态机与布局作用域栈，支持单向垂直流、水平行内排版流（`horizontal`），`allocate_space()` 自动分配几何尺寸并完成鼠标交互命中判定。
-- **核心交互控件套件 (35 Available Widgets)**：
-  - **基础输入与编辑**：`button`（支持快捷键、主次样式与尺寸）、`text_edit`（单行文本输入与隐藏式 IME 桥接）、`code_editor`（多行代码编辑器，支持行号、语法着色、选区高亮、光标滚动、全选与快捷键）、`label` / `label_colored`。
+- **核心交互控件套件 (40 Available Widgets)**：
+  - **基础输入与编辑**：`button`（支持快捷键、主次样式与尺寸）、`text_edit`（单行文本输入与隐藏式 IME 桥接）、`code_editor`（多行代码编辑器，支持行号、语法着色、选区高亮、光标滚动、全选与快捷键）、`stepper`（离散步进调节器，支持点击步进、修饰键加速与滚轮微调）、`rating`（交互与只读星级评分，支持 0.5 半星精细打分与实时悬停预览）、`label` / `label_colored`。
   - **选择与调节**：`checkbox`（精密复选框）、`toggle`（双稳态胶囊开关）、`radio`（单选框）、`slider` / `slider_int`（连续/步进数值条）、`drag_value`（数字微调器）、`knob`（270° 圆弧行程旋钮）、`fader` / `fader_int`（垂直通道推子调节器）、`combo_box`（自适应碰撞翻转下拉框）、`color_button` / `color_picker`（HSV 调色取色盘）。
   - **反馈与通知**：`progress_bar`（平滑进度条）、`badge`（状态徽标与点标）、`toast`（悬浮通知弹窗与遮罩阻断）、`tooltip`（视口防溢出气泡提示）、`spinner`（旋转加载指示器）。
   - **数据可视化与图表**：`sparkline`（实时微型走势图）、`plot`（即时模式工程图表，支持折线、散点、面积多系列混排、双轴刻度与准心浮窗）、`bar_chart`（自适应宽度柱状统计图）。
-  - **高级导航与交互**：`menu_bar`（桌面级菜单栏）、`context_menu`（递归级联多级右键菜单）、`command_palette`（全局快捷命令检索面板）、`tree_view`（资产层次树）、`segmented_control`（分段选择器）、`breadcrumb`（导航面包屑）。
+  - **高级导航与交互**：`steps`（流程与步骤导航条，支持状态自动推导与键盘无障碍导航）、`pagination`（数据分页条，支持智能折叠省略号与键盘翻页）、`node_editor`（节点流拓扑连线编辑器，支持节点拖拽、端口拉线与平滑三次贝塞尔导线）、`menu_bar`（桌面级菜单栏）、`context_menu`（递归级联多级右键菜单）、`command_palette`（全局快捷命令检索面板）、`tree_view`（资产层次树）、`segmented_control`（分段选择器）、`breadcrumb`（导航面包屑）。
   - **排版微调与流式布局**：`separator`（水平发丝分割线）、`spacer`（弹性留白）、`horizontal_wrapped`（自动折行流式布局）。
 - **视窗与高级容器系统 (Windows & Containers)**：
   - **全局顶层菜单栏**：`menu_bar`, `menu`, `menu_item`, `menu_separator`，具备前台图层投影隔离、桌面级 Hover-to-Switch 随动流转与外部点击安全闭合；
   - **自由浮动视窗**：`window` 支持标题栏拖拽位移、动态 Z-Index 置顶管理、内容局部坐标系与 Scissor 视口裁剪；
   - **高级容器**：`splitter`（双向可拖拽分栏器）、`table`（高性能数据表格与列宽拖拽）、`collapsing_header`（树形折叠分组）、`scroll_area`（滚轮与滑块交互视口滚动）、`tab_bar`（标签导航）、`dialog`（模态确认对话框与焦点陷阱）。
-- **无头纯算与高覆盖测试**：核心图元与组件逻辑完全脱离浏览器，内置 211 项自动化无头白盒与黑盒测试（100% 通过）。
+- **无头纯算与高覆盖测试**：核心图元与组件逻辑完全脱离浏览器，内置 311 项自动化无头白盒与黑盒测试（100% 通过）。
 - **Canvas 2D 宿主驱动器**：轻量 JavaScript 桥接层与 60 FPS 渲染管线，结合 O(1) 视口边界裁剪与自适应 LOD 架构。
 
 ### 规划与演进中特性 (Planned / In Roadmap)
 - **硬件加速渲染后端**：WebGL / WebGPU 批量几何图元渲染器与自定义着色器流水线。
 - **跨平台原生桌面桥接**：Raylib / SDL3 跨平台窗口环境驱动器适配。
-- **复杂流图与节点编辑**：节点流连线编辑器 (`NodeEditor`)。
+- **矢量 SVG 导出器**：支持将当前渲染管线图元序列无损导出为标准 `.svg` 矢量文件。
 
 ---
 
@@ -216,8 +216,8 @@ fn update_ui(ctx : @core.UIContext, state : AppState) {
 ### 第二阶段：专业工程能力深度演进（9月12日 – 9月25日）
 - [x] **里程碑 5：专业桌面交互与输入系统**（已全面交付）：全局命令面板 (`CommandPalette` / `⌘K`)、右键上下文菜单 (`ContextMenu`)、代码编辑控件 (`CodeEditor`)、资产树控件 (`TreeView`)、环形旋钮 (`Knob`)、垂直推子 (`Fader`)、全自宿主 Pure Canvas Studio。
 - [x] **里程碑 6：工作台排版体系与高弹性控件**（已交付）：可拖拽弹性分栏器 (`Splitter`)、虚拟化数据表格 (`Table`)、模态对话框 (`Dialog`)、通知提示 (`Toast`)、流式自动折行 (`horizontal_wrapped`)、多主题系统 (`Theme`)。
-- [x] **里程碑 9：工程化验证、基准评测与正式发布**（已交付）：167 项自动化无头单元测试（100% 通过）、Wasm-GC 编译支持、正式发布 `v0.2.0`。
-- [ ] **里程碑 7：数据密集型组件与高级可视化**（演进中）：节点流连线编辑器 (`NodeEditor`)、工程遥测图表套件 (`Plot` & `BarChart`) [已交付]、矢量 SVG 导出器 (`SvgExporter`)。
+- [x] **里程碑 7：数据密集型组件与高级可视化**（已全面交付）：节点流连线编辑器 (`NodeEditor`) [已交付]、工程遥测图表套件 (`Plot` & `BarChart`) [已交付]、虚拟化数据表格 (`Table`) [已交付]。
+- [x] **里程碑 9：工程化验证、基准评测与正式发布**（已交付）：311 项自动化无头单元测试（100% 通过）、Wasm-GC 编译支持、正式发布 `v0.3.2`。
 - [ ] **里程碑 8：高性能渲染管线探索与应用范例**（演进中）：WebGL 2.0 顶点合批渲染后端探索、CAD/节点/音频/IDE 多场景参考演示。
 
 > 完整攻坚指标与详细验收准则请参阅 **[ROADMAP.md](docs/ROADMAP.md)** ([English](docs/ROADMAP_en.md))。

@@ -9,6 +9,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Added
+- **Discrete Step Input Widget (`Stepper`, `src/widgets/stepper.mbt`)**:
+  - Immediate-mode stepper control featuring `[+]` and `[-]` buttons, numerical bounds clamping (`min`/`max`), precision formatting, prefix/suffix labels, and mouse wheel scrubbing.
+  - Multiplier modifier support: Shift increments by 10× step, Ctrl increments by 0.1× step.
+  - Full keyboard reachability (`ArrowLeft`, `ArrowRight`, `Home`, `End`) and focus ring indicator.
+  - Reference-bound variant `StepperRef` with fluent builder methods (`Stepper::from_ref`).
+- **Interactive Star Rating Widget (`Rating`, `src/widgets/rating.mbt`)**:
+  - Star rating component supporting 0.5 half-star fractional evaluation via sub-rect vector scissor clipping.
+  - Real-time hover preview (Live Hover Preview) reflecting potential selection prior to click commit.
+  - Read-only display mode, configurable star size, spacing, and maximum star count.
+  - Keyboard step navigation and bidirectional `RatingRef` binding.
+- **Workflow & Process Steps Indicator (`Steps`, `src/widgets/steps.mbt`)**:
+  - Directional process steps navigation component supporting dynamic step titles, descriptions, and active connector rails.
+  - Automatic status derivation across `Wait`, `Process`, `Finish`, and `Error` states.
+  - Step click switching and keyboard arrow navigation with focus ring styling.
+- **Data Pagination Controller (`Pagination`, `src/widgets/pagination.mbt`)**:
+  - Data pagination bar featuring intelligent ellipsis folding (`1 ... 4 [5] 6 ... 20`).
+  - Next/Previous button stepper navigation with automatic bounds disablement and semantic cursor updates.
+  - Accessible keyboard navigation (`ArrowLeft`, `ArrowRight`, `Home`, `End`).
+- **Blueprint Node Flow Graph Editor Prototype (`NodeEditor`, `src/composite/node_editor.mbt`)**:
+  - Milestone 7 deliverable: infinite/bounded canvas with subtle studio dot grid rasterization and scissor clip isolation.
+  - Draggable node cards with header displacement tracking, title labels, and `Memory`-backed interaction persistence.
+  - Input and output terminal connection ports with localized hover hit testing and `"crosshair"` cursor feedback.
+  - Smooth multi-step cubic Bézier curve wire rasterization with adaptive horizontal curvature.
+  - Interactive link wire drawing (dragging from output port to destination input port).
+- **Test Suite Expansion**:
+  - 31 new multi-frame whitebox and blackbox test cases across `stepper_wbtest.mbt`, `rating_wbtest.mbt`, `steps_wbtest.mbt`, `pagination_wbtest.mbt`, and `node_editor_wbtest.mbt`.
+  - Expanded total test count from 280 to **311 tests with 100% pass rate**.
+- **Interactive Web Gallery Showcase (`examples/canvas/`)**:
+  - Integrated showcases for `Stepper`, `Rating`, `Steps`, `Pagination`, and `NodeEditor` into `gallery.html`.
+  - Added bilingual translations and code signatures to `js/gallery-data.js` and `js/i18n.js`.
+  - Rebuilt standalone `examples/canvas/canvas.js` bundle via `pwsh scripts/build_demo.ps1`.
+
 ## [0.3.2] - 2026-09-15
 
 ### Added

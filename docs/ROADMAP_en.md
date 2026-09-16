@@ -67,8 +67,8 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 
 * **Objective**: Validate immediate-mode performance under heavy data volume and topological graph structures.
 * **Deliverables**:
-  - [ ] **Virtualized Data Table (`VirtualTable`)**: Viewport-culled rasterization processing tens of thousands of rows with column resizing and sorting;
-  - [ ] **Node-Based Blueprint Editor Prototype (`NodeEditor`)**: Infinite canvas, node dragging, port connection validation, and smooth cubic Bezier link splines;
+  - [x] **Virtualized Data Table (`VirtualTable` / `Table`)** [Delivered]: Viewport-culled rasterization processing tens of thousands of rows with column resizing and sorting;
+  - [x] **Node-Based Blueprint Editor Prototype (`NodeEditor`)** [Delivered]: Infinite canvas, node dragging, port connection validation, and smooth cubic Bezier link splines;
   - [x] **Engineering Plotting Suite (`Plot` / `Sparkline`)** [Delivered]: Multi-series plotting (Line, Scatter, Area) and bar charts (`BarChart`) with adaptive grid lines, numeric tick labels, crosshairs, and data hover tooltips;
   - [ ] **Vector SVG Exporter (`SvgExporter`)**: Export active frame command streams into clean, standard `.svg` vector files.
 * **Acceptance Criteria**:
@@ -95,7 +95,7 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 
 * **Objective**: Ensure industrial code reliability, freeze API contracts, and finalize project deliverables.
 * **Deliverables**:
-  - [x] **Expanded Test Suite** [Delivered]: Reach 286 automated whitebox and blackbox test cases (100% passing rate);
+  - [x] **Expanded Test Suite** [Delivered]: Reach 311 automated whitebox and blackbox test cases (100% passing rate);
   - [x] **Large-Scale Performance Benchmark Suite** [Delivered]: 50,000-row stress testing verifying sub-millisecond viewport slicing and in-place sorting;
   - [x] **Interface Stabilization**: Run `moon info && moon fmt`, freeze `.mbti` signatures, and finalize bilingual documentation;
   - [x] **Release Packaging** [Delivered]: Tag and publish the `v0.3.2` release (featuring standalone MoonLens native desktop app).
