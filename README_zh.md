@@ -56,7 +56,7 @@
 moon add LING71671/moon-egui
 
 # 或指定锁定版本
-moon add LING71671/moon-egui@0.3.2
+moon add LING71671/moon-egui@0.4.0
 ```
 
 安装后在 `moon.pkg` 中按需引入分层包：只做自绘 HUD 时引入 `src/core`（纯即时模式运行时），需要内置控件时再叠加 `src/widgets`（标准控件）与 `src/composite`（高级组件）。
@@ -217,7 +217,7 @@ fn update_ui(ctx : @core.UIContext, state : AppState) {
 - [x] **里程碑 5：专业桌面交互与输入系统**（已全面交付）：全局命令面板 (`CommandPalette` / `⌘K`)、右键上下文菜单 (`ContextMenu`)、代码编辑控件 (`CodeEditor`)、资产树控件 (`TreeView`)、环形旋钮 (`Knob`)、垂直推子 (`Fader`)、全自宿主 Pure Canvas Studio。
 - [x] **里程碑 6：工作台排版体系与高弹性控件**（已交付）：可拖拽弹性分栏器 (`Splitter`)、虚拟化数据表格 (`Table`)、模态对话框 (`Dialog`)、通知提示 (`Toast`)、流式自动折行 (`horizontal_wrapped`)、多主题系统 (`Theme`)。
 - [x] **里程碑 7：数据密集型组件与高级可视化**（已全面交付）：节点流连线编辑器 (`NodeEditor`) [已交付]、工程遥测图表套件 (`Plot` & `BarChart`) [已交付]、虚拟化数据表格 (`Table`) [已交付]。
-- [x] **里程碑 9：工程化验证、基准评测与正式发布**（已交付）：311 项自动化无头单元测试（100% 通过）、Wasm-GC 编译支持、正式发布 `v0.3.2`。
+- [x] **里程碑 9：工程化验证、基准评测与正式发布**（已交付）：311 项自动化无头单元测试（100% 通过）、Wasm-GC 编译支持、正式发布 `v0.4.0`。
 - [ ] **里程碑 8：高性能渲染管线探索与应用范例**（演进中）：WebGL 2.0 顶点合批渲染后端探索、CAD/节点/音频/IDE 多场景参考演示。
 
 > 完整攻坚指标与详细验收准则请参阅 **[ROADMAP.md](docs/ROADMAP.md)** ([English](docs/ROADMAP_en.md))。

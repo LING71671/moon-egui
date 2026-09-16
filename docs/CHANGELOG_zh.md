@@ -9,7 +9,7 @@
 
 ---
 
-## [Unreleased]
+## [0.4.0] - 2026-09-16
 
 ### 新增功能与优化
 - **离散步进调节输入器 (`Stepper`, `src/widgets/stepper.mbt`)**：

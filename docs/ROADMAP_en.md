@@ -98,7 +98,7 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
   - [x] **Expanded Test Suite** [Delivered]: Reach 311 automated whitebox and blackbox test cases (100% passing rate);
   - [x] **Large-Scale Performance Benchmark Suite** [Delivered]: 50,000-row stress testing verifying sub-millisecond viewport slicing and in-place sorting;
   - [x] **Interface Stabilization**: Run `moon info && moon fmt`, freeze `.mbti` signatures, and finalize bilingual documentation;
-  - [x] **Release Packaging** [Delivered]: Tag and publish the `v0.3.2` release (featuring standalone MoonLens native desktop app).
+  - [x] **Release Packaging** [Delivered]: Tag and publish the `v0.4.0` release (delivering Stepper, Rating, Steps, Pagination, and NodeEditor blueprint flow editor).
 * **Acceptance Criteria**:
   - 100% passing CI workflow with complete documentation, demos, and test suites archived.
 

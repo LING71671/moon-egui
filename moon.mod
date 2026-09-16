@@ -11,7 +11,7 @@
 
 name = "LING71671/moon-egui"
 
-version = "0.3.2"
+version = "0.4.0"
 
 readme = "README.md"
 

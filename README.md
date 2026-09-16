@@ -56,7 +56,7 @@ When building interactive user interfaces within WebAssembly and HTML5 Canvas en
 moon add LING71671/moon-egui
 
 # Or pin to an exact version
-moon add LING71671/moon-egui@0.3.2
+moon add LING71671/moon-egui@0.4.0
 ```
 
 Import the layers you need in your `moon.pkg`: `src/core` is the bare immediate-mode runtime, `src/widgets` adds the standard controls, and `src/composite` the advanced components.
@@ -218,7 +218,7 @@ fn update_ui(ctx : @core.UIContext, state : AppState) {
 - [x] **Milestone 5: Desktop Input System & Productivity Controls** (Fully Delivered): `CommandPalette` (`⌘K`), context menus (`ContextMenu`), code editor (`CodeEditor`), tree view (`TreeView`), rotary knob (`Knob`), vertical fader (`Fader`), pure Canvas Studio.
 - [x] **Milestone 6: Workstation Layout & Resilient Widgets** (Delivered): draggable splitter (`Splitter`), data table (`Table`), modal dialog (`Dialog`), notifications (`Toast`), flow layout (`horizontal_wrapped`), dynamic multi-theming (`Theme`).
 - [x] **Milestone 7: Data-Dense Components & Advanced Visualizations** (Delivered): node graph editor (`NodeEditor`) [Delivered], telemetry plots (`Plot` & `BarChart`) [Delivered], virtualized data table (`Table`) [Delivered].
-- [x] **Milestone 9: Verification, Benchmarking & Official Release** (Delivered): 311 automated unit and integration tests (100% passing), Wasm-GC compatibility, published `v0.3.2`.
+- [x] **Milestone 9: Verification, Benchmarking & Official Release** (Delivered): 311 automated unit and integration tests (100% passing), Wasm-GC compatibility, published `v0.4.0`.
 - [ ] **Milestone 8: Hardware-Accelerated Rendering & Production Scenarios** (In Roadmap): WebGL 2.0 batched geometry pipeline, integrated multi-scenario showcases.
 
 > For full milestone metrics and acceptance criteria, see **[ROADMAP.md](docs/ROADMAP.md)** ([English](docs/ROADMAP_en.md)).
