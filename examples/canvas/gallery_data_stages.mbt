@@ -286,3 +286,79 @@ fn draw_bar_chart_showcase(ui : @core.UIContext) -> Unit {
     }
   }
 }
+
+///|
+fn draw_node_editor_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "节点拓扑流连线编辑器 (NodeEditor)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "支持无极画布网格、节点卡片自由拖拽排布、输出/输入端口交互式连线与自适应平滑三次贝塞尔导线。",
+  )
+  ui.spacer(12.0)
+
+  let editor_w = if ui.available_width() > 200.0 {
+    ui.available_width()
+  } else {
+    560.0
+  }
+  let editor_h = 320.0
+
+  let resp = @composite.node_editor(
+    ui,
+    "gal_node_editor",
+    @math.Vec2::new(editor_w, editor_h),
+    gallery_state.node_items,
+    gallery_state.node_conns,
+  )
+
+  if resp.new_connection is Some(conn) {
+    gallery_state.node_conns.push(conn)
+    gallery_state.status_text = "New Connection: " +
+      conn.from_node +
+      ":" +
+      conn.from_port +
+      " -> " +
+      conn.to_node +
+      ":" +
+      conn.to_port
+  }
+
+  if resp.dragged_node is Some(d_node) {
+    gallery_state.status_text = "Dragging node: " + d_node
+  } else if resp.selected_node is Some(s_node) {
+    gallery_state.status_text = "Selected node: " + s_node
+  }
+
+  ui.spacer(10.0)
+  ui.horizontal(fn(row) {
+    let _ = row.label(
+      "当前节点数: " +
+      gallery_state.node_items.length().to_string() +
+      " | 拓扑连线数: " +
+      gallery_state.node_conns.length().to_string(),
+    )
+    row.spacer(16.0)
+    if @widgets.button_sized(row, "重置拓扑", @math.Vec2::new(80.0, 24.0)).clicked {
+      if gallery_state.node_items.length() >= 3 {
+        gallery_state.node_items[0].set_pos(@math.Vec2::new(30.0, 40.0))
+        gallery_state.node_items[1].set_pos(@math.Vec2::new(240.0, 40.0))
+        gallery_state.node_items[2].set_pos(@math.Vec2::new(450.0, 70.0))
+      }
+      gallery_state.node_conns.clear()
+      gallery_state.node_conns.push(
+        @composite.NodeConnection::new(
+          "audio_src", "out_wav", "dsp_filter", "in_audio",
+        ),
+      )
+      gallery_state.node_conns.push(
+        @composite.NodeConnection::new(
+          "dsp_filter", "out_filtered", "sink_out", "in_sink",
+        ),
+      )
+      gallery_state.status_text = "Topology Reset to Default"
+    }
+  })
+}

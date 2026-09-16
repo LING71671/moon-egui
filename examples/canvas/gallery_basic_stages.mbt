@@ -304,6 +304,116 @@ fn draw_drag_value_showcase(ui : @core.UIContext) -> Unit {
 }
 
 ///|
+fn draw_stepper_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "离散步进调节输入器 (Stepper Suite)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "支持点击 [+] / [-] 步进、Shift (×10) 与 Ctrl (×0.1) 修饰键加速、鼠标滚轮微调以及键盘左右键控制。",
+  )
+  ui.spacer(14.0)
+
+  let _ = ui.label("1. 整数离散计数器 (0 ~ 50 项):")
+  ui.spacer(6.0)
+  let (cnt, _) = @widgets.stepper(
+    ui,
+    "gallery_step_count",
+    gallery_state.stepper_count,
+    step=1.0,
+    min=0.0,
+    max=50.0,
+    precision=0,
+    suffix=" 项",
+  )
+  if cnt != gallery_state.stepper_count {
+    gallery_state.stepper_count = cnt
+    gallery_state.status_text = "Stepper Count: " + cnt.to_int().to_string()
+  }
+
+  ui.spacer(16.0)
+  let _ = ui.label("2. 浮点增益微调 (-24.0 ~ +24.0 dB):")
+  ui.spacer(6.0)
+  let (gain, _) = @widgets.stepper(
+    ui,
+    "gallery_step_gain",
+    gallery_state.stepper_gain,
+    step=0.5,
+    min=-24.0,
+    max=24.0,
+    precision=1,
+    prefix="Gain: ",
+    suffix=" dB",
+  )
+  if gain != gallery_state.stepper_gain {
+    gallery_state.stepper_gain = gain
+    gallery_state.status_text = "Gain: " + gain.to_string() + " dB"
+  }
+
+  ui.spacer(16.0)
+  ui.separator()
+  ui.spacer(8.0)
+  let _ = ui.label(
+    "当前计数值: " +
+    gallery_state.stepper_count.to_int().to_string() +
+    " | 当前增益: " +
+    gallery_state.stepper_gain.to_string() +
+    " dB",
+  )
+}
+
+///|
+fn draw_rating_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "交互式星标评分评级控件 (Rating Suite)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "支持 0.5 半星精细打分、就地悬停实时预览 (Hover Preview)、Tab 焦点环与左右方向键无障碍切换。",
+  )
+  ui.spacer(14.0)
+
+  let _ = ui.label("1. 交互式评级 (支持半星与实时悬停预览):")
+  ui.spacer(6.0)
+  let (r_val, _) = @widgets.rating(
+    ui,
+    "gallery_rating_main",
+    gallery_state.rating_val,
+    max_stars=5,
+    allow_half=true,
+    star_size=24.0,
+    spacing=6.0,
+  )
+  if r_val != gallery_state.rating_val {
+    gallery_state.rating_val = r_val
+    gallery_state.status_text = "Rating score: " + r_val.to_string() + " Stars"
+  }
+
+  ui.spacer(16.0)
+  let _ = ui.label("2. 只读展示模式 (Read-Only Display):")
+  ui.spacer(6.0)
+  let _ = @widgets.rating(
+    ui,
+    "gallery_rating_ro",
+    4.0,
+    max_stars=5,
+    read_only=true,
+    star_size=18.0,
+  )
+
+  ui.spacer(16.0)
+  ui.separator()
+  ui.spacer(8.0)
+  let _ = ui.label(
+    "当前已选星级得分: " +
+    gallery_state.rating_val.to_string() +
+    " / 5.0 ★",
+  )
+}
+
+///|
 fn draw_progress_bar_showcase(ui : @core.UIContext) -> Unit {
   let _ = ui.label_colored(
     "进度加载指示器 (ProgressBar)",
@@ -421,7 +531,7 @@ fn draw_badge_showcase(ui : @core.UIContext) -> Unit {
     row.spacer(8.0)
     let _ = @widgets.badge(
       row,
-      "v0.3.1",
+      "v0.3.2",
       kind=@widgets.BadgeKind::info(),
       dot=true,
       pill=true,

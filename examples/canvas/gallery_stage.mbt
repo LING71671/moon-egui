@@ -29,6 +29,11 @@ pub struct GalleryState {
   mut drag_x : Double
   mut drag_y : Double
   mut drag_scale : Double
+  mut stepper_count : Double
+  mut stepper_gain : Double
+  mut rating_val : Double
+  mut steps_current : Int
+  mut pagination_page : Int
   mut knob_cutoff : Double
   mut knob_res : Double
   mut knob_pan : Double
@@ -71,6 +76,8 @@ pub struct GalleryState {
   mut breadcrumb_last_clicked : String
   mut rich_text_last_url : String
   mut dock_tree : @composite.DockTree
+  node_items : Array[@composite.NodeItem]
+  node_conns : Array[@composite.NodeConnection]
 }
 
 ///|
@@ -90,6 +97,11 @@ let gallery_state : GalleryState = {
   drag_x: 120.0,
   drag_y: 80.0,
   drag_scale: 1.0,
+  stepper_count: 5.0,
+  stepper_gain: 0.0,
+  rating_val: 4.5,
+  steps_current: 1,
+  pagination_page: 1,
   knob_cutoff: 1200.0,
   knob_res: 25.0,
   knob_pan: 0.0,
@@ -162,6 +174,38 @@ let gallery_state : GalleryState = {
       ]),
     ),
   ),
+  node_items: [
+    @composite.NodeItem::new(
+      "audio_src",
+      "音频源 (Audio Source)",
+      @math.Vec2::new(30.0, 40.0),
+      outputs=[@composite.NodePort::output("out_wav", "PCM Wave")],
+      accent_color=@color.Color::accent_primary(),
+    ),
+    @composite.NodeItem::new(
+      "dsp_filter",
+      "低通滤波 (LowPass DSP)",
+      @math.Vec2::new(240.0, 40.0),
+      inputs=[@composite.NodePort::input("in_audio", "Input")],
+      outputs=[@composite.NodePort::output("out_filtered", "Filtered")],
+      accent_color=@color.Color::success(),
+    ),
+    @composite.NodeItem::new(
+      "sink_out",
+      "扬声器输出 (Audio Sink)",
+      @math.Vec2::new(450.0, 70.0),
+      inputs=[@composite.NodePort::input("in_sink", "Left / Right")],
+      accent_color=@color.Color::warning(),
+    ),
+  ],
+  node_conns: [
+    @composite.NodeConnection::new(
+      "audio_src", "out_wav", "dsp_filter", "in_audio",
+    ),
+    @composite.NodeConnection::new(
+      "dsp_filter", "out_filtered", "sink_out", "in_sink",
+    ),
+  ],
 }
 
 ///|
@@ -205,6 +249,8 @@ fn draw_component_preview(
     "radio" => draw_radio_showcase(ui)
     "slider" => draw_slider_showcase(ui)
     "drag_value" => draw_drag_value_showcase(ui)
+    "stepper" => draw_stepper_showcase(ui)
+    "rating" => draw_rating_showcase(ui)
     "knob" => draw_knob_showcase(ui)
     "fader" => draw_fader_showcase(ui)
     "combo_box" => draw_combo_box_showcase(ui)
@@ -218,6 +264,8 @@ fn draw_component_preview(
 
     // Containers & Layout (gallery_nav_stages.mbt & gallery_container_stages.mbt & gallery_data_stages.mbt)
     "tab_bar" => draw_tab_bar_showcase(ui)
+    "steps" => draw_steps_showcase(ui)
+    "pagination" => draw_pagination_showcase(ui)
     "menu_bar" => draw_menu_bar_showcase(ui)
     "scroll_area" => draw_scroll_area_showcase(ui)
     "window" => draw_window_showcase(ui, cur_w, cur_h)
@@ -232,6 +280,7 @@ fn draw_component_preview(
     "sparkline" => draw_sparkline_showcase(ui)
     "plot" => draw_plot_showcase(ui)
     "bar_chart" => draw_bar_chart_showcase(ui)
+    "node_editor" => draw_node_editor_showcase(ui)
     "segmented_control" => draw_segmented_control_showcase(ui)
     "badge" => draw_badge_showcase(ui)
     "breadcrumb" => draw_breadcrumb_showcase(ui)

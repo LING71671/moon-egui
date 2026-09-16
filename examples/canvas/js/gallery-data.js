@@ -256,6 +256,50 @@ pub fn draw_drag_values(ui : @core.UIContext, state : AppState) -> Unit {
 }`
     }
   },
+  stepper: {
+    titleKey: 'comp.stepper.title',
+    signature: "@widgets.stepper(ui, id_salt, value, step~, min~, max~, precision~, prefix~, suffix~, width~) -> (Double, Response)",
+    code: {
+      zh: `///|
+pub fn draw_stepper_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  // 1. 整数步进计数器
+  let (count, _) = @widgets.stepper(ui, "item_count", state.count, step=1.0, min=0.0, max=100.0, precision=0, suffix=" 项")
+
+  // 2. 浮点增益微调 (支持 Shift ×10, Ctrl ×0.1 加速)
+  let (gain, _) = @widgets.stepper(ui, "gain_adj", state.gain, step=0.5, min=-24.0, max=24.0, precision=1, prefix="Gain: ", suffix=" dB")
+}`,
+      en: `///|
+pub fn draw_stepper_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  // 1. Integer Stepper Counter
+  let (count, _) = @widgets.stepper(ui, "item_count", state.count, step=1.0, min=0.0, max=100.0, precision=0, suffix=" items")
+
+  // 2. Float Gain Adjustment (Supports Shift x10, Ctrl x0.1 modifiers)
+  let (gain, _) = @widgets.stepper(ui, "gain_adj", state.gain, step=0.5, min=-24.0, max=24.0, precision=1, prefix="Gain: ", suffix=" dB")
+}`
+    }
+  },
+  rating: {
+    titleKey: 'comp.rating.title',
+    signature: "@widgets.rating(ui, id_salt, value, max_stars~, allow_half~, read_only~, star_size~, spacing~) -> (Double, Response)",
+    code: {
+      zh: `///|
+pub fn draw_rating_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  // 1. 交互式评级 (支持 0.5 半星与实时悬停预览)
+  let (score, _) = @widgets.rating(ui, "app_rating", state.rating, max_stars=5, allow_half=true, star_size=24.0)
+
+  // 2. 只读展示模式
+  let _ = @widgets.rating(ui, "static_rating", 4.5, read_only=true)
+}`,
+      en: `///|
+pub fn draw_rating_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  // 1. Interactive Rating (Supports 0.5 half-star and live hover preview)
+  let (score, _) = @widgets.rating(ui, "app_rating", state.rating, max_stars=5, allow_half=true, star_size=24.0)
+
+  // 2. Read-Only Display Mode
+  let _ = @widgets.rating(ui, "static_rating", 4.5, read_only=true)
+}`
+    }
+  },
   knob: {
     titleKey: 'comp.knob.title',
     signature: "@composite.knob(ui, id, label, value, min_val~, max_val~, step~, default_val~, unit~, radius~, bipolar~) -> (Double, Response)",
@@ -547,6 +591,68 @@ pub fn draw_tabs(ui : @core.UIContext, state : AppState) -> Unit {
   if res.changed {
     state.tab_idx = active_tab
   }
+}`
+    }
+  },
+  steps: {
+    titleKey: 'comp.steps.title',
+    signature: "@widgets.steps(ui, id_salt, current, items, clickable~, width~) -> (Int, Response)",
+    code: {
+      zh: `///|
+pub fn draw_pipeline_steps(ui : @core.UIContext, state : AppState) -> Unit {
+  let items = [
+    @widgets.StepItem::new("账号认证", description="企业凭证校验"),
+    @widgets.StepItem::new("资源配额", description="选择算力节点"),
+    @widgets.StepItem::new("编译发布", description="构建 Wasm 产物"),
+    @widgets.StepItem::new("运行上线", description="服务健康检查"),
+  ]
+  let (cur, _) = @widgets.steps(ui, "deploy_steps", state.step, items)
+  state.step = cur
+}`,
+      en: `///|
+pub fn draw_pipeline_steps(ui : @core.UIContext, state : AppState) -> Unit {
+  let items = [
+    @widgets.StepItem::new("Auth", description="Credentials check"),
+    @widgets.StepItem::new("Quota", description="Select worker node"),
+    @widgets.StepItem::new("Build", description="Compile Wasm bundle"),
+    @widgets.StepItem::new("Deploy", description="Health check passed"),
+  ]
+  let (cur, _) = @widgets.steps(ui, "deploy_steps", state.step, items)
+  state.step = cur
+}`
+    }
+  },
+  pagination: {
+    titleKey: 'comp.pagination.title',
+    signature: "@widgets.pagination(ui, id_salt, current_page, total_pages, item_size?~, spacing?~, show_prev_next?~) -> (Int, Response)",
+    code: {
+      zh: `///|
+pub fn draw_pagination_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  // 1. 基础函数调用式分页条
+  let (page, _) = @widgets.pagination(ui, "data_pages", state.current_page, 20)
+  state.current_page = page
+
+  // 2. Ref 双向绑定与流式构建器
+  let page_ref = Ref(state.current_page)
+  let _ = ui.add(
+    @widgets.Pagination::from_ref("fluent_pages", page_ref, 20)
+      .item_size(32.0)
+      .spacing(4.0)
+  )
+}`,
+      en: `///|
+pub fn draw_pagination_demo(ui : @core.UIContext, state : AppState) -> Unit {
+  // 1. Functional pagination helper
+  let (page, _) = @widgets.pagination(ui, "data_pages", state.current_page, 20)
+  state.current_page = page
+
+  // 2. Ref-bound fluent builder
+  let page_ref = Ref(state.current_page)
+  let _ = ui.add(
+    @widgets.Pagination::from_ref("fluent_pages", page_ref, 20)
+      .item_size(32.0)
+      .spacing(4.0)
+  )
 }`
     }
   },
@@ -969,6 +1075,50 @@ pub fn draw_workbench(ui : @core.UIContext, state : AppState) -> Unit {
       pane_ui.label("Active Dock Panel: \{tab_id}")
     },
   )
+}`
+    }
+  },
+  node_editor: {
+    titleKey: 'comp.node_editor.title',
+    signature: "@composite.node_editor(ui, id_salt, size, nodes, connections, custom_style?~) -> NodeEditorResponse",
+    code: {
+      zh: `///|
+pub fn draw_node_graph(ui : @core.UIContext, state : AppState) -> Unit {
+  // 定义节点与输出/输入端口
+  let nodes = [
+    @composite.NodeItem::new("src", "音频发生器", @math.Vec2::new(30.0, 40.0), outputs=[@composite.NodePort::output("out", "Waveform")]),
+    @composite.NodeItem::new("dsp", "低通滤波器", @math.Vec2::new(240.0, 40.0), inputs=[@composite.NodePort::input("in", "Input")], outputs=[@composite.NodePort::output("out", "Filtered")]),
+    @composite.NodeItem::new("sink", "扬声器输出", @math.Vec2::new(450.0, 70.0), inputs=[@composite.NodePort::input("in", "Speakers")]),
+  ]
+  let conns = [
+    @composite.NodeConnection::new("src", "out", "dsp", "in"),
+    @composite.NodeConnection::new("dsp", "out", "sink", "in"),
+  ]
+
+  // 即时模式调用拓扑连线编辑器，支持节点拖拽排布、端口交互拉线与三次贝塞尔自适应导线
+  let resp = @composite.node_editor(ui, "audio_graph", @math.Vec2::new(600.0, 320.0), nodes, conns)
+  if resp.new_connection is Some(new_conn) {
+    state.connections.push(new_conn)
+  }
+}`,
+      en: `///|
+pub fn draw_node_graph(ui : @core.UIContext, state : AppState) -> Unit {
+  // Define node cards with input and output ports
+  let nodes = [
+    @composite.NodeItem::new("src", "Audio Source", @math.Vec2::new(30.0, 40.0), outputs=[@composite.NodePort::output("out", "Waveform")]),
+    @composite.NodeItem::new("dsp", "LowPass DSP", @math.Vec2::new(240.0, 40.0), inputs=[@composite.NodePort::input("in", "Input")], outputs=[@composite.NodePort::output("out", "Filtered")]),
+    @composite.NodeItem::new("sink", "Speaker Sink", @math.Vec2::new(450.0, 70.0), inputs=[@composite.NodePort::input("in", "Speakers")]),
+  ]
+  let conns = [
+    @composite.NodeConnection::new("src", "out", "dsp", "in"),
+    @composite.NodeConnection::new("dsp", "out", "sink", "in"),
+  ]
+
+  // Immediate-mode node graph editor with card dragging, port linking, and cubic Bezier wires
+  let resp = @composite.node_editor(ui, "audio_graph", @math.Vec2::new(600.0, 320.0), nodes, conns)
+  if resp.new_connection is Some(new_conn) {
+    state.connections.push(new_conn)
+  }
 }`
     }
   },

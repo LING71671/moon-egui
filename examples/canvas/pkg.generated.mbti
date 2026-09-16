@@ -118,6 +118,11 @@ pub struct GalleryState {
   mut drag_x : Double
   mut drag_y : Double
   mut drag_scale : Double
+  mut stepper_count : Double
+  mut stepper_gain : Double
+  mut rating_val : Double
+  mut steps_current : Int
+  mut pagination_page : Int
   mut knob_cutoff : Double
   mut knob_res : Double
   mut knob_pan : Double
@@ -160,6 +165,8 @@ pub struct GalleryState {
   mut breadcrumb_last_clicked : String
   mut rich_text_last_url : String
   mut dock_tree : @composite.DockTree
+  node_items : Array[@composite.NodeItem]
+  node_conns : Array[@composite.NodeConnection]
 }
 
 type MineChunk

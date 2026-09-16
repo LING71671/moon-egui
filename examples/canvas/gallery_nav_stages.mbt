@@ -215,3 +215,155 @@ fn draw_breadcrumb_showcase(ui : @core.UIContext) -> Unit {
     "最后点击节点: " + gallery_state.breadcrumb_last_clicked,
   )
 }
+
+///|
+fn draw_steps_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "任务流步骤导航条 (Steps & Timeline)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "提供节点状态自动推导、导轨连线、节点图标、点击切换以及键盘左右方向键流转支持。",
+  )
+  ui.spacer(14.0)
+
+  let _ = ui.label("1. 任务向导步骤流 (支持点击与左右键切换):")
+  ui.spacer(8.0)
+
+  let items1 = [
+    @widgets.StepItem::new("1. 账号认证", description="企业凭证校验"),
+    @widgets.StepItem::new("2. 资源配额", description="选择算力节点"),
+    @widgets.StepItem::new("3. 编译发布", description="构建 Wasm 产物"),
+    @widgets.StepItem::new("4. 运行上线", description="服务健康检查"),
+  ]
+
+  let (idx1, _) = @widgets.steps(
+    ui,
+    "gallery_steps_wizard",
+    gallery_state.steps_current,
+    items1,
+    width=560.0,
+  )
+  if idx1 != gallery_state.steps_current {
+    gallery_state.steps_current = idx1
+    gallery_state.status_text = "Step switched to: " + items1[idx1].title
+  }
+
+  ui.spacer(16.0)
+  ui.horizontal(fn(row) {
+    if @widgets.button_sized(row, "上一步", @math.Vec2::new(80.0, 26.0)).clicked {
+      if gallery_state.steps_current > 0 {
+        gallery_state.steps_current = gallery_state.steps_current - 1
+        gallery_state.status_text = "Prev step: " +
+          items1[gallery_state.steps_current].title
+      }
+    }
+    row.spacer(10.0)
+    if @widgets.button_primary_sized(
+        row,
+        "下一步",
+        @math.Vec2::new(80.0, 26.0),
+      ).clicked {
+      if gallery_state.steps_current < items1.length() - 1 {
+        gallery_state.steps_current = gallery_state.steps_current + 1
+        gallery_state.status_text = "Next step: " +
+          items1[gallery_state.steps_current].title
+      }
+    }
+  })
+
+  ui.spacer(18.0)
+  let _ = ui.label("2. 显式状态节点 (Explicit Status with Error):")
+  ui.spacer(8.0)
+
+  let items2 = [
+    @widgets.StepItem::with_status("代码扫描", @widgets.StepStatus::Finish),
+    @widgets.StepItem::with_status("单元测试", @widgets.StepStatus::Finish),
+    @widgets.StepItem::with_status(
+      "安全审计",
+      @widgets.StepStatus::Error,
+      description="存在潜在依赖告警",
+    ),
+    @widgets.StepItem::with_status("镜像打包", @widgets.StepStatus::Wait),
+  ]
+  let _ = @widgets.steps(
+    ui,
+    "gallery_steps_explicit",
+    2,
+    items2,
+    clickable=false,
+    width=560.0,
+  )
+}
+
+///|
+fn draw_pagination_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "数据分页控件 (Pagination)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "支持智能折叠省略号、前驱/后继步进翻页、全键盘方向键无障碍操作与双向状态绑定。",
+  )
+  ui.spacer(14.0)
+
+  let _ = ui.label("1. 基础分页条 (Basic Pagination · 10 页):")
+  ui.spacer(8.0)
+
+  let (p1, _) = @widgets.pagination(
+    ui,
+    "gal_pg_basic",
+    gallery_state.pagination_page,
+    10,
+  )
+  if p1 != gallery_state.pagination_page {
+    gallery_state.pagination_page = p1
+    gallery_state.status_text = "Page switched to: " + p1.to_string()
+  }
+
+  ui.spacer(10.0)
+  ui.horizontal(fn(row) {
+    let _ = row.label(
+      "当前选中页码: " +
+      gallery_state.pagination_page.to_string() +
+      " / 10",
+    )
+    row.spacer(16.0)
+    if @widgets.button_sized(row, "首页", @math.Vec2::new(56.0, 24.0)).clicked {
+      gallery_state.pagination_page = 1
+      gallery_state.status_text = "Jump to page 1"
+    }
+    row.spacer(6.0)
+    if @widgets.button_sized(row, "末页", @math.Vec2::new(56.0, 24.0)).clicked {
+      gallery_state.pagination_page = 10
+      gallery_state.status_text = "Jump to page 10"
+    }
+  })
+
+  ui.spacer(20.0)
+  ui.separator()
+  ui.spacer(14.0)
+
+  let _ = ui.label(
+    "2. 多页智能折叠省略号 (Intelligent Ellipsis · 25 页):",
+  )
+  ui.spacer(8.0)
+
+  let pg_ref = Ref(gallery_state.pagination_page)
+  let _ = ui.add(
+    @widgets.Pagination::from_ref("gal_pg_multi", pg_ref, 25)
+    .item_size(30.0)
+    .spacing(4.0),
+  )
+  if pg_ref.val != gallery_state.pagination_page {
+    gallery_state.pagination_page = pg_ref.val
+    gallery_state.status_text = "Page switched to: " + pg_ref.val.to_string()
+  }
+
+  ui.spacer(14.0)
+  let _ = ui.label(
+    "提示：支持 Tab 聚焦后使用 ArrowLeft / ArrowRight / Home / End 键盘无障碍导航。",
+  )
+}
