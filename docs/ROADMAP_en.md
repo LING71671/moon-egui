@@ -57,9 +57,9 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 * **Deliverables**:
   - [x] **Nested Draggable Splitter (`SplitPane` / `splitter.mbt`)** [Delivered]: Horizontal and vertical viewport splits with ratio preservation and minimum dimension guards;
   - [x] **Multi-Window Docking & Snapping System (`DockArea` / `dock.mbt`)** [Delivered]: Hierarchical DockTree workspace partitioning with draggable splitters, tab switching/closing, and Scissor clipping;
-  - [ ] **Damped Momentum Physics (`Spring Physics`)**: Controlled physical spring-damper easing for window dragging and scrolling.
+  - [x] **Damped Momentum Physics (`Spring Physics` / `spring.mbt`)** [Delivered]: Controlled physical spring-damper easing for window dragging and scrolling with equilibrium detection;
 * **Acceptance Criteria**:
-  - Windows snap cleanly into tiled docks and split panes preserve proportional layouts across window resizing (211/211 tests passing).
+  - Windows snap cleanly into tiled docks and split panes preserve proportional layouts across window resizing (327/327 tests passing).
 
 ---
 
@@ -68,9 +68,10 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 * **Objective**: Validate immediate-mode performance under heavy data volume and topological graph structures.
 * **Deliverables**:
   - [x] **Virtualized Data Table (`VirtualTable` / `Table`)** [Delivered]: Viewport-culled rasterization processing tens of thousands of rows with column resizing and sorting;
+  - [x] **1D Virtualized List Container (`VirtualList` / `virtual_list.mbt`)** [Delivered]: Dynamic visible window index slicing with overscan buffer for high-cardinality lists;
   - [x] **Node-Based Blueprint Editor Prototype (`NodeEditor`)** [Delivered]: Infinite canvas, node dragging, port connection validation, and smooth cubic Bezier link splines;
   - [x] **Engineering Plotting Suite (`Plot` / `Sparkline`)** [Delivered]: Multi-series plotting (Line, Scatter, Area) and bar charts (`BarChart`) with adaptive grid lines, numeric tick labels, crosshairs, and data hover tooltips;
-  - [ ] **Vector SVG Exporter (`SvgExporter`)**: Export active frame command streams into clean, standard `.svg` vector files.
+  - [x] **Vector SVG Exporter (`SvgExporter` / `svg_exporter.mbt`)** [Delivered]: Lossless serialization of active frame draw command streams into clean, standard `.svg` vector files.
 * **Acceptance Criteria**:
   - Sustained 60 FPS under large data sets and multi-node connection graphs with stable memory footprints.
 
@@ -78,24 +79,24 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 
 ### Milestone 8: Hardware-Accelerated Rendering & Production Scenarios (Sep 22 – Sep 24)
 
-* **Objective**: Explore hardware acceleration feasibility and provide real-world reference application shells.
+* **Objective**: Explore hardware acceleration feasibility and provide production-grade reference applications.
 * **Deliverables**:
-  - [ ] **WebGL 2.0 Batched Geometry Pipeline**: Prototype assembling vertex and index buffers in Wasm to batch UI primitives into single GPU draw calls;
-  - [x] **Reference Application Showcase (Deployed to Gallery)**:
-    - CAD mechanical vector workbench (rulers, snapping, inspector) [Delivered];
-    - Standalone Native Desktop Application (MoonLens tabular data & distribution explorer, 286 KB single binary, 50k+ rows benchmark) [Delivered];
-    - Minesweeper streaming field demonstration [Delivered];
-    - Lightweight online code workstation shell.
+  - [ ] **WebGL 2.0 Batched Rendering Backend**: Investigate contiguous vertex/index buffer organization in Wasm memory for unified batched draw dispatch;
+  - [x] **Showcase Reference Applications (Live in Gallery)**:
+    - Interactive 2D CAD Vector Drafting Workbench (ruler metrics, magnetic snapping, inspector) [Delivered];
+    - High-Performance Native Standalone Desktop Tool (MoonLens dataset explorer, 286 KB single file, 50k+ rows) [Delivered];
+    - 1,000,000-Cell Streaming Minesweeper Engine [Delivered];
+    - Lightweight Online Code Workspace Prototype.
 * **Acceptance Criteria**:
-  - All reference demos run smoothly on the interactive showcase gallery with clear architectural patterns.
+  - Reference applications run smoothly in the gallery showcase with idiomatic, decoupled component architectures.
 
 ---
 
-### Milestone 9: Verification, Benchmarking & Official Release (Sep 25)
+### Milestone 9: Quality Engineering, Benchmarking & Stable Releases (Sep 25)
 
-* **Objective**: Ensure industrial code reliability, freeze API contracts, and finalize project deliverables.
+* **Objective**: Enforce strict engineering standards to ensure library reliability and deliver tagged milestones.
 * **Deliverables**:
-  - [x] **Expanded Test Suite** [Delivered]: Reach 311 automated whitebox and blackbox test cases (100% passing rate);
+  - [x] **Automated Test Suite Expansion** [Delivered]: 327/327 whitebox and blackbox headless test cases passing (100% pass rate);
   - [x] **Large-Scale Performance Benchmark Suite** [Delivered]: 50,000-row stress testing verifying sub-millisecond viewport slicing and in-place sorting;
   - [x] **Interface Stabilization**: Run `moon info && moon fmt`, freeze `.mbti` signatures, and finalize bilingual documentation;
   - [x] **Release Packaging** [Delivered]: Tag and publish the `v0.4.0` release (delivering Stepper, Rating, Steps, Pagination, and NodeEditor blueprint flow editor).

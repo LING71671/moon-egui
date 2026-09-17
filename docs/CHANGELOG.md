@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Added
+- **Harmonic Spring Physics Model (`src/math/spring.mbt`)**:
+  - Implemented 1D `Spring` and 2D `Spring2D` physical oscillation solvers supporting mass, stiffness, and damping parameters.
+  - Sub-step numerical integration with equilibrium detection (`is_settled`) and presets (`default_spring`, `stiff`, `gentle`, `bouncy`).
+- **Vector SVG Exporter (`src/draw/svg_exporter.mbt`)**:
+  - Implemented `SvgExporter` and `DrawList::to_svg` for lossless serialization of draw command streams (rects, circles, lines, text with XML escaping, linear gradients, and scoped `<clipPath>` hierarchies).
+- **Core Floating Tooltip Component (`src/widgets/tooltip.mbt`)**:
+  - Standalone `Tooltip` widget rendering into the foreground overlay pass with ambient drop shadow, semantic background, and subtle border.
+  - Supports cardinal placements (`Top`, `Bottom`, `Left`, `Right`) with viewport boundary clamping and persistent hover delay counter.
+  - Added fluent `on_hover_text` response helper and semantic palette tokens `Color::tooltip_bg()` and `Color::tooltip_border()`.
+- **1D Virtualized List Container (`src/widgets/virtual_list.mbt`)**:
+  - `VirtualList` container computing visible index windows (`first_visible..=last_visible`) and overscan buffers, executing item renderers exclusively for visible rows.
+  - Integrated mouse wheel scrolling and interactive proportional scrollbar indicator.
+- **Automated Tests**:
+  - Added 16 new whitebox test cases across `spring_wbtest.mbt`, `svg_exporter_wbtest.mbt`, `tooltip_wbtest.mbt`, and `virtual_list_wbtest.mbt`.
+  - Expanded total automated tests from 311 to **327 tests with 100% pass rate**.
+
 ## [0.4.0] - 2026-09-16
 
 ### Added

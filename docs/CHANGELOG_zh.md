@@ -9,6 +9,25 @@
 
 ---
 
+## [Unreleased]
+
+### 新增功能与优化
+- **谐波弹簧物理动力学模型 (`src/math/spring.mbt`)**：
+  - 实现一维 `Spring` 与二维 `Spring2D` 物理简谐振荡器，支持质量、刚度与阻尼系数调节。
+  - 基于半隐式欧拉子步数值积分，具备平衡静止检测（`is_settled`）与常用预设（`default_spring`, `stiff`, `gentle`, `bouncy`）。
+- **几何矢量 SVG 导出器 (`src/draw/svg_exporter.mbt`)**：
+  - 实现 `SvgExporter` 与 `DrawList::to_svg`，支持将图元序列（矩形、描边、圆、文字、折线、渐变与 `<clipPath>` 裁剪栈）无损导出为标准 `.svg` 矢量文件。
+- **核心浮层提示气泡控件 (`src/widgets/tooltip.mbt`)**：
+  - 独立 `Tooltip` 控件，通过前景层渲染，具备环境软阴影、语义背景色与外轮廓。
+  - 支持四向停靠（`Top`, `Bottom`, `Left`, `Right`）、视口边界防溢出翻转与悬停延迟计数器。
+  - 提供 `on_hover_text` 响应扩展函数与语义调色板色标 `Color::tooltip_bg()`、`Color::tooltip_border()`。
+- **一维数据虚拟化列表容器 (`src/widgets/virtual_list.mbt`)**：
+  - `VirtualList` 容器根据滚动偏移与视口高度仅计算并排版可视窗口区间（`first_visible..=last_visible`）及缓冲区，大幅优化海量行数据排版开销。
+  - 集成鼠标滚轮位移响应与按比例缩放的交互式滚动条指示器。
+- **自动化测试扩充**：
+  - 新增 16 项白盒测试用例，覆盖物理模型、SVG 导出、气泡生命周期与虚拟列表切片。
+  - 全量自动化测试用例扩充至 **327 项，100% 验证通过**。
+
 ## [0.4.0] - 2026-09-16
 
 ### 新增功能与优化
