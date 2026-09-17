@@ -36,6 +36,8 @@ pub fn dialog(@core.UIContext, String, String, String, kind? : DialogKind, confi
 
 pub fn drag_value(@core.UIContext, String, Double, speed? : Double, min? : Double, max? : Double) -> (Double, @core.Response)
 
+pub fn on_hover_text(@core.Response, @core.UIContext, String, placement? : TooltipPlacement, delay_frames? : Int) -> @core.Response
+
 pub fn pagination(@core.UIContext, String, Int, Int, item_size? : Double, spacing? : Double, show_prev_next? : Bool) -> (Int, @core.Response)
 
 pub fn progress_bar(@core.UIContext, Double, text? : String) -> @core.Response
@@ -79,6 +81,8 @@ pub fn toast_stack(@core.UIContext, Array[Toast], anchor? : ToastAnchor, viewpor
 pub fn toggle(@core.UIContext, String, Bool) -> (Bool, @core.Response)
 
 pub fn tooltip(@core.UIContext, String) -> Unit
+
+pub fn tooltip_for(@core.UIContext, String, @math.Rect, Bool, String, placement? : TooltipPlacement, delay_frames? : Int) -> Bool
 
 pub fn window(@core.UIContext, String, @math.Vec2, @math.Vec2, (@core.UIContext) -> Unit, id_salt? : String, constrain_to? : @math.Rect) -> @core.Response
 
@@ -492,9 +496,33 @@ pub impl @core.Widget for ToggleRef
 
 pub struct Tooltip {
   text : String
+  mut placement_val : TooltipPlacement
+  mut custom_style : TooltipStyle?
+  mut delay_frames_val : Int
 } derive(Eq, @debug.Debug)
+pub fn Tooltip::delay(Self, Int) -> Self
 pub fn Tooltip::new(String) -> Self
+pub fn Tooltip::placement(Self, TooltipPlacement) -> Self
 pub fn Tooltip::show(Self, @core.UIContext) -> Unit
+pub fn Tooltip::show_for(Self, @core.UIContext, @core.Id, @math.Rect, Bool) -> Bool
+pub fn Tooltip::style(Self, TooltipStyle) -> Self
+
+pub(all) enum TooltipPlacement {
+  Top
+  Bottom
+  Left
+  Right
+} derive(Eq, @debug.Debug)
+
+pub struct TooltipStyle {
+  padding_x : Double
+  padding_y : Double
+  corner_radius : Double
+  font_size : Double
+  offset : Double
+  delay_frames : Int
+} derive(Eq, @debug.Debug)
+pub fn TooltipStyle::default_for(@core.WidgetStyle) -> Self
 
 pub struct Window {
   title : String

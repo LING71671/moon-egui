@@ -24,13 +24,14 @@ test "tooltip: composites on the foreground layer and escapes clipping" {
   ctx.pop_clip()
   let dl = ctx.end_frame()
 
-  // 0..1 are the main layer clip pair, 2..4 the deferred tooltip bubble
-  assert_eq(dl.len(), 5)
+  // 0..1 are the main layer clip pair, 2..5 the deferred tooltip bubble with shadow
+  assert_eq(dl.len(), 6)
   assert_true(dl.get_command(0) is Some(@draw.DrawCmd::Clip(_)))
   assert_true(dl.get_command(1) is Some(@draw.DrawCmd::ResetClip))
   assert_true(dl.get_command(2) is Some(@draw.DrawCmd::Rect(_, _, _)))
-  assert_true(dl.get_command(3) is Some(@draw.DrawCmd::RectStroke(_, _, _, _)))
-  assert_true(dl.get_command(4) is Some(@draw.DrawCmd::Text(_)))
+  assert_true(dl.get_command(3) is Some(@draw.DrawCmd::Rect(_, _, _)))
+  assert_true(dl.get_command(4) is Some(@draw.DrawCmd::RectStroke(_, _, _, _)))
+  assert_true(dl.get_command(5) is Some(@draw.DrawCmd::Text(_)))
 
   // The main layer's clip stack is restored after the foreground pass
   assert_true(ctx.current_clip() is None)
