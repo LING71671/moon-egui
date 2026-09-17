@@ -44,6 +44,15 @@ pub fn DrawList::new() -> Self
 pub fn DrawList::pop_clip(Self) -> Unit
 pub fn DrawList::push(Self, DrawCmd) -> Unit
 pub fn DrawList::push_clip(Self, @math.Rect) -> Unit
+pub fn DrawList::to_svg(Self, Double, Double, background? : @color.Color) -> String
+
+pub struct SvgExporter {
+  width : Double
+  height : Double
+  background : @color.Color?
+} derive(Eq, @debug.Debug)
+pub fn SvgExporter::new(Double, Double, background? : @color.Color) -> Self
+pub fn SvgExporter::render_to_string(Self, DrawList) -> String
 
 // Type aliases
 
