@@ -34,6 +34,44 @@ pub fn Rect::shrink(Self, Double) -> Self
 pub fn Rect::size(Self) -> Vec2
 pub fn Rect::translate(Self, Vec2) -> Self
 
+pub struct Spring {
+  config : SpringConfig
+  mut current : Double
+  mut target : Double
+  mut velocity : Double
+} derive(Eq, @debug.Debug)
+pub fn Spring::is_settled(Self, tolerance? : Double, velocity_tolerance? : Double) -> Bool
+pub fn Spring::new(Double, config? : SpringConfig) -> Self
+pub fn Spring::reset(Self, Double) -> Unit
+pub fn Spring::set_target(Self, Double) -> Unit
+pub fn Spring::step(Self, Double) -> Unit
+pub fn Spring::target_value(Self) -> Double
+pub fn Spring::value(Self) -> Double
+pub fn Spring::velocity_value(Self) -> Double
+
+pub struct Spring2D {
+  x : Spring
+  y : Spring
+} derive(Eq, @debug.Debug)
+pub fn Spring2D::is_settled(Self, tolerance? : Double, velocity_tolerance? : Double) -> Bool
+pub fn Spring2D::new(Vec2, config? : SpringConfig) -> Self
+pub fn Spring2D::reset(Self, Vec2) -> Unit
+pub fn Spring2D::set_target(Self, Vec2) -> Unit
+pub fn Spring2D::step(Self, Double) -> Unit
+pub fn Spring2D::target_value(Self) -> Vec2
+pub fn Spring2D::value(Self) -> Vec2
+
+pub struct SpringConfig {
+  stiffness : Double
+  damping : Double
+  mass : Double
+} derive(Default, Eq, @debug.Debug)
+pub fn SpringConfig::bouncy() -> Self
+pub fn SpringConfig::default_spring() -> Self
+pub fn SpringConfig::gentle() -> Self
+pub fn SpringConfig::new(Double, Double, mass? : Double) -> Self
+pub fn SpringConfig::stiff() -> Self
+
 pub struct Vec2 {
   x : Double
   y : Double
