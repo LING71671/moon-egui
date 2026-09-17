@@ -431,3 +431,15 @@ pub fn Color::fader_tick() -> Color {
 pub fn Color::fader_cap_line() -> Color {
   Color::hex(0x2563EB)
 }
+
+///|
+/// Semantic background fill for tooltip floating overlays.
+pub fn Color::tooltip_bg() -> Color {
+  Color::hex(0x1A1B23)
+}
+
+///|
+/// Subtle boundary stroke for tooltip floating overlays.
+pub fn Color::tooltip_border() -> Color {
+  Color::rgba(255, 255, 255, 38)
+}

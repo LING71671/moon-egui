@@ -118,4 +118,12 @@ test "theme design tokens" {
   assert_eq(hover.b, 0xE1)
   assert_true(seam.r < ground.r && ground.r < hover.r)
   assert_true(hover.r < 0xFF)
+
+  let tip_bg = Color::tooltip_bg()
+  assert_eq(tip_bg.r, 0x1A)
+  assert_eq(tip_bg.g, 0x1B)
+  assert_eq(tip_bg.b, 0x23)
+
+  let tip_border = Color::tooltip_border()
+  assert_eq(tip_border.a, 38)
 }

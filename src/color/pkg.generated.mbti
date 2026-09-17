@@ -82,6 +82,8 @@ pub fn Color::text_muted() -> Self
 pub fn Color::text_primary() -> Self
 pub fn Color::text_secondary() -> Self
 pub fn Color::text_strong() -> Self
+pub fn Color::tooltip_bg() -> Self
+pub fn Color::tooltip_border() -> Self
 pub fn Color::transparent() -> Self
 pub fn Color::tree_row_selected() -> Self
 pub fn Color::warning() -> Self
