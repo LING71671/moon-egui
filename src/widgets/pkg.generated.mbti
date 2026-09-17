@@ -84,6 +84,8 @@ pub fn tooltip(@core.UIContext, String) -> Unit
 
 pub fn tooltip_for(@core.UIContext, String, @math.Rect, Bool, String, placement? : TooltipPlacement, delay_frames? : Int) -> Bool
 
+pub fn virtual_list(@core.UIContext, String, Int, Double, item_height? : Double, (Int, @math.Rect) -> Unit) -> VirtualListResponse
+
 pub fn window(@core.UIContext, String, @math.Vec2, @math.Vec2, (@core.UIContext) -> Unit, id_salt? : String, constrain_to? : @math.Rect) -> @core.Response
 
 // Errors
@@ -523,6 +525,28 @@ pub struct TooltipStyle {
   delay_frames : Int
 } derive(Eq, @debug.Debug)
 pub fn TooltipStyle::default_for(@core.WidgetStyle) -> Self
+
+pub struct VirtualList {
+  id_salt : String
+  total_items : Int
+  height : Double
+  mut width_val : Double?
+  mut item_height_val : Double
+  mut overscan_val : Int
+} derive(Eq, @debug.Debug)
+pub fn VirtualList::item_height(Self, Double) -> Self
+pub fn VirtualList::new(String, Int, Double) -> Self
+pub fn VirtualList::overscan(Self, Int) -> Self
+pub fn VirtualList::render(Self, @core.UIContext, (Int, @math.Rect) -> Unit) -> VirtualListResponse
+pub fn VirtualList::width(Self, Double) -> Self
+
+pub struct VirtualListResponse {
+  rect : @math.Rect
+  scroll_offset : Double
+  first_visible : Int
+  last_visible : Int
+  hovered : Bool
+} derive(Eq, @debug.Debug)
 
 pub struct Window {
   title : String
