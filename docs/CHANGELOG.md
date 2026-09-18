@@ -24,9 +24,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **1D Virtualized List Container (`src/widgets/virtual_list.mbt`)**:
   - `VirtualList` container computing visible index windows (`first_visible..=last_visible`) and overscan buffers, executing item renderers exclusively for visible rows.
   - Integrated mouse wheel scrolling and interactive proportional scrollbar indicator.
+- **WebGL 2.0 2D Mesh Tessellation & Vertex Buffer Pipeline (`src/draw/mesh.mbt`)**:
+  - Implemented `Vertex` (2D position `x, y`, UV coordinates `u, v`, and normalized RGBA `r, g, b, a`) and `Mesh` for hardware-accelerated batch rendering.
+  - 2D primitive triangulation routines: `tessellate_rect` (axis-aligned and rounded rectangles via corner fan arcs), `tessellate_circle`, and `tessellate_line` (perpendicular normal extrusion).
+  - Batch generator `DrawList::to_mesh()` and serialization helper `Mesh::write_vertex_floats` for zero-copy WebGL VBO uploads.
+- **Gallery Showcase Closures & Online Code Workspace Prototype (`examples/canvas/`)**:
+  - Integrated interactive gallery stages for `VirtualList` (10,000 items viewport slicing), `Spring Physics` (2D spring-damper tethered puck simulation), and `SvgExporter` (vector SVG serialization).
+  - Delivered `code_workspace.html` lightweight online code workspace prototype featuring multi-file explorer, code editor with syntax tokens and line numbers, live immediate-mode canvas viewport, resizable splitters, and interactive terminal.
 - **Automated Tests**:
-  - Added 16 new whitebox test cases across `spring_wbtest.mbt`, `svg_exporter_wbtest.mbt`, `tooltip_wbtest.mbt`, and `virtual_list_wbtest.mbt`.
-  - Expanded total automated tests from 311 to **327 tests with 100% pass rate**.
+  - Added 23 new whitebox test cases across `spring_wbtest.mbt`, `svg_exporter_wbtest.mbt`, `tooltip_wbtest.mbt`, `virtual_list_wbtest.mbt`, and `mesh_wbtest.mbt`.
+  - Expanded total automated tests from 311 to **334 tests with 100% pass rate**.
 
 ## [0.4.0] - 2026-09-16
 

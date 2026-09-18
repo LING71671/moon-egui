@@ -81,12 +81,12 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 
 * **Objective**: Explore hardware acceleration feasibility and provide production-grade reference applications.
 * **Deliverables**:
-  - [ ] **WebGL 2.0 Batched Rendering Backend**: Investigate contiguous vertex/index buffer organization in Wasm memory for unified batched draw dispatch;
+  - [x] **WebGL 2.0 Batched Rendering Backend (`src/draw/mesh.mbt`)** [Delivered]: Contiguous vertex/index buffer organization and 2D primitive triangulation (rects, circles, lines) in Wasm memory for unified batched draw dispatch;
   - [x] **Showcase Reference Applications (Live in Gallery)**:
     - Interactive 2D CAD Vector Drafting Workbench (ruler metrics, magnetic snapping, inspector) [Delivered];
     - High-Performance Native Standalone Desktop Tool (MoonLens dataset explorer, 286 KB single file, 50k+ rows) [Delivered];
     - 1,000,000-Cell Streaming Minesweeper Engine [Delivered];
-    - Lightweight Online Code Workspace Prototype.
+    - Lightweight Online Code Workspace Prototype (`code_workspace.html`, multi-file explorer, live code editor, canvas viewport, interactive terminal) [Delivered].
 * **Acceptance Criteria**:
   - Reference applications run smoothly in the gallery showcase with idiomatic, decoupled component architectures.
 
