@@ -167,6 +167,13 @@ pub struct GalleryState {
   mut dock_tree : @composite.DockTree
   node_items : Array[@composite.NodeItem]
   node_conns : Array[@composite.NodeConnection]
+  mut spring_puck_x : Double
+  mut spring_puck_y : Double
+  spring_model : @math.Spring2D
+  mut spring_stiffness : Double
+  mut spring_damping : Double
+  mut spring_dragging : Bool
+  mut svg_export_done : Bool
 }
 
 type MineChunk

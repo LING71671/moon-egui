@@ -78,6 +78,13 @@ pub struct GalleryState {
   mut dock_tree : @composite.DockTree
   node_items : Array[@composite.NodeItem]
   node_conns : Array[@composite.NodeConnection]
+  mut spring_puck_x : Double
+  mut spring_puck_y : Double
+  spring_model : @math.Spring2D
+  mut spring_stiffness : Double
+  mut spring_damping : Double
+  mut spring_dragging : Bool
+  mut svg_export_done : Bool
 }
 
 ///|
@@ -206,6 +213,13 @@ let gallery_state : GalleryState = {
       "dsp_filter", "out_filtered", "sink_out", "in_sink",
     ),
   ],
+  spring_puck_x: 200.0,
+  spring_puck_y: 120.0,
+  spring_model: @math.Spring2D::new(@math.Vec2::new(200.0, 120.0)),
+  spring_stiffness: 180.0,
+  spring_damping: 20.0,
+  spring_dragging: false,
+  svg_export_done: false,
 }
 
 ///|
@@ -286,6 +300,9 @@ fn draw_component_preview(
     "breadcrumb" => draw_breadcrumb_showcase(ui)
     "color_picker" => draw_color_picker_showcase(ui)
     "rich_text" => draw_rich_text_showcase(ui)
+    "virtual_list" => draw_virtual_list_showcase(ui, cur_w, cur_h)
+    "spring_physics" => draw_spring_physics_showcase(ui, cur_w, cur_h)
+    "svg_export" => draw_svg_export_showcase(ui)
     _ => {
       let _ = ui.label_colored(
         "MoonBit 原生组件: " + comp_id,

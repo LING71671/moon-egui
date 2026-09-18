@@ -170,57 +170,77 @@ fn draw_collapsing_header_showcase(ui : @core.UIContext) -> Unit {
 ///|
 fn draw_tooltip_showcase(ui : @core.UIContext) -> Unit {
   let _ = ui.label_colored(
-    "即时浮动微型提示气泡 (Tooltip Bubble)",
+    "即时浮动微型提示气泡套件 (Tooltip Suite)",
     @color.Color::accent_primary(),
   )
   ui.spacer(8.0)
   let _ = ui.label(
-    "将鼠标悬停在下方各控制按钮上查看即时气泡提示：",
+    "支持四向对齐（Top/Bottom/Left/Right）、视口边界自动反转与前景层 Scissor 逃逸：",
   )
-  ui.spacer(12.0)
+  ui.spacer(14.0)
 
   ui.horizontal(fn(row) {
-    let r1 = @widgets.button_sized(
+    let r_top = @widgets.button_sized(
       row,
-      "图元渲染统计",
-      @math.Vec2::new(110.0, 28.0),
+      "上方气泡 (Top)",
+      @math.Vec2::new(125.0, 30.0),
     )
-    if r1.hovered {
-      @widgets.tooltip(row, "当前视口活跃图元: 1,024 Rects, 32 Texts")
-    }
-
-    row.spacer(10.0)
-
-    let r2 = @widgets.button_sized(
+    let _ = @widgets.on_hover_text(
+      r_top,
       row,
-      "GC 运行状态",
-      @math.Vec2::new(110.0, 28.0),
+      "向顶部弹出的提示气泡 (TooltipPlacement::Top)",
+      placement=@widgets.TooltipPlacement::Top,
+      delay_frames=0,
     )
-    if r2.hovered {
-      @widgets.tooltip(
-        row, "MoonBit 自动内存管理正常，零垃圾回收卡顿",
-      )
-    }
 
-    row.spacer(10.0)
-
-    let r3 = @widgets.button_sized(
+    row.spacer(12.0)
+    let r_bottom = @widgets.button_sized(
       row,
-      "导出设计令牌",
-      @math.Vec2::new(110.0, 28.0),
+      "下方气泡 (Bottom)",
+      @math.Vec2::new(125.0, 30.0),
     )
-    if r3.hovered {
-      @widgets.tooltip(
-        row, "导出符合 Studio Light 规范的标准 Token JSON",
-      )
-    }
+    let _ = @widgets.on_hover_text(
+      r_bottom,
+      row,
+      "向底部弹出的提示气泡 (TooltipPlacement::Bottom)",
+      placement=@widgets.TooltipPlacement::Bottom,
+      delay_frames=0,
+    )
+
+    row.spacer(12.0)
+    let r_left = @widgets.button_sized(
+      row,
+      "左侧气泡 (Left)",
+      @math.Vec2::new(125.0, 30.0),
+    )
+    let _ = @widgets.on_hover_text(
+      r_left,
+      row,
+      "向左侧弹出的提示气泡 (TooltipPlacement::Left)",
+      placement=@widgets.TooltipPlacement::Left,
+      delay_frames=0,
+    )
+
+    row.spacer(12.0)
+    let r_right = @widgets.button_sized(
+      row,
+      "右侧气泡 (Right)",
+      @math.Vec2::new(125.0, 30.0),
+    )
+    let _ = @widgets.on_hover_text(
+      r_right,
+      row,
+      "向右侧弹出的提示气泡 (TooltipPlacement::Right)",
+      placement=@widgets.TooltipPlacement::Right,
+      delay_frames=0,
+    )
   })
 
-  ui.spacer(16.0)
+  ui.spacer(18.0)
   ui.separator()
   ui.spacer(8.0)
   let _ = ui.label(
-    "气泡在顶层前景渲染层自动绘制，带精准像素避让与轻量投影。",
+    "支持 .on_hover_text 链式扩展与 tooltip(ctx, text) 快捷入口，内置环境阴影与反色调色板高对比度保护。",
   )
 }
 

@@ -1422,4 +1422,112 @@ pub fn draw_rich_text(ui : @core.UIContext) -> Unit {
 }`
     }
   },
+  virtual_list: {
+    titleKey: 'comp.virtual_list.title',
+    signature: "@composite.virtual_list(ui, id, total_items, item_height, size, render_item) -> VirtualListResponse",
+    code: {
+      zh: `///|
+pub fn draw_virtual_list_sample(ui : @core.UIContext) -> Unit {
+  let total_count = 10000
+  let item_h = 32.0
+  let view_size = @math.Vec2::new(ui.available_width(), 240.0)
+
+  // 虚拟化列表切片渲染（仅绘制可见区间行，其余全部视口剔除）
+  let resp = @composite.virtual_list(
+    ui,
+    "user_data_list",
+    total_count,
+    item_h,
+    view_size,
+    fn(p, idx, rect) {
+      let is_even = idx % 2 == 0
+      let bg = if is_even { @color.Color::bg_surface() } else { @color.Color::bg_window() }
+      p.add_rect(rect, bg, 0.0)
+      p.add_text(
+        @math.Vec2::new(rect.x + 12.0, rect.y + 6.0),
+        "Item #" + idx.to_string(),
+        14.0,
+        @color.Color::text_body(),
+      )
+    },
+  )
+}`,
+      en: `///|
+pub fn draw_virtual_list_sample(ui : @core.UIContext) -> Unit {
+  let total_count = 10000
+  let item_h = 32.0
+  let view_size = @math.Vec2::new(ui.available_width(), 240.0)
+
+  // Virtualized list slicing: only visible rows are rendered with O(1) frame cost
+  let resp = @composite.virtual_list(
+    ui,
+    "user_data_list",
+    total_count,
+    item_h,
+    view_size,
+    fn(p, idx, rect) {
+      let is_even = idx % 2 == 0
+      let bg = if is_even { @color.Color::bg_surface() } else { @color.Color::bg_window() }
+      p.add_rect(rect, bg, 0.0)
+      p.add_text(
+        @math.Vec2::new(rect.x + 12.0, rect.y + 6.0),
+        "Item #" + idx.to_string(),
+        14.0,
+        @color.Color::text_body(),
+      )
+    },
+  )
+}`
+    }
+  },
+  spring_physics: {
+    titleKey: 'comp.spring_physics.title',
+    signature: "@math.Spring2D::new(initial_pos) -> Spring2D",
+    code: {
+      zh: `///|
+pub fn step_spring_motion(spring : @math.Spring2D, target : @math.Vec2, dt : Double) -> @math.Vec2 {
+  // 设置弹簧平衡点（二阶动力学方程 mẍ + cẋ + kx = 0）
+  spring.set_target(target)
+  spring.step(dt)
+  
+  // 检查是否已达到动力学平衡
+  if spring.is_settled() {
+    println("Spring motion settled at equilibrium point")
+  }
+  spring.value()
+}`,
+      en: `///|
+pub fn step_spring_motion(spring : @math.Spring2D, target : @math.Vec2, dt : Double) -> @math.Vec2 {
+  // Set spring equilibrium target (second-order ODE: mẍ + cẋ + kx = 0)
+  spring.set_target(target)
+  spring.step(dt)
+  
+  // Check if system has settled within tolerance
+  if spring.is_settled() {
+    println("Spring motion settled at equilibrium point")
+  }
+  spring.value()
+}`
+    }
+  },
+  svg_export: {
+    titleKey: 'comp.svg_export.title',
+    signature: "@draw.DrawList::to_svg(self, width, height) -> String",
+    code: {
+      zh: `///|
+pub fn export_frame_to_svg(draw_list : @draw.DrawList, w : Double, h : Double) -> String {
+  // 将即时模式图元指令序列无损导出为标准 SVG XML 矢量文本
+  let svg_xml = draw_list.to_svg(w, h)
+  println("SVG 矢量图序列化成功，字节数: \{svg_xml.length()}")
+  svg_xml
+}`,
+      en: `///|
+pub fn export_frame_to_svg(draw_list : @draw.DrawList, w : Double, h : Double) -> String {
+  // Losslessly export immediate-mode draw commands to standard SVG XML vector string
+  let svg_xml = draw_list.to_svg(w, h)
+  println("Exported SVG vector graphic, length: \{svg_xml.length()}")
+  svg_xml
+}`
+    }
+  },
 };

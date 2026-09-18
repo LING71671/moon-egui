@@ -362,3 +362,277 @@ fn draw_node_editor_showcase(ui : @core.UIContext) -> Unit {
     }
   })
 }
+
+///|
+fn draw_virtual_list_showcase(
+  ui : @core.UIContext,
+  _cur_w : Double,
+  _cur_h : Double,
+) -> Unit {
+  let _ = ui.label_colored(
+    "一维数据虚拟化列表 (VirtualList)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "仅计算并光栅化可见视口区间条目。当前数据池总计: 10,000 行，零垃圾回收卡顿。",
+  )
+  ui.spacer(10.0)
+
+  let resp = @widgets.virtual_list(
+    ui,
+    "gallery_vlist",
+    10000,
+    240.0,
+    item_height=28.0,
+    fn(idx, rect) {
+      let is_even = idx % 2 == 0
+      let bg = if is_even {
+        @color.Color::bg_surface()
+      } else {
+        @color.Color::bg_window()
+      }
+      let p = ui.painter()
+      p.add_rect(rect, bg, 0.0)
+      let text = "条目 #" +
+        idx.to_string() +
+        " - 虚拟视口切片行 (Zero-GC Virtual Row Record)"
+      p.add_text(
+        @math.Vec2::new(rect.x + 12.0, rect.y + 6.0),
+        text,
+        ui.style.font_small * ui.style.scale,
+        @color.Color::text_body(),
+      )
+    },
+  )
+
+  ui.spacer(10.0)
+  ui.separator()
+  ui.spacer(6.0)
+  let stats_text = "当前视口切片: 行 " +
+    resp.first_visible.to_string() +
+    " 至 行 " +
+    resp.last_visible.to_string() +
+    " | 滚动偏移: " +
+    resp.scroll_offset.to_int().to_string() +
+    " px"
+  let _ = ui.label(stats_text)
+}
+
+///|
+fn draw_spring_physics_showcase(
+  ui : @core.UIContext,
+  cur_w : Double,
+  _cur_h : Double,
+) -> Unit {
+  let _ = ui.label_colored(
+    "简谐物理弹簧与动力学衰减沙盒 (Spring Physics)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "基于二阶质点-弹簧-阻尼系统（mẍ + cẋ + kx = 0）。鼠标拖拽圆球并在任意位置松手：",
+  )
+  ui.spacer(10.0)
+
+  // Sliders for stiffness and damping
+  ui.horizontal(fn(row) {
+    let (stiff, _) = @widgets.slider(
+      row,
+      "刚度 (Stiffness)",
+      gallery_state.spring_stiffness,
+      40.0,
+      400.0,
+    )
+    gallery_state.spring_stiffness = stiff
+    row.spacer(16.0)
+    let (damp, _) = @widgets.slider(
+      row,
+      "阻尼比 (Damping)",
+      gallery_state.spring_damping,
+      2.0,
+      60.0,
+    )
+    gallery_state.spring_damping = damp
+  })
+
+  ui.spacer(12.0)
+
+  // Interactive 2D simulation canvas
+  let sim_w = if cur_w > 80.0 { cur_w - 60.0 } else { 300.0 }
+  let sim_h = 160.0
+  let (_id, sim_rect, _resp) = ui.allocate_space(@math.Vec2::new(sim_w, sim_h))
+
+  let p = ui.painter()
+  p.add_rect(sim_rect, @color.Color::bg_surface(), 6.0)
+  p.add_rect_stroke(sim_rect, @color.Color::border_default(), 1.0, 6.0)
+
+  // Origin target marker (center of canvas)
+  let center_pos = @math.Vec2::new(
+    sim_rect.x + sim_rect.w * 0.5,
+    sim_rect.y + sim_rect.h * 0.5,
+  )
+  p.add_circle(center_pos, 4.0, @color.Color::accent_primary())
+
+  let mouse_pos = ui.input.mouse_pos
+  let puck_r = 14.0
+  let current_puck = @math.Vec2::new(
+    gallery_state.spring_puck_x,
+    gallery_state.spring_puck_y,
+  )
+
+  // Hit test puck
+  let puck_hit_rect = @math.Rect::new(
+    current_puck.x - puck_r - 6.0,
+    current_puck.y - puck_r - 6.0,
+    (puck_r + 6.0) * 2.0,
+    (puck_r + 6.0) * 2.0,
+  )
+
+  if ui.is_hovered(puck_hit_rect) {
+    ui.set_cursor_icon("pointer")
+    if ui.input.mouse_pressed {
+      gallery_state.spring_dragging = true
+    }
+  }
+
+  if gallery_state.spring_dragging {
+    ui.set_cursor_icon("pointer")
+    gallery_state.spring_puck_x = mouse_pos.x
+    gallery_state.spring_puck_y = mouse_pos.y
+    gallery_state.spring_model.reset(mouse_pos)
+    if !ui.input.mouse_down {
+      gallery_state.spring_dragging = false
+      gallery_state.spring_model.set_target(center_pos)
+    }
+  } else {
+    // Advance spring physics
+    gallery_state.spring_model.set_target(center_pos)
+    gallery_state.spring_model.step(0.016)
+    let val = gallery_state.spring_model.value()
+    gallery_state.spring_puck_x = val.x
+    gallery_state.spring_puck_y = val.y
+  }
+
+  // Draw tether line
+  p.add_line(
+    center_pos,
+    @math.Vec2::new(gallery_state.spring_puck_x, gallery_state.spring_puck_y),
+    @color.Color::accent_soft(),
+    2.0,
+  )
+
+  // Draw puck with shadow and border
+  let puck_center = @math.Vec2::new(
+    gallery_state.spring_puck_x,
+    gallery_state.spring_puck_y,
+  )
+  p.add_circle(
+    @math.Vec2::new(puck_center.x, puck_center.y + 2.0),
+    puck_r,
+    @color.Color::shadow(),
+  )
+  let puck_color = if gallery_state.spring_dragging {
+    @color.Color::accent_hover()
+  } else {
+    @color.Color::accent_primary()
+  }
+  p.add_circle(puck_center, puck_r, puck_color)
+  p.add_circle_stroke(puck_center, puck_r, @color.Color::white(), 2.0)
+
+  ui.spacer(8.0)
+  let is_settled = gallery_state.spring_model.is_settled()
+  let settle_status = if is_settled {
+    "状态: 动能平衡已归位 (Settled at equilibrium point)"
+  } else {
+    "状态: 简谐振荡衰减中 (Oscillating with spring-damper physics)"
+  }
+  let _ = ui.label(settle_status)
+}
+
+///|
+fn draw_svg_export_showcase(ui : @core.UIContext) -> Unit {
+  let _ = ui.label_colored(
+    "几何矢量无损 SVG 导出器 (SvgExporter)",
+    @color.Color::accent_primary(),
+  )
+  ui.spacer(6.0)
+  let _ = ui.label(
+    "将即时模式图元指令序列无损序列化为标准 SVG 矢量 XML 文本：",
+  )
+  ui.spacer(12.0)
+
+  // Sample graphic card
+  let card_w = 320.0
+  let card_h = 90.0
+  let (_id, preview_rect, _resp) = ui.allocate_space(
+    @math.Vec2::new(card_w, card_h),
+  )
+  let p = ui.painter()
+  p.add_rect(preview_rect, @color.Color::bg_surface(), 8.0)
+  p.add_rect_stroke(preview_rect, @color.Color::border_default(), 1.0, 8.0)
+  p.add_circle(
+    @math.Vec2::new(preview_rect.x + 40.0, preview_rect.y + 45.0),
+    20.0,
+    @color.Color::accent_primary(),
+  )
+  p.add_line(
+    @math.Vec2::new(preview_rect.x + 80.0, preview_rect.y + 45.0),
+    @math.Vec2::new(preview_rect.x + 180.0, preview_rect.y + 45.0),
+    @color.Color::success(),
+    3.0,
+  )
+  p.add_text(
+    @math.Vec2::new(preview_rect.x + 200.0, preview_rect.y + 38.0),
+    "Vector SVG",
+    14.0,
+    @color.Color::text_primary(),
+  )
+
+  ui.spacer(14.0)
+
+  ui.horizontal(fn(row) {
+    if @widgets.button_primary(row, "生成当前图元 SVG 标记").clicked {
+      let sample_dl = @draw.DrawList::new()
+      sample_dl.add_rect(
+        @math.Rect::new(0.0, 0.0, card_w, card_h),
+        @color.Color::bg_surface(),
+        8.0,
+      )
+      sample_dl.add_rect_stroke(
+        @math.Rect::new(0.0, 0.0, card_w, card_h),
+        @color.Color::border_default(),
+        1.0,
+        8.0,
+      )
+      sample_dl.add_circle(
+        @math.Vec2::new(40.0, 45.0),
+        20.0,
+        @color.Color::accent_primary(),
+      )
+      sample_dl.add_line(
+        @math.Vec2::new(80.0, 45.0),
+        @math.Vec2::new(180.0, 45.0),
+        @color.Color::success(),
+        3.0,
+      )
+      sample_dl.add_text(
+        @math.Vec2::new(200.0, 38.0),
+        "Vector SVG",
+        14.0,
+        @color.Color::text_primary(),
+      )
+      let svg_str = sample_dl.to_svg(card_w, card_h)
+      gallery_state.code_buffer = svg_str
+      gallery_state.svg_export_done = true
+      gallery_state.status_text = "SVG 导出成功 (已载入代码对比栏)"
+    }
+  })
+
+  if gallery_state.svg_export_done {
+    ui.spacer(8.0)
+    let _ = ui.label(
+      "SVG 矢量标记已生成！请拖动中央滑块至右侧查看生成的源码。",
+    )
+  }
+}
