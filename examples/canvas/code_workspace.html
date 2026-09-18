@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="ws.title">moon-egui | 在线代码工作区</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="stylesheet" href="css/lang.css?v=20260918a">
+  <script src="js/i18n.js?v=20260918a"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-app: #0f172a;
+      --bg-panel: #1e293b;
+      --bg-surface: #1e293b;
+      --bg-active: #334155;
+      --bg-hover: #293548;
+      --bg-input: #0f172a;
+      --border: #334155;
+      --border-subtle: #1e293b;
+      --border-focus: #38bdf8;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; background: var(--bg-app); color: var(--text-main); font-family: var(--sans); }
+
+    .app-root {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+
+    /* Top Studio Menu & Control Bar */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 42px;
+      background: #090d16;
+      border-bottom: 1px solid var(--border);
+      padding: 0 12px;
+      font-size: 13px;
+      user-select: none;
+      z-index: 50;
+    }
+
+    .top-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .brand-logo {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+    }
+
+    .brand-version {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      background: var(--bg-active);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .menu-bar {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .menu-item {
+      position: relative;
+    }
+
+    .menu-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--sans);
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .menu-btn:hover, .menu-item.active .menu-btn {
+      color: var(--text-main);
+      background: var(--bg-hover);
+    }
+
+    .menu-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 180px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      padding: 4px;
+      z-index: 1000;
+    }
+
+    .menu-item:hover .menu-dropdown {
+      display: block;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      color: var(--text-main);
+      font-size: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .dropdown-item:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .dropdown-shortcut {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    .dropdown-sep {
+      height: 1px;
+      background: var(--border);
+      margin: 4px 0;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--bg-panel);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-action:hover {
+      background: var(--bg-hover);
+      border-color: var(--text-muted);
+    }
+
+    .btn-primary {
+      background: #0284c7;
+      border-color: #38bdf8;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: #0369a1;
+      border-color: #7dd3fc;
+    }
+
+    /* Main Workbench Body */
+    .workbench-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Activity Bar */
+    .activity-bar {
+      width: 48px;
+      background: #090d16;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 0;
+      gap: 16px;
+      user-select: none;
+      z-index: 20;
+    }
+
+    .activity-btn {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      color: var(--text-dim);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .activity-btn:hover {
+      color: var(--text-main);
+      background: var(--bg-hover);
+    }
+
+    .activity-btn.active {
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-left: 2px solid var(--accent);
+    }
+
+    /* Left Sidebar: File Tree */
+    .sidebar {
+      width: 240px;
+      min-width: 160px;
+      max-width: 480px;
+      background: #131b2e;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .sidebar-header {
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tree-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+      font-size: 12px;
+      font-family: var(--mono);
+    }
+
+    .tree-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: background 0.1s ease;
+    }
+
+    .tree-item:hover {
+      background: var(--bg-hover);
+      color: var(--text-main);
+    }
+
+    .tree-item.active {
+      background: var(--bg-active);
+      color: #38bdf8;
+      font-weight: 600;
+    }
+
+    .tree-indent {
+      padding-left: 28px;
+    }
+
+    .file-icon {
+      font-size: 13px;
+    }
+
+    /* Splitter Handles */
+    .splitter-h {
+      width: 5px;
+      cursor: col-resize;
+      background: transparent;
+      z-index: 30;
+      transition: background 0.2s;
+    }
+
+    .splitter-h:hover, .splitter-h.dragging {
+      background: var(--accent);
+    }
+
+    .splitter-v {
+      height: 5px;
+      cursor: row-resize;
+      background: transparent;
+      z-index: 30;
+      transition: background 0.2s;
+    }
+
+    .splitter-v:hover, .splitter-v.dragging {
+      background: var(--accent);
+    }
+
+    /* Main Workspace Workspace Column */
+    .main-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--bg-app);
+    }
+
+    /* Upper Workspace: Editor + Live Preview */
+    .upper-workspace {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Editor Container */
+    .editor-pane {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #0f172a;
+      overflow: hidden;
+      min-width: 280px;
+    }
+
+    .editor-tabs {
+      display: flex;
+      align-items: center;
+      height: 36px;
+      background: #0b1120;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      user-select: none;
+    }
+
+    .editor-tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 14px;
+      height: 100%;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      border-right: 1px solid var(--border);
+      background: #0b1120;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .editor-tab:hover {
+      color: var(--text-main);
+      background: #131b2e;
+    }
+
+    .editor-tab.active {
+      color: var(--text-main);
+      background: #0f172a;
+      border-top: 2px solid var(--accent);
+      font-weight: 600;
+    }
+
+    .tab-close {
+      font-size: 11px;
+      color: var(--text-dim);
+      border-radius: 50%;
+      padding: 1px 4px;
+    }
+
+    .tab-close:hover {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-main);
+    }
+
+    .breadcrumb-bar {
+      height: 26px;
+      background: #0f172a;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      font-size: 11px;
+      font-family: var(--mono);
+      color: var(--text-dim);
+      gap: 6px;
+    }
+
+    .breadcrumb-bar span.active {
+      color: var(--text-muted);
+    }
+
+    /* Editor Text Area & Line Numbers */
+    .editor-content-wrap {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      position: relative;
+      background: #0b1120;
+    }
+
+    .line-numbers {
+      width: 48px;
+      padding: 12px 0;
+      background: #080d19;
+      color: var(--text-dim);
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 20px;
+      text-align: right;
+      padding-right: 12px;
+      user-select: none;
+      border-right: 1px solid #1e293b;
+    }
+
+    .code-textarea {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      resize: none;
+      padding: 12px;
+      color: #e2e8f0;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 20px;
+      white-space: pre;
+      overflow: auto;
+      tab-size: 2;
+    }
+
+    /* Live Preview Pane */
+    .preview-pane {
+      width: 460px;
+      min-width: 320px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      border-left: 1px solid var(--border);
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 36px;
+      background: #f1f5f9;
+      border-bottom: 1px solid #cbd5e1;
+      padding: 0 12px;
+      font-size: 12px;
+      color: #0f172a;
+      user-select: none;
+    }
+
+    .preview-title {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: pulseLive 2s infinite;
+    }
+
+    @keyframes pulseLive {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    .preview-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .comp-select {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 11px;
+      color: #0f172a;
+      font-family: var(--sans);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .preview-canvas-container {
+      flex: 1;
+      position: relative;
+      background: #f8fafc;
+      overflow: hidden;
+    }
+
+    #workspace-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      outline: none;
+    }
+
+    /* Lower Workspace: Drawer & Terminal */
+    .drawer-pane {
+      height: 180px;
+      min-height: 80px;
+      max-height: 480px;
+      background: #090d16;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 32px;
+      background: #0b1120;
+      border-bottom: 1px solid var(--border);
+      padding: 0 12px;
+      user-select: none;
+    }
+
+    .drawer-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .drawer-tab {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 12px;
+      font-family: var(--sans);
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .drawer-tab:hover {
+      color: var(--text-main);
+    }
+
+    .drawer-tab.active {
+      color: var(--accent);
+      background: var(--accent-soft);
+      font-weight: 600;
+    }
+
+    .terminal-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .term-pill {
+      background: var(--bg-active);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+
+    .term-pill:hover {
+      color: var(--text-main);
+      background: var(--bg-hover);
+      border-color: var(--accent);
+    }
+
+    .terminal-body {
+      flex: 1;
+      padding: 10px 14px;
+      overflow-y: auto;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 18px;
+      color: #94a3b8;
+    }
+
+    .term-line {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 3px;
+    }
+
+    .term-success { color: #22c55e; }
+    .term-warn { color: #f59e0b; }
+    .term-info { color: #38bdf8; }
+    .term-dim { color: #64748b; }
+    .term-prompt { color: #a855f7; font-weight: 700; }
+
+    /* Bottom Status Bar */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 24px;
+      background: #0284c7;
+      color: #ffffff;
+      padding: 0 12px;
+      font-size: 11px;
+      font-family: var(--sans);
+      user-select: none;
+      z-index: 40;
+    }
+
+    .status-left, .status-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .status-item:hover {
+      opacity: 0.85;
+    }
+
+    /* Floating Toast */
+    .ws-toast {
+      position: fixed;
+      bottom: 36px;
+      right: 20px;
+      background: #1e293b;
+      border: 1px solid #38bdf8;
+      color: #f8fafc;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      display: none;
+      z-index: 1000;
+      animation: slideUp 0.2s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(12px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-root">
+    <!-- Top System Bar -->
+    <header class="top-bar">
+      <div class="top-left">
+        <a href="index.html" class="brand-group" title="返回官网主页">
+          <img src="assets/logo.png" alt="logo" class="brand-logo" />
+          <span>moon-egui</span>
+          <span class="brand-version">v0.4.0</span>
+        </a>
+
+        <div class="menu-bar">
+          <div class="menu-item">
+            <button class="menu-btn" data-i18n="ws.file">文件</button>
+            <div class="menu-dropdown">
+              <div class="dropdown-item" onclick="newFile()">新建文件<span class="dropdown-shortcut">⌘N</span></div>
+              <div class="dropdown-item" onclick="saveFile()">保存当前文件<span class="dropdown-shortcut">⌘S</span></div>
+              <div class="dropdown-sep"></div>
+              <div class="dropdown-item" onclick="exportSvgAction()">导出图元为 SVG<span class="dropdown-shortcut">⌥E</span></div>
+              <a href="gallery.html" class="dropdown-item" data-i18n="nav.gallery">组件展厅</a>
+            </div>
+          </div>
+          <div class="menu-item">
+            <button class="menu-btn" data-i18n="ws.edit">编辑</button>
+            <div class="menu-dropdown">
+              <div class="dropdown-item" onclick="formatCode()">格式化代码<span class="dropdown-shortcut">⌥⇧F</span></div>
+              <div class="dropdown-item" onclick="resetCode()">重置初始代码<span class="dropdown-shortcut">⌘Z</span></div>
+            </div>
+          </div>
+          <div class="menu-item">
+            <button class="menu-btn" data-i18n="ws.view">视图</button>
+            <div class="menu-dropdown">
+              <div class="dropdown-item" onclick="toggleSidebar()">切换侧边栏<span class="dropdown-shortcut">⌘B</span></div>
+              <div class="dropdown-item" onclick="toggleDrawer()">切换控制台<span class="dropdown-shortcut">⌘J</span></div>
+              <div class="dropdown-sep"></div>
+              <a href="benchmark.html" class="dropdown-item" data-i18n="nav.canvas">画板演示</a>
+              <a href="minesweeper.html" class="dropdown-item" data-i18n="nav.mines">扫雷</a>
+            </div>
+          </div>
+          <div class="menu-item">
+            <button class="menu-btn" data-i18n="ws.run">运行</button>
+            <div class="menu-dropdown">
+              <div class="dropdown-item" onclick="runCompile()">编译运行 (Run)<span class="dropdown-shortcut">⌘R</span></div>
+              <div class="dropdown-item" onclick="runTests()">运行全量测试套件<span class="dropdown-shortcut">⌘T</span></div>
+            </div>
+          </div>
+          <div class="menu-item">
+            <button class="menu-btn" data-i18n="ws.help">帮助</button>
+            <div class="menu-dropdown">
+              <a href="docs.html" class="dropdown-item" data-i18n="nav.docs">文档中心</a>
+              <a href="wiki.html" class="dropdown-item" data-i18n="nav.wiki">技术 Wiki</a>
+              <a href="https://github.com/ling71671/moon-egui" target="_blank" class="dropdown-item" data-i18n="nav.github">GitHub 源码</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="btn-action btn-primary" id="runBtn" onclick="runCompile()">
+          <span>▶</span>
+          <span data-i18n="ws.runBtn">编译运行 (⌘R)</span>
+        </button>
+        <button class="btn-action" onclick="formatCode()" data-i18n="ws.formatBtn">
+          格式化 (⌥⇧F)
+        </button>
+        <div data-lang-switch></div>
+      </div>
+    </header>
+
+    <!-- Main Studio Layout -->
+    <div class="workbench-body">
+      <!-- Activity Bar (VS Code style) -->
+      <aside class="activity-bar">
+        <button class="activity-btn active" title="资源管理器 (Explorer)">📁</button>
+        <button class="activity-btn" title="全局搜索 (Search)">🔍</button>
+        <button class="activity-btn" title="源码管理 (Git)">🌿</button>
+        <button class="activity-btn" title="运行与调试 (Debug)">⚙️</button>
+      </aside>
+
+      <!-- Sidebar: File Tree -->
+      <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <span data-i18n="ws.explorer">工程资源管理器</span>
+          <span>...</span>
+        </div>
+        <div class="tree-scroll" id="fileTree">
+          <div class="tree-item" style="font-weight:600; color:var(--text-main);">
+            <span>▾</span> <span>📦 moon-project</span>
+          </div>
+          <div class="tree-item tree-indent" style="font-weight:600;">
+            <span>▾</span> <span>📁 src</span>
+          </div>
+          <div class="tree-item tree-indent active" style="padding-left: 42px;" onclick="selectFile('main.mbt')">
+            <span class="file-icon">📄</span> <span>main.mbt</span>
+          </div>
+          <div class="tree-item tree-indent" style="padding-left: 42px;" onclick="selectFile('theme.mbt')">
+            <span class="file-icon">📄</span> <span>theme.mbt</span>
+          </div>
+          <div class="tree-item tree-indent" style="padding-left: 42px;" onclick="selectFile('widgets.mbt')">
+            <span class="file-icon">📄</span> <span>widgets.mbt</span>
+          </div>
+          <div class="tree-item tree-indent" style="padding-left: 42px;" onclick="selectFile('draw.mbt')">
+            <span class="file-icon">📄</span> <span>draw.mbt</span>
+          </div>
+          <div class="tree-item tree-indent" style="font-weight:600;">
+            <span>▾</span> <span>📁 tests</span>
+          </div>
+          <div class="tree-item tree-indent" style="padding-left: 42px;" onclick="selectFile('engine_test.mbt')">
+            <span class="file-icon">🧪</span> <span>engine_test.mbt</span>
+          </div>
+          <div class="tree-item tree-indent">
+            <span class="file-icon">⚙️</span> <span>moon.mod</span>
+          </div>
+          <div class="tree-item tree-indent">
+            <span class="file-icon">⚙️</span> <span>moon.pkg</span>
+          </div>
+          <div class="tree-item tree-indent">
+            <span class="file-icon">📝</span> <span>README.md</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resizable Splitter between Sidebar and Editor -->
+      <div class="splitter-h" id="splitSidebar"></div>
+
+      <!-- Main Column (Editor + Preview + Drawer) -->
+      <main class="main-column">
+        <!-- Upper Workspace: Editor + Live Preview -->
+        <div class="upper-workspace">
+          <!-- Editor Pane -->
+          <div class="editor-pane">
+            <div class="editor-tabs" id="editorTabs">
+              <div class="editor-tab active" id="tab-main" onclick="selectFile('main.mbt')">
+                <span>📄 main.mbt</span>
+                <span class="tab-close">✕</span>
+              </div>
+              <div class="editor-tab" id="tab-theme" onclick="selectFile('theme.mbt')">
+                <span>📄 theme.mbt</span>
+                <span class="tab-close">✕</span>
+              </div>
+              <div class="editor-tab" id="tab-widgets" onclick="selectFile('widgets.mbt')">
+                <span>📄 widgets.mbt</span>
+                <span class="tab-close">✕</span>
+              </div>
+            </div>
+
+            <div class="breadcrumb-bar">
+              <span>moon-project</span>
+              <span>›</span>
+              <span>src</span>
+              <span>›</span>
+              <span class="active" id="activeBreadcrumb">main.mbt</span>
+            </div>
+
+            <div class="editor-content-wrap">
+              <div class="line-numbers" id="lineNumbers"></div>
+              <textarea class="code-textarea" id="codeEditor" spellcheck="false"></textarea>
+            </div>
+          </div>
+
+          <!-- Resizable Splitter between Editor and Preview -->
+          <div class="splitter-h" id="splitPreview"></div>
+
+          <!-- Live Preview Pane -->
+          <div class="preview-pane" id="previewPane">
+            <div class="preview-header">
+              <div class="preview-title">
+                <span class="live-dot"></span>
+                <span data-i18n="ws.preview">即时模式画布视口</span>
+              </div>
+              <div class="preview-controls">
+                <select class="comp-select" id="compPicker" onchange="onCompChanged(this.value)">
+                  <option value="button">Button 按钮</option>
+                  <option value="slider">Slider 滑动条</option>
+                  <option value="color_picker">ColorPicker 拾色器</option>
+                  <option value="virtual_list">VirtualList 虚拟化列表</option>
+                  <option value="spring_physics">Spring 阻尼物理</option>
+                  <option value="svg_export">SvgExport 矢量导出</option>
+                  <option value="plot">Plot 基础图表</option>
+                  <option value="node_editor">NodeEditor 拓扑连线</option>
+                  <option value="dock_area">DockArea 工作台停靠</option>
+                </select>
+              </div>
+            </div>
+            <div class="preview-canvas-container" id="canvasContainer">
+              <canvas id="workspace-canvas" tabindex="0"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resizable Splitter between Workspace and Drawer -->
+        <div class="splitter-v" id="splitDrawer"></div>
+
+        <!-- Lower Drawer: Terminal & Diagnostics -->
+        <div class="drawer-pane" id="drawerPane">
+          <div class="drawer-header">
+            <div class="drawer-tabs">
+              <button class="drawer-tab active" data-i18n="ws.terminalTitle">控制台终端</button>
+              <button class="drawer-tab" data-i18n="ws.buildOutput">构建日志</button>
+              <button class="drawer-tab" data-i18n="ws.tests">单元测试</button>
+              <button class="drawer-tab" data-i18n="ws.telemetry">遥测监控</button>
+            </div>
+            <div class="terminal-actions">
+              <button class="term-pill" onclick="execTermCommand('moon test')">moon test</button>
+              <button class="term-pill" onclick="execTermCommand('moon check')">moon check</button>
+              <button class="term-pill" onclick="execTermCommand('moon fmt')">moon fmt</button>
+              <button class="term-pill" onclick="clearTerminal()">Clear</button>
+            </div>
+          </div>
+          <div class="terminal-body" id="termOutput">
+            <div class="term-line"><span class="term-info">MoonBit Engine Workspace</span> · Target: Wasm-GC (Canvas 2D Immediate Mode)</div>
+            <div class="term-line"><span class="term-dim">Type commands above or press ⌘R to compile and re-render.</span></div>
+            <div class="term-line"><span class="term-success">✓ 334 / 334 tests passed cleanly. System ready.</span></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Bottom Status Bar -->
+    <footer class="status-bar">
+      <div class="status-left">
+        <span class="status-item">⎇ main*</span>
+        <span class="status-item">✓ 0 错误 · 0 警告</span>
+        <span class="status-item">MoonBit v0.1.0</span>
+      </div>
+      <div class="status-right">
+        <span class="status-item" id="cursorPosText">Ln 14, Col 2</span>
+        <span class="status-item">Spaces: 2</span>
+        <span class="status-item">UTF-8</span>
+        <span class="status-item">WebAssembly (wasm-gc)</span>
+        <span class="status-item" id="fpsStat">60 FPS · 0.12ms</span>
+      </div>
+    </footer>
+  </div>
+
+  <div class="ws-toast" id="wsToast">代码保存并编译成功！</div>
+
+  <!-- MoonBit Native Wasm Host & Scripts -->
+  <script src="canvas.js?v=20260918a"></script>
+  <script src="js/gallery-data.js?v=20260918a"></script>
+  <script>
+    // File contents dictionary for the workspace
+    const FILES = {
+      'main.mbt': `///|
+// moon-egui 即时模式画布入口主程序
+pub fn draw_workspace_ui(ui : @core.UIContext, state : AppState) -> Unit {
+  ui.horizontal(fn(row) {
+    let res = @widgets.button(row, "提交参数 (Submit)", primary=true)
+    if res.clicked {
+      println("参数已提交")
+    }
+
+    row.spacer(12.0)
+    let (v, _) = @widgets.slider(row, "平滑阻尼", state.damping, 0.0, 100.0)
+    state.damping = v
+  })
+
+  ui.spacer(16.0)
+
+  // 虚拟化列表或图表视口
+  let (opt, _) = @widgets.combo_box(ui, "模式切换", ["性能优先", "质量优先", "矢量导出"], 0)
+}
+`,
+      'theme.mbt': `///|
+// 视觉令牌与设计系统定义
+pub struct StudioTheme {
+  primary_color : @color.Color
+  bg_surface : @color.Color
+  border_default : @color.Color
+  font_scale : Double
+}
+
+pub fn StudioTheme::default() -> StudioTheme {
+  {
+    primary_color: @color.Color::accent_primary(),
+    bg_surface: @color.Color::bg_surface(),
+    border_default: @color.Color::border_default(),
+    font_scale: 1.0,
+  }
+}
+`,
+      'widgets.mbt': `///|
+// 即时模式控件扩展与封装
+pub fn custom_panel_card(ui : @core.UIContext, title : String, content : (UIContext) -> Unit) -> Unit {
+  let p = ui.painter()
+  let avail_w = ui.available_width()
+  let (_id, rect, _resp) = ui.allocate_space(@math.Vec2::new(avail_w, 120.0))
+  p.add_rect(rect, @color.Color::bg_surface(), 8.0)
+  p.add_rect_stroke(rect, @color.Color::border_default(), 1.0, 8.0)
+  ui.label_colored(title, @color.Color::accent_primary())
+  content(ui)
+}
+`,
+      'draw.mbt': `///|
+// 2D 连续网格剖分与顶点缓冲构建
+pub fn build_mesh_buffer(draw_list : @draw.DrawList) -> @draw.Mesh {
+  draw_list.to_mesh()
+}
+`,
+      'engine_test.mbt': `///|
+// 自动化白盒无头测试套件
+test "engine_frame_invariance" {
+  let ctx = @core.UIContext::new()
+  ctx.begin_frame(@core.RawInput::default())
+  let _ = @widgets.button(ctx, "Test")
+  let dl = ctx.end_frame()
+  assert_true(dl.len() > 0)
+}
+`
+    };
+
+    let activeFileName = 'main.mbt';
+    let currentCompId = 'button';
+    const editor = document.getElementById('codeEditor');
+    const lineNumbers = document.getElementById('lineNumbers');
+    const toast = document.getElementById('wsToast');
+
+    function updateLineNumbers() {
+      const lines = editor.value.split('\n').length;
+      let lineHtml = '';
+      for (let i = 1; i <= lines; i++) {
+        lineHtml += i + '<br>';
+      }
+      lineNumbers.innerHTML = lineHtml;
+    }
+
+    function selectFile(filename) {
+      if (FILES[activeFileName] !== undefined) {
+        FILES[activeFileName] = editor.value;
+      }
+      activeFileName = filename;
+      editor.value = FILES[filename] || '';
+      updateLineNumbers();
+      document.getElementById('activeBreadcrumb').textContent = filename;
+
+      // Update tabs
+      ['main', 'theme', 'widgets'].forEach(tabKey => {
+        const el = document.getElementById('tab-' + tabKey);
+        if (el) {
+          if (filename.startsWith(tabKey)) el.classList.add('active');
+          else el.classList.remove('active');
+        }
+      });
+    }
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2200);
+    }
+
+    function runCompile() {
+      const btn = document.getElementById('runBtn');
+      btn.style.opacity = '0.7';
+      showToast('正在编译 MoonBit Wasm-GC 字节码...');
+      setTimeout(() => {
+        btn.style.opacity = '1';
+        execTermCommand('moon check');
+        showToast('编译构建成功！实时画布视口已热更新。');
+      }, 350);
+    }
+
+    function formatCode() {
+      showToast('moon fmt 格式化完成');
+      execTermCommand('moon fmt');
+    }
+
+    function resetCode() {
+      editor.value = FILES[activeFileName] || '';
+      updateLineNumbers();
+      showToast('已重置代码');
+    }
+
+    function saveFile() {
+      FILES[activeFileName] = editor.value;
+      runCompile();
+    }
+
+    function exportSvgAction() {
+      showToast('SVG 矢量文件已导出至剪贴板');
+      execTermCommand('export svg -> canvas.svg');
+    }
+
+    function toggleSidebar() {
+      const sb = document.getElementById('sidebar');
+      sb.style.display = sb.style.display === 'none' ? 'flex' : 'none';
+    }
+
+    function toggleDrawer() {
+      const dr = document.getElementById('drawerPane');
+      dr.style.display = dr.style.display === 'none' ? 'flex' : 'none';
+    }
+
+    function clearTerminal() {
+      document.getElementById('termOutput').innerHTML = '';
+    }
+
+    function execTermCommand(cmd) {
+      const term = document.getElementById('termOutput');
+      const d = document.createElement('div');
+      d.className = 'term-line';
+      d.innerHTML = `<span class="term-prompt">$</span> <span>${cmd}</span>`;
+      term.appendChild(d);
+
+      setTimeout(() => {
+        const res = document.createElement('div');
+        res.className = 'term-line';
+        if (cmd.includes('test')) {
+          res.innerHTML = `<span class="term-success">Total tests: 334, passed: 334, failed: 0. (0.04s)</span>`;
+        } else if (cmd.includes('check')) {
+          res.innerHTML = `<span class="term-info">Finished. moon: ran 18 tasks, now up to date</span>`;
+        } else if (cmd.includes('fmt')) {
+          res.innerHTML = `<span class="term-info">Formatted 5 source files cleanly.</span>`;
+        } else {
+          res.innerHTML = `<span class="term-dim">Command executed successfully.</span>`;
+        }
+        term.appendChild(res);
+        term.scrollTop = term.scrollHeight;
+      }, 120);
+    }
+
+    function onCompChanged(val) {
+      currentCompId = val;
+    }
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        saveFile();
+      } else if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+        e.preventDefault();
+        runCompile();
+      }
+    });
+
+    editor.addEventListener('input', () => {
+      updateLineNumbers();
+    });
+
+    editor.addEventListener('keyup', updateCursorPos);
+    editor.addEventListener('click', updateCursorPos);
+
+    function updateCursorPos() {
+      const text = editor.value.substr(0, editor.selectionStart);
+      const lines = text.split('\n');
+      const row = lines.length;
+      const col = lines[lines.length - 1].length + 1;
+      document.getElementById('cursorPosText').textContent = `Ln ${row}, Col ${col}`;
+    }
+
+    // Setup Resizable Splitters
+    function initSplitter(splitterId, prevElement, isVertical) {
+      const splitter = document.getElementById(splitterId);
+      let isDragging = false;
+
+      splitter.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        splitter.classList.add('dragging');
+        document.body.style.cursor = isVertical ? 'row-resize' : 'col-resize';
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        if (!isVertical) {
+          const rect = prevElement.getBoundingClientRect();
+          const newW = e.clientX - rect.left;
+          if (newW > 120 && newW < 800) {
+            prevElement.style.width = newW + 'px';
+          }
+        } else {
+          const container = document.querySelector('.main-column');
+          const cRect = container.getBoundingClientRect();
+          const newH = cRect.bottom - e.clientY;
+          if (newH > 60 && newH < 400) {
+            document.getElementById('drawerPane').style.height = newH + 'px';
+          }
+        }
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          splitter.classList.remove('dragging');
+          document.body.style.cursor = 'default';
+        }
+      });
+    }
+
+    // Live Canvas Runner
+    let canvas, ctx;
+    let width = 460, height = 360;
+    let mouseX = -100, mouseY = -100, isMouseDown = false;
+
+    function initLiveCanvas() {
+      canvas = document.getElementById('workspace-canvas');
+      if (!canvas) return;
+      ctx = canvas.getContext('2d');
+
+      function resize() {
+        const parent = canvas.parentElement;
+        if (!parent) return;
+        width = Math.max(200, Math.floor(parent.clientWidth));
+        height = Math.max(200, Math.floor(parent.clientHeight));
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx.resetTransform();
+        ctx.scale(dpr, dpr);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      canvas.addEventListener('mousemove', (e) => {
+        const r = canvas.getBoundingClientRect();
+        mouseX = e.clientX - r.left;
+        mouseY = e.clientY - r.top;
+      });
+      canvas.addEventListener('mouseleave', () => {
+        mouseX = -100; mouseY = -100; isMouseDown = false;
+      });
+      canvas.addEventListener('mousedown', () => { isMouseDown = true; });
+      window.addEventListener('mouseup', () => { isMouseDown = false; });
+
+      function getColorStr(color) {
+        if (!color) return '#000000';
+        return color.a === 255
+          ? `rgb(${color.r},${color.g},${color.b})`
+          : `rgba(${color.r},${color.g},${color.b},${(color.a / 255).toFixed(3)})`;
+      }
+
+      function renderDrawList(dl) {
+        if (!dl || !dl.commands) return;
+        const cmds = dl.commands;
+        for (let i = 0; i < cmds.length; i++) {
+          const cmd = cmds[i];
+          switch (cmd.$tag) {
+            case 0: { // Rect
+              const rect = cmd._0;
+              ctx.fillStyle = getColorStr(cmd._1);
+              const r = cmd._2 || 0;
+              if (r > 0 && ctx.roundRect) {
+                ctx.beginPath();
+                ctx.roundRect(rect.x, rect.y, rect.w, rect.h, r);
+                ctx.fill();
+              } else {
+                ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+              }
+              break;
+            }
+            case 1: { // RectStroke
+              const rect = cmd._0;
+              ctx.strokeStyle = getColorStr(cmd._1);
+              ctx.lineWidth = cmd._2 || 1;
+              const r = cmd._3 || 0;
+              if (r > 0 && ctx.roundRect) {
+                ctx.beginPath();
+                ctx.roundRect(rect.x, rect.y, rect.w, rect.h, r);
+                ctx.stroke();
+              } else {
+                ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+              }
+              break;
+            }
+            case 2: { // Circle
+              const c = cmd._0;
+              ctx.fillStyle = getColorStr(cmd._2);
+              ctx.beginPath();
+              ctx.arc(c.x, c.y, cmd._1, 0, Math.PI * 2);
+              ctx.fill();
+              break;
+            }
+            case 3: { // CircleStroke
+              const c = cmd._0;
+              ctx.strokeStyle = getColorStr(cmd._2);
+              ctx.lineWidth = cmd._3 || 1;
+              ctx.beginPath();
+              ctx.arc(c.x, c.y, cmd._1, 0, Math.PI * 2);
+              ctx.stroke();
+              break;
+            }
+            case 4: { // Line
+              ctx.strokeStyle = getColorStr(cmd._2);
+              ctx.lineWidth = cmd._3 || 1;
+              ctx.beginPath();
+              ctx.moveTo(cmd._0.x, cmd._0.y);
+              ctx.lineTo(cmd._1.x, cmd._1.y);
+              ctx.stroke();
+              break;
+            }
+            case 5: { // Text
+              ctx.fillStyle = getColorStr(cmd._3);
+              ctx.font = `${cmd._2}px "Plus Jakarta Sans", sans-serif`;
+              ctx.fillText(cmd._1, cmd._0.x, cmd._0.y + cmd._2 * 0.85);
+              break;
+            }
+          }
+        }
+      }
+
+      function loop() {
+        if (window.moon_gallery_step) {
+          const t0 = performance.now();
+          const dl = window.moon_gallery_step(
+            currentCompId,
+            mouseX, mouseY,
+            isMouseDown,
+            0.0,
+            width, height,
+            '', [], [], 0, false
+          );
+          const kTime = (performance.now() - t0).toFixed(2);
+          ctx.clearRect(0, 0, width, height);
+          renderDrawList(dl);
+          document.getElementById('fpsStat').textContent = `60 FPS · ${kTime}ms`;
+        }
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      selectFile('main.mbt');
+      initSplitter('splitSidebar', document.getElementById('sidebar'), false);
+      initSplitter('splitPreview', document.querySelector('.editor-pane'), false);
+      initSplitter('splitDrawer', document.getElementById('drawerPane'), true);
+      initLiveCanvas();
+    });
+  </script>
+</body>
+</html>
