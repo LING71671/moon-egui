@@ -44,7 +44,26 @@ pub fn DrawList::new() -> Self
 pub fn DrawList::pop_clip(Self) -> Unit
 pub fn DrawList::push(Self, DrawCmd) -> Unit
 pub fn DrawList::push_clip(Self, @math.Rect) -> Unit
+pub fn DrawList::to_mesh(Self) -> Mesh
 pub fn DrawList::to_svg(Self, Double, Double, background? : @color.Color) -> String
+
+pub struct Mesh {
+  vertices : Array[Vertex]
+  indices : Array[Int]
+} derive(Eq, @debug.Debug)
+pub fn Mesh::add_quad(Self, Int, Int, Int, Int) -> Unit
+pub fn Mesh::add_triangle(Self, Int, Int, Int) -> Unit
+pub fn Mesh::add_vertex(Self, Vertex) -> Int
+pub fn Mesh::clear(Self) -> Unit
+pub fn Mesh::index_count(Self) -> Int
+pub fn Mesh::new() -> Self
+pub fn Mesh::tessellate_circle(Self, @math.Vec2, Double, @color.Color, segments? : Int) -> Unit
+pub fn Mesh::tessellate_draw_list(Self, DrawList) -> Unit
+pub fn Mesh::tessellate_line(Self, @math.Vec2, @math.Vec2, @color.Color, Double) -> Unit
+pub fn Mesh::tessellate_rect(Self, @math.Rect, @color.Color, Double) -> Unit
+pub fn Mesh::tessellate_rect_stroke(Self, @math.Rect, @color.Color, Double, corner_radius? : Double) -> Unit
+pub fn Mesh::vertex_count(Self) -> Int
+pub fn Mesh::write_vertex_floats(Self, Array[Double]) -> Unit
 
 pub struct SvgExporter {
   width : Double
@@ -53,6 +72,18 @@ pub struct SvgExporter {
 } derive(Eq, @debug.Debug)
 pub fn SvgExporter::new(Double, Double, background? : @color.Color) -> Self
 pub fn SvgExporter::render_to_string(Self, DrawList) -> String
+
+pub struct Vertex {
+  x : Double
+  y : Double
+  u : Double
+  v : Double
+  r : Double
+  g : Double
+  b : Double
+  a : Double
+} derive(Default, Eq, @debug.Debug)
+pub fn Vertex::new(Double, Double, u? : Double, v? : Double, color? : @color.Color) -> Self
 
 // Type aliases
 
