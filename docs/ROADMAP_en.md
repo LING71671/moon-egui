@@ -96,7 +96,7 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 
 * **Objective**: Enforce strict engineering standards to ensure library reliability and deliver tagged milestones.
 * **Deliverables**:
-  - [x] **Automated Test Suite Expansion** [Delivered]: 327/327 whitebox and blackbox headless test cases passing (100% pass rate);
+  - [x] **Automated Test Suite Expansion** [Delivered]: 334/334 whitebox and blackbox headless test cases passing (100% pass rate);
   - [x] **Large-Scale Performance Benchmark Suite** [Delivered]: 50,000-row stress testing verifying sub-millisecond viewport slicing and in-place sorting;
   - [x] **Interface Stabilization**: Run `moon info && moon fmt`, freeze `.mbti` signatures, and finalize bilingual documentation;
   - [x] **Release Packaging** [Delivered]: Tag and publish the `v0.4.0` release (delivering Stepper, Rating, Steps, Pagination, and NodeEditor blueprint flow editor).
