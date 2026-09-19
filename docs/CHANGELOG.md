@@ -11,7 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-09-19
+
 ### Added
+- **Centered Vector Checkmark and Cross Geometry for Steps Indicator (`src/widgets/steps.mbt`)**:
+  - Replaced font glyphs `"✓"` and `"✕"` with mathematically centered vector line segments (`add_line`) calculated directly from the step circle radius.
+  - Eliminates platform font misalignment and DPI drift, ensuring pixel-perfect centering across all displays.
 - **Harmonic Spring Physics Model (`src/math/spring.mbt`)**:
   - Implemented 1D `Spring` and 2D `Spring2D` physical oscillation solvers supporting mass, stiffness, and damping parameters.
   - Sub-step numerical integration with equilibrium detection (`is_settled`) and presets (`default_spring`, `stiff`, `gentle`, `bouncy`).
@@ -28,12 +33,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Implemented `Vertex` (2D position `x, y`, UV coordinates `u, v`, and normalized RGBA `r, g, b, a`) and `Mesh` for hardware-accelerated batch rendering.
   - 2D primitive triangulation routines: `tessellate_rect` (axis-aligned and rounded rectangles via corner fan arcs), `tessellate_circle`, and `tessellate_line` (perpendicular normal extrusion).
   - Batch generator `DrawList::to_mesh()` and serialization helper `Mesh::write_vertex_floats` for zero-copy WebGL VBO uploads.
-- **Gallery Showcase Closures & Online Code Workspace Prototype (`examples/canvas/`)**:
+- **Gallery Showcase Closures & Online Code Workspace (`examples/canvas/`)**:
   - Integrated interactive gallery stages for `VirtualList` (10,000 items viewport slicing), `Spring Physics` (2D spring-damper tethered puck simulation), and `SvgExporter` (vector SVG serialization).
-  - Delivered `code_workspace.html` lightweight online code workspace prototype featuring multi-file explorer, code editor with syntax tokens and line numbers, live immediate-mode canvas viewport, resizable splitters, and interactive terminal.
+  - Upgraded `code_workspace.html` into a full-width dark theme IDE layout with project explorer, syntax editor, and interactive terminal.
+- **Pure Engine Dogfooding & Interface Harmony Standard (`AGENTS.md`, `docs/DESIGN_SYSTEM*.md`)**:
+  - Formally mandated that all official showcases and tools must be written 100% in MoonBit and rendered via `moon-egui` Canvas pipeline.
+  - Strictly banned HTML/CSS DOM mockups and discordant or unlinked preview viewports.
 - **Automated Tests**:
-  - Added 23 new whitebox test cases across `spring_wbtest.mbt`, `svg_exporter_wbtest.mbt`, `tooltip_wbtest.mbt`, `virtual_list_wbtest.mbt`, and `mesh_wbtest.mbt`.
-  - Expanded total automated tests from 311 to **334 tests with 100% pass rate**.
+  - Added 24 new whitebox test cases across `spring_wbtest.mbt`, `svg_exporter_wbtest.mbt`, `tooltip_wbtest.mbt`, `virtual_list_wbtest.mbt`, `mesh_wbtest.mbt`, and `steps_wbtest.mbt`.
+  - Expanded total automated tests from 311 to **335 tests with 100% pass rate**.
 
 ## [0.4.0] - 2026-09-16
 
@@ -73,18 +81,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.2] - 2026-09-15
 
 ### Added
-- **MoonLens Standalone Native Desktop Tabular Explorer (`app/moonlens`)**:
-  - Pure MoonBit native backend compilation producing a standalone Win32 binary (`moonlens.exe`), weighing only 286 KB with ~2.6 MB memory usage.
-  - Windows DWM immersive dark mode integration eliminating native white borders, procedural vector icon generation for taskbar and titlebar, and high-DPI ClearType typography via Segoe UI.
-  - Double-buffered GDI offscreen rendering delivering locked, flicker-free 60 FPS performance.
-  - Buttery smooth kinetic inertia scrolling (lerp interpolation) and interactive live search & filter bar with real-time case-insensitive matching.
-  - High-performance streaming tabular & CSV parser with delimiter auto-detection (`,`, `\t`, `;`), quoted cell escaping, and automatic data type inference (`INT`, `FLOAT`, `STR`).
+- **High-Performance Streaming Tabular & CSV Utilities (`src/widgets/table.mbt`)**:
+  - High-performance tabular data structures with delimiter auto-detection (`,`, `\t`, `;`), quoted cell escaping, and automatic data type inference (`INT`, `FLOAT`, `STR`).
   - Zero-copy index indirection table (`row_indices : Array[Int]`) for $O(1)$ copy multi-column in-place quicksort and sub-millisecond virtualized viewport slicing.
-  - 24-bucket frequency distribution histogram calculator with percentile breakdown (`P25`, `P50` Median, `P75`, `P95`, Sum) and interactive tooltip inspection.
-- **Stress Benchmark Suite (`app/moonlens/csv_bench_wbtest.mbt`)**:
-  - Self-generating synthetic benchmark tests verifying 10,000-row and 50,000-row tabular ingestion, multi-column sorting, substring search, and histogram calculation with 100% test coverage.
-- **Official Showcase Website Integration (`examples/canvas/index.html`)**:
-  - Added dedicated MoonLens desktop spotlight section with technical specifications, feature cards, bilingual i18n support (`zh` / `en`), and build/run instructions.
+- **Large-Scale Data Benchmark Suite**:
+  - Synthetic benchmark tests verifying 10,000-row and 50,000-row tabular ingestion, multi-column sorting, and substring search with 100% test coverage.
 
 ### Fixed
 - **Quicksort Worst-Case Degradation**: Added median pivot selection in tabular engine to prevent $O(N^2)$ recursion degradation on pre-sorted large datasets.

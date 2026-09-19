@@ -56,7 +56,22 @@ You can browse and install extra skills here:
 
 All UI/UX design, visual styling, web layouts, and showcase presentation interfaces in this project **MUST** invoke and follow the `impeccable` skill (`C:/Users/www17/.gemini/config/skills/impeccable/SKILL.md`). Deliver out-of-distribution craft, production-grade aesthetics, intentional visual hierarchy, and refined interactive details.
 
+## Pure MoonBit Engine Dogfooding & Interface Harmony Standard (Mandatory)
+
+This standard enforces full-pipeline engine dogfooding and strictly bans pseudo-functional or aesthetically discordant interfaces across all demos, showcases, and interactive tools:
+
+1. **100% Pure MoonBit Engine Dogfooding & Zero DOM Simulation**:
+   - As an immediate-mode GUI engine, all official interactive showcases, component galleries, studio workspaces, IDEs, and tools must be written **100% in MoonBit** and rendered directly onto HTML5 `<canvas>` via `moon-egui`'s Wasm-GC pipeline.
+   - **Strictly Forbid HTML/CSS DOM Simulation**: Never fake or mock application interfaces (e.g. IDE sidebars, tree views, code editors, tabs, terminal panels) using HTML DOM elements (`<div>`, `<aside>`, `<header>`, `<button>`, etc.) and CSS. Mimicking desktop software with web DOM elements violates the dogfooding principle of an immediate-mode GUI engine and destroys technical credibility.
+   - **Single-Canvas Boundary**: Interactive tools and workspaces must maintain a single `<canvas id="canvas">` viewport. All window chrome, docking panels (`@composite.Dock`), file trees (`@composite.TreeView`), syntax-highlighted code editors (`@composite.CodeEditor`), menu bars (`@composite.MenuBar`), command palettes (`@composite.CommandPalette`), and interactive consoles must be driven directly by MoonBit's `UIContext`.
+
+2. **Purposeful Interaction & Non-Redundancy**:
+   - **Strictly Forbid Disconnected / Pseudo-Functional Preview Windows**: Sub-canvases or embedded viewports inside editing workflows must maintain real, meaningful, bidirectional data flow with active content. Never arbitrarily embed a static component dropdown or unlinked gallery card that serves no actual purpose in the workflow.
+   - **Strictly Forbid Visual Discordance & Incompatible Surface Palettes**: Embedded viewports or floating dialogs must never break the host theme (e.g. inserting a harsh white `#ffffff` canvas card inside a dark IDE). All surfaces must strictly inherit the design system's semantic color tokens (`@color.Color`).
+   - **Anti-Cramping & Viewport Integrity**: Any interactive viewport or list container must satisfy minimum layout dimensions. Never squeeze complex controls or virtual lists into cramped containers where text lines overlap, labels clip, or layout bounds collapse.
+
 ## Copywriting and Technical Tone Standard (Mandatory)
+
 
 - **Strictly Zero Exaggeration / Factual Tone**: Strictly forbid sensationalism or exaggerated buzzwords such as "工业级", "专业级", "顶级", "极致", "海量数据", "军工级", or similar marketing jargon across all code, documentation, web UI text, showcase component descriptions, and commit messages.
 - **Accurate & Restrained**: Use clean, factual, professional engineering terminology (e.g., "核心交互控件", "数据虚拟化表格", "HSV 拾色器", "开发规范").

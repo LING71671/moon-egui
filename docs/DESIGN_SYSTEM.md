@@ -151,3 +151,18 @@ The global application menu bar implements desktop-grade bistable switching:
 ```
 - **Foreground Layer Isolation**: Dropdown popup cards render on an isolated `Foreground Layer` with shadow elevation and porcelain background.
 - **Occlusion Blocking**: While open, `block_hover` intercepts pointer events from penetrating to underlying canvas widgets.
+
+---
+
+## 6. Pure MoonBit Engine Dogfooding & Interface Harmony Standard
+
+### 6.1 100% Pure MoonBit Engine Dogfooding & Zero DOM Simulation
+- **Pure Canvas Immediate-Mode Rendering**: As an immediate-mode GUI engine, all official interactive showcases, component galleries, studio workspaces, IDEs, and tools must be written 100% in MoonBit and rendered directly onto HTML5 `<canvas>` via `moon-egui`'s Wasm-GC pipeline.
+- **Strictly Forbid HTML/CSS DOM Simulation**: Never fake or mock application interfaces (e.g. IDE sidebars, tree views, code editors, tabs, terminal panels) using HTML DOM elements (`<div>`, `<aside>`, `<header>`, `<button>`, etc.) and CSS. Mimicking desktop software with web DOM elements violates the dogfooding principle of an immediate-mode GUI engine and destroys technical credibility.
+- **Single-Canvas Boundary**: Interactive tools and workspaces must maintain a single `<canvas id="canvas">` viewport. All window chrome, docking panels (`@composite.Dock`), file trees (`@composite.TreeView`), syntax-highlighted code editors (`@composite.CodeEditor`), menu bars (`@composite.MenuBar`), command palettes (`@composite.CommandPalette`), and interactive consoles must be driven directly by MoonBit's `UIContext`.
+
+### 6.2 Purposeful Interaction & Non-Redundancy
+- **Strictly Forbid Disconnected / Pseudo-Functional Preview Windows**: Sub-canvases or embedded viewports inside editing workflows must maintain real, meaningful, bidirectional data flow with active content. Never arbitrarily embed a static component dropdown or unlinked gallery card that serves no actual purpose in the workflow.
+- **Strictly Forbid Visual Discordance & Incompatible Surface Palettes**: Embedded viewports or floating dialogs must never break the host theme (e.g. inserting a harsh white `#ffffff` canvas card inside a dark IDE). All surfaces must strictly inherit the design system's semantic color tokens (`@color.Color`).
+- **Anti-Cramping & Viewport Integrity**: Any interactive viewport or list container must satisfy minimum layout dimensions. Never squeeze complex controls or virtual lists into cramped containers where text lines overlap, labels clip, or layout bounds collapse.
+

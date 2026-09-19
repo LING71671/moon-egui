@@ -84,9 +84,8 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
   - [x] **WebGL 2.0 Batched Rendering Backend (`src/draw/mesh.mbt`)** [Delivered]: Contiguous vertex/index buffer organization and 2D primitive triangulation (rects, circles, lines) in Wasm memory for unified batched draw dispatch;
   - [x] **Showcase Reference Applications (Live in Gallery)**:
     - Interactive 2D CAD Vector Drafting Workbench (ruler metrics, magnetic snapping, inspector) [Delivered];
-    - High-Performance Native Standalone Desktop Tool (MoonLens dataset explorer, 286 KB single file, 50k+ rows) [Delivered];
     - 1,000,000-Cell Streaming Minesweeper Engine [Delivered];
-    - Lightweight Online Code Workspace Prototype (`code_workspace.html`, multi-file explorer, live code editor, canvas viewport, interactive terminal) [Delivered].
+    - Lightweight Online Code Workspace Prototype (`code_workspace.html`, multi-file explorer, live code editor, interactive terminal) [Delivered].
 * **Acceptance Criteria**:
   - Reference applications run smoothly in the gallery showcase with idiomatic, decoupled component architectures.
 
@@ -96,10 +95,10 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 
 * **Objective**: Enforce strict engineering standards to ensure library reliability and deliver tagged milestones.
 * **Deliverables**:
-  - [x] **Automated Test Suite Expansion** [Delivered]: 334/334 whitebox and blackbox headless test cases passing (100% pass rate);
+  - [x] **Automated Test Suite Expansion** [Delivered]: 335/335 whitebox and blackbox headless test cases passing (100% pass rate);
   - [x] **Large-Scale Performance Benchmark Suite** [Delivered]: 50,000-row stress testing verifying sub-millisecond viewport slicing and in-place sorting;
   - [x] **Interface Stabilization**: Run `moon info && moon fmt`, freeze `.mbti` signatures, and finalize bilingual documentation;
-  - [x] **Release Packaging** [Delivered]: Tag and publish the `v0.4.0` release (delivering Stepper, Rating, Steps, Pagination, and NodeEditor blueprint flow editor).
+  - [x] **Release Packaging** [Delivered]: Tag and publish the `v0.5.0` release (delivering hardware-accelerated Mesh pipeline, centered Steps vector icons, and pure engine dogfooding standards).
 * **Acceptance Criteria**:
   - 100% passing CI workflow with complete documentation, demos, and test suites archived.
 
