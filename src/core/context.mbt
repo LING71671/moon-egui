@@ -595,6 +595,10 @@ fn char_width_ratio(code : Int) -> Double {
   } else if code >= 0x2200 && code <= 0x22FF {
     // Mathematical Operators
     0.68
+  } else if code >= 0x2300 && code <= 0x27BF {
+    // Miscellaneous Technical, Control Pictures, Enclosed Alphanumerics,
+    // Box Drawing, Block Elements, Geometric Shapes, Dingbats (e.g. ▶, ⌘, ●, ✓)
+    1.05
   } else if code >= 0xFF61 && code <= 0xFF9F {
     // Halfwidth CJK Katakana
     0.50

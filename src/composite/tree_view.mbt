@@ -151,11 +151,11 @@ pub fn tree_view(
   let tree_radius = ctx.style.radius_md * scale
 
   // Surface and outer border
-  ctx.painter().add_rect(rect, @color.Color::bg_window(), tree_radius)
+  ctx.painter().add_rect(rect, ctx.theme.bg_window, tree_radius)
   let border_color = if is_focused {
-    @color.Color::border_focus()
+    ctx.theme.border_focus
   } else {
-    @color.Color::border_muted()
+    ctx.theme.border_muted
   }
   ctx.painter().add_rect_stroke(rect, border_color, 1.0, tree_radius)
 
@@ -311,7 +311,7 @@ pub fn tree_view(
         1.0,
       )
     } else if is_row_hovered {
-      ctx.painter().add_rect(row_rect, @color.Color::bg_hover(), row_radius)
+      ctx.painter().add_rect(row_rect, ctx.theme.bg_hover, row_radius)
     }
 
     // Hierarchy guide lines (for depths > 0)
@@ -325,7 +325,7 @@ pub fn tree_view(
       .add_line(
         @math.Vec2::new(guide_x, row_rect.y),
         @math.Vec2::new(guide_x, row_rect.y + row_rect.h),
-        @color.Color::border_muted(),
+        ctx.theme.border_muted,
         1.0,
       )
     }
@@ -334,9 +334,9 @@ pub fn tree_view(
     if flat.has_children {
       let chevron_glyph = if flat.is_expanded { "v" } else { ">" }
       let chevron_col = if is_chevron_hovered {
-        @color.Color::text_primary()
+        ctx.theme.text_primary
       } else {
-        @color.Color::text_muted()
+        ctx.theme.text_muted
       }
       ctx
       .painter()
@@ -362,9 +362,9 @@ pub fn tree_view(
         badge_h,
       )
       let (badge_bg, badge_col) = if is_row_selected {
-        (@color.Color::accent_soft(), @color.Color::accent_primary())
+        (ctx.theme.accent_soft, ctx.theme.accent_primary)
       } else {
-        (@color.Color::bg_subtle(), @color.Color::text_secondary())
+        (ctx.theme.bg_subtle, ctx.theme.text_secondary)
       }
       ctx.painter().add_rect(badge_rect, badge_bg, 3.0 * scale)
       ctx
@@ -380,11 +380,11 @@ pub fn tree_view(
 
     // Label text
     let label_col = if is_row_selected {
-      @color.Color::accent_primary()
+      ctx.theme.accent_primary
     } else if is_row_hovered {
-      @color.Color::text_primary()
+      ctx.theme.text_primary
     } else {
-      @color.Color::text_body()
+      ctx.theme.text_body
     }
     ctx
     .painter()

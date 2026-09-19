@@ -98,7 +98,7 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
   - [x] **Automated Test Suite Expansion** [Delivered]: 335/335 whitebox and blackbox headless test cases passing (100% pass rate);
   - [x] **Large-Scale Performance Benchmark Suite** [Delivered]: 50,000-row stress testing verifying sub-millisecond viewport slicing and in-place sorting;
   - [x] **Interface Stabilization**: Run `moon info && moon fmt`, freeze `.mbti` signatures, and finalize bilingual documentation;
-  - [x] **Release Packaging** [Delivered]: Tag and publish the `v0.5.0` release (delivering hardware-accelerated Mesh pipeline, centered Steps vector icons, and pure engine dogfooding standards).
+  - [x] **Release Packaging** [Delivered]: Tag and publish the `v0.5.1` release (delivering 100% pure Canvas Studio IDE, dynamic viewport modal scrims, and layout geometry polish).
 * **Acceptance Criteria**:
   - 100% passing CI workflow with complete documentation, demos, and test suites archived.
 

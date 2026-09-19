@@ -11,6 +11,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-09-19
+
+### Added
+- **100% Pure MoonBit Canvas Studio IDE (`examples/canvas/studio_ide.mbt`, `code_workspace.html`)**:
+  - Implemented a complete desktop IDE experience rendered 100% inside a single HTML5 `<canvas>` via MoonBit immediate-mode GUI.
+  - Features a top menu bar with action buttons and dropdown menus, collapsible and resizable project tree dock (`@composite.Dock`, `@composite.TreeView`), multi-tab code editor with line numbering and syntax styling, interactive terminal output drawer, quick command palette overlay (`@composite.CommandPalette`), and status bar.
+  - Bespoke pure-vector geometric crescent logo badge and typography.
+- **Extended Unicode Technical & Geometric Glyph Measurement (`src/core/context.mbt`)**:
+  - Added width measurement rules for technical, mathematical, and geometric Unicode block glyphs (`0x2300` - `0x27BF`: `▶`, `⌘`, `●`, `✓`, arrows, etc.) with ratio `1.05`, eliminating clipping and text bounds drift.
+- **Dynamic Viewport Modal Scrim (`src/composite/command_palette.mbt`)**:
+  - Added optional `viewport_size? : @math.Vec2` parameter to `CommandPalette` to dynamically cover arbitrary viewport resolutions without cutoffs or truncation.
+- **Semantic Theme Integration for TreeView (`src/composite/tree_view.mbt`)**:
+  - Refactored `TreeView` styling to consume semantic theme tokens (`ctx.theme.bg_window`, `border_focus`, `border_muted`, `bg_hover`, `text_primary`, `text_body`), eliminating hardcoded light backgrounds in dark themes.
+
+### Fixed
+- **Button Auto-Sizing & Negative Padding Prevention (`src/widgets/button.mbt`)**:
+  - Fixed button width calculation to strictly enforce natural padding from measured text bounds and prevent negative padding when explicit width is under-specified.
+- **Modal Scrim Clipping**:
+  - Fixed command palette and modal overlay masks cutting off at 800px on displays with height > 800px.
+
 ## [0.5.0] - 2026-09-19
 
 ### Added

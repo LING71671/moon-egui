@@ -56,7 +56,7 @@ When building interactive user interfaces within WebAssembly and HTML5 Canvas en
 moon add LING71671/moon-egui
 
 # Or pin to an exact version
-moon add LING71671/moon-egui@0.5.0
+moon add LING71671/moon-egui@0.5.1
 ```
 
 Import the layers you need in your `moon.pkg`: `src/core` is the bare immediate-mode runtime, `src/widgets` adds the standard controls, and `src/composite` the advanced components.
@@ -200,7 +200,7 @@ fn update_ui(ctx : @core.UIContext, state : AppState) {
 - [x] **Milestone 6: Workstation Layout & Resilient Widgets** (Delivered): draggable splitter (`Splitter`), data table (`Table`), modal dialog (`Dialog`), notifications (`Toast`), flow layout (`horizontal_wrapped`), dynamic multi-theming (`Theme`).
 - [x] **Milestone 7: Data-Dense Components & Advanced Visualizations** (Delivered): node graph editor (`NodeEditor`) [Delivered], telemetry plots (`Plot` & `BarChart`) [Delivered], virtualized data table (`Table`) [Delivered].
 - [x] **Milestone 8: Hardware-Accelerated Rendering & Production Scenarios** (Delivered): WebGL 2.0 batched geometry pipeline (`mesh.mbt`), CAD/node/audio/studio multi-scenario showcases.
-- [x] **Milestone 9: Verification, Benchmarking & Official Release** (Delivered): 335 automated unit and integration tests (100% passing), Wasm-GC compatibility, published `v0.5.0`.
+- [x] **Milestone 9: Verification, Benchmarking & Official Release** (Delivered): 335 automated unit and integration tests (100% passing), Wasm-GC compatibility, published `v0.5.1`.
 
 > For full milestone metrics and acceptance criteria, see **[ROADMAP.md](docs/ROADMAP.md)** ([English](docs/ROADMAP_en.md)).
 

@@ -19,6 +19,9 @@ if (-not (Test-Path $BUILD)) {
 $content = Get-Content $BUILD -Raw
 $step = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*8examples6canvas4step)\(').Groups[1].Value
 $gallery_step = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*gallery__step[A-Za-z0-9_]*)\(').Groups[1].Value
+$mines_step = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*8examples6canvas11mines__step)\(').Groups[1].Value
+$studio_step = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*studio__step[A-Za-z0-9_]*)\(').Groups[1].Value
+$studio_cursor = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*get__studio__cursor)\(').Groups[1].Value
 $status = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*get__gallery__status)\(').Groups[1].Value
 $cursor = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*get__gallery__cursor)\(').Groups[1].Value
 $set_vm = [regex]::Match($content, 'function (_M0[A-Za-z0-9_]*set__gallery__view__mode)\(').Groups[1].Value
@@ -42,6 +45,30 @@ if (typeof globalThis !== 'undefined') globalThis.moon_step = $step;
 if (typeof window !== 'undefined') window.moon_gallery_step = $gallery_step;
 if (typeof globalThis !== 'undefined') globalThis.moon_gallery_step = $gallery_step;
 "@
+
+if ($mines_step) {
+  $exports += @"
+
+if (typeof window !== 'undefined') window.moon_mines_step = $mines_step;
+if (typeof globalThis !== 'undefined') globalThis.moon_mines_step = $mines_step;
+"@
+}
+
+if ($studio_step) {
+  $exports += @"
+
+if (typeof window !== 'undefined') window.moon_studio_step = $studio_step;
+if (typeof globalThis !== 'undefined') globalThis.moon_studio_step = $studio_step;
+"@
+}
+
+if ($studio_cursor) {
+  $exports += @"
+
+if (typeof window !== 'undefined') window.moon_studio_cursor = $studio_cursor;
+if (typeof globalThis !== 'undefined') globalThis.moon_studio_cursor = $studio_cursor;
+"@
+}
 
 if ($status) {
   $exports += @"

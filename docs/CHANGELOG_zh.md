@@ -11,6 +11,26 @@
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-09-19
+
+### 新增功能与优化
+- **100% 纯 MoonBit 单 Canvas 工作台 Studio IDE (`examples/canvas/studio_ide.mbt`, `code_workspace.html`)**：
+  - 彻底去除任何 HTML/CSS DOM 仿真，完全由纯 MoonBit 即时模式 GUI 在单个 `<canvas>` 视口中渲染。
+  - 集成顶部菜单栏（文件/编辑/视图/终端/帮助菜单下拉、快捷操作按钮）、左侧活动栏与可折叠调节面板（`@composite.Dock`、项目文件树 `@composite.TreeView`）、支持多标签与行号的高级代码编辑器、底部交互式终端面板、快捷命令面板浮层（`@composite.CommandPalette`）与状态栏。
+  - 采用几何纯矢量推导的月相新月 Logo 与精致徽标排版。
+- **技术与几何 Unicode 字符测量宽度支持 (`src/core/context.mbt`)**：
+  - 扩展 `char_width_ratio` 测量字典，支持技术符号、杂项符号与箭头图元（`0x2300` - `0x27BF`：`▶`, `⌘`, `●`, `✓` 等）宽度比率（1.05），根治按钮内文字重叠与边界溢出问题。
+- **动态视口全屏遮罩防截断 (`src/composite/command_palette.mbt`)**：
+  - 为 `CommandPalette` 引入 `viewport_size? : @math.Vec2` 参数，自适应任意视口分辨率，消除大屏（高 > 800px）下遮罩半截断的几何缺陷。
+- **TreeView 树控件语义化主题色标重构 (`src/composite/tree_view.mbt`)**：
+  - 全面使用动态主题色标（`ctx.theme.bg_window`、`border_focus`、`border_muted`、`bg_hover`、`text_primary`、`text_body`），彻底解决暗黑模式下误显纯白背景的视觉割裂。
+
+### 修复
+- **Button 自动宽度排版与负内边距防护 (`src/widgets/button.mbt`)**：
+  - 修正按钮尺寸推导逻辑，基于文字实际宽度叠加主题内边距自适应扩展，杜绝显式尺寸过小时内边距计算为负导致的布局错位。
+- **全屏模态遮罩截断修复**：
+  - 修复命令面板与模态浮层在 800px 以上屏幕高度时遮罩被硬编码截断的缺陷。
+
 ## [0.5.0] - 2026-09-19
 
 ### 新增功能与优化

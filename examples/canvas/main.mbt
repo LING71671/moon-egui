@@ -189,6 +189,8 @@ fn main {
   )
   let _ = get_gallery_status()
   let _ = get_gallery_cursor()
+  let _ = studio_step(1200.0, 800.0, 0.0, 0.0, false, 0.0, "", [], [], 0)
+  let _ = get_studio_cursor()
   println(
     "Benchmark initialized, total commands: \{frame.draw_list.len()}, zoom: \{frame.zoom}",
   )

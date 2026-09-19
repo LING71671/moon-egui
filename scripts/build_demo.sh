@@ -53,6 +53,14 @@ if [ -z "$MINES_STEP" ]; then
   exit 1
 fi
 
+STUDIO_STEP=$(grep -oE 'function (_M0[A-Za-z0-9_]*studio__step[A-Za-z0-9_]*)\(' "$BUILD" |
+  head -n 1 |
+  sed -e 's/^function //' -e 's/($//' || true)
+
+STUDIO_CURSOR=$(grep -oE 'function (_M0[A-Za-z0-9_]*get__studio__cursor)\(' "$BUILD" |
+  head -n 1 |
+  sed -e 's/^function //' -e 's/($//' || true)
+
 STATUS=$(grep -oE 'function (_M0[A-Za-z0-9_]*get__gallery__status)\(' "$BUILD" |
   head -n 1 |
   sed -e 's/^function //' -e 's/($//' || true)
@@ -86,6 +94,14 @@ cp "$BUILD" "$OUT"
   echo "if (typeof globalThis !== 'undefined') globalThis.moon_gallery_step = $GALLERY_STEP;"
   echo "if (typeof window !== 'undefined') window.moon_mines_step = $MINES_STEP;"
   echo "if (typeof globalThis !== 'undefined') globalThis.moon_mines_step = $MINES_STEP;"
+  if [ -n "$STUDIO_STEP" ]; then
+    echo "if (typeof window !== 'undefined') window.moon_studio_step = $STUDIO_STEP;"
+    echo "if (typeof globalThis !== 'undefined') globalThis.moon_studio_step = $STUDIO_STEP;"
+  fi
+  if [ -n "$STUDIO_CURSOR" ]; then
+    echo "if (typeof window !== 'undefined') window.moon_studio_cursor = $STUDIO_CURSOR;"
+    echo "if (typeof globalThis !== 'undefined') globalThis.moon_studio_cursor = $STUDIO_CURSOR;"
+  fi
   if [ -n "$STATUS" ]; then
     echo "if (typeof window !== 'undefined') window.moon_gallery_status = $STATUS;"
     echo "if (typeof globalThis !== 'undefined') globalThis.moon_gallery_status = $STATUS;"

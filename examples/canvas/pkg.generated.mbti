@@ -34,6 +34,8 @@ pub fn get_selected_id() -> Int
 
 pub fn get_state() -> BenchmarkState
 
+pub fn get_studio_cursor() -> String
+
 pub fn get_visible_cells() -> Int
 
 pub fn get_zoom() -> Double
@@ -57,6 +59,8 @@ pub fn mines_is_mine_raw(Int, Int) -> Bool
 pub fn mines_step(Double, Double, Bool, Bool, Double, Double, Double, Int, Double, Double) -> MinesFrame
 
 pub fn step(Double, Double, Bool, Double, Double, Double, Int, Double, Double, String, Array[String], Array[String], Int) -> FrameOutput
+
+pub fn studio_step(Double, Double, Double, Double, Bool, Double, String, Array[String], Array[String], Int, mouse_secondary_down? : Bool) -> @draw.DrawList
 
 // Errors
 
@@ -200,6 +204,25 @@ pub struct MinesFrame {
 }
 
 type MinesState
+
+type StudioFile
+
+pub struct StudioState {
+  files : Array[StudioFile]
+  open_tabs : Array[Int]
+  mut active_tab : Int
+  mut split_h_ratio : Double
+  mut split_v_ratio : Double
+  terminal_lines : Array[TerminalLine]
+  term_tab : Int
+  mut cmd_palette_open : Bool
+  mut cmd_query : String
+  mut cmd_index : Int
+  mut tree_expanded : Array[String]
+  mut initialized : Bool
+}
+
+type TerminalLine
 
 // Type aliases
 

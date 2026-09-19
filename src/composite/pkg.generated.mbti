@@ -18,7 +18,7 @@ pub fn color_picker(@core.UIContext, String, @color.Color, show_alpha? : Bool) -
 
 pub fn color_picker_button(@core.UIContext, String, @color.Color, show_alpha? : Bool) -> (@color.Color, @core.Response)
 
-pub fn command_palette(@core.UIContext, Bool, String, Array[CommandItem], selected_index? : Int) -> CommandPaletteResponse
+pub fn command_palette(@core.UIContext, Bool, String, Array[CommandItem], selected_index? : Int, viewport_size? : @math.Vec2) -> CommandPaletteResponse
 
 pub fn context_menu(@core.UIContext, String, Bool, @math.Vec2, (@core.UIContext) -> Unit, menu_width? : Double, viewport_size? : @math.Vec2) -> ContextMenuResponse
 

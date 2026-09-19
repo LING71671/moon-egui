@@ -84,6 +84,7 @@ pub fn command_palette(
   query : String,
   commands : Array[CommandItem],
   selected_index? : Int = 0,
+  viewport_size? : @math.Vec2 = @math.Vec2::zero(),
 ) -> CommandPaletteResponse {
   if !open {
     return { open: false, selected_id: None, query, selected_index, }
@@ -176,21 +177,30 @@ pub fn command_palette(
   let card_radius = ctx.style.radius_lg * scale
   let row_radius = ctx.style.radius_sm * scale
 
-  let viewport_w = if ctx.available_width() > 0.0 {
+  let viewport_w = if viewport_size.x > 0.0 {
+    viewport_size.x
+  } else if ctx.available_width() > 0.0 {
+    ctx.available_width()
+  } else {
+    4000.0
+  }
+  let viewport_h = if viewport_size.y > 0.0 { viewport_size.y } else { 4000.0 }
+  let scrim_rect = @math.Rect::new(0.0, 0.0, viewport_w, viewport_h)
+
+  let card_container_w = if viewport_size.x > 0.0 {
+    viewport_size.x
+  } else if ctx.available_width() > 0.0 {
     ctx.available_width()
   } else {
     800.0
   }
-  let viewport_h = 800.0
-  let scrim_rect = @math.Rect::new(0.0, 0.0, viewport_w, viewport_h)
-
   let default_palette_w = 540.0 * scale
-  let card_w = if viewport_w < default_palette_w + 20.0 * scale {
-    viewport_w - 32.0 * scale
+  let card_w = if card_container_w < default_palette_w + 20.0 * scale {
+    card_container_w - 32.0 * scale
   } else {
     default_palette_w
   }
-  let card_x = (viewport_w - card_w) * 0.5
+  let card_x = (card_container_w - card_w) * 0.5
   let card_y = 64.0 * scale
   let header_h = (ctx.style.control_h_lg + ctx.style.radius_md) * scale
   let footer_h = (ctx.style.control_h_sm + ctx.style.spacing_xs) * scale
