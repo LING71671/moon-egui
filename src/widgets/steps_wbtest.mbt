@@ -173,3 +173,27 @@ test "widgets: steps cursor semantics" {
   let _ = ctx.end_frame()
   assert_eq(ctx.cursor_icon(), "pointer")
 }
+
+///|
+test "widgets: steps vector checkmark and cross geometry" {
+  let ctx = UIContext::new()
+  let items = [
+    StepItem::with_status("Done", StepStatus::Finish),
+    StepItem::with_status("Failed", StepStatus::Error),
+  ]
+
+  ctx.begin_frame(@core.RawInput::new())
+  let _ = steps(ctx, "steps_vec_test", 0, items, width=200.0)
+  let dl = ctx.end_frame()
+
+  // Verify that vector lines are emitted for both Finish (2 lines) and Error (2 lines)
+  let mut line_count = 0
+  for cmd in dl.commands() {
+    match cmd {
+      @draw.DrawCmd::Line(_, _, _, _) => line_count = line_count + 1
+      _ => ()
+    }
+  }
+  // At least 1 rail line + 2 checkmark lines + 2 cross lines = 5 lines
+  assert_true(line_count >= 5)
+}

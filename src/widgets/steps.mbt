@@ -268,15 +268,22 @@ pub fn Steps::show(self : Steps, ctx : UIContext) -> (Int, Response) {
           ctx
           .painter()
           .add_circle(center, circle_r, @color.Color::accent_primary())
-          let sym = "✓"
-          let sym_sz = ctx.measure_text(sym, font_title)
-          let sym_pos = @math.Vec2::new(
-            center_x - sym_sz.x * 0.5,
-            circle_y - sym_sz.y * 0.5,
+          // Hand-drawn vector checkmark (✓), mathematically centered within the circle
+          let stroke_w = 2.0 * scale
+          let p1 = @math.Vec2::new(
+            center_x - circle_r * 0.38,
+            circle_y - circle_r * 0.02,
           )
-          ctx
-          .painter()
-          .add_text(sym_pos, sym, font_title, @color.Color::text_inverse())
+          let p2 = @math.Vec2::new(
+            center_x - circle_r * 0.10,
+            circle_y + circle_r * 0.32,
+          )
+          let p3 = @math.Vec2::new(
+            center_x + circle_r * 0.38,
+            circle_y - circle_r * 0.30,
+          )
+          ctx.painter().add_line(p1, p2, @color.Color::text_inverse(), stroke_w)
+          ctx.painter().add_line(p2, p3, @color.Color::text_inverse(), stroke_w)
         }
         Process => {
           // Subtle halo for active process node
@@ -323,15 +330,15 @@ pub fn Steps::show(self : Steps, ctx : UIContext) -> (Int, Response) {
         }
         Error => {
           ctx.painter().add_circle(center, circle_r, @color.Color::danger())
-          let sym = "✕"
-          let sym_sz = ctx.measure_text(sym, font_title)
-          let sym_pos = @math.Vec2::new(
-            center_x - sym_sz.x * 0.5,
-            circle_y - sym_sz.y * 0.5,
-          )
-          ctx
-          .painter()
-          .add_text(sym_pos, sym, font_title, @color.Color::text_inverse())
+          // Hand-drawn vector cross (✕), symmetrically centered within the circle
+          let stroke_w = 2.0 * scale
+          let d = circle_r * 0.34
+          let q1 = @math.Vec2::new(center_x - d, circle_y - d)
+          let q2 = @math.Vec2::new(center_x + d, circle_y + d)
+          let q3 = @math.Vec2::new(center_x - d, circle_y + d)
+          let q4 = @math.Vec2::new(center_x + d, circle_y - d)
+          ctx.painter().add_line(q1, q2, @color.Color::text_inverse(), stroke_w)
+          ctx.painter().add_line(q3, q4, @color.Color::text_inverse(), stroke_w)
         }
       }
 
