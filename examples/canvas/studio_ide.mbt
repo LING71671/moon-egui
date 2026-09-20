@@ -89,20 +89,26 @@ let code_context_sample : String =
   #|// Moon-EGUI Immediate-Mode Core Execution Context
   #|pub struct UIContext {
   #|  input : InputState
-  #|  draw_list : @draw.DrawList
-  #|  style : WidgetStyle
-  #|  theme : Theme
-  #|  mut hot_id : Id
-  #|  mut active_id : Id
-  #|  mut focused_id : Id
+  #|  id_stack : IdStack
+  #|  layout : LayoutEngine
+  #|  focus : FocusManager
+  #|  layers : LayerManager
+  #|  windows : WindowManager
+  #|  memory : Memory
+  #|  mut style : WidgetStyle
+  #|  mut theme : Theme
+  #|  mut cursor_icon : String
+  #|  mut time : Double
+  #|  mut frame_counter : Int
   #|}
   #|
   #|pub fn UIContext::allocate_space(
   #|  self : UIContext,
-  #|  desired_size : @math.Vec2
+  #|  size : @math.Vec2
   #|) -> (Id, @math.Rect, Response) {
-  #|  let id = self.next_widget_id()
-  #|  let rect = self.layout_cursor_advance(desired_size)
+  #|  let id = self.next_auto_id()
+  #|  let rect = self.layout.allocate_rect(size)
+  #|  // Hit-testing, focus, and pointer state evaluation
   #|  let resp = self.interact(id, rect)
   #|  (id, rect, resp)
   #|}
