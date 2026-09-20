@@ -247,20 +247,28 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
     if ctx.input.key_pressed(Key::ArrowUp) ||
       ctx.input.key_pressed(Key::ArrowRight) {
       current_val = current_val + step
+      ctx.input.consume_key(Key::ArrowUp)
+      ctx.input.consume_key(Key::ArrowRight)
     }
     if ctx.input.key_pressed(Key::ArrowDown) ||
       ctx.input.key_pressed(Key::ArrowLeft) {
       current_val = current_val - step
+      ctx.input.consume_key(Key::ArrowDown)
+      ctx.input.consume_key(Key::ArrowLeft)
     }
     if ctx.input.key_pressed(Key::Home) {
       current_val = min_val
+      ctx.input.consume_key(Key::Home)
     }
     if ctx.input.key_pressed(Key::End) {
       current_val = max_val
+      ctx.input.consume_key(Key::End)
     }
     if ctx.input.key_pressed(Key::Backspace) ||
       ctx.input.key_pressed(Key::Delete) {
       current_val = default_val
+      ctx.input.consume_key(Key::Backspace)
+      ctx.input.consume_key(Key::Delete)
     }
   }
 

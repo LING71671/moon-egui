@@ -60,7 +60,16 @@ test "widgets: segmented_control arrow key navigation when focused" {
   )
   ctx.begin_frame(raw2)
   let (sel2, _resp) = segmented_control(ctx, "abc_ctrl", opts, 0, width=150.0)
-  let _ = ctx.end_frame()
+  assert_true(ctx.input().is_key_consumed(Key::ArrowRight))
+  let dl = ctx.end_frame()
 
   assert_eq(sel2, 1)
+  // Verify focus ring is in draw list
+  let mut has_focus_ring = false
+  for i = 0; i < dl.len(); i = i + 1 {
+    if dl.get_command(i) is Some(@draw.DrawCmd::RectStroke(_)) {
+      has_focus_ring = true
+    }
+  }
+  assert_true(has_focus_ring)
 }

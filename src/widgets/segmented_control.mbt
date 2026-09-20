@@ -128,13 +128,27 @@ pub fn segmented_control(
     current_sel = count - 1
   }
 
-  if ctx.has_focus(id) {
+  let is_focused = resp.has_focus() || ctx.has_focus(id)
+  if is_focused {
     if ctx.input.key_pressed(Key::ArrowLeft) {
       current_sel = if current_sel > 0 { current_sel - 1 } else { count - 1 }
+      ctx.input.consume_key(Key::ArrowLeft)
     }
     if ctx.input.key_pressed(Key::ArrowRight) {
       current_sel = if current_sel < count - 1 { current_sel + 1 } else { 0 }
+      ctx.input.consume_key(Key::ArrowRight)
     }
+  }
+
+  if is_focused {
+    ctx
+    .painter()
+    .add_rect_stroke(
+      track_rect.expand(2.0 * scale),
+      @color.Color::border_focus(),
+      1.5,
+      track_radius + 2.0 * scale,
+    )
   }
 
   ctx.painter().add_rect(track_rect, @color.Color::bg_subtle(), track_radius)

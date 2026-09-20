@@ -249,6 +249,7 @@ test "knob: keyboard arrows and home/end navigation" {
     .step(0.1)
     .show(ctx)
   assert_true((v2 - 0.6).abs() < 0.0001)
+  assert_true(ctx.input().is_key_consumed(@core.Key::ArrowUp))
   let _ = ctx.end_frame()
 
   // End key -> max_val
@@ -267,6 +268,7 @@ test "knob: keyboard arrows and home/end navigation" {
     .step(0.1)
     .show(ctx)
   assert_eq(v3, 1.0)
+  assert_true(ctx.input().is_key_consumed(@core.Key::End))
   let _ = ctx.end_frame()
 
   // Home key -> min_val
@@ -285,6 +287,7 @@ test "knob: keyboard arrows and home/end navigation" {
     .step(0.1)
     .show(ctx)
   assert_eq(v4, 0.0)
+  assert_true(ctx.input().is_key_consumed(@core.Key::Home))
   let _ = ctx.end_frame()
 }
 
