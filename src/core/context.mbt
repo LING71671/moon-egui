@@ -856,6 +856,11 @@ pub fn UIContext::set_time(self : UIContext, t : Double) -> Unit {
 }
 
 ///|
+pub fn UIContext::frame_counter(self : UIContext) -> Int {
+  self.frame_counter
+}
+
+///|
 pub fn UIContext::reset_caret_blink(self : UIContext) -> Unit {
   self.last_caret_activity = self.time
 }

@@ -421,6 +421,7 @@ pub fn UIContext::fg_painter(Self) -> Painter
 pub fn UIContext::focus(Self) -> FocusManager
 pub fn UIContext::focusable_ids(Self) -> Array[Id]
 pub fn UIContext::focused_id(Self) -> Id
+pub fn UIContext::frame_counter(Self) -> Int
 pub fn UIContext::get_scroll_content_height(Self, Id) -> Double
 pub fn UIContext::get_scroll_offset(Self, Id) -> Double
 pub fn UIContext::get_text_cursor_pos(Self, Id, Int) -> Int
