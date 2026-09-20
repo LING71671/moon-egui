@@ -750,6 +750,40 @@ This review evaluates seven foundational dimensions:
 
 ---
 
+### AUDIT-LOGIC-04 (P0) [OPEN]: Infinite Allocation Loop and Memory Exhaustion on Unbalanced `begin_foreground`
+- **Location**: [src/core/layer_manager.mbt#L85-L111](file:///a:/moonbit-project/src/core/layer_manager.mbt#L85-L111), [src/core/context.mbt#L90-L92](file:///a:/moonbit-project/src/core/context.mbt#L90-L92)
+- **Status**: **Backlog**
+- **Priority**: **P0**
+- **Category**: Layer Compositing Logic & Memory Safety
+- **Description**:
+  When `begin_foreground()` is called, `LayerManager` redirects `self.draw_list` to point directly to `self.fg_draw_list`.
+- **Failure Mechanism**:
+  If a widget or stage encounters an early return, error, or unhandled branch without calling `end_foreground()`, `self.foreground` remains `true` at the end of the frame. In `UIContext::end_frame`:
+  ```moonbit
+  self.layers.draw_list().append(self.layers.fg_draw_list())
+  ```
+  Because `self.layers.draw_list()` and `self.layers.fg_draw_list()` point to the exact same `DrawList` reference, `DrawList::append` iterates `for cmd in other.commands { self.commands.push(cmd) }`, pushing commands into the array while iterating over it. The loop never terminates, exhausting available Wasm heap memory until a fatal allocation trap crashes the application.
+- **Remediation**:
+  Guard `DrawList::append` against pointer/array identity aliasing (`if physical_equal(self.commands, other.commands) { return }`), and in `UIContext::end_frame`, forcefully check `if self.layers.is_foreground() { self.layers.end_foreground() }` to guarantee layer restoration before list compositing.
+
+---
+
+### AUDIT-LOGIC-05 (P1) [OPEN]: Unreleased `active_id` in DockArea Splitter Causing Global Mouse Capture Leaks
+- **Location**: [src/composite/dock.mbt#L540-L546](file:///a:/moonbit-project/src/composite/dock.mbt#L540-L546)
+- **Status**: **Backlog**
+- **Priority**: **P1**
+- **Category**: Interaction State Machine Logic
+- **Description**:
+  When dragging a dock splitter divider in `DockArea`, line 540 executes `ctx.set_active_id(handle_id)`.
+- **Failure Mechanism**:
+  Unlike standard interactive controls, `DockArea` contains no logic to release `ctx.set_active_id(Id::zero())` when `!ctx.input().mouse_down`. Once the splitter handle is clicked, `ctx.active_id()` remains locked to `handle_id` indefinitely across all subsequent frames until another widget happens to set it. As a result:
+  1. `ctx.set_cursor_icon(cursor_icon)` is continuously enforced across the whole canvas.
+  2. Other interactive surfaces guarding against background pointer activity (such as `Table`: `(ctx.active_id() == Id::zero() || ctx.active_id() == table_id)`) believe an active drag is perpetually in progress, permanently disabling table row hover, column resizing, and selection.
+- **Remediation**:
+  In `DockArea`'s splitter drag block, explicitly release active ownership when mouse is released: `if is_active && !ctx.input().mouse_down { ctx.set_active_id(Id::zero()) }`. In addition, enhance `FocusManager::begin_frame` to automatically clear `active_id` if `!ctx.input.mouse_down`.
+
+---
+
 ## 10. Robustness & Stability (`robust`)
 
 ### AUDIT-ROBUST-01 (P1) [OPEN]: Unbounded Sub-stepping Loop in `Spring::step` Under Large Frame Deltas or NaN
@@ -809,6 +843,49 @@ This review evaluates seven foundational dimensions:
 
 ---
 
+### AUDIT-ROBUST-04 (P1) [OPEN]: Negative Rect Dimension Arithmetic Trap Under Squeezed Dock Nodes
+- **Location**: [src/composite/dock.mbt#L483-L520](file:///a:/moonbit-project/src/composite/dock.mbt#L483-L520)
+- **Status**: **Backlog**
+- **Priority**: **P1**
+- **Category**: Geometry Arithmetic Robustness
+- **Description**:
+  In `DockArea`'s `Split` node calculation, child pane widths are computed against `min_pane_size`:
+  ```moonbit
+  let total_w = rect.w - handle_thick
+  let mut w1 = total_w * cur_ratio
+  if w1 < min_pane_size { w1 = min_pane_size }
+  if total_w - w1 < min_pane_size { w1 = total_w - min_pane_size }
+  let w2 = total_w - w1
+  ```
+- **Failure Mechanism**:
+  When a dock node is deeply nested or the container is resized such that `total_w < min_pane_size` (e.g. `total_w = 30.0` while `min_pane_size = 40.0`):
+  `w1 = total_w - min_pane_size = 30.0 - 40.0 = -10.0`!
+  This constructs negative-width rectangles `Rect::new(rect.x, rect.y, -10.0, rect.h)` and `w2 = 40.0`, resulting in inverted scissor boundaries, inverted mouse hit-testing coordinates, and visual glitches. The same arithmetic failure occurs in the vertical split direction when `total_h < min_pane_size`.
+- **Remediation**:
+  Enforce boundary safeguards: `if total_w <= min_pane_size * 2.0`, assign `w1 = total_w * 0.5` and clamp both `w1` and `w2` to `>= 0.0`.
+
+---
+
+### AUDIT-ROBUST-05 (P2) [OPEN]: Stale Index Mismatch and Positional Jumping on Toast Manual Dismissal
+- **Location**: [src/widgets/toast.mbt#L201-L211](file:///a:/moonbit-project/src/widgets/toast.mbt#L201-L211)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: Rendering Consistency & Array Alignment
+- **Description**:
+  In `toast_stack`, `placed_rects` is computed based on the initial `next_active` array.
+- **Failure Mechanism**:
+  When a user clicks the close button of a toast, that toast is filtered out to produce `final_active`. Then:
+  ```moonbit
+  for i = 0; i < final_active.length(); i = i + 1 {
+    let toast = final_active[i]
+    let rect = placed_rects[i] // BUG: placed_rects contains the dismissed toast's position!
+  ```
+  If `toast[0]` is dismissed, `toast[1]` is drawn at `placed_rects[0]`, causing all subsequent toasts to abruptly jump to the coordinate of the toast before them in the same frame rather than maintaining their visual coordinates.
+- **Remediation**:
+  Filter or rebuild `placed_rects` synchronously after deciding `dismissed_id`, ensuring indices in `placed_rects` strictly correspond to the drawn toasts.
+
+---
+
 ## 11. Performance & Allocations (`perf`)
 
 ### AUDIT-PERF-01 (P1) [OPEN]: High-Frequency String Allocation and Fractional Truncation in Text Measurement Cache
@@ -840,6 +917,27 @@ This review evaluates seven foundational dimensions:
   For a graph with 50 connections, this generates 1,000 discrete line commands per frame. In `canvas.js`, each line command triggers separate `ctx.beginPath()`, `ctx.moveTo()`, `ctx.lineTo()`, and `ctx.stroke()` state transitions, severely degrading Canvas 2D rasterization throughput.
 - **Remediation**:
   Introduce a native `DrawCmd::BezierCurve { p0, p1, p2, p3, stroke }` command in `@draw`, mapping directly to HTML5 Canvas `bezierCurveTo` in a single GPU/Canvas path.
+
+---
+
+### AUDIT-PERF-03 (P2) [OPEN]: 70-Command Quad Mesh Flood in 2D Color Picker Saturation-Value Surface
+- **Location**: [src/composite/color_picker.mbt#L178-L196](file:///a:/moonbit-project/src/composite/color_picker.mbt#L178-L196)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: Draw Command Batching Efficiency
+- **Description**:
+  To render the 2D saturation/value picking square, `color_picker` executes a nested loop over a $10 \times 7$ grid:
+  ```moonbit
+  for gx = 0; gx < grid_x; gx = gx + 1 {
+    for gy = 0; gy < grid_y; gy = gy + 1 {
+      ctx.painter().add_rect(c_rect, Color::rgb(cr, cg, cb), 0.0)
+    }
+  }
+  ```
+- **Failure Mechanism**:
+  This emits 70 separate `DrawCmd::Rect` commands and generates 70 `fillRect` calls on the Canvas 2D context every frame. In addition to high command overhead, the resulting surface displays visible blocky color banding instead of a continuous gradient.
+- **Remediation**:
+  Replace the 70-rectangle grid with two layered `DrawCmd::LinearGradient` passes (a horizontal gradient from white to pure hue overlaid with a vertical gradient from transparent to black) or a dedicated bilinear gradient primitive.
 
 ---
 
@@ -895,6 +993,26 @@ This review evaluates seven foundational dimensions:
 
 ---
 
+### AUDIT-MAINT-04 (P2) [OPEN]: Unscaled Layout Literals and Theme Tokens in Auxiliary Scroll and Toast Containers
+- **Location**: [src/widgets/scroll_area.mbt#L88-L175](file:///a:/moonbit-project/src/widgets/scroll_area.mbt#L88-L175), [src/widgets/toast.mbt#L134-L146](file:///a:/moonbit-project/src/widgets/toast.mbt#L134-L146)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: Anti-Hardcoding & Geometry Scale
+- **Description**:
+  Direct audit reveals multiple raw unscaled float literals in container sizing:
+  - `scroll_area.mbt#L88`: `let scrollbar_w = 6.0` (unscaled)
+  - `scroll_area.mbt#L90`: `inner_w = size.x - scrollbar_w - 4.0` (unscaled `4.0`)
+  - `scroll_area.mbt#L175`: `bar_x = container_rect.x + size.x - scrollbar_w - 2.0` (unscaled `2.0`)
+  - `scroll_area.mbt#L181`: `thumb_h < 24.0` (unscaled `24.0`)
+  - `scroll_area.mbt#L169`: `ctx.style.radius_md` (passed without `* scale`)
+  - `toast.mbt#L134-L146`: `toast_w = 280.0`, `spacing = 8.0`, `h = 38.0 / 54.0` (all unscaled)
+- **Failure Mechanism**:
+  At non-default DPI scale factors (`scale = 1.5` or `2.0`), scrollbar tracks become disproportionately thin and toast cards become cramped, causing text lines to overflow their boxes.
+- **Remediation**:
+  Normalize all layout constants to derive from `self.style` tokens scaled via `scale`.
+
+---
+
 ## 13. Dogfooding & Non-Code Defects (`dogfood`)
 
 ### AUDIT-DOGFOOD-01 (P1) [OPEN]: Raw HTML/DOM Top Header Bar in Benchmark Violating Pure Canvas Dogfooding Standard
@@ -908,6 +1026,20 @@ This review evaluates seven foundational dimensions:
   This directly violates Section 1 of the *Pure MoonBit Engine Dogfooding & Interface Harmony Standard* ("Strictly Forbid HTML/CSS DOM Simulation... All window chrome, docking panels, tree views, code editors, menu bars, and command palettes must be driven directly by MoonBit's UIContext").
 - **Remediation**:
   Replace the HTML DOM `.studio-header` in `benchmark.html` with a native MoonBit immediate-mode header bar rendered directly on the single canvas viewport.
+
+---
+
+### AUDIT-DOGFOOD-02 (P1) [OPEN]: Extensive HTML/DOM Simulation of App Header, Toolbar, and HUD in Minesweeper
+- **Location**: [examples/canvas/minesweeper.html#L373-L487](file:///a:/moonbit-project/examples/canvas/minesweeper.html#L373-L487)
+- **Status**: **Backlog**
+- **Priority**: **P1**
+- **Category**: Dogfooding Standard Compliance
+- **Description**:
+  `examples/canvas/minesweeper.html` implements application chrome (top header bar, segmented zoom controls, center/restart buttons, flag/pan toggle tools, and bottom telemetry capsule HUD) entirely using HTML/CSS DOM elements (`<header class="studio-header">`, `<div class="segmented-control">`, `<div class="studio-footer-pill">`) floating on top of the canvas, synchronized via JS event bridges.
+- **Failure Mechanism**:
+  This directly violates Section 1 of the *Pure MoonBit Engine Dogfooding & Interface Harmony Standard* ("Strictly Forbid HTML/CSS DOM Simulation... All window chrome, docking panels, tree views, code editors, menu bars, command palettes, and interactive consoles must be driven directly by MoonBit's UIContext").
+- **Remediation**:
+  Re-engineer the entire chrome and HUD of Minesweeper in native MoonBit using `UIContext` widgets (`@widgets.segmented_control`, `@composite.menu_bar`, `@widgets.badge`), rendering entirely within a single `<canvas>` viewport.
 
 ---
 
@@ -941,6 +1073,62 @@ This review evaluates seven foundational dimensions:
 
 ---
 
+### AUDIT-UX-03 (P1) [OPEN]: Lack of Horizontal Scrolling in Single-Line `TextEdit` Causing Text and Caret Clipping
+- **Location**: [src/widgets/text_edit.mbt#L227-L275](file:///a:/moonbit-project/src/widgets/text_edit.mbt#L227-L275)
+- **Status**: **Backlog**
+- **Priority**: **P1**
+- **Category**: UX Usability & Input Boundary
+- **Description**:
+  `TextEdit` always draws its text starting at fixed position `rect.x + padding_x` without managing a horizontal scroll offset (`scroll_x`).
+- **Failure Mechanism**:
+  When user input exceeds the container's width (e.g. typing 40 characters in a 200px field), text is clipped by `inner_clip`, and the cursor caret `caret_x = rect.x + padding_x + prefix_w` is rendered outside the visible area. The user cannot see what they are typing, cannot see the caret, and navigating with right arrow/End moves into an invisible void.
+- **Remediation**:
+  Introduce dynamic `scroll_x` tracking in `TextEdit` (storing offset in `Memory`), automatically scrolling the text window to keep the active cursor caret visible within `[rect.x + padding_x, rect.x + rect.w - padding_x]`.
+
+---
+
+### AUDIT-UX-04 (P2) [OPEN]: Non-Interactive Scrollbar Thumb and Missing Keyboard Reachability in VirtualList
+- **Location**: [src/widgets/virtual_list.mbt#L180-L204](file:///a:/moonbit-project/src/widgets/virtual_list.mbt#L180-L204)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: UX Accessibility & Interaction
+- **Description**:
+  `VirtualList` renders a scrollbar thumb purely as a passive rectangle (`p.add_rect(thumb_rect, ...)`).
+- **Failure Mechanism**:
+  Unlike `ScrollArea`, `VirtualList` does not support thumb hover highlights, dragging, or page jumping on track click. Furthermore, `VirtualList` never registers itself as focusable (`ctx.register_focusable`), making it completely unreachable via keyboard (PageUp / PageDown / Up / Down arrow keys fail to scroll).
+- **Remediation**:
+  Implement thumb hit-testing and dragging state machine in `VirtualList` matching `ScrollArea`, register container focusability, and support keyboard page/arrow scrolling.
+
+---
+
+### AUDIT-UX-05 (P2) [OPEN]: Hue Reset to 0° When Selecting Black, White, or Grayscale in ColorPicker
+- **Location**: [src/composite/color_picker.mbt#L148-L151](file:///a:/moonbit-project/src/composite/color_picker.mbt#L148-L151)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: UX Interaction & Color State
+- **Description**:
+  `ColorPicker` computes HSV from the caller's incoming RGB on every frame via `rgb_to_hsv(color.r, color.g, color.b)`.
+- **Failure Mechanism**:
+  For any achromatic color (where `r == g == b`, e.g. pure black `(0,0,0)`, pure white `(255,255,255)`, or gray), `delta = 0`, causing `rgb_to_hsv` to return `h = 0.0`. If a user selects a blue or green hue and then drags saturation to 0 or value to 0, the active hue immediately jumps to 0° (red), resetting the hue slider and 2D picker surface.
+- **Remediation**:
+  Persist the active `hue : Double` across frames in `ctx.memory` keyed by the color picker's ID, preserving the selected hue angle even when saturation or value drops to zero.
+
+---
+
+### AUDIT-UX-06 (P2) [OPEN]: Unconsumed Editing and Navigation Keys Leaking into Parent Containers
+- **Location**: [src/widgets/text_edit.mbt#L169-L196](file:///a:/moonbit-project/src/widgets/text_edit.mbt#L169-L196), [src/composite/tree_view.mbt#L178-L198](file:///a:/moonbit-project/src/composite/tree_view.mbt#L178-L198), [src/composite/code_editor.mbt#L411-L467](file:///a:/moonbit-project/src/composite/code_editor.mbt#L411-L467)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: Event Consumption & Focus Isolation
+- **Description**:
+  In `TextEdit`, `TreeView`, and `CodeEditor`, navigation keys (ArrowLeft, ArrowRight, ArrowUp, ArrowDown, Home, End, Backspace, Delete) are intercepted to mutate internal state.
+- **Failure Mechanism**:
+  `ctx.input.consume_key(...)` is never called for these navigation keys. When these widgets are embedded inside a scrollable area, window, or table, pressing arrow keys moves the internal cursor/selection AND simultaneously scrolls the parent viewport.
+- **Remediation**:
+  Call `ctx.input.consume_key(key)` for every handled navigation or editing key event.
+
+---
+
 ## 15. Technical Documentation Accuracy (`doc`)
 
 ### AUDIT-DOC-01 (P2) [OPEN]: Obsolete Method Signatures and Missing Post-v0.3 Components in API Reference
@@ -970,6 +1158,34 @@ This review evaluates seven foundational dimensions:
   Users inspecting the in-engine source code sample see a stale, pre-decoupling context representation rather than the modularized v0.5.1 architecture (`LayoutEngine`, `FocusManager`, `LayerManager`, `WindowManager`, `Memory`).
 - **Remediation**:
   Update the embedded source string in `studio_ide.mbt` to display the actual decomposed engine architecture.
+
+---
+
+### AUDIT-DOC-03 (P2) [OPEN]: Missing SVG Text Baseline Alignment Specification Causing Vertical Text Misplacement
+- **Location**: [src/draw/svg_exporter.mbt#L210-L234](file:///a:/moonbit-project/src/draw/svg_exporter.mbt#L210-L234)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: SVG Standard Compliance & Documentation
+- **Description**:
+  In `SvgExporter`, text is emitted as `<text x="..." y="..." font-size="...">`.
+- **Failure Mechanism**:
+  In SVG, default text alignment aligns the font baseline to `y`, whereas `moon-egui`'s layout coordinates define `pos.y` as the top of the text bounding box (rendered with `textBaseline = 'middle'` and `y + fontSize * 0.48` in Canvas 2D). Consequently, when exported to SVG, all text strings are rendered shifted upwards by approximately one font height, clipping out of containers or overlapping preceding lines.
+- **Remediation**:
+  Add `dominant-baseline="hanging"` (or adjust `y` to `pos.y + font_size * 0.8` with `dominant-baseline="alphabetic"`) in SVG `<text>` elements.
+
+---
+
+### AUDIT-DOC-04 (P3) [OPEN]: Undocumented Primitive Loss in `DrawList::to_mesh` (Text, Gradient, Clip Omissions)
+- **Location**: [src/draw/mesh.mbt#L308-L327](file:///a:/moonbit-project/src/draw/mesh.mbt#L308-L327)
+- **Status**: **Backlog**
+- **Priority**: **P3**
+- **Category**: API Technical Documentation Accuracy
+- **Description**:
+  `DrawList::to_mesh()` claims to batch convert an entire `DrawList` into a single contiguous `Mesh`.
+- **Failure Mechanism**:
+  `LinearGradient` is flattened to a plain monochrome `start_col` rect, and `Text` and `Clip` commands are silently discarded (`_ => ()`). This lossy conversion is neither documented in the public API docstrings nor guarded with warnings.
+- **Remediation**:
+  Formally document the tessellation limitations in `Mesh::tessellate_draw_list` docstrings, or implement vertex-color gradient interpolation for `LinearGradient`.
 
 ---
 
@@ -1036,4 +1252,17 @@ This review evaluates seven foundational dimensions:
 | **ux** | `AUDIT-UX-02` | Fixed-Width Value Text Container Causing Numeric Clipping & Layout Jitter | **P2** | Backlog |
 | **doc** | `AUDIT-DOC-01` | Obsolete Method Signatures and Missing Post-v0.3 Components in API Reference | **P2** | Backlog |
 | **doc** | `AUDIT-DOC-02` | Stale Monolithic `UIContext` Struct Code Sample in Flagship Studio IDE | **P3** | Backlog |
+| **logic** | `AUDIT-LOGIC-04` | Infinite Allocation Loop & OOM Crash on Unbalanced `begin_foreground` | **P0** | Backlog |
+| **logic** | `AUDIT-LOGIC-05` | Unreleased `active_id` in DockArea Splitter Causing Mouse Capture Leaks | **P1** | Backlog |
+| **robust**| `AUDIT-ROBUST-04`| Negative Rect Dimension Arithmetic Trap Under Squeezed Dock Nodes | **P1** | Backlog |
+| **robust**| `AUDIT-ROBUST-05`| Stale Index Mismatch & Positional Jumping on Toast Manual Dismissal | **P2** | Backlog |
+| **perf** | `AUDIT-PERF-03` | 70-Command Quad Mesh Flood in 2D Color Picker Sat/Val Surface | **P2** | Backlog |
+| **maint** | `AUDIT-MAINT-04` | Unscaled Layout Literals and Theme Tokens in Scroll & Toast Containers | **P2** | Backlog |
+| **dogfood**| `AUDIT-DOGFOOD-02`| Extensive HTML/DOM Simulation of App Header, Toolbar, HUD in Minesweeper | **P1** | Backlog |
+| **ux** | `AUDIT-UX-03` | Lack of Horizontal Scrolling in Single-Line `TextEdit` Causing Caret Clipping | **P1** | Backlog |
+| **ux** | `AUDIT-UX-04` | Non-Interactive Scrollbar Thumb & Missing Keyboard Focus in VirtualList | **P2** | Backlog |
+| **ux** | `AUDIT-UX-05` | Hue Reset to 0° When Selecting Black, White, or Grayscale in ColorPicker | **P2** | Backlog |
+| **ux** | `AUDIT-UX-06` | Unconsumed Editing & Navigation Keys Leaking into Parent Containers | **P2** | Backlog |
+| **doc** | `AUDIT-DOC-03` | Missing SVG Text Baseline Alignment Causing Vertical Text Misplacement | **P2** | Backlog |
+| **doc** | `AUDIT-DOC-04` | Undocumented Primitive Loss in `DrawList::to_mesh` (Text, Gradient Omissions) | **P3** | Backlog |
 
