@@ -886,6 +886,20 @@ This review evaluates seven foundational dimensions:
 
 ---
 
+### AUDIT-ROBUST-06 (P2) [RESOLVED]: Raw Mouse Position Hit-Testing and Missing Cursor Affordance in Scientific Plot & BarChart
+- **Location**: [src/composite/plot.mbt#L254-L260](file:///a:/moonbit-project/src/composite/plot.mbt#L254-L260), [L683-L689](file:///a:/moonbit-project/src/composite/plot.mbt#L683-L689)
+- **Status**: **RESOLVED** (Iteration 3). Replaced raw `rect.contains(mouse_pos)` with `ctx.is_hovered(...)` conforming to Widget Interaction Standard Rule 2; reported `crosshair` cursor when hovering over plot area and `pointer` cursor on bar hover; scaled layout threshold checks by `scale`.
+- **Priority**: **P2**
+- **Category**: Widget Interaction Standard & Hit-Testing
+- **Description**:
+  In `plot.mbt`, hit testing for interactive crosshair coordinates and bar chart hover indices used raw `plot_rect.contains(mouse_pos)` and `bar_rect.contains(mouse_pos)`.
+- **Failure Mechanism**:
+  Direct `rect.contains(mouse_pos)` bypasses `ctx.is_hovered`, causing hover state to trigger even when the chart is scrolled outside a container's scissor clip or occluded by an active modal/popup. Additionally, neither `Plot` nor `BarChart` reported cursor affordances via `ctx.set_cursor_icon(...)`, violating the Widget Interaction Standard.
+- **Remediation**:
+  Route all hit-testing through `ctx.is_hovered(rect)`, set `crosshair` cursor while hovering over the 2D plot area, and set `pointer` cursor while hovering over chart bars.
+
+---
+
 ## 11. Performance & Allocations (`perf`)
 
 ### AUDIT-PERF-01 (P1) [RESOLVED]: High-Frequency String Allocation and Fractional Truncation in Text Measurement Cache
@@ -1013,6 +1027,20 @@ This review evaluates seven foundational dimensions:
 
 ---
 
+### AUDIT-MAINT-05 (P2) [RESOLVED]: Unscaled Metric Literals and Invariant Violations in Table and Plot Dimensions
+- **Location**: [src/composite/table.mbt#L305-L480](file:///a:/moonbit-project/src/composite/table.mbt#L305-L480), [src/composite/plot.mbt#L225-L230](file:///a:/moonbit-project/src/composite/plot.mbt#L225-L230)
+- **Status**: **RESOLVED** (Iteration 3). Scaled layout threshold checks (`10.0 * scale`), table row heights, scrollbar widths, grab offsets, and padding in `table.mbt` and `plot.mbt`.
+- **Priority**: **P2**
+- **Category**: Anti-Hardcoding & Sizing Metrics
+- **Description**:
+  Layout dimension checks in `table.mbt` (header height fallback, minimum scrollbar thumb sizes, grab threshold) and `plot.mbt` (minimum plot width/height guards) used unscaled float literals (`10.0`, `18.0`, `20.0`).
+- **Failure Mechanism**:
+  At non-default DPI scale factors (`scale = 1.5` or `2.0`), unscaled thresholds cause layout guards to trigger prematurely or create disproportionately thin scrollbars and cramped table rows, violating scale invariance.
+- **Remediation**:
+  Multiply all geometry checks, padding, and minimum thumb metrics by `scale`.
+
+---
+
 ## 13. Dogfooding & Non-Code Defects (`dogfood`)
 
 ### AUDIT-DOGFOOD-01 (P1) [OPEN]: Raw HTML/DOM Top Header Bar in Benchmark Violating Pure Canvas Dogfooding Standard
@@ -1045,9 +1073,9 @@ This review evaluates seven foundational dimensions:
 
 ## 14. User Experience & Interaction (`ux`)
 
-### AUDIT-UX-01 (P2) [OPEN]: Missing Horizontal Scrolling and Header Clamping in Wide Composite Tables
+### AUDIT-UX-01 (P2) [RESOLVED]: Missing Horizontal Scrolling and Header Clamping in Wide Composite Tables
 - **Location**: [src/composite/table.mbt#L237-L420](file:///a:/moonbit-project/src/composite/table.mbt#L237-L420)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED** (Iteration 3). Implemented horizontal scrolling (`scroll_x` in `Memory`), Shift+wheel and horizontal gesture support, Left/Right arrow navigation with `consume_key`, scissor-clipped header (`push_clip(header_rect)`), and interactive horizontal + vertical scrollbars with thumb dragging, pointer cursors, and grab offsets.
 - **Priority**: **P2**
 - **Category**: UX & Boundary Handling
 - **Description**:
@@ -1129,11 +1157,25 @@ This review evaluates seven foundational dimensions:
 
 ---
 
+### AUDIT-UX-07 (P2) [RESOLVED]: Unconsumed Navigation Keys and Missing Focus Indicator in Rotary Knob and Segmented Control
+- **Location**: [src/composite/knob.mbt#L190-L245](file:///a:/moonbit-project/src/composite/knob.mbt#L190-L245), [src/widgets/segmented_control.mbt#L125-L165](file:///a:/moonbit-project/src/widgets/segmented_control.mbt#L125-L165)
+- **Status**: **RESOLVED** (Iteration 3). Added `ctx.input.consume_key(...)` for all navigation keys (ArrowUp/Down/Left/Right, Home, End, Backspace, Delete) in `Knob` and `SegmentedControl`; added visible focus rings for both widgets.
+- **Priority**: **P2**
+- **Category**: Keyboard Reachability & Event Consumption
+- **Description**:
+  In `Knob` and `SegmentedControl`, keyboard interaction altered values without consuming the key events or rendering proper focus rings.
+- **Failure Mechanism**:
+  When a knob or segmented control was focused inside a scrollable view or dock area, pressing Arrow keys adjusted the widget value while simultaneously scrolling the parent container. Furthermore, `SegmentedControl` lacked an outer focus ring, leaving users unable to visually identify which control currently held keyboard focus.
+- **Remediation**:
+  Call `ctx.input.consume_key(...)` for all handled keys and render a focus ring stroke when `resp.has_focus() || ctx.has_focus(id)`.
+
+---
+
 ## 15. Technical Documentation Accuracy (`doc`)
 
-### AUDIT-DOC-01 (P2) [OPEN]: Obsolete Method Signatures and Missing Post-v0.3 Components in API Reference
+### AUDIT-DOC-01 (P2) [RESOLVED]: Obsolete Method Signatures and Missing Post-v0.3 Components in API Reference
 - **Location**: [docs/API_DESIGN.md](file:///a:/moonbit-project/docs/API_DESIGN.md), [docs/API_DESIGN_zh.md](file:///a:/moonbit-project/docs/API_DESIGN_zh.md)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED** (Iteration 3). Synchronized `docs/API_DESIGN.md` and `docs/API_DESIGN_zh.md` with current v0.5.1 API signatures, updating `Response.id : Id`, marking `toggle` as implemented, and adding complete specifications for `VirtualList`, `Table`, `Plot`, `BarChart`, `Knob`, `Fader`, `DockArea`, `Mesh`, `SvgExporter`, and `Spring`.
 - **Priority**: **P2**
 - **Category**: Documentation Drift
 - **Description**:
@@ -1147,9 +1189,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-DOC-02 (P3) [OPEN]: Stale Monolithic `UIContext` Struct Code Sample in Flagship Studio IDE
+### AUDIT-DOC-02 (P3) [RESOLVED]: Stale Monolithic `UIContext` Struct Code Sample in Flagship Studio IDE
 - **Location**: [examples/canvas/studio_ide.mbt#L88-L100](file:///a:/moonbit-project/examples/canvas/studio_ide.mbt#L88-L100)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED** (Iteration 3). Updated the embedded source code string in `examples/canvas/studio_ide.mbt` to display the actual decomposed modular engine architecture (`LayoutEngine`, `FocusManager`, `LayerManager`, `WindowManager`, `Memory`, `Painter`).
 - **Priority**: **P3**
 - **Category**: Code Sample Drift
 - **Description**:
@@ -1248,10 +1290,10 @@ This review evaluates seven foundational dimensions:
 | **maint** | `AUDIT-MAINT-02` | Residual Widget-Specific Identifier Fields in `UIContext` Violating Decoupling | **P1** | Resolved (Iteration 1) |
 | **maint** | `AUDIT-MAINT-03` | Unscaled Metric Literals Bypassing Global Scale Invariance in Slider | **P2** | Resolved (Iteration 1) |
 | **dogfood**| `AUDIT-DOGFOOD-01`| Raw HTML/DOM Top Header Bar in Benchmark Violating Pure Canvas Standard | **P1** | Backlog |
-| **ux** | `AUDIT-UX-01` | Missing Horizontal Scrolling and Header Clamping in Wide Composite Tables | **P2** | Backlog |
+| **ux** | `AUDIT-UX-01` | Missing Horizontal Scrolling and Header Clamping in Wide Composite Tables | **P2** | Resolved (Iteration 3) |
 | **ux** | `AUDIT-UX-02` | Fixed-Width Value Text Container Causing Numeric Clipping & Layout Jitter | **P2** | Resolved (Iteration 2) |
-| **doc** | `AUDIT-DOC-01` | Obsolete Method Signatures and Missing Post-v0.3 Components in API Reference | **P2** | Backlog |
-| **doc** | `AUDIT-DOC-02` | Stale Monolithic `UIContext` Struct Code Sample in Flagship Studio IDE | **P3** | Backlog |
+| **doc** | `AUDIT-DOC-01` | Obsolete Method Signatures and Missing Post-v0.3 Components in API Reference | **P2** | Resolved (Iteration 3) |
+| **doc** | `AUDIT-DOC-02` | Stale Monolithic `UIContext` Struct Code Sample in Flagship Studio IDE | **P3** | Resolved (Iteration 3) |
 | **logic** | `AUDIT-LOGIC-04` | Infinite Allocation Loop & OOM Crash on Unbalanced `begin_foreground` | **P0** | Resolved (Iteration 1) |
 | **logic** | `AUDIT-LOGIC-05` | Unreleased `active_id` in DockArea Splitter Causing Mouse Capture Leaks | **P1** | Resolved (Iteration 1) |
 | **robust**| `AUDIT-ROBUST-04`| Negative Rect Dimension Arithmetic Trap Under Squeezed Dock Nodes | **P1** | Resolved (Iteration 1) |
@@ -1265,4 +1307,8 @@ This review evaluates seven foundational dimensions:
 | **ux** | `AUDIT-UX-06` | Unconsumed Editing & Navigation Keys Leaking into Parent Containers | **P2** | Resolved (Iteration 2) |
 | **doc** | `AUDIT-DOC-03` | Missing SVG Text Baseline Alignment Causing Vertical Text Misplacement | **P2** | Resolved (Iteration 2) |
 | **doc** | `AUDIT-DOC-04` | Undocumented Primitive Loss in `DrawList::to_mesh` (Text, Gradient Omissions) | **P3** | Resolved (Iteration 2) |
+| **robust**| `AUDIT-ROBUST-06`| Raw Mouse Position Hit-Testing & Missing Cursor in Plot/BarChart | **P2** | Resolved (Iteration 3) |
+| **maint** | `AUDIT-MAINT-05` | Unscaled Metric Literals and Invariant Violations in Table and Plot | **P2** | Resolved (Iteration 3) |
+| **ux** | `AUDIT-UX-07` | Unconsumed Navigation Keys & Missing Focus Indicator in Knob and SegmentedControl | **P2** | Resolved (Iteration 3) |
+
 
