@@ -66,6 +66,7 @@ test "plot_multi_series_and_crosshair_tracking" {
     assert_true(coord.x >= 0.0 && coord.x <= 100.0)
     assert_true(coord.y >= 0.0 && coord.y <= 100.0)
   }
+  assert_eq(ui.cursor_icon(), "crosshair")
 
   let _ = ui.end_frame()
 }
@@ -90,6 +91,7 @@ test "bar_chart_layout_and_hover_interaction" {
   assert_true(resp.rect.w == 280.0)
   assert_true(resp.rect.h == 160.0)
   assert_true(hover_bar is Some(_))
+  assert_eq(ui.cursor_icon(), "pointer")
 
   let _ = ui.end_frame()
 }

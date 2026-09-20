@@ -226,7 +226,7 @@ pub fn plot(
   // Inner Plot Coordinate Rect
   let plot_w = rect.w - pad_left - pad_right
   let plot_h = rect.h - pad_top - pad_bottom
-  if plot_w <= 10.0 || plot_h <= 10.0 {
+  if plot_w <= 10.0 * scale || plot_h <= 10.0 * scale {
     return (None, resp)
   }
   let plot_rect = @math.Rect::new(
@@ -438,8 +438,12 @@ pub fn plot(
 
   // 5. Interactive Crosshair & Tooltip Readout
   let mouse_pos = ctx.input.mouse_pos
-  let is_hovered = plot_rect.contains(mouse_pos)
+  let is_hovered = ctx.is_hovered(plot_rect)
   let mut hovered_coord : @math.Vec2? = None
+
+  if is_hovered {
+    ctx.set_cursor_icon("crosshair")
+  }
 
   if is_hovered && show_crosshair {
     hovered_coord = Some(
@@ -609,7 +613,7 @@ pub fn bar_chart(
 
   let plot_w = rect.w - pad_left - pad_right
   let plot_h = rect.h - pad_top - pad_bottom
-  if plot_w <= 10.0 || plot_h <= 10.0 {
+  if plot_w <= 10.0 * scale || plot_h <= 10.0 * scale {
     return (None, resp)
   }
   let plot_rect = @math.Rect::new(
@@ -666,7 +670,6 @@ pub fn bar_chart(
     4.0 * scale
   }
 
-  let mouse_pos = ctx.input.mouse_pos
   let mut hovered_idx : Int? = None
 
   for i = 0; i < count; i = i + 1 {
@@ -677,7 +680,7 @@ pub fn bar_chart(
     let by = plot_bottom - bar_h
     let bar_rect = @math.Rect::new(bx, by, bar_w, bar_h)
 
-    let is_bar_hovered = bar_rect.contains(mouse_pos)
+    let is_bar_hovered = ctx.is_hovered(bar_rect)
     if is_bar_hovered {
       hovered_idx = Some(i)
       ctx.set_cursor_icon("pointer")
