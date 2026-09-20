@@ -127,23 +127,29 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
   let safe_range = if range > 0.000001 { range } else { 1.0 }
 
   let mut new_val = self.value
-  if is_active && ctx.input.mouse_down {
-    let mouse_x = ctx.input.mouse_pos.x
-    let mut pct = (mouse_x - track_rect.x) / track_rect.w
-    if pct < 0.0 {
-      pct = 0.0
-    } else if pct > 1.0 {
-      pct = 1.0
-    }
-    new_val = clamped_min + pct * safe_range
-    if self.step is Some(s) {
-      if s > 0.000001 {
-        let steps_cnt = ((new_val - clamped_min) / s + 0.5).to_int().to_double()
-        new_val = clamped_min + steps_cnt * s
-        if new_val > clamped_max {
-          new_val = clamped_max
+  if is_active {
+    if ctx.input.mouse_down {
+      let mouse_x = ctx.input.mouse_pos.x
+      let mut pct = (mouse_x - track_rect.x) / track_rect.w
+      if pct < 0.0 {
+        pct = 0.0
+      } else if pct > 1.0 {
+        pct = 1.0
+      }
+      new_val = clamped_min + pct * safe_range
+      if self.step is Some(s) {
+        if s > 0.000001 {
+          let steps_cnt = ((new_val - clamped_min) / s + 0.5)
+            .to_int()
+            .to_double()
+          new_val = clamped_min + steps_cnt * s
+          if new_val > clamped_max {
+            new_val = clamped_max
+          }
         }
       }
+    } else {
+      ctx.set_active_id(@core.Id::zero())
     }
   }
 
@@ -186,25 +192,34 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
     ctx
     .painter()
     .add_text(
-      @math.Vec2::new(rect.x, rect.y + (h - 13.0) * 0.5),
+      @math.Vec2::new(rect.x, rect.y + (h - font_size) * 0.5),
       self.label,
-      13.0,
+      font_size,
       @color.Color::text_primary(),
     )
   }
 
+  let track_radius = 3.0 * scale
+
   // Draw Recessed Track Background
-  ctx.painter().add_rect(track_rect, @color.Color::bg_surface(), 3.0)
+  ctx.painter().add_rect(track_rect, @color.Color::bg_surface(), track_radius)
   ctx
   .painter()
-  .add_rect_stroke(track_rect, @color.Color::border_muted(), 1.0, 3.0)
+  .add_rect_stroke(
+    track_rect,
+    @color.Color::border_muted(),
+    1.0 * scale,
+    track_radius,
+  )
 
   // Draw Discrete Ticks (25%, 50%, 75%)
   let tick_col = @color.Color::border_default()
   for t in [0.25, 0.5, 0.75] {
     let tick_x = track_rect.x + track_rect.w * t
     let tick_y = track_rect.y + track_rect.h * 0.5
-    ctx.painter().add_circle(@math.Vec2::new(tick_x, tick_y), 1.5, tick_col)
+    ctx
+    .painter()
+    .add_circle(@math.Vec2::new(tick_x, tick_y), 1.5 * scale, tick_col)
   }
 
   // Draw Active Progress Fill
@@ -222,7 +237,9 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
       active_w,
       track_rect.h,
     )
-    ctx.painter().add_rect(fill_rect, @color.Color::accent_primary(), 3.0)
+    ctx
+    .painter()
+    .add_rect(fill_rect, @color.Color::accent_primary(), track_radius)
   }
 
   // Compute Value Text
@@ -267,7 +284,7 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
   } else {
     @color.Color::accent_primary()
   }
-  let thumb_stroke_w = if is_focused { 2.0 * scale } else { 1.5 }
+  let thumb_stroke_w = if is_focused { 2.0 * scale } else { 1.5 * scale }
   ctx
   .painter()
   .add_circle_stroke(
@@ -291,7 +308,7 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
     .add_rect_stroke(
       bubble_rect,
       @color.Color::border_default(),
-      1.0,
+      1.0 * scale,
       radius_sm,
     )
     let bubble_text_pos = @math.Vec2::new(
@@ -307,9 +324,12 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
   ctx
   .painter()
   .add_text(
-    @math.Vec2::new(track_rect.x + track_w + 10.0, rect.y + (h - 12.0) * 0.5),
+    @math.Vec2::new(
+      track_rect.x + track_w + 10.0 * scale,
+      rect.y + (h - font_sm) * 0.5,
+    ),
     val_text,
-    12.0,
+    font_sm,
     @color.Color::text_secondary(),
   )
 
@@ -438,15 +458,19 @@ pub fn drag_value(
   }
 
   // 2. Pointer drag tracking
-  if is_active && ctx.input.mouse_down {
-    let delta_x = ctx.input.mouse_delta.x
-    new_val = new_val + delta_x * step
-    if min < max {
-      if new_val < min {
-        new_val = min
-      } else if new_val > max {
-        new_val = max
+  if is_active {
+    if ctx.input.mouse_down {
+      let delta_x = ctx.input.mouse_delta.x
+      new_val = new_val + delta_x * step
+      if min < max {
+        if new_val < min {
+          new_val = min
+        } else if new_val > max {
+          new_val = max
+        }
       }
+    } else {
+      ctx.set_active_id(@core.Id::zero())
     }
   }
 
@@ -500,14 +524,14 @@ pub fn drag_value(
     }
   }
 
-  ctx.painter().add_rect_stroke(box_rect, border_color, 1.0, radius_sm)
+  ctx.painter().add_rect_stroke(box_rect, border_color, 1.0 * scale, radius_sm)
   if is_focused {
     ctx
     .painter()
     .add_rect_stroke(
       box_rect.expand(2.0 * scale),
       @color.Color::border_focus(),
-      1.5,
+      1.5 * scale,
       radius_sm + 2.0 * scale,
     )
   }

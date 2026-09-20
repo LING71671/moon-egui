@@ -131,26 +131,36 @@ pub fn toast_stack(
     None => 600.0
   }
 
-  let toast_w = 280.0
-  let spacing = 8.0
+  let scale = ctx.style.scale
+  let toast_w = 280.0 * scale
+  let spacing = 8.0 * scale
+  let margin = 20.0 * scale
 
   let placed_rects : Array[@math.Rect] = []
   match anchor {
     BottomRight => {
-      let x = vw - toast_w - 20.0
-      let mut cur_bottom = vh - 20.0
+      let x = vw - toast_w - margin
+      let mut cur_bottom = vh - margin
       for toast in next_active {
-        let h = if toast.message.is_empty() { 38.0 } else { 54.0 }
+        let h = if toast.message.is_empty() {
+          38.0 * scale
+        } else {
+          54.0 * scale
+        }
         let y = cur_bottom - h
         placed_rects.push(@math.Rect::new(x, y, toast_w, h))
         cur_bottom = cur_bottom - h - spacing
       }
     }
     TopRight => {
-      let x = vw - toast_w - 20.0
-      let mut cur_top = 20.0
+      let x = vw - toast_w - margin
+      let mut cur_top = margin
       for toast in next_active {
-        let h = if toast.message.is_empty() { 38.0 } else { 54.0 }
+        let h = if toast.message.is_empty() {
+          38.0 * scale
+        } else {
+          54.0 * scale
+        }
         let y = cur_top
         placed_rects.push(@math.Rect::new(x, y, toast_w, h))
         cur_top = cur_top + h + spacing
@@ -158,9 +168,13 @@ pub fn toast_stack(
     }
     BottomCenter => {
       let x = (vw - toast_w) * 0.5
-      let mut cur_bottom = vh - 20.0
+      let mut cur_bottom = vh - margin
       for toast in next_active {
-        let h = if toast.message.is_empty() { 38.0 } else { 54.0 }
+        let h = if toast.message.is_empty() {
+          38.0 * scale
+        } else {
+          54.0 * scale
+        }
         let y = cur_bottom - h
         placed_rects.push(@math.Rect::new(x, y, toast_w, h))
         cur_bottom = cur_bottom - h - spacing
@@ -180,11 +194,12 @@ pub fn toast_stack(
   // first frame.
   for i = 0; i < next_active.length(); i = i + 1 {
     let rect = placed_rects[i]
+    let close_size = 20.0 * scale
     let close_btn_rect = @math.Rect::new(
-      rect.x + toast_w - 26.0,
-      rect.y + 6.0,
-      20.0,
-      20.0,
+      rect.x + toast_w - 26.0 * scale,
+      rect.y + 6.0 * scale,
+      close_size,
+      close_size,
     )
     if ctx.is_hovered(close_btn_rect) {
       ctx.set_cursor_icon("pointer")
@@ -199,15 +214,18 @@ pub fn toast_stack(
   }
 
   let final_active : Array[Toast] = []
-  for toast in next_active {
+  let final_rects : Array[@math.Rect] = []
+  for i = 0; i < next_active.length(); i = i + 1 {
+    let toast = next_active[i]
     if Some(toast.id) != dismissed_id {
       final_active.push(toast)
+      final_rects.push(placed_rects[i])
     }
   }
 
   for i = 0; i < final_active.length(); i = i + 1 {
     let toast = final_active[i]
-    let rect = placed_rects[i]
+    let rect = final_rects[i]
 
     let scale = ctx.style.scale
     let toast_radius = (ctx.style.radius_md + 1.0) * scale
@@ -238,23 +256,36 @@ pub fn toast_stack(
       Warning => @color.Color::warning()
       Danger => @color.Color::danger()
     }
+    let font_title = ctx.style.font_normal * scale
+    let font_detail = ctx.style.font_small * scale
+    let font_close = 11.5 * scale
+
     ctx
     .painter()
     .add_rect(
-      @math.Rect::new(rect.x, rect.y + 5.0, 3.5, rect.h - 10.0),
+      @math.Rect::new(
+        rect.x,
+        rect.y + 5.0 * scale,
+        3.5 * scale,
+        rect.h - 10.0 * scale,
+      ),
       kind_color,
-      1.5,
+      1.5 * scale,
     )
 
     let has_detail = !toast.message.is_empty()
-    let title_y = if has_detail { rect.y + 10.0 } else { rect.y + 12.0 }
+    let title_y = if has_detail {
+      rect.y + 10.0 * scale
+    } else {
+      rect.y + 12.0 * scale
+    }
 
     ctx
     .painter()
     .add_text(
-      @math.Vec2::new(rect.x + 16.0, title_y),
+      @math.Vec2::new(rect.x + 16.0 * scale, title_y),
       toast.title,
-      12.5,
+      font_title,
       @color.Color::text_primary(),
     )
 
@@ -262,15 +293,20 @@ pub fn toast_stack(
       ctx
       .painter()
       .add_text(
-        @math.Vec2::new(rect.x + 16.0, rect.y + 29.0),
+        @math.Vec2::new(rect.x + 16.0 * scale, rect.y + 29.0 * scale),
         toast.message,
-        11.0,
+        font_detail,
         @color.Color::text_muted(),
       )
     }
 
     let close_hover = ctx.is_hovered(
-      @math.Rect::new(rect.x + toast_w - 24.0, rect.y + 6.0, 18.0, 18.0),
+      @math.Rect::new(
+        rect.x + toast_w - 24.0 * scale,
+        rect.y + 6.0 * scale,
+        18.0 * scale,
+        18.0 * scale,
+      ),
     )
     let close_col = if close_hover {
       @color.Color::text_primary()
@@ -280,9 +316,9 @@ pub fn toast_stack(
     ctx
     .painter()
     .add_text(
-      @math.Vec2::new(rect.x + toast_w - 18.0, rect.y + 9.0),
+      @math.Vec2::new(rect.x + toast_w - 18.0 * scale, rect.y + 9.0 * scale),
       "x",
-      11.5,
+      font_close,
       close_col,
     )
   }

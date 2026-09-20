@@ -85,9 +85,10 @@ pub fn scroll_area(
   let prev_avail_w = ctx.available_width()
 
   // Adjust available width if scrollbar is present
-  let scrollbar_w = 6.0
+  let scale = ctx.style.scale
+  let scrollbar_w = 6.0 * scale
   let inner_w = if max_scroll > 0.0 {
-    size.x - scrollbar_w - 4.0
+    size.x - scrollbar_w - 4.0 * scale
   } else {
     size.x
   }
@@ -165,21 +166,21 @@ pub fn scroll_area(
     .add_rect_stroke(
       container_rect,
       @color.Color::border_focus(),
-      1.0 * ctx.style.scale,
-      ctx.style.radius_md,
+      1.0 * scale,
+      ctx.style.radius_md * scale,
     )
   }
 
   // Draw scrollbar thumb if content exceeds container height
   if real_max_scroll > 0.0 && measured_content_h > 0.0 {
-    let bar_x = container_rect.x + size.x - scrollbar_w - 2.0
+    let bar_x = container_rect.x + size.x - scrollbar_w - 2.0 * scale
     let bar_track_y = container_rect.y
     let bar_track_h = size.y
 
     let ratio = size.y / measured_content_h
     let raw_thumb_h = size.y * ratio
-    let thumb_h = if raw_thumb_h < 24.0 {
-      24.0
+    let thumb_h = if raw_thumb_h < 24.0 * scale {
+      24.0 * scale
     } else if raw_thumb_h > bar_track_h {
       bar_track_h
     } else {
@@ -189,9 +190,9 @@ pub fn scroll_area(
     let usable_h = bar_track_h - thumb_h
     let thumb_id = ctx.id_stack.derive_id(id_salt + "::thumb")
     let track_rect = @math.Rect::new(
-      bar_x - 2.0,
+      bar_x - 2.0 * scale,
       bar_track_y,
-      scrollbar_w + 4.0,
+      scrollbar_w + 4.0 * scale,
       bar_track_h,
     )
 
@@ -240,6 +241,8 @@ pub fn scroll_area(
     } else {
       @color.Color::border_muted()
     }
-    ctx.painter().add_rect(active_thumb_rect, thumb_color, ctx.style.radius_sm)
+    ctx
+    .painter()
+    .add_rect(active_thumb_rect, thumb_color, ctx.style.radius_sm * scale)
   }
 }

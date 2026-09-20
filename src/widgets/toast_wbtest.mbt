@@ -182,3 +182,19 @@ test "toast: close button stays clickable once the hover blocker is live" {
   let _ = ctx.end_frame()
   assert_eq(r2.dismissed_id, Some("linger"))
 }
+
+///|
+test "toast: dismissing first toast retains remaining toast correctly" {
+  let ctx = @core.UIContext::new()
+  ctx.begin_frame(
+    @core.RawInput::from_mouse(@math.Vec2::new(760.0, 555.0), true),
+  )
+  let t1 = Toast::new("first", "Toast 1", duration=60.0)
+  let t2 = Toast::new("second", "Toast 2", duration=60.0)
+  let res = toast_stack(ctx, [t1, t2])
+  let _ = ctx.end_frame()
+
+  assert_eq(res.dismissed_id, Some("first"))
+  assert_eq(res.active_toasts.length(), 1)
+  assert_eq(res.active_toasts[0].id, "second")
+}

@@ -789,3 +789,24 @@ test "input: secondary mouse click sets secondary_clicked on response" {
   assert_true(resp1.secondary_clicked())
   assert_true(!resp1.clicked())
 }
+
+///|
+test "widgets: slider releases active_id on mouse release" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Mouse down on slider track
+  let raw1 = @core.RawInput::from_mouse(@math.Vec2::new(100.0, 10.0), true)
+  ctx.begin_frame(raw1)
+  let (_, resp1) = slider(ctx, "TestSlider", 50.0, 0.0, 100.0)
+  let _ = ctx.end_frame()
+
+  assert_eq(ctx.active_id(), resp1.id)
+
+  // Frame 2: Mouse released
+  let raw2 = @core.RawInput::from_mouse(@math.Vec2::new(100.0, 10.0), false)
+  ctx.begin_frame(raw2)
+  let _ = slider(ctx, "TestSlider", 50.0, 0.0, 100.0)
+  let _ = ctx.end_frame()
+
+  assert_eq(ctx.active_id(), @core.Id::zero())
+}
