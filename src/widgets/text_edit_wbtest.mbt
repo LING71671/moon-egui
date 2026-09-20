@@ -116,3 +116,71 @@ test "text_edit: caret line rendered when visible and omitted when blinking off"
   }
   assert_true(has_line4)
 }
+
+///|
+test "widgets: text_edit horizontal scroll tracking and key consumption" {
+  let ctx = @core.UIContext::new()
+  let long_text = "The quick brown fox jumps over the lazy dog and runs across the field"
+  let size = @math.Vec2::new(120.0, 32.0)
+
+  // Frame 1: click on the text edit to focus it and place cursor at end
+  let raw1 = @core.RawInput::from_mouse(@math.Vec2::new(30.0, 15.0), true)
+  ctx.begin_frame(raw1)
+  let (_, resp1) = text_edit_sized(ctx, "scroll_test", long_text, "", size)
+  let _ = ctx.end_frame()
+  assert_true(resp1.has_focus() || ctx.has_focus(resp1.id))
+
+  // Frame 2: press End to jump to end of text
+  let raw2 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(Key::End, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw2)
+  let (_, resp2) = text_edit_sized(ctx, "scroll_test", long_text, "", size)
+  // Check that Key::End was consumed
+  assert_true(ctx.input().is_key_consumed(Key::End))
+  let _ = ctx.end_frame()
+
+  // scroll_x should be positive because cursor is at end of long string
+  let scroll_x = ctx
+    .memory()
+    .get_double_or_default(resp2.id, 0.0, tag="scroll_x")
+  assert_true(scroll_x > 0.0)
+
+  // Frame 3: press ArrowLeft - should consume ArrowLeft
+  let raw3 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(Key::ArrowLeft, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw3)
+  let _ = text_edit_sized(ctx, "scroll_test", long_text, "", size)
+  assert_true(ctx.input().is_key_consumed(Key::ArrowLeft))
+  let _ = ctx.end_frame()
+
+  // Frame 4: press Home - jumps to beginning and resets scroll_x to 0.0
+  let raw4 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(Key::Home, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw4)
+  let _ = text_edit_sized(ctx, "scroll_test", long_text, "", size)
+  assert_true(ctx.input().is_key_consumed(Key::Home))
+  let _ = ctx.end_frame()
+
+  let home_scroll_x = ctx
+    .memory()
+    .get_double_or_default(resp2.id, 0.0, tag="scroll_x")
+  assert_eq(home_scroll_x, 0.0)
+}

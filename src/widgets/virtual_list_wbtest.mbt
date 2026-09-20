@@ -78,3 +78,102 @@ test "virtual_list: empty list handling" {
   assert_eq(resp.first_visible, 0)
   assert_eq(resp.last_visible, -1)
 }
+
+///|
+test "virtual_list: focus and keyboard navigation" {
+  let ctx = @core.UIContext::new()
+  let list_id = ctx.id_stack.derive_id("vlist_key_test")
+
+  // Frame 1: mouse down on container
+  let raw1 = @core.RawInput::from_mouse(@math.Vec2::new(50.0, 50.0), true)
+  ctx.begin_frame(raw1)
+  let _ = virtual_list(ctx, "vlist_key_test", 100, 300.0, item_height=30.0, fn(
+    _,
+    _,
+  ) {
+
+  })
+  let _ = ctx.end_frame()
+
+  // Frame 2: mouse release completes click, establishing focused state
+  let raw2 = @core.RawInput::from_mouse(@math.Vec2::new(50.0, 50.0), false)
+  ctx.begin_frame(raw2)
+  let _ = virtual_list(ctx, "vlist_key_test", 100, 300.0, item_height=30.0, fn(
+    _,
+    _,
+  ) {
+
+  })
+  let _ = ctx.end_frame()
+  assert_true(ctx.has_focus(list_id))
+
+  // Frame 3: press ArrowDown -> should advance scroll_y by 30.0 and consume key
+  let raw3 = @core.RawInput::with_events(
+    @math.Vec2::new(50.0, 50.0),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(Key::ArrowDown, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw3)
+  let _ = virtual_list(ctx, "vlist_key_test", 100, 300.0, item_height=30.0, fn(
+    _,
+    _,
+  ) {
+
+  })
+  assert_true(ctx.input().is_key_consumed(Key::ArrowDown))
+  let dl3 = ctx.end_frame()
+
+  let scroll1 = ctx.get_scroll_offset(list_id)
+  assert_eq(scroll1, 30.0)
+
+  // Verify focus ring is rendered in draw list
+  let mut has_focus_ring = false
+  for i = 0; i < dl3.len(); i = i + 1 {
+    if dl3.get_command(i) is Some(@draw.DrawCmd::RectStroke(_)) {
+      has_focus_ring = true
+    }
+  }
+  assert_true(has_focus_ring)
+
+  // Frame 4: press End -> jump to max_scroll
+  let raw4 = @core.RawInput::with_events(
+    @math.Vec2::new(50.0, 50.0),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(Key::End, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw4)
+  let _ = virtual_list(ctx, "vlist_key_test", 100, 300.0, item_height=30.0, fn(
+    _,
+    _,
+  ) {
+
+  })
+  assert_true(ctx.input().is_key_consumed(Key::End))
+  let _ = ctx.end_frame()
+
+  let max_s = 100.0 * 30.0 - 300.0
+  let scroll_end = ctx.get_scroll_offset(list_id)
+  assert_eq(scroll_end, max_s)
+}
+
+///|
+test "virtual_list: scrollbar thumb reports pointer cursor" {
+  let ctx = @core.UIContext::new()
+
+  // Frame 1: hover over scrollbar thumb area (right edge of 300x300 container)
+  let raw1 = @core.RawInput::from_mouse(@math.Vec2::new(295.0, 10.0), false)
+  ctx.begin_frame(raw1)
+  let list = VirtualList::new("vlist_thumb_test", 100, 300.0)
+    .width(300.0)
+    .item_height(30.0)
+  let _ = list.render(ctx, fn(_, _) {  })
+  let _ = ctx.end_frame()
+
+  assert_eq(ctx.cursor_icon(), "pointer")
+}

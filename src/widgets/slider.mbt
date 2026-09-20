@@ -84,6 +84,7 @@ pub impl @core.Widget for SliderRef with fn ui(self, ctx : UIContext) -> Respons
 pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
   let scale = ctx.style.scale
   let font_size = ctx.style.font_normal * scale
+  let font_sm = ctx.style.font_small * scale
   let label_size = ctx.measure_text(self.label, font_size)
   let label_w = if self.label.length() > 0 {
     label_size.x + 12.0 * scale
@@ -91,7 +92,41 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
     0.0
   }
   let track_w = 120.0 * scale
-  let val_w = 42.0 * scale
+
+  let clamped_min = if self.min < self.max { self.min } else { self.max }
+  let clamped_max = if self.max > self.min { self.max } else { self.min }
+  let range = clamped_max - clamped_min
+  let safe_range = if range > 0.000001 { range } else { 1.0 }
+
+  let format_val = fn(v : Double) -> String {
+    if safe_range >= 10.0 {
+      v.to_int().to_string()
+    } else {
+      let int_part = v.to_int()
+      let diff = v - int_part.to_double()
+      let abs_diff = if diff < 0.0 { -diff } else { diff }
+      let frac_part = (abs_diff * 100.0).to_int()
+      let frac_str = if frac_part < 10 {
+        "0" + frac_part.to_string()
+      } else {
+        frac_part.to_string()
+      }
+      int_part.to_string() + "." + frac_str
+    }
+  }
+
+  let min_str = format_val(clamped_min)
+  let max_str = format_val(clamped_max)
+  let min_text_w = ctx.measure_text(min_str, font_sm).x
+  let max_text_w = ctx.measure_text(max_str, font_sm).x
+  let raw_val_w = if min_text_w > max_text_w { min_text_w } else { max_text_w }
+  let base_val_w = 40.0 * scale
+  let val_w = if raw_val_w + 12.0 * scale > base_val_w {
+    raw_val_w + 12.0 * scale
+  } else {
+    base_val_w
+  }
+
   let total_w = label_w + track_w + val_w + 8.0 * scale
   let h = ctx.style.control_h_sm * scale
   let (id, rect, resp) = ctx.allocate_space(@math.Vec2::new(total_w, h))
@@ -121,10 +156,6 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
   if is_hovered || is_active {
     ctx.set_cursor_icon("ew-resize")
   }
-  let clamped_min = if self.min < self.max { self.min } else { self.max }
-  let clamped_max = if self.max > self.min { self.max } else { self.min }
-  let range = clamped_max - clamped_min
-  let safe_range = if range > 0.000001 { range } else { 1.0 }
 
   let mut new_val = self.value
   if is_active {
@@ -243,26 +274,11 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
   }
 
   // Compute Value Text
-  let val_text = if safe_range >= 10.0 {
-    new_val.to_int().to_string()
-  } else {
-    let int_part = new_val.to_int()
-    let diff = new_val - int_part.to_double()
-    let abs_diff = if diff < 0.0 { -diff } else { diff }
-    let frac_part = (abs_diff * 100.0).to_int()
-    let frac_str = if frac_part < 10 {
-      "0" + frac_part.to_string()
-    } else {
-      frac_part.to_string()
-    }
-    int_part.to_string() + "." + frac_str
-  }
+  let val_text = format_val(new_val)
 
   // Draw White Ceramic Thumb Handle with Cobalt Border
   let thumb_cx = track_rect.x + active_w
   let thumb_cy = track_rect.y + track_rect.h * 0.5
-  let scale = ctx.style.scale
-  let font_sm = ctx.style.font_small * scale
   let radius_sm = ctx.style.radius_sm * scale
 
   let thumb_r = if is_active {

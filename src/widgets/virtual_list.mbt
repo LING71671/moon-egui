@@ -93,14 +93,19 @@ pub fn VirtualList::render(
   }
 
   let list_id = ctx.id_stack.derive_id(self.id_salt)
-  let (_id, container_rect, _resp) = ctx.allocate_space(
+  let (_id, container_rect, resp) = ctx.allocate_space(
     @math.Vec2::new(total_w, list_h),
   )
+  ctx.register_focusable(list_id)
 
-  let is_hovered = ctx.is_hovered(container_rect)
+  let is_hovered = resp.hovered()
   if is_hovered {
     ctx.set_wants_capture_mouse(true)
   }
+  if resp.clicked() || (is_hovered && ctx.input.mouse_pressed) {
+    ctx.request_focus(list_id)
+  }
+  let is_focused = resp.has_focus() || ctx.has_focus(list_id)
 
   let total_content_h = self.total_items.to_double() * item_h
   let max_scroll = if total_content_h > list_h {
@@ -116,6 +121,102 @@ pub fn VirtualList::render(
     let dy = ctx.input.scroll_delta.y
     if dy != 0.0 {
       scroll_y = scroll_y + dy
+    }
+  }
+
+  // Keyboard navigation when focused
+  if is_focused && max_scroll > 0.0 {
+    if ctx.input.key_pressed(Key::ArrowUp) {
+      scroll_y = scroll_y - item_h
+      ctx.input.consume_key(Key::ArrowUp)
+    }
+    if ctx.input.key_pressed(Key::ArrowDown) {
+      scroll_y = scroll_y + item_h
+      ctx.input.consume_key(Key::ArrowDown)
+    }
+    if ctx.input.key_pressed(Key::PageUp) {
+      scroll_y = scroll_y - list_h
+      ctx.input.consume_key(Key::PageUp)
+    }
+    if ctx.input.key_pressed(Key::PageDown) {
+      scroll_y = scroll_y + list_h
+      ctx.input.consume_key(Key::PageDown)
+    }
+    if ctx.input.key_pressed(Key::Home) {
+      scroll_y = 0.0
+      ctx.input.consume_key(Key::Home)
+    }
+    if ctx.input.key_pressed(Key::End) {
+      scroll_y = max_scroll
+      ctx.input.consume_key(Key::End)
+    }
+  }
+
+  // Process scrollbar thumb dragging
+  let scrollbar_w = 5.0 * scale
+  let thumb_id = ctx.id_stack.derive_id(self.id_salt + "::thumb")
+  if max_scroll > 0.0 {
+    let track_x = container_rect.x +
+      container_rect.w -
+      scrollbar_w -
+      2.0 * scale
+    let min_thumb_h = 16.0 * scale
+    let thumb_h = if total_content_h > 0.0 {
+      let h_prop = list_h / total_content_h * list_h
+      if h_prop < min_thumb_h {
+        min_thumb_h
+      } else {
+        h_prop
+      }
+    } else {
+      min_thumb_h
+    }
+
+    let track_travel = list_h - thumb_h
+    let track_rect = @math.Rect::new(
+      track_x - 2.0 * scale,
+      container_rect.y,
+      scrollbar_w + 4.0 * scale,
+      list_h,
+    )
+
+    let current_pct = if max_scroll > 0.0001 {
+      scroll_y / max_scroll
+    } else {
+      0.0
+    }
+    let thumb_y = container_rect.y + current_pct * track_travel
+    let thumb_rect = @math.Rect::new(track_x, thumb_y, scrollbar_w, thumb_h)
+
+    let is_thumb_hovered = ctx.is_hovered(thumb_rect)
+    let is_track_hovered = ctx.is_hovered(track_rect)
+
+    if is_thumb_hovered || is_track_hovered || ctx.active_id() == thumb_id {
+      ctx.set_cursor_icon("pointer")
+    }
+
+    if (is_thumb_hovered || is_track_hovered) && ctx.input.mouse_pressed {
+      ctx.set_active_id(thumb_id)
+    }
+
+    if ctx.active_id() == thumb_id {
+      ctx.set_wants_capture_mouse(true)
+      if ctx.input.mouse_down && track_travel > 0.0 {
+        let rel_mouse_y = ctx.input.mouse_pos.y -
+          container_rect.y -
+          thumb_h * 0.5
+        let mut new_pct = rel_mouse_y / track_travel
+        if new_pct < 0.0 {
+          new_pct = 0.0
+        }
+        if new_pct > 1.0 {
+          new_pct = 1.0
+        }
+        scroll_y = new_pct * max_scroll
+      }
+      if ctx.input.mouse_released {
+        ctx.set_active_id(Id::zero())
+      }
     }
   }
 
@@ -151,7 +252,6 @@ pub fn VirtualList::render(
     (first, last)
   }
 
-  let scrollbar_w = 5.0 * scale
   let content_w = if max_scroll > 0.0 {
     container_rect.w - scrollbar_w - 2.0 * scale
   } else {
@@ -195,12 +295,36 @@ pub fn VirtualList::render(
     }
 
     let track_travel = list_h - thumb_h
-    let thumb_y = container_rect.y + scroll_y / max_scroll * track_travel
+    let current_pct = if max_scroll > 0.0001 {
+      scroll_y / max_scroll
+    } else {
+      0.0
+    }
+    let thumb_y = container_rect.y + current_pct * track_travel
     let thumb_rect = @math.Rect::new(track_x, thumb_y, scrollbar_w, thumb_h)
+
+    let is_thumb_hovered = ctx.is_hovered(thumb_rect)
+    let thumb_color = if ctx.active_id() == thumb_id || is_thumb_hovered {
+      @color.Color::accent_primary()
+    } else {
+      @color.Color::border_default()
+    }
 
     let p = ctx.painter()
     let radius = scrollbar_w * 0.5
-    p.add_rect(thumb_rect, @color.Color::border_default(), radius)
+    p.add_rect(thumb_rect, thumb_color, radius)
+  }
+
+  // Draw container focus ring if focused
+  if is_focused {
+    ctx
+    .painter()
+    .add_rect_stroke(
+      container_rect,
+      @color.Color::accent_primary(),
+      1.5 * scale,
+      ctx.style.radius_sm * scale,
+    )
   }
 
   {

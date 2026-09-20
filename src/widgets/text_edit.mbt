@@ -120,6 +120,7 @@ pub fn text_edit_sized(
 
   let mut cursor_pos = ctx.get_text_cursor_pos(id, text.length())
   let mut current_text = text
+  let mut scroll_x = ctx.memory().get_double_or_default(id, 0.0, tag="scroll_x")
 
   if resp.pressed() || resp.clicked() {
     ctx.request_focus(id)
@@ -127,7 +128,7 @@ pub fn text_edit_sized(
   }
   if ctx.input.mouse_pressed && (resp.hovered() || resp.pressed()) {
     ctx.reset_caret_blink()
-    let click_x = ctx.input.mouse_pos.x - (rect.x + padding_x)
+    let click_x = ctx.input.mouse_pos.x - (rect.x + padding_x) + scroll_x
     let total_text_w = ctx.measure_text(current_text, font_size).x
     if click_x <= 0.0 {
       cursor_pos = 0
@@ -167,19 +168,24 @@ pub fn text_edit_sized(
     }
 
     if ctx.input.key_pressed(Key::ArrowLeft) {
+      ctx.input.consume_key(Key::ArrowLeft)
       cursor_pos = @core.prev_char_boundary(current_text, cursor_pos)
     }
     if ctx.input.key_pressed(Key::ArrowRight) {
+      ctx.input.consume_key(Key::ArrowRight)
       cursor_pos = @core.next_char_boundary(current_text, cursor_pos)
     }
     if ctx.input.key_pressed(Key::Home) {
+      ctx.input.consume_key(Key::Home)
       cursor_pos = 0
     }
     if ctx.input.key_pressed(Key::End) {
+      ctx.input.consume_key(Key::End)
       cursor_pos = current_text.length()
     }
 
     if ctx.input.key_pressed(Key::Backspace) {
+      ctx.input.consume_key(Key::Backspace)
       if cursor_pos > 0 && current_text.length() > 0 {
         let (new_text, new_pos) = @core.delete_prev_char(
           current_text, cursor_pos,
@@ -190,6 +196,7 @@ pub fn text_edit_sized(
     }
 
     if ctx.input.key_pressed(Key::Delete) {
+      ctx.input.consume_key(Key::Delete)
       if cursor_pos < current_text.length() {
         current_text = @core.delete_next_char(current_text, cursor_pos)
       }
@@ -209,6 +216,32 @@ pub fn text_edit_sized(
   }
 
   ctx.set_text_cursor_pos(id, cursor_pos)
+
+  let visible_w = rect.w - padding_x * 2.0
+  let total_text_w = ctx.measure_text(current_text, font_size).x
+  let sub = @core.string_slice(current_text, 0, cursor_pos)
+  let caret_text_x = ctx.measure_text(sub, font_size).x
+
+  if total_text_w <= visible_w {
+    scroll_x = 0.0
+  } else {
+    let margin = 8.0 * scale
+    if caret_text_x - scroll_x < 0.0 {
+      scroll_x = caret_text_x
+    } else if caret_text_x - scroll_x > visible_w - margin {
+      scroll_x = caret_text_x - (visible_w - margin)
+    }
+    let max_scroll = total_text_w - visible_w + margin
+    if scroll_x > max_scroll {
+      scroll_x = max_scroll
+    }
+    if scroll_x < 0.0 {
+      scroll_x = 0.0
+    }
+  }
+  ctx
+  .memory()
+  .set_double(id, scroll_x, tag="scroll_x", frame=ctx.frame_counter())
 
   let bg_color = @color.Color::bg_window()
   let border_color = if is_focused {
@@ -249,7 +282,7 @@ pub fn text_edit_sized(
     ctx
     .painter()
     .add_text(
-      @math.Vec2::new(rect.x + padding_x, text_y),
+      @math.Vec2::new(rect.x + padding_x - scroll_x, text_y),
       current_text,
       font_size,
       @color.Color::text_primary(),
@@ -257,9 +290,7 @@ pub fn text_edit_sized(
   }
 
   if is_focused && ctx.is_caret_visible() {
-    let sub = @core.string_slice(current_text, 0, cursor_pos)
-    let measured_prefix = ctx.measure_text(sub, font_size)
-    let caret_x = rect.x + padding_x + measured_prefix.x
+    let caret_x = rect.x + padding_x + caret_text_x - scroll_x
     let caret_top = rect.y + (rect.h - caret_h) * 0.5
     let caret_bottom = caret_top + caret_h
     ctx

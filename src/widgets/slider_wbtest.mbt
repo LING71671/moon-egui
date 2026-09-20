@@ -34,3 +34,19 @@ test "widgets: slider builder and ref binding" {
   let dl = ctx.end_frame()
   assert_true(dl.len() >= 3)
 }
+
+///|
+test "widgets: slider dynamic val_w expands for large numbers" {
+  let ctx = @core.UIContext::new()
+
+  ctx.begin_frame(@core.RawInput::new())
+  let (_, resp_small) = slider(ctx, "Small", 5.0, 0.0, 10.0)
+  let _ = ctx.end_frame()
+
+  ctx.begin_frame(@core.RawInput::new())
+  let (_, resp_large) = slider(ctx, "Small", 25000.0, 10000.0, 50000.0)
+  let _ = ctx.end_frame()
+
+  // Slider with 5-digit numbers allocates wider total_w to accommodate the value text
+  assert_true(resp_large.rect.w > resp_small.rect.w)
+}
