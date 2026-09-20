@@ -20,7 +20,7 @@ pub struct LayerManager {
   mut fg_saved_draw_list : @draw.DrawList
   clip_stack : Array[@math.Rect]
   fg_saved_clip_stack : Array[@math.Rect]
-  mut foreground : Bool
+  mut foreground_depth : Int
   blocking_rects : Array[@math.Rect]
   prev_blocking_rects : Array[@math.Rect]
 } derive(Eq, Debug)
@@ -33,7 +33,7 @@ pub fn LayerManager::new() -> LayerManager {
     fg_saved_draw_list: @draw.DrawList::new(),
     clip_stack: [],
     fg_saved_clip_stack: [],
-    foreground: false,
+    foreground_depth: 0,
     blocking_rects: [],
     prev_blocking_rects: [],
   }
@@ -44,7 +44,7 @@ pub fn LayerManager::begin_frame(self : LayerManager) -> Unit {
   self.draw_list.clear()
   self.fg_draw_list.clear()
   self.clip_stack.clear()
-  self.foreground = false
+  self.foreground_depth = 0
   self.prev_blocking_rects.clear()
   for rect in self.blocking_rects {
     self.prev_blocking_rects.push(rect)
@@ -83,31 +83,32 @@ pub fn LayerManager::current_clip(self : LayerManager) -> @math.Rect? {
 
 ///|
 pub fn LayerManager::begin_foreground(self : LayerManager) -> Unit {
-  if self.foreground {
-    return
+  if self.foreground_depth == 0 {
+    self.fg_saved_draw_list = self.draw_list
+    self.fg_saved_clip_stack.clear()
+    for rect in self.clip_stack {
+      self.fg_saved_clip_stack.push(rect)
+    }
+    self.clip_stack.clear()
+    self.draw_list = self.fg_draw_list
   }
-  self.fg_saved_draw_list = self.draw_list
-  self.fg_saved_clip_stack.clear()
-  for rect in self.clip_stack {
-    self.fg_saved_clip_stack.push(rect)
-  }
-  self.clip_stack.clear()
-  self.draw_list = self.fg_draw_list
-  self.foreground = true
+  self.foreground_depth = self.foreground_depth + 1
 }
 
 ///|
 pub fn LayerManager::end_foreground(self : LayerManager) -> Unit {
-  if !self.foreground {
+  if self.foreground_depth <= 0 {
     return
   }
-  self.draw_list = self.fg_saved_draw_list
-  self.clip_stack.clear()
-  for rect in self.fg_saved_clip_stack {
-    self.clip_stack.push(rect)
+  self.foreground_depth = self.foreground_depth - 1
+  if self.foreground_depth == 0 {
+    self.draw_list = self.fg_saved_draw_list
+    self.clip_stack.clear()
+    for rect in self.fg_saved_clip_stack {
+      self.clip_stack.push(rect)
+    }
+    self.fg_saved_clip_stack.clear()
   }
-  self.fg_saved_clip_stack.clear()
-  self.foreground = false
 }
 
 ///|
@@ -157,5 +158,5 @@ pub fn LayerManager::clip_stack(self : LayerManager) -> Array[@math.Rect] {
 
 ///|
 pub fn LayerManager::is_foreground(self : LayerManager) -> Bool {
-  self.foreground
+  self.foreground_depth > 0
 }

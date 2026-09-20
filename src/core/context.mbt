@@ -32,10 +32,7 @@ pub struct UIContext {
   mut time : Double
   mut frame_counter : Int
   mut last_caret_activity : Double
-  text_measure_cache : @hashmap.HashMap[String, Double]
-  mut open_combo_id : Id
-  mut open_menu_id : Id
-  mut active_submenu_id : String
+  text_measure_cache : @hashmap.HashMap[(String, Int), Double]
 } derive(Eq, Debug)
 
 ///|
@@ -56,9 +53,6 @@ pub fn UIContext::new() -> UIContext {
     frame_counter: 0,
     last_caret_activity: 0.0,
     text_measure_cache: @hashmap.HashMap([], capacity=256),
-    open_combo_id: Id::zero(),
-    open_menu_id: Id::zero(),
-    active_submenu_id: "",
   }
 }
 
@@ -87,6 +81,9 @@ pub fn UIContext::end_frame(self : UIContext) -> @draw.DrawList {
 
   // Composite the deferred layers: floating windows bottom-up, then the
   // foreground layer (popups, tooltips) above everything.
+  while self.layers.is_foreground() {
+    self.layers.end_foreground()
+  }
   self.windows.flush_to(self.layers.draw_list())
   self.layers.draw_list().append(self.layers.fg_draw_list())
 
@@ -650,7 +647,7 @@ pub fn UIContext::measure_text(
   if text.is_empty() {
     return @math.Vec2::new(0.0, font_size * 1.25)
   }
-  let key = text + "@" + font_size.to_int().to_string()
+  let key = (text, (font_size * 100.0 + 0.5).to_int())
   let w = match self.text_measure_cache.get(key) {
     Some(cached) => cached
     None => {
@@ -673,7 +670,7 @@ pub fn UIContext::set_cached_text_width(
   font_size : Double,
   width : Double,
 ) -> Unit {
-  let key = text + "@" + font_size.to_int().to_string()
+  let key = (text, (font_size * 100.0 + 0.5).to_int())
   if self.text_measure_cache.length() > 2048 {
     self.text_measure_cache.clear()
   }
@@ -786,12 +783,16 @@ pub fn UIContext::prune_stale_state(self : UIContext, ttl_frames : Int) -> Unit 
 
 ///|
 pub fn UIContext::active_submenu_id(self : UIContext) -> String {
-  self.active_submenu_id
+  self.memory.get_string_or_default(
+    Id::zero(),
+    "",
+    tag="core::active_submenu_id",
+  )
 }
 
 ///|
 pub fn UIContext::set_active_submenu_id(self : UIContext, id : String) -> Unit {
-  self.active_submenu_id = id
+  self.memory.set_string(Id::zero(), id, tag="core::active_submenu_id")
 }
 
 ///|
@@ -820,22 +821,28 @@ pub fn UIContext::clear_text_selection(self : UIContext, id : Id) -> Unit {
 
 ///|
 pub fn UIContext::open_combo_id(self : UIContext) -> Id {
-  self.open_combo_id
+  match self.memory.get_id(Id::zero(), tag="core::open_combo_id") {
+    Some(id) => id
+    None => Id::zero()
+  }
 }
 
 ///|
 pub fn UIContext::set_open_combo_id(self : UIContext, id : Id) -> Unit {
-  self.open_combo_id = id
+  self.memory.set_id(Id::zero(), id, tag="core::open_combo_id")
 }
 
 ///|
 pub fn UIContext::open_menu_id(self : UIContext) -> Id {
-  self.open_menu_id
+  match self.memory.get_id(Id::zero(), tag="core::open_menu_id") {
+    Some(id) => id
+    None => Id::zero()
+  }
 }
 
 ///|
 pub fn UIContext::set_open_menu_id(self : UIContext, id : Id) -> Unit {
-  self.open_menu_id = id
+  self.memory.set_id(Id::zero(), id, tag="core::open_menu_id")
 }
 
 ///|

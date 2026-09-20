@@ -421,7 +421,7 @@ test "context: typographical measurement caching and emoji surrogate measurement
   assert_eq(size1.x, 21.0)
 
   // Verify cache hit by checking text_measure_cache directly
-  assert_eq(ctx.text_measure_cache.get(emojis + "@10"), Some(21.0))
+  assert_eq(ctx.text_measure_cache.get((emojis, 1000)), Some(21.0))
 
   // Override via set_cached_text_width
   ctx.set_cached_text_width(emojis, 10.0, 25.0)

@@ -86,7 +86,7 @@ fn host_raw_input(
     mouse_down,
     @math.Vec2::new(0.0, scroll_dy),
     events,
-    text_input,
+    "",
     mods,
     mouse_secondary_down~,
   )

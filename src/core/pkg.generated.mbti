@@ -99,6 +99,7 @@ pub struct InputState {
   mut mouse_pos : @math.Vec2
   mut mouse_prev_pos : @math.Vec2
   mut mouse_delta : @math.Vec2
+  mut mouse_initialized : Bool
   mut mouse_down : Bool
   mut mouse_pressed : Bool
   mut mouse_released : Bool
@@ -195,7 +196,7 @@ pub struct LayerManager {
   mut fg_saved_draw_list : @draw.DrawList
   clip_stack : Array[@math.Rect]
   fg_saved_clip_stack : Array[@math.Rect]
-  mut foreground : Bool
+  mut foreground_depth : Int
   blocking_rects : Array[@math.Rect]
   prev_blocking_rects : Array[@math.Rect]
 } derive(Eq, @debug.Debug)
@@ -395,10 +396,7 @@ pub struct UIContext {
   mut time : Double
   mut frame_counter : Int
   mut last_caret_activity : Double
-  text_measure_cache : @hashmap.HashMap[String, Double]
-  mut open_combo_id : Id
-  mut open_menu_id : Id
-  mut active_submenu_id : String
+  text_measure_cache : @hashmap.HashMap[(String, Int), Double]
 } derive(Eq, @debug.Debug)
 pub fn UIContext::active_id(Self) -> Id
 pub fn UIContext::active_submenu_id(Self) -> String

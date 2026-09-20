@@ -169,6 +169,7 @@ pub struct InputState {
   mut mouse_pos : @math.Vec2
   mut mouse_prev_pos : @math.Vec2
   mut mouse_delta : @math.Vec2
+  mut mouse_initialized : Bool
   mut mouse_down : Bool
   mut mouse_pressed : Bool
   mut mouse_released : Bool
@@ -192,6 +193,7 @@ pub fn InputState::new() -> InputState {
     mouse_pos: @math.Vec2::zero(),
     mouse_prev_pos: @math.Vec2::zero(),
     mouse_delta: @math.Vec2::zero(),
+    mouse_initialized: false,
     mouse_down: false,
     mouse_pressed: false,
     mouse_released: false,
@@ -212,9 +214,16 @@ pub fn InputState::new() -> InputState {
 
 ///|
 pub fn InputState::update(self : InputState, raw : RawInput) -> Unit {
-  self.mouse_prev_pos = self.mouse_pos
-  self.mouse_pos = raw.mouse_pos
-  self.mouse_delta = self.mouse_pos.sub(self.mouse_prev_pos)
+  if !self.mouse_initialized {
+    self.mouse_prev_pos = raw.mouse_pos
+    self.mouse_pos = raw.mouse_pos
+    self.mouse_delta = @math.Vec2::zero()
+    self.mouse_initialized = true
+  } else {
+    self.mouse_prev_pos = self.mouse_pos
+    self.mouse_pos = raw.mouse_pos
+    self.mouse_delta = self.mouse_pos.sub(self.mouse_prev_pos)
+  }
   let was_down = self.mouse_down
   self.mouse_down = raw.mouse_down
   self.mouse_pressed = raw.mouse_down && !was_down
@@ -226,15 +235,16 @@ pub fn InputState::update(self : InputState, raw : RawInput) -> Unit {
   self.mouse_secondary_released = !raw.mouse_secondary_down && was_sec_down
 
   self.scroll_delta = raw.scroll_delta
-  self.dt = if raw.dt > 0.0 { raw.dt } else { 0.0166 }
+  self.dt = raw.dt
 
   self.keys_pressed.clear()
   self.keys_released.clear()
   self.consumed_keys.clear()
-  self.text_input = raw.text_input
+  self.text_input = ""
   self.modifiers = raw.modifiers
   self.events.clear()
 
+  let mut has_event_text = false
   for ev in raw.events {
     self.events.push(ev)
     match ev {
@@ -255,17 +265,20 @@ pub fn InputState::update(self : InputState, raw : RawInput) -> Unit {
           }
           if found_idx >= 0 {
             let _ = self.keys_down.remove(found_idx)
-            self.keys_released.push(k)
           }
+          self.keys_released.push(k)
         }
-      TextInput(s) =>
-        if self.text_input.is_empty() {
-          self.text_input = s
-        } else {
-          self.text_input = self.text_input + s
-        }
+      TextInput(s) => {
+        has_event_text = true
+        self.text_input = self.text_input + s
+      }
       PointerWheel(delta) => self.scroll_delta = self.scroll_delta.add(delta)
     }
+  }
+
+  // Fallback to raw.text_input only if no TextInput events were processed
+  if !has_event_text && !raw.text_input.is_empty() {
+    self.text_input = raw.text_input
   }
 }
 
