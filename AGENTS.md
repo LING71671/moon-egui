@@ -185,21 +185,23 @@ Every version release of this library **MUST** execute a synchronized dual-chann
 The canonical release procedure is defined as follows:
 
 1. **Version Declaration & Documentation Synchronization Checklist**:
-   - **Module Manifest**: Bump `version = "X.Y.Z"` in `moon.mod` adhering to Semantic Versioning (`MAJOR.MINOR.PATCH`).
+   - **Module Manifest & SemVer 3-Part Invariant**: Bump `version = "X.Y.Z"` in `moon.mod` strictly adhering to 3-part Semantic Versioning (`MAJOR.MINOR.PATCH`). MoonBit's toolchain rejects 2-part shorthand versions (e.g. `0.55`) with `version bad format: unexpected end of input while parsing minor version number`. Always normalize shorthand user inputs to valid SemVer (e.g. `0.5.5`).
    - **CLI Console Output**: Update version string in `cmd/main/main.mbt` (`println("=== Moon-EGUI vX.Y.Z Interactive Frame ===")`) to prevent drift.
-   - **Release Changelog**: Insert new release section `## [X.Y.Z] - YYYY-MM-DD` in `docs/CHANGELOG.md` with complete Added/Fixed/Changed entries.
+   - **Release Changelogs (Bilingual)**: Insert new release section `## [X.Y.Z] - YYYY-MM-DD` in both `docs/CHANGELOG.md` (English) and `docs/CHANGELOG_zh.md` (Chinese) with complete Added/Fixed/Changed entries.
    - **Project READMEs**: In `README.md` (English, primary) and `README_zh.md` (Chinese), update:
      - Versioned installation commands (`moon add LING71671/moon-egui@X.Y.Z`).
-     - Delivered widget count (e.g. 32 Available Widgets) and automated test count.
+     - Delivered widget count and automated test count (e.g. 348 automated tests).
      - Milestone checklist status in the Development Roadmap section.
-   - **Roadmap Documents**: Update `docs/ROADMAP.md` and `docs/ROADMAP_en.md` delivery checkboxes.
+   - **Roadmap Documents**: Update `docs/ROADMAP.md` and `docs/ROADMAP_en.md` delivery checkboxes and test metrics.
+   - **Flagship Studio IDE Embedded Samples**: Update embedded module manifests, install commands, and status bar version strings in `examples/canvas/studio_ide.mbt` (`version = "X.Y.Z"`, `moon add LING71671/moon-egui@X.Y.Z`, `label_colored("MoonBit vX.Y.Z", ...)`).
    - **Web Showcase Brand Badges & Cache Busters**:
      - `examples/canvas/index.html`: Update navigation `<span class="brand-tag">vX.Y.Z</span>` and quickstart copy command.
      - `examples/canvas/gallery.html`: Update navigation `<span class="brand-tag">vX.Y.Z</span>` and script/CSS query strings (`canvas.js?v=X.Y.Z`, `css/gallery.css?v=X.Y.Z`).
      - `examples/canvas/docs.html`: Update navigation `<span class="brand-tag">vX.Y.Z</span>` and page header `<span class="page-badge">MOON-EGUI API REFERENCE · vX.Y.Z</span>`.
-     - `examples/canvas/benchmark.html`: Update script query strings (`canvas.js?v=X.Y.Z`, `js/run.js?v=X.Y.Z`).
+     - `examples/canvas/benchmark.html`: Update all script and CSS query strings (`canvas.js?v=X.Y.Z`, `js/run.js?v=X.Y.Z`, `css/lang.css?v=X.Y.Z`, `js/i18n.js?v=X.Y.Z`).
+     - `examples/canvas/code_workspace.html`: Update script query strings (`canvas.js?v=X.Y.Z`, `js/studio_runner.js?v=X.Y.Z`).
      - `examples/canvas/minesweeper.html`: Update script query strings too (`canvas.js?v=...`, `js/mines_run.js?v=...`). 2026-09-13 lesson: between releases the engine changes many times while the query string stays put, so browsers keep running a stale engine and the page looks broken. When ANY file under `examples/canvas` changes outside a release, bump the date-stamped query string (`?v=YYYYMMDDx`) in every page that loads it - do not wait for the next version bump.
-     - `examples/canvas/gallery_basic_stages.mbt`: Update the hard-coded version badge string ("vX.Y.Z") and rebuild the demo bundle (`sh scripts/build_demo.sh`), or the showcase keeps advertising the previous release.
+     - `examples/canvas/gallery_basic_stages.mbt`: Update the hard-coded version badge string ("vX.Y.Z").
 
 2. **Interface Generation and Code Formatting**:
    - Execute `moon info && moon fmt`.
@@ -208,7 +210,7 @@ The canonical release procedure is defined as follows:
 3. **Compilation and Test Suite Verification**:
    - Execute `moon test` and ensure 100% test pass rate across all unit and whitebox tests.
    - Verify Wasm-GC compatibility via `moon check --target wasm-gc`.
-   - Rebuild demo bundle synchronously using both `pwsh scripts/build_demo.ps1` (local) and `sh scripts/build_demo.sh` (Linux CI compatibility) to keep runtime assets in sync.
+   - Rebuild demo bundle synchronously using both `pwsh scripts/build_demo.ps1` (local) and `sh scripts/build_demo.sh` (Linux CI compatibility) to keep runtime assets in sync. **CRITICAL ORDER**: This step MUST run AFTER updating `gallery_basic_stages.mbt` and `studio_ide.mbt`, or the compiled `canvas.js` bundle will bake in stale version strings.
 
 4. **Mooncake Central Registry Publishing**:
    - Run `moon publish --dry-run` to validate package archive construction and server pre-flight checks (verifying `Server status: 202 Accepted`).
