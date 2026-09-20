@@ -46,6 +46,16 @@ test "color linear interpolation (lerp)" {
 
   let at_end = black.lerp(white, 1.0)
   assert_eq(at_end.r, 200)
+
+  // NaN protection falls back to t=0 (self)
+  let at_nan = black.lerp(white, 0.0 / 0.0)
+  assert_eq(at_nan.r, 0)
+
+  // Out of bounds clamps
+  let below_zero = black.lerp(white, -1.0)
+  assert_eq(below_zero.r, 0)
+  let above_one = black.lerp(white, 2.0)
+  assert_eq(above_one.r, 200)
 }
 
 ///|

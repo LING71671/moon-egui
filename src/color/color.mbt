@@ -40,7 +40,13 @@ pub fn Color::with_alpha(self : Color, a : Int) -> Color {
 
 ///|
 pub fn Color::lerp(self : Color, other : Color, t : Double) -> Color {
-  let clamp_t = if t < 0.0 { 0.0 } else if t > 1.0 { 1.0 } else { t }
+  let clamp_t = if t.is_nan() || t < 0.0 {
+    0.0
+  } else if t > 1.0 {
+    1.0
+  } else {
+    t
+  }
   let r = (self.r.to_double() + (other.r - self.r).to_double() * clamp_t).to_int()
   let g = (self.g.to_double() + (other.g - self.g).to_double() * clamp_t).to_int()
   let b = (self.b.to_double() + (other.b - self.b).to_double() * clamp_t).to_int()
