@@ -2,10 +2,11 @@
 
 This document provides a systematic, factual audit of the codebase (`src/core`, `src/draw`, `src/color`, `src/math`, and runtime showcase pages).
 
-It is organized into three primary tracks:
+It is organized into four primary tracks:
 - **Part I: Defects and Technical Debt (`bug`)**: Memory leaks, state corruption, unhandled input channels, typographical drift, and widget edge-case omissions.
 - **Part II: Engine Capabilities and Dogfooding Roadmap (`feat`)**: Core engine extensions, layout enhancements, and showcase pages where raw HTML/DOM should be replaced by our native MoonBit GUI engine.
 - **Part III: Structural Decoupling and Architecture Modularization (`arch`)**: Subsystem modularization, generic memory persistence, design token stratification, first-class widget structs, painter rendering abstraction, package hierarchy, and showcase stage decomposition.
+- **Part IV: Post-v0.5.1 Comprehensive Code Review Audit (`audit`)**: Robustness, maintainability, performance, technical documentation, non-code dogfooding bugs, logical errors, and UX impact.
 
 ---
 
@@ -664,7 +665,315 @@ Items in this section address foundational decoupling across the engine: modular
 
 ---
 
-## 9. Prioritized Roadmap & Milestone Matrix
+---
+
+# Part IV: Post-v0.5.1 Comprehensive Code Review Audit (`audit`)
+
+Following the v0.5.1 release, an exhaustive, multi-dimensional code review was executed across the entire codebase (`src/core`, `src/widgets`, `src/composite`, `src/draw`, `src/color`, `src/math`, `examples/canvas`, and `docs/`).
+
+This review evaluates seven foundational dimensions:
+- **Section 9: Logical Errors (`logic`)**: Bugs in event routing, state tracking, and layer compositing.
+- **Section 10: Robustness & Stability (`robust`)**: Numeric guards, unbounded loops, extreme frame deltas, and initialization boundaries.
+- **Section 11: Performance & Allocations (`perf`)**: Heap allocation hot paths, string thrashing, and batching efficiency.
+- **Section 12: Maintainability & Design Tokens (`maint`)**: Theme token decoupling, remaining Context leaks, and scale scaling invariants.
+- **Section 13: Dogfooding & Non-Code Defects (`dogfood`)**: Violations of the pure single-canvas standard in runtime pages.
+- **Section 14: User Experience & Interaction (`ux`)**: Overflow handling, clipping, and control usability boundaries.
+- **Section 15: Technical Documentation Accuracy (`doc`)**: Interface drift, obsolete signatures, and sample code synchronization.
+
+---
+
+## 9. Logical Errors (`logic`)
+
+### AUDIT-LOGIC-01 (P0) [OPEN]: Dual-Channel Text Ingestion In Web Host Causing Input Character Duplication
+- **Location**: [examples/canvas/host_input.mbt#L80-L93](file:///a:/moonbit-project/examples/canvas/host_input.mbt#L80-L93), [src/core/input.mbt#L234-L266](file:///a:/moonbit-project/src/core/input.mbt#L234-L266)
+- **Status**: **Backlog**
+- **Priority**: **P0**
+- **Category**: Input Subsystem Logic
+- **Description**:
+  In `examples/canvas/host_input.mbt`, `parse_raw_input` maps incoming JS text events into both `raw.text_input = char_str` and `raw.events.push(Event::TextInput(char_str))`.
+- **Failure Mechanism**:
+  In `src/core/input.mbt` (`InputState::update`):
+  ```moonbit
+  for event in raw.events {
+    match event {
+      TextInput(text) => self.text_input = self.text_input + text
+      ...
+    }
+  }
+  self.text_input = self.text_input + raw.text_input
+  ```
+  When both `raw.text_input` and `raw.events` are populated by the web runner, every typed character is appended twice (`"a"` becomes `"aa"`). This doubles keystrokes in `TextEdit`, `CodeEditor`, and `CommandPalette` when running on the web canvas.
+- **Remediation**:
+  Deprecate or remove the redundant scalar `raw.text_input` field from `RawInput`. Route all incoming character inputs exclusively through discrete `Event::TextInput(s)` entries in `raw.events`.
+
+---
+
+### AUDIT-LOGIC-02 (P1) [OPEN]: Key-Up Event Dropping When Key Pressed Outside Canvas Focus
+- **Location**: [src/core/input.mbt#L247-L260](file:///a:/moonbit-project/src/core/input.mbt#L247-L260)
+- **Status**: **Backlog**
+- **Priority**: **P1**
+- **Category**: Event State Logic
+- **Description**:
+  In `InputState::update`, release events (`Key(key, false, _)`) are conditionally filtered against `keys_down`.
+- **Failure Mechanism**:
+  ```moonbit
+  Key(key, false, _) => {
+    if self.keys_down.contains(key) {
+      self.keys_released.push(key)
+      self.keys_down.remove(key)
+    }
+  }
+  ```
+  If a user holds a key (or modifier like Shift/Control/Alt) before the browser window or canvas element gains focus, `keys_down` does not register the initial down transition. When the key is subsequently released inside the canvas, `self.keys_down.contains(key)` evaluates to `false`, and the release event is discarded without being recorded in `self.keys_released`. Widgets monitoring `ctx.key_released(key)` to conclude an interaction (e.g. modifier-drag, multi-selection, shortcut cancellation) never receive the release signal.
+- **Remediation**:
+  Unconditionally push the key to `self.keys_released` on `Key(key, false, _)`, regardless of whether `keys_down` previously tracked the key:
+  ```moonbit
+  Key(key, false, _) => {
+    self.keys_released.push(key)
+    self.keys_down.remove(key)
+  }
+  ```
+
+---
+
+### AUDIT-LOGIC-03 (P2) [OPEN]: LayerManager Flat Boolean State Causing Nested Foreground Premature Exit
+- **Location**: [src/core/layer_manager.mbt#L85-L111](file:///a:/moonbit-project/src/core/layer_manager.mbt#L85-L111)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: Layer Compositing Logic
+- **Description**:
+  `LayerManager` tracks foreground layer activation via a single flat boolean field `foreground : Bool`.
+- **Failure Mechanism**:
+  When a modal popup, dialog, or floating window invokes `begin_foreground()`, `self.foreground` is set to `true`. If any nested child component within that modal (e.g. a `Tooltip`, a nested context menu, or an embedded `ComboBox`) also invokes `begin_foreground()` and subsequently `end_foreground()`, `end_foreground()` unconditionally sets `self.foreground = false`. This terminates foreground mode prematurely for the remaining draw commands of the parent modal dialog, causing them to fall back into the default background `draw_list` and be occluded by standard widgets.
+- **Remediation**:
+  Replace `foreground : Bool` with a re-entrant depth counter `foreground_depth : Int = 0`. Increment on `begin_foreground` and decrement on `end_foreground`, only restoring drawing to the background list when `foreground_depth == 0`.
+
+---
+
+## 10. Robustness & Stability (`robust`)
+
+### AUDIT-ROBUST-01 (P1) [OPEN]: Unbounded Sub-stepping Loop in `Spring::step` Under Large Frame Deltas or NaN
+- **Location**: [src/math/spring.mbt#L129-L143](file:///a:/moonbit-project/src/math/spring.mbt#L129-L143)
+- **Status**: **Backlog**
+- **Priority**: **P1**
+- **Category**: Numerical & Runtime Stability
+- **Description**:
+  `Spring::step(self, dt : Double)` accumulates delta time via `self.accum = self.accum + dt` and executes a sub-stepping integration loop with `fixed_dt = 1.0 / 120.0`.
+- **Failure Mechanism**:
+  ```moonbit
+  while remaining > 0.0 {
+    let step_dt = if remaining < fixed_dt { remaining } else { fixed_dt }
+    ...
+    remaining = remaining - step_dt
+  }
+  ```
+  1. When a browser tab returns from background suspension or machine sleep, `dt` can be 10–60 seconds. At `1/120s` sub-steps, this executes 1,200 to 7,200 iterations in a single frame, causing significant main-thread lag.
+  2. If `dt` contains a non-finite value (`NaN` or `Infinity`), `remaining > 0.0` or arithmetic failure can lock the runtime into an infinite loop or throw a Wasm runtime trap.
+- **Remediation**:
+  Clamp incoming delta time to a safe maximum (e.g. `let safe_dt = @math.clamp(dt, 0.0, 0.2)`), cap the maximum integration iterations to at most 16–24 per frame, and guard against `is_nan()`.
+
+---
+
+### AUDIT-ROBUST-02 (P2) [OPEN]: Uninitialized Initial Mouse Delta Spike on Frame Zero
+- **Location**: [src/core/input.mbt#L192-L217](file:///a:/moonbit-project/src/core/input.mbt#L192-L217)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: Input Robustness
+- **Description**:
+  `InputState::new` initializes `mouse_prev_pos` to `(0.0, 0.0)`.
+- **Failure Mechanism**:
+  On the first frame where the cursor enters the canvas at `(960.0, 540.0)` (center of a 1080p display), `InputState::update` computes:
+  ```moonbit
+  self.mouse_delta = self.mouse_pos - self.mouse_prev_pos // (960.0, 540.0)
+  ```
+  Any widget or viewport relying on `mouse_delta` (pan/zoom canvasses, splitters, 3D orbit controls, continuous sliders) experiences an immediate 960px jump on initial cursor contact.
+- **Remediation**:
+  Track an initialization state flag `mouse_initialized : Bool`. On the first received pointer position, initialize both `mouse_pos` and `mouse_prev_pos` to the incoming coordinates and set `mouse_delta = Vec2::zero()`.
+
+---
+
+### AUDIT-ROBUST-03 (P2) [OPEN]: Non-Finite Interpolation Parameter in `Color::lerp` Propagating Malformed RGBA
+- **Location**: [src/color/color.mbt#L42-L49](file:///a:/moonbit-project/src/color/color.mbt#L42-L49)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: Color Arithmetic Robustness
+- **Description**:
+  `Color::lerp(a, b, t)` performs linear interpolation between channel values.
+- **Failure Mechanism**:
+  ```moonbit
+  let r = a.r.to_double() + (b.r.to_double() - a.r.to_double()) * t
+  ```
+  If an animation tween, physics spring, or external computation produces `t = NaN` or non-finite values, `r.round().to_int()` emits invalid integers or traps in Wasm-GC, bypassing downstream clamp assertions and feeding corrupted color commands into `DrawCmd`.
+- **Remediation**:
+  Enforce finite number validation: `let t_clamped = if t.is_nan() { 0.0 } else { @math.clamp(t, 0.0, 1.0) }`.
+
+---
+
+## 11. Performance & Allocations (`perf`)
+
+### AUDIT-PERF-01 (P1) [OPEN]: High-Frequency String Allocation and Fractional Truncation in Text Measurement Cache
+- **Location**: [src/core/context.mbt#L653-L661](file:///a:/moonbit-project/src/core/context.mbt#L653-L661)
+- **Status**: **Backlog**
+- **Priority**: **P1**
+- **Category**: Heap Allocation & Typographical Precision
+- **Description**:
+  `UIContext::measure_text` queries font sizing via string key concatenation:
+  ```moonbit
+  let key = text + "@" + font_size.to_int().to_string()
+  ```
+- **Failure Mechanism**:
+  1. In a UI frame rendering 200–300 labels, buttons, and table cells, this concatenation allocates hundreds of temporary strings per frame (>18,000 strings/sec at 60 FPS), triggering GC pressure in Wasm-GC.
+  2. Casting `font_size.to_int()` truncates fractional sizes (e.g. `13.5` and `13.8` both produce `"13"`), causing cache key collisions and inaccurate text layout widths.
+- **Remediation**:
+  Refactor the LRU cache key from a string concatenation to a compound tuple `(String, Int)` (using scaled millipoints e.g. `(font_size * 100.0).to_int()`) or custom key struct with integer hash computation, eliminating heap string allocations on cache queries.
+
+---
+
+### AUDIT-PERF-02 (P2) [OPEN]: Granular Line Segment Flooding During Node Connection Wire Drawing
+- **Location**: [src/composite/node_editor.mbt#L204-L218](file:///a:/moonbit-project/src/composite/node_editor.mbt#L204-L218), [L528-L558](file:///a:/moonbit-project/src/composite/node_editor.mbt#L528-L558)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: Draw Command Batching Efficiency
+- **Description**:
+  `NodeEditor` approximates cubic bezier curve connections between node ports by emitting 16 to 20 individual `DrawCmd::Line` commands per wire into `DrawList`.
+- **Failure Mechanism**:
+  For a graph with 50 connections, this generates 1,000 discrete line commands per frame. In `canvas.js`, each line command triggers separate `ctx.beginPath()`, `ctx.moveTo()`, `ctx.lineTo()`, and `ctx.stroke()` state transitions, severely degrading Canvas 2D rasterization throughput.
+- **Remediation**:
+  Introduce a native `DrawCmd::BezierCurve { p0, p1, p2, p3, stroke }` command in `@draw`, mapping directly to HTML5 Canvas `bezierCurveTo` in a single GPU/Canvas path.
+
+---
+
+## 12. Maintainability & Design Tokens (`maint`)
+
+### AUDIT-MAINT-01 (P1) [OPEN]: Systemic Theme Bypass via Direct Semantic Palette Token Calls in Widgets
+- **Location**: [src/widgets/](file:///a:/moonbit-project/src/widgets/) (all 18 files)
+- **Status**: **Backlog**
+- **Priority**: **P1**
+- **Category**: Design Token Decoupling & Theming
+- **Description**:
+  Direct analysis reveals 285 calls to `@color.Color::*` palette functions directly across `src/widgets/` and 0 calls referencing `ctx.theme.*`.
+- **Failure Mechanism**:
+  Although `FEAT-CORE-03` introduced runtime theme switching (`studio_light`, `slate_dark`, `high_contrast`) via `ctx.theme`, standard widgets query static global palette constructors rather than the active theme configured on `UIContext`. Consequently, toggling `ctx.set_theme(...)` leaves standard widgets visually stuck in the default palette.
+- **Remediation**:
+  Route widget surface coloring through `ctx.theme` (or provide `ctx.color_accent()`, `ctx.color_surface()` delegates) across all standard widgets, ensuring that changing the active theme dynamically recolors all UI surfaces.
+
+---
+
+### AUDIT-MAINT-02 (P1) [OPEN]: Residual Widget-Specific Identifier Fields in `UIContext` Violating Decoupling Standard
+- **Location**: [src/core/context.mbt#L36-L38](file:///a:/moonbit-project/src/core/context.mbt#L36-L38), [L822-L840](file:///a:/moonbit-project/src/core/context.mbt#L822-L840)
+- **Status**: **Backlog**
+- **Priority**: **P1**
+- **Category**: Architectural Decoupling Compliance
+- **Description**:
+  `UIContext` directly declares three widget-specific fields:
+  - `open_combo_id : Id`
+  - `open_menu_id : Id`
+  - `active_submenu_id : String`
+  along with dedicated getter/setter methods.
+- **Failure Mechanism**:
+  This directly violates Section 1 of the *Low-Coupling Architecture & Structural Decoupling Standard* ("UIContext must exclusively house core engine runtime primitives... Strictly Forbid adding widget-specific fields to UIContext").
+- **Remediation**:
+  Migrate `open_combo_id`, `open_menu_id`, and `active_submenu_id` into `ctx.memory` using a private or widget-namespaced state struct (`ComboBoxState`, `MenuState`).
+
+---
+
+### AUDIT-MAINT-03 (P2) [OPEN]: Unscaled Metric Literals Bypassing Global Scale Invariance in Slider
+- **Location**: [src/widgets/slider.mbt#L191-L313](file:///a:/moonbit-project/src/widgets/slider.mbt#L191-L313)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: Anti-Hardcoding & Geometry Scale
+- **Description**:
+  In `src/widgets/slider.mbt`, while primary dimensions use `scale`, several internal layout offsets are hardcoded as raw float literals:
+  - line 191: `let thumb_pad = 1.5`
+  - line 208: `let val_text_pad = 10.0`
+  - line 224: `let handle_r = 13.0`
+  - line 241: `let track_h = 12.0`
+- **Failure Mechanism**:
+  At non-default DPI scale factors (`scale = 1.5` or `2.0`), unscaled padding causes the slider handle to clip into the track border and misalign with the label baseline.
+- **Remediation**:
+  Derive all internal offsets and radii from `self.style` tokens or multiply by `scale` (e.g. `1.5 * scale`, `10.0 * scale`).
+
+---
+
+## 13. Dogfooding & Non-Code Defects (`dogfood`)
+
+### AUDIT-DOGFOOD-01 (P1) [OPEN]: Raw HTML/DOM Top Header Bar in Benchmark Violating Pure Canvas Dogfooding Standard
+- **Location**: [examples/canvas/benchmark.html#L244-L321](file:///a:/moonbit-project/examples/canvas/benchmark.html#L244-L321)
+- **Status**: **Backlog**
+- **Priority**: **P1**
+- **Category**: Dogfooding Standard Compliance
+- **Description**:
+  `examples/canvas/benchmark.html` renders a simulated top application header using raw HTML/CSS DOM: `<header class="studio-header"><div class="brand">...</div><div class="metrics">...</div></header>`.
+- **Failure Mechanism**:
+  This directly violates Section 1 of the *Pure MoonBit Engine Dogfooding & Interface Harmony Standard* ("Strictly Forbid HTML/CSS DOM Simulation... All window chrome, docking panels, tree views, code editors, menu bars, and command palettes must be driven directly by MoonBit's UIContext").
+- **Remediation**:
+  Replace the HTML DOM `.studio-header` in `benchmark.html` with a native MoonBit immediate-mode header bar rendered directly on the single canvas viewport.
+
+---
+
+## 14. User Experience & Interaction (`ux`)
+
+### AUDIT-UX-01 (P2) [OPEN]: Missing Horizontal Scrolling and Header Clamping in Wide Composite Tables
+- **Location**: [src/composite/table.mbt#L237-L420](file:///a:/moonbit-project/src/composite/table.mbt#L237-L420)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: UX & Boundary Handling
+- **Description**:
+  `Table` computes layout based on cumulative column widths.
+- **Failure Mechanism**:
+  When total table column width exceeds the container's `available_width`, columns beyond the right boundary are clipped by the scissor rectangle. Because `Table` only manages a vertical `scroll_y` offset without horizontal `scroll_x` support, wide columns or user-expanded columns become permanently inaccessible.
+- **Remediation**:
+  Integrate two-dimensional scroll support (`scroll_x`, `scroll_y`) in `Table` with synchronized header row translation, or automatically wrap wide tables in an interactive horizontal scroll area.
+
+---
+
+### AUDIT-UX-02 (P2) [OPEN]: Fixed-Width Value Text Container Causing Numeric Clipping and Layout Jitter
+- **Location**: [src/widgets/slider.mbt#L94-L242](file:///a:/moonbit-project/src/widgets/slider.mbt#L94-L242)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: UX Typography & Layout Stability
+- **Description**:
+  In `Slider::ui`, the numeric display label reservation is hardcoded to a fixed width of `42.0 * scale`.
+- **Failure Mechanism**:
+  When displaying values with negative signs, large ranges (e.g. `-10000.0`), or precision formatting (`0.0001`), the text measurement exceeds 42px, causing the value text to visibly overflow the slider container or violently push the track boundary on value changes.
+- **Remediation**:
+  Dynamically measure the formatted string width using `ctx.measure_text` or calculate reservation width based on `max(measure(min_val), measure(max_val)) + padding`.
+
+---
+
+## 15. Technical Documentation Accuracy (`doc`)
+
+### AUDIT-DOC-01 (P2) [OPEN]: Obsolete Method Signatures and Missing Post-v0.3 Components in API Reference
+- **Location**: [docs/API_DESIGN.md](file:///a:/moonbit-project/docs/API_DESIGN.md), [docs/API_DESIGN_zh.md](file:///a:/moonbit-project/docs/API_DESIGN_zh.md)
+- **Status**: **Backlog**
+- **Priority**: **P2**
+- **Category**: Documentation Drift
+- **Description**:
+  The official API design specifications still document outdated pre-refactoring signatures.
+- **Failure Mechanism**:
+  - Documents `Response.id : UInt64` instead of `Id`.
+  - Documents `ctx.button(id, label)` instead of `Button::new(label)` / `ctx.button(label)`.
+  - Missing formal API documentation for 10+ major components delivered in v0.4 and v0.5: `Rating`, `Steps`, `VirtualList`, `Spring`, `Mesh`, `SvgExporter`, `DockArea`, `NodeEditor`, `Plot`, and `Table`.
+- **Remediation**:
+  Synchronize `docs/API_DESIGN.md` and `docs/API_DESIGN_zh.md` to reflect current v0.5.1 package layouts (`@core`, `@widgets`, `@composite`), modern builder signatures, and new component APIs.
+
+---
+
+### AUDIT-DOC-02 (P3) [OPEN]: Stale Monolithic `UIContext` Struct Code Sample in Flagship Studio IDE
+- **Location**: [examples/canvas/studio_ide.mbt#L88-L100](file:///a:/moonbit-project/examples/canvas/studio_ide.mbt#L88-L100)
+- **Status**: **Backlog**
+- **Priority**: **P3**
+- **Category**: Code Sample Drift
+- **Description**:
+  In the flagship Studio IDE showcase (`examples/canvas/studio_ide.mbt`), the embedded "Context Architecture" source viewer displays a mock string representing the old monolithic `UIContext` definition with flat fields (`layout_stack`, `clip_stack`, `scroll_offsets`).
+- **Failure Mechanism**:
+  Users inspecting the in-engine source code sample see a stale, pre-decoupling context representation rather than the modularized v0.5.1 architecture (`LayoutEngine`, `FocusManager`, `LayerManager`, `WindowManager`, `Memory`).
+- **Remediation**:
+  Update the embedded source string in `studio_ide.mbt` to display the actual decomposed engine architecture.
+
+---
+
+## 16. Prioritized Roadmap & Milestone Matrix
 
 | Track | ID | Title | Priority | Status |
 | :--- | :--- | :--- | :--- | :--- |
@@ -711,3 +1020,20 @@ Items in this section address foundational decoupling across the engine: modular
 | **a11y** | `FEAT-A11Y-01` | Keyboard Reachability for Container & Overlay Widgets | **P2** | In Progress (15 of 16 surfaces) |
 | **test** | `DEBT-TEST-01` | Whitebox Coverage Gaps in `src/composite` Containers | **P3** | Backlog |
 | **arch** | `DEBT-ARCH-01` | Declare `composite -> widgets` Dependency Edge | **P3** | Backlog |
+| **logic** | `AUDIT-LOGIC-01` | Dual-Channel Text Ingestion In Web Host Causing Input Duplication | **P0** | Backlog |
+| **logic** | `AUDIT-LOGIC-02` | Key-Up Event Dropping When Key Pressed Outside Canvas Focus | **P1** | Backlog |
+| **logic** | `AUDIT-LOGIC-03` | LayerManager Flat Boolean State Causing Nested Foreground Premature Exit | **P2** | Backlog |
+| **robust**| `AUDIT-ROBUST-01`| Unbounded Sub-stepping Loop in `Spring::step` Under Large Frame Deltas or NaN | **P1** | Backlog |
+| **robust**| `AUDIT-ROBUST-02`| Uninitialized Initial Mouse Delta Spike on Frame Zero | **P2** | Backlog |
+| **robust**| `AUDIT-ROBUST-03`| Non-Finite Interpolation Parameter in `Color::lerp` Propagating Malformed RGBA | **P2** | Backlog |
+| **perf** | `AUDIT-PERF-01` | High-Frequency String Allocation & Fractional Truncation in Text Cache | **P1** | Backlog |
+| **perf** | `AUDIT-PERF-02` | Granular Line Segment Flooding During Node Connection Wire Drawing | **P2** | Backlog |
+| **maint** | `AUDIT-MAINT-01` | Systemic Theme Bypass via Direct Semantic Palette Token Calls in Widgets | **P1** | Backlog |
+| **maint** | `AUDIT-MAINT-02` | Residual Widget-Specific Identifier Fields in `UIContext` Violating Decoupling | **P1** | Backlog |
+| **maint** | `AUDIT-MAINT-03` | Unscaled Metric Literals Bypassing Global Scale Invariance in Slider | **P2** | Backlog |
+| **dogfood**| `AUDIT-DOGFOOD-01`| Raw HTML/DOM Top Header Bar in Benchmark Violating Pure Canvas Standard | **P1** | Backlog |
+| **ux** | `AUDIT-UX-01` | Missing Horizontal Scrolling and Header Clamping in Wide Composite Tables | **P2** | Backlog |
+| **ux** | `AUDIT-UX-02` | Fixed-Width Value Text Container Causing Numeric Clipping & Layout Jitter | **P2** | Backlog |
+| **doc** | `AUDIT-DOC-01` | Obsolete Method Signatures and Missing Post-v0.3 Components in API Reference | **P2** | Backlog |
+| **doc** | `AUDIT-DOC-02` | Stale Monolithic `UIContext` Struct Code Sample in Flagship Studio IDE | **P3** | Backlog |
+
