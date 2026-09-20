@@ -479,14 +479,21 @@ fn render_dock_node(
       let (first_rect, handle_rect, second_rect) = match direction {
         Horizontal => {
           let total_w = rect.w - handle_thick
-          let mut w1 = total_w * cur_ratio
-          if w1 < min_pane_size {
-            w1 = min_pane_size
+          let (w1, w2) = if total_w <= 0.0 {
+            (0.0, 0.0)
+          } else if total_w < min_pane_size * 2.0 {
+            let half = total_w * 0.5
+            (half, total_w - half)
+          } else {
+            let mut calculated_w1 = total_w * cur_ratio
+            if calculated_w1 < min_pane_size {
+              calculated_w1 = min_pane_size
+            }
+            if total_w - calculated_w1 < min_pane_size {
+              calculated_w1 = total_w - min_pane_size
+            }
+            (calculated_w1, total_w - calculated_w1)
           }
-          if total_w - w1 < min_pane_size {
-            w1 = total_w - min_pane_size
-          }
-          let w2 = total_w - w1
 
           let r1 = @math.Rect::new(rect.x, rect.y, w1, rect.h)
           let rh = @math.Rect::new(rect.x + w1, rect.y, handle_thick, rect.h)
@@ -500,14 +507,21 @@ fn render_dock_node(
         }
         Vertical => {
           let total_h = rect.h - handle_thick
-          let mut h1 = total_h * cur_ratio
-          if h1 < min_pane_size {
-            h1 = min_pane_size
+          let (h1, h2) = if total_h <= 0.0 {
+            (0.0, 0.0)
+          } else if total_h < min_pane_size * 2.0 {
+            let half = total_h * 0.5
+            (half, total_h - half)
+          } else {
+            let mut calculated_h1 = total_h * cur_ratio
+            if calculated_h1 < min_pane_size {
+              calculated_h1 = min_pane_size
+            }
+            if total_h - calculated_h1 < min_pane_size {
+              calculated_h1 = total_h - min_pane_size
+            }
+            (calculated_h1, total_h - calculated_h1)
           }
-          if total_h - h1 < min_pane_size {
-            h1 = total_h - min_pane_size
-          }
-          let h2 = total_h - h1
 
           let r1 = @math.Rect::new(rect.x, rect.y, rect.w, h1)
           let rh = @math.Rect::new(rect.x, rect.y + h1, rect.w, handle_thick)
@@ -582,6 +596,8 @@ fn render_dock_node(
               }
             }
           }
+        } else {
+          ctx.set_active_id(@core.Id::zero())
         }
       }
 

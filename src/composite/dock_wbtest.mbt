@@ -285,3 +285,58 @@ test "dock: DockArea::new show path matches the free function" {
   let _ = ctx.end_frame()
   assert_eq(resp.resp.rect.w, 400.0)
 }
+
+///|
+test "dock: small dimensions do not produce negative split rects" {
+  let ctx = @core.UIContext::new()
+  ctx.begin_frame(@core.RawInput::new())
+  let left = DockTree::leaf([DockTab::new("l", "Left")])
+  let right = DockTree::leaf([DockTab::new("r", "Right")])
+  let tree = DockTree::split(DockSplitDirection::Horizontal, 0.5, left, right)
+  // Give it an extremely tiny size smaller than 2 * min_pane_size (60 * 2 = 120)
+  let mut recorded_w = -1.0
+  let mut recorded_h = -1.0
+  let area = DockArea::new("tiny_area", @math.Vec2::new(50.0, 50.0), tree, (
+    _ui,
+    _id,
+    rect,
+  ) => {
+    recorded_w = rect.w
+    recorded_h = rect.h
+  })
+  let _ = area.show(ctx)
+  let _ = ctx.end_frame()
+  assert_true(recorded_w >= 0.0)
+  assert_true(recorded_h >= 0.0)
+}
+
+///|
+test "dock: splitter releases active_id when mouse is released" {
+  let ctx = @core.UIContext::new()
+  let left = DockTree::leaf([DockTab::new("l", "Left")])
+  let right = DockTree::leaf([DockTab::new("r", "Right")])
+  let tree = DockTree::split(DockSplitDirection::Horizontal, 0.5, left, right)
+
+  // Frame 1: Mouse down on splitter handle (x ≈ 150)
+  let input1 = @core.RawInput::from_mouse(@math.Vec2::new(150.0, 100.0), true)
+  ctx.begin_frame(input1)
+  let _ = dock_area(ctx, "dock_act", @math.Vec2::new(300.0, 200.0), tree, (
+    _ui,
+    _id,
+    _r,
+  ) => ())
+  let _ = ctx.end_frame()
+  assert_true(ctx.active_id() != @core.Id::zero())
+
+  // Frame 2: Mouse released (mouse_down = false)
+  let input2 = @core.RawInput::from_mouse(@math.Vec2::new(160.0, 100.0), false)
+  ctx.begin_frame(input2)
+  let _ = dock_area(ctx, "dock_act", @math.Vec2::new(300.0, 200.0), tree, (
+    _ui,
+    _id,
+    _r,
+  ) => ())
+  let _ = ctx.end_frame()
+  // active_id must be released back to Id::zero()
+  assert_eq(ctx.active_id(), @core.Id::zero())
+}

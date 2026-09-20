@@ -607,7 +607,7 @@ pub fn context_menu(
 ) -> ContextMenuResponse {
   let menu_id = ctx.id_stack.derive_id("context_menu::" + id_salt)
   if !open {
-    if ctx.open_menu_id == menu_id {
+    if ctx.open_menu_id() == menu_id {
       ctx.set_open_menu_id(Id::zero())
     }
     return { open: false, selected_id: None, pos, size: @math.Vec2::zero(), }
