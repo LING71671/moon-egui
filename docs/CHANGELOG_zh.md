@@ -11,6 +11,46 @@
 
 ## [Unreleased]
 
+## [0.5.5] - 2026-09-20
+
+### 新增功能与优化
+- **数据表格二维虚拟化滚动与交互式滚动条系统 (`src/composite/table.mbt`)**：
+  - 支持完整的水平滚动状态持久化（`scroll_x` 写入 `Memory`），支持滚轮水平增量与 Shift+垂直滚轮映射。
+  - 支持键盘左右方向键平滑横向滚动，并在表格获得焦点时严格消费按键事件（`consume_key`）。
+  - 增加表头独立视口剪裁保护（`push_clip(header_rect)`），大列宽水平平移时表头与数据单元格严格对齐无文字溢漏。
+  - 水平与垂直滚动条升级为交互式实体，支持基于 `grab_offset` 的鼠标拖拽滑块、`pointer` 悬停光标指示及 DPI 缩放保护。
+- **离散输入控件按键消费与焦点环指示 (`src/composite/knob.mbt`, `src/widgets/segmented_control.mbt`)**：
+  - `Knob` 与 `SegmentedControl` 全面消费处理的导航按键（上下左右、Home、End、退格、删除），杜绝外层容器视口意外滚动。
+  - `SegmentedControl` 支持焦点状态检测（`resp.has_focus() || ctx.has_focus(id)`）与外层动态焦点高亮环绘制。
+- **TextEdit 单行输入框水平滚动跟随 (`src/widgets/text_edit.mbt`)**：
+  - 引入 `scroll_x` 偏移并写入 `Memory`，超长文字输入时自动横向滚动视口保持光标可见，点击定位计算动态计入滚动量。
+- **VirtualList 交互式滚动条与键盘可达性 (`src/widgets/virtual_list.mbt`)**：
+  - 实现滑块交互拖拽、焦点注册、焦点环绘制以及键盘上下箭头/翻页键滚动支持。
+- **ColorPicker 无彩色相记忆与纯矢量渐变 (`src/composite/color_picker.mbt`)**：
+  - 色相角度持久化至 `Memory`（`"hue"` 标签），在饱和度或明度拉为零（黑白灰）时完整保留用户选中的色相角。
+  - 2D 选色表面升级为双层矢量线性渐变（`LinearGradient`），消除阶梯色块并将图元渲染指令减少 90%。
+- **公共 API 设计规范文档全面同步 (`docs/API_DESIGN.md`, `docs/API_DESIGN_zh.md`)**：
+  - 同步最新 v0.5.x 签名（`Response.id : Id`，焦点感知与次级点击方法），将 `toggle` 标为已实现并补充 Fluent/Ref 绑定范式。
+  - 全面补全 10 大核心组件与子系统规范：`VirtualList`, `Table`, `Plot`, `BarChart`, `Knob`, `Fader`, `DockArea`, `Mesh`, `SvgExporter`, `Spring`。
+- **自动化测试用例扩充**：
+  - 自动化无头白盒与黑盒测试套件扩展至 348 项（100% 通过）。
+
+### 修复
+- **图表与柱状图悬停命中检测与光标指示 (`src/composite/plot.mbt`)**：
+  - 移除裸 `rect.contains` 检测，接入 `ctx.is_hovered(rect)` 统一命中机制；折线图上报 `crosshair` 准星光标，柱体上报 `pointer` 手型光标。
+- **输入防重复与状态同步 (`src/core/input.mbt`, `src/core/context.mbt`)**：
+  - 根除浏览器 IME 组合输入与原生按键的重复摄入冲突；修复外部按键释放丢失导致的修饰键粘滞；修复 Frame 0 鼠标突跳。
+- **图层管理器嵌套前景栈作用域 (`src/core/layers.mbt`)**：
+  - 修复多层嵌套前景层时提前退出的扁平状态，防范非配对前景层调用的死循环。
+- **弹簧模拟数值健壮性 (`src/math/spring.mbt`)**：
+  - 增加最大子步数上限截断与 NaN/非正数时间步长守卫，防范超大帧时间造成的无限卡死。
+- **色彩插值参数边界校验 (`src/color/color.mbt`)**：
+  - 在 `Color::lerp` 中严格限制插值参数在 `[0.0, 1.0]` 有限数值区间，杜绝非法浮点数扩散。
+- **SVG 导出基线垂直对齐 (`src/draw/svg_exporter.mbt`)**：
+  - `<text>` 标签补充 `dominant-baseline="hanging"` 规范对齐属性，消除 SVG 导出文字向上漂移错位。
+- **Studio IDE 架构示例代码漂移修复 (`examples/canvas/studio_ide.mbt`)**：
+  - 同步源码展示查看器为解耦后的模块化架构代码（`LayoutEngine`, `FocusManager`, `LayerManager`, `WindowManager`, `Memory`, `Painter`）。
+
 ## [0.5.1] - 2026-09-19
 
 ### 新增功能与优化

@@ -11,6 +11,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.5] - 2026-09-20
+
+### Added
+- **Two-Dimensional Virtualized Table Scrolling & Interactive Scrollbars (`src/composite/table.mbt`)**:
+  - Added bidirectional horizontal scrolling (`scroll_x` persisted in `Memory`), supporting mouse wheel horizontal delta and Shift+wheel translation.
+  - Added keyboard horizontal arrow navigation (`ArrowLeft` / `ArrowRight`) with strict key consumption (`consume_key`).
+  - Scissor-clipped table header row (`push_clip(header_rect)`), ensuring pixel-perfect column alignment without text bleed during horizontal scrolling.
+  - Interactive draggable scrollbars (horizontal and vertical) with grab-offset tracking, `pointer` cursor icon, and DPI scale invariant thumb sizing.
+- **Focus Rings & Event Consumption on Discrete Inputs (`src/composite/knob.mbt`, `src/widgets/segmented_control.mbt`)**:
+  - Added navigation key consumption (`ArrowUp/Down/Left/Right`, `Home`, `End`, `Backspace`, `Delete`) to `Knob` and `SegmentedControl`, preventing parent viewport scroll leaks.
+  - Added focus ring rendering and `has_focus` state detection for `SegmentedControl`.
+- **TextEdit Caret-Following Horizontal Auto-Scroll (`src/widgets/text_edit.mbt`)**:
+  - Added `scroll_x` offset tracking in `Memory` with auto-scrolling viewport window to keep the active text caret visible.
+- **VirtualList Drag Thumb & Keyboard Reachability (`src/widgets/virtual_list.mbt`)**:
+  - Interactive draggable scrollbar thumb, focusable registration with focus ring, and keyboard page/arrow scrolling.
+- **Achromatic Hue Preservation in ColorPicker (`src/composite/color_picker.mbt`)**:
+  - Persisted user-selected hue angle across zero-saturation and zero-value states in `Memory` (`"hue"`).
+  - Smooth dual-layer vector `LinearGradient` replacement reducing draw commands by 90%.
+- **Public API Design Specification Overhaul (`docs/API_DESIGN.md`, `docs/API_DESIGN_zh.md`)**:
+  - Synchronized public API reference with modern v0.5.x signatures (`Response.id : Id`, focus accessors).
+  - Added complete API specifications for 10 core components: `VirtualList`, `Table`, `Plot`, `BarChart`, `Knob`, `Fader`, `DockArea`, `Mesh`, `SvgExporter`, and `Spring`.
+- **Automated Test Suite Expansion**:
+  - Expanded test suite to 348 automated headless unit and integration tests (100% pass rate).
+
+### Fixed
+- **Plot & BarChart Hit-Testing and Cursor Affordances (`src/composite/plot.mbt`)**:
+  - Replaced raw `rect.contains(mouse_pos)` with unified `ctx.is_hovered(rect)` adhering to Widget Interaction Standards.
+  - Added `crosshair` cursor on plot coordinate canvas hover and `pointer` cursor on bar hover.
+- **Input Duplication & Key State Desynchronization (`src/core/input.mbt`, `src/core/context.mbt`)**:
+  - Eliminated duplicate character insertion between IME composition bridge and direct KeyDown events.
+  - Prevented sticky modifier states when releasing keys outside canvas focus.
+  - Fixed Frame 0 mouse delta spike.
+- **LayerManager Nested Foreground Scoping (`src/core/layers.mbt`)**:
+  - Fixed premature exit of nested foreground overlays and guarded against unbalanced foreground calls.
+- **Spring Physics NaN & Spike Guard (`src/math/spring.mbt`)**:
+  - Bound sub-stepping loop with adaptive iteration limits and NaN/infinite guards.
+- **Color Interpolation Parameter Sanitization (`src/color/color.mbt`)**:
+  - Enforced finite parameter clamping in `Color::lerp`.
+- **SVG Text Baseline Alignment (`src/draw/svg_exporter.mbt`)**:
+  - Added `dominant-baseline="hanging"` attribute to exported `<text>` tags to eliminate vertical text drift.
+- **Studio IDE Monolithic UIContext Code Sample Drift (`examples/canvas/studio_ide.mbt`)**:
+  - Synchronized embedded viewer sample with the real decoupled engine architecture (`LayoutEngine`, `FocusManager`, `LayerManager`, `WindowManager`, `Memory`, `Painter`).
+
 ## [0.5.1] - 2026-09-19
 
 ### Added

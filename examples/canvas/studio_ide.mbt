@@ -117,7 +117,7 @@ let code_context_sample : String =
 let code_mod_sample : String =
   #|module "LING71671/moon-egui"
   #|
-  #|version = "0.5.1"
+  #|version = "0.5.5"
   #|
   #|license = "Apache-2.0"
   #|readme = "README.md"
@@ -134,10 +134,10 @@ let code_readme_sample : String =
   #|- 100% Pure MoonBit implementation with zero FFI dependencies
   #|- 42+ production-grade standard and composite widgets
   #|- Hardware-accelerated WebGL 2.0 mesh tessellation pipeline
-  #|- 335 automated unit and headless integration tests (100% passing)
+  #|- 348 automated unit and headless integration tests (100% passing)
   #|
   #|```bash
-  #|moon add LING71671/moon-egui@0.5.1
+  #|moon add LING71671/moon-egui@0.5.5
   #|```
 
 ///|
@@ -807,11 +807,11 @@ pub fn studio_step(
     let _ = stat_row.label_colored("⎇ main*", @color.Color::white())
     stat_row.spacer(14.0 * scale)
     let _ = stat_row.label_colored(
-      "✓ 335 / 335 Tests Passed",
+      "✓ 348 / 348 Tests Passed",
       @color.Color::white(),
     )
     stat_row.spacer(14.0 * scale)
-    let _ = stat_row.label_colored("MoonBit v0.5.1", @color.Color::white())
+    let _ = stat_row.label_colored("MoonBit v0.5.5", @color.Color::white())
     stat_row.spacer(14.0 * scale)
     let _ = stat_row.label_colored(
       "WebAssembly (wasm-gc)",
