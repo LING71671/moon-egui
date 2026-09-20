@@ -920,9 +920,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-PERF-03 (P2) [OPEN]: 70-Command Quad Mesh Flood in 2D Color Picker Saturation-Value Surface
+### AUDIT-PERF-03 (P2) [RESOLVED]: 70-Command Quad Mesh Flood in 2D Color Picker Saturation-Value Surface
 - **Location**: [src/composite/color_picker.mbt#L178-L196](file:///a:/moonbit-project/src/composite/color_picker.mbt#L178-L196)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED** (Iteration 2). Replaced 70-tile quad mesh and 24-step rainbow with continuous linear gradients (base hue rect + horizontal white gradient + vertical black gradient; 6 multi-stop spectrum slices for hue slider), achieving continuous smooth rendering and reducing draw list commands by 90%.
 - **Priority**: **P2**
 - **Category**: Draw Command Batching Efficiency
 - **Description**:
@@ -1059,9 +1059,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-UX-02 (P2) [OPEN]: Fixed-Width Value Text Container Causing Numeric Clipping and Layout Jitter
+### AUDIT-UX-02 (P2) [RESOLVED]: Fixed-Width Value Text Container Causing Numeric Clipping and Layout Jitter
 - **Location**: [src/widgets/slider.mbt#L94-L242](file:///a:/moonbit-project/src/widgets/slider.mbt#L94-L242)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED** (Iteration 2). Dynamically computed numeric reservation width from `max(ctx.measure_text(min_str), ctx.measure_text(max_str)) + 8.0 * scale`, eliminating label clipping and layout jitter.
 - **Priority**: **P2**
 - **Category**: UX Typography & Layout Stability
 - **Description**:
@@ -1073,9 +1073,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-UX-03 (P1) [OPEN]: Lack of Horizontal Scrolling in Single-Line `TextEdit` Causing Text and Caret Clipping
+### AUDIT-UX-03 (P1) [RESOLVED]: Lack of Horizontal Scrolling in Single-Line `TextEdit` Causing Text and Caret Clipping
 - **Location**: [src/widgets/text_edit.mbt#L227-L275](file:///a:/moonbit-project/src/widgets/text_edit.mbt#L227-L275)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED** (Iteration 2). Persisted `scroll_x` in `ctx.memory`, dynamically auto-scrolled to keep active caret in view, clamped scroll offset, and adjusted pointer click hit testing with scroll offset.
 - **Priority**: **P1**
 - **Category**: UX Usability & Input Boundary
 - **Description**:
@@ -1087,9 +1087,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-UX-04 (P2) [OPEN]: Non-Interactive Scrollbar Thumb and Missing Keyboard Reachability in VirtualList
+### AUDIT-UX-04 (P2) [RESOLVED]: Non-Interactive Scrollbar Thumb and Missing Keyboard Reachability in VirtualList
 - **Location**: [src/widgets/virtual_list.mbt#L180-L204](file:///a:/moonbit-project/src/widgets/virtual_list.mbt#L180-L204)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED** (Iteration 2). Added interactive scrollbar thumb dragging with grab offset tracking, pointer cursor icon, focusable registration with focus ring, and keyboard page/arrow scrolling with event consumption.
 - **Priority**: **P2**
 - **Category**: UX Accessibility & Interaction
 - **Description**:
@@ -1101,9 +1101,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-UX-05 (P2) [OPEN]: Hue Reset to 0° When Selecting Black, White, or Grayscale in ColorPicker
+### AUDIT-UX-05 (P2) [RESOLVED]: Hue Reset to 0° When Selecting Black, White, or Grayscale in ColorPicker
 - **Location**: [src/composite/color_picker.mbt#L148-L151](file:///a:/moonbit-project/src/composite/color_picker.mbt#L148-L151)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED** (Iteration 2). Persisted selected hue in `ctx.memory` with tag `"hue"`, preventing achromatic fallback to 0° and preserving user hue selection across black, white, and gray states.
 - **Priority**: **P2**
 - **Category**: UX Interaction & Color State
 - **Description**:
@@ -1115,9 +1115,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-UX-06 (P2) [OPEN]: Unconsumed Editing and Navigation Keys Leaking into Parent Containers
+### AUDIT-UX-06 (P2) [RESOLVED]: Unconsumed Editing and Navigation Keys Leaking into Parent Containers
 - **Location**: [src/widgets/text_edit.mbt#L169-L196](file:///a:/moonbit-project/src/widgets/text_edit.mbt#L169-L196), [src/composite/tree_view.mbt#L178-L198](file:///a:/moonbit-project/src/composite/tree_view.mbt#L178-L198), [src/composite/code_editor.mbt#L411-L467](file:///a:/moonbit-project/src/composite/code_editor.mbt#L411-L467)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED** (Iteration 2). Called `ctx.input.consume_key(...)` for all intercepted editing and navigation keys in `TextEdit`, `CodeEditor`, and `TreeView`, preventing key events from leaking to parent containers.
 - **Priority**: **P2**
 - **Category**: Event Consumption & Focus Isolation
 - **Description**:
@@ -1161,9 +1161,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-DOC-03 (P2) [OPEN]: Missing SVG Text Baseline Alignment Specification Causing Vertical Text Misplacement
+### AUDIT-DOC-03 (P2) [RESOLVED]: Missing SVG Text Baseline Alignment Specification Causing Vertical Text Misplacement
 - **Location**: [src/draw/svg_exporter.mbt#L210-L234](file:///a:/moonbit-project/src/draw/svg_exporter.mbt#L210-L234)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED** (Iteration 2). Added `dominant-baseline="hanging"` attribute to exported `<text>` tags in `SvgExporter`, aligning SVG text rendering with top-origin layout coordinates.
 - **Priority**: **P2**
 - **Category**: SVG Standard Compliance & Documentation
 - **Description**:
@@ -1175,9 +1175,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-DOC-04 (P3) [OPEN]: Undocumented Primitive Loss in `DrawList::to_mesh` (Text, Gradient, Clip Omissions)
+### AUDIT-DOC-04 (P3) [RESOLVED]: Undocumented Primitive Loss in `DrawList::to_mesh` (Text, Gradient, Clip Omissions)
 - **Location**: [src/draw/mesh.mbt#L308-L327](file:///a:/moonbit-project/src/draw/mesh.mbt#L308-L327)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED** (Iteration 2). Formally documented tessellation limitations in `Mesh::tessellate_draw_list` docstrings, specifying that `LinearGradient` is approximated as a solid rect, `Text` requires font atlas glyph quad generation, and `Clip` requires scissor testing.
 - **Priority**: **P3**
 - **Category**: API Technical Documentation Accuracy
 - **Description**:
@@ -1249,20 +1249,20 @@ This review evaluates seven foundational dimensions:
 | **maint** | `AUDIT-MAINT-03` | Unscaled Metric Literals Bypassing Global Scale Invariance in Slider | **P2** | Resolved (Iteration 1) |
 | **dogfood**| `AUDIT-DOGFOOD-01`| Raw HTML/DOM Top Header Bar in Benchmark Violating Pure Canvas Standard | **P1** | Backlog |
 | **ux** | `AUDIT-UX-01` | Missing Horizontal Scrolling and Header Clamping in Wide Composite Tables | **P2** | Backlog |
-| **ux** | `AUDIT-UX-02` | Fixed-Width Value Text Container Causing Numeric Clipping & Layout Jitter | **P2** | Backlog |
+| **ux** | `AUDIT-UX-02` | Fixed-Width Value Text Container Causing Numeric Clipping & Layout Jitter | **P2** | Resolved (Iteration 2) |
 | **doc** | `AUDIT-DOC-01` | Obsolete Method Signatures and Missing Post-v0.3 Components in API Reference | **P2** | Backlog |
 | **doc** | `AUDIT-DOC-02` | Stale Monolithic `UIContext` Struct Code Sample in Flagship Studio IDE | **P3** | Backlog |
 | **logic** | `AUDIT-LOGIC-04` | Infinite Allocation Loop & OOM Crash on Unbalanced `begin_foreground` | **P0** | Resolved (Iteration 1) |
 | **logic** | `AUDIT-LOGIC-05` | Unreleased `active_id` in DockArea Splitter Causing Mouse Capture Leaks | **P1** | Resolved (Iteration 1) |
 | **robust**| `AUDIT-ROBUST-04`| Negative Rect Dimension Arithmetic Trap Under Squeezed Dock Nodes | **P1** | Resolved (Iteration 1) |
 | **robust**| `AUDIT-ROBUST-05`| Stale Index Mismatch & Positional Jumping on Toast Manual Dismissal | **P2** | Resolved (Iteration 1) |
-| **perf** | `AUDIT-PERF-03` | 70-Command Quad Mesh Flood in 2D Color Picker Sat/Val Surface | **P2** | Backlog |
+| **perf** | `AUDIT-PERF-03` | 70-Command Quad Mesh Flood in 2D Color Picker Sat/Val Surface | **P2** | Resolved (Iteration 2) |
 | **maint** | `AUDIT-MAINT-04` | Unscaled Layout Literals and Theme Tokens in Scroll & Toast Containers | **P2** | Resolved (Iteration 1) |
 | **dogfood**| `AUDIT-DOGFOOD-02`| Extensive HTML/DOM Simulation of App Header, Toolbar, HUD in Minesweeper | **P1** | Backlog |
-| **ux** | `AUDIT-UX-03` | Lack of Horizontal Scrolling in Single-Line `TextEdit` Causing Caret Clipping | **P1** | Backlog |
-| **ux** | `AUDIT-UX-04` | Non-Interactive Scrollbar Thumb & Missing Keyboard Focus in VirtualList | **P2** | Backlog |
-| **ux** | `AUDIT-UX-05` | Hue Reset to 0° When Selecting Black, White, or Grayscale in ColorPicker | **P2** | Backlog |
-| **ux** | `AUDIT-UX-06` | Unconsumed Editing & Navigation Keys Leaking into Parent Containers | **P2** | Backlog |
-| **doc** | `AUDIT-DOC-03` | Missing SVG Text Baseline Alignment Causing Vertical Text Misplacement | **P2** | Backlog |
-| **doc** | `AUDIT-DOC-04` | Undocumented Primitive Loss in `DrawList::to_mesh` (Text, Gradient Omissions) | **P3** | Backlog |
+| **ux** | `AUDIT-UX-03` | Lack of Horizontal Scrolling in Single-Line `TextEdit` Causing Caret Clipping | **P1** | Resolved (Iteration 2) |
+| **ux** | `AUDIT-UX-04` | Non-Interactive Scrollbar Thumb & Missing Keyboard Focus in VirtualList | **P2** | Resolved (Iteration 2) |
+| **ux** | `AUDIT-UX-05` | Hue Reset to 0° When Selecting Black, White, or Grayscale in ColorPicker | **P2** | Resolved (Iteration 2) |
+| **ux** | `AUDIT-UX-06` | Unconsumed Editing & Navigation Keys Leaking into Parent Containers | **P2** | Resolved (Iteration 2) |
+| **doc** | `AUDIT-DOC-03` | Missing SVG Text Baseline Alignment Causing Vertical Text Misplacement | **P2** | Resolved (Iteration 2) |
+| **doc** | `AUDIT-DOC-04` | Undocumented Primitive Loss in `DrawList::to_mesh` (Text, Gradient Omissions) | **P3** | Resolved (Iteration 2) |
 
