@@ -184,11 +184,14 @@ pub fn table(
   }
   let table_radius = t_style.radius * scale
 
+  let container_id = ctx.id_stack.derive_id(id_salt)
   ctx.push_id(id_salt)
-  let (table_id, table_rect, _resp) = ctx.allocate_space(size)
+  let (table_id, table_rect, resp) = ctx.allocate_space(size)
   ctx.pop_id()
   ctx.register_focusable(table_id)
-  let is_focused = ctx.has_focus(table_id)
+  let is_focused = resp.has_focus() ||
+    ctx.has_focus(table_id) ||
+    ctx.has_focus(container_id)
 
   let mut active_sort_col = sort_column
   let mut active_sort_dir = sort_direction
@@ -233,8 +236,72 @@ pub fn table(
     1.0,
   )
 
-  // 2. Interactive Column Headers
-  let mut current_x = table_rect.x
+  // 2. Interactive Column Headers (with horizontal scroll support)
+  let mut total_cols_w = 0.0
+  for col in columns {
+    total_cols_w = total_cols_w + col.width
+  }
+  let max_scroll_x = if total_cols_w > table_rect.w {
+    total_cols_w - table_rect.w
+  } else {
+    0.0
+  }
+
+  let mut scroll_x = ctx
+    .memory()
+    .get_double_or_default(container_id, 0.0, tag="scroll_x")
+  if ctx.is_hovered(table_rect) {
+    if ctx.input.modifiers.shift && ctx.input.scroll_delta.y != 0.0 {
+      scroll_x = scroll_x - ctx.input.scroll_delta.y
+      ctx.set_wants_capture_mouse(true)
+    } else if ctx.input.scroll_delta.x != 0.0 {
+      scroll_x = scroll_x - ctx.input.scroll_delta.x
+      ctx.set_wants_capture_mouse(true)
+    }
+  }
+
+  if scroll_x < 0.0 {
+    scroll_x = 0.0
+  }
+  if scroll_x > max_scroll_x {
+    scroll_x = max_scroll_x
+  }
+  ctx.memory().set_double(container_id, scroll_x, tag="scroll_x")
+
+  // Keyboard horizontal scrolling when table is focused
+  if is_focused && max_scroll_x > 0.0 {
+    if ctx.input.key_pressed(Key::ArrowLeft) {
+      scroll_x = scroll_x - 30.0 * scale
+      if scroll_x < 0.0 {
+        scroll_x = 0.0
+      }
+      ctx.memory().set_double(container_id, scroll_x, tag="scroll_x")
+      ctx.input.consume_key(Key::ArrowLeft)
+    }
+    if ctx.input.key_pressed(Key::ArrowRight) {
+      scroll_x = scroll_x + 30.0 * scale
+      if scroll_x > max_scroll_x {
+        scroll_x = max_scroll_x
+      }
+      ctx.memory().set_double(container_id, scroll_x, tag="scroll_x")
+      ctx.input.consume_key(Key::ArrowRight)
+    }
+  }
+
+  // Focus ring around table card
+  if is_focused {
+    ctx
+    .painter()
+    .add_rect_stroke(
+      table_rect.expand(2.0 * scale),
+      @color.Color::border_focus(),
+      1.5,
+      table_radius + 2.0 * scale,
+    )
+  }
+
+  ctx.push_clip(header_rect)
+  let mut current_x = table_rect.x - scroll_x
   let total_cols = columns.length()
 
   for c = 0; c < total_cols; c = c + 1 {
@@ -352,6 +419,7 @@ pub fn table(
 
     current_x = current_x + col.width
   }
+  ctx.pop_clip()
 
   // 3. Virtual Data Body
   let body_y = table_rect.y + eff_header_h
@@ -389,7 +457,7 @@ pub fn table(
   // highlighted row (kept inside the visible window), Enter activates it.
   let mut kb_row = -1
   if is_focused && row_count > 0 {
-    let mut cur = ctx.memory().get_int_or_default(table_id, 0, tag="kb_row")
+    let mut cur = ctx.memory().get_int_or_default(container_id, 0, tag="kb_row")
     if cur < 0 {
       cur = 0
     }
@@ -417,7 +485,7 @@ pub fn table(
       scroll_y = max_scroll
     }
     ctx.set_scroll_offset(body_container_id, scroll_y)
-    ctx.memory().set_int(table_id, cur, tag="kb_row")
+    ctx.memory().set_int(container_id, cur, tag="kb_row")
     kb_row = cur
     if ctx.input.key_pressed(Key::Enter) {
       ctx.input.consume_key(Key::Enter)
@@ -484,7 +552,7 @@ pub fn table(
     )
 
     // Render cells for this row
-    let mut cell_x = body_rect.x
+    let mut cell_x = body_rect.x - scroll_x
     for c = 0; c < total_cols; c = c + 1 {
       let col = columns[c]
       let cell_rect = @math.Rect::new(cell_x, row_y, col.width, eff_row_h)
@@ -506,21 +574,70 @@ pub fn table(
 
   ctx.pop_clip()
 
-  // 4. Scrollbar indicator
+  // 4. Scrollbar indicators & interactions
+  let v_thumb_id = ctx.id_stack.derive_id(id_salt + "::table_v_thumb")
+  let h_thumb_id = ctx.id_stack.derive_id(id_salt + "::table_h_thumb")
+
+  // Vertical Scrollbar
   if max_scroll > 0.0 && total_content_h > 0.0 {
-    let scrollbar_w = 6.0
-    let bar_x = body_rect.x + body_rect.w - scrollbar_w - 3.0
-    let bar_track_y = body_rect.y + 2.0
-    let bar_track_h = body_rect.h - 4.0
+    let scrollbar_w = 6.0 * scale
+    let bar_x = body_rect.x + body_rect.w - scrollbar_w - 3.0 * scale
+    let bar_track_y = body_rect.y + 2.0 * scale
+    let bar_track_h = body_rect.h -
+      4.0 * scale -
+      (if max_scroll_x > 0.0 { 8.0 * scale } else { 0.0 })
 
     let ratio = body_rect.h / total_content_h
     let raw_thumb_h = body_rect.h * ratio
-    let thumb_h = if raw_thumb_h < 24.0 {
-      24.0
+    let min_thumb_h = 24.0 * scale
+    let thumb_h = if raw_thumb_h < min_thumb_h {
+      min_thumb_h
     } else if raw_thumb_h > bar_track_h {
       bar_track_h
     } else {
       raw_thumb_h
+    }
+    let travel_h = bar_track_h - thumb_h
+
+    if ctx.input.mouse_pressed {
+      let scroll_pct = if max_scroll > 0.0001 {
+        scroll_y / max_scroll
+      } else {
+        0.0
+      }
+      let cur_thumb_y = bar_track_y + scroll_pct * travel_h
+      let thumb_rect = @math.Rect::new(bar_x, cur_thumb_y, scrollbar_w, thumb_h)
+      if ctx.is_hovered(thumb_rect) {
+        ctx.set_active_id(v_thumb_id)
+        let grab_offset = ctx.input.mouse_pos.y - cur_thumb_y
+        ctx.memory().set_double(container_id, grab_offset, tag="v_grab_offset")
+      }
+    }
+
+    if ctx.active_id() == v_thumb_id {
+      ctx.set_cursor_icon("pointer")
+      ctx.set_wants_capture_mouse(true)
+      let grab_offset = ctx
+        .memory()
+        .get_double_or_default(container_id, thumb_h * 0.5, tag="v_grab_offset")
+      let target_thumb_y = ctx.input.mouse_pos.y - grab_offset
+      let new_pct = if travel_h > 0.0 {
+        (target_thumb_y - bar_track_y) / travel_h
+      } else {
+        0.0
+      }
+      let clamped_pct = if new_pct < 0.0 {
+        0.0
+      } else if new_pct > 1.0 {
+        1.0
+      } else {
+        new_pct
+      }
+      scroll_y = clamped_pct * max_scroll
+      ctx.set_scroll_offset(body_container_id, scroll_y)
+      if ctx.input.mouse_released {
+        ctx.set_active_id(Id::zero())
+      }
     }
 
     let scroll_pct = if max_scroll > 0.0001 {
@@ -528,16 +645,105 @@ pub fn table(
     } else {
       0.0
     }
-    let thumb_y = bar_track_y + scroll_pct * (bar_track_h - thumb_h)
+    let thumb_y = bar_track_y + scroll_pct * travel_h
     let thumb_rect = @math.Rect::new(bar_x, thumb_y, scrollbar_w, thumb_h)
 
-    let is_bar_hovered = ctx.is_hovered(thumb_rect)
+    let is_bar_hovered = ctx.is_hovered(thumb_rect) ||
+      ctx.active_id() == v_thumb_id
+    if is_bar_hovered {
+      ctx.set_cursor_icon("pointer")
+    }
     let thumb_color = if is_bar_hovered {
       @color.Color::accent_primary()
     } else {
       @color.Color::border_muted()
     }
-    ctx.painter().add_rect(thumb_rect, thumb_color, 3.0)
+    ctx.painter().add_rect(thumb_rect, thumb_color, 3.0 * scale)
+  }
+
+  // Horizontal Scrollbar
+  if max_scroll_x > 0.0 && total_cols_w > 0.0 {
+    let scrollbar_h = 6.0 * scale
+    let bar_y = body_rect.y + body_rect.h - scrollbar_h - 2.0 * scale
+    let bar_track_x = body_rect.x + 2.0 * scale
+    let bar_track_w = body_rect.w -
+      4.0 * scale -
+      (if max_scroll > 0.0 { 8.0 * scale } else { 0.0 })
+
+    let ratio = body_rect.w / total_cols_w
+    let raw_thumb_w = body_rect.w * ratio
+    let min_thumb_w = 24.0 * scale
+    let thumb_w = if raw_thumb_w < min_thumb_w {
+      min_thumb_w
+    } else if raw_thumb_w > bar_track_w {
+      bar_track_w
+    } else {
+      raw_thumb_w
+    }
+    let travel_w = bar_track_w - thumb_w
+
+    if ctx.input.mouse_pressed {
+      let scroll_pct_x = if max_scroll_x > 0.0001 {
+        scroll_x / max_scroll_x
+      } else {
+        0.0
+      }
+      let cur_thumb_x = bar_track_x + scroll_pct_x * travel_w
+      let thumb_rect_x = @math.Rect::new(
+        cur_thumb_x, bar_y, thumb_w, scrollbar_h,
+      )
+      if ctx.is_hovered(thumb_rect_x) {
+        ctx.set_active_id(h_thumb_id)
+        let grab_offset = ctx.input.mouse_pos.x - cur_thumb_x
+        ctx.memory().set_double(container_id, grab_offset, tag="h_grab_offset")
+      }
+    }
+
+    if ctx.active_id() == h_thumb_id {
+      ctx.set_cursor_icon("pointer")
+      ctx.set_wants_capture_mouse(true)
+      let grab_offset = ctx
+        .memory()
+        .get_double_or_default(container_id, thumb_w * 0.5, tag="h_grab_offset")
+      let target_thumb_x = ctx.input.mouse_pos.x - grab_offset
+      let new_pct = if travel_w > 0.0 {
+        (target_thumb_x - bar_track_x) / travel_w
+      } else {
+        0.0
+      }
+      let clamped_pct = if new_pct < 0.0 {
+        0.0
+      } else if new_pct > 1.0 {
+        1.0
+      } else {
+        new_pct
+      }
+      scroll_x = clamped_pct * max_scroll_x
+      ctx.memory().set_double(container_id, scroll_x, tag="scroll_x")
+      if ctx.input.mouse_released {
+        ctx.set_active_id(Id::zero())
+      }
+    }
+
+    let scroll_pct_x = if max_scroll_x > 0.0001 {
+      scroll_x / max_scroll_x
+    } else {
+      0.0
+    }
+    let thumb_x = bar_track_x + scroll_pct_x * travel_w
+    let thumb_rect_x = @math.Rect::new(thumb_x, bar_y, thumb_w, scrollbar_h)
+
+    let is_bar_hovered = ctx.is_hovered(thumb_rect_x) ||
+      ctx.active_id() == h_thumb_id
+    if is_bar_hovered {
+      ctx.set_cursor_icon("pointer")
+    }
+    let thumb_color = if is_bar_hovered {
+      @color.Color::accent_primary()
+    } else {
+      @color.Color::border_muted()
+    }
+    ctx.painter().add_rect(thumb_rect_x, thumb_color, 3.0 * scale)
   }
 
   {

@@ -142,3 +142,119 @@ test "table: row click detection" {
   assert_eq(resp.clicked_row, Some(0))
   assert_eq(resp.hovered_row, Some(0))
 }
+
+///|
+test "table: horizontal scrolling via wheel delta and memory persistence" {
+  let ctx = UIContext::new()
+
+  // Table width 200px, but 3 columns totaling 100 + 150 + 150 = 400px
+  let cols = [
+    TableColumn::new("c1", "Col 1", 100.0),
+    TableColumn::new("c2", "Col 2", 150.0),
+    TableColumn::new("c3", "Col 3", 150.0),
+  ]
+
+  // Frame 1: Scroll horizontally with scroll_delta.x = -50.0 over table
+  let raw1 = @core.RawInput::with_events(
+    @math.Vec2::new(50.0, 50.0),
+    false,
+    @math.Vec2::new(-50.0, 0.0),
+    [],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw1)
+  let _ = table(ctx, "h_scroll_test", @math.Vec2::new(200.0, 200.0), cols, 5, fn(
+    _ui,
+    _r,
+    _c,
+    _rect,
+  ) {
+    ()
+  })
+  let _ = ctx.end_frame()
+
+  let table_id = ctx.id_stack.derive_id("h_scroll_test")
+  let scroll_x1 = ctx
+    .memory()
+    .get_double_or_default(table_id, 0.0, tag="scroll_x")
+  assert_eq(scroll_x1, 50.0)
+
+  // Frame 2: Shift+Wheel vertical delta translates to horizontal scroll
+  let raw2 = @core.RawInput::with_events(
+    @math.Vec2::new(50.0, 50.0),
+    false,
+    @math.Vec2::new(0.0, -30.0),
+    [],
+    "",
+    @core.Modifiers::shift(),
+  )
+  ctx.begin_frame(raw2)
+  let _ = table(ctx, "h_scroll_test", @math.Vec2::new(200.0, 200.0), cols, 5, fn(
+    _ui,
+    _r,
+    _c,
+    _rect,
+  ) {
+    ()
+  })
+  let _ = ctx.end_frame()
+
+  let scroll_x2 = ctx
+    .memory()
+    .get_double_or_default(table_id, 0.0, tag="scroll_x")
+  assert_eq(scroll_x2, 80.0)
+}
+
+///|
+test "table: keyboard horizontal navigation consumes arrow keys" {
+  let ctx = UIContext::new()
+  let cols = [
+    TableColumn::new("c1", "Col 1", 100.0),
+    TableColumn::new("c2", "Col 2", 150.0),
+    TableColumn::new("c3", "Col 3", 150.0),
+  ]
+
+  let table_id = ctx.id_stack.derive_id("h_kb_test")
+
+  // Frame 1: Request focus on table
+  let raw1 = RawInput::new()
+  ctx.begin_frame(raw1)
+  ctx.request_focus(table_id)
+  let _ = table(ctx, "h_kb_test", @math.Vec2::new(200.0, 200.0), cols, 5, fn(
+    _ui,
+    _r,
+    _c,
+    _rect,
+  ) {
+    ()
+  })
+  let _ = ctx.end_frame()
+  assert_true(ctx.has_focus(table_id))
+
+  // Frame 2: Press ArrowRight -> advance scroll_x and consume key
+  let raw2 = @core.RawInput::with_events(
+    @math.Vec2::new(50.0, 50.0),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(Key::ArrowRight, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw2)
+  let _ = table(ctx, "h_kb_test", @math.Vec2::new(200.0, 200.0), cols, 5, fn(
+    _ui,
+    _r,
+    _c,
+    _rect,
+  ) {
+    ()
+  })
+  assert_true(ctx.input().is_key_consumed(Key::ArrowRight))
+  let _ = ctx.end_frame()
+
+  let scroll_x = ctx
+    .memory()
+    .get_double_or_default(table_id, 0.0, tag="scroll_x")
+  assert_eq(scroll_x, 30.0)
+}
