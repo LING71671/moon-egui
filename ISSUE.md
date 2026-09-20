@@ -684,9 +684,9 @@ This review evaluates seven foundational dimensions:
 
 ## 9. Logical Errors (`logic`)
 
-### AUDIT-LOGIC-01 (P0) [OPEN]: Dual-Channel Text Ingestion In Web Host Causing Input Character Duplication
+### AUDIT-LOGIC-01 (P0) [RESOLVED]: Dual-Channel Text Ingestion In Web Host Causing Input Character Duplication
 - **Location**: [examples/canvas/host_input.mbt#L80-L93](file:///a:/moonbit-project/examples/canvas/host_input.mbt#L80-L93), [src/core/input.mbt#L234-L266](file:///a:/moonbit-project/src/core/input.mbt#L234-L266)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED**. `host_input.mbt` now passes `""` into `raw.text_input`, and `InputState::update` initializes `self.text_input = ""` and only falls back to `raw.text_input` if no `TextInput` events were present.
 - **Priority**: **P0**
 - **Category**: Input Subsystem Logic
 - **Description**:
@@ -708,9 +708,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-LOGIC-02 (P1) [OPEN]: Key-Up Event Dropping When Key Pressed Outside Canvas Focus
+### AUDIT-LOGIC-02 (P1) [RESOLVED]: Key-Up Event Dropping When Key Pressed Outside Canvas Focus
 - **Location**: [src/core/input.mbt#L247-L260](file:///a:/moonbit-project/src/core/input.mbt#L247-L260)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED**. Key release events unconditionally push to `self.keys_released`, ensuring modifiers and interaction termination signals are never lost.
 - **Priority**: **P1**
 - **Category**: Event State Logic
 - **Description**:
@@ -736,9 +736,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-LOGIC-03 (P2) [OPEN]: LayerManager Flat Boolean State Causing Nested Foreground Premature Exit
+### AUDIT-LOGIC-03 (P2) [RESOLVED]: LayerManager Flat Boolean State Causing Nested Foreground Premature Exit
 - **Location**: [src/core/layer_manager.mbt#L85-L111](file:///a:/moonbit-project/src/core/layer_manager.mbt#L85-L111)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED**. Replaced flat `foreground : Bool` with re-entrant `mut foreground_depth : Int`, safely supporting nested overlays and popups without premature termination.
 - **Priority**: **P2**
 - **Category**: Layer Compositing Logic
 - **Description**:
@@ -750,9 +750,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-LOGIC-04 (P0) [OPEN]: Infinite Allocation Loop and Memory Exhaustion on Unbalanced `begin_foreground`
-- **Location**: [src/core/layer_manager.mbt#L85-L111](file:///a:/moonbit-project/src/core/layer_manager.mbt#L85-L111), [src/core/context.mbt#L90-L92](file:///a:/moonbit-project/src/core/context.mbt#L90-L92)
-- **Status**: **Backlog**
+### AUDIT-LOGIC-04 (P0) [RESOLVED]: Infinite Allocation Loop and Memory Exhaustion on Unbalanced `begin_foreground`
+- **Location**: [src/core/layer_manager.mbt#L85-L111](file:///a:/moonbit-project/src/core/layer_manager.mbt#L85-L111), [src/core/context.mbt#L90-L92](file:///a:/moonbit-project/src/core/context.mbt#L90-L92), [src/draw/draw_cmd.mbt#L125-L135](file:///a:/moonbit-project/src/draw/draw_cmd.mbt#L125-L135)
+- **Status**: **RESOLVED**. `DrawList::append` iterates over a pre-captured `let count = other.commands.length()`, eliminating array growth loops. `UIContext::end_frame` cleans up any unbalanced foreground frames before list merging.
 - **Priority**: **P0**
 - **Category**: Layer Compositing Logic & Memory Safety
 - **Description**:
@@ -768,9 +768,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-LOGIC-05 (P1) [OPEN]: Unreleased `active_id` in DockArea Splitter Causing Global Mouse Capture Leaks
-- **Location**: [src/composite/dock.mbt#L540-L546](file:///a:/moonbit-project/src/composite/dock.mbt#L540-L546)
-- **Status**: **Backlog**
+### AUDIT-LOGIC-05 (P1) [RESOLVED]: Unreleased `active_id` in DockArea Splitter Causing Global Mouse Capture Leaks
+- **Location**: [src/composite/dock.mbt#L540-L586](file:///a:/moonbit-project/src/composite/dock.mbt#L540-L586), [src/widgets/slider.mbt#L130-L150](file:///a:/moonbit-project/src/widgets/slider.mbt#L130-L150)
+- **Status**: **RESOLVED**. Added explicit `else { ctx.set_active_id(Id::zero()) }` when mouse is released in both `dock.mbt` and `slider.mbt`.
 - **Priority**: **P1**
 - **Category**: Interaction State Machine Logic
 - **Description**:
@@ -786,9 +786,9 @@ This review evaluates seven foundational dimensions:
 
 ## 10. Robustness & Stability (`robust`)
 
-### AUDIT-ROBUST-01 (P1) [OPEN]: Unbounded Sub-stepping Loop in `Spring::step` Under Large Frame Deltas or NaN
-- **Location**: [src/math/spring.mbt#L129-L143](file:///a:/moonbit-project/src/math/spring.mbt#L129-L143)
-- **Status**: **Backlog**
+### AUDIT-ROBUST-01 (P1) [RESOLVED]: Unbounded Sub-stepping Loop in `Spring::step` Under Large Frame Deltas or NaN
+- **Location**: [src/math/spring.mbt#L118-L150](file:///a:/moonbit-project/src/math/spring.mbt#L118-L150)
+- **Status**: **RESOLVED**. Clamped `safe_dt = if dt > 0.2 { 0.2 } else { dt }`, added `dt.is_nan()` check, and capped integration iterations at 30 per frame.
 - **Priority**: **P1**
 - **Category**: Numerical & Runtime Stability
 - **Description**:
@@ -808,9 +808,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-ROBUST-02 (P2) [OPEN]: Uninitialized Initial Mouse Delta Spike on Frame Zero
-- **Location**: [src/core/input.mbt#L192-L217](file:///a:/moonbit-project/src/core/input.mbt#L192-L217)
-- **Status**: **Backlog**
+### AUDIT-ROBUST-02 (P2) [RESOLVED]: Uninitialized Initial Mouse Delta Spike on Frame Zero
+- **Location**: [src/core/input.mbt#L192-L225](file:///a:/moonbit-project/src/core/input.mbt#L192-L225)
+- **Status**: **RESOLVED**. Added `mouse_initialized : Bool`. On frame zero, sets `mouse_prev_pos = mouse_pos` and `mouse_delta = Vec2::zero()`, eliminating delta spikes.
 - **Priority**: **P2**
 - **Category**: Input Robustness
 - **Description**:
@@ -826,9 +826,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-ROBUST-03 (P2) [OPEN]: Non-Finite Interpolation Parameter in `Color::lerp` Propagating Malformed RGBA
+### AUDIT-ROBUST-03 (P2) [RESOLVED]: Non-Finite Interpolation Parameter in `Color::lerp` Propagating Malformed RGBA
 - **Location**: [src/color/color.mbt#L42-L49](file:///a:/moonbit-project/src/color/color.mbt#L42-L49)
-- **Status**: **Backlog**
+- **Status**: **RESOLVED**. Added `if t.is_nan() || t < 0.0 { 0.0 } else if t > 1.0 { 1.0 } else { t }` in `Color::lerp`.
 - **Priority**: **P2**
 - **Category**: Color Arithmetic Robustness
 - **Description**:
@@ -843,9 +843,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-ROBUST-04 (P1) [OPEN]: Negative Rect Dimension Arithmetic Trap Under Squeezed Dock Nodes
-- **Location**: [src/composite/dock.mbt#L483-L520](file:///a:/moonbit-project/src/composite/dock.mbt#L483-L520)
-- **Status**: **Backlog**
+### AUDIT-ROBUST-04 (P1) [RESOLVED]: Negative Rect Dimension Arithmetic Trap Under Squeezed Dock Nodes
+- **Location**: [src/composite/dock.mbt#L480-L525](file:///a:/moonbit-project/src/composite/dock.mbt#L480-L525)
+- **Status**: **RESOLVED**. Clamped `total_w <= 0.0` to `(0.0, 0.0)` and guarded `total_w < min_pane_size * 2.0` by halving available space rather than subtracting and producing negative widths.
 - **Priority**: **P1**
 - **Category**: Geometry Arithmetic Robustness
 - **Description**:
@@ -866,9 +866,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-ROBUST-05 (P2) [OPEN]: Stale Index Mismatch and Positional Jumping on Toast Manual Dismissal
-- **Location**: [src/widgets/toast.mbt#L201-L211](file:///a:/moonbit-project/src/widgets/toast.mbt#L201-L211)
-- **Status**: **Backlog**
+### AUDIT-ROBUST-05 (P2) [RESOLVED]: Stale Index Mismatch and Positional Jumping on Toast Manual Dismissal
+- **Location**: [src/widgets/toast.mbt#L201-L215](file:///a:/moonbit-project/src/widgets/toast.mbt#L201-L215)
+- **Status**: **RESOLVED**. Filtered `placed_rects` synchronously into `final_rects` alongside `final_active`, maintaining 1:1 physical positional alignment when a toast is closed.
 - **Priority**: **P2**
 - **Category**: Rendering Consistency & Array Alignment
 - **Description**:
@@ -888,9 +888,9 @@ This review evaluates seven foundational dimensions:
 
 ## 11. Performance & Allocations (`perf`)
 
-### AUDIT-PERF-01 (P1) [OPEN]: High-Frequency String Allocation and Fractional Truncation in Text Measurement Cache
-- **Location**: [src/core/context.mbt#L653-L661](file:///a:/moonbit-project/src/core/context.mbt#L653-L661)
-- **Status**: **Backlog**
+### AUDIT-PERF-01 (P1) [RESOLVED]: High-Frequency String Allocation and Fractional Truncation in Text Measurement Cache
+- **Location**: [src/core/context.mbt#L35](file:///a:/moonbit-project/src/core/context.mbt#L35), [L650-L685](file:///a:/moonbit-project/src/core/context.mbt#L650-L685)
+- **Status**: **RESOLVED**. Upgraded `text_measure_cache` key from heap `String` concatenation to `(String, Int)` tuple with millipoint precision `(font_size * 100.0 + 0.5).to_int()`, eliminating transient string allocations on cache hits and misses.
 - **Priority**: **P1**
 - **Category**: Heap Allocation & Typographical Precision
 - **Description**:
@@ -957,9 +957,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-MAINT-02 (P1) [OPEN]: Residual Widget-Specific Identifier Fields in `UIContext` Violating Decoupling Standard
-- **Location**: [src/core/context.mbt#L36-L38](file:///a:/moonbit-project/src/core/context.mbt#L36-L38), [L822-L840](file:///a:/moonbit-project/src/core/context.mbt#L822-L840)
-- **Status**: **Backlog**
+### AUDIT-MAINT-02 (P1) [RESOLVED]: Residual Widget-Specific Identifier Fields in `UIContext` Violating Decoupling Standard
+- **Location**: [src/core/context.mbt#L30-L40](file:///a:/moonbit-project/src/core/context.mbt#L30-L40), [L785-L840](file:///a:/moonbit-project/src/core/context.mbt#L785-L840)
+- **Status**: **RESOLVED**. Removed `open_combo_id`, `open_menu_id`, and `active_submenu_id` from `UIContext` struct. Re-routed their public accessors through `self.memory` with namespaced tags.
 - **Priority**: **P1**
 - **Category**: Architectural Decoupling Compliance
 - **Description**:
@@ -975,9 +975,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-MAINT-03 (P2) [OPEN]: Unscaled Metric Literals Bypassing Global Scale Invariance in Slider
-- **Location**: [src/widgets/slider.mbt#L191-L313](file:///a:/moonbit-project/src/widgets/slider.mbt#L191-L313)
-- **Status**: **Backlog**
+### AUDIT-MAINT-03 (P2) [RESOLVED]: Unscaled Metric Literals Bypassing Global Scale Invariance in Slider
+- **Location**: [src/widgets/slider.mbt#L190-L325](file:///a:/moonbit-project/src/widgets/slider.mbt#L190-L325), [L510-L525](file:///a:/moonbit-project/src/widgets/slider.mbt#L510-L525)
+- **Status**: **RESOLVED**. Scaled label font, track radius, tick radius, thumb strokes, bubble metrics, and value text position by `scale`.
 - **Priority**: **P2**
 - **Category**: Anti-Hardcoding & Geometry Scale
 - **Description**:
@@ -993,9 +993,9 @@ This review evaluates seven foundational dimensions:
 
 ---
 
-### AUDIT-MAINT-04 (P2) [OPEN]: Unscaled Layout Literals and Theme Tokens in Auxiliary Scroll and Toast Containers
-- **Location**: [src/widgets/scroll_area.mbt#L88-L175](file:///a:/moonbit-project/src/widgets/scroll_area.mbt#L88-L175), [src/widgets/toast.mbt#L134-L146](file:///a:/moonbit-project/src/widgets/toast.mbt#L134-L146)
-- **Status**: **Backlog**
+### AUDIT-MAINT-04 (P2) [RESOLVED]: Unscaled Layout Literals and Theme Tokens in Auxiliary Scroll and Toast Containers
+- **Location**: [src/widgets/scroll_area.mbt#L88-L195](file:///a:/moonbit-project/src/widgets/scroll_area.mbt#L88-L195), [src/widgets/toast.mbt#L134-L290](file:///a:/moonbit-project/src/widgets/toast.mbt#L134-L290)
+- **Status**: **RESOLVED**. Scaled scrollbar width, track padding, min thumb height, and radii in `scroll_area.mbt`. Scaled toast dimensions, spacing, margins, indicator bar, typography, and close button in `toast.mbt`.
 - **Priority**: **P2**
 - **Category**: Anti-Hardcoding & Geometry Scale
 - **Description**:
@@ -1236,28 +1236,28 @@ This review evaluates seven foundational dimensions:
 | **a11y** | `FEAT-A11Y-01` | Keyboard Reachability for Container & Overlay Widgets | **P2** | In Progress (15 of 16 surfaces) |
 | **test** | `DEBT-TEST-01` | Whitebox Coverage Gaps in `src/composite` Containers | **P3** | Backlog |
 | **arch** | `DEBT-ARCH-01` | Declare `composite -> widgets` Dependency Edge | **P3** | Backlog |
-| **logic** | `AUDIT-LOGIC-01` | Dual-Channel Text Ingestion In Web Host Causing Input Duplication | **P0** | Backlog |
-| **logic** | `AUDIT-LOGIC-02` | Key-Up Event Dropping When Key Pressed Outside Canvas Focus | **P1** | Backlog |
-| **logic** | `AUDIT-LOGIC-03` | LayerManager Flat Boolean State Causing Nested Foreground Premature Exit | **P2** | Backlog |
-| **robust**| `AUDIT-ROBUST-01`| Unbounded Sub-stepping Loop in `Spring::step` Under Large Frame Deltas or NaN | **P1** | Backlog |
-| **robust**| `AUDIT-ROBUST-02`| Uninitialized Initial Mouse Delta Spike on Frame Zero | **P2** | Backlog |
-| **robust**| `AUDIT-ROBUST-03`| Non-Finite Interpolation Parameter in `Color::lerp` Propagating Malformed RGBA | **P2** | Backlog |
-| **perf** | `AUDIT-PERF-01` | High-Frequency String Allocation & Fractional Truncation in Text Cache | **P1** | Backlog |
+| **logic** | `AUDIT-LOGIC-01` | Dual-Channel Text Ingestion In Web Host Causing Input Duplication | **P0** | Resolved (Iteration 1) |
+| **logic** | `AUDIT-LOGIC-02` | Key-Up Event Dropping When Key Pressed Outside Canvas Focus | **P1** | Resolved (Iteration 1) |
+| **logic** | `AUDIT-LOGIC-03` | LayerManager Flat Boolean State Causing Nested Foreground Premature Exit | **P2** | Resolved (Iteration 1) |
+| **robust**| `AUDIT-ROBUST-01`| Unbounded Sub-stepping Loop in `Spring::step` Under Large Frame Deltas or NaN | **P1** | Resolved (Iteration 1) |
+| **robust**| `AUDIT-ROBUST-02`| Uninitialized Initial Mouse Delta Spike on Frame Zero | **P2** | Resolved (Iteration 1) |
+| **robust**| `AUDIT-ROBUST-03`| Non-Finite Interpolation Parameter in `Color::lerp` Propagating Malformed RGBA | **P2** | Resolved (Iteration 1) |
+| **perf** | `AUDIT-PERF-01` | High-Frequency String Allocation & Fractional Truncation in Text Cache | **P1** | Resolved (Iteration 1) |
 | **perf** | `AUDIT-PERF-02` | Granular Line Segment Flooding During Node Connection Wire Drawing | **P2** | Backlog |
 | **maint** | `AUDIT-MAINT-01` | Systemic Theme Bypass via Direct Semantic Palette Token Calls in Widgets | **P1** | Backlog |
-| **maint** | `AUDIT-MAINT-02` | Residual Widget-Specific Identifier Fields in `UIContext` Violating Decoupling | **P1** | Backlog |
-| **maint** | `AUDIT-MAINT-03` | Unscaled Metric Literals Bypassing Global Scale Invariance in Slider | **P2** | Backlog |
+| **maint** | `AUDIT-MAINT-02` | Residual Widget-Specific Identifier Fields in `UIContext` Violating Decoupling | **P1** | Resolved (Iteration 1) |
+| **maint** | `AUDIT-MAINT-03` | Unscaled Metric Literals Bypassing Global Scale Invariance in Slider | **P2** | Resolved (Iteration 1) |
 | **dogfood**| `AUDIT-DOGFOOD-01`| Raw HTML/DOM Top Header Bar in Benchmark Violating Pure Canvas Standard | **P1** | Backlog |
 | **ux** | `AUDIT-UX-01` | Missing Horizontal Scrolling and Header Clamping in Wide Composite Tables | **P2** | Backlog |
 | **ux** | `AUDIT-UX-02` | Fixed-Width Value Text Container Causing Numeric Clipping & Layout Jitter | **P2** | Backlog |
 | **doc** | `AUDIT-DOC-01` | Obsolete Method Signatures and Missing Post-v0.3 Components in API Reference | **P2** | Backlog |
 | **doc** | `AUDIT-DOC-02` | Stale Monolithic `UIContext` Struct Code Sample in Flagship Studio IDE | **P3** | Backlog |
-| **logic** | `AUDIT-LOGIC-04` | Infinite Allocation Loop & OOM Crash on Unbalanced `begin_foreground` | **P0** | Backlog |
-| **logic** | `AUDIT-LOGIC-05` | Unreleased `active_id` in DockArea Splitter Causing Mouse Capture Leaks | **P1** | Backlog |
-| **robust**| `AUDIT-ROBUST-04`| Negative Rect Dimension Arithmetic Trap Under Squeezed Dock Nodes | **P1** | Backlog |
-| **robust**| `AUDIT-ROBUST-05`| Stale Index Mismatch & Positional Jumping on Toast Manual Dismissal | **P2** | Backlog |
+| **logic** | `AUDIT-LOGIC-04` | Infinite Allocation Loop & OOM Crash on Unbalanced `begin_foreground` | **P0** | Resolved (Iteration 1) |
+| **logic** | `AUDIT-LOGIC-05` | Unreleased `active_id` in DockArea Splitter Causing Mouse Capture Leaks | **P1** | Resolved (Iteration 1) |
+| **robust**| `AUDIT-ROBUST-04`| Negative Rect Dimension Arithmetic Trap Under Squeezed Dock Nodes | **P1** | Resolved (Iteration 1) |
+| **robust**| `AUDIT-ROBUST-05`| Stale Index Mismatch & Positional Jumping on Toast Manual Dismissal | **P2** | Resolved (Iteration 1) |
 | **perf** | `AUDIT-PERF-03` | 70-Command Quad Mesh Flood in 2D Color Picker Sat/Val Surface | **P2** | Backlog |
-| **maint** | `AUDIT-MAINT-04` | Unscaled Layout Literals and Theme Tokens in Scroll & Toast Containers | **P2** | Backlog |
+| **maint** | `AUDIT-MAINT-04` | Unscaled Layout Literals and Theme Tokens in Scroll & Toast Containers | **P2** | Resolved (Iteration 1) |
 | **dogfood**| `AUDIT-DOGFOOD-02`| Extensive HTML/DOM Simulation of App Header, Toolbar, HUD in Minesweeper | **P1** | Backlog |
 | **ux** | `AUDIT-UX-03` | Lack of Horizontal Scrolling in Single-Line `TextEdit` Causing Caret Clipping | **P1** | Backlog |
 | **ux** | `AUDIT-UX-04` | Non-Interactive Scrollbar Thumb & Missing Keyboard Focus in VirtualList | **P2** | Backlog |
