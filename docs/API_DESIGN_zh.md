@@ -69,18 +69,23 @@ fn Color::with_alpha(self : Color, alpha : Int) -> Color
 
 ```moonbit
 struct Response {
-  id : UInt64
+  id : Id
   rect : Rect
   hovered : Bool
   clicked : Bool
   pressed : Bool
   dragged : Bool
-  double_clicked : Bool
+  has_focus : Bool
+  gained_focus : Bool
+  lost_focus : Bool
+  secondary_clicked : Bool
 }
 
 fn Response::clicked(self : Response) -> Bool
 fn Response::hovered(self : Response) -> Bool
 fn Response::dragged(self : Response) -> Bool
+fn Response::has_focus(self : Response) -> Bool
+fn Response::secondary_clicked(self : Response) -> Bool
 ```
 
 ---
@@ -135,14 +140,20 @@ fn UIContext::spacer(self : UIContext, height : Double) -> Unit
 
 ### 3.4 布尔与开关控制 (Booleans & Toggles)
 * `checkbox`：**[状态: ✅ 已实现 (Implemented)]**
-* `toggle`：**[状态: 🚧 规划中 (Proposed)]**
+* `toggle`：**[状态: ✅ 已实现 (Implemented)]**
 
 ```moonbit
 // [已实现] 标准方框复选框
-fn UIContext::checkbox(self : UIContext, text : String, checked : Bool) -> (Bool, Response)
+pub fn @widgets.checkbox(ctx : UIContext, text : String, checked : Bool) -> (Bool, Response)
 
-// [规划中] 现代胶囊型滑动开关
-fn UIContext::toggle(self : UIContext, text : String, active : Bool) -> (Bool, Response)
+// [已实现] 现代胶囊型滑动开关
+pub fn @widgets.toggle(ctx : UIContext, text : String, checked : Bool) -> (Bool, Response)
+
+// [已实现] Fluent 链式与 Ref-bound 绑定构建器
+// @widgets.Checkbox::new(text, checked).show(ctx)
+// @widgets.Checkbox::from_ref(text, ref_target)
+// @widgets.Toggle::new(text, checked).show(ctx)
+// @widgets.Toggle::from_ref(text, ref_target)
 ```
 
 ### 3.5 数值调节与滑动条 (Value Selectors)
@@ -238,6 +249,42 @@ pub fn @composite.sparkline(
 
 // [规划中] 悬浮气泡提示（挂载在任意控件响应对象之后）
 fn Response::on_hover_text(self : Response, ui : UIContext, tooltip : String) -> Unit
+```
+
+### 3.8 专业音频与硬件控制器 (Audio & Hardware Controls)
+* `knob`：**[状态: ✅ 已实现 (Implemented)]**
+* `fader`：**[状态: ✅ 已实现 (Implemented)]**
+
+```moonbit
+// [已实现] 旋钮调节控制器（极坐标圆弧、双极模式、键盘消费交互）
+pub fn @composite.knob(
+  ctx : UIContext,
+  id_salt : String,
+  label : String,
+  value : Double,
+  min_val? : Double = 0.0,
+  max_val? : Double = 1.0,
+  step? : Double = 0.01,
+  default_val? : Double = 0.0,
+  unit? : String = "",
+  radius? : Double = 22.0,
+  bipolar? : Bool = false,
+) -> (Double, Response)
+
+// [Implemented] 垂直通道推子（滑块轨道、手柄凹槽与刻度线）
+pub fn @composite.fader(
+  ctx : UIContext,
+  id_salt : String,
+  label : String,
+  value : Double,
+  min_val? : Double = 0.0,
+  max_val? : Double = 1.0,
+  step? : Double = 0.01,
+  default_val? : Double = 0.0,
+  unit? : String = "",
+  show_ticks? : Bool = true,
+  size? : @math.Vec2,
+) -> (Double, Response)
 ```
 
 ---
@@ -366,9 +413,94 @@ pub fn @composite.node_editor(
 ) -> NodeEditorResponse
 ```
 
+### 4.7 数据虚拟化列表 (VirtualList)
+* `virtual_list`：**[状态: ✅ 已实现 (Implemented)]**
+
+```moonbit
+// [已实现] 高性能一维数据虚拟化列表，仅对视口内的可见切片项执行绘制求值
+pub fn @widgets.virtual_list(
+  ctx : UIContext,
+  id_salt : String,
+  total_items : Int,
+  height : Double,
+  item_height? : Double = 28.0,
+  item_renderer : (Int, @math.Rect) -> Unit,
+) -> VirtualListResponse
+
+// Fluent 链式构建范式：
+// @widgets.VirtualList::new(id_salt, total_items, height)
+//   .item_height(32.0)
+//   .width(400.0)
+//   .overscan(2)
+//   .render(ctx, fn(idx, rect) { ... })
+```
+
+### 4.8 虚拟化数据表格 (Table)
+* `table`：**[状态: ✅ 已实现 (Implemented)]**
+
+```moonbit
+// [已实现] 虚拟化多列数据表格（支持列宽拖拽排序、双向水平/垂直滚动与自定义单元格闭包）
+pub fn @composite.table(
+  ctx : UIContext,
+  id_salt : String,
+  size : @math.Vec2,
+  columns : Array[TableColumn],
+  row_count : Int,
+  render_cell : (UIContext, Int, Int, @math.Rect) -> Unit,
+  row_height? : Double = 30.0,
+  header_height? : Double = 32.0,
+  selected_row? : Int = -1,
+  sort_column? : String = "",
+  sort_direction? : TableSortDirection = NoSort,
+) -> TableResponse
+```
+
+### 4.9 复合停靠工作区 (DockArea)
+* `dock_area`：**[状态: ✅ 已实现 (Implemented)]**
+
+```moonbit
+// [已实现] 递归多窗口分栏停靠系统（支持水平/垂直切分、多标签页与动态拖拽分栏）
+pub fn @composite.dock_area(
+  ctx : UIContext,
+  id_salt : String,
+  size : @math.Vec2,
+  tree : DockTree,
+  render_tab : (UIContext, String, @math.Rect) -> Unit,
+) -> DockResponse
+```
+
+### 4.10 科学二维折线图与分类柱状图 (Plot & BarChart)
+* `plot`：**[状态: ✅ 已实现 (Implemented)]**
+* `bar_chart`：**[状态: ✅ 已实现 (Implemented)]**
+
+```moonbit
+// [已实现] 即时模式科学坐标折线/散点/面积图（多数据序列、平滑缩放与十字准星 HUD）
+pub fn @composite.plot(
+  ctx : UIContext,
+  id_salt : String,
+  series : Array[PlotSeries],
+  size? : @math.Vec2,
+  show_grid? : Bool = true,
+  show_crosshair? : Bool = true,
+  show_legend? : Bool = true,
+) -> (@math.Vec2?, Response)
+
+// [已实现] 即时模式分类柱状图（数值自适应归一化、悬浮高亮与数值指示角标）
+pub fn @composite.bar_chart(
+  ctx : UIContext,
+  id_salt : String,
+  labels : Array[String],
+  values : Array[Double],
+  size? : @math.Vec2,
+  bar_color? : @color.Color = @color.Color::accent_primary(),
+) -> (Int?, Response)
+```
+
 ---
 
-## 5. 底层自由矢量手绘接口 (Painter API)
+## 5. 渲染图元、物理动效与矢量导出子系统
+
+### 5.1 底层自由矢量手绘接口 (Painter API)
 
 针对游戏 HUD、仪表盘、小地图或自绘节点图，`Painter` 提供了在当前容器上下文内直接提交 2D 图元的能力：
 
@@ -383,6 +515,58 @@ fn Painter::line(self : Painter, start : Vec2, end : Vec2, color : Color, width 
 fn Painter::circle_filled(self : Painter, center : Vec2, radius : Double, color : Color)
 fn Painter::circle_stroke(self : Painter, center : Vec2, radius : Double, color : Color, width : Double)
 fn Painter::text(self : Painter, pos : Vec2, text : String, font_size : Double, color : Color)
+```
+
+### 5.2 GPU 三角网格细分剖分 (Mesh)
+* `Mesh` / `Vertex`：**[状态: ✅ 已实现 (Implemented)]**
+
+```moonbit
+// [已实现] 紧凑 2D 顶点与索引缓冲区，支持 WebGL/GPU 批处理绘制与图元三角细分
+pub struct Mesh {
+  vertices : Array[Vertex]
+  indices : Array[Int]
+}
+
+pub fn Mesh::new() -> Mesh
+pub fn Mesh::tessellate_rect(self : Mesh, rect : Rect, color : Color, corner_radius : Double) -> Unit
+pub fn Mesh::write_vertex_floats(self : Mesh, out : Array[Double]) -> Unit
+```
+
+### 5.3 矢量 SVG 序列化导出 (SvgExporter)
+* `SvgExporter`：**[状态: ✅ 已实现 (Implemented)]**
+
+```moonbit
+// [已实现] 将即时模式 DrawList 绘制指令流直接序列化为标准 SVG 矢量 XML 文本
+pub struct SvgExporter {
+  width : Double
+  height : Double
+  background : @color.Color?
+}
+
+pub fn SvgExporter::new(width : Double, height : Double, background? : @color.Color) -> SvgExporter
+pub fn SvgExporter::render_to_string(self : SvgExporter, draw_list : DrawList) -> String
+```
+
+### 5.4 物理阻尼弹簧动画模拟引擎 (Spring)
+* `Spring` / `SpringConfig`：**[状态: ✅ 已实现 (Implemented)]**
+
+```moonbit
+// [已实现] 基于半隐式欧拉积分的高阶简谐弹簧物理模拟器，呈现丝滑自然的原生 UI 交互惯性
+pub struct SpringConfig {
+  stiffness : Double
+  damping : Double
+  mass : Double
+}
+
+pub fn SpringConfig::default_spring() -> SpringConfig
+pub fn SpringConfig::bouncy() -> SpringConfig
+
+pub struct Spring { ... }
+pub fn Spring::new(initial_val : Double, config? : SpringConfig) -> Spring
+pub fn Spring::set_target(self : Spring, target : Double) -> Unit
+pub fn Spring::step(self : Spring, dt : Double) -> Unit
+pub fn Spring::value(self : Spring) -> Double
+pub fn Spring::is_settled(self : Spring, tolerance? : Double, velocity_tolerance? : Double) -> Bool
 ```
 
 ---
