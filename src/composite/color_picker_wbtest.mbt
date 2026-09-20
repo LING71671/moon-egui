@@ -54,8 +54,33 @@ test "color_picker: panel renders grid and controls" {
   assert_eq(resp.rect.w, 180.0)
   assert_eq(resp.rect.h, 230.0)
   assert_eq(col.a, 200)
-  // card + stroke + 70 grid tiles + border + 2 cursor rings + 24 hue tiles + hue stroke + thumb + thumb stroke + alpha bar + 16 alpha tiles + alpha stroke + thumb + thumb stroke + swatch + swatch stroke + hex text = 120+ cmds
-  assert_true(dl.len() > 100)
+  // Continuous linear gradients: 90% fewer commands than legacy 70-tile grid
+  assert_true(dl.len() >= 25 && dl.len() <= 60)
+}
+
+///|
+test "color_picker: hue preserved in memory across black/white grayscale" {
+  let ctx = UIContext::new()
+  let panel_id = ctx.id_stack.derive_id("color_picker::picker_hue_test")
+
+  // Frame 1: blue color (h ~ 210)
+  let blue = @color.Color::rgb(0, 128, 255)
+  ctx.begin_frame(RawInput::new())
+  let _ = color_picker(ctx, "picker_hue_test", blue)
+  let _ = ctx.end_frame()
+
+  let saved_h = ctx.memory().get_double_or_default(panel_id, 0.0, tag="hue")
+  assert_true(saved_h > 200.0 && saved_h < 220.0)
+
+  // Frame 2: user selects pure black (0, 0, 0), where rgb_to_hsv delta = 0
+  let black = @color.Color::rgb(0, 0, 0)
+  ctx.begin_frame(RawInput::new())
+  let _ = color_picker(ctx, "picker_hue_test", black)
+  let _ = ctx.end_frame()
+
+  // Hue should still be preserved in memory, not reset to 0
+  let preserved_h = ctx.memory().get_double_or_default(panel_id, 0.0, tag="hue")
+  assert_true(preserved_h > 200.0 && preserved_h < 220.0)
 }
 
 ///|

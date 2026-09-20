@@ -225,6 +225,7 @@ test "tree_view: keyboard ArrowRight expands and ArrowLeft collapses node" {
   )
   assert_eq(res2.expanded_ids.contains("camera_group"), true)
   assert_eq(res2.toggled_id, Some("camera_group"))
+  assert_true(ctx.input().is_key_consumed(Key::ArrowRight))
   let _ = ctx.end_frame()
 
   // Frame 3: press ArrowLeft -> should collapse camera_group
@@ -246,5 +247,6 @@ test "tree_view: keyboard ArrowRight expands and ArrowLeft collapses node" {
   )
   assert_eq(res3.expanded_ids.contains("camera_group"), false)
   assert_eq(res3.toggled_id, Some("camera_group"))
+  assert_true(ctx.input().is_key_consumed(Key::ArrowLeft))
   let _ = ctx.end_frame()
 }

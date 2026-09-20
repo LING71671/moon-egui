@@ -409,6 +409,7 @@ pub fn code_editor(
 
     // Horizontal character navigation
     if ctx.input.key_pressed(Key::ArrowLeft) {
+      ctx.input.consume_key(Key::ArrowLeft)
       if shift_held && selection_anchor is None {
         selection_anchor = Some(cursor_pos)
       } else if !shift_held {
@@ -417,6 +418,7 @@ pub fn code_editor(
       cursor_pos = prev_char_boundary(current_text, cursor_pos)
     }
     if ctx.input.key_pressed(Key::ArrowRight) {
+      ctx.input.consume_key(Key::ArrowRight)
       if shift_held && selection_anchor is None {
         selection_anchor = Some(cursor_pos)
       } else if !shift_held {
@@ -427,6 +429,7 @@ pub fn code_editor(
 
     // Vertical line navigation
     if ctx.input.key_pressed(Key::ArrowUp) {
+      ctx.input.consume_key(Key::ArrowUp)
       if shift_held && selection_anchor is None {
         selection_anchor = Some(cursor_pos)
       } else if !shift_held {
@@ -439,6 +442,7 @@ pub fn code_editor(
       }
     }
     if ctx.input.key_pressed(Key::ArrowDown) {
+      ctx.input.consume_key(Key::ArrowDown)
       if shift_held && selection_anchor is None {
         selection_anchor = Some(cursor_pos)
       } else if !shift_held {
@@ -453,6 +457,7 @@ pub fn code_editor(
 
     // Line boundary and document boundary jumps
     if ctx.input.key_pressed(Key::Home) {
+      ctx.input.consume_key(Key::Home)
       if shift_held && selection_anchor is None {
         selection_anchor = Some(cursor_pos)
       } else if !shift_held {
@@ -465,6 +470,7 @@ pub fn code_editor(
       }
     }
     if ctx.input.key_pressed(Key::End) {
+      ctx.input.consume_key(Key::End)
       if shift_held && selection_anchor is None {
         selection_anchor = Some(cursor_pos)
       } else if !shift_held {
@@ -541,6 +547,7 @@ pub fn code_editor(
 
       // Backspace deletion
       if ctx.input.key_pressed(Key::Backspace) {
+        ctx.input.consume_key(Key::Backspace)
         if has_sel {
           let left = string_slice(current_text, 0, s_start)
           let right = string_slice(current_text, s_end, current_text.length())
@@ -558,6 +565,7 @@ pub fn code_editor(
 
       // Delete key
       if ctx.input.key_pressed(Key::Delete) {
+        ctx.input.consume_key(Key::Delete)
         if has_sel {
           let left = string_slice(current_text, 0, s_start)
           let right = string_slice(current_text, s_end, current_text.length())

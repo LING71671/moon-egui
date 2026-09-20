@@ -176,6 +176,7 @@ pub fn tree_view(
 
     // Up arrow
     if ctx.input.key_pressed(Key::ArrowUp) {
+      ctx.input.consume_key(Key::ArrowUp)
       if sel_idx > 0 {
         cur_selected = Some(flat_nodes[sel_idx - 1].node.id)
         clicked_id = cur_selected
@@ -187,6 +188,7 @@ pub fn tree_view(
 
     // Down arrow
     if ctx.input.key_pressed(Key::ArrowDown) {
+      ctx.input.consume_key(Key::ArrowDown)
       if sel_idx >= 0 && sel_idx < node_count - 1 {
         cur_selected = Some(flat_nodes[sel_idx + 1].node.id)
         clicked_id = cur_selected
@@ -197,32 +199,38 @@ pub fn tree_view(
     }
 
     // Right arrow: expand if node has children and is collapsed
-    if ctx.input.key_pressed(Key::ArrowRight) && sel_idx >= 0 {
-      let flat = flat_nodes[sel_idx]
-      if flat.has_children && !flat.is_expanded {
-        next_expanded.push(flat.node.id)
-        toggled_id = Some(flat.node.id)
+    if ctx.input.key_pressed(Key::ArrowRight) {
+      ctx.input.consume_key(Key::ArrowRight)
+      if sel_idx >= 0 {
+        let flat = flat_nodes[sel_idx]
+        if flat.has_children && !flat.is_expanded {
+          next_expanded.push(flat.node.id)
+          toggled_id = Some(flat.node.id)
+        }
       }
     }
 
     // Left arrow: collapse if node is expanded, or jump to parent
-    if ctx.input.key_pressed(Key::ArrowLeft) && sel_idx >= 0 {
-      let flat = flat_nodes[sel_idx]
-      if flat.has_children && flat.is_expanded {
-        let mut idx_to_remove = -1
-        for i = 0; i < next_expanded.length(); i = i + 1 {
-          if next_expanded[i] == flat.node.id {
-            idx_to_remove = i
-            break
+    if ctx.input.key_pressed(Key::ArrowLeft) {
+      ctx.input.consume_key(Key::ArrowLeft)
+      if sel_idx >= 0 {
+        let flat = flat_nodes[sel_idx]
+        if flat.has_children && flat.is_expanded {
+          let mut idx_to_remove = -1
+          for i = 0; i < next_expanded.length(); i = i + 1 {
+            if next_expanded[i] == flat.node.id {
+              idx_to_remove = i
+              break
+            }
           }
+          if idx_to_remove >= 0 {
+            let _ = next_expanded.remove(idx_to_remove)
+            toggled_id = Some(flat.node.id)
+          }
+        } else if flat.parent_id is Some(p_id) {
+          cur_selected = Some(p_id)
+          clicked_id = Some(p_id)
         }
-        if idx_to_remove >= 0 {
-          let _ = next_expanded.remove(idx_to_remove)
-          toggled_id = Some(flat.node.id)
-        }
-      } else if flat.parent_id is Some(p_id) {
-        cur_selected = Some(p_id)
-        clicked_id = Some(p_id)
       }
     }
   }

@@ -146,7 +146,15 @@ pub fn color_picker(
   let sq_rect = @math.Rect::new(sq_x, sq_y, sq_w, sq_h)
 
   let (init_h, init_s, init_v) = rgb_to_hsv(color.r, color.g, color.b)
-  let mut h = init_h
+  let panel_id = ctx.id_stack.derive_id("color_picker::" + id_salt)
+  let mut h = if init_s > 0.001 && init_v > 0.001 {
+    ctx
+    .memory()
+    .set_double(panel_id, init_h, tag="hue", frame=ctx.frame_counter())
+    init_h
+  } else {
+    ctx.memory().get_double_or_default(panel_id, init_h, tag="hue")
+  }
   let mut s = init_s
   let mut v = init_v
   let mut a = color.a
@@ -174,26 +182,31 @@ pub fn color_picker(
     }
   }
 
-  // Draw 2D Sat/Val Mesh
-  let grid_x = 10
-  let grid_y = 7
-  let cell_w = sq_w / grid_x.to_double()
-  let cell_h = sq_h / grid_y.to_double()
-
-  for gx = 0; gx < grid_x; gx = gx + 1 {
-    let cell_s = gx.to_double() / (grid_x - 1).to_double()
-    for gy = 0; gy < grid_y; gy = gy + 1 {
-      let cell_v = 1.0 - gy.to_double() / (grid_y - 1).to_double()
-      let (cr, cg, cb) = hsv_to_rgb(h, cell_s, cell_v)
-      let c_rect = @math.Rect::new(
-        sq_x + gx.to_double() * cell_w,
-        sq_y + gy.to_double() * cell_h,
-        cell_w + 0.5,
-        cell_h + 0.5,
-      )
-      ctx.painter().add_rect(c_rect, @color.Color::rgb(cr, cg, cb), 0.0)
-    }
-  }
+  // Draw 2D Sat/Val Surface using smooth continuous gradients
+  let (pure_r, pure_g, pure_b) = hsv_to_rgb(h, 1.0, 1.0)
+  ctx
+  .painter()
+  .add_rect(sq_rect, @color.Color::rgb(pure_r, pure_g, pure_b), inner_radius)
+  ctx
+  .painter()
+  .add_linear_gradient(
+    sq_rect,
+    @math.Vec2::new(sq_x, sq_y),
+    @math.Vec2::new(sq_x + sq_w, sq_y),
+    @color.Color::rgba(255, 255, 255, 255),
+    @color.Color::rgba(255, 255, 255, 0),
+    inner_radius,
+  )
+  ctx
+  .painter()
+  .add_linear_gradient(
+    sq_rect,
+    @math.Vec2::new(sq_x, sq_y),
+    @math.Vec2::new(sq_x, sq_y + sq_h),
+    @color.Color::rgba(0, 0, 0, 0),
+    @color.Color::rgba(0, 0, 0, 255),
+    inner_radius,
+  )
 
   // Border outline for SV square
   ctx
@@ -245,25 +258,33 @@ pub fn color_picker(
     if ctx.input.mouse_down {
       let raw_h = (ctx.input.mouse_pos.x - sq_x) / sq_w * 360.0
       h = if raw_h < 0.0 { 0.0 } else if raw_h > 360.0 { 360.0 } else { raw_h }
+      ctx.memory().set_double(panel_id, h, tag="hue", frame=ctx.frame_counter())
     }
     if ctx.input.mouse_released {
       ctx.set_active_id(Id::zero())
     }
   }
 
-  // Draw Rainbow Slices
-  let hue_steps = 24
-  let hue_step_w = sq_w / hue_steps.to_double()
-  for step = 0; step < hue_steps; step = step + 1 {
-    let step_h = step.to_double() / hue_steps.to_double() * 360.0
-    let (hr, hg, hb) = hsv_to_rgb(step_h, 1.0, 1.0)
-    let slice_rect = @math.Rect::new(
-      sq_x + step.to_double() * hue_step_w,
-      hue_y,
-      hue_step_w + 0.5,
-      hue_h,
-    )
-    ctx.painter().add_rect(slice_rect, @color.Color::rgb(hr, hg, hb), 0.0)
+  // Draw Continuous Rainbow Multi-Stop Gradient Slices
+  let rainbow_stops : Array[(Double, Double, @color.Color, @color.Color)] = [
+    (0.0, 60.0, @color.Color::rgb(255, 0, 0), @color.Color::rgb(255, 255, 0)),
+    (60.0, 120.0, @color.Color::rgb(255, 255, 0), @color.Color::rgb(0, 255, 0)),
+    (120.0, 180.0, @color.Color::rgb(0, 255, 0), @color.Color::rgb(0, 255, 255)),
+    (180.0, 240.0, @color.Color::rgb(0, 255, 255), @color.Color::rgb(0, 0, 255)),
+    (240.0, 300.0, @color.Color::rgb(0, 0, 255), @color.Color::rgb(255, 0, 255)),
+    (300.0, 360.0, @color.Color::rgb(255, 0, 255), @color.Color::rgb(255, 0, 0)),
+  ]
+  let seg_w = sq_w / 6.0
+  for idx, item in rainbow_stops {
+    let (_, _, c_start, c_end) = item
+    let seg_x = sq_x + idx.to_double() * seg_w
+    let seg_rect = @math.Rect::new(seg_x, hue_y, seg_w + 0.5, hue_h)
+    let p_start = @math.Vec2::new(seg_x, hue_y)
+    let p_end = @math.Vec2::new(seg_x + seg_w, hue_y)
+    let corner_r = if idx == 0 || idx == 5 { inner_radius } else { 0.0 }
+    ctx
+    .painter()
+    .add_linear_gradient(seg_rect, p_start, p_end, c_start, c_end, corner_r)
   }
   ctx
   .painter()

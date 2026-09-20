@@ -323,3 +323,58 @@ test "code_editor: wheel scrolling and auto-scroll to caret" {
   assert_eq(offset2, 0.0)
   let _ = ctx.end_frame()
 }
+
+///|
+test "code_editor: arrow and editing keys are consumed" {
+  let ctx = UIContext::new()
+  let ed_id = ctx.id_stack.derive_id("code_editor::editor_keys")
+
+  // Frame 1: click to focus
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(100.0, 50.0), true)
+  ctx.begin_frame(raw1)
+  let _ = code_editor(ctx, "editor_keys", "val x = 42\nval y = 100")
+  let _ = ctx.end_frame()
+  ctx.request_focus(ed_id)
+
+  // Frame 2: press ArrowLeft
+  let raw2 = RawInput::with_events(
+    @math.Vec2::new(100.0, 50.0),
+    false,
+    @math.Vec2::zero(),
+    [Event::Key(Key::ArrowLeft, true, Modifiers::none())],
+    "",
+    Modifiers::none(),
+  )
+  ctx.begin_frame(raw2)
+  let _ = code_editor(ctx, "editor_keys", "val x = 42\nval y = 100")
+  assert_true(ctx.input().is_key_consumed(Key::ArrowLeft))
+  let _ = ctx.end_frame()
+
+  // Frame 3: press ArrowDown
+  let raw3 = RawInput::with_events(
+    @math.Vec2::new(100.0, 50.0),
+    false,
+    @math.Vec2::zero(),
+    [Event::Key(Key::ArrowDown, true, Modifiers::none())],
+    "",
+    Modifiers::none(),
+  )
+  ctx.begin_frame(raw3)
+  let _ = code_editor(ctx, "editor_keys", "val x = 42\nval y = 100")
+  assert_true(ctx.input().is_key_consumed(Key::ArrowDown))
+  let _ = ctx.end_frame()
+
+  // Frame 4: press Backspace
+  let raw4 = RawInput::with_events(
+    @math.Vec2::new(100.0, 50.0),
+    false,
+    @math.Vec2::zero(),
+    [Event::Key(Key::Backspace, true, Modifiers::none())],
+    "",
+    Modifiers::none(),
+  )
+  ctx.begin_frame(raw4)
+  let _ = code_editor(ctx, "editor_keys", "val x = 42\nval y = 100")
+  assert_true(ctx.input().is_key_consumed(Key::Backspace))
+  let _ = ctx.end_frame()
+}
