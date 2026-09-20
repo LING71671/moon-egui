@@ -116,7 +116,7 @@ pub fn Spring::is_settled(
 /// Advances the spring simulation by dt seconds using semi-implicit Euler integration
 /// with adaptive sub-stepping to prevent numerical instability.
 pub fn Spring::step(self : Spring, dt : Double) -> Unit {
-  if dt <= 0.0 {
+  if dt <= 0.0 || dt.is_nan() {
     return
   }
   // If already at target with negligible velocity, snap to target
@@ -126,10 +126,13 @@ pub fn Spring::step(self : Spring, dt : Double) -> Unit {
     return
   }
 
-  // Use a fixed sub-step of at most 1/120s for numerical stability
+  // Clamp dt to at most 0.2s to prevent frame-spike freezes (e.g. backgrounded tabs)
+  let safe_dt = if dt > 0.2 { 0.2 } else { dt }
   let max_sub_dt = 1.0 / 120.0
-  let mut remaining = dt
-  while remaining > 0.0 {
+  let mut remaining = safe_dt
+  let mut iter = 0
+  while remaining > 0.0 && iter < 30 {
+    iter = iter + 1
     let sub_dt = if remaining < max_sub_dt { remaining } else { max_sub_dt }
     let disp = self.current - self.target
     let spring_force = -self.config.stiffness * disp

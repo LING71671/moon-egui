@@ -107,3 +107,18 @@ test "spring2d: 2D vector convergence" {
   assert_eq(s2.value(), Vec2::new(10.0, 20.0))
   assert_true(s2.is_settled())
 }
+
+///|
+test "spring: nan and large dt protection" {
+  let s = Spring::new(0.0)
+  s.set_target(100.0)
+  // NaN should be ignored
+  let nan = 0.0 / 0.0
+  s.step(nan)
+  assert_eq(s.value(), 0.0)
+
+  // Huge dt (e.g. 100.0s background tab) should be clamped safely without infinite loop
+  s.step(100.0)
+  assert_true(s.value() > 0.0)
+  assert_false(s.value().is_nan())
+}
