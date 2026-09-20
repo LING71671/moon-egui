@@ -217,7 +217,7 @@ pub fn SvgExporter::render_to_string(
         buf.write_string(color_to_rgb(color))
         buf.write_string("\" fill-opacity=\"")
         buf.write_string(color_to_opacity(color))
-        buf.write_string("\"")
+        buf.write_string("\" dominant-baseline=\"hanging\"")
         if font_family != "" {
           buf.write_string(" font-family=\"")
           buf.write_string(escape_xml(font_family))

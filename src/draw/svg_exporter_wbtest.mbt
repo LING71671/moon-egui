@@ -91,6 +91,7 @@ test "svg_exporter: text with xml escaping" {
   let svg = dl.to_svg(300.0, 100.0)
   assert_true(svg.contains("Alert &lt;Important&gt; &amp; &quot;Special&quot;"))
   assert_true(svg.contains("font-size=\"14\""))
+  assert_true(svg.contains("dominant-baseline=\"hanging\""))
 }
 
 ///|

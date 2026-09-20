@@ -305,6 +305,14 @@ pub fn Mesh::tessellate_line(
 
 ///|
 /// Batch converts an entire DrawList into a single contiguous Mesh.
+///
+/// NOTE on primitive support and lossy conversions:
+/// - Supports geometric vector primitives: Rect, RectStroke, Circle, and Line.
+/// - LinearGradient is approximated as a solid rectangle filled with `start_col`,
+///   as smooth vertex gradient interpolation requires multi-color vertex meshes or shader support.
+/// - Text commands are skipped here; text geometry must be generated via a font atlas texture.
+/// - Clip commands are not tessellated into vertex geometry; viewport clipping must be
+///   managed via hardware scissor test or geometric polygon clipping.
 pub fn Mesh::tessellate_draw_list(self : Mesh, draw_list : DrawList) -> Unit {
   for cmd in draw_list.commands {
     match cmd {
