@@ -166,6 +166,28 @@ pub fn WindowManager::prune_stale(self : WindowManager) -> Unit {
   for id in stale_ids {
     self.positions.remove(id)
   }
+
+  let kept_batches : Array[(Id, @draw.DrawList)] = []
+  for batch in self.batches {
+    if self.drawn.contains(batch.0) {
+      kept_batches.push(batch)
+    }
+  }
+  self.batches.clear()
+  for b in kept_batches {
+    self.batches.push(b)
+  }
+
+  let kept_focus : Array[Id] = []
+  for id in self.focus {
+    if self.drawn.contains(id) {
+      kept_focus.push(id)
+    }
+  }
+  self.focus.clear()
+  for id in kept_focus {
+    self.focus.push(id)
+  }
 }
 
 ///|
