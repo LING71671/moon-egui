@@ -253,7 +253,14 @@ pub fn Stepper::show(self : Stepper, ctx : UIContext) -> (Double, Response) {
   }
   let effective_step = self.step * multiplier
 
-  let mut new_val = self.value
+  let mut new_val = if self.value.is_nan() {
+    match self.min {
+      Some(min_v) => min_v
+      None => 0.0
+    }
+  } else {
+    self.value
+  }
 
   // 1. Mouse Click on Buttons
   if resp.clicked {
@@ -273,7 +280,7 @@ pub fn Stepper::show(self : Stepper, ctx : UIContext) -> (Double, Response) {
     }
   }
 
-  // 3. Keyboard Arrow keys when focused
+  // 3. Keyboard navigation when focused
   if is_focused {
     if ctx.input.key_pressed(Key::ArrowLeft) ||
       ctx.input.key_pressed(Key::ArrowDown) {
@@ -286,6 +293,29 @@ pub fn Stepper::show(self : Stepper, ctx : UIContext) -> (Double, Response) {
       new_val = new_val + effective_step
       ctx.input.consume_key(Key::ArrowRight)
       ctx.input.consume_key(Key::ArrowUp)
+    }
+    if ctx.input.key_pressed(Key::Home) {
+      match self.min {
+        Some(min_v) => new_val = min_v
+        None => ()
+      }
+      ctx.input.consume_key(Key::Home)
+    }
+    if ctx.input.key_pressed(Key::End) {
+      match self.max {
+        Some(max_v) => new_val = max_v
+        None => ()
+      }
+      ctx.input.consume_key(Key::End)
+    }
+    let page_step = effective_step * 10.0
+    if ctx.input.key_pressed(Key::PageUp) {
+      new_val = new_val + page_step
+      ctx.input.consume_key(Key::PageUp)
+    }
+    if ctx.input.key_pressed(Key::PageDown) {
+      new_val = new_val - page_step
+      ctx.input.consume_key(Key::PageDown)
     }
   }
 
@@ -330,7 +360,7 @@ pub fn Stepper::show(self : Stepper, ctx : UIContext) -> (Double, Response) {
 
   // Vertical divider lines
   let sep_color = @color.Color::border_muted()
-  let line_w = 1.0
+  let line_w = 1.0 * scale
   ctx
   .painter()
   .add_line(
@@ -356,7 +386,7 @@ pub fn Stepper::show(self : Stepper, ctx : UIContext) -> (Double, Response) {
   } else {
     @color.Color::border_default()
   }
-  ctx.painter().add_rect_stroke(rect, border_color, 1.0, radius)
+  ctx.painter().add_rect_stroke(rect, border_color, 1.0 * scale, radius)
 
   // Focus Ring
   if is_focused {
@@ -365,7 +395,7 @@ pub fn Stepper::show(self : Stepper, ctx : UIContext) -> (Double, Response) {
     .add_rect_stroke(
       rect.expand(2.0 * scale),
       @color.Color::border_focus(),
-      1.5,
+      1.5 * scale,
       radius + 2.0 * scale,
     )
   }

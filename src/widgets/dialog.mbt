@@ -169,14 +169,26 @@ pub fn dialog(
   width? : Double = 440.0,
   viewport_size? : @math.Vec2 = @math.Vec2::zero(),
 ) -> DialogResult {
+  let scale = ctx.style.scale
+  let clip_opt = ctx.current_clip()
   let vp_w = if viewport_size.x > 0.0 {
     viewport_size.x
   } else if ctx.available_width() > 0.0 {
     ctx.available_width()
   } else {
-    800.0
+    match clip_opt {
+      Some(c) => if c.w > 0.0 { c.x + c.w } else { 800.0 * scale }
+      None => 800.0 * scale
+    }
   }
-  let vp_h = if viewport_size.y > 0.0 { viewport_size.y } else { 600.0 }
+  let vp_h = if viewport_size.y > 0.0 {
+    viewport_size.y
+  } else {
+    match clip_opt {
+      Some(c) => if c.h > 0.0 { c.y + c.h } else { 600.0 * scale }
+      None => 600.0 * scale
+    }
+  }
   let scrim_rect = @math.Rect::new(0.0, 0.0, vp_w, vp_h)
   ctx.block_hover(scrim_rect)
 
@@ -192,7 +204,6 @@ pub fn dialog(
     ctx.request_focus(confirm_id)
   }
 
-  let scale = ctx.style.scale
   let eff_w = if width * scale > vp_w - 32.0 * scale {
     if vp_w > 32.0 * scale {
       vp_w - 32.0 * scale
@@ -275,7 +286,12 @@ pub fn dialog(
   ctx.painter().add_rect(card_rect, @color.Color::bg_surface(), card_radius)
   ctx
   .painter()
-  .add_rect_stroke(card_rect, @color.Color::border_default(), 1.0, card_radius)
+  .add_rect_stroke(
+    card_rect,
+    @color.Color::border_default(),
+    1.0 * scale,
+    card_radius,
+  )
 
   // 4. Semantic Badge Icon
   let icon_center = @math.Vec2::new(
@@ -354,15 +370,20 @@ pub fn dialog(
   ctx.painter().add_rect(cancel_rect, cancel_bg, btn_radius)
   ctx
   .painter()
-  .add_rect_stroke(cancel_rect, @color.Color::border_default(), 1.0, btn_radius)
+  .add_rect_stroke(
+    cancel_rect,
+    @color.Color::border_default(),
+    1.0 * scale,
+    btn_radius,
+  )
   if ctx.has_focus(cancel_id) {
     ctx
     .painter()
     .add_rect_stroke(
-      cancel_rect.expand(2.0),
+      cancel_rect.expand(2.0 * scale),
       @color.Color::border_focus(),
-      1.5,
-      btn_radius + 2.0,
+      1.5 * scale,
+      btn_radius + 2.0 * scale,
     )
   }
   let cancel_sz = ctx.measure_text(cancel_label, ctx.style.font_normal * scale)
@@ -398,10 +419,10 @@ pub fn dialog(
     ctx
     .painter()
     .add_rect_stroke(
-      confirm_rect.expand(2.0),
+      confirm_rect.expand(2.0 * scale),
       @color.Color::border_focus(),
-      1.5,
-      btn_radius + 2.0,
+      1.5 * scale,
+      btn_radius + 2.0 * scale,
     )
   }
   let confirm_sz = ctx.measure_text(
@@ -436,8 +457,23 @@ pub fn dialog(
   let result = if confirm_clicked ||
     confirm_key ||
     (enter_pressed && !ctx.has_focus(cancel_id)) {
+    if enter_pressed {
+      ctx.input.consume_key(Key::Enter)
+    }
+    if space_pressed {
+      ctx.input.consume_key(Key::Space)
+    }
     DialogResult::Confirmed
   } else if cancel_clicked || cancel_key || esc_pressed || backdrop_clicked {
+    if esc_pressed {
+      ctx.input.consume_key(Key::Escape)
+    }
+    if enter_pressed {
+      ctx.input.consume_key(Key::Enter)
+    }
+    if space_pressed {
+      ctx.input.consume_key(Key::Space)
+    }
     DialogResult::Cancelled
   } else {
     DialogResult::Open

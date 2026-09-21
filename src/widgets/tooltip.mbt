@@ -103,7 +103,7 @@ fn render_tooltip_box(
 
   // Surface fill & boundary
   p.add_rect(rect, @color.Color::tooltip_bg(), radius)
-  p.add_rect_stroke(rect, @color.Color::tooltip_border(), 1.0, radius)
+  p.add_rect_stroke(rect, @color.Color::tooltip_border(), 1.0 * scale, radius)
 
   // Label text
   let text_x = rect.x + style.padding_x
@@ -133,18 +133,32 @@ pub fn Tooltip::show(self : Tooltip, ctx : UIContext) -> Unit {
   let mouse = ctx.input.mouse_pos
   let scale = ctx.style.scale
   let mut tip_x = mouse.x + 12.0 * scale
-  let tip_y = mouse.y + 12.0 * scale
+  let mut tip_y = mouse.y + 12.0 * scale
 
+  let clip_opt = ctx.current_clip()
   let vp_w = if ctx.available_width() > 0.0 {
     ctx.available_width()
   } else {
-    800.0
+    match clip_opt {
+      Some(c) => if c.w > 0.0 { c.x + c.w } else { 800.0 * scale }
+      None => 800.0 * scale
+    }
+  }
+  let vp_h = match clip_opt {
+    Some(c) => if c.h > 0.0 { c.y + c.h } else { 600.0 * scale }
+    None => 600.0 * scale
   }
 
   if tip_x + tip_w > vp_w {
     tip_x = mouse.x - tip_w - 4.0 * scale
     if tip_x < 4.0 * scale {
       tip_x = 4.0 * scale
+    }
+  }
+  if tip_y + tip_h > vp_h {
+    tip_y = mouse.y - tip_h - 4.0 * scale
+    if tip_y < 4.0 * scale {
+      tip_y = 4.0 * scale
     }
   }
   let tip_rect = @math.Rect::new(tip_x, tip_y, tip_w, tip_h)
@@ -183,19 +197,28 @@ pub fn Tooltip::show_for(
   let tip_h = font_sz + style.padding_y * 2.0
 
   // Viewport boundaries
+  let scale = ctx.style.scale
+  let clip_opt = ctx.current_clip()
   let vp_w = if ctx.available_width() > 0.0 {
     ctx.available_width()
   } else {
-    800.0
+    match clip_opt {
+      Some(c) => if c.w > 0.0 { c.x + c.w } else { 800.0 * scale }
+      None => 800.0 * scale
+    }
   }
-  let vp_h = 600.0
+  let vp_h = match clip_opt {
+    Some(c) => if c.h > 0.0 { c.y + c.h } else { 600.0 * scale }
+    None => 600.0 * scale
+  }
+  let edge_margin = 4.0 * scale
 
   // Compute position based on placement and boundary clamping
   let (raw_x, raw_y) = match self.placement_val {
     Top => {
       let x = target_rect.x + (target_rect.w - tip_w) * 0.5
       let y = target_rect.y - tip_h - style.offset
-      if y < 4.0 {
+      if y < edge_margin {
         (x, target_rect.y + target_rect.h + style.offset)
       } else {
         (x, y)
@@ -204,7 +227,7 @@ pub fn Tooltip::show_for(
     Bottom => {
       let x = target_rect.x + (target_rect.w - tip_w) * 0.5
       let y = target_rect.y + target_rect.h + style.offset
-      if y + tip_h > vp_h - 4.0 {
+      if y + tip_h > vp_h - edge_margin {
         (x, target_rect.y - tip_h - style.offset)
       } else {
         (x, y)
@@ -213,7 +236,7 @@ pub fn Tooltip::show_for(
     Left => {
       let x = target_rect.x - tip_w - style.offset
       let y = target_rect.y + (target_rect.h - tip_h) * 0.5
-      if x < 4.0 {
+      if x < edge_margin {
         (target_rect.x + target_rect.w + style.offset, y)
       } else {
         (x, y)
@@ -222,7 +245,7 @@ pub fn Tooltip::show_for(
     Right => {
       let x = target_rect.x + target_rect.w + style.offset
       let y = target_rect.y + (target_rect.h - tip_h) * 0.5
-      if x + tip_w > vp_w - 4.0 {
+      if x + tip_w > vp_w - edge_margin {
         (target_rect.x - tip_w - style.offset, y)
       } else {
         (x, y)
@@ -231,8 +254,12 @@ pub fn Tooltip::show_for(
   }
 
   // Clamp within screen boundaries
-  let min_x = 4.0
-  let max_x = if vp_w > tip_w + 4.0 { vp_w - tip_w - 4.0 } else { 4.0 }
+  let min_x = edge_margin
+  let max_x = if vp_w > tip_w + edge_margin {
+    vp_w - tip_w - edge_margin
+  } else {
+    edge_margin
+  }
   let clamped_x = if raw_x < min_x {
     min_x
   } else if raw_x > max_x {
@@ -241,8 +268,12 @@ pub fn Tooltip::show_for(
     raw_x
   }
 
-  let min_y = 4.0
-  let max_y = if vp_h > tip_h + 4.0 { vp_h - tip_h - 4.0 } else { 4.0 }
+  let min_y = edge_margin
+  let max_y = if vp_h > tip_h + edge_margin {
+    vp_h - tip_h - edge_margin
+  } else {
+    edge_margin
+  }
   let clamped_y = if raw_y < min_y {
     min_y
   } else if raw_y > max_y {

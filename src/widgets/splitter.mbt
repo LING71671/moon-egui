@@ -158,7 +158,7 @@ pub fn split_horizontal(
   let mut effective_ratio = left_w / w
 
   let bar_x = container_rect.x + left_w
-  let hit_w = 10.0
+  let hit_w = 10.0 * ctx.style.scale
   let hit_rect = @math.Rect::new(
     bar_x - hit_w * 0.5,
     container_rect.y,
@@ -221,6 +221,31 @@ pub fn split_horizontal(
         min_ratio
       } else {
         effective_ratio - kb_step
+      }
+    }
+    if ctx.input.key_pressed(Key::Home) {
+      ctx.input.consume_key(Key::Home)
+      effective_ratio = min_ratio
+    }
+    if ctx.input.key_pressed(Key::End) {
+      ctx.input.consume_key(Key::End)
+      effective_ratio = max_ratio
+    }
+    let coarse_step = 0.10
+    if ctx.input.key_pressed(Key::PageDown) {
+      ctx.input.consume_key(Key::PageDown)
+      effective_ratio = if effective_ratio + coarse_step > max_ratio {
+        max_ratio
+      } else {
+        effective_ratio + coarse_step
+      }
+    }
+    if ctx.input.key_pressed(Key::PageUp) {
+      ctx.input.consume_key(Key::PageUp)
+      effective_ratio = if effective_ratio - coarse_step < min_ratio {
+        min_ratio
+      } else {
+        effective_ratio - coarse_step
       }
     }
   }
@@ -342,7 +367,7 @@ pub fn split_vertical(
   let mut effective_ratio = top_h / h
 
   let bar_y = container_rect.y + top_h
-  let hit_h = 10.0
+  let hit_h = 10.0 * ctx.style.scale
   let hit_rect = @math.Rect::new(
     container_rect.x,
     bar_y - hit_h * 0.5,
@@ -405,6 +430,31 @@ pub fn split_vertical(
         min_ratio
       } else {
         effective_ratio - kb_step
+      }
+    }
+    if ctx.input.key_pressed(Key::Home) {
+      ctx.input.consume_key(Key::Home)
+      effective_ratio = min_ratio
+    }
+    if ctx.input.key_pressed(Key::End) {
+      ctx.input.consume_key(Key::End)
+      effective_ratio = max_ratio
+    }
+    let coarse_step = 0.10
+    if ctx.input.key_pressed(Key::PageDown) {
+      ctx.input.consume_key(Key::PageDown)
+      effective_ratio = if effective_ratio + coarse_step > max_ratio {
+        max_ratio
+      } else {
+        effective_ratio + coarse_step
+      }
+    }
+    if ctx.input.key_pressed(Key::PageUp) {
+      ctx.input.consume_key(Key::PageUp)
+      effective_ratio = if effective_ratio - coarse_step < min_ratio {
+        min_ratio
+      } else {
+        effective_ratio - coarse_step
       }
     }
   }

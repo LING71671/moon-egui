@@ -216,6 +216,29 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
       ctx.input.consume_key(Key::ArrowRight)
       ctx.input.consume_key(Key::ArrowUp)
     }
+    if ctx.input.key_pressed(Key::Home) {
+      new_val = clamped_min
+      ctx.input.consume_key(Key::Home)
+    }
+    if ctx.input.key_pressed(Key::End) {
+      new_val = clamped_max
+      ctx.input.consume_key(Key::End)
+    }
+    let page_step = step * 10.0
+    if ctx.input.key_pressed(Key::PageUp) {
+      new_val = new_val + page_step
+      if new_val > clamped_max {
+        new_val = clamped_max
+      }
+      ctx.input.consume_key(Key::PageUp)
+    }
+    if ctx.input.key_pressed(Key::PageDown) {
+      new_val = new_val - page_step
+      if new_val < clamped_min {
+        new_val = clamped_min
+      }
+      ctx.input.consume_key(Key::PageDown)
+    }
   }
 
   // Draw Label

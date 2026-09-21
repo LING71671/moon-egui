@@ -200,30 +200,45 @@ pub fn window(
   let border_color = @color.Color::border_muted()
   let header_color = @color.Color::bg_surface()
 
-  let win_radius = ctx.style.radius_md
-  let font_sz = ctx.style.font_normal
+  let win_radius = ctx.style.radius_md * scale
+  let font_sz = ctx.style.font_normal * scale
   let painter = ctx.painter()
   painter.add_rect(window_rect, bg_color, win_radius)
-  painter.add_rect_stroke(window_rect, border_color, 1.0, win_radius)
+  painter.add_rect_stroke(window_rect, border_color, 1.0 * scale, win_radius)
+
+  if ctx.has_focus(id) {
+    painter.add_rect_stroke(
+      window_rect.expand(2.0 * scale),
+      @color.Color::border_focus(),
+      1.5 * scale,
+      win_radius + 2.0 * scale,
+    )
+  }
 
   painter.add_rect(title_bar_rect, header_color, win_radius)
-  let filler_rect = @math.Rect::new(x, y + title_bar_h - 4.0, size.x, 4.0)
+  let filler_rect = @math.Rect::new(
+    x,
+    y + title_bar_h - 4.0 * scale,
+    size.x,
+    4.0 * scale,
+  )
   painter.add_rect(filler_rect, header_color, 0.0)
   painter.add_line(
     @math.Vec2::new(x, y + title_bar_h),
     @math.Vec2::new(x + size.x, y + title_bar_h),
     border_color,
-    1.0,
+    1.0 * scale,
   )
 
+  let text_y = y + (title_bar_h - font_sz) * 0.5
   painter.add_text(
-    @math.Vec2::new(x + 12.0, y + 7.0),
+    @math.Vec2::new(x + 12.0 * scale, text_y),
     title,
     font_sz,
     @color.Color::text_primary(),
   )
 
-  let pad = 12.0
+  let pad = 12.0 * scale
   let content_x = x + pad
   let content_y = y + title_bar_h + pad
   let content_w = size.x - pad * 2.0
