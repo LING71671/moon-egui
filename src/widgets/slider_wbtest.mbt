@@ -50,3 +50,78 @@ test "widgets: slider dynamic val_w expands for large numbers" {
   // Slider with 5-digit numbers allocates wider total_w to accommodate the value text
   assert_true(resp_large.rect.w > resp_small.rect.w)
 }
+
+///|
+test "widgets: slider Home, End, PageUp, and PageDown keyboard navigation" {
+  let ctx = @core.UIContext::new()
+  let target = Ref(50.0)
+
+  // Frame 1: Focus slider via Tab
+  let input1 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Tab, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(input1)
+  let _ = ctx.add(Slider::from_ref("Level", target, 0.0, 100.0).step(1.0))
+  let _ = ctx.end_frame()
+
+  // Frame 2: Home key snaps to min (0.0)
+  let input2 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Home, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(input2)
+  let _ = ctx.add(Slider::from_ref("Level", target, 0.0, 100.0).step(1.0))
+  let _ = ctx.end_frame()
+  assert_eq(target.val, 0.0)
+
+  // Frame 3: End key snaps to max (100.0)
+  let input3 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::End, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(input3)
+  let _ = ctx.add(Slider::from_ref("Level", target, 0.0, 100.0).step(1.0))
+  let _ = ctx.end_frame()
+  assert_eq(target.val, 100.0)
+
+  // Frame 4: PageDown key steps down by 10x step (10.0 -> 90.0)
+  let input4 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::PageDown, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(input4)
+  let _ = ctx.add(Slider::from_ref("Level", target, 0.0, 100.0).step(1.0))
+  let _ = ctx.end_frame()
+  assert_eq(target.val, 90.0)
+
+  // Frame 5: PageUp key steps up by 10x step (10.0 -> 100.0)
+  let input5 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::PageUp, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(input5)
+  let _ = ctx.add(Slider::from_ref("Level", target, 0.0, 100.0).step(1.0))
+  let _ = ctx.end_frame()
+  assert_eq(target.val, 100.0)
+}

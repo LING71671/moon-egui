@@ -57,3 +57,41 @@ test "window_manager: occlusion detection and frame lifecycle" {
   wm.set_active_z(2)
   assert_false(wm.is_occluded(@math.Vec2::new(75.0, 75.0)))
 }
+
+///|
+test "window_manager: prune_stale cleans batches, positions, and focus" {
+  let wm = WindowManager::new()
+  let win1 = Id::from_int(101)
+  let win2 = Id::from_int(102)
+
+  wm.set_pos(win1, @math.Vec2::new(10.0, 10.0))
+  wm.set_pos(win2, @math.Vec2::new(20.0, 20.0))
+  let _ = wm.window_z(win1)
+  let _ = wm.window_z(win2)
+  let batch1 = wm.batch(win1)
+  let batch2 = wm.batch(win2)
+  batch1.add_rect(
+    @math.Rect::new(0.0, 0.0, 10.0, 10.0),
+    @color.Color::white(),
+    0.0,
+  )
+  batch2.add_rect(
+    @math.Rect::new(0.0, 0.0, 20.0, 20.0),
+    @color.Color::white(),
+    0.0,
+  )
+
+  // Only win1 is drawn this frame
+  wm.begin_frame()
+  wm.mark_drawn(win1)
+  wm.prune_stale()
+
+  // win2 should be pruned from positions, focus, and batches
+  let fallback = @math.Vec2::new(-1.0, -1.0)
+  assert_eq(wm.get_pos(win1, fallback), @math.Vec2::new(10.0, 10.0))
+  assert_eq(wm.get_pos(win2, fallback), fallback)
+
+  let out_list = @draw.DrawList::new()
+  wm.flush_to(out_list)
+  assert_eq(out_list.len(), 1)
+}

@@ -269,3 +269,79 @@ test "widgets: stepper cursor semantics" {
   let _ = ctx.end_frame()
   assert_eq(ctx.cursor_icon(), "ew-resize")
 }
+
+///|
+test "widgets: stepper Home, End, PageUp, PageDown and NaN guard" {
+  let ctx = UIContext::new()
+  let target = Ref(50.0)
+
+  // Focus stepper via Tab
+  let raw_tab = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Tab, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw_tab)
+  let _ = ctx.add(
+    Stepper::from_ref("kb_range_step", target).step(2.0).range(0.0, 100.0),
+  )
+  let _ = ctx.end_frame()
+
+  // Frame 2: Home snaps to min (0.0)
+  let raw_home = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Home, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw_home)
+  let _ = ctx.add(
+    Stepper::from_ref("kb_range_step", target).step(2.0).range(0.0, 100.0),
+  )
+  let _ = ctx.end_frame()
+  assert_eq(target.val, 0.0)
+
+  // Frame 3: End snaps to max (100.0)
+  let raw_end = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::End, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw_end)
+  let _ = ctx.add(
+    Stepper::from_ref("kb_range_step", target).step(2.0).range(0.0, 100.0),
+  )
+  let _ = ctx.end_frame()
+  assert_eq(target.val, 100.0)
+
+  // Frame 4: PageDown decrements by 10x step (20.0 -> 80.0)
+  let raw_pd = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::PageDown, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw_pd)
+  let _ = ctx.add(
+    Stepper::from_ref("kb_range_step", target).step(2.0).range(0.0, 100.0),
+  )
+  let _ = ctx.end_frame()
+  assert_eq(target.val, 80.0)
+
+  // Frame 5: NaN value fallback to min
+  let nan_target = Ref(0.0 / 0.0)
+  ctx.begin_frame(@core.RawInput::new())
+  let _ = ctx.add(Stepper::from_ref("nan_step", nan_target).range(10.0, 50.0))
+  let _ = ctx.end_frame()
+  assert_eq(nan_target.val, 10.0)
+}

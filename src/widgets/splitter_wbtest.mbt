@@ -136,3 +136,76 @@ test "splitter: split_horizontal dragging updates ratio" {
   // 200 / 400 = 0.5
   assert_eq(ratio2, 0.5)
 }
+
+///|
+test "splitter: Home and End keys snap ratio to boundaries" {
+  let ctx = @core.UIContext::new()
+
+  // Frame 1: Tab into horizontal splitter
+  let input1 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Tab, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(input1)
+  let _ = split_horizontal(
+    ctx,
+    "snap_split",
+    0.5,
+    @math.Vec2::new(400.0, 200.0),
+    fn(_ui, _r) { () },
+    fn(_ui, _r) { () },
+    min_ratio=0.2,
+    max_ratio=0.8,
+  )
+  let _ = ctx.end_frame()
+
+  // Frame 2: Home snaps to min_ratio (0.2)
+  let input2 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Home, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(input2)
+  let r_home = split_horizontal(
+    ctx,
+    "snap_split",
+    0.5,
+    @math.Vec2::new(400.0, 200.0),
+    fn(_ui, _r) { () },
+    fn(_ui, _r) { () },
+    min_ratio=0.2,
+    max_ratio=0.8,
+  )
+  let _ = ctx.end_frame()
+  assert_eq(r_home, 0.2)
+
+  // Frame 3: End snaps to max_ratio (0.8)
+  let input3 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::End, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(input3)
+  let r_end = split_horizontal(
+    ctx,
+    "snap_split",
+    0.5,
+    @math.Vec2::new(400.0, 200.0),
+    fn(_ui, _r) { () },
+    fn(_ui, _r) { () },
+    min_ratio=0.2,
+    max_ratio=0.8,
+  )
+  let _ = ctx.end_frame()
+  assert_eq(r_end, 0.8)
+}

@@ -462,3 +462,87 @@ test "context_menu: separators render inside submenus" {
   let _ = ctx.end_frame()
   assert_eq(r.open, true)
 }
+
+///|
+test "fader: PageUp and PageDown keyboard navigation and NaN guard" {
+  let ctx = @core.UIContext::new()
+  let target = Ref(50.0)
+
+  // Frame 1: Focus fader via click
+  let raw1 = @core.RawInput::from_mouse(@math.Vec2::new(20.0, 40.0), true)
+  ctx.begin_frame(raw1)
+  let _ = ctx.add(
+    Fader::from_ref("fader_nav", "FADER", target).min(0.0).max(100.0).step(1.0),
+  )
+  let _ = ctx.end_frame()
+
+  // Frame 2: PageUp steps up by 10x step (10.0 -> 60.0)
+  ctx.begin_frame(kb_key_input(@core.Key::PageUp))
+  let _ = ctx.add(
+    Fader::from_ref("fader_nav", "FADER", target).min(0.0).max(100.0).step(1.0),
+  )
+  let _ = ctx.end_frame()
+  assert_eq(target.val, 60.0)
+
+  // Frame 3: PageDown steps down by 10x step (10.0 -> 50.0)
+  ctx.begin_frame(kb_key_input(@core.Key::PageDown))
+  let _ = ctx.add(
+    Fader::from_ref("fader_nav", "FADER", target).min(0.0).max(100.0).step(1.0),
+  )
+  let _ = ctx.end_frame()
+  assert_eq(target.val, 50.0)
+
+  // Frame 4: NaN target fallback to default
+  let nan_target = Ref(0.0 / 0.0)
+  ctx.begin_frame(@core.RawInput::new())
+  let _ = ctx.add(
+    Fader::from_ref("fader_nan", "NAN", nan_target)
+    .min(0.0)
+    .max(100.0)
+    .default_val(25.0),
+  )
+  let _ = ctx.end_frame()
+  assert_eq(nan_target.val, 25.0)
+}
+
+///|
+test "knob: PageUp and PageDown keyboard navigation and NaN guard" {
+  let ctx = @core.UIContext::new()
+  let target = Ref(50.0)
+
+  // Frame 1: Focus knob via click
+  let raw1 = @core.RawInput::from_mouse(@math.Vec2::new(20.0, 20.0), true)
+  ctx.begin_frame(raw1)
+  let _ = ctx.add(
+    Knob::from_ref("knob_nav", "KNOB", target).min(0.0).max(100.0).step(1.0),
+  )
+  let _ = ctx.end_frame()
+
+  // Frame 2: PageUp steps up by 10x step (10.0 -> 60.0)
+  ctx.begin_frame(kb_key_input(@core.Key::PageUp))
+  let _ = ctx.add(
+    Knob::from_ref("knob_nav", "KNOB", target).min(0.0).max(100.0).step(1.0),
+  )
+  let _ = ctx.end_frame()
+  assert_eq(target.val, 60.0)
+
+  // Frame 3: PageDown steps down by 10x step (10.0 -> 50.0)
+  ctx.begin_frame(kb_key_input(@core.Key::PageDown))
+  let _ = ctx.add(
+    Knob::from_ref("knob_nav", "KNOB", target).min(0.0).max(100.0).step(1.0),
+  )
+  let _ = ctx.end_frame()
+  assert_eq(target.val, 50.0)
+
+  // Frame 4: NaN target fallback to default
+  let nan_target = Ref(0.0 / 0.0)
+  ctx.begin_frame(@core.RawInput::new())
+  let _ = ctx.add(
+    Knob::from_ref("knob_nan", "NAN", nan_target)
+    .min(0.0)
+    .max(100.0)
+    .default_val(33.0),
+  )
+  let _ = ctx.end_frame()
+  assert_eq(nan_target.val, 33.0)
+}
