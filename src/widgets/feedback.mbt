@@ -49,7 +49,7 @@ pub fn progress_bar(
   let h = (ctx.style.control_h_sm - ctx.style.radius_md) * scale
   let (_id, rect, resp) = ctx.allocate_space(@math.Vec2::new(w, h))
 
-  let clamped_pct = if fraction < 0.0 {
+  let clamped_pct = if fraction.is_nan() || fraction < 0.0 {
     0.0
   } else if fraction > 1.0 {
     1.0
@@ -60,7 +60,7 @@ pub fn progress_bar(
   let bar_radius = ctx.style.radius_sm * scale
   let p = ctx.painter()
   p.add_rect(rect, @color.Color::bg_surface(), bar_radius)
-  p.add_rect_stroke(rect, @color.Color::border_muted(), 1.0, bar_radius)
+  p.add_rect_stroke(rect, @color.Color::border_muted(), 1.0 * scale, bar_radius)
 
   let fill_w = rect.w * clamped_pct
   if fill_w > 0.0 {

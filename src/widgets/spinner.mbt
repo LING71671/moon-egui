@@ -21,18 +21,18 @@ pub fn spinner(
   color? : @color.Color = @color.Color::accent_primary(),
   stroke_width? : Double = 2.5,
 ) -> Response {
-  let (_id, rect, resp) = ctx.allocate_space(@math.Vec2::new(size, size))
+  let scale = ctx.style.scale
+  let eff_size = size * scale
+  let eff_stroke = stroke_width * scale
+  let (_id, rect, resp) = ctx.allocate_space(
+    @math.Vec2::new(eff_size, eff_size),
+  )
   let center = rect.center()
-  let radius = (size - stroke_width) * 0.5
+  let radius = (eff_size - eff_stroke) * 0.5
 
   // 1. Subtle Background Track Ring
   let p = ctx.painter()
-  p.add_circle_stroke(
-    center,
-    radius,
-    @color.Color::border_track(),
-    stroke_width,
-  )
+  p.add_circle_stroke(center, radius, @color.Color::border_track(), eff_stroke)
 
   // 2. Dynamic Arc Angles Driven by UIContext::time
   let pi2 = 6.283185307179586
@@ -55,7 +55,7 @@ pub fn spinner(
 
     let alpha = (80.0 + t2 * 175.0).to_int()
     let seg_color = color.with_alpha(alpha)
-    p.add_line(p1, p2, seg_color, stroke_width)
+    p.add_line(p1, p2, seg_color, eff_stroke)
   }
 
   resp
@@ -70,23 +70,22 @@ pub fn spinner_with_label(
   color? : @color.Color = @color.Color::accent_primary(),
   stroke_width? : Double = 2.0,
 ) -> Response {
-  let font_sz = ctx.style.font_normal
+  let scale = ctx.style.scale
+  let eff_size = size * scale
+  let eff_stroke = stroke_width * scale
+  let font_sz = ctx.style.font_normal * scale
   let label_sz = ctx.measure_text(label, font_sz)
-  let total_w = size + 8.0 + label_sz.x
-  let total_h = if size > label_sz.y { size } else { label_sz.y }
+  let gap = 8.0 * scale
+  let total_w = eff_size + gap + label_sz.x
+  let total_h = if eff_size > label_sz.y { eff_size } else { label_sz.y }
 
   let (_id, rect, resp) = ctx.allocate_space(@math.Vec2::new(total_w, total_h))
-  let center = @math.Vec2::new(rect.x + size * 0.5, rect.y + rect.h * 0.5)
-  let radius = (size - stroke_width) * 0.5
+  let center = @math.Vec2::new(rect.x + eff_size * 0.5, rect.y + rect.h * 0.5)
+  let radius = (eff_size - eff_stroke) * 0.5
 
   // Background ring
   let p = ctx.painter()
-  p.add_circle_stroke(
-    center,
-    radius,
-    @color.Color::border_track(),
-    stroke_width,
-  )
+  p.add_circle_stroke(center, radius, @color.Color::border_track(), eff_stroke)
 
   // Arc
   let pi2 = 6.283185307179586
@@ -106,12 +105,12 @@ pub fn spinner_with_label(
 
     let alpha = (90.0 + t2 * 165.0).to_int()
     let seg_color = color.with_alpha(alpha)
-    p.add_line(p1, p2, seg_color, stroke_width)
+    p.add_line(p1, p2, seg_color, eff_stroke)
   }
 
   // Label text
   let text_pos = @math.Vec2::new(
-    rect.x + size + 8.0,
+    rect.x + eff_size + gap,
     rect.y + (rect.h - font_sz) * 0.5,
   )
   p.add_text(text_pos, label, font_sz, @color.Color::text_secondary())

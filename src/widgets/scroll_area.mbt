@@ -207,14 +207,26 @@ pub fn scroll_area(
     let is_thumb_hovered = ctx.is_hovered(thumb_rect)
     let is_track_hovered = ctx.is_hovered(track_rect)
 
+    if is_thumb_hovered || is_track_hovered || ctx.active_id() == thumb_id {
+      ctx.set_cursor_icon("pointer")
+    }
+
+    let grab_id = ctx.id_stack.derive_id(id_salt + "::grab_offset")
     if (is_thumb_hovered || is_track_hovered) && ctx.input.mouse_pressed {
       ctx.set_active_id(thumb_id)
+      let initial_grab = if is_thumb_hovered {
+        ctx.input.mouse_pos.y - thumb_y
+      } else {
+        thumb_h * 0.5
+      }
+      ctx.set_scroll_offset(grab_id, initial_grab)
     }
 
     if ctx.active_id() == thumb_id {
       ctx.set_wants_capture_mouse(true)
       if ctx.input.mouse_down && usable_h > 0.0 {
-        let rel_mouse_y = ctx.input.mouse_pos.y - bar_track_y - thumb_h * 0.5
+        let grab_offset = ctx.get_scroll_offset(grab_id)
+        let rel_mouse_y = ctx.input.mouse_pos.y - bar_track_y - grab_offset
         let mut new_pct = rel_mouse_y / usable_h
         if new_pct < 0.0 {
           new_pct = 0.0

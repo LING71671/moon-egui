@@ -294,9 +294,9 @@ pub fn combo_box(
     @color.Color::border_default()
   }
 
-  let box_radius = ctx.style.radius_sm
+  let box_radius = ctx.style.radius_sm * scale
   ctx.painter().add_rect(box_rect, bg_color, box_radius)
-  let stroke_w = if is_focused || is_open { 1.5 } else { 1.0 }
+  let stroke_w = if is_focused || is_open { 1.5 * scale } else { 1.0 * scale }
   ctx.painter().add_rect_stroke(box_rect, border_color, stroke_w, box_radius)
 
   let selected_str = if current_idx >= 0 && current_idx < options.length() {
@@ -308,13 +308,13 @@ pub fn combo_box(
   ctx
   .painter()
   .add_text(
-    @math.Vec2::new(box_rect.x + 8.0, text_y),
+    @math.Vec2::new(box_rect.x + 8.0 * scale, text_y),
     selected_str,
     combo_font_sz,
     @color.Color::text_primary(),
   )
 
-  let chevron_cx = box_rect.x + box_w - 14.0
+  let chevron_cx = box_rect.x + box_w - 14.0 * scale
   let chevron_cy = box_rect.y + h * 0.5
   let chevron_col = if is_open {
     @color.Color::accent_primary()
@@ -324,32 +324,36 @@ pub fn combo_box(
     @color.Color::text_muted()
   }
   if is_open {
-    let p1 = @math.Vec2::new(chevron_cx - 3.5, chevron_cy + 1.5)
-    let p2 = @math.Vec2::new(chevron_cx, chevron_cy - 2.0)
-    let p3 = @math.Vec2::new(chevron_cx + 3.5, chevron_cy + 1.5)
-    ctx.painter().add_line(p1, p2, chevron_col, 1.5)
-    ctx.painter().add_line(p2, p3, chevron_col, 1.5)
+    let p1 = @math.Vec2::new(chevron_cx - 3.5 * scale, chevron_cy + 1.5 * scale)
+    let p2 = @math.Vec2::new(chevron_cx, chevron_cy - 2.0 * scale)
+    let p3 = @math.Vec2::new(chevron_cx + 3.5 * scale, chevron_cy + 1.5 * scale)
+    ctx.painter().add_line(p1, p2, chevron_col, 1.5 * scale)
+    ctx.painter().add_line(p2, p3, chevron_col, 1.5 * scale)
   } else {
-    let p1 = @math.Vec2::new(chevron_cx - 3.5, chevron_cy - 1.5)
-    let p2 = @math.Vec2::new(chevron_cx, chevron_cy + 2.0)
-    let p3 = @math.Vec2::new(chevron_cx + 3.5, chevron_cy - 1.5)
-    ctx.painter().add_line(p1, p2, chevron_col, 1.5)
-    ctx.painter().add_line(p2, p3, chevron_col, 1.5)
+    let p1 = @math.Vec2::new(chevron_cx - 3.5 * scale, chevron_cy - 1.5 * scale)
+    let p2 = @math.Vec2::new(chevron_cx, chevron_cy + 2.0 * scale)
+    let p3 = @math.Vec2::new(chevron_cx + 3.5 * scale, chevron_cy - 1.5 * scale)
+    ctx.painter().add_line(p1, p2, chevron_col, 1.5 * scale)
+    ctx.painter().add_line(p2, p3, chevron_col, 1.5 * scale)
   }
 
   if is_open {
-    let item_h = 24.0
+    let item_h = 24.0 * scale
     let total_options_h = item_h * options.length().to_double()
-    let max_menu_h = 240.0
+    let max_menu_h = 240.0 * scale
     let menu_h = if total_options_h > max_menu_h {
       max_menu_h
     } else {
       total_options_h
     }
 
-    let mut menu_y = box_rect.y + box_rect.h + 2.0
-    if menu_y + menu_h > 600.0 && box_rect.y - menu_h - 2.0 >= 0.0 {
-      menu_y = box_rect.y - menu_h - 2.0
+    let screen_h = match ctx.current_clip() {
+      Some(c) => if c.h > 0.0 { c.y + c.h } else { 600.0 * scale }
+      None => 600.0 * scale
+    }
+    let mut menu_y = box_rect.y + box_rect.h + 2.0 * scale
+    if menu_y + menu_h > screen_h && box_rect.y - menu_h - 2.0 * scale >= 0.0 {
+      menu_y = box_rect.y - menu_h - 2.0 * scale
     }
     let menu_rect = @math.Rect::new(box_rect.x, menu_y, box_w, menu_h)
 
@@ -382,13 +386,13 @@ pub fn combo_box(
 
     let shadow_rect = @math.Rect::new(
       menu_rect.x,
-      menu_rect.y + 2.0,
+      menu_rect.y + 2.0 * scale,
       menu_rect.w,
       menu_rect.h,
     )
-    let menu_radius = ctx.style.radius_md
-    let item_radius = ctx.style.radius_sm
-    let item_font_sz = ctx.style.font_small
+    let menu_radius = ctx.style.radius_md * scale
+    let item_radius = ctx.style.radius_sm * scale
+    let item_font_sz = ctx.style.font_small * scale
     ctx
     .painter()
     .add_rect(shadow_rect, @color.Color::shadow_ambient(), menu_radius)
@@ -398,7 +402,7 @@ pub fn combo_box(
     .add_rect_stroke(
       menu_rect,
       @color.Color::border_default(),
-      1.0,
+      1.0 * scale,
       item_radius,
     )
 
@@ -433,7 +437,7 @@ pub fn combo_box(
       .painter()
       .add_text(
         @math.Vec2::new(
-          item_rect.x + 8.0,
+          item_rect.x + 8.0 * scale,
           item_rect.y + (item_h - item_font_sz) * 0.5,
         ),
         options[i],
@@ -442,13 +446,17 @@ pub fn combo_box(
       )
 
       if i == current_idx {
-        let chk_x = item_rect.x + box_w - 14.0
+        let chk_x = item_rect.x + box_w - 14.0 * scale
         let chk_y = item_rect.y + item_h * 0.5
-        let p1 = @math.Vec2::new(chk_x - 4.0, chk_y)
-        let p2 = @math.Vec2::new(chk_x - 1.5, chk_y + 2.5)
-        let p3 = @math.Vec2::new(chk_x + 3.5, chk_y - 2.5)
-        ctx.painter().add_line(p1, p2, @color.Color::accent_primary(), 1.5)
-        ctx.painter().add_line(p2, p3, @color.Color::accent_primary(), 1.5)
+        let p1 = @math.Vec2::new(chk_x - 4.0 * scale, chk_y)
+        let p2 = @math.Vec2::new(chk_x - 1.5 * scale, chk_y + 2.5 * scale)
+        let p3 = @math.Vec2::new(chk_x + 3.5 * scale, chk_y - 2.5 * scale)
+        ctx
+        .painter()
+        .add_line(p1, p2, @color.Color::accent_primary(), 1.5 * scale)
+        ctx
+        .painter()
+        .add_line(p2, p3, @color.Color::accent_primary(), 1.5 * scale)
       }
     }
 

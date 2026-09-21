@@ -260,32 +260,53 @@ pub fn color_button(
   _id_str : String,
   color : @color.Color,
 ) -> (Bool, Response) {
-  let size = 22.0
-  let (_id, rect, resp) = ctx.allocate_space(@math.Vec2::new(size, size))
+  let scale = ctx.style.scale
+  let size = 22.0 * scale
+  let (id, rect, resp) = ctx.allocate_space(@math.Vec2::new(size, size))
+  ctx.register_focusable(id)
   if resp.hovered {
     ctx.set_cursor_icon("pointer")
   }
+  let is_focused = resp.has_focus() || ctx.has_focus(id)
+  let key_toggle = is_focused &&
+    !ctx.input.is_key_consumed(Key::Space) &&
+    !ctx.input.is_key_consumed(Key::Enter) &&
+    (ctx.input.key_pressed(Key::Space) || ctx.input.key_pressed(Key::Enter))
+  if key_toggle {
+    ctx.input.consume_key(Key::Space)
+    ctx.input.consume_key(Key::Enter)
+  }
+  let clicked = resp.clicked || key_toggle
 
-  let press_offset = if resp.pressed { 1.0 } else { 0.0 }
+  let press_offset = if resp.pressed { 1.0 * scale } else { 0.0 }
   let btn_rect = @math.Rect::new(
     rect.x,
     rect.y + press_offset,
     size,
     size - press_offset,
   )
-  let border_color = if resp.pressed {
-    @color.Color::accent_primary()
-  } else if resp.hovered {
+  let border_color = if is_focused {
+    @color.Color::border_focus()
+  } else if resp.pressed || resp.hovered {
     @color.Color::accent_primary()
   } else {
     @color.Color::border_default()
   }
 
   // Draw color swatch with clean white rim
-  let swatch_radius = ctx.style.radius_md * ctx.style.scale
+  let swatch_radius = ctx.style.radius_md * scale
   let p = ctx.painter()
   p.add_rect(btn_rect, color, swatch_radius)
-  p.add_rect_stroke(btn_rect, border_color, 1.5, swatch_radius)
+  let stroke_w = if is_focused { 2.0 * scale } else { 1.5 * scale }
+  p.add_rect_stroke(btn_rect, border_color, stroke_w, swatch_radius)
+  if is_focused {
+    p.add_rect_stroke(
+      btn_rect.expand(2.0 * scale),
+      @color.Color::border_focus(),
+      1.5 * scale,
+      swatch_radius + 2.0 * scale,
+    )
+  }
 
-  (resp.clicked, resp)
+  (clicked, resp)
 }

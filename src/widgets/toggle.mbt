@@ -60,7 +60,20 @@ pub fn Checkbox::show(self : Checkbox, ctx : UIContext) -> (Bool, Response) {
   if resp.hovered {
     ctx.set_cursor_icon("pointer")
   }
-  let new_state = if resp.clicked { !self.checked } else { self.checked }
+  let is_focused = resp.has_focus() || ctx.has_focus(id)
+  let key_toggle = is_focused &&
+    !ctx.input.is_key_consumed(Key::Space) &&
+    !ctx.input.is_key_consumed(Key::Enter) &&
+    (ctx.input.key_pressed(Key::Space) || ctx.input.key_pressed(Key::Enter))
+  if key_toggle {
+    ctx.input.consume_key(Key::Space)
+    ctx.input.consume_key(Key::Enter)
+  }
+  let new_state = if resp.clicked || key_toggle {
+    !self.checked
+  } else {
+    self.checked
+  }
 
   let box_rect = @math.Rect::new(
     rect.x,
@@ -72,12 +85,12 @@ pub fn Checkbox::show(self : Checkbox, ctx : UIContext) -> (Bool, Response) {
   let radius = ctx.style.radius_sm * scale
   if self.checked {
     ctx.painter().add_rect(box_rect, @color.Color::accent_primary(), radius)
-    let stroke_color = if resp.has_focus() {
+    let stroke_color = if is_focused {
       @color.Color::border_focus()
     } else {
       @color.Color::accent_pressed()
     }
-    let stroke_w = if resp.has_focus() { 1.5 * scale } else { 1.0 }
+    let stroke_w = if is_focused { 1.5 * scale } else { 1.0 }
     ctx.painter().add_rect_stroke(box_rect, stroke_color, stroke_w, radius)
     let inner = box_rect.shrink(4.0 * scale)
     ctx.painter().add_rect(inner, @color.Color::text_inverse(), 2.0 * scale)
@@ -87,16 +100,26 @@ pub fn Checkbox::show(self : Checkbox, ctx : UIContext) -> (Bool, Response) {
     } else {
       @color.Color::bg_window()
     }
-    let box_border = if resp.has_focus() {
+    let box_border = if is_focused {
       @color.Color::border_focus()
     } else if resp.hovered {
       @color.Color::accent_primary()
     } else {
       @color.Color::border_default()
     }
-    let stroke_w = if resp.has_focus() { 1.5 * scale } else { 1.0 }
+    let stroke_w = if is_focused { 1.5 * scale } else { 1.0 }
     ctx.painter().add_rect(box_rect, box_bg, radius)
     ctx.painter().add_rect_stroke(box_rect, box_border, stroke_w, radius)
+  }
+  if is_focused {
+    ctx
+    .painter()
+    .add_rect_stroke(
+      box_rect.expand(2.0 * scale),
+      @color.Color::border_focus(),
+      1.5 * scale,
+      radius + 2.0 * scale,
+    )
   }
 
   let text_x = rect.x + box_size + gap
@@ -151,15 +174,28 @@ pub fn Radio::show(self : Radio, ctx : UIContext) -> (Bool, Response) {
     ctx.set_cursor_icon("pointer")
   }
   ctx.register_focusable(id)
+  let is_focused = resp.has_focus() || ctx.has_focus(id)
+  let key_toggle = is_focused &&
+    !ctx.input.is_key_consumed(Key::Space) &&
+    !ctx.input.is_key_consumed(Key::Enter) &&
+    (ctx.input.key_pressed(Key::Space) || ctx.input.key_pressed(Key::Enter))
+  if key_toggle {
+    ctx.input.consume_key(Key::Space)
+    ctx.input.consume_key(Key::Enter)
+  }
 
-  let new_selected = if resp.clicked() { true } else { self.selected }
+  let new_selected = if resp.clicked() || key_toggle {
+    true
+  } else {
+    self.selected
+  }
 
   let center = @math.Vec2::new(
     rect.x + circle_r + 1.0 * scale,
     rect.y + total_h * 0.5,
   )
 
-  let outer_color = if resp.has_focus() || self.selected {
+  let outer_color = if is_focused || self.selected {
     @color.Color::accent_primary()
   } else if resp.hovered {
     @color.Color::accent_primary()
@@ -174,7 +210,18 @@ pub fn Radio::show(self : Radio, ctx : UIContext) -> (Bool, Response) {
   }
 
   ctx.painter().add_circle(center, circle_r, bg_circle_color)
-  ctx.painter().add_circle_stroke(center, circle_r, outer_color, 1.5 * scale)
+  let stroke_w = if is_focused { 2.0 * scale } else { 1.5 * scale }
+  ctx.painter().add_circle_stroke(center, circle_r, outer_color, stroke_w)
+  if is_focused {
+    ctx
+    .painter()
+    .add_circle_stroke(
+      center,
+      circle_r + 2.0 * scale,
+      @color.Color::border_focus(),
+      1.5 * scale,
+    )
+  }
 
   if self.selected {
     ctx
@@ -255,7 +302,20 @@ pub fn Toggle::show(self : Toggle, ctx : UIContext) -> (Bool, Response) {
   if resp.hovered {
     ctx.set_cursor_icon("pointer")
   }
-  let new_state = if resp.clicked { !self.checked } else { self.checked }
+  let is_focused = resp.has_focus() || ctx.has_focus(id)
+  let key_toggle = is_focused &&
+    !ctx.input.is_key_consumed(Key::Space) &&
+    !ctx.input.is_key_consumed(Key::Enter) &&
+    (ctx.input.key_pressed(Key::Space) || ctx.input.key_pressed(Key::Enter))
+  if key_toggle {
+    ctx.input.consume_key(Key::Space)
+    ctx.input.consume_key(Key::Enter)
+  }
+  let new_state = if resp.clicked || key_toggle {
+    !self.checked
+  } else {
+    self.checked
+  }
 
   let switch_rect = @math.Rect::new(
     rect.x,
@@ -277,14 +337,14 @@ pub fn Toggle::show(self : Toggle, ctx : UIContext) -> (Bool, Response) {
   }
 
   ctx.painter().add_rect(switch_rect, bg_color, switch_h * 0.5)
-  if resp.has_focus() {
+  if is_focused {
     ctx
     .painter()
     .add_rect_stroke(
-      switch_rect,
+      switch_rect.expand(2.0 * scale),
       @color.Color::border_focus(),
       1.5 * scale,
-      switch_h * 0.5,
+      switch_h * 0.5 + 2.0 * scale,
     )
   }
 
