@@ -1231,6 +1231,94 @@ This review evaluates seven foundational dimensions:
 
 ---
 
+### AUDIT-A11Y-02 (P1) [RESOLVED]: Keyboard Activation Missing in Checkbox, Radio, and Toggle Switches
+- **Location**: [src/widgets/toggle.mbt#L58-L64](file:///a:/moonbit-project/src/widgets/toggle.mbt#L58-L64), [L150-L156](file:///a:/moonbit-project/src/widgets/toggle.mbt#L150-L156), [L254-L259](file:///a:/moonbit-project/src/widgets/toggle.mbt#L254-L259), [src/widgets/button.mbt#L258-L290](file:///a:/moonbit-project/src/widgets/button.mbt#L258-L290)
+- **Status**: **RESOLVED** (Iteration 4). Added `Key::Space` and `Key::Enter` detection, key consumption, and focus rings to `Checkbox`, `Radio`, and `Toggle`. Added `register_focusable(id)`, Space/Enter activation, and focus indicator to `color_button`.
+- **Priority**: **P1**
+- **Category**: Keyboard Reachability & Accessibility Standard
+- **Description**:
+  `Checkbox`, `Radio`, and `Toggle` call `ctx.register_focusable(id)` and display focus styling, but only toggle their state on pointer click (`resp.clicked`). They do not handle `Key::Space` or `Key::Enter`.
+- **Failure Mechanism**:
+  A keyboard/screen-reader user tabbing onto a `Checkbox`, `Radio`, or `Toggle` cannot toggle or activate the control with standard keyboard inputs. The keystrokes leak unconsumed to outer containers. In addition, `color_button` never calls `register_focusable`, remaining completely unreachable by keyboard navigation.
+- **Remediation**:
+  Check `is_focused && (ctx.input.key_pressed(Key::Space) || ctx.input.key_pressed(Key::Enter))`, consume the keys, and trigger toggle. Call `register_focusable` and draw focus indicator in `color_button`.
+
+---
+
+### AUDIT-MAINT-06 (P1) [RESOLVED]: Hardcoded Viewport Boundaries and Unscaled Layout Literals in Containers & Controls
+- **Location**: [src/widgets/containers.mbt#L341-L440](file:///a:/moonbit-project/src/widgets/containers.mbt#L341-L440), [src/widgets/spinner.mbt#L18-L80](file:///a:/moonbit-project/src/widgets/spinner.mbt#L18-L80), [src/composite/menu_bar.mbt#L335-L348](file:///a:/moonbit-project/src/composite/menu_bar.mbt#L335-L348), [src/widgets/button.mbt#L263-L289](file:///a:/moonbit-project/src/widgets/button.mbt#L263-L289)
+- **Status**: **RESOLVED** (Iteration 4). Dynamically derived screen height from `ctx.current_clip()` in `combo_box`, and scaled all item heights, padding, font sizes, radii, and chevron coordinates by `scale`. Scaled `spinner`, `menu_separator`, and `color_button` layout metrics.
+- **Priority**: **P1**
+- **Category**: Anti-Hardcoding & Scale Invariance
+- **Description**:
+  Widespread hardcoded screen dimensions, unscaled geometry literals, and unscaled theme tokens:
+  - `combo_box` assumes a static `600.0` screen height for dropdown upward collision flipping (`menu_y + menu_h > 600.0`), has unscaled item heights (`24.0`), font sizes (`font_small` without `* scale`), and radii (`radius_md` / `radius_sm` without `* scale`).
+  - `spinner` completely ignores `ctx.style.scale`, drawing identical 20px spinners regardless of DPI scale.
+  - `menu_separator` uses raw `sep_h = 7.0`, `line_y = rect.y + 3.0`, and unscaled padding/strokes.
+  - `color_button` uses unscaled `22.0`, `1.0` press offset, and `1.5` stroke.
+- **Failure Mechanism**:
+  At non-default DPI scale factors (1.5x, 2.0x), dropdown items appear tiny and unscaled, spinners do not scale with the host UI density, and combo popups flip inappropriately on high-resolution displays.
+- **Remediation**:
+  Dynamically query `ctx.input.screen_rect.h` for viewport bounds, and multiply all layout metrics, padding, font sizes, and radii by `scale`.
+
+---
+
+### AUDIT-UX-08 (P2) [RESOLVED]: Positional Thumb Snapping and Zero Cursor Affordance in `ScrollArea`
+- **Location**: [src/widgets/scroll_area.mbt#L207-L245](file:///a:/moonbit-project/src/widgets/scroll_area.mbt#L207-L245)
+- **Status**: **RESOLVED** (Iteration 4). Persisted `grab_offset` in `Memory` upon mouse press on the thumb, calculated drag offset relative to `grab_offset`, and reported `ctx.set_cursor_icon("pointer")` on thumb and track hover/active states.
+- **Priority**: **P2**
+- **Category**: UX Drag Stability & Cursor Contract
+- **Description**:
+  `ScrollArea` thumb dragging uses `thumb_h * 0.5` centering instead of tracking the initial mouse click grab offset (`grab_offset`). Furthermore, hovering and dragging the thumb or track reports no cursor icon.
+- **Failure Mechanism**:
+  Clicking anywhere on the scrollbar thumb abruptly snaps its center to the cursor, causing a jarring visual jump and disorientation in scroll position. Lack of `pointer` cursor violates Section 1 of the Widget Interaction Standard.
+- **Remediation**:
+  Persist `grab_offset` in `Memory` upon mouse press on the thumb, calculate drag offset relative to `grab_offset`, and report `ctx.set_cursor_icon("pointer")` on thumb and track hover/active states.
+
+---
+
+### AUDIT-LOGIC-06 (P2) [RESOLVED]: Scissor Clipping and Hit-Test Isolation Bypass in DockArea and NodeEditor
+- **Location**: [src/composite/dock.mbt#L461-L470](file:///a:/moonbit-project/src/composite/dock.mbt#L461-L470), [src/composite/node_editor.mbt#L326-L725](file:///a:/moonbit-project/src/composite/node_editor.mbt#L326-L725)
+- **Status**: **RESOLVED** (Iteration 4). Pushed and popped scissor clip on `UIContext` via `ctx.push_clip` and `ctx.pop_clip` in both `DockArea` tab content rendering and `NodeEditor` canvas scope so `is_hovered` respects container clips.
+- **Priority**: **P2**
+- **Category**: Scissor Clipping & Scoped Hit-Testing
+- **Description**:
+  In `DockArea` leaf tab content rendering, clipping is pushed to a local sub-painter (`content_painter.push_clip(content_rect)`), but `ctx.push_clip(content_rect)` is never invoked on `UIContext`. In `NodeEditor`, `painter.push_clip(canvas_rect)` is called instead of `ctx.push_clip(canvas_rect)`.
+- **Failure Mechanism**:
+  Because `ctx.layers.clip_stack` remains unaffected, `ctx.is_hovered(...)` called by child widgets inside dock panels or node canvas cannot detect that widgets are clipped outside `content_rect`. Widgets spilling outside the panel boundary continue responding to mouse hover and clicks.
+- **Remediation**:
+  Invoke `ctx.push_clip(content_rect)` and `ctx.pop_clip()` on `UIContext` around child content rendering.
+
+---
+
+### AUDIT-UX-09 (P2) [RESOLVED]: Missing Vertical Scrolling, Mouse Wheel Ingestion, and Selection Auto-Scroll in Fixed-Size TreeView
+- **Location**: [src/composite/tree_view.mbt#L130-L245](file:///a:/moonbit-project/src/composite/tree_view.mbt#L130-L245)
+- **Status**: **RESOLVED** (Iteration 4). Scaled `indent_step`, added persistent `scroll_y` offset tracking, mouse wheel delta handling, auto-scrolling during keyboard navigation, and interactive scrollbar thumb with pointer cursor.
+- **Priority**: **P2**
+- **Category**: Container Usability & Dynamic Viewports
+- **Description**:
+  When `TreeView` is allocated with an explicit height constraint (`size = Some(...)`), it does not support vertical scrolling: `scroll_y` is neither tracked nor applied, mouse wheel delta (`scroll_delta.y`) is discarded, and no scrollbar is rendered.
+- **Failure Mechanism**:
+  In project sidebars (such as the Studio IDE explorer) with dozens of files, items below the container height are permanently clipped and inaccessible. Navigating with keyboard down-arrow selects off-screen items that remain invisible.
+- **Remediation**:
+  Track `scroll_y` in `Memory`, handle mouse wheel delta, auto-scroll to keep the selected item in view during keyboard traversal, and render an interactive scrollbar thumb when content overflows.
+
+---
+
+### AUDIT-PERF-04 (P2) [RESOLVED]: 16-Command Discrete Strip Flood in ColorPicker Alpha Slider & ProgressBar NaN Sensitivity
+- **Location**: [src/composite/color_picker.mbt#L341-L356](file:///a:/moonbit-project/src/composite/color_picker.mbt#L341-L356), [src/widgets/feedback.mbt#L52-L58](file:///a:/moonbit-project/src/widgets/feedback.mbt#L52-L58)
+- **Status**: **RESOLVED** (Iteration 4). Replaced 16-slice rect strip loop in `ColorPicker` Alpha slider with single continuous `LinearGradient` primitive with `inner_radius`. Added `fraction.is_nan()` validation in `ProgressBar`.
+- **Priority**: **P2**
+- **Category**: Rendering Performance & Arithmetic Robustness
+- **Description**:
+  The Alpha slider in `ColorPicker` renders 16 separate small rectangle strips with `0.0` corner radius to fake a transparency gradient, flooding `DrawList` with 16 draw commands per frame and bleeding out of rounded container corners. In `ProgressBar`, `fraction` lacks `is_nan()` validation.
+- **Failure Mechanism**:
+  The discrete alpha slices produce visible banding and corner bleed. In `ProgressBar`, passing `NaN` bypasses `< 0.0` and `> 1.0` checks, leading to `NaN.to_int()` crashes or malformed text formatting.
+- **Remediation**:
+  Replace the 16 rectangle strips with a single continuous `LinearGradient` primitive with `inner_radius`. Add `is_nan()` guard in `ProgressBar`.
+
+---
+
 ## 16. Prioritized Roadmap & Milestone Matrix
 
 | Track | ID | Title | Priority | Status |
@@ -1310,5 +1398,13 @@ This review evaluates seven foundational dimensions:
 | **robust**| `AUDIT-ROBUST-06`| Raw Mouse Position Hit-Testing & Missing Cursor in Plot/BarChart | **P2** | Resolved (Iteration 3) |
 | **maint** | `AUDIT-MAINT-05` | Unscaled Metric Literals and Invariant Violations in Table and Plot | **P2** | Resolved (Iteration 3) |
 | **ux** | `AUDIT-UX-07` | Unconsumed Navigation Keys & Missing Focus Indicator in Knob and SegmentedControl | **P2** | Resolved (Iteration 3) |
+| **a11y** | `AUDIT-A11Y-02` | Keyboard Activation Missing in Checkbox, Radio, Toggle & Unreachable color_button | **P1** | Resolved (Iteration 4) |
+| **maint** | `AUDIT-MAINT-06` | Hardcoded Viewport Boundaries & Unscaled Layout Literals in Containers & Controls | **P1** | Resolved (Iteration 4) |
+| **ux** | `AUDIT-UX-08` | Positional Thumb Snapping and Zero Cursor Affordance in ScrollArea | **P2** | Resolved (Iteration 4) |
+| **logic** | `AUDIT-LOGIC-06` | Scissor Clipping and Hit-Test Isolation Bypass in DockArea and NodeEditor | **P2** | Resolved (Iteration 4) |
+| **ux** | `AUDIT-UX-09` | Missing Vertical Scrolling, Wheel Ingestion & Auto-Scroll in Fixed-Size TreeView | **P2** | Resolved (Iteration 4) |
+| **perf** | `AUDIT-PERF-04` | 16-Command Discrete Strip Flood in ColorPicker Alpha Slider & ProgressBar NaN | **P2** | Resolved (Iteration 4) |
+
+
 
 
