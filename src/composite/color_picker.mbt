@@ -337,28 +337,18 @@ pub fn color_picker(
       }
     }
 
-    // Alpha Bar Background & Gradient
+    // Alpha Bar Background & Continuous Gradient
     ctx.painter().add_rect(alpha_rect, @color.Color::bg_subtle(), inner_radius)
-    let alpha_steps = 16
-    let alpha_step_w = sq_w / alpha_steps.to_double()
     let (cur_r, cur_g, cur_b) = hsv_to_rgb(h, s, v)
-
-    for step = 0; step < alpha_steps; step = step + 1 {
-      let step_a = (step.to_double() / alpha_steps.to_double() * 255.0).to_int()
-      let slice_rect = @math.Rect::new(
-        sq_x + step.to_double() * alpha_step_w,
-        alpha_y,
-        alpha_step_w + 0.5,
-        alpha_h,
-      )
-      ctx
-      .painter()
-      .add_rect(
-        slice_rect,
-        @color.Color::rgba(cur_r, cur_g, cur_b, step_a),
-        0.0,
-      )
-    }
+    let c_start = @color.Color::rgba(cur_r, cur_g, cur_b, 0)
+    let c_end = @color.Color::rgba(cur_r, cur_g, cur_b, 255)
+    let p_start = @math.Vec2::new(sq_x, alpha_y)
+    let p_end = @math.Vec2::new(sq_x + sq_w, alpha_y)
+    ctx
+    .painter()
+    .add_linear_gradient(
+      alpha_rect, p_start, p_end, c_start, c_end, inner_radius,
+    )
     ctx
     .painter()
     .add_rect_stroke(

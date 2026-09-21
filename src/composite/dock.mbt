@@ -464,8 +464,11 @@ fn render_dock_node(
         content_painter.push_clip(content_rect)
         content_painter.add_rect(content_rect, @color.Color::bg_window(), 0.0)
 
+        ctx.push_clip(content_rect)
         let active_tab_id = tabs[valid_active].id
         render_tab(ctx, active_tab_id, content_rect)
+        ctx.pop_clip()
+
         content_painter.pop_clip()
       }
 

@@ -323,6 +323,7 @@ pub fn node_editor(
   )
 
   // Push scissor clip so nodes & wires cannot leak outside editor bounds
+  ctx.push_clip(canvas_rect)
   painter.push_clip(canvas_rect)
 
   let grid_step = style.grid_size * scale
@@ -723,6 +724,7 @@ pub fn node_editor(
 
   // Pop scissor clip
   painter.pop_clip()
+  ctx.pop_clip()
 
   let active_drag = if active_drag_node != "" {
     Some(active_drag_node)

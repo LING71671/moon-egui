@@ -333,16 +333,19 @@ pub fn menu_item(
 ///|
 /// Render a clean divider line between menu item groups.
 pub fn menu_separator(ctx : UIContext) -> Unit {
-  let sep_h = 7.0
+  let scale = ctx.style.scale
+  let sep_h = 7.0 * scale
   let item_w = ctx.available_width()
   let (_id, rect, _) = ctx.allocate_space(@math.Vec2::new(item_w, sep_h))
-  let line_y = rect.y + 3.0
+  let line_y = rect.y + 3.0 * scale
+  let pad_x = 4.0 * scale
+  let stroke_w = 1.0 * scale
   ctx
   .painter()
   .add_line(
-    @math.Vec2::new(rect.x + 4.0, line_y),
-    @math.Vec2::new(rect.x + item_w - 4.0, line_y),
+    @math.Vec2::new(rect.x + pad_x, line_y),
+    @math.Vec2::new(rect.x + item_w - pad_x, line_y),
     @color.Color::border_muted(),
-    1.0,
+    stroke_w,
   )
 }
