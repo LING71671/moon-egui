@@ -196,12 +196,13 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
   let value = self.value
 
   let range = if max_val > min_val { max_val - min_val } else { 1.0 }
-  let clamped_initial = if value < min_val {
+  let raw_val = if value.is_nan() { default_val } else { value }
+  let clamped_initial = if raw_val < min_val {
     min_val
-  } else if value > max_val {
+  } else if raw_val > max_val {
     max_val
   } else {
-    value
+    raw_val
   }
 
   let diameter = radius * 2.0
@@ -264,6 +265,15 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
       current_val = max_val
       ctx.input.consume_key(Key::End)
     }
+    let page_step = step * 10.0
+    if ctx.input.key_pressed(Key::PageUp) {
+      current_val = current_val + page_step
+      ctx.input.consume_key(Key::PageUp)
+    }
+    if ctx.input.key_pressed(Key::PageDown) {
+      current_val = current_val - page_step
+      ctx.input.consume_key(Key::PageDown)
+    }
     if ctx.input.key_pressed(Key::Backspace) ||
       ctx.input.key_pressed(Key::Delete) {
       current_val = default_val
@@ -278,6 +288,9 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
   }
 
   // 4. Quantize and clamp
+  if current_val.is_nan() {
+    current_val = default_val
+  }
   if step > 0.0 {
     let steps_count = ((current_val - min_val) / step + 0.5)
       .to_int()
@@ -318,7 +331,14 @@ pub fn Knob::show(self : Knob, ctx : UIContext) -> (Double, Response) {
   )
 
   // B. Active Indicator Arc
-  let norm = (final_val - min_val) / range
+  let raw_norm = (final_val - min_val) / range
+  let norm = if raw_norm.is_nan() || raw_norm < 0.0 {
+    0.0
+  } else if raw_norm > 1.0 {
+    1.0
+  } else {
+    raw_norm
+  }
   if bipolar {
     let mid_angle = 1.5 * @math.pi // Top center (270 deg)
     let curr_angle = start_angle + norm * total_sweep

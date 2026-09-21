@@ -198,12 +198,13 @@ pub fn Fader::show(self : Fader, ctx : UIContext) -> (Double, Response) {
   let value = self.value
 
   let range = if max_val > min_val { max_val - min_val } else { 1.0 }
-  let clamped_initial = if value < min_val {
+  let raw_val = if value.is_nan() { default_val } else { value }
+  let clamped_initial = if raw_val < min_val {
     min_val
-  } else if value > max_val {
+  } else if raw_val > max_val {
     max_val
   } else {
-    value
+    raw_val
   }
 
   ctx.push_id(self.id_salt)
@@ -286,6 +287,15 @@ pub fn Fader::show(self : Fader, ctx : UIContext) -> (Double, Response) {
       current_val = min_val
       ctx.input.consume_key(Key::End)
     }
+    let page_step = key_step * 10.0
+    if ctx.input.key_pressed(Key::PageUp) {
+      current_val = current_val + page_step
+      ctx.input.consume_key(Key::PageUp)
+    }
+    if ctx.input.key_pressed(Key::PageDown) {
+      current_val = current_val - page_step
+      ctx.input.consume_key(Key::PageDown)
+    }
   }
 
   // 4. Alt + Click or double click reset to default
@@ -294,6 +304,9 @@ pub fn Fader::show(self : Fader, ctx : UIContext) -> (Double, Response) {
   }
 
   // Final value clamping
+  if current_val.is_nan() {
+    current_val = default_val
+  }
   if current_val < min_val {
     current_val = min_val
   } else if current_val > max_val {
@@ -302,7 +315,7 @@ pub fn Fader::show(self : Fader, ctx : UIContext) -> (Double, Response) {
 
   // --- Rendering ---
   let fraction = (current_val - min_val) / range
-  let clamped_frac = if fraction < 0.0 {
+  let clamped_frac = if fraction.is_nan() || fraction < 0.0 {
     0.0
   } else if fraction > 1.0 {
     1.0
