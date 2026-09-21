@@ -1319,6 +1319,93 @@ This review evaluates seven foundational dimensions:
 
 ---
 
+### AUDIT-A11Y-03 (P1) [RESOLVED]: Missing Home, End, PageUp, and PageDown Range Navigation in Slider and Fader
+- **Location**: [src/widgets/slider.mbt#L201-L225](file:///a:/moonbit-project/src/widgets/slider.mbt#L201-L225), [src/composite/fader.mbt#L280-L295](file:///a:/moonbit-project/src/composite/fader.mbt#L280-L295)
+- **Status**: **RESOLVED** (Iteration 5). Added `Key::Home` (jump to min), `Key::End` (jump to max), `Key::PageUp` (+10x step), and `Key::PageDown` (-10x step) range navigation with key consumption to `Slider`. Added `Key::PageUp` and `Key::PageDown` to `Fader`.
+- **Priority**: **P1**
+- **Category**: Keyboard Reachability & Range Navigation Standard
+- **Description**:
+  In `Slider`, only single-step arrow keys were handled; `Home`, `End`, `PageUp`, and `PageDown` were unhandled, leaving keystrokes unconsumed. In `Fader`, coarse page navigation (`PageUp`, `PageDown`) was absent.
+- **Failure Mechanism**:
+  Keyboard users navigating wide-range sliders or audio channels had no fast way to jump to extremities or step across large intervals, requiring dozens of individual arrow key presses.
+- **Remediation**:
+  Implement `Key::Home`, `Key::End`, `Key::PageUp`, and `Key::PageDown` range actions with key consumption across `Slider` and `Fader`.
+
+---
+
+### AUDIT-MAINT-07 (P1) [RESOLVED]: Hardcoded Viewport Dimensions, Unscaled Strokes, and Unconsumed Keys in Dialog, Tooltip, and Window
+- **Location**: [src/widgets/dialog.mbt#L170-L448](file:///a:/moonbit-project/src/widgets/dialog.mbt#L170-L448), [src/widgets/tooltip.mbt#L106-L255](file:///a:/moonbit-project/src/widgets/tooltip.mbt#L106-L255), [src/widgets/window.mbt#L200-L230](file:///a:/moonbit-project/src/widgets/window.mbt#L200-L230)
+- **Status**: **RESOLVED** (Iteration 5). Dynamically derived viewport boundaries from `ctx.current_clip()` in `Dialog` and `Tooltip`. Scaled all strokes, radii, offsets, and paddings by `scale`. Added focus ring indicator to `Window`, and consumed modal activation keys (`Escape`, `Enter`, `Space`) in `Dialog`.
+- **Priority**: **P1**
+- **Category**: Anti-Hardcoding, Scale Invariance & Focus Indicators
+- **Description**:
+  Modal dialogs, floating tooltips, and draggable windows contained multiple hardcoded unscaled constants:
+  - `Dialog`: fallback `800.0` / `600.0` screen bounds, unscaled button strokes (`1.0`, `1.5`), unscaled focus ring expansion (`2.0`), unconsumed `Escape`/`Enter`/`Space` keys leaking into underlying widgets.
+  - `Tooltip`: hardcoded `600.0` viewport height, unscaled border stroke (`1.0`), unscaled edge margins (`4.0`), unclamped `tip_y` overflowing bottom screen edge.
+  - `Window`: unscaled `radius_md`, `font_normal`, border strokes (`1.0`), filler rects (`4.0`), interior padding (`12.0`), and missing visual focus ring when window has keyboard focus.
+- **Failure Mechanism**:
+  High-DPI displays rendered thin, unscaled borders and miscalculated viewport bounds. Unconsumed modal keys triggered actions in obscured background widgets. Focused windows had no visual focus affordance.
+- **Remediation**:
+  Derive screen boundaries dynamically from `ctx.current_clip()`, multiply all layout/stroke literals by `scale`, consume modal keys upon dismissal, and draw standard focus ring around focused window.
+
+---
+
+### AUDIT-UX-10 (P2) [RESOLVED]: Splitter Missing Keyboard Home/End Min-Max Snapping & Unscaled Handle Hover Zone
+- **Location**: [src/widgets/splitter.mbt#L161-L226](file:///a:/moonbit-project/src/widgets/splitter.mbt#L161-L226), [L345-L410](file:///a:/moonbit-project/src/widgets/splitter.mbt#L345-L410)
+- **Status**: **RESOLVED** (Iteration 5). Scaled divider hit tolerances `hit_w` and `hit_h` by `scale`. Added `Key::Home` (snap to `min_ratio`), `Key::End` (snap to `max_ratio`), and `Key::PageDown`/`Key::PageUp` coarse step navigation with key consumption to both horizontal and vertical splitters.
+- **Priority**: **P2**
+- **Category**: Container Usability & Keyboard Reachability
+- **Description**:
+  `split_horizontal` and `split_vertical` dividers used unscaled `10.0` hit zones (`hit_w = 10.0`, `hit_h = 10.0`) and only supported fine-grained arrow key nudging (`0.02`).
+- **Failure Mechanism**:
+  On 2.0x high-DPI displays, the divider grab area felt cramped (50% thinner relative to visual scale). Keyboard users had no shortcut to quickly snap panes to boundary limits or step coarsely.
+- **Remediation**:
+  Scale divider hit tolerances with `ctx.style.scale`, and handle `Key::Home`, `Key::End`, `Key::PageUp`, and `Key::PageDown` with key consumption.
+
+---
+
+### AUDIT-ROBUST-07 (P2) [RESOLVED]: Non-Finite and NaN Sensitivity in Fader, Knob, and Stepper Controls
+- **Location**: [src/composite/fader.mbt#L198-L312](file:///a:/moonbit-project/src/composite/fader.mbt#L198-L312), [src/composite/knob.mbt#L198-L325](file:///a:/moonbit-project/src/composite/knob.mbt#L198-L325), [src/widgets/stepper.mbt#L255-L300](file:///a:/moonbit-project/src/widgets/stepper.mbt#L255-L300)
+- **Status**: **RESOLVED** (Iteration 5). Added `is_nan()` validation and safe fallback to `default_val` or `min_val` across `Fader`, `Knob`, and `Stepper`. Validated `fraction` and `norm` in cap and arc angle calculations.
+- **Priority**: **P2**
+- **Category**: Arithmetic Robustness & Numeric Sanitization
+- **Description**:
+  Passing `NaN` (e.g. from uninitialized physics, audio streams, or corrupt sensor inputs) bypassed comparison bounds (`NaN < min` is false, `NaN > max` is false).
+- **Failure Mechanism**:
+  `NaN` propagated into division arithmetic (`fraction = (val - min) / range`), yielding `NaN` cap positions and arc angles that infected `DrawList` with malformed draw command coordinates.
+- **Remediation**:
+  Add `is_nan()` validation on inputs and intermediate fractions, falling back safely to `default_val` or `min_val` and clamping render fractions to `0.0..1.0`.
+
+---
+
+### AUDIT-A11Y-04 (P2) [RESOLVED]: Stepper Range Navigation Omission and Unscaled Divider Strokes
+- **Location**: [src/widgets/stepper.mbt#L276-L372](file:///a:/moonbit-project/src/widgets/stepper.mbt#L276-L372)
+- **Status**: **RESOLVED** (Iteration 5). Added `Key::Home` (jump to min), `Key::End` (jump to max), `Key::PageUp` (+10x step), and `Key::PageDown` (-10x step) to `Stepper`. Scaled vertical separator lines, border strokes, and focus ring stroke by `scale`.
+- **Priority**: **P2**
+- **Category**: Accessibility Navigation & Scale Invariance
+- **Description**:
+  When focused, `Stepper` only responded to `ArrowLeft/Right` and `ArrowUp/Down`. Divider lines and borders used unscaled literals (`line_w = 1.0`, border stroke `1.0`, focus stroke `1.5`).
+- **Failure Mechanism**:
+  Bounded steppers could not jump directly to boundaries via keyboard. Divider and border lines appeared disproportionately hairline-thin on high-DPI displays.
+- **Remediation**:
+  Implement `Home`, `End`, `PageUp`, and `PageDown` handlers with key consumption, and scale all divider and border strokes by `scale`.
+
+---
+
+### AUDIT-PERF-05 (P2) [RESOLVED]: Unbounded Growth of Window Batches & Stale Focus IDs in WindowManager
+- **Location**: [src/core/window_manager.mbt#L158-L170](file:///a:/moonbit-project/src/core/window_manager.mbt#L158-L170)
+- **Status**: **RESOLVED** (Iteration 5). Extended `WindowManager::prune_stale` to filter out unmounted window entries from `batches` (`Array[(Id, DrawList)]`) and `focus` (`Array[Id]`).
+- **Priority**: **P2**
+- **Category**: Memory Reclamation & Window Management Performance
+- **Description**:
+  In `WindowManager`, `prune_stale` only removed records from `positions : HashMap[Id, Vec2]`. `batches` and `focus` retained records for all previously allocated windows indefinitely.
+- **Failure Mechanism**:
+  In dynamic applications where floating windows or dialog cards open and close repeatedly, `batches` accumulated dead `DrawList` allocations without freeing them, and `flush_to` performed quadratic iterations scanning through orphaned window IDs.
+- **Remediation**:
+  Prune `batches` and `focus` arrays during `prune_stale` to retain only windows present in `self.drawn`.
+
+---
+
 ## 16. Prioritized Roadmap & Milestone Matrix
 
 | Track | ID | Title | Priority | Status |
@@ -1404,6 +1491,12 @@ This review evaluates seven foundational dimensions:
 | **logic** | `AUDIT-LOGIC-06` | Scissor Clipping and Hit-Test Isolation Bypass in DockArea and NodeEditor | **P2** | Resolved (Iteration 4) |
 | **ux** | `AUDIT-UX-09` | Missing Vertical Scrolling, Wheel Ingestion & Auto-Scroll in Fixed-Size TreeView | **P2** | Resolved (Iteration 4) |
 | **perf** | `AUDIT-PERF-04` | 16-Command Discrete Strip Flood in ColorPicker Alpha Slider & ProgressBar NaN | **P2** | Resolved (Iteration 4) |
+| **a11y** | `AUDIT-A11Y-03` | Missing Home, End, PageUp, PageDown Range Navigation in Slider & Fader | **P1** | Resolved (Iteration 5) |
+| **maint** | `AUDIT-MAINT-07` | Hardcoded Viewport Boundaries, Unscaled Strokes in Dialog, Tooltip, Window | **P1** | Resolved (Iteration 5) |
+| **ux** | `AUDIT-UX-10` | Splitter Missing Home/End Ratio Snapping & Unscaled Handle Hover Zone | **P2** | Resolved (Iteration 5) |
+| **robust**| `AUDIT-ROBUST-07`| Non-Finite & NaN Sensitivity in Fader, Knob, and Stepper Controls | **P2** | Resolved (Iteration 5) |
+| **a11y** | `AUDIT-A11Y-04` | Stepper Range Navigation Omission & Unscaled Divider Strokes | **P2** | Resolved (Iteration 5) |
+| **perf** | `AUDIT-PERF-05` | Unbounded Growth of Window Batches & Stale Focus IDs in WindowManager | **P2** | Resolved (Iteration 5) |
 
 
 
