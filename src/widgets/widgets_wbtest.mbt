@@ -810,3 +810,105 @@ test "widgets: slider releases active_id on mouse release" {
 
   assert_eq(ctx.active_id(), @core.Id::zero())
 }
+
+///|
+test "widgets: color_button keyboard activation and focus ring" {
+  let ctx = UIContext::new()
+  let col = @color.Color::rgb(200, 50, 50)
+
+  // Frame 1: Tab to focus the color_button
+  let raw1 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Tab, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw1)
+  let (clicked1, _resp1) = color_button(ctx, "col_btn", col)
+  let _ = ctx.end_frame()
+  assert_false(clicked1)
+
+  // Frame 2: Press Space on focused color_button -> triggers click
+  let raw2 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Space, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw2)
+  let (clicked2, resp2) = color_button(ctx, "col_btn", col)
+  let dl2 = ctx.end_frame()
+  assert_true(resp2.has_focus())
+  assert_true(clicked2)
+  assert_true(dl2.len() >= 3) // swatch rect, border stroke, focus ring
+
+  // Frame 3: Press Enter on focused color_button -> triggers click
+  let raw3 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Enter, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw3)
+  let (clicked3, resp3) = color_button(ctx, "col_btn", col)
+  let _ = ctx.end_frame()
+  assert_true(resp3.has_focus())
+  assert_true(clicked3)
+}
+
+///|
+test "widgets: progress_bar nan fraction handling" {
+  let ctx = UIContext::new()
+  ctx.begin_frame(@core.RawInput::new())
+  let nan_val = 0.0 / 0.0
+  let resp = progress_bar(ctx, nan_val)
+  let dl = ctx.end_frame()
+  assert_true(resp.rect.w > 0.0)
+  assert_true(dl.len() >= 2) // background + border, no NaN fill crash
+}
+
+///|
+test "widgets: scroll_area thumb drag grab offset eliminates snapping" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Hover over scrollbar thumb
+  // Container 200px tall, content 400px tall (max scroll = 200)
+  // bar_x is at 194 (total_w = 200, scrollbar_w = 6)
+  let raw1 = @core.RawInput::from_mouse(@math.Vec2::new(196.0, 20.0), false)
+  ctx.begin_frame(raw1)
+  scroll_area(ctx, "test_sa", @math.Vec2::new(200.0, 200.0), fn(ui) {
+    let _ = ui.allocate_space(@math.Vec2::new(180.0, 400.0))
+  })
+  let _ = ctx.end_frame()
+  assert_eq(ctx.cursor_icon(), "pointer")
+
+  // Frame 2: Mouse press on lower half of thumb (e.g., at y = 40.0, where thumb starts at 0 and height is ~100)
+  let raw2 = @core.RawInput::from_mouse(@math.Vec2::new(196.0, 40.0), true)
+  ctx.begin_frame(raw2)
+  scroll_area(ctx, "test_sa", @math.Vec2::new(200.0, 200.0), fn(ui) {
+    let _ = ui.allocate_space(@math.Vec2::new(180.0, 400.0))
+  })
+  let _ = ctx.end_frame()
+
+  // Frame 3: Drag mouse down by 10px to y = 50.0.
+  // With grab_offset stored, rel_mouse_y = 50.0 - 0.0 - 40.0 = 10.0
+  // Usable height is 200 - 100 = 100.
+  // new_pct = 10.0 / 100.0 = 0.1 -> scroll_y = 0.1 * 200 = 20.0
+  // Thumb does NOT snap its center to 50.0!
+  let raw3 = @core.RawInput::from_mouse(@math.Vec2::new(196.0, 50.0), true)
+  ctx.begin_frame(raw3)
+  scroll_area(ctx, "test_sa", @math.Vec2::new(200.0, 200.0), fn(ui) {
+    let _ = ui.allocate_space(@math.Vec2::new(180.0, 400.0))
+  })
+  let _ = ctx.end_frame()
+
+  let sa_id = ctx.id_stack.derive_id("test_sa")
+  let current_scroll = ctx.get_scroll_offset(sa_id)
+  assert_true(current_scroll >= 15.0 && current_scroll <= 25.0)
+}

@@ -45,3 +45,70 @@ test "widgets: checkbox and toggle ref builders" {
   assert_false(toggled.val)
   let _ = ctx.end_frame()
 }
+
+///|
+test "widgets: radio and toggle keyboard activation via Space and Enter" {
+  let ctx = @core.UIContext::new()
+
+  // Frame 1: Tab focuses the radio button
+  let raw1 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Tab, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw1)
+  let (r_val1, _) = radio(ctx, "Option 1", false)
+  let (t_val1, _) = toggle(ctx, "Switch", false)
+  let _ = ctx.end_frame()
+  assert_false(r_val1)
+  assert_false(t_val1)
+
+  // Frame 2: Radio is focused. Press Space -> selects option
+  let raw2 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Space, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw2)
+  let (r_val2, r_resp2) = radio(ctx, "Option 1", false)
+  let _ = toggle(ctx, "Switch", false)
+  let _ = ctx.end_frame()
+  assert_true(r_resp2.has_focus())
+  assert_true(r_val2)
+
+  // Frame 3: Tab to focus the Toggle switch
+  let raw3 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Tab, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw3)
+  let _ = radio(ctx, "Option 1", true)
+  let _ = toggle(ctx, "Switch", false)
+  let _ = ctx.end_frame()
+
+  // Frame 4: Toggle is focused. Press Enter -> toggles ON
+  let raw4 = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Enter, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw4)
+  let _ = radio(ctx, "Option 1", true)
+  let (t_val4, t_resp4) = toggle(ctx, "Switch", false)
+  let _ = ctx.end_frame()
+  assert_true(t_resp4.has_focus())
+  assert_true(t_val4)
+}

@@ -131,3 +131,25 @@ test "color_picker: drag handles report a resize cursor" {
   assert_eq(ctx.cursor_icon(), "default")
   let _ = ctx.end_frame()
 }
+
+///|
+test "color_picker: alpha slider renders as single linear gradient primitive" {
+  let ctx = @core.UIContext::new()
+  ctx.begin_frame(RawInput::from_mouse(@math.Vec2::new(-100.0, -100.0), false))
+  let _ = color_picker(
+    ctx,
+    "cp_alpha_grad",
+    @color.Color::rgba(100, 150, 200, 180),
+    show_alpha=true,
+  )
+  let dl = ctx.end_frame()
+
+  let mut grad_count = 0
+  for cmd in dl.commands() {
+    if cmd is @draw.DrawCmd::LinearGradient(_) {
+      grad_count = grad_count + 1
+    }
+  }
+  // 2 SV gradients (sat + val) + 6 Hue rainbow slices + 1 Alpha continuous gradient = 9
+  assert_eq(grad_count, 9)
+}

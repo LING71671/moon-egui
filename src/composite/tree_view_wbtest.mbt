@@ -250,3 +250,68 @@ test "tree_view: keyboard ArrowRight expands and ArrowLeft collapses node" {
   assert_true(ctx.input().is_key_consumed(Key::ArrowLeft))
   let _ = ctx.end_frame()
 }
+
+///|
+test "tree_view: vertical scrolling with wheel delta and keyboard auto-scroll" {
+  let ctx = UIContext::new()
+  let expanded = ["root_scene", "camera_group"]
+
+  // Frame 1: Hover over constrained tree and scroll mouse wheel down (-40px)
+  let raw1 = RawInput::with_events(
+    @math.Vec2::new(50.0, 20.0),
+    false,
+    @math.Vec2::new(0.0, -40.0),
+    [],
+    "",
+    Modifiers::none(),
+  )
+  ctx.begin_frame(raw1)
+  let res1 = tree_view(
+    ctx,
+    "tree_scroll",
+    sample_tree(),
+    expanded_ids=expanded,
+    size=@math.Vec2::new(200.0, 60.0),
+  )
+  let _ = ctx.end_frame()
+  assert_true(res1.response.hovered())
+
+  let scroll_id = ctx.id_stack.derive_id("tree_view::tree_scroll::scroll")
+  let scroll_y = ctx.get_scroll_offset(scroll_id)
+  assert_eq(scroll_y, 40.0)
+
+  // Frame 2: Click to focus the tree
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(50.0, 20.0), true)
+  ctx.begin_frame(raw2)
+  let _ = tree_view(
+    ctx,
+    "tree_scroll",
+    sample_tree(),
+    expanded_ids=expanded,
+    size=@math.Vec2::new(200.0, 60.0),
+  )
+  let _ = ctx.end_frame()
+
+  // Frame 3: Navigate down to bottom items with ArrowDown, verifying auto-scroll engages
+  let raw3 = RawInput::with_events(
+    @math.Vec2::new(50.0, 20.0),
+    false,
+    @math.Vec2::zero(),
+    [Event::Key(Key::ArrowDown, true, Modifiers::none())],
+    "",
+    Modifiers::none(),
+  )
+  ctx.begin_frame(raw3)
+  let res3 = tree_view(
+    ctx,
+    "tree_scroll",
+    sample_tree(),
+    selected_id=Some("main_cam"),
+    expanded_ids=expanded,
+    size=@math.Vec2::new(200.0, 60.0),
+  )
+  let _ = ctx.end_frame()
+  assert_eq(res3.selected_id, Some("top_cam"))
+  let scroll_y3 = ctx.get_scroll_offset(scroll_id)
+  assert_true(scroll_y3 > 0.0)
+}
