@@ -223,14 +223,15 @@ pub fn rich_text(
         )
       }
       Code => {
-        let pad_x = 3.0
+        let scale = ctx.style.scale
+        let pad_x = 3.0 * scale
         let code_bg_rect = @math.Rect::new(
           abs_rect.x,
-          abs_rect.y + 2.0,
+          abs_rect.y + 2.0 * scale,
           abs_rect.w,
-          line_h - 4.0,
+          line_h - 4.0 * scale,
         )
-        let code_radius = ctx.style.radius_sm
+        let code_radius = ctx.style.radius_sm * scale
         ctx
         .painter()
         .add_rect(code_bg_rect, @color.Color::bg_subtle(), code_radius)
@@ -239,7 +240,7 @@ pub fn rich_text(
         .add_rect_stroke(
           code_bg_rect,
           @color.Color::border_muted(),
-          1.0,
+          1.0 * scale,
           code_radius,
         )
 
@@ -259,6 +260,7 @@ pub fn rich_text(
         )
       }
       Link(url) => {
+        let scale = ctx.style.scale
         if is_hovered {
           ctx.set_cursor_icon("pointer")
           if ctx.input.mouse_pressed {
@@ -280,14 +282,14 @@ pub fn rich_text(
 
         // Underline when hovered
         if is_hovered {
-          let line_y = abs_rect.y + line_h - 3.0
+          let line_y = abs_rect.y + line_h - 2.0 * scale
           ctx
           .painter()
           .add_line(
             @math.Vec2::new(abs_rect.x, line_y),
             @math.Vec2::new(abs_rect.x + abs_rect.w, line_y),
             link_col,
-            1.0,
+            1.0 * scale,
           )
         }
       }
