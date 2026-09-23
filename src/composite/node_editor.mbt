@@ -193,15 +193,23 @@ fn draw_cubic_bezier_wire(
   p3 : @math.Vec2,
   color : @color.Color,
   width : Double,
-  steps? : Int = 20,
+  steps? : Int = 16,
 ) -> Unit {
   let dx = (p3.x - p0.x).abs() * 0.5
-  let curvature = if dx < 40.0 { 40.0 } else { dx }
+  let curvature = if dx < 32.0 { 32.0 } else { dx }
   let p1 = @math.Vec2::new(p0.x + curvature, p0.y)
   let p2 = @math.Vec2::new(p3.x - curvature, p3.y)
 
+  let dist = (p3.x - p0.x).abs() + (p3.y - p0.y).abs()
+  let computed_steps = if dist < 100.0 {
+    8
+  } else if dist < 260.0 {
+    12
+  } else {
+    steps
+  }
   let mut prev_pt = p0
-  let step_count = if steps > 4 { steps } else { 4 }
+  let step_count = if computed_steps > 4 { computed_steps } else { 4 }
   for i = 1; i <= step_count; i = i + 1 {
     let t = i.to_double() / step_count.to_double()
     let inv_t = 1.0 - t
@@ -504,7 +512,7 @@ pub fn node_editor(
         }
 
         let node_rect = @math.Rect::new(screen_x, screen_y, node_w, total_h)
-        if node_rect.contains(mouse_pos) {
+        if ctx.is_hovered(node_rect) {
           cur_selected_node = node.id
           active_drag_node = node.id
           ctx.memory.set_string(canvas_id, node.id, tag="selected_node")
