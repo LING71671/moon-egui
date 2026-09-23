@@ -1406,6 +1406,62 @@ This review evaluates seven foundational dimensions:
 
 ---
 
+### AUDIT-MAINT-08 (P1) [RESOLVED]: Systemic Unscaled Literals in `Tag` and `Badge`
+- **Location**: [src/widgets/badge.mbt#L148-L260](file:///a:/moonbit-project/src/widgets/badge.mbt#L148-L260)
+- **Status**: **RESOLVED** (Iteration 6). Scaled all font metrics, dimensions, paddings, corner radii, close button vectors, and border strokes by `ctx.style.scale`.
+- **Priority**: **P1**
+- **Category**: Scale Invariance & Geometry Normalization
+- **Description**:
+  `tag` and `badge` bypassed global scale factor for paddings (`pad_x = 8.0`), tag height (`h = 24.0`), close button bounds (`14.0`), close cross radius (`r = 3.5`), font sizes, and border strokes (`1.5`, `1.0`, `1.2`).
+- **Failure Mechanism**:
+  At non-standard scaling factors (1.5x, 2.0x, high-DPI displays), tag chips appeared shrunken and cramped, and close button icons suffered geometric clipping.
+- **Remediation**:
+  Derive all sizing, padding, and stroke metrics proportionally from `ctx.style.scale`.
+
+---
+
+### AUDIT-ROBUST-08 (P2) [RESOLVED]: Non-Finite and NaN Sensitivity in `Rating`
+- **Location**: [src/widgets/rating.mbt#L148-L235](file:///a:/moonbit-project/src/widgets/rating.mbt#L148-L235)
+- **Status**: **RESOLVED** (Iteration 6). Added `is_nan()` input sanitization defaulting to `0.0`, bounds protection against `NaN`, scaled focus ring stroke, and added `PageUp`/`PageDown` coarse stepping (+2.0 / -2.0).
+- **Priority**: **P2**
+- **Category**: Arithmetic Robustness & Numeric Sanitization
+- **Description**:
+  Passing `NaN` to `Rating` bypassed range clamping (`new_val < 0.0` and `new_val > max` are false for `NaN`), propagating `NaN` into caller state. Focus ring stroke used unscaled `1.5`.
+- **Failure Mechanism**:
+  NaN state corrupted caller scoring models, and focus rings appeared hairline-thin on scaled viewports.
+- **Remediation**:
+  Sanitize `self.value.is_nan()` to `0.0`, clamp `new_val.is_nan()`, scale focus stroke by `ctx.style.scale`, and support `PageUp`/`PageDown` coarse stepping.
+
+---
+
+### AUDIT-A11Y-05 (P2) [RESOLVED]: Missing Coarse Range Stepping in `Pagination` & Unscaled Strokes
+- **Location**: [src/widgets/pagination.mbt#L215-L395](file:///a:/moonbit-project/src/widgets/pagination.mbt#L215-L395)
+- **Status**: **RESOLVED** (Iteration 6). Added `PageUp` (-5 pages) and `PageDown` (+5 pages) keyboard navigation with key consumption, and scaled all button borders and focus ring strokes by `ctx.style.scale`.
+- **Priority**: **P2**
+- **Category**: Accessibility Navigation & Stroke Scaling
+- **Description**:
+  Focused `Pagination` supported fine stepping (arrows) and extreme boundaries (Home/End), but lacked coarse paging (`PageUp`/`PageDown`). Button borders used unscaled `1.0` and focus ring used unscaled `1.5`.
+- **Failure Mechanism**:
+  Keyboard users navigating multi-page datasets were forced to tab or arrow press dozens of times. High-DPI screens rendered faint button borders.
+- **Remediation**:
+  Implement `PageUp` (-5) / `PageDown` (+5) handlers and scale all border strokes by `scale`.
+
+---
+
+### AUDIT-MAINT-09 (P2) [RESOLVED]: Unscaled Layout Offsets & Focus Ring Metrics in `Steps` and `Breadcrumb`
+- **Location**: [src/widgets/steps.mbt#L206-L320](file:///a:/moonbit-project/src/widgets/steps.mbt#L206-L320), [src/widgets/breadcrumb.mbt#L130-L215](file:///a:/moonbit-project/src/widgets/breadcrumb.mbt#L130-L215)
+- **Status**: **RESOLVED** (Iteration 6). Scaled Wait node circle stroke, focus ring stroke and radius in `Steps`. Scaled text offset (`4.0 * scale`), focus ring, and added `Home`/`End`/`Space` keyboard navigation in `Breadcrumb`.
+- **Priority**: **P2**
+- **Category**: Accessibility Navigation & Scale Invariance
+- **Description**:
+  `Breadcrumb` had an unscaled literal offset (`current_x + 4.0`), missed `Home`, `End`, and `Space` keyboard activation, and `Steps` had an unscaled focus ring stroke and Wait circle stroke (`1.0`).
+- **Failure Mechanism**:
+  Breadcrumb item labels collided on scaled viewports; keyboard-only users could not jump to roots or activate items using Space bar.
+- **Remediation**:
+  Scale text offsets, Wait circle strokes, and focus rings by `scale`, and add full `Home`/`End`/`Space` keyboard navigation.
+
+---
+
 ## 16. Prioritized Roadmap & Milestone Matrix
 
 | Track | ID | Title | Priority | Status |
@@ -1497,6 +1553,10 @@ This review evaluates seven foundational dimensions:
 | **robust**| `AUDIT-ROBUST-07`| Non-Finite & NaN Sensitivity in Fader, Knob, and Stepper Controls | **P2** | Resolved (Iteration 5) |
 | **a11y** | `AUDIT-A11Y-04` | Stepper Range Navigation Omission & Unscaled Divider Strokes | **P2** | Resolved (Iteration 5) |
 | **perf** | `AUDIT-PERF-05` | Unbounded Growth of Window Batches & Stale Focus IDs in WindowManager | **P2** | Resolved (Iteration 5) |
+| **maint** | `AUDIT-MAINT-08` | Systemic Unscaled Literals in `Tag` and `Badge` | **P1** | Resolved (Iteration 6) |
+| **robust**| `AUDIT-ROBUST-08`| Non-Finite & NaN Sensitivity in `Rating` | **P2** | Resolved (Iteration 6) |
+| **a11y** | `AUDIT-A11Y-05` | Missing Coarse Range Stepping in `Pagination` & Unscaled Strokes | **P2** | Resolved (Iteration 6) |
+| **maint** | `AUDIT-MAINT-09` | Unscaled Layout Offsets & Focus Ring Metrics in `Steps` and `Breadcrumb` | **P2** | Resolved (Iteration 6) |
 
 
 
