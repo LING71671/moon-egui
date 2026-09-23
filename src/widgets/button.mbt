@@ -140,7 +140,7 @@ pub impl @core.Widget for Button with fn ui(self, ctx : UIContext) -> Response {
   let painter = ctx.painter()
   let radius = ctx.style.radius_md * scale
   painter.add_rect(draw_rect, bg_color, radius)
-  let stroke_w = if resp.has_focus() { 1.5 * scale } else { 1.0 }
+  let stroke_w = if resp.has_focus() { 1.5 * scale } else { 1.0 * scale }
   painter.add_rect_stroke(draw_rect, border_color, stroke_w, radius)
 
   if has_shortcut {

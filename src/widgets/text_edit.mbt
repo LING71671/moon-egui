@@ -252,15 +252,15 @@ pub fn text_edit_sized(
     @color.Color::border_default()
   }
 
-  let border_width = if is_focused { 1.5 } else { 1.0 }
+  let border_width = if is_focused { 1.5 * scale } else { 1.0 * scale }
 
   ctx.painter().add_rect(rect, bg_color, radius)
   ctx.painter().add_rect_stroke(rect, border_color, border_width, radius)
 
   let inner_clip = @math.Rect::new(
-    rect.x + padding_x - 2.0,
+    rect.x + padding_x - 2.0 * scale,
     rect.y,
-    rect.w - (padding_x * 2.0 - 4.0),
+    rect.w - (padding_x * 2.0 - 4.0 * scale),
     rect.h,
   )
   ctx.push_clip(inner_clip)

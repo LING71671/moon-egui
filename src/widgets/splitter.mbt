@@ -278,13 +278,14 @@ pub fn split_horizontal(
   ctx.set_cursor(saved_cursor)
   ctx.set_available_width(saved_avail)
 
+  let scale = ctx.style.scale
   let divider_x = container_rect.x + left_w
   let line_col = if is_active || hovered {
     @color.Color::accent_primary()
   } else {
     @color.Color::border_muted()
   }
-  let line_w = if is_active || hovered { 2.0 } else { 1.0 }
+  let line_w = (if is_active || hovered { 2.0 } else { 1.0 }) * scale
 
   ctx
   .painter()
@@ -301,22 +302,24 @@ pub fn split_horizontal(
   } else {
     @color.Color::border_strong()
   }
+  let dot_r = 1.5 * scale
+  let dot_spacing = 6.0 * scale
   ctx
   .painter()
-  .add_circle(@math.Vec2::new(divider_x, mid_y - 6.0), 1.5, dot_col)
-  ctx.painter().add_circle(@math.Vec2::new(divider_x, mid_y), 1.5, dot_col)
+  .add_circle(@math.Vec2::new(divider_x, mid_y - dot_spacing), dot_r, dot_col)
+  ctx.painter().add_circle(@math.Vec2::new(divider_x, mid_y), dot_r, dot_col)
   ctx
   .painter()
-  .add_circle(@math.Vec2::new(divider_x, mid_y + 6.0), 1.5, dot_col)
+  .add_circle(@math.Vec2::new(divider_x, mid_y + dot_spacing), dot_r, dot_col)
 
   if is_focused {
     ctx
     .painter()
     .add_rect_stroke(
-      hit_rect.expand(1.0),
+      hit_rect.expand(2.0 * scale),
       @color.Color::border_focus(),
-      1.0,
-      ctx.style.radius_sm,
+      1.5 * scale,
+      ctx.style.radius_sm * scale,
     )
   }
 
@@ -487,13 +490,14 @@ pub fn split_vertical(
   ctx.set_cursor(saved_cursor)
   ctx.set_available_width(saved_avail)
 
+  let scale = ctx.style.scale
   let divider_y = container_rect.y + top_h
   let line_col = if is_active || hovered {
     @color.Color::accent_primary()
   } else {
     @color.Color::border_muted()
   }
-  let line_w = if is_active || hovered { 2.0 } else { 1.0 }
+  let line_w = (if is_active || hovered { 2.0 } else { 1.0 }) * scale
 
   ctx
   .painter()
@@ -510,22 +514,24 @@ pub fn split_vertical(
   } else {
     @color.Color::border_strong()
   }
+  let dot_r = 1.5 * scale
+  let dot_spacing = 6.0 * scale
   ctx
   .painter()
-  .add_circle(@math.Vec2::new(mid_x - 6.0, divider_y), 1.5, dot_col)
-  ctx.painter().add_circle(@math.Vec2::new(mid_x, divider_y), 1.5, dot_col)
+  .add_circle(@math.Vec2::new(mid_x - dot_spacing, divider_y), dot_r, dot_col)
+  ctx.painter().add_circle(@math.Vec2::new(mid_x, divider_y), dot_r, dot_col)
   ctx
   .painter()
-  .add_circle(@math.Vec2::new(mid_x + 6.0, divider_y), 1.5, dot_col)
+  .add_circle(@math.Vec2::new(mid_x + dot_spacing, divider_y), dot_r, dot_col)
 
   if is_focused {
     ctx
     .painter()
     .add_rect_stroke(
-      hit_rect.expand(1.0),
+      hit_rect.expand(2.0 * scale),
       @color.Color::border_focus(),
-      1.0,
-      ctx.style.radius_sm,
+      1.5 * scale,
+      ctx.style.radius_sm * scale,
     )
   }
 

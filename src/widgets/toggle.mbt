@@ -90,7 +90,7 @@ pub fn Checkbox::show(self : Checkbox, ctx : UIContext) -> (Bool, Response) {
     } else {
       @color.Color::accent_pressed()
     }
-    let stroke_w = if is_focused { 1.5 * scale } else { 1.0 }
+    let stroke_w = if is_focused { 1.5 * scale } else { 1.0 * scale }
     ctx.painter().add_rect_stroke(box_rect, stroke_color, stroke_w, radius)
     let inner = box_rect.shrink(4.0 * scale)
     ctx.painter().add_rect(inner, @color.Color::text_inverse(), 2.0 * scale)
@@ -107,7 +107,7 @@ pub fn Checkbox::show(self : Checkbox, ctx : UIContext) -> (Bool, Response) {
     } else {
       @color.Color::border_default()
     }
-    let stroke_w = if is_focused { 1.5 * scale } else { 1.0 }
+    let stroke_w = if is_focused { 1.5 * scale } else { 1.0 * scale }
     ctx.painter().add_rect(box_rect, box_bg, radius)
     ctx.painter().add_rect_stroke(box_rect, box_border, stroke_w, radius)
   }
