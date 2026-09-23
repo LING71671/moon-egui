@@ -117,21 +117,29 @@ pub fn toast_stack(
   }
 
   // 2. Viewport and layout calculation
+  let scale = ctx.style.scale
+  let clip_opt = ctx.current_clip()
   let vw = match viewport_size {
-    Some(vp) => vp.x
+    Some(vp) => if vp.x > 0.0 { vp.x } else { 800.0 * scale }
     None =>
       if ctx.available_width() > 0.0 {
         ctx.available_width()
       } else {
-        800.0
+        match clip_opt {
+          Some(c) => if c.w > 0.0 { c.x + c.w } else { 800.0 * scale }
+          None => 800.0 * scale
+        }
       }
   }
   let vh = match viewport_size {
-    Some(vp) => vp.y
-    None => 600.0
+    Some(vp) => if vp.y > 0.0 { vp.y } else { 600.0 * scale }
+    None =>
+      match clip_opt {
+        Some(c) => if c.h > 0.0 { c.y + c.h } else { 600.0 * scale }
+        None => 600.0 * scale
+      }
   }
 
-  let scale = ctx.style.scale
   let toast_w = 280.0 * scale
   let spacing = 8.0 * scale
   let margin = 20.0 * scale
@@ -248,7 +256,12 @@ pub fn toast_stack(
     ctx.painter().add_rect(rect, @color.Color::bg_window(), toast_radius)
     ctx
     .painter()
-    .add_rect_stroke(rect, @color.Color::border_default(), 1.0, toast_radius)
+    .add_rect_stroke(
+      rect,
+      @color.Color::border_default(),
+      1.0 * scale,
+      toast_radius,
+    )
 
     let kind_color = match toast.kind {
       Info => @color.Color::accent_primary()
@@ -258,7 +271,7 @@ pub fn toast_stack(
     }
     let font_title = ctx.style.font_normal * scale
     let font_detail = ctx.style.font_small * scale
-    let font_close = 11.5 * scale
+    let font_close = ctx.style.font_small * scale
 
     ctx
     .painter()

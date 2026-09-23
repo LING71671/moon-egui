@@ -35,11 +35,12 @@ pub fn spinner(
   p.add_circle_stroke(center, radius, @color.Color::border_track(), eff_stroke)
 
   // 2. Dynamic Arc Angles Driven by UIContext::time
+  let time = if ctx.time.is_nan() { 0.0 } else { ctx.time }
   let pi2 = 6.283185307179586
-  let base_rot = ctx.time * 4.0 % pi2
+  let base_rot = time * 4.0 % pi2
   let sweep_min = 0.6
   let sweep_max = 4.8
-  let sweep_factor = (@math.sin(ctx.time * 2.8) + 1.0) * 0.5
+  let sweep_factor = (@math.sin(time * 2.8) + 1.0) * 0.5
   let sweep_len = sweep_min + sweep_factor * (sweep_max - sweep_min)
 
   // 3. Tapered Arc Line Segments
@@ -88,9 +89,10 @@ pub fn spinner_with_label(
   p.add_circle_stroke(center, radius, @color.Color::border_track(), eff_stroke)
 
   // Arc
+  let time = if ctx.time.is_nan() { 0.0 } else { ctx.time }
   let pi2 = 6.283185307179586
-  let base_rot = ctx.time * 4.0 % pi2
-  let sweep_factor = (@math.sin(ctx.time * 2.8) + 1.0) * 0.5
+  let base_rot = time * 4.0 % pi2
+  let sweep_factor = (@math.sin(time * 2.8) + 1.0) * 0.5
   let sweep_len = 0.6 + sweep_factor * 4.2
 
   let num_steps = 16

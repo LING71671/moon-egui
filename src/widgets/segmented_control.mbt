@@ -138,6 +138,14 @@ pub fn segmented_control(
       current_sel = if current_sel < count - 1 { current_sel + 1 } else { 0 }
       ctx.input.consume_key(Key::ArrowRight)
     }
+    if ctx.input.key_pressed(Key::Home) {
+      current_sel = 0
+      ctx.input.consume_key(Key::Home)
+    }
+    if ctx.input.key_pressed(Key::End) {
+      current_sel = count - 1
+      ctx.input.consume_key(Key::End)
+    }
   }
 
   if is_focused {
@@ -146,7 +154,7 @@ pub fn segmented_control(
     .add_rect_stroke(
       track_rect.expand(2.0 * scale),
       @color.Color::border_focus(),
-      1.5,
+      1.5 * scale,
       track_radius + 2.0 * scale,
     )
   }
@@ -154,7 +162,12 @@ pub fn segmented_control(
   ctx.painter().add_rect(track_rect, @color.Color::bg_subtle(), track_radius)
   ctx
   .painter()
-  .add_rect_stroke(track_rect, @color.Color::border_muted(), 1.0, track_radius)
+  .add_rect_stroke(
+    track_rect,
+    @color.Color::border_muted(),
+    1.0 * scale,
+    track_radius,
+  )
 
   let pill_h = track_rect.h - pad * 2.0
   let pill_x = track_rect.x + pad + current_sel.to_double() * item_w
@@ -174,7 +187,7 @@ pub fn segmented_control(
   .add_rect_stroke(
     pill_rect,
     @color.Color::pill_active_border(),
-    1.0,
+    1.0 * scale,
     pill_radius,
   )
 
