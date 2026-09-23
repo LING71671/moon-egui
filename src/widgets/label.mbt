@@ -53,17 +53,18 @@ pub fn Separator::new() -> Separator {
 ///|
 /// Render the separator into the provided UIContext.
 pub impl @core.Widget for Separator with fn ui(_self, ctx : UIContext) -> Response {
+  let scale = ctx.style.scale
   let w = ctx.available_width()
-  let h = 9.0
+  let h = 9.0 * scale
   let (_id, rect, resp) = ctx.allocate_space(@math.Vec2::new(w, h))
-  let y = rect.y + 4.5
+  let y = rect.y + 4.5 * scale
   ctx
   .painter()
   .add_line(
     @math.Vec2::new(rect.x, y),
     @math.Vec2::new(rect.x + rect.w, y),
-    @color.Color::border_muted(),
-    1.0,
+    ctx.theme.border_muted,
+    1.0 * scale,
   )
   resp
 }

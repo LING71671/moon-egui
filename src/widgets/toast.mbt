@@ -238,36 +238,32 @@ pub fn toast_stack(
     let scale = ctx.style.scale
     let toast_radius = (ctx.style.radius_md + 1.0) * scale
 
+    let theme = ctx.theme
     ctx
     .painter()
     .add_rect(
       @math.Rect::new(rect.x, rect.y + 4.0 * scale, rect.w, rect.h),
-      @color.Color::shadow_ambient(),
+      theme.shadow,
       toast_radius,
     )
     ctx
     .painter()
     .add_rect(
       @math.Rect::new(rect.x, rect.y + 1.0 * scale, rect.w, rect.h),
-      @color.Color::shadow_key(),
+      theme.shadow,
       toast_radius,
     )
 
-    ctx.painter().add_rect(rect, @color.Color::bg_window(), toast_radius)
+    ctx.painter().add_rect(rect, theme.bg_window, toast_radius)
     ctx
     .painter()
-    .add_rect_stroke(
-      rect,
-      @color.Color::border_default(),
-      1.0 * scale,
-      toast_radius,
-    )
+    .add_rect_stroke(rect, theme.border_default, 1.0 * scale, toast_radius)
 
     let kind_color = match toast.kind {
-      Info => @color.Color::accent_primary()
-      Success => @color.Color::success()
-      Warning => @color.Color::warning()
-      Danger => @color.Color::danger()
+      Info => theme.accent_primary
+      Success => theme.success
+      Warning => theme.warning
+      Danger => theme.danger
     }
     let font_title = ctx.style.font_normal * scale
     let font_detail = ctx.style.font_small * scale
@@ -299,7 +295,7 @@ pub fn toast_stack(
       @math.Vec2::new(rect.x + 16.0 * scale, title_y),
       toast.title,
       font_title,
-      @color.Color::text_primary(),
+      theme.text_primary,
     )
 
     if has_detail {
@@ -309,7 +305,7 @@ pub fn toast_stack(
         @math.Vec2::new(rect.x + 16.0 * scale, rect.y + 29.0 * scale),
         toast.message,
         font_detail,
-        @color.Color::text_muted(),
+        theme.text_muted,
       )
     }
 
@@ -322,9 +318,9 @@ pub fn toast_stack(
       ),
     )
     let close_col = if close_hover {
-      @color.Color::text_primary()
+      theme.text_primary
     } else {
-      @color.Color::text_disabled()
+      theme.text_disabled
     }
     ctx
     .painter()

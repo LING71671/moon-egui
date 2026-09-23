@@ -304,11 +304,12 @@ pub fn VirtualList::render(
     let thumb_y = container_rect.y + current_pct * track_travel
     let thumb_rect = @math.Rect::new(track_x, thumb_y, scrollbar_w, thumb_h)
 
+    let theme = ctx.theme
     let is_thumb_hovered = ctx.is_hovered(thumb_rect)
     let thumb_color = if ctx.active_id() == thumb_id || is_thumb_hovered {
-      @color.Color::accent_primary()
+      theme.accent_primary
     } else {
-      @color.Color::border_default()
+      theme.border_default
     }
 
     let p = ctx.painter()
@@ -318,12 +319,13 @@ pub fn VirtualList::render(
 
   // Draw container focus ring if focused
   if is_focused {
+    let theme = ctx.theme
     let focus_radius = ctx.style.radius_sm * scale
     ctx
     .painter()
     .add_rect_stroke(
       container_rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       focus_radius + 2.0 * scale,
     )

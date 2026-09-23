@@ -249,12 +249,13 @@ pub fn Pagination::show(self : Pagination, ctx : UIContext) -> (Int, Response) {
   }
 
   // 2. Focus Ring
+  let theme = ctx.theme
   if is_focused {
     ctx
     .painter()
     .add_rect_stroke(
       rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       radius + 2.0 * scale,
     )
@@ -276,15 +277,15 @@ pub fn Pagination::show(self : Pagination, ctx : UIContext) -> (Int, Response) {
     }
 
     let prev_bg = if is_prev_hovered {
-      @color.Color::bg_hover()
+      theme.bg_hover
     } else {
-      @color.Color::bg_surface()
+      theme.bg_surface
     }
     ctx.painter().add_rect(prev_rect, prev_bg, radius)
     let prev_border = if is_prev_enabled {
-      @color.Color::border_default()
+      theme.border_default
     } else {
-      @color.Color::border_muted()
+      theme.border_muted
     }
     ctx.painter().add_rect_stroke(prev_rect, prev_border, 1.0 * scale, radius)
 
@@ -295,9 +296,9 @@ pub fn Pagination::show(self : Pagination, ctx : UIContext) -> (Int, Response) {
       rect.y + (h - font_sz) * 0.5,
     )
     let sym_color = if is_prev_enabled {
-      @color.Color::text_primary()
+      theme.text_primary
     } else {
-      @color.Color::text_disabled()
+      theme.text_disabled
     }
     ctx.painter().add_text(sym_pos, sym, font_sz, sym_color)
 
@@ -321,42 +322,27 @@ pub fn Pagination::show(self : Pagination, ctx : UIContext) -> (Int, Response) {
         }
 
         if is_active {
-          ctx
-          .painter()
-          .add_rect(item_rect, @color.Color::accent_primary(), radius)
+          ctx.painter().add_rect(item_rect, theme.accent_primary, radius)
           let p_str = p.to_string()
           let p_sz = ctx.measure_text(p_str, font_sz)
           let p_pos = @math.Vec2::new(
             curr_x + (btn_sz - p_sz.x) * 0.5,
             rect.y + (h - font_sz) * 0.5,
           )
-          ctx
-          .painter()
-          .add_text(p_pos, p_str, font_sz, @color.Color::text_inverse())
+          ctx.painter().add_text(p_pos, p_str, font_sz, theme.text_inverse)
         } else {
-          let bg = if is_hovered {
-            @color.Color::bg_hover()
-          } else {
-            @color.Color::bg_surface()
-          }
+          let bg = if is_hovered { theme.bg_hover } else { theme.bg_surface }
           ctx.painter().add_rect(item_rect, bg, radius)
           ctx
           .painter()
-          .add_rect_stroke(
-            item_rect,
-            @color.Color::border_default(),
-            1.0 * scale,
-            radius,
-          )
+          .add_rect_stroke(item_rect, theme.border_default, 1.0 * scale, radius)
           let p_str = p.to_string()
           let p_sz = ctx.measure_text(p_str, font_sz)
           let p_pos = @math.Vec2::new(
             curr_x + (btn_sz - p_sz.x) * 0.5,
             rect.y + (h - font_sz) * 0.5,
           )
-          ctx
-          .painter()
-          .add_text(p_pos, p_str, font_sz, @color.Color::text_primary())
+          ctx.painter().add_text(p_pos, p_str, font_sz, theme.text_primary)
         }
       }
       Ellipsis => {
@@ -366,9 +352,7 @@ pub fn Pagination::show(self : Pagination, ctx : UIContext) -> (Int, Response) {
           curr_x + (btn_sz - sym_sz.x) * 0.5,
           rect.y + (h - font_sz) * 0.5,
         )
-        ctx
-        .painter()
-        .add_text(sym_pos, sym, font_sz, @color.Color::text_muted())
+        ctx.painter().add_text(sym_pos, sym, font_sz, theme.text_muted)
       }
     }
 
@@ -389,15 +373,15 @@ pub fn Pagination::show(self : Pagination, ctx : UIContext) -> (Int, Response) {
     }
 
     let next_bg = if is_next_hovered {
-      @color.Color::bg_hover()
+      theme.bg_hover
     } else {
-      @color.Color::bg_surface()
+      theme.bg_surface
     }
     ctx.painter().add_rect(next_rect, next_bg, radius)
     let next_border = if is_next_enabled {
-      @color.Color::border_default()
+      theme.border_default
     } else {
-      @color.Color::border_muted()
+      theme.border_muted
     }
     ctx.painter().add_rect_stroke(next_rect, next_border, 1.0 * scale, radius)
 
@@ -408,9 +392,9 @@ pub fn Pagination::show(self : Pagination, ctx : UIContext) -> (Int, Response) {
       rect.y + (h - font_sz) * 0.5,
     )
     let sym_color = if is_next_enabled {
-      @color.Color::text_primary()
+      theme.text_primary
     } else {
-      @color.Color::text_disabled()
+      theme.text_disabled
     }
     ctx.painter().add_text(sym_pos, sym, font_sz, sym_color)
   }

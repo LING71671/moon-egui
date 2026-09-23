@@ -196,9 +196,10 @@ pub fn window(
   let x = win_pos.x
   let y = win_pos.y
 
-  let bg_color = @color.Color::bg_window()
-  let border_color = @color.Color::border_muted()
-  let header_color = @color.Color::bg_surface()
+  let theme = ctx.theme
+  let bg_color = theme.bg_window
+  let border_color = theme.border_muted
+  let header_color = theme.bg_surface
 
   let win_radius = ctx.style.radius_md * scale
   let font_sz = ctx.style.font_normal * scale
@@ -209,7 +210,7 @@ pub fn window(
   if ctx.has_focus(id) {
     painter.add_rect_stroke(
       window_rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       win_radius + 2.0 * scale,
     )
@@ -235,7 +236,7 @@ pub fn window(
     @math.Vec2::new(x + 12.0 * scale, text_y),
     title,
     font_sz,
-    @color.Color::text_primary(),
+    theme.text_primary,
   )
 
   let pad = 12.0 * scale

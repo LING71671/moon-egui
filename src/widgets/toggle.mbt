@@ -82,30 +82,27 @@ pub fn Checkbox::show(self : Checkbox, ctx : UIContext) -> (Bool, Response) {
     box_size,
   )
 
+  let theme = ctx.theme
   let radius = ctx.style.radius_sm * scale
   if self.checked {
-    ctx.painter().add_rect(box_rect, @color.Color::accent_primary(), radius)
+    ctx.painter().add_rect(box_rect, theme.accent_primary, radius)
     let stroke_color = if is_focused {
-      @color.Color::border_focus()
+      theme.border_focus
     } else {
-      @color.Color::accent_pressed()
+      theme.accent_pressed
     }
     let stroke_w = if is_focused { 1.5 * scale } else { 1.0 * scale }
     ctx.painter().add_rect_stroke(box_rect, stroke_color, stroke_w, radius)
     let inner = box_rect.shrink(4.0 * scale)
-    ctx.painter().add_rect(inner, @color.Color::text_inverse(), 2.0 * scale)
+    ctx.painter().add_rect(inner, theme.text_inverse, 2.0 * scale)
   } else {
-    let box_bg = if resp.hovered {
-      @color.Color::bg_subtle()
-    } else {
-      @color.Color::bg_window()
-    }
+    let box_bg = if resp.hovered { theme.bg_subtle } else { theme.bg_window }
     let box_border = if is_focused {
-      @color.Color::border_focus()
+      theme.border_focus
     } else if resp.hovered {
-      @color.Color::accent_primary()
+      theme.accent_primary
     } else {
-      @color.Color::border_default()
+      theme.border_default
     }
     let stroke_w = if is_focused { 1.5 * scale } else { 1.0 * scale }
     ctx.painter().add_rect(box_rect, box_bg, radius)
@@ -116,7 +113,7 @@ pub fn Checkbox::show(self : Checkbox, ctx : UIContext) -> (Bool, Response) {
     .painter()
     .add_rect_stroke(
       box_rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       radius + 2.0 * scale,
     )
@@ -125,9 +122,9 @@ pub fn Checkbox::show(self : Checkbox, ctx : UIContext) -> (Bool, Response) {
   let text_x = rect.x + box_size + gap
   let text_y = rect.y + (h - font_nm) * 0.5
   let text_color = if resp.hovered {
-    @color.Color::text_primary()
+    theme.text_primary
   } else {
-    @color.Color::text_body()
+    theme.text_body
   }
   ctx
   .painter()
@@ -195,18 +192,19 @@ pub fn Radio::show(self : Radio, ctx : UIContext) -> (Bool, Response) {
     rect.y + total_h * 0.5,
   )
 
+  let theme = ctx.theme
   let outer_color = if is_focused || self.selected {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else if resp.hovered {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else {
-    @color.Color::border_default()
+    theme.border_default
   }
 
   let bg_circle_color = if resp.hovered {
-    @color.Color::bg_subtle()
+    theme.bg_subtle
   } else {
-    @color.Color::bg_window()
+    theme.bg_window
   }
 
   ctx.painter().add_circle(center, circle_r, bg_circle_color)
@@ -218,15 +216,13 @@ pub fn Radio::show(self : Radio, ctx : UIContext) -> (Bool, Response) {
     .add_circle_stroke(
       center,
       circle_r + 2.0 * scale,
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
     )
   }
 
   if self.selected {
-    ctx
-    .painter()
-    .add_circle(center, circle_r * 0.5, @color.Color::accent_primary())
+    ctx.painter().add_circle(center, circle_r * 0.5, theme.accent_primary)
   }
 
   let text_pos = @math.Vec2::new(
@@ -234,9 +230,9 @@ pub fn Radio::show(self : Radio, ctx : UIContext) -> (Bool, Response) {
     rect.y + (total_h - font_nm) * 0.5,
   )
   let text_color = if resp.hovered {
-    @color.Color::text_primary()
+    theme.text_primary
   } else {
-    @color.Color::text_body()
+    theme.text_body
   }
   ctx.painter().add_text(text_pos, self.label, font_nm, text_color)
 
@@ -324,16 +320,17 @@ pub fn Toggle::show(self : Toggle, ctx : UIContext) -> (Bool, Response) {
     switch_h,
   )
 
+  let theme = ctx.theme
   let bg_color = if self.checked {
     if resp.hovered {
-      @color.Color::accent_pressed()
+      theme.accent_pressed
     } else {
-      @color.Color::accent_primary()
+      theme.accent_primary
     }
   } else if resp.hovered {
-    @color.Color::border_default()
+    theme.border_default
   } else {
-    @color.Color::border_muted()
+    theme.border_muted
   }
 
   ctx.painter().add_rect(switch_rect, bg_color, switch_h * 0.5)
@@ -342,7 +339,7 @@ pub fn Toggle::show(self : Toggle, ctx : UIContext) -> (Bool, Response) {
     .painter()
     .add_rect_stroke(
       switch_rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       switch_h * 0.5 + 2.0 * scale,
     )
@@ -361,14 +358,14 @@ pub fn Toggle::show(self : Toggle, ctx : UIContext) -> (Bool, Response) {
     thumb_radius * 2.0,
     thumb_radius * 2.0,
   )
-  ctx.painter().add_rect(thumb_rect, @color.Color::bg_window(), thumb_radius)
+  ctx.painter().add_rect(thumb_rect, theme.bg_window, thumb_radius)
 
   let text_x = rect.x + switch_w + gap
   let text_y = rect.y + (h - font_nm) * 0.5
   let text_color = if resp.hovered {
-    @color.Color::text_primary()
+    theme.text_primary
   } else {
-    @color.Color::text_body()
+    theme.text_body
   }
   ctx
   .painter()

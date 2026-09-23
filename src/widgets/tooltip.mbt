@@ -93,17 +93,18 @@ fn render_tooltip_box(
   let scale = ctx.style.scale
 
   // Drop shadow
+  let theme = ctx.theme
   let shadow_rect = @math.Rect::new(
     rect.x,
     rect.y + 2.0 * scale,
     rect.w,
     rect.h,
   )
-  p.add_rect(shadow_rect, @color.Color::shadow(), radius)
+  p.add_rect(shadow_rect, theme.shadow, radius)
 
   // Surface fill & boundary
-  p.add_rect(rect, @color.Color::tooltip_bg(), radius)
-  p.add_rect_stroke(rect, @color.Color::tooltip_border(), 1.0 * scale, radius)
+  p.add_rect(rect, theme.bg_inverse, radius)
+  p.add_rect_stroke(rect, theme.border_strong, 1.0 * scale, radius)
 
   // Label text
   let text_x = rect.x + style.padding_x
@@ -112,7 +113,7 @@ fn render_tooltip_box(
     @math.Vec2::new(text_x, text_y),
     text,
     style.font_size,
-    @color.Color::text_inverse(),
+    theme.text_inverse,
   )
 
   ctx.end_foreground()

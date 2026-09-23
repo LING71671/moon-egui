@@ -18,9 +18,14 @@
 pub fn spinner(
   ctx : UIContext,
   size? : Double = 20.0,
-  color? : @color.Color = @color.Color::accent_primary(),
+  color? : @color.Color,
   stroke_width? : Double = 2.5,
 ) -> Response {
+  let theme = ctx.theme
+  let eff_color = match color {
+    Some(c) => c
+    None => theme.accent_primary
+  }
   let scale = ctx.style.scale
   let eff_size = size * scale
   let eff_stroke = stroke_width * scale
@@ -32,7 +37,7 @@ pub fn spinner(
 
   // 1. Subtle Background Track Ring
   let p = ctx.painter()
-  p.add_circle_stroke(center, radius, @color.Color::border_track(), eff_stroke)
+  p.add_circle_stroke(center, radius, theme.border_muted, eff_stroke)
 
   // 2. Dynamic Arc Angles Driven by UIContext::time
   let time = if ctx.time.is_nan() { 0.0 } else { ctx.time }
@@ -55,7 +60,7 @@ pub fn spinner(
     let p2 = center.add(@math.Vec2::from_polar(radius, a2))
 
     let alpha = (80.0 + t2 * 175.0).to_int()
-    let seg_color = color.with_alpha(alpha)
+    let seg_color = eff_color.with_alpha(alpha)
     p.add_line(p1, p2, seg_color, eff_stroke)
   }
 
@@ -68,9 +73,14 @@ pub fn spinner_with_label(
   ctx : UIContext,
   label : String,
   size? : Double = 18.0,
-  color? : @color.Color = @color.Color::accent_primary(),
+  color? : @color.Color,
   stroke_width? : Double = 2.0,
 ) -> Response {
+  let theme = ctx.theme
+  let eff_color = match color {
+    Some(c) => c
+    None => theme.accent_primary
+  }
   let scale = ctx.style.scale
   let eff_size = size * scale
   let eff_stroke = stroke_width * scale
@@ -86,7 +96,7 @@ pub fn spinner_with_label(
 
   // Background ring
   let p = ctx.painter()
-  p.add_circle_stroke(center, radius, @color.Color::border_track(), eff_stroke)
+  p.add_circle_stroke(center, radius, theme.border_muted, eff_stroke)
 
   // Arc
   let time = if ctx.time.is_nan() { 0.0 } else { ctx.time }
@@ -106,7 +116,7 @@ pub fn spinner_with_label(
     let p2 = center.add(@math.Vec2::from_polar(radius, a2))
 
     let alpha = (90.0 + t2 * 165.0).to_int()
-    let seg_color = color.with_alpha(alpha)
+    let seg_color = eff_color.with_alpha(alpha)
     p.add_line(p1, p2, seg_color, eff_stroke)
   }
 
@@ -115,7 +125,7 @@ pub fn spinner_with_label(
     rect.x + eff_size + gap,
     rect.y + (rect.h - font_sz) * 0.5,
   )
-  p.add_text(text_pos, label, font_sz, @color.Color::text_secondary())
+  p.add_text(text_pos, label, font_sz, theme.text_secondary)
 
   resp
 }

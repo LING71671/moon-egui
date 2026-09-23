@@ -331,35 +331,32 @@ pub fn Stepper::show(self : Stepper, ctx : UIContext) -> (Double, Response) {
 
   // 5. Drawing (Painter)
   // Background for the entire stepper
-  let base_bg = if resp.hovered {
-    @color.Color::bg_window()
-  } else {
-    @color.Color::bg_surface()
-  }
+  let theme = ctx.theme
+  let base_bg = if resp.hovered { theme.bg_window } else { theme.bg_surface }
   ctx.painter().add_rect(rect, base_bg, radius)
 
   // Minus button background
   let minus_bg = if minus_hovered && ctx.input.mouse_down {
-    @color.Color::bg_active()
+    theme.bg_active
   } else if minus_hovered {
-    @color.Color::bg_subtle()
+    theme.bg_subtle
   } else {
-    @color.Color::bg_surface()
+    theme.bg_surface
   }
   ctx.painter().add_rect(btn_minus_rect, minus_bg, radius)
 
   // Plus button background
   let plus_bg = if plus_hovered && ctx.input.mouse_down {
-    @color.Color::bg_active()
+    theme.bg_active
   } else if plus_hovered {
-    @color.Color::bg_subtle()
+    theme.bg_subtle
   } else {
-    @color.Color::bg_surface()
+    theme.bg_surface
   }
   ctx.painter().add_rect(btn_plus_rect, plus_bg, radius)
 
   // Vertical divider lines
-  let sep_color = @color.Color::border_muted()
+  let sep_color = theme.border_muted
   let line_w = 1.0 * scale
   ctx
   .painter()
@@ -380,11 +377,11 @@ pub fn Stepper::show(self : Stepper, ctx : UIContext) -> (Double, Response) {
 
   // Outer border stroke
   let border_color = if is_focused {
-    @color.Color::border_focus()
+    theme.border_focus
   } else if resp.hovered {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else {
-    @color.Color::border_default()
+    theme.border_default
   }
   ctx.painter().add_rect_stroke(rect, border_color, 1.0 * scale, radius)
 
@@ -394,7 +391,7 @@ pub fn Stepper::show(self : Stepper, ctx : UIContext) -> (Double, Response) {
     .painter()
     .add_rect_stroke(
       rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       radius + 2.0 * scale,
     )
@@ -402,9 +399,9 @@ pub fn Stepper::show(self : Stepper, ctx : UIContext) -> (Double, Response) {
 
   // Draw Minus icon (-)
   let icon_color = if minus_hovered {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else {
-    @color.Color::text_secondary()
+    theme.text_secondary
   }
   let minus_center = @math.Vec2::new(
     btn_minus_rect.x + btn_w * 0.5,
@@ -422,9 +419,9 @@ pub fn Stepper::show(self : Stepper, ctx : UIContext) -> (Double, Response) {
 
   // Draw Plus icon (+)
   let plus_icon_color = if plus_hovered {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else {
-    @color.Color::text_secondary()
+    theme.text_secondary
   }
   let plus_center = @math.Vec2::new(
     btn_plus_rect.x + btn_w * 0.5,
@@ -456,9 +453,9 @@ pub fn Stepper::show(self : Stepper, ctx : UIContext) -> (Double, Response) {
     val_rect.y + (val_rect.h - font_sz) * 0.5,
   )
   let text_color = if is_focused {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else {
-    @color.Color::text_primary()
+    theme.text_primary
   }
   ctx.painter().add_text(text_pos, display_text, font_sz, text_color)
 

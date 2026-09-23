@@ -94,47 +94,48 @@ pub impl @core.Widget for Button with fn ui(self, ctx : UIContext) -> Response {
     rect.h - press_offset,
   )
 
-  // Studio Light Lunar Porcelain Palette
+  // Active Semantic Theme Palette
+  let theme = ctx.theme
   let bg_color = if self.primary {
     if resp.pressed {
-      @color.Color::accent_pressed() // Deep cobalt under load
+      theme.accent_pressed
     } else if resp.hovered {
-      @color.Color::accent_hover() // Vibrant azure excitation
+      theme.accent_hover
     } else {
-      @color.Color::accent_primary() // Precision cold cobalt base
+      theme.accent_primary
     }
   } else if resp.pressed {
-    @color.Color::bg_surface() // Sunken active porcelain
+    theme.bg_surface
   } else if resp.hovered {
-    @color.Color::bg_subtle() // Floating porcelain highlight
+    theme.bg_subtle
   } else {
-    @color.Color::bg_window() // Pure bone porcelain surface
+    theme.bg_window
   }
 
   let border_color = if resp.has_focus() {
-    @color.Color::border_focus()
+    theme.border_focus
   } else if self.primary {
     if resp.pressed {
-      @color.Color::accent_deep()
+      theme.accent_deep
     } else {
-      @color.Color::accent_pressed()
+      theme.accent_pressed
     }
   } else if resp.pressed {
-    @color.Color::border_strong() // Compressed border
+    theme.border_strong
   } else if resp.hovered {
-    @color.Color::accent_primary() // Precision cobalt halo
+    theme.accent_primary
   } else {
-    @color.Color::border_default() // Milled cold-slate hairline
+    theme.border_default
   }
 
   let text_color = if self.primary {
-    @color.Color::text_inverse()
+    theme.text_inverse
   } else if resp.pressed {
-    @color.Color::text_strong()
+    theme.text_strong
   } else if resp.hovered {
-    @color.Color::text_primary()
+    theme.text_primary
   } else {
-    @color.Color::text_body()
+    theme.text_body
   }
 
   let painter = ctx.painter()
@@ -163,20 +164,20 @@ pub impl @core.Widget for Button with fn ui(self, ctx : UIContext) -> Response {
       kbd_h,
     )
     let (kbd_bg, kbd_col) = if self.primary {
-      (@color.Color::accent_highlight(), @color.Color::text_inverse())
+      (theme.accent_light, theme.text_inverse)
     } else {
       (
         if resp.pressed {
-          @color.Color::border_muted()
+          theme.border_muted
         } else if resp.hovered {
-          @color.Color::bg_active()
+          theme.bg_active
         } else {
-          @color.Color::bg_surface()
+          theme.bg_surface
         },
         if resp.hovered {
-          @color.Color::text_primary()
+          theme.text_primary
         } else {
-          @color.Color::text_muted()
+          theme.text_muted
         },
       )
     }
@@ -285,12 +286,13 @@ pub fn color_button(
     size,
     size - press_offset,
   )
+  let theme = ctx.theme
   let border_color = if is_focused {
-    @color.Color::border_focus()
+    theme.border_focus
   } else if resp.pressed || resp.hovered {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else {
-    @color.Color::border_default()
+    theme.border_default
   }
 
   // Draw color swatch with clean white rim
@@ -302,7 +304,7 @@ pub fn color_button(
   if is_focused {
     p.add_rect_stroke(
       btn_rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       swatch_radius + 2.0 * scale,
     )

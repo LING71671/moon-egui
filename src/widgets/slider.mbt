@@ -242,6 +242,7 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
   }
 
   // Draw Label
+  let theme = ctx.theme
   if self.label.length() > 0 {
     ctx
     .painter()
@@ -249,25 +250,20 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
       @math.Vec2::new(rect.x, rect.y + (h - font_size) * 0.5),
       self.label,
       font_size,
-      @color.Color::text_primary(),
+      theme.text_primary,
     )
   }
 
   let track_radius = 3.0 * scale
 
   // Draw Recessed Track Background
-  ctx.painter().add_rect(track_rect, @color.Color::bg_surface(), track_radius)
+  ctx.painter().add_rect(track_rect, theme.bg_surface, track_radius)
   ctx
   .painter()
-  .add_rect_stroke(
-    track_rect,
-    @color.Color::border_muted(),
-    1.0 * scale,
-    track_radius,
-  )
+  .add_rect_stroke(track_rect, theme.border_muted, 1.0 * scale, track_radius)
 
   // Draw Discrete Ticks (25%, 50%, 75%)
-  let tick_col = @color.Color::border_default()
+  let tick_col = theme.border_default
   for t in [0.25, 0.5, 0.75] {
     let tick_x = track_rect.x + track_rect.w * t
     let tick_y = track_rect.y + track_rect.h * 0.5
@@ -291,9 +287,7 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
       active_w,
       track_rect.h,
     )
-    ctx
-    .painter()
-    .add_rect(fill_rect, @color.Color::accent_primary(), track_radius)
+    ctx.painter().add_rect(fill_rect, theme.accent_primary, track_radius)
   }
 
   // Compute Value Text
@@ -313,15 +307,11 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
   }
   ctx
   .painter()
-  .add_circle(
-    @math.Vec2::new(thumb_cx, thumb_cy),
-    thumb_r,
-    @color.Color::bg_window(),
-  )
+  .add_circle(@math.Vec2::new(thumb_cx, thumb_cy), thumb_r, theme.bg_window)
   let thumb_stroke = if is_focused {
-    @color.Color::border_focus()
+    theme.border_focus
   } else {
-    @color.Color::accent_primary()
+    theme.accent_primary
   }
   let thumb_stroke_w = if is_focused { 2.0 * scale } else { 1.5 * scale }
   ctx
@@ -341,22 +331,17 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
     let bubble_x = thumb_cx - bubble_w * 0.5
     let bubble_y = thumb_cy - thumb_r - bubble_h - 4.0 * scale
     let bubble_rect = @math.Rect::new(bubble_x, bubble_y, bubble_w, bubble_h)
-    ctx.painter().add_rect(bubble_rect, @color.Color::bg_window(), radius_sm)
+    ctx.painter().add_rect(bubble_rect, theme.bg_window, radius_sm)
     ctx
     .painter()
-    .add_rect_stroke(
-      bubble_rect,
-      @color.Color::border_default(),
-      1.0 * scale,
-      radius_sm,
-    )
+    .add_rect_stroke(bubble_rect, theme.border_default, 1.0 * scale, radius_sm)
     let bubble_text_pos = @math.Vec2::new(
       bubble_x + 7.0 * scale,
       bubble_y + (bubble_h - font_sm) * 0.5,
     )
     ctx
     .painter()
-    .add_text(bubble_text_pos, val_text, font_sm, @color.Color::text_primary())
+    .add_text(bubble_text_pos, val_text, font_sm, theme.text_primary)
   }
 
   // Draw Value Text in row
@@ -369,7 +354,7 @@ pub fn Slider::show(self : Slider, ctx : UIContext) -> (Double, Response) {
     ),
     val_text,
     font_sm,
-    @color.Color::text_secondary(),
+    theme.text_secondary,
   )
 
   (new_val, resp)
@@ -514,6 +499,7 @@ pub fn drag_value(
   }
 
   // 3. Draw Label
+  let theme = ctx.theme
   if label.length() > 0 {
     ctx
     .painter()
@@ -521,25 +507,25 @@ pub fn drag_value(
       @math.Vec2::new(rect.x, rect.y + (h - font_nm) * 0.5),
       label,
       font_nm,
-      @color.Color::text_primary(),
+      theme.text_primary,
     )
   }
 
   // 4. Draw Box Background & Mercury Progress Fill
   let bg_color = if is_active {
-    @color.Color::bg_surface()
+    theme.bg_surface
   } else if is_hovered {
-    @color.Color::bg_window()
+    theme.bg_window
   } else {
-    @color.Color::bg_subtle()
+    theme.bg_subtle
   }
 
   let border_color = if is_focused {
-    @color.Color::border_focus()
+    theme.border_focus
   } else if is_active || is_hovered {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else {
-    @color.Color::border_default()
+    theme.border_default
   }
 
   ctx.painter().add_rect(box_rect, bg_color, radius_sm)
@@ -557,9 +543,7 @@ pub fn drag_value(
         fill_w,
         box_rect.h,
       )
-      ctx
-      .painter()
-      .add_rect(mercury_rect, @color.Color::accent_soft(), radius_sm)
+      ctx.painter().add_rect(mercury_rect, theme.accent_soft, radius_sm)
     }
   }
 
@@ -569,7 +553,7 @@ pub fn drag_value(
     .painter()
     .add_rect_stroke(
       box_rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       radius_sm + 2.0 * scale,
     )
@@ -591,9 +575,9 @@ pub fn drag_value(
     val_str,
     font_sm,
     if is_active {
-      @color.Color::accent_primary()
+      theme.accent_primary
     } else {
-      @color.Color::text_primary()
+      theme.text_primary
     },
   )
 

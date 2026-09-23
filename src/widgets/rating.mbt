@@ -234,21 +234,22 @@ pub fn Rating::show(self : Rating, ctx : UIContext) -> (Double, Response) {
   }
 
   // 4. Focus Ring
+  let theme = ctx.theme
   if is_focused {
     let radius = ctx.style.radius_sm * scale
     ctx
     .painter()
     .add_rect_stroke(
       rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       radius + 2.0 * scale,
     )
   }
 
   // 5. Star Glyphs Drawing
-  let empty_color = @color.Color::border_default()
-  let active_color = @color.Color::warning()
+  let empty_color = theme.border_default
+  let active_color = theme.warning
 
   for i = 0; i < max_stars; i = i + 1 {
     let star_x = rect.x + i.to_double() * (star_sz + spacing)

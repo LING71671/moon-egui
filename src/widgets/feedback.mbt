@@ -57,15 +57,16 @@ pub fn progress_bar(
     fraction
   }
 
+  let theme = ctx.theme
   let bar_radius = ctx.style.radius_sm * scale
   let p = ctx.painter()
-  p.add_rect(rect, @color.Color::bg_surface(), bar_radius)
-  p.add_rect_stroke(rect, @color.Color::border_muted(), 1.0 * scale, bar_radius)
+  p.add_rect(rect, theme.bg_surface, bar_radius)
+  p.add_rect_stroke(rect, theme.border_muted, 1.0 * scale, bar_radius)
 
   let fill_w = rect.w * clamped_pct
   if fill_w > 0.0 {
     let fill_rect = @math.Rect::new(rect.x, rect.y, fill_w, rect.h)
-    p.add_rect(fill_rect, @color.Color::accent_primary(), bar_radius)
+    p.add_rect(fill_rect, theme.accent_primary, bar_radius)
   }
 
   let display_text = if text.is_empty() {
@@ -79,9 +80,9 @@ pub fn progress_bar(
   let text_x = rect.x + (rect.w - text_size.x) * 0.5
   let text_y = rect.y + (rect.h - font_sz) * 0.5
   let text_color = if clamped_pct >= 0.5 {
-    @color.Color::text_inverse()
+    theme.text_inverse
   } else {
-    @color.Color::text_primary()
+    theme.text_primary
   }
   p.add_text(@math.Vec2::new(text_x, text_y), display_text, font_sz, text_color)
 

@@ -154,6 +154,7 @@ pub fn breadcrumb(
     }
   }
 
+  let theme = ctx.theme
   let mut current_x = rect.x
 
   for i = 0; i < num_display; i = i + 1 {
@@ -172,11 +173,7 @@ pub fn breadcrumb(
         if is_hovered {
           ctx.set_cursor_icon("pointer")
         }
-        painter.add_rect(
-          item_rect,
-          @color.Color::bg_hover(),
-          ctx.style.radius_sm * scale,
-        )
+        painter.add_rect(item_rect, theme.bg_hover, ctx.style.radius_sm * scale)
         if is_hovered && ctx.input.mouse_pressed {
           clicked_idx = Some(orig_idx)
         }
@@ -184,11 +181,11 @@ pub fn breadcrumb(
     }
 
     let text_col = if is_last {
-      @color.Color::text_strong()
+      theme.text_strong
     } else if (is_hovered || is_kb) && orig_idx >= 0 {
-      @color.Color::text_primary()
+      theme.text_primary
     } else {
-      @color.Color::text_secondary()
+      theme.text_secondary
     }
 
     let text_pos = @math.Vec2::new(
@@ -201,12 +198,7 @@ pub fn breadcrumb(
     if !is_last {
       let sep_x = current_x + sep_gap
       let sep_pos = @math.Vec2::new(sep_x, rect.y + (h - font_sz) * 0.5)
-      painter.add_text(
-        sep_pos,
-        separator,
-        font_sz,
-        @color.Color::text_disabled(),
-      )
+      painter.add_text(sep_pos, separator, font_sz, theme.text_disabled)
       current_x = sep_x + sep_sz.x + sep_gap
     }
   }
@@ -218,7 +210,7 @@ pub fn breadcrumb(
     .painter()
     .add_rect_stroke(
       rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       radius + 2.0 * scale,
     )

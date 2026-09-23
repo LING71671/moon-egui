@@ -203,13 +203,14 @@ pub fn Steps::show(self : Steps, ctx : UIContext) -> (Int, Response) {
   }
 
   // 3. Focus Ring
+  let theme = ctx.theme
   if is_focused {
     let radius = ctx.style.radius_md * scale
     ctx
     .painter()
     .add_rect_stroke(
       rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       radius + 2.0 * scale,
     )
@@ -229,9 +230,9 @@ pub fn Steps::show(self : Steps, ctx : UIContext) -> (Int, Response) {
 
       if rail_end_x > rail_start_x {
         let rail_color = if i < new_current {
-          @color.Color::accent_primary()
+          theme.accent_primary
         } else {
-          @color.Color::border_muted()
+          theme.border_muted
         }
         ctx
         .painter()
@@ -265,9 +266,7 @@ pub fn Steps::show(self : Steps, ctx : UIContext) -> (Int, Response) {
       // Draw node circle
       match status {
         Finish => {
-          ctx
-          .painter()
-          .add_circle(center, circle_r, @color.Color::accent_primary())
+          ctx.painter().add_circle(center, circle_r, theme.accent_primary)
           // Hand-drawn vector checkmark (✓), mathematically centered within the circle
           let stroke_w = 2.0 * scale
           let p1 = @math.Vec2::new(
@@ -282,8 +281,8 @@ pub fn Steps::show(self : Steps, ctx : UIContext) -> (Int, Response) {
             center_x + circle_r * 0.38,
             circle_y - circle_r * 0.30,
           )
-          ctx.painter().add_line(p1, p2, @color.Color::text_inverse(), stroke_w)
-          ctx.painter().add_line(p2, p3, @color.Color::text_inverse(), stroke_w)
+          ctx.painter().add_line(p1, p2, theme.text_inverse, stroke_w)
+          ctx.painter().add_line(p2, p3, theme.text_inverse, stroke_w)
         }
         Process => {
           // Subtle halo for active process node
@@ -292,12 +291,10 @@ pub fn Steps::show(self : Steps, ctx : UIContext) -> (Int, Response) {
           .add_circle_stroke(
             center,
             circle_r + 3.0 * scale,
-            @color.Color::accent_soft(),
+            theme.accent_soft,
             2.0 * scale,
           )
-          ctx
-          .painter()
-          .add_circle(center, circle_r, @color.Color::accent_primary())
+          ctx.painter().add_circle(center, circle_r, theme.accent_primary)
           let num_str = (i + 1).to_string()
           let num_sz = ctx.measure_text(num_str, font_title)
           let num_pos = @math.Vec2::new(
@@ -306,16 +303,16 @@ pub fn Steps::show(self : Steps, ctx : UIContext) -> (Int, Response) {
           )
           ctx
           .painter()
-          .add_text(num_pos, num_str, font_title, @color.Color::text_inverse())
+          .add_text(num_pos, num_str, font_title, theme.text_inverse)
         }
         Wait => {
-          ctx.painter().add_circle(center, circle_r, @color.Color::bg_surface())
+          ctx.painter().add_circle(center, circle_r, theme.bg_surface)
           ctx
           .painter()
           .add_circle_stroke(
             center,
             circle_r,
-            @color.Color::border_default(),
+            theme.border_default,
             1.0 * scale,
           )
           let num_str = (i + 1).to_string()
@@ -324,12 +321,10 @@ pub fn Steps::show(self : Steps, ctx : UIContext) -> (Int, Response) {
             center_x - num_sz.x * 0.5,
             circle_y - num_sz.y * 0.5,
           )
-          ctx
-          .painter()
-          .add_text(num_pos, num_str, font_title, @color.Color::text_muted())
+          ctx.painter().add_text(num_pos, num_str, font_title, theme.text_muted)
         }
         Error => {
-          ctx.painter().add_circle(center, circle_r, @color.Color::danger())
+          ctx.painter().add_circle(center, circle_r, theme.danger)
           // Hand-drawn vector cross (✕), symmetrically centered within the circle
           let stroke_w = 2.0 * scale
           let d = circle_r * 0.34
@@ -337,17 +332,17 @@ pub fn Steps::show(self : Steps, ctx : UIContext) -> (Int, Response) {
           let q2 = @math.Vec2::new(center_x + d, circle_y + d)
           let q3 = @math.Vec2::new(center_x - d, circle_y + d)
           let q4 = @math.Vec2::new(center_x + d, circle_y - d)
-          ctx.painter().add_line(q1, q2, @color.Color::text_inverse(), stroke_w)
-          ctx.painter().add_line(q3, q4, @color.Color::text_inverse(), stroke_w)
+          ctx.painter().add_line(q1, q2, theme.text_inverse, stroke_w)
+          ctx.painter().add_line(q3, q4, theme.text_inverse, stroke_w)
         }
       }
 
       // Draw Title below circle
       let title_color = match status {
-        Process => @color.Color::text_primary()
-        Finish => @color.Color::text_primary()
-        Error => @color.Color::danger()
-        Wait => @color.Color::text_muted()
+        Process => theme.text_primary
+        Finish => theme.text_primary
+        Error => theme.danger
+        Wait => theme.text_muted
       }
       let title_y = circle_y + circle_r + 4.0 * scale
       let title_sz = ctx.measure_text(item.title, font_title)
@@ -372,7 +367,7 @@ pub fn Steps::show(self : Steps, ctx : UIContext) -> (Int, Response) {
           @math.Vec2::new(desc_x, desc_y),
           item.description,
           font_desc,
-          @color.Color::text_secondary(),
+          theme.text_secondary,
         )
       }
     }

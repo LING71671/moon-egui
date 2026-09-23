@@ -264,34 +264,30 @@ pub fn dialog(
   ctx.begin_foreground()
 
   // 1. Fullscreen Backdrop Scrim
-  ctx.painter().add_rect(scrim_rect, @color.Color::bg_scrim(), 0.0)
+  let theme = ctx.theme
+  ctx.painter().add_rect(scrim_rect, theme.bg_inverse.with_alpha(128), 0.0)
 
   // 2. Multi-layer Studio Light Shadows
   ctx
   .painter()
   .add_rect(
     @math.Rect::new(card_x, card_y + 4.0 * scale, eff_w, card_h),
-    @color.Color::shadow_key(),
+    theme.shadow,
     card_radius,
   )
   ctx
   .painter()
   .add_rect(
     @math.Rect::new(card_x, card_y + 12.0 * scale, eff_w, card_h),
-    @color.Color::shadow_ambient(),
+    theme.shadow,
     card_radius,
   )
 
   // 3. Card Base & Outline
-  ctx.painter().add_rect(card_rect, @color.Color::bg_surface(), card_radius)
+  ctx.painter().add_rect(card_rect, theme.bg_surface, card_radius)
   ctx
   .painter()
-  .add_rect_stroke(
-    card_rect,
-    @color.Color::border_default(),
-    1.0 * scale,
-    card_radius,
-  )
+  .add_rect_stroke(card_rect, theme.border_default, 1.0 * scale, card_radius)
 
   // 4. Semantic Badge Icon
   let icon_center = @math.Vec2::new(
@@ -299,11 +295,10 @@ pub fn dialog(
     card_y + 36.0 * scale,
   )
   let (badge_bg, badge_sym, badge_fg) = match kind {
-    Info => (@color.Color::badge_info_bg(), "i", @color.Color::accent_primary())
-    Warning => (@color.Color::badge_warning_bg(), "!", @color.Color::warning())
-    Danger => (@color.Color::badge_danger_bg(), "x", @color.Color::danger())
-    Confirm =>
-      (@color.Color::badge_info_bg(), "?", @color.Color::accent_primary())
+    Info => (theme.accent_soft, "i", theme.accent_primary)
+    Warning => (theme.warning.with_alpha(40), "!", theme.warning)
+    Danger => (theme.danger.with_alpha(40), "x", theme.danger)
+    Confirm => (theme.accent_soft, "?", theme.accent_primary)
   }
 
   ctx.painter().add_circle(icon_center, 16.0 * scale, badge_bg)
@@ -320,12 +315,7 @@ pub fn dialog(
   let title_pos = @math.Vec2::new(card_x + 60.0 * scale, card_y + pad_top)
   ctx
   .painter()
-  .add_text(
-    title_pos,
-    title,
-    ctx.style.font_large * scale,
-    @color.Color::text_strong(),
-  )
+  .add_text(title_pos, title, ctx.style.font_large * scale, theme.text_strong)
 
   let btn_y = card_y + card_h - btn_h - btn_pad_y
   let msg_start_y = card_y + pad_top + title_h + msg_gap
@@ -338,7 +328,7 @@ pub fn dialog(
         @math.Vec2::new(card_x + 60.0 * scale, line_y),
         msg_lines[idx],
         msg_font_sz,
-        @color.Color::text_secondary(),
+        theme.text_secondary,
       )
     }
   }
@@ -362,26 +352,17 @@ pub fn dialog(
   if cancel_hovered || confirm_hovered {
     ctx.set_cursor_icon("pointer")
   }
-  let cancel_bg = if cancel_hovered {
-    @color.Color::bg_hover()
-  } else {
-    @color.Color::bg_subtle()
-  }
+  let cancel_bg = if cancel_hovered { theme.bg_hover } else { theme.bg_subtle }
   ctx.painter().add_rect(cancel_rect, cancel_bg, btn_radius)
   ctx
   .painter()
-  .add_rect_stroke(
-    cancel_rect,
-    @color.Color::border_default(),
-    1.0 * scale,
-    btn_radius,
-  )
+  .add_rect_stroke(cancel_rect, theme.border_default, 1.0 * scale, btn_radius)
   if ctx.has_focus(cancel_id) {
     ctx
     .painter()
     .add_rect_stroke(
       cancel_rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       btn_radius + 2.0 * scale,
     )
@@ -397,22 +378,12 @@ pub fn dialog(
     cancel_text_pos,
     cancel_label,
     ctx.style.font_normal * scale,
-    @color.Color::text_body(),
+    theme.text_body,
   )
   let cancel_clicked = cancel_hovered && ctx.input.mouse_pressed
   let confirm_bg = match kind {
-    Danger =>
-      if confirm_hovered {
-        @color.Color::danger_hover()
-      } else {
-        @color.Color::danger()
-      }
-    _ =>
-      if confirm_hovered {
-        @color.Color::accent_hover()
-      } else {
-        @color.Color::accent_primary()
-      }
+    Danger => theme.danger
+    _ => if confirm_hovered { theme.accent_hover } else { theme.accent_primary }
   }
   ctx.painter().add_rect(confirm_rect, confirm_bg, btn_radius)
   if ctx.has_focus(confirm_id) {
@@ -420,7 +391,7 @@ pub fn dialog(
     .painter()
     .add_rect_stroke(
       confirm_rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       btn_radius + 2.0 * scale,
     )
@@ -439,7 +410,7 @@ pub fn dialog(
     confirm_text_pos,
     confirm_label,
     ctx.style.font_normal * scale,
-    @color.Color::text_inverse(),
+    theme.text_inverse,
   )
   let confirm_clicked = confirm_hovered && ctx.input.mouse_pressed
 

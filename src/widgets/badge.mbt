@@ -48,37 +48,31 @@ pub fn BadgeKind::info() -> BadgeKind {
 }
 
 ///|
-fn badge_colors(kind : BadgeKind) -> (@color.Color, @color.Color, @color.Color) {
+fn badge_colors(
+  kind : BadgeKind,
+  theme : @core.Theme,
+) -> (@color.Color, @color.Color, @color.Color) {
   match kind {
-    Default =>
-      (
-        @color.Color::bg_subtle(),
-        @color.Color::border_default(),
-        @color.Color::text_secondary(),
-      )
+    Default => (theme.bg_subtle, theme.border_default, theme.text_secondary)
     Success =>
       (
-        @color.Color::badge_success_bg(),
-        @color.Color::badge_success_border(),
-        @color.Color::badge_success_text(),
+        theme.success.with_alpha(35),
+        theme.success.with_alpha(80),
+        theme.success,
       )
     Warning =>
       (
-        @color.Color::badge_warning_bg(),
-        @color.Color::badge_warning_border(),
-        @color.Color::badge_warning_text(),
+        theme.warning.with_alpha(35),
+        theme.warning.with_alpha(80),
+        theme.warning,
       )
     Danger =>
-      (
-        @color.Color::badge_danger_bg(),
-        @color.Color::badge_danger_border(),
-        @color.Color::badge_danger_text(),
-      )
+      (theme.danger.with_alpha(35), theme.danger.with_alpha(80), theme.danger)
     Info =>
       (
-        @color.Color::badge_info_bg(),
-        @color.Color::badge_info_border(),
-        @color.Color::badge_info_text(),
+        theme.accent_soft,
+        theme.accent_primary.with_alpha(80),
+        theme.accent_primary,
       )
   }
 }
@@ -144,7 +138,7 @@ pub fn badge(
   let (_id, rect, resp) = ctx.allocate_space(@math.Vec2::new(w, h))
   let radius = if pill { h * 0.5 } else { ctx.style.radius_sm * scale }
 
-  let (bg, border, fg) = badge_colors(kind)
+  let (bg, border, fg) = badge_colors(kind, ctx.theme)
 
   let p = ctx.painter()
   p.add_rect(rect, bg, radius)
@@ -191,7 +185,7 @@ pub fn tag(
   ctx.register_focusable(id)
   let is_focused = resp.has_focus() || ctx.has_focus(id)
 
-  let (bg, border, fg) = badge_colors(kind)
+  let (bg, border, fg) = badge_colors(kind, ctx.theme)
 
   let tag_radius = ctx.style.radius_sm * scale
   let p = ctx.painter()
@@ -199,7 +193,7 @@ pub fn tag(
   p.add_rect_stroke(
     rect,
     if is_focused {
-      @color.Color::border_focus()
+      ctx.theme.border_focus
     } else {
       border
     },
@@ -229,7 +223,7 @@ pub fn tag(
     let is_close_hovered = ctx.is_hovered(close_box)
     if is_close_hovered {
       ctx.set_cursor_icon("pointer")
-      p.add_rect(close_box, @color.Color::tag_close_hover(), tag_radius)
+      p.add_rect(close_box, ctx.theme.bg_hover, tag_radius)
       if ctx.input.mouse_pressed {
         closed = true
       }

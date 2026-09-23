@@ -148,26 +148,22 @@ pub fn segmented_control(
     }
   }
 
+  let theme = ctx.theme
   if is_focused {
     ctx
     .painter()
     .add_rect_stroke(
       track_rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       track_radius + 2.0 * scale,
     )
   }
 
-  ctx.painter().add_rect(track_rect, @color.Color::bg_subtle(), track_radius)
+  ctx.painter().add_rect(track_rect, theme.bg_subtle, track_radius)
   ctx
   .painter()
-  .add_rect_stroke(
-    track_rect,
-    @color.Color::border_muted(),
-    1.0 * scale,
-    track_radius,
-  )
+  .add_rect_stroke(track_rect, theme.border_muted, 1.0 * scale, track_radius)
 
   let pill_h = track_rect.h - pad * 2.0
   let pill_x = track_rect.x + pad + current_sel.to_double() * item_w
@@ -178,18 +174,13 @@ pub fn segmented_control(
   .painter()
   .add_rect(
     @math.Rect::new(pill_x, pill_y + 1.0 * scale, item_w, pill_h),
-    @color.Color::pill_ambient_shadow(),
+    theme.shadow,
     pill_radius,
   )
-  ctx.painter().add_rect(pill_rect, @color.Color::pill_active_bg(), pill_radius)
+  ctx.painter().add_rect(pill_rect, theme.bg_window, pill_radius)
   ctx
   .painter()
-  .add_rect_stroke(
-    pill_rect,
-    @color.Color::pill_active_border(),
-    1.0 * scale,
-    pill_radius,
-  )
+  .add_rect_stroke(pill_rect, theme.border_default, 1.0 * scale, pill_radius)
 
   for i = 0; i < count; i = i + 1 {
     let opt_x = track_rect.x + pad + i.to_double() * item_w
@@ -199,9 +190,7 @@ pub fn segmented_control(
     if is_hovered {
       ctx.set_cursor_icon("pointer")
       if i != current_sel {
-        ctx
-        .painter()
-        .add_rect(opt_rect, @color.Color::wash_hover(), pill_radius)
+        ctx.painter().add_rect(opt_rect, theme.bg_hover, pill_radius)
       }
       if ctx.input.mouse_pressed {
         current_sel = i
@@ -210,11 +199,11 @@ pub fn segmented_control(
     }
 
     let text_col = if i == current_sel {
-      @color.Color::text_strong()
+      theme.text_strong
     } else if is_hovered {
-      @color.Color::text_primary()
+      theme.text_primary
     } else {
-      @color.Color::text_secondary()
+      theme.text_secondary
     }
 
     let text_sz = ctx.measure_text(options[i], font_sz)

@@ -96,17 +96,14 @@ pub fn collapsing_header(
   if resp.hovered() {
     ctx.set_cursor_icon("pointer")
   }
-  let bg_color = if resp.hovered() {
-    @color.Color::bg_surface()
-  } else {
-    @color.Color::bg_subtle()
-  }
+  let theme = ctx.theme
+  let bg_color = if resp.hovered() { theme.bg_surface } else { theme.bg_subtle }
   let border_color = if is_focused {
-    @color.Color::border_focus()
+    theme.border_focus
   } else if resp.hovered() {
-    @color.Color::border_default()
+    theme.border_default
   } else {
-    @color.Color::border_muted()
+    theme.border_muted
   }
   let header_radius = ctx.style.radius_sm * scale
   ctx.painter().add_rect(rect, bg_color, header_radius)
@@ -116,16 +113,16 @@ pub fn collapsing_header(
     .painter()
     .add_rect_stroke(
       rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       header_radius + 2.0 * scale,
     )
   }
 
   let arrow_color = if is_open {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else {
-    @color.Color::text_muted()
+    theme.text_muted
   }
   let arrow_cx = rect.x + 12.0 * scale
   let arrow_cy = rect.y + h * 0.5
@@ -148,11 +145,11 @@ pub fn collapsing_header(
   let title_x = rect.x + 24.0 * scale
   let title_y = rect.y + (rect.h - font_sz) * 0.5
   let text_color = if is_open {
-    @color.Color::text_strong()
+    theme.text_strong
   } else if resp.hovered() {
-    @color.Color::text_primary()
+    theme.text_primary
   } else {
-    @color.Color::text_body()
+    theme.text_body
   }
   ctx
   .painter()
@@ -282,6 +279,7 @@ pub fn combo_box(
     }
   }
 
+  let theme = ctx.theme
   if !label.is_empty() {
     let label_y = rect.y + (h - combo_font_sz) * 0.5
     ctx
@@ -290,21 +288,21 @@ pub fn combo_box(
       @math.Vec2::new(rect.x, label_y),
       label,
       combo_font_sz,
-      @color.Color::text_primary(),
+      theme.text_primary,
     )
   }
 
   let bg_color = if box_hovered || is_open {
-    @color.Color::bg_subtle()
+    theme.bg_subtle
   } else {
-    @color.Color::bg_window()
+    theme.bg_window
   }
   let border_color = if is_focused || is_open {
-    @color.Color::border_focus()
+    theme.border_focus
   } else if box_hovered {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else {
-    @color.Color::border_default()
+    theme.border_default
   }
 
   let box_radius = ctx.style.radius_sm * scale
@@ -324,17 +322,17 @@ pub fn combo_box(
     @math.Vec2::new(box_rect.x + 8.0 * scale, text_y),
     selected_str,
     combo_font_sz,
-    @color.Color::text_primary(),
+    theme.text_primary,
   )
 
   let chevron_cx = box_rect.x + box_w - 14.0 * scale
   let chevron_cy = box_rect.y + h * 0.5
   let chevron_col = if is_open {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else if box_hovered {
-    @color.Color::text_primary()
+    theme.text_primary
   } else {
-    @color.Color::text_muted()
+    theme.text_muted
   }
   if is_open {
     let p1 = @math.Vec2::new(chevron_cx - 3.5 * scale, chevron_cy + 1.5 * scale)
@@ -406,18 +404,11 @@ pub fn combo_box(
     let menu_radius = ctx.style.radius_md * scale
     let item_radius = ctx.style.radius_sm * scale
     let item_font_sz = ctx.style.font_small * scale
+    ctx.painter().add_rect(shadow_rect, theme.shadow, menu_radius)
+    ctx.painter().add_rect(menu_rect, theme.bg_window, item_radius)
     ctx
     .painter()
-    .add_rect(shadow_rect, @color.Color::shadow_ambient(), menu_radius)
-    ctx.painter().add_rect(menu_rect, @color.Color::bg_window(), item_radius)
-    ctx
-    .painter()
-    .add_rect_stroke(
-      menu_rect,
-      @color.Color::border_default(),
-      1.0 * scale,
-      item_radius,
-    )
+    .add_rect_stroke(menu_rect, theme.border_default, 1.0 * scale, item_radius)
 
     ctx.push_clip(menu_rect)
 
@@ -431,20 +422,18 @@ pub fn combo_box(
       let item_hovered = ctx.is_hovered(item_rect)
       if item_hovered {
         ctx.set_cursor_icon("pointer")
-        ctx
-        .painter()
-        .add_rect(item_rect, @color.Color::bg_surface(), item_radius)
+        ctx.painter().add_rect(item_rect, theme.bg_surface, item_radius)
         if ctx.input.mouse_pressed() {
           current_idx = i
           ctx.set_open_combo_id(@core.Id::zero())
         }
       }
       let item_text_col = if item_hovered {
-        @color.Color::accent_primary()
+        theme.accent_primary
       } else if i == current_idx {
-        @color.Color::accent_primary()
+        theme.accent_primary
       } else {
-        @color.Color::text_body()
+        theme.text_body
       }
       ctx
       .painter()
@@ -464,12 +453,8 @@ pub fn combo_box(
         let p1 = @math.Vec2::new(chk_x - 4.0 * scale, chk_y)
         let p2 = @math.Vec2::new(chk_x - 1.5 * scale, chk_y + 2.5 * scale)
         let p3 = @math.Vec2::new(chk_x + 3.5 * scale, chk_y - 2.5 * scale)
-        ctx
-        .painter()
-        .add_line(p1, p2, @color.Color::accent_primary(), 1.5 * scale)
-        ctx
-        .painter()
-        .add_line(p2, p3, @color.Color::accent_primary(), 1.5 * scale)
+        ctx.painter().add_line(p1, p2, theme.accent_primary, 1.5 * scale)
+        ctx.painter().add_line(p2, p3, theme.accent_primary, 1.5 * scale)
       }
     }
 
@@ -554,17 +539,18 @@ pub fn tab_bar(
     }
   }
 
+  let theme = ctx.theme
   let container_radius = ctx.style.radius_md * scale
   let tab_radius = ctx.style.radius_sm * scale
-  ctx.painter().add_rect(rect, @color.Color::bg_surface(), container_radius)
+  ctx.painter().add_rect(rect, theme.bg_surface, container_radius)
   ctx
   .painter()
   .add_rect_stroke(
     rect,
     if is_focused {
-      @color.Color::border_focus()
+      theme.border_focus
     } else {
-      @color.Color::border_muted()
+      theme.border_muted
     },
     1.0 * scale,
     container_radius,
@@ -574,7 +560,7 @@ pub fn tab_bar(
     .painter()
     .add_rect_stroke(
       rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       container_radius + 2.0 * scale,
     )
@@ -598,26 +584,26 @@ pub fn tab_bar(
 
     if is_selected {
       let active_rect = tab_rect.shrink(2.0 * scale)
-      ctx.painter().add_rect(active_rect, @color.Color::bg_window(), tab_radius)
+      ctx.painter().add_rect(active_rect, theme.bg_window, tab_radius)
       ctx
       .painter()
       .add_rect_stroke(
         active_rect,
-        @color.Color::border_default(),
+        theme.border_default,
         1.0 * scale,
         tab_radius,
       )
     } else if is_hovered {
       let hover_rect = tab_rect.shrink(2.0 * scale)
-      ctx.painter().add_rect(hover_rect, @color.Color::bg_subtle(), tab_radius)
+      ctx.painter().add_rect(hover_rect, theme.bg_subtle, tab_radius)
     }
 
     let text_col = if is_selected {
-      @color.Color::text_primary()
+      theme.text_primary
     } else if is_hovered {
-      @color.Color::text_primary()
+      theme.text_primary
     } else {
-      @color.Color::text_muted()
+      theme.text_muted
     }
 
     let text_x = tab_rect.x + (tab_w - text_w) * 0.5

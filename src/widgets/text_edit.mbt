@@ -243,13 +243,14 @@ pub fn text_edit_sized(
   .memory()
   .set_double(id, scroll_x, tag="scroll_x", frame=ctx.frame_counter())
 
-  let bg_color = @color.Color::bg_window()
+  let theme = ctx.theme
+  let bg_color = theme.bg_window
   let border_color = if is_focused {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else if resp.hovered() {
-    @color.Color::border_strong()
+    theme.border_strong
   } else {
-    @color.Color::border_default()
+    theme.border_default
   }
 
   let border_width = if is_focused { 1.5 * scale } else { 1.0 * scale }
@@ -275,7 +276,7 @@ pub fn text_edit_sized(
         @math.Vec2::new(rect.x + padding_x, text_y),
         placeholder,
         font_size,
-        @color.Color::text_disabled(),
+        theme.text_disabled,
       )
     }
   } else {
@@ -285,7 +286,7 @@ pub fn text_edit_sized(
       @math.Vec2::new(rect.x + padding_x - scroll_x, text_y),
       current_text,
       font_size,
-      @color.Color::text_primary(),
+      theme.text_primary,
     )
   }
 
@@ -298,8 +299,8 @@ pub fn text_edit_sized(
     .add_line(
       @math.Vec2::new(caret_x, caret_top),
       @math.Vec2::new(caret_x, caret_bottom),
-      @color.Color::accent_primary(),
-      1.5,
+      theme.accent_primary,
+      1.5 * scale,
     )
   }
 

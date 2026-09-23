@@ -160,12 +160,13 @@ pub fn scroll_area(
   ctx.pop_clip()
 
   // Focus ring so Tab users can see the viewport is keyboard-scrollable
+  let theme = ctx.theme
   if ctx.has_focus(container_id) {
     ctx
     .painter()
     .add_rect_stroke(
       container_rect,
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.0 * scale,
       ctx.style.radius_md * scale,
     )
@@ -249,9 +250,9 @@ pub fn scroll_area(
     )
 
     let thumb_color = if ctx.active_id() == thumb_id || is_thumb_hovered {
-      @color.Color::accent_primary()
+      theme.accent_primary
     } else {
-      @color.Color::border_muted()
+      theme.border_muted
     }
     ctx
     .painter()

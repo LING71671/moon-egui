@@ -279,11 +279,12 @@ pub fn split_horizontal(
   ctx.set_available_width(saved_avail)
 
   let scale = ctx.style.scale
+  let theme = ctx.theme
   let divider_x = container_rect.x + left_w
   let line_col = if is_active || hovered {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else {
-    @color.Color::border_muted()
+    theme.border_muted
   }
   let line_w = (if is_active || hovered { 2.0 } else { 1.0 }) * scale
 
@@ -298,9 +299,9 @@ pub fn split_horizontal(
 
   let mid_y = container_rect.y + h * 0.5
   let dot_col = if is_active || hovered {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else {
-    @color.Color::border_strong()
+    theme.border_strong
   }
   let dot_r = 1.5 * scale
   let dot_spacing = 6.0 * scale
@@ -317,7 +318,7 @@ pub fn split_horizontal(
     .painter()
     .add_rect_stroke(
       hit_rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       ctx.style.radius_sm * scale,
     )
@@ -491,11 +492,12 @@ pub fn split_vertical(
   ctx.set_available_width(saved_avail)
 
   let scale = ctx.style.scale
+  let theme = ctx.theme
   let divider_y = container_rect.y + top_h
   let line_col = if is_active || hovered {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else {
-    @color.Color::border_muted()
+    theme.border_muted
   }
   let line_w = (if is_active || hovered { 2.0 } else { 1.0 }) * scale
 
@@ -510,9 +512,9 @@ pub fn split_vertical(
 
   let mid_x = container_rect.x + w * 0.5
   let dot_col = if is_active || hovered {
-    @color.Color::accent_primary()
+    theme.accent_primary
   } else {
-    @color.Color::border_strong()
+    theme.border_strong
   }
   let dot_r = 1.5 * scale
   let dot_spacing = 6.0 * scale
@@ -529,7 +531,7 @@ pub fn split_vertical(
     .painter()
     .add_rect_stroke(
       hit_rect.expand(2.0 * scale),
-      @color.Color::border_focus(),
+      theme.border_focus,
       1.5 * scale,
       ctx.style.radius_sm * scale,
     )
