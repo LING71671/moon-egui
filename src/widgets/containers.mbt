@@ -75,6 +75,18 @@ pub fn collapsing_header(
     ctx.input.consume_key(Key::Space)
     ctx.input.consume_key(Key::Enter)
   }
+  if is_focused {
+    if ctx.input.key_pressed(Key::ArrowRight) && !is_open {
+      is_open = true
+      ctx.set_collapsing_open(header_id, is_open)
+      ctx.input.consume_key(Key::ArrowRight)
+    }
+    if ctx.input.key_pressed(Key::ArrowLeft) && is_open {
+      is_open = false
+      ctx.set_collapsing_open(header_id, is_open)
+      ctx.input.consume_key(Key::ArrowLeft)
+    }
+  }
 
   if resp.clicked() || key_toggle {
     is_open = !is_open
@@ -98,14 +110,14 @@ pub fn collapsing_header(
   }
   let header_radius = ctx.style.radius_sm * scale
   ctx.painter().add_rect(rect, bg_color, header_radius)
-  ctx.painter().add_rect_stroke(rect, border_color, 1.0, header_radius)
+  ctx.painter().add_rect_stroke(rect, border_color, 1.0 * scale, header_radius)
   if is_focused {
     ctx
     .painter()
     .add_rect_stroke(
       rect.expand(2.0 * scale),
       @color.Color::border_focus(),
-      1.5,
+      1.5 * scale,
       header_radius + 2.0 * scale,
     )
   }
@@ -115,20 +127,21 @@ pub fn collapsing_header(
   } else {
     @color.Color::text_muted()
   }
-  let arrow_cx = rect.x + 12.0
+  let arrow_cx = rect.x + 12.0 * scale
   let arrow_cy = rect.y + h * 0.5
+  let arrow_stroke = 1.5 * scale
   if is_open {
-    let p1 = @math.Vec2::new(arrow_cx - 3.5, arrow_cy - 1.5)
-    let p2 = @math.Vec2::new(arrow_cx, arrow_cy + 2.0)
-    let p3 = @math.Vec2::new(arrow_cx + 3.5, arrow_cy - 1.5)
-    ctx.painter().add_line(p1, p2, arrow_color, 1.5)
-    ctx.painter().add_line(p2, p3, arrow_color, 1.5)
+    let p1 = @math.Vec2::new(arrow_cx - 3.5 * scale, arrow_cy - 1.5 * scale)
+    let p2 = @math.Vec2::new(arrow_cx, arrow_cy + 2.0 * scale)
+    let p3 = @math.Vec2::new(arrow_cx + 3.5 * scale, arrow_cy - 1.5 * scale)
+    ctx.painter().add_line(p1, p2, arrow_color, arrow_stroke)
+    ctx.painter().add_line(p2, p3, arrow_color, arrow_stroke)
   } else {
-    let p1 = @math.Vec2::new(arrow_cx - 1.5, arrow_cy - 3.5)
-    let p2 = @math.Vec2::new(arrow_cx + 2.0, arrow_cy)
-    let p3 = @math.Vec2::new(arrow_cx - 1.5, arrow_cy + 3.5)
-    ctx.painter().add_line(p1, p2, arrow_color, 1.5)
-    ctx.painter().add_line(p2, p3, arrow_color, 1.5)
+    let p1 = @math.Vec2::new(arrow_cx - 1.5 * scale, arrow_cy - 3.5 * scale)
+    let p2 = @math.Vec2::new(arrow_cx + 2.0 * scale, arrow_cy)
+    let p3 = @math.Vec2::new(arrow_cx - 1.5 * scale, arrow_cy + 3.5 * scale)
+    ctx.painter().add_line(p1, p2, arrow_color, arrow_stroke)
+    ctx.painter().add_line(p2, p3, arrow_color, arrow_stroke)
   }
 
   let font_sz = ctx.style.font_normal * scale
@@ -531,6 +544,14 @@ pub fn tab_bar(
       }
       ctx.input.consume_key(Key::ArrowRight)
     }
+    if ctx.input.key_pressed(Key::Home) {
+      current_selected = 0
+      ctx.input.consume_key(Key::Home)
+    }
+    if ctx.input.key_pressed(Key::End) {
+      current_selected = tabs.length() - 1
+      ctx.input.consume_key(Key::End)
+    }
   }
 
   let container_radius = ctx.style.radius_md * scale
@@ -545,9 +566,19 @@ pub fn tab_bar(
     } else {
       @color.Color::border_muted()
     },
-    1.0,
+    1.0 * scale,
     container_radius,
   )
+  if is_focused {
+    ctx
+    .painter()
+    .add_rect_stroke(
+      rect.expand(2.0 * scale),
+      @color.Color::border_focus(),
+      1.5 * scale,
+      container_radius + 2.0 * scale,
+    )
+  }
 
   let mut cur_x = rect.x
   for i = 0; i < tabs.length(); i = i + 1 {
@@ -566,18 +597,18 @@ pub fn tab_bar(
     }
 
     if is_selected {
-      let active_rect = tab_rect.shrink(2.0)
+      let active_rect = tab_rect.shrink(2.0 * scale)
       ctx.painter().add_rect(active_rect, @color.Color::bg_window(), tab_radius)
       ctx
       .painter()
       .add_rect_stroke(
         active_rect,
         @color.Color::border_default(),
-        1.0,
+        1.0 * scale,
         tab_radius,
       )
     } else if is_hovered {
-      let hover_rect = tab_rect.shrink(2.0)
+      let hover_rect = tab_rect.shrink(2.0 * scale)
       ctx.painter().add_rect(hover_rect, @color.Color::bg_subtle(), tab_radius)
     }
 

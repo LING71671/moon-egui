@@ -114,7 +114,8 @@ pub fn VirtualList::render(
     0.0
   }
 
-  let mut scroll_y = ctx.get_scroll_offset(list_id)
+  let raw_scroll = ctx.get_scroll_offset(list_id)
+  let mut scroll_y = if raw_scroll.is_nan() { 0.0 } else { raw_scroll }
 
   // Process mouse wheel scrolling
   if is_hovered && max_scroll > 0.0 {
@@ -221,7 +222,7 @@ pub fn VirtualList::render(
   }
 
   // Clamp scroll offset within valid boundaries
-  if scroll_y < 0.0 {
+  if scroll_y.is_nan() || scroll_y < 0.0 {
     scroll_y = 0.0
   } else if scroll_y > max_scroll {
     scroll_y = max_scroll
@@ -317,13 +318,14 @@ pub fn VirtualList::render(
 
   // Draw container focus ring if focused
   if is_focused {
+    let focus_radius = ctx.style.radius_sm * scale
     ctx
     .painter()
     .add_rect_stroke(
-      container_rect,
-      @color.Color::accent_primary(),
+      container_rect.expand(2.0 * scale),
+      @color.Color::border_focus(),
       1.5 * scale,
-      ctx.style.radius_sm * scale,
+      focus_radius + 2.0 * scale,
     )
   }
 
