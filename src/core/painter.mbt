@@ -203,6 +203,27 @@ pub fn Painter::add_linear_gradient(
 }
 
 ///|
+/// Render a cubic bezier curve, shifted by the painter's offset.
+pub fn Painter::add_bezier_curve(
+  self : Painter,
+  p0 : @math.Vec2,
+  p1 : @math.Vec2,
+  p2 : @math.Vec2,
+  p3 : @math.Vec2,
+  color : @color.Color,
+  stroke_width : Double,
+) -> Unit {
+  let off = self.offset
+  let shifted_p0 = @math.Vec2::new(p0.x + off.x, p0.y + off.y)
+  let shifted_p1 = @math.Vec2::new(p1.x + off.x, p1.y + off.y)
+  let shifted_p2 = @math.Vec2::new(p2.x + off.x, p2.y + off.y)
+  let shifted_p3 = @math.Vec2::new(p3.x + off.x, p3.y + off.y)
+  self.draw_list.add_bezier_curve(
+    shifted_p0, shifted_p1, shifted_p2, shifted_p3, color, stroke_width,
+  )
+}
+
+///|
 /// Push a scissor clipping region to the underlying draw list.
 pub fn Painter::push_clip(self : Painter, rect : @math.Rect) -> Unit {
   let shifted_rect = @math.Rect::new(

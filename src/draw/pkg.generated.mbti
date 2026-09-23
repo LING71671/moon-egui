@@ -22,11 +22,13 @@ pub enum DrawCmd {
   Clip(@math.Rect)
   ResetClip
   LinearGradient(@math.Rect, @math.Vec2, @math.Vec2, @color.Color, @color.Color, Double)
+  BezierCurve(@math.Vec2, @math.Vec2, @math.Vec2, @math.Vec2, @color.Color, Double)
 } derive(Eq, @debug.Debug)
 
 pub struct DrawList {
   commands : Array[DrawCmd]
 } derive(Eq, @debug.Debug)
+pub fn DrawList::add_bezier_curve(Self, @math.Vec2, @math.Vec2, @math.Vec2, @math.Vec2, @color.Color, Double) -> Unit
 pub fn DrawList::add_circle(Self, @math.Vec2, Double, @color.Color) -> Unit
 pub fn DrawList::add_circle_stroke(Self, @math.Vec2, Double, @color.Color, Double) -> Unit
 pub fn DrawList::add_line(Self, @math.Vec2, @math.Vec2, @color.Color, Double) -> Unit

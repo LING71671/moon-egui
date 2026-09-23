@@ -297,6 +297,7 @@ pub struct Painter {
   clip_rect : @math.Rect?
   offset : @math.Vec2
 } derive(Eq, @debug.Debug)
+pub fn Painter::add_bezier_curve(Self, @math.Vec2, @math.Vec2, @math.Vec2, @math.Vec2, @color.Color, Double) -> Unit
 pub fn Painter::add_circle(Self, @math.Vec2, Double, @color.Color) -> Unit
 pub fn Painter::add_circle_stroke(Self, @math.Vec2, Double, @color.Color, Double) -> Unit
 pub fn Painter::add_line(Self, @math.Vec2, @math.Vec2, @color.Color, Double) -> Unit

@@ -16,6 +16,14 @@ pub enum DrawCmd {
     @color.Color,
     Double
   )
+  BezierCurve(
+    @math.Vec2,
+    @math.Vec2,
+    @math.Vec2,
+    @math.Vec2,
+    @color.Color,
+    Double
+  )
 } derive(Eq, Debug)
 
 ///|
@@ -138,6 +146,19 @@ pub fn DrawList::add_linear_gradient(
       rect, start_pt, end_pt, start_color, end_color, corner_radius,
     ),
   )
+}
+
+///|
+pub fn DrawList::add_bezier_curve(
+  self : DrawList,
+  p0 : @math.Vec2,
+  p1 : @math.Vec2,
+  p2 : @math.Vec2,
+  p3 : @math.Vec2,
+  color : @color.Color,
+  stroke_width : Double,
+) -> Unit {
+  self.commands.push(DrawCmd::BezierCurve(p0, p1, p2, p3, color, stroke_width))
 }
 
 ///|

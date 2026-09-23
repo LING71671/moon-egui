@@ -302,6 +302,31 @@ pub fn SvgExporter::render_to_string(
         buf.write_string(grad_id)
         buf.write_string(")\"/>\n")
       }
+      DrawCmd::BezierCurve(p0, p1, p2, p3, col, stroke_w) => {
+        buf.write_string("  <path d=\"M ")
+        buf.write_string(p0.x.to_string())
+        buf.write_string(" ")
+        buf.write_string(p0.y.to_string())
+        buf.write_string(" C ")
+        buf.write_string(p1.x.to_string())
+        buf.write_string(" ")
+        buf.write_string(p1.y.to_string())
+        buf.write_string(", ")
+        buf.write_string(p2.x.to_string())
+        buf.write_string(" ")
+        buf.write_string(p2.y.to_string())
+        buf.write_string(", ")
+        buf.write_string(p3.x.to_string())
+        buf.write_string(" ")
+        buf.write_string(p3.y.to_string())
+        buf.write_string("\" fill=\"none\" stroke=\"")
+        buf.write_string(color_to_rgb(col))
+        buf.write_string("\" stroke-width=\"")
+        buf.write_string(stroke_w.to_string())
+        buf.write_string("\" stroke-opacity=\"")
+        buf.write_string(color_to_opacity(col))
+        buf.write_string("\"/>\n")
+      }
     }
   }
 
