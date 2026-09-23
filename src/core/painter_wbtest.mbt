@@ -115,3 +115,28 @@ test "painter: sub_painter nesting and clip intersection" {
     _ => assert_true(false)
   }
 }
+
+///|
+test "painter: bezier curve offset translation" {
+  let dl = @draw.DrawList::new()
+  let p = Painter::new(dl, offset=@math.Vec2::new(20.0, 30.0))
+  p.add_bezier_curve(
+    @math.Vec2::new(0.0, 0.0),
+    @math.Vec2::new(10.0, 0.0),
+    @math.Vec2::new(10.0, 50.0),
+    @math.Vec2::new(20.0, 50.0),
+    @color.Color::accent_primary(),
+    2.0,
+  )
+  assert_eq(dl.len(), 1)
+  match dl.get_command(0) {
+    Some(@draw.DrawCmd::BezierCurve(p0, _p1, _p2, p3, _, w)) => {
+      assert_eq(p0.x, 20.0)
+      assert_eq(p0.y, 30.0)
+      assert_eq(p3.x, 40.0)
+      assert_eq(p3.y, 80.0)
+      assert_eq(w, 2.0)
+    }
+    _ => assert_true(false)
+  }
+}

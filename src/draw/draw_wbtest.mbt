@@ -41,3 +41,19 @@ test "drawlist linear gradient command" {
   let cmd = dl.get_command(0)
   assert_true(cmd is Some(DrawCmd::LinearGradient(_)))
 }
+
+///|
+test "drawlist bezier curve command" {
+  let dl = DrawList::new()
+  dl.add_bezier_curve(
+    @math.Vec2::new(0.0, 0.0),
+    @math.Vec2::new(50.0, 0.0),
+    @math.Vec2::new(50.0, 100.0),
+    @math.Vec2::new(100.0, 100.0),
+    @color.Color::accent_primary(),
+    2.5,
+  )
+  assert_eq(dl.len(), 1)
+  let cmd = dl.get_command(0)
+  assert_true(cmd is Some(DrawCmd::BezierCurve(_)))
+}

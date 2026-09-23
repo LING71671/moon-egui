@@ -209,3 +209,49 @@ test "splitter: Home and End keys snap ratio to boundaries" {
   let _ = ctx.end_frame()
   assert_eq(r_end, 0.8)
 }
+
+///|
+test "widgets: splitter scale 2.0 geometry invariance" {
+  let ctx1 = UIContext::new()
+  ctx1.begin_frame(RawInput::new())
+  let _ = split_horizontal(
+    ctx1,
+    "scale_split_1",
+    0.5,
+    @math.Vec2::new(400.0, 200.0),
+    fn(_ui, _r) { () },
+    fn(_ui, _r) { () },
+  )
+  let dl1 = ctx1.end_frame()
+
+  let ctx2 = UIContext::new()
+  ctx2.set_style(@core.WidgetStyle::default().scaled(2.0))
+  ctx2.begin_frame(RawInput::new())
+  let _ = split_horizontal(
+    ctx2,
+    "scale_split_2",
+    0.5,
+    @math.Vec2::new(800.0, 400.0),
+    fn(_ui, _r) { () },
+    fn(_ui, _r) { () },
+  )
+  let dl2 = ctx2.end_frame()
+
+  let mut w1 = 0.0
+  for i = 0; i < dl1.len(); i = i + 1 {
+    if dl1.get_command(i) is Some(@draw.DrawCmd::Line(_, _, _, w)) {
+      w1 = w
+      break
+    }
+  }
+
+  let mut w2 = 0.0
+  for i = 0; i < dl2.len(); i = i + 1 {
+    if dl2.get_command(i) is Some(@draw.DrawCmd::Line(_, _, _, w)) {
+      w2 = w
+      break
+    }
+  }
+
+  assert_eq(w2, w1 * 2.0)
+}

@@ -244,4 +244,12 @@ test "composite: node_editor adaptive wire LOD steps and is_hovered hit testing"
   let dl = ctx.end_frame()
   assert_eq(resp.connections.length(), 1)
   assert_true(dl.len() > 0)
+
+  let mut bezier_count = 0
+  for i = 0; i < dl.len(); i = i + 1 {
+    if dl.get_command(i) is Some(@draw.DrawCmd::BezierCurve(_)) {
+      bezier_count = bezier_count + 1
+    }
+  }
+  assert_eq(bezier_count, 1)
 }
