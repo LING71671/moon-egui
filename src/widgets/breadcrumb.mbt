@@ -137,10 +137,19 @@ pub fn breadcrumb(
       cur = if cur - 1 >= 0 { cur - 1 } else { cur }
       ctx.input.consume_key(Key::ArrowLeft)
     }
+    if ctx.input.key_pressed(Key::Home) {
+      cur = 0
+      ctx.input.consume_key(Key::Home)
+    }
+    if ctx.input.key_pressed(Key::End) {
+      cur = selectable.length() - 1
+      ctx.input.consume_key(Key::End)
+    }
     ctx.memory().set_int(id, cur, tag="kb")
     kb_pos = Some(selectable[cur])
-    if ctx.input.key_pressed(Key::Enter) {
+    if ctx.input.key_pressed(Key::Enter) || ctx.input.key_pressed(Key::Space) {
       ctx.input.consume_key(Key::Enter)
+      ctx.input.consume_key(Key::Space)
       clicked_idx = Some(display_items[selectable[cur]].1)
     }
   }
@@ -183,7 +192,7 @@ pub fn breadcrumb(
     }
 
     let text_pos = @math.Vec2::new(
-      current_x + 4.0,
+      current_x + 4.0 * scale,
       rect.y + (h - font_sz) * 0.5,
     )
     painter.add_text(text_pos, label, font_sz, text_col)
@@ -204,13 +213,14 @@ pub fn breadcrumb(
 
   // Focus ring so Tab users can see the trail is keyboard-navigable
   if is_focused {
+    let radius = ctx.style.radius_sm * scale
     ctx
     .painter()
     .add_rect_stroke(
-      rect,
+      rect.expand(2.0 * scale),
       @color.Color::border_focus(),
-      1.0 * scale,
-      ctx.style.radius_sm * scale,
+      1.5 * scale,
+      radius + 2.0 * scale,
     )
   }
 

@@ -145,8 +145,8 @@ pub fn Rating::show(self : Rating, ctx : UIContext) -> (Double, Response) {
 
   let is_focused = !self.read_only && (resp.has_focus() || ctx.has_focus(id))
 
-  let mut new_val = self.value
-  let mut display_val = self.value
+  let mut new_val = if self.value.is_nan() { 0.0 } else { self.value }
+  let mut display_val = new_val
 
   // 1. Mouse Hover and Click Evaluation
   if !self.read_only && resp.hovered {
@@ -195,6 +195,18 @@ pub fn Rating::show(self : Rating, ctx : UIContext) -> (Double, Response) {
       ctx.input.consume_key(Key::ArrowUp)
       display_val = new_val
     }
+    if ctx.input.key_pressed(Key::PageDown) {
+      let coarse_step = if self.allow_half { 2.0 } else { 2.0 }
+      new_val = new_val - coarse_step
+      ctx.input.consume_key(Key::PageDown)
+      display_val = new_val
+    }
+    if ctx.input.key_pressed(Key::PageUp) {
+      let coarse_step = if self.allow_half { 2.0 } else { 2.0 }
+      new_val = new_val + coarse_step
+      ctx.input.consume_key(Key::PageUp)
+      display_val = new_val
+    }
     if ctx.input.key_pressed(Key::Home) {
       new_val = 0.0
       ctx.input.consume_key(Key::Home)
@@ -207,14 +219,14 @@ pub fn Rating::show(self : Rating, ctx : UIContext) -> (Double, Response) {
     }
   }
 
-  // 3. Bounds Clamping
-  if new_val < 0.0 {
+  // 3. Bounds Clamping & NaN safety
+  if new_val.is_nan() || new_val < 0.0 {
     new_val = 0.0
   }
   if new_val > max_stars.to_double() {
     new_val = max_stars.to_double()
   }
-  if display_val < 0.0 {
+  if display_val.is_nan() || display_val < 0.0 {
     display_val = 0.0
   }
   if display_val > max_stars.to_double() {
@@ -229,7 +241,7 @@ pub fn Rating::show(self : Rating, ctx : UIContext) -> (Double, Response) {
     .add_rect_stroke(
       rect.expand(2.0 * scale),
       @color.Color::border_focus(),
-      1.5,
+      1.5 * scale,
       radius + 2.0 * scale,
     )
   }

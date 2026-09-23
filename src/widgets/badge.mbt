@@ -148,7 +148,7 @@ pub fn badge(
 
   let p = ctx.painter()
   p.add_rect(rect, bg, radius)
-  p.add_rect_stroke(rect, border, 1.0, radius)
+  p.add_rect_stroke(rect, border, 1.0 * scale, radius)
 
   let mut current_x = rect.x + pad_x
 
@@ -176,12 +176,13 @@ pub fn tag(
   kind? : BadgeKind = Default,
   closable? : Bool = false,
 ) -> (Bool, Response) {
-  let font_sz = ctx.style.font_small
+  let scale = ctx.style.scale
+  let font_sz = ctx.style.font_small * scale
   let text_sz = ctx.measure_text(text, font_sz)
 
-  let close_w = if closable { 16.0 } else { 0.0 }
-  let pad_x = 8.0
-  let h = 24.0
+  let close_w = if closable { 16.0 * scale } else { 0.0 }
+  let pad_x = 8.0 * scale
+  let h = 24.0 * scale
   let w = pad_x * 2.0 + text_sz.x + close_w
 
   ctx.push_id(id_salt)
@@ -192,7 +193,7 @@ pub fn tag(
 
   let (bg, border, fg) = badge_colors(kind)
 
-  let tag_radius = ctx.style.radius_sm
+  let tag_radius = ctx.style.radius_sm * scale
   let p = ctx.painter()
   p.add_rect(rect, bg, tag_radius)
   p.add_rect_stroke(
@@ -203,9 +204,9 @@ pub fn tag(
       border
     },
     if is_focused {
-      1.5
+      1.5 * scale
     } else {
-      1.0
+      1.0 * scale
     },
     tag_radius,
   )
@@ -218,11 +219,12 @@ pub fn tag(
 
   // Closable button
   if closable {
+    let btn_sz = 14.0 * scale
     let close_box = @math.Rect::new(
-      rect.x + w - pad_x - 14.0,
-      rect.y + (h - 14.0) * 0.5,
-      14.0,
-      14.0,
+      rect.x + w - pad_x - btn_sz,
+      rect.y + (h - btn_sz) * 0.5,
+      btn_sz,
+      btn_sz,
     )
     let is_close_hovered = ctx.is_hovered(close_box)
     if is_close_hovered {
@@ -241,18 +243,18 @@ pub fn tag(
       closed = true
     }
     let x_center = close_box.center()
-    let r = 3.5
+    let r = 3.5 * scale
     p.add_line(
       @math.Vec2::new(x_center.x - r, x_center.y - r),
       @math.Vec2::new(x_center.x + r, x_center.y + r),
       fg,
-      1.2,
+      1.2 * scale,
     )
     p.add_line(
       @math.Vec2::new(x_center.x - r, x_center.y + r),
       @math.Vec2::new(x_center.x + r, x_center.y - r),
       fg,
-      1.2,
+      1.2 * scale,
     )
   }
 

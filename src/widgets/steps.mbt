@@ -210,8 +210,8 @@ pub fn Steps::show(self : Steps, ctx : UIContext) -> (Int, Response) {
     .add_rect_stroke(
       rect.expand(2.0 * scale),
       @color.Color::border_focus(),
-      1.5,
-      radius,
+      1.5 * scale,
+      radius + 2.0 * scale,
     )
   }
 
@@ -316,7 +316,7 @@ pub fn Steps::show(self : Steps, ctx : UIContext) -> (Int, Response) {
             center,
             circle_r,
             @color.Color::border_default(),
-            1.0,
+            1.0 * scale,
           )
           let num_str = (i + 1).to_string()
           let num_sz = ctx.measure_text(num_str, font_title)

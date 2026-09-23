@@ -230,6 +230,14 @@ pub fn Pagination::show(self : Pagination, ctx : UIContext) -> (Int, Response) {
       ctx.input.consume_key(Key::ArrowRight)
       ctx.input.consume_key(Key::ArrowUp)
     }
+    if ctx.input.key_pressed(Key::PageDown) {
+      new_page = if new_page + 5 <= total { new_page + 5 } else { total }
+      ctx.input.consume_key(Key::PageDown)
+    }
+    if ctx.input.key_pressed(Key::PageUp) {
+      new_page = if new_page > 5 { new_page - 5 } else { 1 }
+      ctx.input.consume_key(Key::PageUp)
+    }
     if ctx.input.key_pressed(Key::Home) {
       new_page = 1
       ctx.input.consume_key(Key::Home)
@@ -247,7 +255,7 @@ pub fn Pagination::show(self : Pagination, ctx : UIContext) -> (Int, Response) {
     .add_rect_stroke(
       rect.expand(2.0 * scale),
       @color.Color::border_focus(),
-      1.5,
+      1.5 * scale,
       radius + 2.0 * scale,
     )
   }
@@ -278,7 +286,7 @@ pub fn Pagination::show(self : Pagination, ctx : UIContext) -> (Int, Response) {
     } else {
       @color.Color::border_muted()
     }
-    ctx.painter().add_rect_stroke(prev_rect, prev_border, 1.0, radius)
+    ctx.painter().add_rect_stroke(prev_rect, prev_border, 1.0 * scale, radius)
 
     let sym = "‹"
     let sym_sz = ctx.measure_text(sym, font_sz)
@@ -337,7 +345,7 @@ pub fn Pagination::show(self : Pagination, ctx : UIContext) -> (Int, Response) {
           .add_rect_stroke(
             item_rect,
             @color.Color::border_default(),
-            1.0,
+            1.0 * scale,
             radius,
           )
           let p_str = p.to_string()
@@ -391,7 +399,7 @@ pub fn Pagination::show(self : Pagination, ctx : UIContext) -> (Int, Response) {
     } else {
       @color.Color::border_muted()
     }
-    ctx.painter().add_rect_stroke(next_rect, next_border, 1.0, radius)
+    ctx.painter().add_rect_stroke(next_rect, next_border, 1.0 * scale, radius)
 
     let sym = "›"
     let sym_sz = ctx.measure_text(sym, font_sz)
