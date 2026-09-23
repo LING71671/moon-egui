@@ -1081,3 +1081,30 @@
 - **类别**: 键盘无障碍可达性
 
 ---
+
+### AUDIT-PERF-02 (P2) [已解决]: 节点连线绘制中细碎折线段大量消耗绘制指令
+- **代码位置**: [src/draw/draw_cmd.mbt](file:///a:/moonbit-project/src/draw/draw_cmd.mbt), [src/core/painter.mbt](file:///a:/moonbit-project/src/core/painter.mbt), [src/composite/node_editor.mbt](file:///a:/moonbit-project/src/composite/node_editor.mbt)
+- **状态**: **已解决**（迭代 9）。引入原生 `DrawCmd::BezierCurve` 图元与 `Painter::add_bezier_curve`，直接映射至 HTML5 Canvas `bezierCurveTo`，将每条连线 16-20 条线段合并为单条贝塞尔曲线指令。
+- **优先级**: **P2**
+- **类别**: 绘制指令合批效率
+- **问题描述**:
+  `NodeEditor` 在绘制端口间的连线时，通过逐帧向 `DrawList` 提交 16 至 20 条 `DrawCmd::Line` 分段线模拟三次贝塞尔曲线。
+- **失效机制**:
+  50 条连线产生 1000 条线段指令，在 Canvas 2D 中触发 1000 次路径开启与描边切换，造成严重的栅格化性能损耗。
+- **修复方案**:
+  引入原生 `DrawCmd::BezierCurve` 指令与 `Painter::add_bezier_curve`，单次调用即可完成平滑渲染。
+
+---
+
+### AUDIT-MAINT-13 (P1) [已解决]: 按钮、复选框、文本框与分栏器中系统性未缩放边框描边与分栏圆点
+- **代码位置**: [src/widgets/button.mbt#L143](file:///a:/moonbit-project/src/widgets/button.mbt#L143), [src/widgets/toggle.mbt#L93](file:///a:/moonbit-project/src/widgets/toggle.mbt#L93), [src/widgets/text_edit.mbt#L255](file:///a:/moonbit-project/src/widgets/text_edit.mbt#L255), [src/widgets/splitter.mbt#L287](file:///a:/moonbit-project/src/widgets/splitter.mbt#L287)
+- **状态**: **已解决**（迭代 9）。全面规范了 `Button`、`Checkbox`、`TextEdit` 与 `Splitter` 的非焦点态描边回退（乘以 `scale`），缩放了分栏器中线、把手圆点（半径 `1.5 * scale`，间距 `6.0 * scale`）及焦点环。
+- **优先级**: **P1**
+- **类别**: 可维护性与全局缩放不变量
+- **问题描述**:
+  核心交互组件在未聚焦态时直接写死 `1.0` 描边宽度，而聚焦态采用 `1.5 * scale`。分栏器手柄的圆点与间距也是字面量 `1.5` 与 `6.0`。
+- **失效机制**:
+  在高分屏（如 scale 2.0）下，非焦点边框显得异常纤细单薄，分栏把手圆点比例失调。
+- **修复方案**:
+  所有默认边框描边、分栏线与手柄圆点统一乘以 `ctx.style.scale`。
+

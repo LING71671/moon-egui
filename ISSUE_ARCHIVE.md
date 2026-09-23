@@ -1508,3 +1508,30 @@ This review evaluates seven foundational dimensions:
   Scale all span background offsets, radii, and strokes by `ctx.style.scale`.
 
 ---
+
+### AUDIT-PERF-02 (P2) [RESOLVED]: Granular Line Segment Flooding During Node Connection Wire Drawing
+- **Location**: [src/draw/draw_cmd.mbt](file:///a:/moonbit-project/src/draw/draw_cmd.mbt), [src/core/painter.mbt](file:///a:/moonbit-project/src/core/painter.mbt), [src/composite/node_editor.mbt](file:///a:/moonbit-project/src/composite/node_editor.mbt)
+- **Status**: **RESOLVED** (Iteration 9). Introduced native `DrawCmd::BezierCurve` variant and `Painter::add_bezier_curve`, mapping directly to HTML5 Canvas `bezierCurveTo` in a single GPU/Canvas path, reducing 16-20 line commands per wire to 1 curve command.
+- **Priority**: **P2**
+- **Category**: Draw Command Batching Efficiency
+- **Description**:
+  `NodeEditor` approximated cubic bezier curve connections between node ports by emitting 16 to 20 individual `DrawCmd::Line` commands per wire into `DrawList`.
+- **Failure Mechanism**:
+  For a graph with 50 connections, this generated 1,000 discrete line commands per frame, causing 1,000 `beginPath`/`stroke` state transitions in Canvas 2D.
+- **Remediation**:
+  Introduced native `DrawCmd::BezierCurve` and `Painter::add_bezier_curve`, emitting a single command per wire.
+
+---
+
+### AUDIT-MAINT-13 (P1) [RESOLVED]: Systemic Unscaled Border Strokes & Splitter Dots in Button, Checkbox, TextEdit, Splitter
+- **Location**: [src/widgets/button.mbt#L143](file:///a:/moonbit-project/src/widgets/button.mbt#L143), [src/widgets/toggle.mbt#L93](file:///a:/moonbit-project/src/widgets/toggle.mbt#L93), [src/widgets/text_edit.mbt#L255](file:///a:/moonbit-project/src/widgets/text_edit.mbt#L255), [src/widgets/splitter.mbt#L287](file:///a:/moonbit-project/src/widgets/splitter.mbt#L287)
+- **Status**: **RESOLVED** (Iteration 9). Scaled default 1.0px border stroke fallbacks by `scale` in Button, Checkbox, TextEdit, and Splitter. Scaled splitter divider lines, grip dots (`1.5 * scale`, spacing `6.0 * scale`), and focus rings.
+- **Priority**: **P1**
+- **Category**: Maintainability & Scale Invariance
+- **Description**:
+  Foundational controls used raw unscaled literal `1.0` in fallback non-focused border states, while focused states used `1.5 * scale`. Splitter divider lines and center grip dots used literal `1.5` and `6.0`.
+- **Failure Mechanism**:
+  Under HiDPI display scaling (scale 2.0), unfocused borders appeared at 1.0 physical pixel (disproportionately thin), and splitter grip dots looked tiny and misaligned.
+- **Remediation**:
+  Multiply all default border strokes, divider lines, and grip dots by `ctx.style.scale`.
+

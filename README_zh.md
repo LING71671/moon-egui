@@ -176,7 +176,7 @@ fn update_ui(ctx : @core.UIContext, state : AppState) {
   - **全局顶层菜单栏**：`menu_bar`, `menu`, `menu_item`, `menu_separator`，具备前台图层投影隔离、桌面级 Hover-to-Switch 随动流转与外部点击安全闭合；
   - **自由浮动视窗**：`window` 支持标题栏拖拽位移、动态 Z-Index 置顶管理、内容局部坐标系与 Scissor 视口裁剪；
   - **高级容器**：`splitter`（双向可拖拽分栏器）、`table`（高性能数据表格与列宽拖拽）、`collapsing_header`（树形折叠分组）、`scroll_area`（滚轮与滑块交互视口滚动）、`tab_bar`（标签导航）、`dialog`（模态确认对话框与焦点陷阱）。
-- **无头纯算与高覆盖测试**：核心图元与组件逻辑完全脱离浏览器，内置 372 项自动化无头白盒与黑盒测试（100% 通过）。
+- **无头纯算与高覆盖测试**：核心图元与组件逻辑完全脱离浏览器，内置 375 项自动化无头白盒与黑盒测试（100% 通过）。
 - **Canvas 2D 宿主驱动器**：轻量 JavaScript 桥接层与 60 FPS 渲染管线，结合 O(1) 视口边界裁剪与自适应 LOD 架构。
 
 ### 规划与演进中特性 (Planned / In Roadmap)
@@ -199,7 +199,7 @@ fn update_ui(ctx : @core.UIContext, state : AppState) {
 - [x] **里程碑 6：工作台排版体系与高弹性控件**（已交付）：可拖拽弹性分栏器 (`Splitter`)、虚拟化数据表格 (`Table`)、模态对话框 (`Dialog`)、通知提示 (`Toast`)、流式自动折行 (`horizontal_wrapped`)、多主题系统 (`Theme`)。
 - [x] **里程碑 7：数据密集型组件与高级可视化**（已全面交付）：节点流连线编辑器 (`NodeEditor`) [已交付]、工程遥测图表套件 (`Plot` & `BarChart`) [已交付]、虚拟化数据表格 (`Table`) [已交付]。
 - [x] **里程碑 8：高性能渲染管线探索与应用范例**（已交付）：WebGL 2.0 顶点合批渲染后端探索 (`src/draw/mesh.mbt`)、CAD/节点/音频/IDE 多场景参考演示。
-- [x] **里程碑 9：工程化验证、基准评测与正式发布**（已交付）：372 项自动化无头单元测试（100% 通过）、Wasm-GC 编译支持、正式发布 `v0.5.5`。
+- [x] **里程碑 9：工程化验证、基准评测与正式发布**（已交付）：375 项自动化无头单元测试（100% 通过）、Wasm-GC 编译支持、正式发布 `v0.5.5`。
 
 > 完整攻坚指标与详细验收准则请参阅 **[ROADMAP.md](docs/ROADMAP.md)** ([English](docs/ROADMAP_en.md))。
 

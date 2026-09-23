@@ -12,15 +12,6 @@
 
 # 第一部分：活跃缺陷与代码审查审计 (`bug` / `audit`)
 
-### AUDIT-PERF-02 (P2) [待处理]: 节点连线绘制中细碎折线段大量消耗绘制指令
-- **代码位置**: [src/composite/node_editor.mbt](file:///a:/moonbit-project/src/composite/node_editor.mbt)
-- **状态**: **部分解决/待优化**（迭代 7 中已加入基于距离的动态自适应 LOD 采样，高密场景将进一步合批）。
-- **优先级**: **P2**
-- **类别**: 绘制吞吐
-
----
-
-
 ### AUDIT-MAINT-01 (P1) [待处理]: 组件直接调用语义调色板令牌绕过系统主题机制
 - **代码位置**: [src/widgets/](file:///a:/moonbit-project/src/widgets/)
 - **状态**: **待处理**。
@@ -148,7 +139,7 @@
 | **robust**| `AUDIT-ROBUST-02`| 零号帧初始鼠标位移突变飞跃 | **P2** | 已解决（迭代 1） |
 | **robust**| `AUDIT-ROBUST-03`| `Color::lerp` 非有限插值参数导致生成畸变 RGBA | **P2** | 已解决（迭代 1） |
 | **perf** | `AUDIT-PERF-01` | 文本度量缓存中的高频堆字符串分配与浮点截断 | **P1** | 已解决（迭代 1） |
-| **perf** | `AUDIT-PERF-02` | 节点连线绘制中细碎折线段大量消耗绘制指令 | **P2** | 积压中 |
+| **perf** | `AUDIT-PERF-02` | 节点连线绘制中细碎折线段大量消耗绘制指令 | **P2** | 已解决（迭代 9） |
 | **maint** | `AUDIT-MAINT-01` | 组件直接调用语义调色板令牌绕过系统主题机制 | **P1** | 积压中 |
 | **maint** | `AUDIT-MAINT-02` | `UIContext` 中遗留的特定控件标识符字段破坏解耦 | **P1** | 已解决（迭代 1） |
 | **maint** | `AUDIT-MAINT-03` | `Slider` 滑块中未缩放的尺寸字面量破坏全局缩放不变量 | **P2** | 已解决（迭代 1） |
@@ -197,3 +188,5 @@
 | **a11y** | `AUDIT-A11Y-07` | `collapsing_header` 缺失树状展开键及 `tab_bar` 缺失 `Home`/`End` 快速跳转 | **P2** | 已解决（迭代 8） |
 | **robust**| `AUDIT-ROBUST-10`| `VirtualList` 虚拟列表中持久化滚动偏移量为 NaN 的传播扩散 | **P2** | 已解决（迭代 8） |
 | **maint** | `AUDIT-MAINT-12` | `RichText` 中行内代码块内边距与链接下划线度量未缩放 | **P2** | 已解决（迭代 8） |
+| **maint** | `AUDIT-MAINT-13` | 按钮、复选框、文本框与分栏器系统性未缩放描边与分栏圆点 | **P1** | 已解决（迭代 9） |
+

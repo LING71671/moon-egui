@@ -12,21 +12,6 @@
 
 # Part I: Active Defects & Code Review Audit (`bug` / `audit`)
 
-### AUDIT-PERF-02 (P2) [OPEN]: Granular Line Segment Flooding During Node Connection Wire Drawing
-- **Location**: [src/composite/node_editor.mbt#L204-L218](file:///a:/moonbit-project/src/composite/node_editor.mbt#L204-L218), [L528-L558](file:///a:/moonbit-project/src/composite/node_editor.mbt#L528-L558)
-- **Status**: **Backlog**
-- **Priority**: **P2**
-- **Category**: Draw Command Batching Efficiency
-- **Description**:
-  `NodeEditor` approximates cubic bezier curve connections between node ports by emitting 16 to 20 individual `DrawCmd::Line` commands per wire into `DrawList`.
-- **Failure Mechanism**:
-  For a graph with 50 connections, this generates 1,000 discrete line commands per frame. In `canvas.js`, each line command triggers separate `ctx.beginPath()`, `ctx.moveTo()`, `ctx.lineTo()`, and `ctx.stroke()` state transitions, severely degrading Canvas 2D rasterization throughput.
-- **Remediation**:
-  Introduce a native `DrawCmd::BezierCurve { p0, p1, p2, p3, stroke }` command in `@draw`, mapping directly to HTML5 Canvas `bezierCurveTo` in a single GPU/Canvas path.
-
----
-
-
 ### AUDIT-MAINT-01 (P1) [OPEN]: Systemic Theme Bypass via Direct Semantic Palette Token Calls in Widgets
 - **Location**: [src/widgets/](file:///a:/moonbit-project/src/widgets/) (all 18 files)
 - **Status**: **Backlog**
@@ -224,7 +209,7 @@
 | **robust**| `AUDIT-ROBUST-02`| Uninitialized Initial Mouse Delta Spike on Frame Zero | **P2** | Resolved (Iteration 1) |
 | **robust**| `AUDIT-ROBUST-03`| Non-Finite Interpolation Parameter in `Color::lerp` Propagating Malformed RGBA | **P2** | Resolved (Iteration 1) |
 | **perf** | `AUDIT-PERF-01` | High-Frequency String Allocation & Fractional Truncation in Text Cache | **P1** | Resolved (Iteration 1) |
-| **perf** | `AUDIT-PERF-02` | Granular Line Segment Flooding During Node Connection Wire Drawing | **P2** | Backlog |
+| **perf** | `AUDIT-PERF-02` | Granular Line Segment Flooding During Node Connection Wire Drawing | **P2** | Resolved (Iteration 9) |
 | **maint** | `AUDIT-MAINT-01` | Systemic Theme Bypass via Direct Semantic Palette Token Calls in Widgets | **P1** | Backlog |
 | **maint** | `AUDIT-MAINT-02` | Residual Widget-Specific Identifier Fields in `UIContext` Violating Decoupling | **P1** | Resolved (Iteration 1) |
 | **maint** | `AUDIT-MAINT-03` | Unscaled Metric Literals Bypassing Global Scale Invariance in Slider | **P2** | Resolved (Iteration 1) |
@@ -273,6 +258,8 @@
 | **a11y** | `AUDIT-A11Y-07` | Missing `ArrowRight`/`ArrowLeft` in `collapsing_header` & `Home`/`End` in `tab_bar` | **P2** | Resolved (Iteration 8) |
 | **robust**| `AUDIT-ROBUST-10`| Non-Finite & NaN Scroll Offset Propagation in `VirtualList` | **P2** | Resolved (Iteration 8) |
 | **maint** | `AUDIT-MAINT-12` | Unscaled Inline Code Padding & Link Underline Metrics in `RichText` | **P2** | Resolved (Iteration 8) |
+| **maint** | `AUDIT-MAINT-13` | Systemic Unscaled Border Strokes & Splitter Dots in Button, Checkbox, TextEdit, Splitter | **P1** | Resolved (Iteration 9) |
+
 
 
 
