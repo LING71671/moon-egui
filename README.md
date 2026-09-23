@@ -177,7 +177,7 @@ fn update_ui(ctx : @core.UIContext, state : AppState) {
   - **Global Application Menu Bar**: `menu_bar`, `menu`, `menu_item`, `menu_separator` featuring isolated foreground layer projection, desktop-grade Hover-to-Switch transitions, and outside-click dismissal;
   - **Free-Floating Windows**: `window` supporting title-bar drag repositioning, dynamic Z-Index elevation, local coordinate scoping, and scissor clipping;
   - **Advanced Containers**: `splitter` (bidirectional draggable divider), `table` (high-performance virtualized data table with resizable columns), `collapsing_header` (tree groupings with persistent open memory), `scroll_area` (wheel and thumb draggable viewport scrolling), `tab_bar` (tab navigation), `dialog` (modal confirmation dialog with focus trap).
-- **Headless & Automated Testing**: Core logic produces pure `DrawCmd` streams without browser bindings, backed by 368 automated headless unit and integration tests (100% passing).
+- **Headless & Automated Testing**: Core logic produces pure `DrawCmd` streams without browser bindings, backed by 372 automated headless unit and integration tests (100% passing).
 - **Canvas 2D Host Driver**: Lightweight JavaScript bridge and 60 FPS rendering pipeline, coupled with O(1) viewport spatial culling and adaptive LOD architecture.
 
 ### Planned & In Roadmap
@@ -200,7 +200,7 @@ fn update_ui(ctx : @core.UIContext, state : AppState) {
 - [x] **Milestone 6: Workstation Layout & Resilient Widgets** (Delivered): draggable splitter (`Splitter`), data table (`Table`), modal dialog (`Dialog`), notifications (`Toast`), flow layout (`horizontal_wrapped`), dynamic multi-theming (`Theme`).
 - [x] **Milestone 7: Data-Dense Components & Advanced Visualizations** (Delivered): node graph editor (`NodeEditor`) [Delivered], telemetry plots (`Plot` & `BarChart`) [Delivered], virtualized data table (`Table`) [Delivered].
 - [x] **Milestone 8: Hardware-Accelerated Rendering & Production Scenarios** (Delivered): WebGL 2.0 batched geometry pipeline (`mesh.mbt`), CAD/node/audio/studio multi-scenario showcases.
-- [x] **Milestone 9: Verification, Benchmarking & Official Release** (Delivered): 368 automated unit and integration tests (100% passing), Wasm-GC compatibility, published `v0.5.5`.
+- [x] **Milestone 9: Verification, Benchmarking & Official Release** (Delivered): 372 automated unit and integration tests (100% passing), Wasm-GC compatibility, published `v0.5.5`.
 
 > For full milestone metrics and acceptance criteria, see **[ROADMAP.md](docs/ROADMAP.md)** ([English](docs/ROADMAP_en.md)).
 

@@ -1,5 +1,9 @@
 # Technical Inventory: Defects (bug) and Feature Capabilities (feat)
 
+<p>
+  <a href="ISSUE.md">English</a> · <a href="ISSUE_zh.md">简体中文</a>
+</p>
+
 This document provides a systematic, factual audit of the codebase (`src/core`, `src/draw`, `src/color`, `src/math`, and runtime showcase pages).
 
 It is organized into four primary tracks:
@@ -1518,6 +1522,62 @@ This review evaluates seven foundational dimensions:
 
 ---
 
+### AUDIT-MAINT-11 (P1) [RESOLVED]: Unscaled Arrow Geometries and Container Borders in `collapsing_header` and `tab_bar`
+- **Location**: [src/widgets/containers.mbt#L42-L68](file:///a:/moonbit-project/src/widgets/containers.mbt#L42-L68), [src/widgets/containers.mbt#L120-L160](file:///a:/moonbit-project/src/widgets/containers.mbt#L120-L160)
+- **Status**: **RESOLVED** (Iteration 8). Multiplied arrow vertex offsets and stroke widths by `scale`. Scaled tab bar bottom container border (`1.0 * scale`), active tab shrink (`2.0 * scale`), and tab focus ring indicator.
+- **Priority**: **P1**
+- **Category**: Maintainability & Scale Invariance
+- **Description**:
+  `collapsing_header` hardcoded arrow vector offsets (`arrow_cx - 3.5`, `arrow_cy + 2.0`) and stroke `1.5`, making icons appear tiny and disproportional under 2.0x display scale. `tab_bar` had hardcoded `1.0` bottom line stroke and active tab shrink offsets.
+- **Failure Mechanism**:
+  Under non-1.0 scale factors (e.g. HiDPI display scale 2.0), header arrows and tab bar active states looked visually disconnected and cramped.
+- **Remediation**:
+  Scale all geometric vertex offsets, line thicknesses, and focus ring borders by `scale`.
+
+---
+
+### AUDIT-A11Y-07 (P2) [RESOLVED]: Missing Keyboard Tree Navigation in `collapsing_header` and `Home`/`End` in `tab_bar`
+- **Location**: [src/widgets/containers.mbt#L25-L38](file:///a:/moonbit-project/src/widgets/containers.mbt#L25-L38), [src/widgets/containers.mbt#L95-L115](file:///a:/moonbit-project/src/widgets/containers.mbt#L95-L115)
+- **Status**: **RESOLVED** (Iteration 8). Added `ArrowRight` (open) and `ArrowLeft` (close) tree navigation keys to `collapsing_header`. Added `Home` (first tab) and `End` (last tab) jumping to `tab_bar`.
+- **Priority**: **P2**
+- **Category**: Keyboard Accessibility & Navigability
+- **Description**:
+  `collapsing_header` only toggled state via `Space` / `Enter`. Hierarchical tree navigation convention requires `ArrowRight` to expand and `ArrowLeft` to collapse. `tab_bar` only supported sequential `ArrowLeft` and `ArrowRight` without boundary jumping.
+- **Failure Mechanism**:
+  Keyboard-only users could not quickly collapse/expand headers deterministically or jump between extremes in extensive tab bars.
+- **Remediation**:
+  Consume and handle `ArrowRight`/`ArrowLeft` in `collapsing_header` to explicitly set `is_open = true/false`, and bind `Home`/`End` to indices `0` and `tabs.length() - 1` in `tab_bar`.
+
+---
+
+### AUDIT-ROBUST-10 (P2) [RESOLVED]: Non-Finite & NaN Scroll Offset Propagation in `VirtualList`
+- **Location**: [src/widgets/virtual_list.mbt#L114-L120](file:///a:/moonbit-project/src/widgets/virtual_list.mbt#L114-L120), [src/widgets/virtual_list.mbt#L220-L230](file:///a:/moonbit-project/src/widgets/virtual_list.mbt#L220-L230)
+- **Status**: **RESOLVED** (Iteration 8). Sanitized `raw_scroll` retrieval against `is_nan()`, falling back to `0.0`. Added NaN guard in boundary clamping block.
+- **Priority**: **P2**
+- **Category**: Numerical Robustness & Sanitization
+- **Description**:
+  If persistent scroll offset became NaN (e.g. from upstream calculations or corrupted memory), `scroll_y` remained NaN through index calculations (`(scroll_y / item_h).to_int()`), causing slice computation failure and blank container rendering.
+- **Failure Mechanism**:
+  A single NaN value in persistent memory permanently disabled item rendering for the virtualized list.
+- **Remediation**:
+  Check `is_nan()` when reading `scroll_y` and in clamping; reset to `0.0` if non-finite.
+
+---
+
+### AUDIT-MAINT-12 (P2) [RESOLVED]: Unscaled Inline Code Padding and Link Underline Metrics in `RichText`
+- **Location**: [src/composite/rich_text.mbt#L223-L245](file:///a:/moonbit-project/src/composite/rich_text.mbt#L223-L245), [src/composite/rich_text.mbt#L275-L290](file:///a:/moonbit-project/src/composite/rich_text.mbt#L275-L290)
+- **Status**: **RESOLVED** (Iteration 8). Scaled inline code horizontal padding (`3.0 * scale`), vertical bounds, corner radius (`radius_sm * scale`), stroke width (`1.0 * scale`), and hover link underline stroke.
+- **Priority**: **P2**
+- **Category**: Maintainability & Scale Invariance
+- **Description**:
+  `RichText` inline `Code` span used raw literal `3.0` padding, unscaled corner radius, and unscaled `1.0` border stroke. `Link` hover underline used raw `1.0` stroke and unscaled vertical offset.
+- **Failure Mechanism**:
+  At scale 2.0, inline code blocks had clipped margins, disproportionately thin borders, and cramped text.
+- **Remediation**:
+  Scale all span background offsets, radii, and strokes by `ctx.style.scale`.
+
+---
+
 ## 16. Prioritized Roadmap & Milestone Matrix
 
 | Track | ID | Title | Priority | Status |
@@ -1617,6 +1677,11 @@ This review evaluates seven foundational dimensions:
 | **a11y** | `AUDIT-A11Y-06` | Missing `Home`/`End` Range Navigation & Unscaled Strokes in `SegmentedControl` | **P2** | Resolved (Iteration 7) |
 | **maint** | `AUDIT-MAINT-10` | Static Fallback Viewport Dimensions & Unscaled Literals in `Toast` | **P1** | Resolved (Iteration 7) |
 | **perf** | `AUDIT-PERF-07` | Raw Mouse Hit Testing & Static Wire Sub-segment Flood in `NodeEditor` | **P2** | Resolved (Iteration 7) |
+| **maint** | `AUDIT-MAINT-11` | Unscaled Arrow Geometries & Container Borders in `collapsing_header`/`tab_bar` | **P1** | Resolved (Iteration 8) |
+| **a11y** | `AUDIT-A11Y-07` | Missing `ArrowRight`/`ArrowLeft` in `collapsing_header` & `Home`/`End` in `tab_bar` | **P2** | Resolved (Iteration 8) |
+| **robust**| `AUDIT-ROBUST-10`| Non-Finite & NaN Scroll Offset Propagation in `VirtualList` | **P2** | Resolved (Iteration 8) |
+| **maint** | `AUDIT-MAINT-12` | Unscaled Inline Code Padding & Link Underline Metrics in `RichText` | **P2** | Resolved (Iteration 8) |
+
 
 
 
