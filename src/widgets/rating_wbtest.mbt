@@ -185,3 +185,58 @@ test "widgets: rating cursor semantics" {
   let _ = ctx.end_frame()
   assert_eq(ctx.cursor_icon(), "pointer")
 }
+
+///|
+test "widgets: rating NaN guard and PageUp/PageDown stepping" {
+  let ctx = UIContext::new()
+  // NaN value should safely normalize to 0.0 without crash
+  ctx.begin_frame(@core.RawInput::new())
+  let nan_val = 0.0 / 0.0
+  let (v_nan, _) = rating(ctx, "rate_nan", nan_val)
+  let _ = ctx.end_frame()
+  assert_eq(v_nan, 0.0)
+
+  // Test PageUp (+2.0) and PageDown (-2.0)
+  let ctx_page = UIContext::new()
+  // Frame 1: Tab to focus
+  let raw_tab = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Tab, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx_page.begin_frame(raw_tab)
+  let (v0, _) = rating(ctx_page, "rate_page", 1.0)
+  let _ = ctx_page.end_frame()
+  assert_eq(v0, 1.0)
+
+  // Frame 2: PageUp increases by 2.0 -> 3.0
+  let raw_pgup = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::PageUp, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx_page.begin_frame(raw_pgup)
+  let (v1, _) = rating(ctx_page, "rate_page", 1.0)
+  let _ = ctx_page.end_frame()
+  assert_eq(v1, 3.0)
+
+  // Frame 3: PageDown decreases by 2.0 -> 1.0
+  let raw_pgdn = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::PageDown, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx_page.begin_frame(raw_pgdn)
+  let (v2, _) = rating(ctx_page, "rate_page", 3.0)
+  let _ = ctx_page.end_frame()
+  assert_eq(v2, 1.0)
+}

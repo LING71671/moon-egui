@@ -263,3 +263,50 @@ test "widgets: pagination from_ref binding" {
   assert_eq(current_ref.val, 3)
   let _ = ctx.end_frame()
 }
+
+///|
+test "widgets: pagination PageUp and PageDown coarse navigation" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Tab into pagination
+  let raw_tab = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Tab, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw_tab)
+  let (p0, _) = pagination(ctx, "pg_coarse", 2, 20)
+  let _ = ctx.end_frame()
+  assert_eq(p0, 2)
+
+  // Frame 2: PageDown steps forward by 5 pages (2 + 5 = 7)
+  let raw_pgdn = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::PageDown, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw_pgdn)
+  let (p1, _) = pagination(ctx, "pg_coarse", 2, 20)
+  let _ = ctx.end_frame()
+  assert_eq(p1, 7)
+
+  // Frame 3: PageUp steps backward by 5 pages (7 - 5 = 2)
+  let raw_pgup = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::PageUp, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw_pgup)
+  let (p2, _) = pagination(ctx, "pg_coarse", 7, 20)
+  let _ = ctx.end_frame()
+  assert_eq(p2, 2)
+}

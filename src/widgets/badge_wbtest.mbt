@@ -59,3 +59,51 @@ test "tag: closable close button click returns closed = true" {
 
   assert_true(closed)
 }
+
+///|
+test "tag: scale 2.0 geometry invariance and keyboard dismiss" {
+  let ctx1 = @core.UIContext::new()
+  ctx1.begin_frame(@core.RawInput::new())
+  let (_, resp1) = tag(ctx1, "tag_scale", "Alpha", closable=true)
+  let _ = ctx1.end_frame()
+
+  let ctx2 = @core.UIContext::new()
+  ctx2.set_style(@core.WidgetStyle::default().scaled(2.0))
+  ctx2.begin_frame(@core.RawInput::new())
+  let (_, resp2) = tag(ctx2, "tag_scale", "Alpha", closable=true)
+  let _ = ctx2.end_frame()
+
+  // Height and width should scale proportionally with scale factor
+  assert_eq(resp2.rect.h, resp1.rect.h * 2.0)
+  assert_eq(resp2.rect.w, resp1.rect.w * 2.0)
+
+  // Test keyboard dismiss with Space
+  let ctx_kb = @core.UIContext::new()
+  // Frame 1: Tab into tag
+  let raw_tab = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Tab, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx_kb.begin_frame(raw_tab)
+  let (c0, _) = tag(ctx_kb, "tag_dismiss", "Beta", closable=true)
+  let _ = ctx_kb.end_frame()
+  assert_false(c0)
+
+  // Frame 2: Space dismisses tag
+  let raw_space = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Space, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx_kb.begin_frame(raw_space)
+  let (c1, _) = tag(ctx_kb, "tag_dismiss", "Beta", closable=true)
+  let _ = ctx_kb.end_frame()
+  assert_true(c1)
+}

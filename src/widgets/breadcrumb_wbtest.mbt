@@ -52,3 +52,68 @@ test "widgets: breadcrumb long hierarchy folds with ellipsis" {
 
   assert_eq(dl.len(), 7)
 }
+
+///|
+test "widgets: breadcrumb keyboard navigation with Home, End, and Space" {
+  let ctx = UIContext::new()
+  let path = ["Root", "Folder", "Subfolder", "File"]
+
+  // Frame 1: Tab to focus breadcrumb
+  let raw_tab = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Tab, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw_tab)
+  let (c0, _) = breadcrumb(ctx, "bc_kb", path)
+  let _ = ctx.end_frame()
+  assert_eq(c0, None)
+
+  // Frame 2: End jumps to last selectable ancestor ("Subfolder" index 2)
+  let raw_end = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::End, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw_end)
+  let (c1, _) = breadcrumb(ctx, "bc_kb", path)
+  let _ = ctx.end_frame()
+  assert_eq(c1, None)
+
+  // Frame 3: Space activates currently focused node (index 2)
+  let raw_space = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Space, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw_space)
+  let (c2, _) = breadcrumb(ctx, "bc_kb", path)
+  let _ = ctx.end_frame()
+  assert_eq(c2, Some(2))
+
+  // Frame 4: Home jumps to first ancestor (index 0) and Enter activates it
+  let raw_home_enter = @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [
+      @core.Event::Key(@core.Key::Home, true, @core.Modifiers::none()),
+      @core.Event::Key(@core.Key::Enter, true, @core.Modifiers::none()),
+    ],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw_home_enter)
+  let (c3, _) = breadcrumb(ctx, "bc_kb", path)
+  let _ = ctx.end_frame()
+  assert_eq(c3, Some(0))
+}
