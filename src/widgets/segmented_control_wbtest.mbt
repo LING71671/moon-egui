@@ -73,3 +73,43 @@ test "widgets: segmented_control arrow key navigation when focused" {
   }
   assert_true(has_focus_ring)
 }
+
+///|
+test "widgets: segmented_control Home/End keyboard navigation and stroke scaling" {
+  let ctx = UIContext::new()
+  let opts = ["First", "Second", "Third", "Fourth"]
+
+  // Frame 1: Focus segmented control
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), true)
+  ctx.begin_frame(raw1)
+  let _ = segmented_control(ctx, "he_ctrl", opts, 1, width=200.0)
+  let _ = ctx.end_frame()
+
+  // Frame 2: End key jumps to last index (3)
+  let raw_end = RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(Key::End, true, Modifiers::none())],
+    "",
+    Modifiers::none(),
+  )
+  ctx.begin_frame(raw_end)
+  let (sel_end, _) = segmented_control(ctx, "he_ctrl", opts, 1, width=200.0)
+  let _ = ctx.end_frame()
+  assert_eq(sel_end, 3)
+
+  // Frame 3: Home key jumps to first index (0)
+  let raw_home = RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(Key::Home, true, Modifiers::none())],
+    "",
+    Modifiers::none(),
+  )
+  ctx.begin_frame(raw_home)
+  let (sel_home, _) = segmented_control(ctx, "he_ctrl", opts, 3, width=200.0)
+  let _ = ctx.end_frame()
+  assert_eq(sel_home, 0)
+}

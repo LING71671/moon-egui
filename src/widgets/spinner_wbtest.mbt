@@ -56,3 +56,26 @@ test "spinner: time advance rotates arc segments" {
   assert_eq(dl1.len(), 19)
   assert_eq(dl2.len(), 19)
 }
+
+///|
+test "spinner: NaN ctx.time sanitization prevents malformed draw commands" {
+  let ctx = @core.UIContext::new()
+  ctx.begin_frame(@core.RawInput::new())
+  ctx.set_time(0.0 / 0.0) // Set NaN time
+  let _ = spinner(ctx, size=20.0)
+  let dl = ctx.end_frame()
+
+  assert_eq(dl.len(), 19)
+  // Ensure lines have finite coordinates
+  for cmd in dl.commands() {
+    match cmd {
+      @draw.DrawCmd::Line(p1, p2, _, _) => {
+        assert_false(p1.x.is_nan())
+        assert_false(p1.y.is_nan())
+        assert_false(p2.x.is_nan())
+        assert_false(p2.y.is_nan())
+      }
+      _ => ()
+    }
+  }
+}

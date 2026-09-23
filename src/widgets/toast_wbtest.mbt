@@ -198,3 +198,16 @@ test "toast: dismissing first toast retains remaining toast correctly" {
   assert_eq(res.active_toasts.length(), 1)
   assert_eq(res.active_toasts[0].id, "second")
 }
+
+///|
+test "toast: dynamic viewport placement using viewport_size" {
+  let ctx = @core.UIContext::new()
+  let vp = @math.Vec2::new(1200.0, 900.0)
+  ctx.begin_frame(@core.RawInput::new())
+  let t = Toast::new("screen_toast", "动态视口提示", duration=60.0)
+  let res = toast_stack(ctx, [t], viewport_size=vp)
+  let dl = ctx.end_frame()
+
+  assert_eq(res.active_toasts.length(), 1)
+  assert_true(dl.len() > 0)
+}

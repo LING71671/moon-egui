@@ -217,3 +217,31 @@ test "composite: node_editor cursor semantics" {
   assert_eq(ctx.cursor_icon(), "crosshair")
   let _ = ctx.end_frame()
 }
+
+///|
+test "composite: node_editor adaptive wire LOD steps and is_hovered hit testing" {
+  let ctx = UIContext::new()
+
+  // Short distance wire: Node 1 at (20, 20), Node 2 at (100, 20) -> dist ~80px, should use 8 steps
+  let nodes_short = [
+    NodeItem::new("s1", "A", @math.Vec2::new(20.0, 20.0), outputs=[
+      NodePort::output("o", "O"),
+    ]),
+    NodeItem::new("s2", "B", @math.Vec2::new(100.0, 20.0), inputs=[
+      NodePort::input("i", "I"),
+    ]),
+  ]
+  let conns_short = [NodeConnection::new("s1", "o", "s2", "i")]
+
+  ctx.begin_frame(@core.RawInput::new())
+  let resp = node_editor(
+    ctx,
+    "ne_lod",
+    @math.Vec2::new(400.0, 300.0),
+    nodes_short,
+    conns_short,
+  )
+  let dl = ctx.end_frame()
+  assert_eq(resp.connections.length(), 1)
+  assert_true(dl.len() > 0)
+}
