@@ -397,6 +397,20 @@
           }
           break;
         }
+        case 9: { // BezierCurve: cmd._0: p0, cmd._1: p1, cmd._2: p2, cmd._3: p3, cmd._4: color, cmd._5: strokeW
+          const p0 = cmd._0;
+          const p1 = cmd._1;
+          const p2 = cmd._2;
+          const p3 = cmd._3;
+          const color = cmd._4;
+          const strokeW = cmd._5 || 1;
+          setStroke(getColorStr(color), strokeW);
+          ctx.beginPath();
+          ctx.moveTo(p0.x, p0.y);
+          ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+          ctx.stroke();
+          break;
+        }
       }
     }
     ctx.restore();
