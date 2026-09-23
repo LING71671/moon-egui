@@ -199,31 +199,8 @@ fn draw_cubic_bezier_wire(
   let curvature = if dx < 32.0 { 32.0 } else { dx }
   let p1 = @math.Vec2::new(p0.x + curvature, p0.y)
   let p2 = @math.Vec2::new(p3.x - curvature, p3.y)
-
-  let dist = (p3.x - p0.x).abs() + (p3.y - p0.y).abs()
-  let computed_steps = if dist < 100.0 {
-    8
-  } else if dist < 260.0 {
-    12
-  } else {
-    steps
-  }
-  let mut prev_pt = p0
-  let step_count = if computed_steps > 4 { computed_steps } else { 4 }
-  for i = 1; i <= step_count; i = i + 1 {
-    let t = i.to_double() / step_count.to_double()
-    let inv_t = 1.0 - t
-    let c0 = inv_t * inv_t * inv_t
-    let c1 = 3.0 * inv_t * inv_t * t
-    let c2 = 3.0 * inv_t * t * t
-    let c3 = t * t * t
-    let curr_pt = @math.Vec2::new(
-      c0 * p0.x + c1 * p1.x + c2 * p2.x + c3 * p3.x,
-      c0 * p0.y + c1 * p1.y + c2 * p2.y + c3 * p3.y,
-    )
-    painter.add_line(prev_pt, curr_pt, color, width)
-    prev_pt = curr_pt
-  }
+  let _ = steps
+  painter.add_bezier_curve(p0, p1, p2, p3, color, width)
 }
 
 ///|
