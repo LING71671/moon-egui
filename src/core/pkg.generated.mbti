@@ -378,6 +378,10 @@ pub struct Theme {
   accent_deep : @color.Color
   accent_soft : @color.Color
   accent_light : @color.Color
+  danger : @color.Color
+  warning : @color.Color
+  success : @color.Color
+  shadow : @color.Color
 } derive(Eq, @debug.Debug)
 pub fn Theme::high_contrast() -> Self
 pub fn Theme::slate_dark() -> Self

@@ -119,6 +119,10 @@ pub struct Theme {
   accent_deep : @color.Color
   accent_soft : @color.Color
   accent_light : @color.Color
+  danger : @color.Color
+  warning : @color.Color
+  success : @color.Color
+  shadow : @color.Color
 } derive(Eq, Debug)
 
 ///|
@@ -150,6 +154,10 @@ pub fn Theme::studio_light() -> Theme {
     accent_deep: @color.Color::hex(0x1E3A8A),
     accent_soft: @color.Color::rgba(37, 99, 235, 45),
     accent_light: @color.Color::rgba(255, 255, 255, 140),
+    danger: @color.Color::hex(0xEF4444),
+    warning: @color.Color::hex(0xF59E0B),
+    success: @color.Color::hex(0x22C55E),
+    shadow: @color.Color::rgba(15, 23, 42, 18),
   }
 }
 
@@ -182,6 +190,10 @@ pub fn Theme::slate_dark() -> Theme {
     accent_deep: @color.Color::hex(0x1D4ED8),
     accent_soft: @color.Color::rgba(59, 130, 246, 50),
     accent_light: @color.Color::rgba(255, 255, 255, 180),
+    danger: @color.Color::hex(0xEF4444),
+    warning: @color.Color::hex(0xF59E0B),
+    success: @color.Color::hex(0x10B981),
+    shadow: @color.Color::rgba(0, 0, 0, 60),
   }
 }
 
@@ -214,5 +226,9 @@ pub fn Theme::high_contrast() -> Theme {
     accent_deep: @color.Color::hex(0x0080FF),
     accent_soft: @color.Color::rgba(0, 229, 255, 80),
     accent_light: @color.Color::rgba(255, 255, 255, 220),
+    danger: @color.Color::hex(0xFF0000),
+    warning: @color.Color::hex(0xFFFF00),
+    success: @color.Color::hex(0x00FF00),
+    shadow: @color.Color::transparent(),
   }
 }

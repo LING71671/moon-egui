@@ -18,9 +18,9 @@
 /// allocation and the painter, and every downstream package derives from them.
 
 ///|
-/// Render a read-only text label using Studio Light slate text color.
+/// Render a read-only text label using the active theme's primary text color.
 pub fn UIContext::label(self : UIContext, text : String) -> Response {
-  self.label_colored(text, @color.Color::text_primary())
+  self.label_colored(text, self.theme.text_primary)
 }
 
 ///|
@@ -33,7 +33,7 @@ pub fn UIContext::label_colored(
   let font_sz = self.style.font_normal * self.style.scale
   let text_size = self.measure_text(text, font_sz)
   let w = if text_size.x > 20.0 { text_size.x } else { 20.0 }
-  let h = 18.0
+  let h = 18.0 * self.style.scale
   let (_id, rect, resp) = self.allocate_space(@math.Vec2::new(w, h))
   let text_pos = @math.Vec2::new(rect.x, rect.y + (h - font_sz) * 0.5)
   self.painter().add_text(text_pos, text, font_sz, color)
@@ -43,17 +43,18 @@ pub fn UIContext::label_colored(
 ///|
 /// Render a full-width horizontal divider line.
 pub fn UIContext::separator(self : UIContext) -> Unit {
+  let scale = self.style.scale
   let w = self.available_width()
-  let h = 9.0
+  let h = 9.0 * scale
   let (_id, rect, _resp) = self.allocate_space(@math.Vec2::new(w, h))
-  let y = rect.y + 4.5
+  let y = rect.y + 4.5 * scale
   self
   .painter()
   .add_line(
     @math.Vec2::new(rect.x, y),
     @math.Vec2::new(rect.x + rect.w, y),
-    @color.Color::border_muted(),
-    1.0,
+    self.theme.border_muted,
+    1.0 * scale,
   )
 }
 
