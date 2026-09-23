@@ -1462,6 +1462,62 @@ This review evaluates seven foundational dimensions:
 
 ---
 
+### AUDIT-ROBUST-09 (P2) [RESOLVED]: Non-finite & NaN Sensitivity in `Spinner` Animation State
+- **Location**: [src/widgets/spinner.mbt#L37-L105](file:///a:/moonbit-project/src/widgets/spinner.mbt#L37-L105)
+- **Status**: **RESOLVED** (Iteration 7). Added `is_nan()` input sanitization defaulting `ctx.time` to `0.0` in both `spinner` and `spinner_with_label`.
+- **Priority**: **P2**
+- **Category**: Animation Robustness & Numeric Sanitization
+- **Description**:
+  When host engines pass uninitialized or NaN frame timestamps, trigonometric functions in `spinner` evaluate to NaN, propagating into polar coordinate calculations.
+- **Failure Mechanism**:
+  DrawList receives dozens of Line primitives with NaN endpoint coordinates, causing HTML5 canvas rendering errors or silent degradation.
+- **Remediation**:
+  Sanitize `ctx.time` using `if ctx.time.is_nan() { 0.0 } else { ctx.time }`.
+
+---
+
+### AUDIT-A11Y-06 (P2) [RESOLVED]: Missing `Home`/`End` Range Navigation and Unscaled Strokes in `SegmentedControl`
+- **Location**: [src/widgets/segmented_control.mbt#L130-L180](file:///a:/moonbit-project/src/widgets/segmented_control.mbt#L130-L180)
+- **Status**: **RESOLVED** (Iteration 7). Added `Key::Home` (jump to first option) and `Key::End` (jump to last option) with key consumption, and scaled focus stroke, track border, and pill border by `ctx.style.scale`.
+- **Priority**: **P2**
+- **Category**: Keyboard Accessibility & Stroke Scaling
+- **Description**:
+  Focused `SegmentedControl` only handled `ArrowLeft` and `ArrowRight`, lacking direct boundary jumping. Track and pill strokes used unscaled literals (`1.0`, `1.5`).
+- **Failure Mechanism**:
+  Long segmented option groups required excessive keystrokes to traverse. Borders appeared disproportionately thin on scaled viewports.
+- **Remediation**:
+  Support `Home` and `End` keys with consumption, and scale all border strokes by `scale`.
+
+---
+
+### AUDIT-MAINT-10 (P1) [RESOLVED]: Static Fallback Viewport Dimensions and Unscaled Literals in `Toast`
+- **Location**: [src/widgets/toast.mbt#L118-L265](file:///a:/moonbit-project/src/widgets/toast.mbt#L118-L265)
+- **Status**: **RESOLVED** (Iteration 7). Replaced static `800.0`/`600.0` viewport defaults with dynamic resolution deriving from `ctx.current_clip()` and `ctx.available_width()`. Scaled border stroke (`1.0 * scale`) and replaced literal `11.5 * scale` close font with tokenized `ctx.style.font_small * scale`.
+- **Priority**: **P1**
+- **Category**: Viewport Dynamics & Design Tokens
+- **Description**:
+  `toast_stack` assumed static `800.0` / `600.0` screen bounds when `viewport_size` was omitted, used raw `1.0` border stroke, and hardcoded `11.5 * scale` font size.
+- **Failure Mechanism**:
+  Toasts positioned off-screen or overlapped UI chrome on responsive displays; close button text bypassed design tokens.
+- **Remediation**:
+  Derive viewport from active clip or available width, scale border stroke by `scale`, and use tokenized font metrics.
+
+---
+
+### AUDIT-PERF-07 (P2) [RESOLVED]: Raw Mouse Hit Testing and Static Wire Sub-segment Flood in `NodeEditor`
+- **Location**: [src/composite/node_editor.mbt#L190-L220](file:///a:/moonbit-project/src/composite/node_editor.mbt#L190-L220), [src/composite/node_editor.mbt#L510-L525](file:///a:/moonbit-project/src/composite/node_editor.mbt#L510-L525)
+- **Status**: **RESOLVED** (Iteration 7). Replaced `node_rect.contains(mouse_pos)` with `ctx.is_hovered(node_rect)` to respect scissor clipping. Implemented distance-adaptive LOD curve sampling for connection wires (8-16 steps).
+- **Priority**: **P2**
+- **Category**: Rendering Performance & Hit-Test Scoping
+- **Description**:
+  Node drag initiation bypassed scissor clipping via raw `node_rect.contains(mouse_pos)`. Cubic Bézier wires unconditionally emitted 20 line draw commands per connection even for short connections.
+- **Failure Mechanism**:
+  Nodes clipped outside scrollable viewports could still be dragged. Hundreds of wire lines flooded DrawList every frame.
+- **Remediation**:
+  Use `ctx.is_hovered(node_rect)` for node selection and adapt curve interpolation steps dynamically based on connection endpoint distance.
+
+---
+
 ## 16. Prioritized Roadmap & Milestone Matrix
 
 | Track | ID | Title | Priority | Status |
@@ -1557,6 +1613,10 @@ This review evaluates seven foundational dimensions:
 | **robust**| `AUDIT-ROBUST-08`| Non-Finite & NaN Sensitivity in `Rating` | **P2** | Resolved (Iteration 6) |
 | **a11y** | `AUDIT-A11Y-05` | Missing Coarse Range Stepping in `Pagination` & Unscaled Strokes | **P2** | Resolved (Iteration 6) |
 | **maint** | `AUDIT-MAINT-09` | Unscaled Layout Offsets & Focus Ring Metrics in `Steps` and `Breadcrumb` | **P2** | Resolved (Iteration 6) |
+| **robust**| `AUDIT-ROBUST-09`| Non-finite & NaN Sensitivity in `Spinner` Animation State | **P2** | Resolved (Iteration 7) |
+| **a11y** | `AUDIT-A11Y-06` | Missing `Home`/`End` Range Navigation & Unscaled Strokes in `SegmentedControl` | **P2** | Resolved (Iteration 7) |
+| **maint** | `AUDIT-MAINT-10` | Static Fallback Viewport Dimensions & Unscaled Literals in `Toast` | **P1** | Resolved (Iteration 7) |
+| **perf** | `AUDIT-PERF-07` | Raw Mouse Hit Testing & Static Wire Sub-segment Flood in `NodeEditor` | **P2** | Resolved (Iteration 7) |
 
 
 
