@@ -12,12 +12,6 @@
 
 # 第一部分：活跃缺陷与代码审查审计 (`bug` / `audit`)
 
-### AUDIT-MAINT-01 (P1) [待处理]: 组件直接调用语义调色板令牌绕过系统主题机制
-- **代码位置**: [src/widgets/](file:///a:/moonbit-project/src/widgets/)
-- **状态**: **待处理**。
-
----
-
 
 ### AUDIT-DOGFOOD-01 (P1) [待处理]: 跑分页面 (`benchmark.html`) 中的原生 HTML/DOM 顶栏违反纯 Canvas 标准
 - **代码位置**: [examples/canvas/benchmark.html](file:///a:/moonbit-project/examples/canvas/benchmark.html)

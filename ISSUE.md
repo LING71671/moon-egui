@@ -12,20 +12,6 @@
 
 # Part I: Active Defects & Code Review Audit (`bug` / `audit`)
 
-### AUDIT-MAINT-01 (P1) [OPEN]: Systemic Theme Bypass via Direct Semantic Palette Token Calls in Widgets
-- **Location**: [src/widgets/](file:///a:/moonbit-project/src/widgets/) (all 18 files)
-- **Status**: **Backlog**
-- **Priority**: **P1**
-- **Category**: Design Token Decoupling & Theming
-- **Description**:
-  Direct analysis reveals 285 calls to `@color.Color::*` palette functions directly across `src/widgets/` and 0 calls referencing `ctx.theme.*`.
-- **Failure Mechanism**:
-  Although `FEAT-CORE-03` introduced runtime theme switching (`studio_light`, `slate_dark`, `high_contrast`) via `ctx.theme`, standard widgets query static global palette constructors rather than the active theme configured on `UIContext`. Consequently, toggling `ctx.set_theme(...)` leaves standard widgets visually stuck in the default palette.
-- **Remediation**:
-  Route widget surface coloring through `ctx.theme` (or provide `ctx.color_accent()`, `ctx.color_surface()` delegates) across all standard widgets, ensuring that changing the active theme dynamically recolors all UI surfaces.
-
----
-
 
 ### AUDIT-DOGFOOD-01 (P1) [OPEN]: Raw HTML/DOM Top Header Bar in Benchmark Violating Pure Canvas Dogfooding Standard
 - **Location**: [examples/canvas/benchmark.html#L244-L321](file:///a:/moonbit-project/examples/canvas/benchmark.html#L244-L321)

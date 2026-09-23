@@ -1535,3 +1535,18 @@ This review evaluates seven foundational dimensions:
 - **Remediation**:
   Multiply all default border strokes, divider lines, and grip dots by `ctx.style.scale`.
 
+---
+
+### AUDIT-MAINT-01 (P1) [RESOLVED]: Systemic Theme Bypass via Direct Semantic Palette Token Calls in Widgets
+- **Location**: [src/widgets/](file:///a:/moonbit-project/src/widgets/) (all 18 files)
+- **Status**: **RESOLVED** (Iteration 10). Replaced all 285 hardcoded `@color.Color::*` semantic palette calls across all 18 standard widget implementations with dynamic `ctx.theme` references. Added status colors (`danger`, `warning`, `success`, `shadow`) to `Theme` and verified real-time recoloring across `studio_light`, `slate_dark`, and `high_contrast` with automated unit/whitebox tests.
+- **Priority**: **P1**
+- **Category**: Design Token Decoupling & Theming
+- **Description**:
+  Widgets were hardcoding 285+ calls directly to `@color.Color::*` global constructors, completely bypassing `ctx.theme`.
+- **Failure Mechanism**:
+  Although `FEAT-CORE-03` provided runtime theme switching via `ctx.set_theme(...)`, widgets did not query `ctx.theme`, leaving UI surfaces visually stuck in the default porcelain palette.
+- **Remediation**:
+  All standard widgets route their surface, text, border, focus, and state colors through `ctx.theme`. Added 5 new automated whitebox tests asserting theme color emission.
+
+
