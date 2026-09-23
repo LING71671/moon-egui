@@ -44,3 +44,20 @@ test "rich_text: mixed english and cjk wraps without artificial gaps" {
   assert_eq(res.resp.rect.h, 22.0)
   assert_true(res.resp.rect.w > 0.0)
 }
+
+///|
+test "rich_text: scale 2.0 inline code geometry invariance" {
+  let ctx1 = UIContext::new()
+  ctx1.begin_frame(RawInput::new())
+  let spans = [TextSpan::code("let x = 42")]
+  let res1 = rich_text(ctx1, "code_scale_1", spans)
+  let _ = ctx1.end_frame()
+
+  let ctx2 = UIContext::new()
+  ctx2.set_style(@core.WidgetStyle::default().scaled(2.0))
+  ctx2.begin_frame(RawInput::new())
+  let res2 = rich_text(ctx2, "code_scale_2", spans)
+  let _ = ctx2.end_frame()
+
+  assert_eq(res2.resp.rect.h, res1.resp.rect.h * 2.0)
+}

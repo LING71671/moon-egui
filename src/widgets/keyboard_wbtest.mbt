@@ -283,3 +283,53 @@ test "combo_box: an empty label renders the box alone" {
   assert_eq(sel, 1)
   assert_true(resp.rect.w > 0.0)
 }
+
+///|
+test "collapsing_header: ArrowRight opens and ArrowLeft closes" {
+  let ctx = @core.UIContext::new()
+  let render = fn() {
+    collapsing_header(ctx, "kb_ch", "Folder", false, fn(_c) {  })
+  }
+
+  // Frame 1: Tab into collapsing header
+  ctx.begin_frame(kb_key_input(@core.Key::Tab))
+  let _ = render()
+  let _ = ctx.end_frame()
+  assert_false(ctx.is_collapsing_open(ctx.id_stack.derive_id("kb_ch"), false))
+
+  // Frame 2: ArrowRight opens header
+  ctx.begin_frame(kb_key_input(@core.Key::ArrowRight))
+  let _ = render()
+  let _ = ctx.end_frame()
+  assert_true(ctx.is_collapsing_open(ctx.id_stack.derive_id("kb_ch"), false))
+
+  // Frame 3: ArrowLeft closes header
+  ctx.begin_frame(kb_key_input(@core.Key::ArrowLeft))
+  let _ = render()
+  let _ = ctx.end_frame()
+  assert_false(ctx.is_collapsing_open(ctx.id_stack.derive_id("kb_ch"), false))
+}
+
+///|
+test "tab_bar: Home and End keys jump to first and last tabs" {
+  let ctx = @core.UIContext::new()
+  let tabs = ["Alpha", "Beta", "Gamma", "Delta"]
+
+  // Frame 1: Tab into tab bar
+  ctx.begin_frame(kb_key_input(@core.Key::Tab))
+  let (s0, _) = tab_bar(ctx, "kb_tb", tabs, 1)
+  let _ = ctx.end_frame()
+  assert_eq(s0, 1)
+
+  // Frame 2: End jumps to last tab (3)
+  ctx.begin_frame(kb_key_input(@core.Key::End))
+  let (s1, _) = tab_bar(ctx, "kb_tb", tabs, 1)
+  let _ = ctx.end_frame()
+  assert_eq(s1, 3)
+
+  // Frame 3: Home jumps to first tab (0)
+  ctx.begin_frame(kb_key_input(@core.Key::Home))
+  let (s2, _) = tab_bar(ctx, "kb_tb", tabs, 3)
+  let _ = ctx.end_frame()
+  assert_eq(s2, 0)
+}

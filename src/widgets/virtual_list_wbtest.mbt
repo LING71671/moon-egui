@@ -177,3 +177,24 @@ test "virtual_list: scrollbar thumb reports pointer cursor" {
 
   assert_eq(ctx.cursor_icon(), "pointer")
 }
+
+///|
+test "virtual_list: nan scroll offset sanitization" {
+  let ctx = @core.UIContext::new()
+  let list_id = ctx.id_stack.derive_id("vlist_nan_test")
+  ctx.set_scroll_offset(list_id, 0.0 / 0.0)
+
+  ctx.begin_frame(@core.RawInput::from_mouse(@math.Vec2::zero(), false))
+  let mut rendered_count = 0
+  let resp = virtual_list(ctx, "vlist_nan_test", 100, 300.0, item_height=30.0, fn(
+    _,
+    _,
+  ) {
+    rendered_count = rendered_count + 1
+  })
+  let _ = ctx.end_frame()
+
+  assert_eq(resp.first_visible, 0)
+  assert_false(ctx.get_scroll_offset(list_id).is_nan())
+  assert_eq(ctx.get_scroll_offset(list_id), 0.0)
+}
