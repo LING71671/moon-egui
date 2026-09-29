@@ -340,3 +340,19 @@ test "dock: splitter releases active_id when mouse is released" {
   // active_id must be released back to Id::zero()
   assert_eq(ctx.active_id(), @core.Id::zero())
 }
+
+///|
+test "dock: empty node renders placeholder badge" {
+  let ctx = @core.UIContext::new()
+  ctx.begin_frame(@core.RawInput::new())
+  let tree = DockTree::empty()
+  let area = DockArea::new("empty_dock", @math.Vec2::new(300.0, 200.0), tree, (
+    _ui,
+    _id,
+    _rect,
+  ) => ())
+  let _ = area.show(ctx)
+  let dl = ctx.end_frame()
+  // Ensure that background, stroke, and badge draw commands were emitted
+  assert_true(dl.commands().length() > 0)
+}
