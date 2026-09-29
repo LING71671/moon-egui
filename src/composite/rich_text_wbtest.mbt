@@ -61,3 +61,95 @@ test "rich_text: scale 2.0 inline code geometry invariance" {
 
   assert_eq(res2.resp.rect.h, res1.resp.rect.h * 2.0)
 }
+
+///|
+test "rich_text: keyboard navigation between links and Enter activation" {
+  let ctx = UIContext::new()
+  let spans = [
+    TextSpan::normal("Visit "),
+    TextSpan::link("Doc1", "https://example.com/1"),
+    TextSpan::normal(" and "),
+    TextSpan::link("Doc2", "https://example.com/2"),
+  ]
+
+  // Frame 1: Focus container via click
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), true)
+  ctx.begin_frame(raw1)
+  let _ = rich_text(ctx, "kb_links", spans)
+  let _ = ctx.end_frame()
+
+  // Frame 2: ArrowRight moves focus to second link
+  let raw2 = @core.RawInput::with_events(
+    @math.Vec2::new(10.0, 10.0),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::ArrowRight, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw2)
+  let _ = rich_text(ctx, "kb_links", spans)
+  assert_true(ctx.input().is_key_consumed(@core.Key::ArrowRight))
+  let _ = ctx.end_frame()
+
+  // Frame 3: Press Enter to follow the focused second link
+  let raw3 = @core.RawInput::with_events(
+    @math.Vec2::new(10.0, 10.0),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Enter, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw3)
+  let res3 = rich_text(ctx, "kb_links", spans)
+  assert_true(ctx.input().is_key_consumed(@core.Key::Enter))
+  let dl3 = ctx.end_frame()
+
+  assert_eq(res3.clicked_url, Some("https://example.com/2"))
+
+  // Verify focus ring on the active link is in draw list
+  let mut has_focus_ring = false
+  for i = 0; i < dl3.len(); i = i + 1 {
+    if dl3.get_command(i) is Some(@draw.DrawCmd::RectStroke(_)) {
+      has_focus_ring = true
+    }
+  }
+  assert_true(has_focus_ring)
+}
+
+///|
+test "hyperlink: keyboard focus and Space activation with focus ring" {
+  let ctx = UIContext::new()
+
+  // Frame 1: Focus hyperlink
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(10.0, 10.0), true)
+  ctx.begin_frame(raw1)
+  let _ = hyperlink(ctx, "Learn More", "https://moonbitlang.com")
+  let _ = ctx.end_frame()
+
+  // Frame 2: Press Space to activate
+  let raw2 = @core.RawInput::with_events(
+    @math.Vec2::new(10.0, 10.0),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Space, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw2)
+  let (clicked, resp) = hyperlink(ctx, "Learn More", "https://moonbitlang.com")
+  assert_true(ctx.input().is_key_consumed(@core.Key::Space))
+  assert_true(clicked)
+  assert_true(resp.has_focus() || ctx.has_focus(resp.id))
+  let dl2 = ctx.end_frame()
+
+  // Verify focus ring stroke in draw list
+  let mut has_focus_ring = false
+  for i = 0; i < dl2.len(); i = i + 1 {
+    if dl2.get_command(i) is Some(@draw.DrawCmd::RectStroke(_)) {
+      has_focus_ring = true
+    }
+  }
+  assert_true(has_focus_ring)
+}
