@@ -258,3 +258,83 @@ test "table: keyboard horizontal navigation consumes arrow keys" {
     .get_double_or_default(table_id, 0.0, tag="scroll_x")
   assert_eq(scroll_x, 30.0)
 }
+
+///|
+test "table: vertical and horizontal scrollbar thumb drag interactions" {
+  let ctx = UIContext::new()
+  let cols = [
+    TableColumn::new("c1", "Col 1", 200.0),
+    TableColumn::new("c2", "Col 2", 200.0),
+  ]
+
+  // Body rect is w=200, h=100. Header h=24. Total cols w=400 > 200, rows=20 > 100
+  // Frame 1: Press on vertical scrollbar thumb
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(193.0, 35.0), true)
+  ctx.begin_frame(raw1)
+  let _ = table(ctx, "tbl_thumb", @math.Vec2::new(200.0, 100.0), cols, 20, fn(
+    _ui,
+    _r,
+    _c,
+    _rect,
+  ) {
+    ()
+  })
+  let _ = ctx.end_frame()
+
+  // Frame 2: Drag vertical thumb downwards
+  let raw2 = RawInput::from_mouse(@math.Vec2::new(193.0, 65.0), true)
+  ctx.begin_frame(raw2)
+  let _ = table(ctx, "tbl_thumb", @math.Vec2::new(200.0, 100.0), cols, 20, fn(
+    _ui,
+    _r,
+    _c,
+    _rect,
+  ) {
+    ()
+  })
+  let _ = ctx.end_frame()
+
+  // Frame 3: Release
+  let raw3 = RawInput::from_mouse(@math.Vec2::new(193.0, 65.0), false)
+  ctx.begin_frame(raw3)
+  let _ = table(ctx, "tbl_thumb", @math.Vec2::new(200.0, 100.0), cols, 20, fn(
+    _ui,
+    _r,
+    _c,
+    _rect,
+  ) {
+    ()
+  })
+  let _ = ctx.end_frame()
+
+  // Frame 4: Press on horizontal scrollbar thumb (bottom bar at y ≈ 94, x ≈ 20)
+  let raw4 = RawInput::from_mouse(@math.Vec2::new(20.0, 94.0), true)
+  ctx.begin_frame(raw4)
+  let _ = table(ctx, "tbl_thumb", @math.Vec2::new(200.0, 100.0), cols, 20, fn(
+    _ui,
+    _r,
+    _c,
+    _rect,
+  ) {
+    ()
+  })
+  let _ = ctx.end_frame()
+
+  // Frame 5: Drag horizontal thumb rightwards
+  let raw5 = RawInput::from_mouse(@math.Vec2::new(60.0, 94.0), true)
+  ctx.begin_frame(raw5)
+  let _ = table(ctx, "tbl_thumb", @math.Vec2::new(200.0, 100.0), cols, 20, fn(
+    _ui,
+    _r,
+    _c,
+    _rect,
+  ) {
+    ()
+  })
+  let _ = ctx.end_frame()
+  let table_id = ctx.id_stack.derive_id("tbl_thumb")
+  let scroll_x = ctx
+    .memory()
+    .get_double_or_default(table_id, 0.0, tag="scroll_x")
+  assert_true(scroll_x > 0.0)
+}

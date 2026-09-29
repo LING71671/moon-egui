@@ -253,3 +253,76 @@ test "composite: node_editor adaptive wire LOD steps and is_hovered hit testing"
   }
   assert_eq(bezier_count, 1)
 }
+
+///|
+test "composite: node_editor custom size, accent color and custom port colors" {
+  let ctx = UIContext::new()
+  ctx.begin_frame(@core.RawInput::new())
+
+  let node = NodeItem::new(
+    "custom_node",
+    "Custom Node",
+    @math.Vec2::new(30.0, 30.0),
+    size=@math.Vec2::new(200.0, 150.0),
+    accent_color=@color.Color::rgb(200, 50, 50),
+    inputs=[NodePort::input("in1", "In", color=@color.Color::rgb(0, 200, 0))],
+    outputs=[
+      NodePort::output("out1", "Out", color=@color.Color::rgb(0, 0, 200)),
+    ],
+  )
+  let broken_conn = NodeConnection::new(
+    "custom_node", "non_existent_port", "missing_node", "in1",
+  )
+  let resp = node_editor(
+    ctx,
+    "ne_custom",
+    @math.Vec2::new(500.0, 400.0),
+    [node],
+    [broken_conn],
+  )
+  let dl = ctx.end_frame()
+  assert_eq(resp.nodes.length(), 1)
+  assert_true(dl.len() > 0)
+}
+
+///|
+test "composite: node_editor click to drag custom sized node" {
+  let ctx = UIContext::new()
+  let node = NodeItem::new(
+    "drag_node",
+    "Drag Node",
+    @math.Vec2::new(50.0, 50.0),
+    size=@math.Vec2::new(220.0, 120.0),
+    accent_color=@color.Color::rgb(50, 100, 200),
+    inputs=[NodePort::input("in", "In")],
+  )
+
+  // Frame 1: Mouse press inside the custom node body (x=70, y=70)
+  let raw1 = @core.RawInput::from_mouse(@math.Vec2::new(70.0, 70.0), true)
+  ctx.begin_frame(raw1)
+  let resp1 = node_editor(
+    ctx,
+    "ne_drag_body",
+    @math.Vec2::new(500.0, 400.0),
+    [node],
+    [],
+  )
+  let _ = ctx.end_frame()
+  assert_eq(resp1.selected_node, Some("drag_node"))
+  assert_eq(resp1.dragged_node, Some("drag_node"))
+
+  // Frame 2: Mouse drag delta to (110, 110)
+  let raw2 = @core.RawInput::from_mouse(@math.Vec2::new(110.0, 110.0), true)
+  ctx.begin_frame(raw2)
+  let resp2 = node_editor(
+    ctx,
+    "ne_drag_body",
+    @math.Vec2::new(500.0, 400.0),
+    [node],
+    [],
+  )
+  let _ = ctx.end_frame()
+  assert_true(resp2.changed)
+  assert_eq(resp2.nodes[0].pos.x, 90.0)
+  assert_eq(resp2.nodes[0].pos.y, 90.0)
+}

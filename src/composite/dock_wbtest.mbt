@@ -356,3 +356,121 @@ test "dock: empty node renders placeholder badge" {
   // Ensure that background, stroke, and badge draw commands were emitted
   assert_true(dl.commands().length() > 0)
 }
+
+///|
+fn dock_key(k : @core.Key) -> @core.RawInput {
+  @core.RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(k, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+}
+
+///|
+test "dock: vertical splitter drag clamping and keyboard resizing" {
+  let ctx = @core.UIContext::new()
+  let top = DockTree::leaf([DockTab::new("top", "Top Tab")])
+  let btm = DockTree::leaf([DockTab::new("btm", "Bottom Tab")])
+  let tree = DockTree::split(DockSplitDirection::Vertical, 0.5, top, btm)
+
+  // Frame 1: Mouse down on vertical splitter handle (y ≈ 100 on 200h)
+  let raw1 = @core.RawInput::from_mouse(@math.Vec2::new(100.0, 100.0), true)
+  ctx.begin_frame(raw1)
+  let _ = dock_area(ctx, "dock_v", @math.Vec2::new(300.0, 200.0), tree, (
+    _ui,
+    _id,
+    _r,
+  ) => ())
+  let _ = ctx.end_frame()
+  assert_true(ctx.active_id() != @core.Id::zero())
+
+  // Frame 2: Drag upwards to extreme (y = 5.0) -> clamp ratio to 0.05
+  let raw2 = @core.RawInput::from_mouse(@math.Vec2::new(100.0, 5.0), true)
+  ctx.begin_frame(raw2)
+  let res2 = dock_area(ctx, "dock_v", @math.Vec2::new(300.0, 200.0), tree, (
+    _ui,
+    _id,
+    _r,
+  ) => ())
+  let _ = ctx.end_frame()
+  assert_true(res2.ratio_changed)
+
+  // Frame 3: Drag downwards to extreme (y = 195.0) -> clamp ratio to 0.95
+  let raw3 = @core.RawInput::from_mouse(@math.Vec2::new(100.0, 195.0), true)
+  ctx.begin_frame(raw3)
+  let res3 = dock_area(ctx, "dock_v", @math.Vec2::new(300.0, 200.0), tree, (
+    _ui,
+    _id,
+    _r,
+  ) => ())
+  let _ = ctx.end_frame()
+  assert_true(res3.ratio_changed)
+
+  // Frame 4: Keyboard resizing with vertical split focused (Tab cycles to divider, ArrowDown / ArrowUp)
+  ctx.begin_frame(dock_key(@core.Key::Tab))
+  let _ = dock_area(ctx, "dock_v", @math.Vec2::new(300.0, 200.0), tree, (
+    _ui,
+    _id,
+    _r,
+  ) => ())
+  let _ = ctx.end_frame()
+
+  ctx.begin_frame(dock_key(@core.Key::ArrowDown))
+  let res4 = dock_area(ctx, "dock_v", @math.Vec2::new(300.0, 200.0), tree, (
+    _ui,
+    _id,
+    _r,
+  ) => ())
+  let _ = ctx.end_frame()
+  assert_true(res4.ratio_changed)
+
+  ctx.begin_frame(dock_key(@core.Key::ArrowUp))
+  let res5 = dock_area(ctx, "dock_v", @math.Vec2::new(300.0, 200.0), tree, (
+    _ui,
+    _id,
+    _r,
+  ) => ())
+  let _ = ctx.end_frame()
+  assert_true(res5.ratio_changed)
+}
+
+///|
+test "dock: horizontal splitter keyboard shrink and first branch empty collapse" {
+  let ctx = @core.UIContext::new()
+  let left = DockTree::leaf([DockTab::new("l", "Left Tab", closable=true)])
+  let right = DockTree::leaf([DockTab::new("r", "Right Tab")])
+  let tree = DockTree::split(DockSplitDirection::Horizontal, 0.5, left, right)
+
+  ctx.begin_frame(dock_key(@core.Key::Tab))
+  let _ = dock_area(ctx, "dock_h", @math.Vec2::new(300.0, 200.0), tree, (
+    _ui,
+    _id,
+    _r,
+  ) => ())
+  let _ = ctx.end_frame()
+
+  ctx.begin_frame(dock_key(@core.Key::ArrowLeft))
+  let res1 = dock_area(ctx, "dock_h", @math.Vec2::new(300.0, 200.0), tree, (
+    _ui,
+    _id,
+    _r,
+  ) => ())
+  let _ = ctx.end_frame()
+  assert_true(res1.ratio_changed)
+
+  // Close the only tab in the left branch -> first branch collapses to remaining right branch
+  let closed = tree.close_tab("l")
+  assert_true(closed)
+  ctx.begin_frame(@core.RawInput::new())
+  let _ = dock_area(ctx, "dock_h", @math.Vec2::new(300.0, 200.0), tree, (
+    _ui,
+    _id,
+    _r,
+  ) => ())
+  let _ = ctx.end_frame()
+  assert_true(tree.find_tab("r") is Some(_))
+  assert_true(tree.find_tab("l") is None)
+}

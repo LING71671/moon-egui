@@ -215,3 +215,102 @@ test "context_menu: cascading submenu hover and child item selection" {
   assert_eq(res2.selected_id, Some("export_png"))
   let _ = ctx.end_frame()
 }
+
+///|
+test "context_menu: custom closure menu lifecycle and dismissals" {
+  let ctx = UIContext::new()
+
+  // 1. Closed state
+  ctx.begin_frame(RawInput::new())
+  let r0 = context_menu(
+    ctx,
+    "custom_ctx",
+    false,
+    @math.Vec2::new(100.0, 100.0),
+    fn(ui) { let _ = ui.label("Item 1") },
+  )
+  assert_eq(r0.open, false)
+  let _ = ctx.end_frame()
+
+  // 2. Open state renders content
+  ctx.begin_frame(RawInput::new())
+  let r1 = context_menu(
+    ctx,
+    "custom_ctx",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    fn(ui) {
+      let _ = ui.label("Item 1")
+      let _ = ui.label("Item 2")
+    },
+  )
+  assert_eq(r1.open, true)
+  assert_true(r1.size.y > 0.0)
+  let dl1 = ctx.end_frame()
+  assert_true(dl1.len() > 0)
+
+  // 3. Escape key dismissal
+  let raw_esc = RawInput::with_events(
+    @math.Vec2::zero(),
+    false,
+    @math.Vec2::zero(),
+    [@core.Event::Key(@core.Key::Escape, true, @core.Modifiers::none())],
+    "",
+    @core.Modifiers::none(),
+  )
+  ctx.begin_frame(raw_esc)
+  let r2 = context_menu(
+    ctx,
+    "custom_ctx",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    fn(ui) { let _ = ui.label("Item 1") },
+  )
+  assert_eq(r2.open, false)
+  let _ = ctx.end_frame()
+
+  // 4. Outside click dismissal
+  let raw_outside = RawInput::from_mouse(@math.Vec2::new(500.0, 500.0), true)
+  ctx.begin_frame(raw_outside)
+  let r3 = context_menu(
+    ctx,
+    "custom_ctx",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    fn(ui) { let _ = ui.label("Item 1") },
+  )
+  assert_eq(r3.open, false)
+  let _ = ctx.end_frame()
+}
+
+///|
+test "context_menu: submenu with separator, disabled items and shortcuts" {
+  let ctx = UIContext::new()
+  let menu = [
+    ContextMenuItem::new("parent", "Parent"),
+    ContextMenuItem::submenu("sub", "Submenu", [
+      ContextMenuItem::new("active_sc", "Shortcut Item", shortcut="⌘K"),
+      ContextMenuItem::separator(),
+      ContextMenuItem::new(
+        "disabled_sc",
+        "Disabled Item",
+        shortcut="⌘D",
+        disabled=true,
+      ),
+    ]),
+  ]
+
+  // Hover over parent submenu item to show submenu
+  let raw1 = RawInput::from_mouse(@math.Vec2::new(120.0, 134.0), false)
+  ctx.begin_frame(raw1)
+  let r1 = context_menu_items(
+    ctx,
+    "sub_menu_rich",
+    true,
+    @math.Vec2::new(100.0, 100.0),
+    menu,
+  )
+  assert_eq(r1.open, true)
+  let dl1 = ctx.end_frame()
+  assert_true(dl1.len() > 5)
+}
