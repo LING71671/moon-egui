@@ -269,3 +269,27 @@ test "mines_step: the hand tool pans the camera and cannot dig" {
   assert_false(dig.pan_mode)
   assert_true(dig.revealed + dig.hits >= 1)
 }
+
+///|
+test "mines_step: native immediate-mode header and footer bars render in canvas" {
+  let vw = 1200.0
+  let vh = 800.0
+  let frame = mines_step(600.0, 400.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  assert_true(frame.draw_list.len() > 0)
+  assert_eq(frame.navigate_url, "")
+
+  // Clicking on the top header bar area does NOT dig or flag tiles
+  let rev_before = frame.revealed
+  let _ = mines_step(20.0, 15.0, true, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  let top_release = mines_step(
+    20.0, 15.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh,
+  )
+  assert_eq(top_release.revealed, rev_before)
+
+  // Clicking on the bottom footer bar area does NOT dig or flag tiles
+  let _ = mines_step(20.0, 785.0, true, false, 0.0, 0.0, 0.0, -1, vw, vh)
+  let bot_release = mines_step(
+    20.0, 785.0, false, false, 0.0, 0.0, 0.0, -1, vw, vh,
+  )
+  assert_eq(bot_release.revealed, rev_before)
+}
