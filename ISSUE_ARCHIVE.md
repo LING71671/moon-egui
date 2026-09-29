@@ -1619,4 +1619,17 @@ This review evaluates seven foundational dimensions:
 - **Remediation**:
   Embedded native HTML5 `<canvas>` micro-sandboxes directly evaluated by MoonBit Wasm, upholding the *Pure MoonBit Engine Dogfooding & Zero DOM Simulation Standard*.
 
+---
+
+### FEAT-A11Y-01 (P2) [RESOLVED]: Universal Keyboard Reachability Across All 16 Interactive Surfaces
+- **Location**: [src/core/](file:///a:/moonbit-project/src/core/), [src/widgets/](file:///a:/moonbit-project/src/widgets/), [src/composite/](file:///a:/moonbit-project/src/composite/)
+- **Status**: **RESOLVED** (Iteration 16). Completed full keyboard reachability and focus ring support across all 16 interactive surfaces: `button`, `slider`, `toggle`/`checkbox`/`radio`, `text_edit`, `knob`/`fader`, `dialog`, `segmented_control`, `tree_view`, `code_editor`, `color_picker`, `badge`/`tag` (keyboard close), `breadcrumb` (arrows + Enter navigation), `scroll_area` (arrows/PageUp/PageDown/Home/End scrolling), `splitter` (arrow resize, both directions), `window` (arrow move), `menu_bar` (Enter/ArrowDown open, Tab item traversal, Enter activate, Escape dismiss), `table` (arrows move highlighted row with auto-scroll, Enter activates), `dock` (Tab-focusable tabs with Enter/Space switching, arrow-resizable divider), and `rich_text` / `hyperlink` (Arrow/Home/End link cycling, Enter/Space activation, and focus ring strokes). Added automated multi-frame whitebox test suites asserting key consumption, focus persistence, and draw command emission (391 tests, 100% passing).
+- **Priority**: **P2**
+- **Category**: Accessibility & Interaction Quality
+- **Description**:
+  Prior to this initiative, only simple inputs registered as focusable, while compound containers and inline links were unreachable via Tab and keyboard-only navigation.
+- **Remediation**:
+  Systematically implemented `register_focusable`, memory-backed keyboard indices, directional arrow and Tab event consumption, and standard `theme.border_focus` focus rings across all 16 interactive engine surfaces.
+
+
 

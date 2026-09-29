@@ -47,21 +47,6 @@
 ---
 
 
-### FEAT-A11Y-01 (P2): Keyboard Reachability for Container & Overlay Widgets
-- **Location**: [src/widgets/](file:///a:/moonbit-project/src/widgets/), [src/composite/](file:///a:/moonbit-project/src/composite/)
-- **Status**: In Progress (2026-09-13). Delivered: `badge` / `tag` (keyboard close), `breadcrumb` (arrows + Enter navigation), `scroll_area` (arrows / PageUp / PageDown / Home / End scrolling), `splitter` (arrow resize, both directions), `window` (arrow move), `menu_bar` (Enter / ArrowDown opens the focused trigger, Tab walks the dropdown items, Enter activates, Escape closes), `table` (arrows move the highlighted row with auto-scroll, Enter activates). Remaining: `rich_text` (selection editing - feature-sized), `toast` (deliberately deferred: transient, auto-dismissing). `dock` delivered 2026-09-13: tabs are Tab-focusable with Enter / Space switching, and the split divider is arrow-resizable like the standalone splitter.
-- **Current State**:
-  Core input controls (button, slider, toggle, checkbox, radio, text_edit, knob, fader, dialog, segmented_control, tree_view, code_editor, color_picker) register focusables and handle Space / Enter / arrows. Twelve interactive surfaces never call `register_focusable`, so Tab cannot reach them: `badge` / `tag` close buttons, `breadcrumb` items, `scroll_area` (keyboard scrolling), `splitter` (keyboard resize), `toast` close, `window` (keyboard move), `context_menu`, `dock`, `menu_bar` dropdowns, `rich_text` (selection), `table` (row navigation).
-- **Why it matters**:
-  Keyboard-only operation is a stated milestone acceptance criterion, and containers are the gap.
-- **Remediation**:
-  - Follow the established pattern: `register_focusable` + explicit key consumption + focus ring rendering, per widget, with a whitebox test each.
-  - Modals that already own full keyboard flows (`command_palette`) are exempt.
-  - Feature-sized work: schedule as a dedicated pass rather than drive-by fixes.
-
----
-
-
 ## 16. Prioritized Roadmap & Milestone Matrix
 
 | Track | ID | Title | Priority | Status |
@@ -106,7 +91,7 @@
 | **arch** | `ARCH-05` | `Painter` Rendering & Scissor Coordinate Abstraction | **P2** | Resolved (Phase 3) |
 | **arch** | `ARCH-06` | Multi-Package Hierarchy (Decompose `src/core` Monolith) | **P2** | Resolved (Phase 9) |
 | **arch** | `ARCH-07` | Showcase Stage Modularization (`gallery_stage.mbt`) | **P2** | Resolved (Phase 6) |
-| **a11y** | `FEAT-A11Y-01` | Keyboard Reachability for Container & Overlay Widgets | **P2** | In Progress (15 of 16 surfaces) |
+| **a11y** | `FEAT-A11Y-01` | Keyboard Reachability for Container & Overlay Widgets | **P2** | Resolved (Iteration 16) |
 | **test** | `DEBT-TEST-01` | Whitebox Coverage Gaps in `src/composite` Containers | **P3** | Resolved (Iteration 14) |
 | **arch** | `DEBT-ARCH-01` | Declare `composite -> widgets` Dependency Edge | **P3** | Resolved (Iteration 13) |
 | **logic** | `AUDIT-LOGIC-01` | Dual-Channel Text Ingestion In Web Host Causing Input Duplication | **P0** | Resolved (Iteration 1) |

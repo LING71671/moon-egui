@@ -1192,3 +1192,16 @@
 - **修复方案**:
   严格遵守《Pure MoonBit Engine Dogfooding & Interface Harmony Standard》，在各 API 章节下方挂载原生 `<canvas>` 沙箱，直接由 MoonBit 编译产物实时求值与光栅化。
 
+---
+
+### FEAT-A11Y-01 (P2) [已解决]: 全量 16 个交互表面的通用键盘无障碍可达性规范
+- **代码位置**: [src/core/](file:///a:/moonbit-project/src/core/), [src/widgets/](file:///a:/moonbit-project/src/widgets/), [src/composite/](file:///a:/moonbit-project/src/composite/)
+- **状态**: **已解决**（迭代 16）。全面实现全引擎 16 个交互表面的全键盘可达性与标准焦点环支持：包括基础输入 `button`、`slider`、`toggle`/`checkbox`/`radio`、`text_edit`、`knob`/`fader`、`dialog`、`segmented_control`、`tree_view`、`code_editor`、`color_picker`，复合控件 `badge`/`tag`（键盘退格/Delete 关闭）、`breadcrumb`（左右方向键漫游 + 回车下钻）、`scroll_area`（方向键/翻页键滚动）、`splitter`（方向键双向调比）、`window`（方向键平移）、`menu_bar`（回车/下键展开菜单、Tab/方向键遍历菜单项、回车激活、Escape 退出）、`table`（方向键切换高亮行并自动平滑跟随滚动、回车激活）、`dock`（Tab 键切换标签页、回车/空格激活、方向键拖拽分栏比例），以及 `rich_text` / `hyperlink`（方向键/Home/End 跨超链接漫游、回车/空格激活、聚焦状态下高亮焦点框）。全工程白盒自动化测试达到 391 项且 100% 绿色通过。
+- **优先级**: **P2**
+- **类别**: 无障碍可达性与交互质量
+- **问题描述**:
+  在此之前，仅部分扁平单项输入控件注册了可聚焦项，复合容器、嵌套列表与富文本内嵌超链接无法被 Tab 键和全键盘操作触达。
+- **修复方案**:
+  系统化落实 `register_focusable` 注册、基于 Scoped Memory 的键盘索引持久化、方向键与功能键的事件消费机制，以及统一的 `theme.border_focus` 轮廓光栅化渲染。
+
+
