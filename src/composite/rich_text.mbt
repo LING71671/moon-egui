@@ -174,14 +174,77 @@ pub fn rich_text(
   let total_w = if wrap_width > 0.0 { wrap_width } else { measured_max_w }
 
   ctx.push_id(id_salt)
-  let (_id, container_rect, resp) = ctx.allocate_space(
+  let (id, container_rect, resp) = ctx.allocate_space(
     @math.Vec2::new(total_w, total_h),
   )
   ctx.pop_id()
 
-  let mut clicked_url : String? = None
+  // Collect all link item indices in layout_items
+  let link_indices : Array[Int] = []
+  for i = 0; i < layout_items.length(); i = i + 1 {
+    let (_, kind, _) = layout_items[i]
+    match kind {
+      Link(_) => link_indices.push(i)
+      _ => ()
+    }
+  }
 
-  for item in layout_items {
+  // Register focusable if interactive links exist
+  if link_indices.length() > 0 {
+    ctx.register_focusable(id)
+  }
+  let is_focused = resp.has_focus() || ctx.has_focus(id)
+
+  let mut clicked_url : String? = None
+  let mut kb_link_idx : Int? = None
+
+  if is_focused && link_indices.length() > 0 {
+    let mut cur = ctx.memory().get_int_or_default(id, 0, tag="rich_text_kb")
+    if cur >= link_indices.length() {
+      cur = link_indices.length() - 1
+    }
+    if cur < 0 {
+      cur = 0
+    }
+    if ctx.input.key_pressed(Key::ArrowRight) ||
+      ctx.input.key_pressed(Key::ArrowDown) {
+      cur = if cur + 1 < link_indices.length() { cur + 1 } else { cur }
+      ctx.input.consume_key(Key::ArrowRight)
+      ctx.input.consume_key(Key::ArrowDown)
+    }
+    if ctx.input.key_pressed(Key::ArrowLeft) ||
+      ctx.input.key_pressed(Key::ArrowUp) {
+      cur = if cur - 1 >= 0 { cur - 1 } else { cur }
+      ctx.input.consume_key(Key::ArrowLeft)
+      ctx.input.consume_key(Key::ArrowUp)
+    }
+    if ctx.input.key_pressed(Key::Home) {
+      cur = 0
+      ctx.input.consume_key(Key::Home)
+    }
+    if ctx.input.key_pressed(Key::End) {
+      cur = link_indices.length() - 1
+      ctx.input.consume_key(Key::End)
+    }
+    ctx.memory().set_int(id, cur, tag="rich_text_kb")
+    kb_link_idx = Some(link_indices[cur])
+
+    if ctx.input.key_pressed(Key::Enter) || ctx.input.key_pressed(Key::Space) {
+      ctx.input.consume_key(Key::Enter)
+      ctx.input.consume_key(Key::Space)
+      let (_, target_kind, _) = layout_items[link_indices[cur]]
+      match target_kind {
+        Link(target_url) => clicked_url = Some(target_url)
+        _ => ()
+      }
+    }
+  }
+
+  let theme = ctx.theme
+  let scale = ctx.style.scale
+
+  for i = 0; i < layout_items.length(); i = i + 1 {
+    let item = layout_items[i]
     let (text, kind, rel) = item
     let abs_rect = @math.Rect::new(
       container_rect.x + rel.x,
@@ -203,9 +266,7 @@ pub fn rich_text(
           abs_rect.x,
           abs_rect.y + (line_h - font_sz) * 0.5,
         )
-        ctx
-        .painter()
-        .add_text(text_pos, text, font_sz, @color.Color::text_body())
+        ctx.painter().add_text(text_pos, text, font_sz, theme.text_body)
       }
       Bold => {
         let text_pos = @math.Vec2::new(
@@ -214,16 +275,9 @@ pub fn rich_text(
         )
         ctx
         .painter()
-        .add_text(
-          text_pos,
-          text,
-          font_sz,
-          @color.Color::text_strong(),
-          font_weight=700,
-        )
+        .add_text(text_pos, text, font_sz, theme.text_strong, font_weight=700)
       }
       Code => {
-        let scale = ctx.style.scale
         let pad_x = 3.0 * scale
         let code_bg_rect = @math.Rect::new(
           abs_rect.x,
@@ -232,14 +286,12 @@ pub fn rich_text(
           line_h - 4.0 * scale,
         )
         let code_radius = ctx.style.radius_sm * scale
-        ctx
-        .painter()
-        .add_rect(code_bg_rect, @color.Color::bg_subtle(), code_radius)
+        ctx.painter().add_rect(code_bg_rect, theme.bg_subtle, code_radius)
         ctx
         .painter()
         .add_rect_stroke(
           code_bg_rect,
-          @color.Color::border_muted(),
+          theme.border_muted,
           1.0 * scale,
           code_radius,
         )
@@ -254,13 +306,13 @@ pub fn rich_text(
           text_pos,
           text,
           font_sz,
-          @color.Color::accent_deep(),
+          theme.accent_primary,
           font_family="monospace",
           font_weight=500,
         )
       }
       Link(url) => {
-        let scale = ctx.style.scale
+        let is_kb_focused = kb_link_idx == Some(i)
         if is_hovered {
           ctx.set_cursor_icon("pointer")
           if ctx.input.mouse_pressed {
@@ -268,10 +320,10 @@ pub fn rich_text(
           }
         }
 
-        let link_col = if is_hovered {
-          @color.Color::accent_hover()
+        let link_col = if is_hovered || is_kb_focused {
+          theme.accent_hover
         } else {
-          @color.Color::accent_primary()
+          theme.accent_primary
         }
 
         let text_pos = @math.Vec2::new(
@@ -280,8 +332,8 @@ pub fn rich_text(
         )
         ctx.painter().add_text(text_pos, text, font_sz, link_col)
 
-        // Underline when hovered
-        if is_hovered {
+        // Underline when hovered or keyboard focused
+        if is_hovered || is_kb_focused {
           let line_y = abs_rect.y + line_h - 2.0 * scale
           ctx
           .painter()
@@ -290,6 +342,24 @@ pub fn rich_text(
             @math.Vec2::new(abs_rect.x + abs_rect.w, line_y),
             link_col,
             1.0 * scale,
+          )
+        }
+
+        // Focus ring on active keyboard-focused link
+        if is_kb_focused {
+          let focus_r = @math.Rect::new(
+            abs_rect.x - 2.0 * scale,
+            abs_rect.y + 1.0 * scale,
+            abs_rect.w + 4.0 * scale,
+            line_h - 2.0 * scale,
+          )
+          ctx
+          .painter()
+          .add_rect_stroke(
+            focus_r,
+            theme.border_focus,
+            1.5 * scale,
+            ctx.style.radius_xs * scale,
           )
         }
       }
@@ -306,39 +376,62 @@ pub fn hyperlink(
   text : String,
   _url : String,
 ) -> (Bool, Response) {
-  let font_sz = ctx.style.font_normal
+  let scale = ctx.style.scale
+  let font_sz = ctx.style.font_normal * scale
   let text_sz = ctx.measure_text(text, font_sz)
-  let h = 20.0
+  let h = 20.0 * scale
   let w = text_sz.x
 
-  let (_id, rect, resp) = ctx.allocate_space(@math.Vec2::new(w, h))
+  let (id, rect, resp) = ctx.allocate_space(@math.Vec2::new(w, h))
+  ctx.register_focusable(id)
+  let is_focused = resp.has_focus() || ctx.has_focus(id)
   let is_hovered = ctx.is_hovered(rect)
 
   if is_hovered {
     ctx.set_cursor_icon("pointer")
   }
 
-  let link_col = if is_hovered {
-    @color.Color::accent_hover()
+  let mut clicked = is_hovered && ctx.input.mouse_pressed
+  if is_focused {
+    if ctx.input.key_pressed(Key::Enter) || ctx.input.key_pressed(Key::Space) {
+      ctx.input.consume_key(Key::Enter)
+      ctx.input.consume_key(Key::Space)
+      clicked = true
+    }
+  }
+
+  let theme = ctx.theme
+  let link_col = if is_hovered || is_focused {
+    theme.accent_hover
   } else {
-    @color.Color::accent_primary()
+    theme.accent_primary
   }
 
   let text_pos = @math.Vec2::new(rect.x, rect.y + (h - font_sz) * 0.5)
   ctx.painter().add_text(text_pos, text, font_sz, link_col)
 
-  if is_hovered {
-    let line_y = rect.y + h - 2.0
+  if is_hovered || is_focused {
+    let line_y = rect.y + h - 2.0 * scale
     ctx
     .painter()
     .add_line(
       @math.Vec2::new(rect.x, line_y),
       @math.Vec2::new(rect.x + w, line_y),
       link_col,
-      1.0,
+      1.0 * scale,
     )
   }
 
-  let clicked = is_hovered && ctx.input.mouse_pressed
+  if is_focused {
+    ctx
+    .painter()
+    .add_rect_stroke(
+      rect.expand(2.0 * scale),
+      theme.border_focus,
+      1.5 * scale,
+      ctx.style.radius_xs * scale,
+    )
+  }
+
   (clicked, resp)
 }
