@@ -24,17 +24,6 @@
 
 # 第二部分：引擎能力与业务自举路线图 (`feat`)
 
-### FEAT-SHOWCASE-02 (中优先级) [待处理]: 在官方文档中内嵌即时交互式沙箱
-- **目标文件**: [examples/canvas/docs.html](examples/canvas/docs.html)
-- **状态**: **待处理**（积压中）。
-- **问题描述**:
-  文档页面目前仅展示静态 API 文本与代码高亮，缺乏即时内嵌运行的组件沙箱。
-- **修复方案**:
-  - 为关键组件引入微型嵌入式 Canvas 演示实例，允许开发者在文档内直接与控件交互并实时修改参数查看反馈。
-
----
-
-
 ### FEAT-A11Y-01 (P2) [进行中]: 容器与浮动浮层的全量键盘可达性规范
 - **目标文件**: [src/core/](file:///a:/moonbit-project/src/core/), [src/widgets/](file:///a:/moonbit-project/src/widgets/), [src/composite/](file:///a:/moonbit-project/src/composite/)
 - **状态**: **进行中**（16 个交互表面已落地 15 个）。为输入框、选择框、折叠头、分栏器、表格、树形视图等全量控件补齐焦点与快捷键。
@@ -75,7 +64,7 @@
 | **feat** | `FEAT-CORE-02` | 自动折行流式排版 (`horizontal_wrapped`) | **P1** | 已解决（阶段 6） |
 | **feat** | `FEAT-CORE-03` | 运行时多主题系统 (`studio_light`, `slate_dark`) | **P2** | 已解决（阶段 6） |
 | **feat** | `FEAT-CORE-04` | 即时模式动画物理弹簧与缓动状态机 | **P2** | 已解决（阶段 6） |
-| **feat** | `FEAT-SHOWCASE-02`| 官方参考文档内嵌即时交互式组件沙箱 | **P2** | 积压中 |
+| **feat** | `FEAT-SHOWCASE-02`| 官方参考文档内嵌即时交互式组件沙箱 | **P2** | 已解决 (迭代 15) |
 | **feat** | `FEAT-SHOWCASE-03`| 跑分基准页面的 Canvas 原生顶层工作栏 | **P3** | 已解决（迭代 12） |
 | **feat** | `FEAT-CORE-01` | 多视口停靠与二叉树平铺分屏系统 (`DockArea`) | **P3** | 已解决（阶段 7） |
 | **feat** | `FEAT-CORE-05` | 即时模式科学工程图表套件 (`plot`, `bar_chart`) | **P3** | 已解决（阶段 7） |

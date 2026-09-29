@@ -1605,3 +1605,18 @@ This review evaluates seven foundational dimensions:
 - **Remediation**:
   Authored targeted scripted `RawInput` multi-frame interaction sequences exercising every key branch, edge clamping condition, and container collapse path.
 
+---
+
+### FEAT-SHOWCASE-02 (P2) [RESOLVED]: Live Interactive Component Sandboxes in `docs.html`
+- **Location**: [examples/canvas/docs.html](file:///a:/moonbit-project/examples/canvas/docs.html), [examples/canvas/js/docs_sandbox.js](file:///a:/moonbit-project/examples/canvas/js/docs_sandbox.js), [examples/canvas/css/docs.css](file:///a:/moonbit-project/examples/canvas/css/docs.css)
+- **Status**: **RESOLVED** (Iteration 15). Engineered native MoonBit Wasm-GC interactive micro-sandboxes embedded directly underneath widget API sections in `examples/canvas/docs.html`. Implemented high-performance Canvas 2D rasterizer dispatcher (`docs_sandbox.js`) hooked into `window.moon_gallery_step(...)` with touch/pointer/wheel/keyboard event dispatch and `IntersectionObserver` viewport virtualization to eliminate offscreen CPU/GPU overhead. Styled with Studio Light porcelain aesthetic matching the design system. Enabled live in-place interaction for `Button`, `TextEdit`, `CodeEditor`, `Slider`, `DragValue`, `Knob`, `Toggle`, `ColorPicker`, `Stepper`, `ProgressBar`, `Rating`, and `Badge`.
+- **Priority**: **P2**
+- **Category**: Showcase & Engine Dogfooding
+- **Description**:
+  `docs.html` was previously a static HTML document with zero Wasm runtime execution. Developers reading API signatures only saw static text code snippets.
+- **Failure Mechanism**:
+  Static documentation fails to showcase the reactive immediate-mode capabilities and sub-millisecond responsiveness of the engine, requiring users to navigate away to understand widget ergonomics.
+- **Remediation**:
+  Embedded native HTML5 `<canvas>` micro-sandboxes directly evaluated by MoonBit Wasm, upholding the *Pure MoonBit Engine Dogfooding & Zero DOM Simulation Standard*.
+
+

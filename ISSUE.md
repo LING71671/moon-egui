@@ -24,22 +24,6 @@
 
 # Part II: Engine Capabilities & Dogfooding Roadmap (`feat`)
 
-### FEAT-SHOWCASE-02 (Medium): Live Interactive Component Sandboxes in `docs.html`
-- **Target File**: [examples/canvas/docs.html](file:///a:/moonbit-project/examples/canvas/docs.html)
-- **Current State**:
-  `docs.html` is a 44.5 KB static HTML document with zero Wasm runtime execution. Developers reading API signatures only see static text code snippets.
-- **Proposed Enhancement**:
-  Embed interactive micro-canvas instances underneath each widget's API section:
-  - Users reading `Slider` documentation can drag the live slider on the page.
-  - Users reading `ColorPicker` can interact with the HSV canvas in-place.
-  - Users reading `Table` can sort and resize columns directly inside the documentation.
-- **Value**: Transforms static documentation into an interactive developer showcase, aligned with modern UI documentation standards.
-
----
-
-
-
-
 ### FEAT-SHOWCASE-04 (Low): Interactive Architecture & Pipeline Visualizers in `wiki.html`
 - **Target File**: [examples/canvas/wiki.html](file:///a:/moonbit-project/examples/canvas/wiki.html)
 - **Current State**:
@@ -111,7 +95,7 @@
 | **feat** | `FEAT-CORE-02` | Auto-Wrapping Flow Layout (`horizontal_wrapped`) | **P1** | Resolved (Phase 6) |
 | **feat** | `FEAT-CORE-03` | Runtime Dynamic Theming (`studio_light`, `slate_dark`) | **P2** | Resolved (Phase 6) |
 | **feat** | `FEAT-CORE-04` | Immediate-Mode Animation Tweening State Machine | **P2** | Resolved (Phase 6) |
-| **feat** | `FEAT-SHOWCASE-02`| Live Interactive Sandboxes in Docs | **P2** | Backlog |
+| **feat** | `FEAT-SHOWCASE-02`| Live Interactive Sandboxes in Docs | **P2** | Resolved (Iteration 15) |
 | **feat** | `FEAT-SHOWCASE-03`| Native In-Canvas Studio Header Bar in Benchmark | **P3** | Resolved (Iteration 12) |
 | **feat** | `FEAT-CORE-01` | Multi-Window Docking Layout System (`DockArea`) | **P3** | Resolved (Phase 7) |
 | **feat** | `FEAT-CORE-05` | Immediate-Mode Plotting & Charting Suite (`plot`, `bar_chart`) | **P3** | Resolved (Phase 7) |

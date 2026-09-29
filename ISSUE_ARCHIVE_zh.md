@@ -1178,3 +1178,17 @@
 - **修复方案**:
   编写结构化脚本多帧输入测试（`RawInput` 事件序列），全面验证各复合容器的拖拽、命中、缩放与键盘交互分支。
 
+---
+
+### FEAT-SHOWCASE-02 (P2) [已解决]: 在官方参考文档中内嵌即时交互式组件微沙箱
+- **代码位置**: [examples/canvas/docs.html](file:///a:/moonbit-project/examples/canvas/docs.html), [examples/canvas/js/docs_sandbox.js](file:///a:/moonbit-project/examples/canvas/js/docs_sandbox.js), [examples/canvas/css/docs.css](file:///a:/moonbit-project/examples/canvas/css/docs.css)
+- **状态**: **已解决**（迭代 15）。在 `examples/canvas/docs.html` 官方参考文档的各个组件 API 小节下方，直接内嵌了由原生 MoonBit Wasm-GC 引擎实时渲染驱动的即时交互微沙箱。通过 `docs_sandbox.js` 统一调度 Canvas 2D 矢量绘制指令，对接 `window.moon_gallery_step(...)` 核心帧驱动入口，支持鼠标拖拽、滚轮微调、键盘聚焦导航以及移动端触控手势。引入 `IntersectionObserver` 视口惰性求值，仅在沙箱进入可视区域时运行主循环与重绘，杜绝后台 CPU/GPU 空耗。全面覆盖了 `Button`、`TextEdit`、`CodeEditor`、`Slider`、`DragValue`、`Knob`、`Toggle`、`ColorPicker`、`Stepper`、`ProgressBar`、`Rating` 及 `Badge` 等 12 组核心控件。
+- **优先级**: **P2**
+- **类别**: 展厅与引擎自宿主
+- **问题描述**:
+  `docs.html` 此前为纯静态 HTML 页面，没有任何 Wasm 运行时介入，开发者阅读 API 时只能查看纯文本代码片段，无法即时感受交互反馈。
+- **失效机制**:
+  静态文档无法直观展现即时模式 GUI 引擎特有的微秒级响应性能与丰富控件状态机，读者必须跳转至其它页面才能测试组件行为。
+- **修复方案**:
+  严格遵守《Pure MoonBit Engine Dogfooding & Interface Harmony Standard》，在各 API 章节下方挂载原生 `<canvas>` 沙箱，直接由 MoonBit 编译产物实时求值与光栅化。
+
