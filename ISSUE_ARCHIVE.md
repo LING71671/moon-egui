@@ -1563,5 +1563,20 @@ This review evaluates seven foundational dimensions:
 - **Remediation**:
   Completely removed the HTML DOM `.studio-header` and associated CSS from `benchmark.html`. Engineered a 100% pure MoonBit immediate-mode header bar inside `examples/canvas/header_bar.mbt` and integrated it into `examples/canvas/main.mbt`.
 
+---
+
+### AUDIT-DOGFOOD-02 (P1) [RESOLVED]: Extensive HTML/DOM Simulation of App Header, Toolbar, and HUD in Minesweeper
+- **Location**: [examples/canvas/minesweeper.html](file:///a:/moonbit-project/examples/canvas/minesweeper.html), [examples/canvas/mines_header.mbt](file:///a:/moonbit-project/examples/canvas/mines_header.mbt), [examples/canvas/mines_main.mbt](file:///a:/moonbit-project/examples/canvas/mines_main.mbt), [examples/canvas/js/mines_run.js](file:///a:/moonbit-project/examples/canvas/js/mines_run.js)
+- **Status**: **RESOLVED** (Iteration 12). Eliminated all HTML/CSS DOM application chrome (`.ms-dock--top`, `.ms-dock--bottom`, `.ms-hint`, and associated controls) from `minesweeper.html`. Engineered native MoonBit immediate-mode top header bar and bottom status bar in `examples/canvas/mines_header.mbt` rendered directly onto the single `<canvas id="mines-canvas">` viewport via `UIContext`. Integrated brand logo, navigation links ("首页", "展厅"), zoom controls ("-", "%", "+"), camera controls ("居中", "重开"), tool toggles ("🚩 插旗", "✋ 手形"), live telemetry badges ("翻开", "旗", "踩雷"), cursor coordinates, domain statistics, cascade indicator, and an interactive minimap that jumps the camera on click. Also upgraded `UIContext::separator` in `src/core/text_layout.mbt` to be layout-direction aware.
+- **Priority**: **P1**
+- **Category**: Dogfooding Standard Compliance
+- **Description**:
+  `examples/canvas/minesweeper.html` previously implemented application chrome (top header bar, segmented zoom controls, center/restart buttons, flag/pan toggle tools, and bottom telemetry capsule HUD) entirely using HTML/CSS DOM elements floating on top of the canvas, synchronized via JS event bridges.
+- **Failure Mechanism**:
+  Directly violated Section 1 of the *Pure MoonBit Engine Dogfooding & Interface Harmony Standard* ("Strictly Forbid HTML/CSS DOM Simulation... All window chrome, docking panels, tree views, code editors, menu bars, and command palettes must be driven directly by MoonBit's UIContext").
+- **Remediation**:
+  Re-engineered the entire chrome and HUD of Minesweeper in native MoonBit using `UIContext` widgets (`@widgets.badge`, `@widgets.button_sized`, labels, interactive minimap), rendering entirely within a single `<canvas>` viewport.
+
+
 
 

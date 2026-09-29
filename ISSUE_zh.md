@@ -12,10 +12,8 @@
 
 # 第一部分：活跃缺陷与代码审查审计 (`bug` / `audit`)
 
-
-### AUDIT-DOGFOOD-02 (P1) [待处理]: 扫雷游戏 (`minesweeper.html`) 大量模拟 HTML/DOM 顶栏、工具条与 HUD
-- **代码位置**: [examples/canvas/minesweeper.html](file:///a:/moonbit-project/examples/canvas/minesweeper.html)
-- **状态**: **待处理**。
+> [!NOTE]
+> 全部核心缺陷与自举审计项均已完成彻底修复与全管线验证，详见 **[ISSUE_ARCHIVE.md](ISSUE_ARCHIVE.md)**（[中文归档](ISSUE_ARCHIVE_zh.md)）。
 
 ---
 
@@ -27,23 +25,12 @@
 # 第二部分：引擎能力与业务自举路线图 (`feat`)
 
 ### FEAT-SHOWCASE-02 (中优先级) [待处理]: 在官方文档中内嵌即时交互式沙箱
-- **目标文件**: [examples/canvas/docs.html](file:///a:/moonbit-project/examples/canvas/docs.html)
+- **目标文件**: [examples/canvas/docs.html](examples/canvas/docs.html)
 - **状态**: **待处理**（积压中）。
 - **问题描述**:
   文档页面目前仅展示静态 API 文本与代码高亮，缺乏即时内嵌运行的组件沙箱。
 - **修复方案**:
   - 为关键组件引入微型嵌入式 Canvas 演示实例，允许开发者在文档内直接与控件交互并实时修改参数查看反馈。
-
----
-
-
-### FEAT-SHOWCASE-03 (低优先级) [待处理]: 跑分页面 (`benchmark.html`) 的 Canvas 原生标题栏自举
-- **目标文件**: [examples/canvas/benchmark.html](file:///a:/moonbit-project/examples/canvas/benchmark.html)
-- **状态**: **待处理**（积压中）。参见 AUDIT-DOGFOOD-01。
-- **问题描述**:
-  基准跑分页面的顶部控制栏与统计数据条目仍由原生 HTML DOM 标签渲染。
-- **修复方案**:
-  - 将控制栏迁移到 Canvas 内部绘制，确保整个跑分页面仅存在单一 `<canvas>` 视口。
 
 ---
 

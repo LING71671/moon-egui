@@ -1136,5 +1136,20 @@
 - **修复方案**:
   在 MoonBit 引擎侧编写原生即时模式顶栏 `render_benchmark_header_bar`，彻底剥离 HTML DOM 伪造顶栏与配套冗余脚本。
 
+---
+
+### AUDIT-DOGFOOD-02 (P1) [已解决]: 扫雷游戏 (`minesweeper.html`) 大量模拟 HTML/DOM 顶栏、工具条与 HUD
+- **代码位置**: [examples/canvas/minesweeper.html](file:///a:/moonbit-project/examples/canvas/minesweeper.html), [examples/canvas/mines_header.mbt](file:///a:/moonbit-project/examples/canvas/mines_header.mbt), [examples/canvas/mines_main.mbt](file:///a:/moonbit-project/examples/canvas/mines_main.mbt), [examples/canvas/js/mines_run.js](file:///a:/moonbit-project/examples/canvas/js/mines_run.js)
+- **状态**: **已解决**（迭代 12）。彻底移除 `minesweeper.html` 中以 HTML/CSS DOM 模拟的顶栏 `.ms-dock--top`、底栏 `.ms-dock--bottom`、`.ms-hint` 提示气泡及配套事件桥接逻辑。在 `examples/canvas/mines_header.mbt` 中以 100% 纯 MoonBit 原生即时模式重构顶栏与底栏（集成品牌 Logo 图标、"首页" / "展厅" 导航跳转、"-" / "%" / "+" 缩放控件、"居中" / "重开" 视角控制、"🚩 插旗" / "✋ 手形" 交互模式切换、"翻开" / "旗" / "踩雷" 实时遥测徽章、光标坐标、视口与全场规格统计、连锁展开动画指示器，以及支持点击瞬移镜头的微型交互式小地图）。同时升级了 `src/core/text_layout.mbt` 中的 `UIContext::separator`，使其在水平与垂直排版流中自适应为纵向/横向分割线。
+- **优先级**: **P1**
+- **类别**: 全管线自宿主规范遵从
+- **问题描述**:
+  `examples/canvas/minesweeper.html` 原先通过悬浮在 Canvas 表面的 HTML/CSS DOM 元素实现顶栏、工具条、手形模式与底部 HUD。
+- **失效机制**:
+  直接违反了《Pure MoonBit Engine Dogfooding & Interface Harmony Standard》第一条禁令（“Strictly Forbid HTML/CSS DOM Simulation... 所有应用界面、顶栏、树控件、代码编辑器与控制面板必须由 MoonBit UIContext 直接驱动”）。
+- **修复方案**:
+  将扫雷的全部应用 Chrome 与 HUD 迁移为 MoonBit 原生即时模式渲染，并基于单一 `<canvas id="mines-canvas">` 视口完成全部输入捕获与绘制。
+
+
 
 

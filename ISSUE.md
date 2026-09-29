@@ -12,18 +12,8 @@
 
 # Part I: Active Defects & Code Review Audit (`bug` / `audit`)
 
-
-### AUDIT-DOGFOOD-02 (P1) [OPEN]: Extensive HTML/DOM Simulation of App Header, Toolbar, and HUD in Minesweeper
-- **Location**: [examples/canvas/minesweeper.html#L373-L487](file:///a:/moonbit-project/examples/canvas/minesweeper.html#L373-L487)
-- **Status**: **Backlog**
-- **Priority**: **P1**
-- **Category**: Dogfooding Standard Compliance
-- **Description**:
-  `examples/canvas/minesweeper.html` implements application chrome (top header bar, segmented zoom controls, center/restart buttons, flag/pan toggle tools, and bottom telemetry capsule HUD) entirely using HTML/CSS DOM elements (`<header class="studio-header">`, `<div class="segmented-control">`, `<div class="studio-footer-pill">`) floating on top of the canvas, synchronized via JS event bridges.
-- **Failure Mechanism**:
-  This directly violates Section 1 of the *Pure MoonBit Engine Dogfooding & Interface Harmony Standard* ("Strictly Forbid HTML/CSS DOM Simulation... All window chrome, docking panels, tree views, code editors, menu bars, command palettes, and interactive consoles must be driven directly by MoonBit's UIContext").
-- **Remediation**:
-  Re-engineer the entire chrome and HUD of Minesweeper in native MoonBit using `UIContext` widgets (`@widgets.segmented_control`, `@composite.menu_bar`, `@widgets.badge`), rendering entirely within a single `<canvas>` viewport.
+> [!NOTE]
+> All primary defects and dogfooding audit items have been resolved and archived. See [ISSUE_ARCHIVE.md](ISSUE_ARCHIVE.md).
 
 ---
 
@@ -48,15 +38,6 @@
 ---
 
 
-### FEAT-SHOWCASE-03 (Medium): Native In-Canvas Studio Header Bar for `benchmark.html`
-- **Target File**: [examples/canvas/benchmark.html](file:///a:/moonbit-project/examples/canvas/benchmark.html), [examples/canvas/main.mbt](file:///a:/moonbit-project/examples/canvas/main.mbt)
-- **Current State**:
-  The CAD matrix viewport is rendered by MoonBit, but the top floating control bar (`.studio-header` containing preset scales 1,600/10,000/1M, modes, theme toggle, and FPS metrics HUD) is an HTML DOM overlay.
-- **Proposed Enhancement**:
-  Render the top bar directly inside the canvas using `ui.menu_bar(...)`, `ui.segmented_control(...)`, and `ui.badge(...)`.
-- **Value**: Makes the CAD benchmark 100% standalone and portable (embeddable into any WebGL/WebGPU surface or native desktop window with zero DOM dependencies).
-
----
 
 
 ### FEAT-SHOWCASE-04 (Low): Interactive Architecture & Pipeline Visualizers in `wiki.html`
