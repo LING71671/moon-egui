@@ -41,21 +41,40 @@ pub fn UIContext::label_colored(
 }
 
 ///|
-/// Render a full-width horizontal divider line.
+/// Render a full-width horizontal divider line, or a vertical divider line in horizontal layouts.
 pub fn UIContext::separator(self : UIContext) -> Unit {
   let scale = self.style.scale
-  let w = self.available_width()
-  let h = 9.0 * scale
-  let (_id, rect, _resp) = self.allocate_space(@math.Vec2::new(w, h))
-  let y = rect.y + 4.5 * scale
-  self
-  .painter()
-  .add_line(
-    @math.Vec2::new(rect.x, y),
-    @math.Vec2::new(rect.x + rect.w, y),
-    self.theme.border_muted,
-    1.0 * scale,
-  )
+  let is_horiz = match self.layout.current_scope() {
+    Some(s) => s.dir == LeftToRight || s.dir == LeftToRightWrapped
+    None => false
+  }
+  if is_horiz {
+    let w = 8.0 * scale
+    let h = 18.0 * scale
+    let (_id, rect, _resp) = self.allocate_space(@math.Vec2::new(w, h))
+    let x = rect.x + w * 0.5
+    self
+    .painter()
+    .add_line(
+      @math.Vec2::new(x, rect.y),
+      @math.Vec2::new(x, rect.y + h),
+      self.theme.border_muted,
+      1.0 * scale,
+    )
+  } else {
+    let w = self.available_width()
+    let h = 9.0 * scale
+    let (_id, rect, _resp) = self.allocate_space(@math.Vec2::new(w, h))
+    let y = rect.y + 4.5 * scale
+    self
+    .painter()
+    .add_line(
+      @math.Vec2::new(rect.x, y),
+      @math.Vec2::new(rect.x + rect.w, y),
+      self.theme.border_muted,
+      1.0 * scale,
+    )
+  }
 }
 
 ///|
