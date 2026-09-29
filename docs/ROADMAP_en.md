@@ -104,6 +104,20 @@ Rooted in MoonBit's language strengths and drawing from mature immediate-mode GU
 
 ---
 
+### Milestone 10: Universal Keyboard Accessibility, Pure Canvas Dogfooding & Release v0.6.0 (Sep 29)
+
+* **Objective**: Enforce universal keyboard navigation, eliminate DOM simulations with pure Canvas showcases, integrate cubic Bezier curves, clear all tracking issues, and deliver `v0.6.0`.
+* **Deliverables**:
+  - [x] **Universal Keyboard Accessibility Standard** [Delivered]: All 16 interactive surfaces support Tab navigation, arrow cycling, and independent focus rings (`FEAT-A11Y-01`);
+  - [x] **100% Pure Canvas Dogfooding Showcases** [Delivered]: Homepage, Docs, Wiki, Benchmark, and Minesweeper eliminate DOM simulation with embedded live sandboxes;
+  - [x] **Cubic Bezier Curves & Package Dependency Decoupling** [Delivered]: `DrawCmd::BezierCurve` and `composite -> widgets` physical dependency edge formally integrated;
+  - [x] **Automated Test Suite Expansion** [Delivered]: 391/391 headless whitebox tests passing (100% pass rate), all 102 tracking issues cleared and archived;
+  - [x] **Release Packaging** [Delivered]: Tag and publish the `v0.6.0` release.
+* **Acceptance Criteria**:
+  - 100% green CI test pass rate, Wasm-GC clean compilation, documentation and live sandboxes fully synchronized.
+
+---
+
 ## 2. Future Work
 
 - **Multi-Backend Maturation**: Deepen WebGL / WebGPU custom shader pipelines and texture atlas support;

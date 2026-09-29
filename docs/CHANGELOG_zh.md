@@ -11,6 +11,39 @@
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-09-29
+
+### 新增功能与优化
+- **全引擎通用键盘无障碍可达性规范 (`FEAT-A11Y-01`)**：
+  - 全量 16 个交互表面支持完整的全键盘可达性与标准焦点环（`theme.border_focus`）。
+  - 富文本 `rich_text` 与 `hyperlink` 支持方向键/Home/End 跨超链接漫游、回车/空格激活，并基于 Scoped Memory 记录键盘聚焦索引。
+  - 停靠系统 `DockArea` 支持 Tab 键遍历标签页、回车/空格切换窗格以及方向键动态调整分栏比例。
+  - 菜单栏 `menu_bar` 与级联右键菜单支持全键盘展开、漫游、激活与 Escape 退出。
+  - 数据表格 `Table` 支持键盘高亮行快速漫游与视口自动平滑跟随滚动。
+- **100% 纯 Canvas 彻底自举与原生交互展台 (`FEAT-SHOWCASE-02` ~ `05`, `AUDIT-DOGFOOD-01`, `02`)**：
+  - 首页 Hero 区域全面替换 iframe 为纯 MoonBit 原生微操展台（`<canvas id="hero-workbench-canvas">`），内置 5 组预设切换器（`FEAT-SHOWCASE-05`）。
+  - 技术 Wiki 内嵌 5 阶段逐帧生命周期流水线单步可视化器与实时 `DrawCmd` 矢量指令流探测器（`FEAT-SHOWCASE-04`）。
+  - 官方参考文档全面内嵌 12 组原生 Wasm-GC 组件微沙箱并引入 `IntersectionObserver` 视口惰性执行（`FEAT-SHOWCASE-02`）。
+  - 彻底清除 Benchmark 跑分页面与扫雷游戏中的全部模拟 HTML DOM Chrome，替换为原生 MoonBit 即时渲染顶层工作栏、底部 HUD 与交互式小地图。
+- **三次贝塞尔曲线原生图元 (`DrawCmd::BezierCurve`)**：
+  - `DrawCmd` 核心代数数据类型扩充 `BezierCurve` 图元，Canvas 2D / WebGL 后端原生支持，节点连线升级为自适应 LOD 曲线。
+- **包依赖架构正式解耦与闭环 (`DEBT-ARCH-01`)**：
+  - 在 `src/composite/moon.pkg` 中正式声明引入 `widgets` 依赖，停靠窗格空置状态优雅集成 `@widgets.badge` 占位引导。
+
+### 优化与调整
+- **系统级全局缩放不变性 (Scale Invariance)**：
+  - 全量标准控件与复合容器的尺寸、内边距、圆角与线宽严格按 `ctx.style.scale` 比例派生，彻底消除绝对像素硬编码。
+- **运行时动态多主题系统**：
+  - 全量标准控件统一消费 `ctx.theme` 语义令牌，支持瞬时无缝切换高对比浅色/暗色调色板。
+
+### 缺陷修复与稳健性加固
+- **算术鲁棒性与非有限值 (NaN) 熔断**：
+  - 在滑块、旋钮、推子、步进器、评分、微调加载环及虚拟列表中全面增加 `is_nan()` 校验与安全回退极值。
+- **窗口管理器内存回收优化**：
+  - `WindowManager::prune_stale` 扩展清理未挂载窗口的 `batches` 绘制队列与 `focus` 活跃 ID 列表，杜绝长生命周期内存泄漏。
+- **测试工程规模突破**：
+  - 自动化白盒与多帧单元测试集扩充至 **391 项（100% 绿色通过）**，全量 102 项规划与缺陷议题全部清零归档。
+
 ## [0.5.5] - 2026-09-20
 
 ### 新增功能与优化

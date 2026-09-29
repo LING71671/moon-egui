@@ -11,6 +11,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-09-29
+
+### Added
+- **Universal Keyboard Reachability (`FEAT-A11Y-01`)**:
+  - Full keyboard accessibility and focus rings (`theme.border_focus`) across all 16 interactive surfaces.
+  - Added keyboard link cycling (ArrowLeft/Right, Home/End) and activation (Enter/Space) to `rich_text` and `hyperlink` with focus persistence in `Memory`.
+  - Added Tab-focusable tabs, Enter/Space switching, and arrow-key divider resizing to `DockArea`.
+  - Added menu bar and cascading context menu keyboard traversal (Enter/Down to open, Arrow/Tab to navigate, Enter to activate, Escape to dismiss).
+  - Added highlighted row arrow navigation with auto-scrolling to `Table`.
+- **Pure Canvas Dogfooding & Interactive Showcases (`FEAT-SHOWCASE-02` - `05`, `AUDIT-DOGFOOD-01`, `02`)**:
+  - Replaced landing page iframe with native MoonBit immediate-mode micro-workbench (`<canvas id="hero-workbench-canvas">`) and 5 interactive presets (`FEAT-SHOWCASE-05`).
+  - Embedded 5-stage frame lifecycle stepper and live `DrawCmd` stream inspector in `wiki.html` (`FEAT-SHOWCASE-04`).
+  - Embedded 12 native Wasm-GC immediate-mode component sandboxes in `docs.html` with `IntersectionObserver` viewport virtualization (`FEAT-SHOWCASE-02`).
+  - Eliminated simulated HTML DOM chrome from Benchmark and Minesweeper, replacing them with 100% native MoonBit immediate-mode header bars, telemetry HUDs, and interactive minimap.
+- **Native Cubic Bezier Curves (`DrawCmd::BezierCurve`)**:
+  - Added cubic `BezierCurve` variant to `DrawCmd` with native Canvas 2D / WebGL backends and adaptive subdivision LOD in `NodeEditor`.
+- **Architectural Formalization & Physical Package Decoupling (`DEBT-ARCH-01`)**:
+  - Declared `composite -> widgets` physical package dependency edge in `src/composite/moon.pkg` with empty-dock placeholder badge.
+
+### Changed
+- **System-Wide Scale Invariance & Geometry Normalization**:
+  - Normalized all layout offsets, strokes, paddings, and radii across standard and composite widgets to derive strictly from `ctx.style.scale`.
+- **Dynamic Theming Subsystem**:
+  - Routed all standard widgets strictly through `ctx.theme` tokens for dynamic real-time theme swapping (`studio_light`, `slate_dark`).
+
+### Fixed
+- **Arithmetic Robustness & NaN Guards**:
+  - Added systemic `is_nan()` sanitization and finite checks across sliders, faders, knobs, steppers, ratings, spinners, and virtual lists.
+- **Window Management Resource Reclamation**:
+  - Added pruning of unmounted window entries from `batches` and `focus` arrays in `WindowManager::prune_stale`.
+- **Test Suite Expansion**:
+  - Expanded total automated unit and whitebox test suites to 391 tests with 100% pass rate.
+
 ## [0.5.5] - 2026-09-20
 
 ### Added
