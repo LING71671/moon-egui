@@ -26,6 +26,7 @@ pub struct FrameOutput {
   /// Cursor icon the engine wants while the pointer sits where it does, so the
   /// host page can mirror it onto `canvas.style.cursor`.
   cursor : String
+  navigate_url : String
 }
 
 ///|
@@ -59,20 +60,24 @@ pub fn step(
   let win_w = 264.0
   let win_h = 340.0
 
+  let scale = ctx.style.scale
+  let top_bar_h = 38.0 * scale
   let vp_x = 0.0
-  let vp_y = 0.0
+  let vp_y = top_bar_h
   let ruler_h = 22.0
   let ruler_w = 48.0
   let cv_x = vp_x + ruler_w
   let cv_y = vp_y + ruler_h
   let cv_w = cur_w - ruler_w
-  let cv_h = cur_h - ruler_h
+  let cv_h = cur_h - top_bar_h - ruler_h
   let sc_x = cv_x + cv_w * 0.5
   let sc_y = cv_y + cv_h * 0.5
 
   // 2. Camera Pan & Zoom updates (pinning world point under mouse cursor).
   // The floating panel now owns its own drag and viewport clamping.
-  update_camera_pan(state, ctx, pan_dx, pan_dy)
+  if mouse_y >= top_bar_h {
+    update_camera_pan(state, ctx, pan_dx, pan_dy)
+  }
   if !mouse_down {
     state.is_dragging_item = false
   }
@@ -84,6 +89,9 @@ pub fn step(
   )
   ctx.begin_frame(raw)
   let dl = ctx.draw_list()
+
+  // 5. Native In-Canvas Application Header Bar
+  let nav_url = render_benchmark_header_bar(ctx, state, cur_w, cur_h, top_bar_h)
 
   let grid_dim = state.grid_dim
   let matrix_world_size = 10000.0
@@ -152,6 +160,7 @@ pub fn step(
     show_studio: state.show_studio,
     is_vector,
     cursor: ctx.cursor_icon(),
+    navigate_url: nav_url,
   }
 }
 

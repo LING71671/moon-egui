@@ -743,6 +743,10 @@
       const frameOut = res;
       if (frameOut) {
         window.moon_state = frameOut;
+        if (typeof frameOut.navigate_url === 'string' && frameOut.navigate_url.length > 0) {
+          window.location.href = frameOut.navigate_url;
+          return;
+        }
       }
       const dl = frameOut ? (frameOut.draw_list || frameOut) : null;
 

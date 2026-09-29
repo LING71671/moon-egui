@@ -104,6 +104,7 @@ pub struct FrameOutput {
   show_studio : Bool
   is_vector : Bool
   cursor : String
+  navigate_url : String
 }
 
 pub struct GalleryState {
