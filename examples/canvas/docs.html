@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/docs.css?v=0.5.5">
+  <link rel="stylesheet" href="css/docs.css?v=20260929a">
   <link rel="stylesheet" href="css/lang.css?v=0.5.5">
   <script src="js/i18n.js?v=0.5.5"></script>
 </head>
@@ -391,6 +391,7 @@
 <span class="syn-cmt">// 4. 紧凑型小按钮（显式尺寸）</span>
 <span class="syn-kw">if</span> @widgets.button_sized(ctx, <span class="syn-str">"+"</span>, @math.<span class="syn-type">Vec2</span>::new(<span class="syn-num">24.0</span>, <span class="syn-num">24.0</span>)).clicked { ... }</code></pre>
           </div>
+          <div class="doc-sandbox" data-comp="button" data-height="160"></div>
 
           <h3 id="widget-text-edit">5.2 TextEdit 文本输入</h3>
           <p>
@@ -401,6 +402,7 @@
             <pre><code><span class="syn-kw">let</span> (new_text, resp) = @widgets.text_edit_val(ctx, <span class="syn-str">"username"</span>, state.username, placeholder=<span class="syn-str">"请输入用户名..."</span>)
 state.username = new_text</code></pre>
           </div>
+          <div class="doc-sandbox" data-comp="text_edit" data-height="150"></div>
 
           <h3 id="widget-code-editor">5.3 CodeEditor 代码编辑器</h3>
           <p>内置等宽行号显示、Tab 缩进与深色代码展示容器：</p>
@@ -409,6 +411,7 @@ state.username = new_text</code></pre>
             <pre><code><span class="syn-kw">let</span> (code, resp) = @composite.code_editor(ctx, <span class="syn-str">"source"</span>, state.source_code, show_line_numbers=<span class="syn-kw">true</span>)
 state.source_code = code</code></pre>
           </div>
+          <div class="doc-sandbox" data-comp="code_editor" data-height="180"></div>
 
           <h3 id="widget-labels">5.4 文本展示与排版 (Label)</h3>
           <div class="code-wrapper">
@@ -433,6 +436,7 @@ state.volume = vol
 <span class="syn-kw">let</span> (samples, _) = @widgets.slider_int(ctx, <span class="syn-str">"采样率"</span>, state.samples, <span class="syn-num">1</span>, <span class="syn-num">64</span>)
 state.samples = samples</code></pre>
           </div>
+          <div class="doc-sandbox" data-comp="slider" data-height="160"></div>
 
           <h3 id="widget-drag-value">6.2 DragValue Blender 风格数字微调</h3>
           <p>按住数值标签横向拖动即可平滑加减数值，支持指定拖拽步进速度：</p>
@@ -441,6 +445,7 @@ state.samples = samples</code></pre>
             <pre><code><span class="syn-kw">let</span> (focal, _) = @widgets.drag_value(ctx, <span class="syn-str">"焦距 (mm)"</span>, state.focal_length, speed=<span class="syn-num">0.5</span>, min=<span class="syn-num">10.0</span>, max=<span class="syn-num">800.0</span>)
 state.focal_length = focal</code></pre>
           </div>
+          <div class="doc-sandbox" data-comp="drag_value" data-height="150"></div>
 
           <h3 id="widget-knob">6.3 Knob 360° 角度旋钮</h3>
           <p>直观的环形仪表角度控制器，非常适合音频合成与旋转角度参数调节：</p>
@@ -449,6 +454,7 @@ state.focal_length = focal</code></pre>
             <pre><code><span class="syn-kw">let</span> (angle, _) = @composite.knob(ctx, <span class="syn-str">"rotation"</span>, <span class="syn-str">"旋转角度"</span>, state.rotation_deg, min_val=<span class="syn-num">0.0</span>, max_val=<span class="syn-num">360.0</span>)
 state.rotation_deg = angle</code></pre>
           </div>
+          <div class="doc-sandbox" data-comp="knob" data-height="200"></div>
 
           <h3 id="widget-checkbox-toggle">6.4 Checkbox 与 Toggle 胶囊开关</h3>
           <div class="code-wrapper">
@@ -459,6 +465,7 @@ state.vsync = sync
 <span class="syn-kw">let</span> (wire, _) = @widgets.toggle(ctx, <span class="syn-str">"线框模式"</span>, state.wireframe)
 state.wireframe = wire</code></pre>
           </div>
+          <div class="doc-sandbox" data-comp="toggle" data-height="150"></div>
 
           <h3 id="widget-combo-box">6.5 ComboBox 下拉选择菜单</h3>
           <div class="code-wrapper">
@@ -478,6 +485,7 @@ state.backend_idx = selected_idx</code></pre>
 <span class="syn-kw">let</span> (pen, _) = @composite.color_picker_button(ctx, <span class="syn-str">"画笔颜色"</span>, state.pen_color)
 state.pen_color = pen</code></pre>
           </div>
+          <div class="doc-sandbox" data-comp="color_picker" data-height="260"></div>
 
           <h3 id="widget-stepper">6.7 Stepper 离散步进调节器</h3>
           <p>提供带加减步进按钮、边界约束、滚轮微调及修饰键倍率控制（Shift 10×，Ctrl 0.1×）的数值调节器：</p>
@@ -486,6 +494,7 @@ state.pen_color = pen</code></pre>
             <pre><code><span class="syn-kw">let</span> (val, resp) = @widgets.stepper(ctx, <span class="syn-str">"buffer_size"</span>, state.buffer_size, step=<span class="syn-num">1.0</span>, min=<span class="syn-num">1.0</span>, max=<span class="syn-num">100.0</span>)
 state.buffer_size = val</code></pre>
           </div>
+          <div class="doc-sandbox" data-comp="stepper" data-height="150"></div>
         </section>
 
         <!-- Feedback & Status -->
@@ -498,6 +507,7 @@ state.buffer_size = val</code></pre>
             <div class="code-header"><span class="code-lang-tag">MoonBit</span></div>
             <pre><code>@widgets.progress_bar(ctx, state.download_percent)</code></pre>
           </div>
+          <div class="doc-sandbox" data-comp="progress_bar" data-height="150"></div>
 
           <h3 id="widget-rating">7.2 Rating 星级评分条</h3>
           <p>支持 0.5 半星精度矢量裁剪、实时悬浮预览反馈及只读模式的交互式评分组件：</p>
@@ -506,6 +516,7 @@ state.buffer_size = val</code></pre>
             <pre><code><span class="syn-kw">let</span> (stars, resp) = @widgets.rating(ctx, <span class="syn-str">"app_rating"</span>, state.rating, allow_half=<span class="syn-kw">true</span>)
 state.rating = stars</code></pre>
           </div>
+          <div class="doc-sandbox" data-comp="rating" data-height="150"></div>
 
           <h3 id="widget-spinner">7.3 Spinner 加载动画</h3>
           <div class="code-wrapper">
@@ -519,6 +530,7 @@ state.rating = stars</code></pre>
             <pre><code>@widgets.badge(ctx, <span class="syn-str">"PRO"</span>, kind=@widgets.<span class="syn-type">BadgeKind</span>::info(), dot=<span class="syn-kw">true</span>)
 <span class="syn-kw">let</span> (closed, resp) = @widgets.tag(ctx, <span class="syn-str">"build_tag"</span>, <span class="syn-str">"v0.3.1"</span>, closable=<span class="syn-kw">true</span>)</code></pre>
           </div>
+          <div class="doc-sandbox" data-comp="badge" data-height="150"></div>
 
           <h3 id="widget-tooltip">7.5 Tooltip 悬浮信息提示</h3>
           <div class="code-wrapper">
@@ -774,6 +786,8 @@ ctx.set_style(style.scaled(<span class="syn-num">1.25</span>))</code></pre>
 
   </div>
 
-  <script src="js/docs.js"></script>
+  <script src="canvas.js?v=20260929a"></script>
+  <script src="js/docs_sandbox.js?v=20260929a"></script>
+  <script src="js/docs.js?v=20260929a"></script>
 </body>
 </html>
