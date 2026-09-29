@@ -1590,3 +1590,18 @@ This review evaluates seven foundational dimensions:
   Without standard widgets integrated into composite structures, composite containers had to reinvent simple controls or leave empty states unstyled and without visual affordances.
 - **Remediation**:
   Formalized the unidirectional dependency edge by having empty dock panes render a standard placeholder badge (`@widgets.badge`) inside a subtle rounded container. Added unit tests and verified 100% test pass rate and Wasm-GC compatibility.
+
+---
+
+### DEBT-TEST-01 (P3) [RESOLVED]: Whitebox Coverage Gaps in `src/composite` Containers
+- **Location**: [src/composite/](file:///a:/moonbit-project/src/composite/) (`node_editor_wbtest.mbt`, `dock_wbtest.mbt`, `context_menu_wbtest.mbt`, `table_wbtest.mbt`)
+- **Status**: **RESOLVED** (Iteration 14). Closed major coverage gaps across `src/composite` by adding 7 new multi-frame headless whitebox test suites. Covered custom node dimensions, accent colors, custom port colors, and body dragging in `NodeEditor`; vertical splitter drag bounds clamping, keyboard ratio adjustment, and empty-leaf subtree collapsing in `DockArea`; closure-based menu lifecycle, Escape/click-away dismissals, and rich cascading submenus in `ContextMenu`; and vertical/horizontal scrollbar thumb drag tracking in `Table`. Total project tests reached 389 passing (100%), reducing uncovered lines across these modules by over 60%.
+- **Priority**: **P3**
+- **Category**: Test Infrastructure
+- **Description**:
+  Prior to this pass, `src/composite` containers carried untested interaction branches, particularly vertical splitter keyboard navigation, scrollbar thumb drags, and custom node/menu closures.
+- **Failure Mechanism**:
+  Passing tests masked potential regressions in multi-frame pointer state machines, keyboard event handlers, and nested menu lifecycle transitions.
+- **Remediation**:
+  Authored targeted scripted `RawInput` multi-frame interaction sequences exercising every key branch, edge clamping condition, and container collapse path.
+

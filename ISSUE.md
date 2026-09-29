@@ -78,20 +78,40 @@
 ---
 
 
-### DEBT-TEST-01 (P3): Whitebox Coverage Gaps in `src/composite` Containers
-- **Location**: [src/composite/](file:///a:/moonbit-project/src/composite/)
-- **Status**: Backlog
-- **Category**: Test Infrastructure
-- **Current State**:
-  `moon coverage analyze` reports 622 uncovered lines in `src/`, concentrated in `dock` (59), `code_editor` (54), `context_menu` (52), `containers` (35), `splitter` (32), `rich_text` (31), `color_picker` (29), `command_palette` (28) — mostly interaction branches (dragging, clipping, sub-menus).
-- **Why it matters**:
-  The ARCH-06 migration and the 2026-09-13 interaction fixes both showed that "tests pass" can hide real defects; these files carry the largest untested surface.
-- **Remediation**:
-  - Cover drag / clip / occlusion branches per widget with headless frame sequences (scripted `RawInput`), following the toast close-button frame-two regression test as the template.
+## 16. Prioritized Roadmap & Milestone Matrix
 
----
-
-
+| Track | ID | Title | Priority | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **bug** | `BUG-CORE-01` | Generational Hash Map Persistent State & Frame Pruning | **P0** | Resolved (Phase 2) |
+| **bug** | `BUG-CORE-02` | Zero-Allocation Integer ID Derivation & Stack Hashing | **P0** | Resolved (Phase 2) |
+| **bug** | `BUG-INPUT-01` | Secondary Pointer Events (Right-Click) & Context Menu | **P1** | Resolved (Phase 1) |
+| **bug** | `BUG-INPUT-02` | Event Consumption (Prevent Tab loss in CodeEditor) | **P1** | Resolved (Phase 1) |
+| **bug** | `BUG-INPUT-03` | Complete Tab Focus Navigation Chain Across All Widgets | **P1** | Resolved (Phase 1) |
+| **bug** | `BUG-INPUT-04` | Keyboard Activation (Space/Enter) on Focused Controls | **P1** | Resolved (Phase 1) |
+| **bug** | `BUG-INPUT-05` | Touch Gestures & Horizontal Trackpad Delta Forwarding | **P2** | Resolved (Phase 3) |
+| **bug** | `BUG-TEXT-01` | LRU Typographical Measurement Cache & Unicode Block Sizing | **P1** | Resolved (Phase 3) |
+| **bug** | `BUG-TEXT-02` | Atomic Surrogate Navigation & Grapheme Editing Traversal | **P1** | Resolved (Phase 3) |
+| **bug** | `BUG-TEXT-03` | CJK Word-Wrapping & Line Breaking in RichText | **P1** | Resolved (Phase 3) |
+| **bug** | `BUG-TEXT-04` | Hidden Browser IME Textarea Bridge in Web Runner | **P1** | Resolved (Phase 3) |
+| **bug** | `BUG-WIDGET-01`| Interactive Scrollbar Thumb Dragging & Page Stepping | **P2** | Resolved (Phase 4) |
+| **bug** | `BUG-WIDGET-02`| Post-Closure Content Height Clamping in ScrollArea | **P2** | Resolved (Phase 4) |
+| **bug** | `BUG-WIDGET-03`| CodeEditor Binary Search Hit-Testing & Viewport Scrolling | **P2** | Resolved (Phase 4) |
+| **bug** | `BUG-WIDGET-04`| CodeEditor Range Selection Buffers & Drag Highlighting | **P2** | Resolved (Phase 4) |
+| **bug** | `BUG-WIDGET-05`| Dialog Dynamic Height Measurement & Tab Focus Trapping | **P2** | Resolved (Phase 4) |
+| **bug** | `BUG-WIDGET-06`| CommandPalette Scissor-Clipped Height Clamping & Scrolling | **P2** | Resolved (Phase 4) |
+| **bug** | `BUG-WIDGET-07`| ComboBox Upward Boundary Collision Flipping & Scrolling | **P2** | Resolved (Phase 4) |
+| **bug** | `BUG-WIDGET-08`| Splitter Zero-Dimension Guards & Safe Min-Px Clamping | **P2** | Resolved (Phase 4) |
+| **bug** | `BUG-WIDGET-09`| Tooltip Viewport Boundary Clamping & Toast Hover Blocking | **P2** | Resolved (Phase 4) |
+| **bug** | `BUG-WIDGET-10`| Design Tokens Normalization Across Auxiliary Widgets | **P2** | Resolved (Phase 4) |
+| **bug** | `BUG-WIDGET-11`| ContextMenu Cascading Multi-Level Submenus | **P2** | Resolved (Phase 4) |
+| **bug** | `BUG-DRAW-01` | LinearGradient Primitive in DrawCmd & Canvas Backends | **P2** | Resolved (Phase 4) |
+| **bug** | `BUG-DRAW-02` | Elimination of Redundant Per-Cell Canvas Save/Restores | **P3** | Resolved (Phase 4) |
+| **bug** | `BUG-DRAW-03` | `DrawCmd::Text` Font Family and Weight Metadata | **P3** | Resolved (Phase 8) |
+| **feat** | `FEAT-SHOWCASE-01`| Full Self-Hosted Pure Canvas Studio Workbench | **P1** | Resolved (Phase 5) |
+| **feat** | `FEAT-CORE-02` | Auto-Wrapping Flow Layout (`horizontal_wrapped`) | **P1** | Resolved (Phase 6) |
+| **feat** | `FEAT-CORE-03` | Runtime Dynamic Theming (`studio_light`, `slate_dark`) | **P2** | Resolved (Phase 6) |
+| **feat** | `FEAT-CORE-04` | Immediate-Mode Animation Tweening State Machine | **P2** | Resolved (Phase 6) |
+| **feat** | `FEAT-SHOWCASE-02`| Live Interactive Sandboxes in Docs | **P2** | Backlog |
 | **feat** | `FEAT-SHOWCASE-03`| Native In-Canvas Studio Header Bar in Benchmark | **P3** | Resolved (Iteration 12) |
 | **feat** | `FEAT-CORE-01` | Multi-Window Docking Layout System (`DockArea`) | **P3** | Resolved (Phase 7) |
 | **feat** | `FEAT-CORE-05` | Immediate-Mode Plotting & Charting Suite (`plot`, `bar_chart`) | **P3** | Resolved (Phase 7) |
@@ -103,7 +123,7 @@
 | **arch** | `ARCH-06` | Multi-Package Hierarchy (Decompose `src/core` Monolith) | **P2** | Resolved (Phase 9) |
 | **arch** | `ARCH-07` | Showcase Stage Modularization (`gallery_stage.mbt`) | **P2** | Resolved (Phase 6) |
 | **a11y** | `FEAT-A11Y-01` | Keyboard Reachability for Container & Overlay Widgets | **P2** | In Progress (15 of 16 surfaces) |
-| **test** | `DEBT-TEST-01` | Whitebox Coverage Gaps in `src/composite` Containers | **P3** | Backlog |
+| **test** | `DEBT-TEST-01` | Whitebox Coverage Gaps in `src/composite` Containers | **P3** | Resolved (Iteration 14) |
 | **arch** | `DEBT-ARCH-01` | Declare `composite -> widgets` Dependency Edge | **P3** | Resolved (Iteration 13) |
 | **logic** | `AUDIT-LOGIC-01` | Dual-Channel Text Ingestion In Web Host Causing Input Duplication | **P0** | Resolved (Iteration 1) |
 | **logic** | `AUDIT-LOGIC-02` | Key-Up Event Dropping When Key Pressed Outside Canvas Focus | **P1** | Resolved (Iteration 1) |
