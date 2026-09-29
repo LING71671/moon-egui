@@ -40,6 +40,7 @@ pub struct MinesFrame {
   view_y : Int
   view_cols : Int
   view_rows : Int
+  navigate_url : String
 }
 
 ///|
@@ -279,6 +280,14 @@ pub fn mines_step(
     mines_centre_camera(st, vp_w, vp_h)
   }
 
+  let scale = mines_ctx.style.scale
+  let top_bar_h = 38.0 * scale
+  let bottom_bar_h = 28.0 * scale
+  let in_board = mouse_x >= 0.0 &&
+    mouse_x <= vp_w &&
+    mouse_y >= top_bar_h &&
+    mouse_y <= vp_h - bottom_bar_h
+
   // 2. camera: pan + zoom anchored at the pointer
   st.cam_x = st.cam_x - pan_dx
   st.cam_y = st.cam_y - pan_dy
@@ -292,15 +301,15 @@ pub fn mines_step(
   }
   // The right button plants a flag the moment it goes down (no right-drag
   // gesture exists, so there is nothing to disambiguate).
-  if secondary_pressed && !st.drag_move {
+  if secondary_pressed && !st.drag_move && in_board {
     let wx = (mouse_x + st.cam_x) / st.cell
     let wy = (mouse_y + st.cam_y) / st.cell
     st.world.toggle_flag(wx.floor().to_int(), wy.floor().to_int())
   }
-  if mouse_down && (pan_dx != 0.0 || pan_dy != 0.0) {
+  if mouse_down && (pan_dx != 0.0 || pan_dy != 0.0) && in_board {
     st.drag_move = true
   }
-  if zoom_delta != 0.0 {
+  if zoom_delta != 0.0 && in_board {
     // wheel zoom anchors on the pointer, so the tile under the cursor stays put
     let factor = if zoom_delta > 0.0 { ZOOM_STEP } else { 1.0 / ZOOM_STEP }
     mines_zoom_about(st, mouse_x, mouse_y, factor)
@@ -327,6 +336,13 @@ pub fn mines_step(
     mouse_y <= vp_h
   let cursor = if !inside {
     "default"
+  } else if !in_board {
+    let c = mines_ctx.cursor_icon()
+    if c != "" {
+      c
+    } else {
+      "default"
+    }
   } else if st.drag_move {
     "grabbing"
   } else if st.pan_mode {
@@ -340,7 +356,7 @@ pub fn mines_step(
   // the hand tool up the left button belongs to the camera, so a press and
   // release that covered no distance does nothing at all: a pan mode that
   // still opened a tile on a stray click would be worse than no pan mode.
-  if released && !st.drag_move && !st.pan_mode {
+  if released && !st.drag_move && !st.pan_mode && in_board {
     let cx = ((mouse_x + st.cam_x) / st.cell).floor().to_int()
     let cy = ((mouse_y + st.cam_y) / st.cell).floor().to_int()
     if st.gesture_flag {
@@ -445,6 +461,12 @@ pub fn mines_step(
     }
   }
 
+  let nav_url = render_mines_header_bar(mines_ctx, st, vp_w, vp_h, top_bar_h)
+  render_mines_footer_bar(
+    mines_ctx, st, vp_w, vp_h, bottom_bar_h, mouse_x, mouse_y, mouse_down, view_cols,
+    view_rows,
+  )
+
   {
     draw_list: mines_ctx.end_frame(),
     revealed: world.revealed_count(),
@@ -462,5 +484,6 @@ pub fn mines_step(
     view_y: row0,
     view_cols,
     view_rows,
+    navigate_url: nav_url,
   }
 }

@@ -130,6 +130,45 @@
     zoomDelta += e.deltaY < 0 ? 1 : -1;
   }, { passive: false });
 
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      const t = e.touches[0];
+      mouseX = localX(t);
+      mouseY = localY(t);
+      lastX = t.clientX;
+      lastY = t.clientY;
+      downX = t.clientX;
+      downY = t.clientY;
+      moved = false;
+      isMouseDown = true;
+      leftPulse = true;
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 1) {
+      e.preventDefault();
+      const t = e.touches[0];
+      mouseX = localX(t);
+      mouseY = localY(t);
+      if (isMouseDown && !moved) {
+        const dx = t.clientX - downX;
+        const dy = t.clientY - downY;
+        if (dx * dx + dy * dy > 16) moved = true;
+      }
+      if (isMouseDown && moved) {
+        panDX += t.clientX - (lastX === undefined ? t.clientX : lastX);
+        panDY += t.clientY - (lastY === undefined ? t.clientY : lastY);
+      }
+      lastX = t.clientX;
+      lastY = t.clientY;
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', () => {
+    isMouseDown = false;
+  });
+
   /* ---- chrome auto-hide ---------------------------------------------
      The field is the page and the chrome is a guest: it leaves after a couple
      of quiet seconds and comes straight back on any pointer move, wheel or
@@ -446,6 +485,11 @@
       // stayed 0 forever and a right click could plant exactly one flag.
       leftPulse = false;
       rightPulse = false;
+
+      if (res && res.navigate_url && res.navigate_url.length > 0) {
+        window.location.href = res.navigate_url;
+        return;
+      }
 
       window.minesLastFrame = res;
       renderDrawList(res.draw_list);
