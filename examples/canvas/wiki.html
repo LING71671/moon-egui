@@ -247,6 +247,58 @@
 │  • 硬件光栅化绘图，全流程零 DOM 操作                                  │
 └────────────────────────────────────────────────────────────────────────┘</code></pre>
           </div>
+
+          <!-- Pipeline 5-Stage Stepper Visualizer -->
+          <div class="pipeline-card">
+            <div class="pipeline-header">
+              <span>逐帧流水线单步可视化器</span>
+              <span class="pipeline-badge" id="pipelineStageBadge">Host Event Bridge</span>
+            </div>
+            <div class="pipeline-stepper">
+              <div class="pipeline-step-node active">
+                <span class="step-num">1</span>
+                <span>输入采集</span>
+              </div>
+              <span class="step-arrow">→</span>
+              <div class="pipeline-step-node">
+                <span class="step-num">2</span>
+                <span>帧初始化</span>
+              </div>
+              <span class="step-arrow">→</span>
+              <div class="pipeline-step-node">
+                <span class="step-num">3</span>
+                <span>即时求值</span>
+              </div>
+              <span class="step-arrow">→</span>
+              <div class="pipeline-step-node">
+                <span class="step-num">4</span>
+                <span>图层合成</span>
+              </div>
+              <span class="step-arrow">→</span>
+              <div class="pipeline-step-node">
+                <span class="step-num">5</span>
+                <span>渲染分发</span>
+              </div>
+            </div>
+            <div class="pipeline-content">
+              <div class="pipeline-meta">
+                <div class="pipeline-title" id="pipelineStageTitle">阶段 1：输入数据采集 (Input Gathering)</div>
+                <div class="pipeline-metrics" id="pipelineStageMetrics" style="font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">开销: ~0.02ms · 内存分配: 0 Bytes · 无垃圾回收负担</div>
+              </div>
+              <div class="pipeline-desc" id="pipelineStageDesc">宿主拦截 pointer/mouse/touch、wheel、keydown/keyup 与 IME 文本事件，统一封装并归一化为平台无关的不可变结构体 RawInput。</div>
+              <div class="code-wrapper" style="margin: 0;">
+                <div class="code-header"><span class="code-lang-tag">Phase Execution Kernel</span></div>
+                <pre style="margin: 0; padding: 12px 16px; font-size: 12px;"><code id="pipelineStageCode">let raw = host_raw_input(...)</code></pre>
+              </div>
+            </div>
+            <div class="pipeline-controls">
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-secondary btn-sm" id="pipelinePrevBtn" style="padding: 4px 12px; font-size: 12px; cursor: pointer; border-radius: 4px; border: 1px solid var(--border); background: var(--surface);">← 上一阶段</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="pipelineNextBtn" style="padding: 4px 12px; font-size: 12px; cursor: pointer; border-radius: 4px; border: 1px solid var(--border); background: var(--surface);">下一阶段 →</button>
+              </div>
+              <button type="button" class="btn btn-primary btn-sm" id="pipelinePlayBtn" style="padding: 4px 12px; font-size: 12px; cursor: pointer; border-radius: 4px; border: 1px solid var(--border); background: var(--surface); color: var(--brand); font-weight: 600;">▶ 自动步进演示</button>
+            </div>
+          </div>
         </section>
 
         <!-- DrawCmd Protocol -->
@@ -272,6 +324,34 @@
           <p>
             基于这一协议，同一份 MoonBit 核心不仅能在 HTML5 Canvas 2D 上运行，未来还可无缝平替接入 WebGL / WebGPU 批处理管线或原生桌面 SDL/Raylib。
           </p>
+
+          <!-- Live DrawCmd Stream Inspector -->
+          <div class="inspector-card">
+            <div class="pipeline-header">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span>实时 DrawCmd 矢量指令流探测器</span>
+                <select id="inspectorCompSelect" style="padding: 2px 8px; font-size: 12px; border-radius: 4px; border: 1px solid var(--border); background: var(--surface); color: var(--text-main);">
+                  <option value="button">基础按钮 (Button)</option>
+                  <option value="slider">连续滑块 (Slider)</option>
+                  <option value="knob">精密旋钮 (Knob)</option>
+                  <option value="color_picker">色盘拾色器 (ColorPicker)</option>
+                  <option value="node_editor">流程节点图 (NodeEditor)</option>
+                </select>
+              </div>
+              <span id="drawcmdCountBadge" class="pipeline-badge" style="background: rgba(37,99,235,0.08); color: var(--brand); padding: 2px 8px; border-radius: 12px; font-size: 11px; font-family: 'JetBrains Mono', monospace;">0 图元指令 / 帧</span>
+            </div>
+            <div class="inspector-body">
+              <div class="inspector-canvas-pane">
+                <canvas id="inspectorCanvas" width="360" height="240"></canvas>
+                <div style="padding: 6px 12px; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); background: #fafbfc;">
+                  交互提示：移动鼠标或点击画布，观察右侧即时图元流变化
+                </div>
+              </div>
+              <div class="inspector-stream-pane" id="drawcmdStreamBox">
+                <!-- Live DrawCmd streaming populated by wiki_visualizer.js -->
+              </div>
+            </div>
+          </div>
         </section>
 
         <!-- ID System -->
@@ -458,6 +538,8 @@ Total tests: 106, passed: 106, failed: 0.</code></pre>
 
   </div>
 
+  <script src="canvas.js?v=20260929a"></script>
   <script src="js/docs.js"></script>
+  <script src="js/wiki_visualizer.js?v=20260929a"></script>
 </body>
 </html>

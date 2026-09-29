@@ -906,3 +906,195 @@ h3:hover .heading-anchor {
   outline-offset: -2px;
 }
 
+/* Interactive Wiki Pipeline Stepper & DrawCmd Inspector */
+.pipeline-card {
+  margin: 24px 0 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 6px 16px rgba(0, 0, 0, 0.02);
+}
+
+.pipeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pipeline-stepper {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+  overflow-x: auto;
+}
+
+.pipeline-step-node {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.pipeline-step-node.active {
+  color: var(--brand);
+  font-weight: 700;
+}
+
+.pipeline-step-node.active .step-num {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #ffffff;
+}
+
+.pipeline-step-node.completed .step-num {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.step-arrow {
+  color: var(--border-strong);
+  font-size: 12px;
+}
+
+.pipeline-content {
+  padding: 20px;
+  background: #fafbfc;
+}
+
+.pipeline-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.pipeline-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.pipeline-desc {
+  font-size: 14px;
+  color: var(--text-sub);
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+
+.pipeline-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: var(--bg-subtle);
+  border-top: 1px solid var(--border);
+}
+
+.inspector-card {
+  margin: 24px 0 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.inspector-body {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  height: 280px;
+}
+
+.inspector-canvas-pane {
+  position: relative;
+  background: #ffffff;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.inspector-canvas-pane canvas {
+  width: 100%;
+  height: 240px;
+  display: block;
+}
+
+.inspector-stream-pane {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  overflow-y: auto;
+  line-height: 1.7;
+}
+
+.cmd-line {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.cmd-idx {
+  color: #64748b;
+  min-width: 24px;
+}
+
+.cmd-tag {
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.cmd-meta {
+  color: #94a3b8;
+  word-break: break-all;
+}
+
+.cmd-more {
+  color: #64748b;
+  font-style: italic;
+  margin-top: 6px;
+}
+
+@media (max-width: 840px) {
+  .inspector-body {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .inspector-canvas-pane {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .inspector-stream-pane {
+    height: 240px;
+  }
+}
+
+

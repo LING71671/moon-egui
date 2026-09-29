@@ -252,11 +252,57 @@
       text-decoration: underline;
     }
 
-    .workbench-iframe {
+    .hero-tab-btns {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 10px;
+    }
+
+    .hero-tab-btn {
+      padding: 3px 9px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .hero-tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .hero-tab-btn.active {
+      color: var(--brand);
+      background: #ffffff;
+      border-color: var(--border);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .hero-workbench-body {
+      position: relative;
       width: 100%;
-      height: 560px;
-      border: none;
+      height: 480px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    #hero-workbench-canvas {
+      width: 100%;
+      height: 100%;
       display: block;
+      outline: none;
+      cursor: default;
+    }
+
+    #hero-workbench-canvas:focus-visible {
+      outline: 2px solid rgba(37, 99, 235, 0.35);
+      outline-offset: -2px;
     }
 
     /* Engineering Pillars */
@@ -578,13 +624,22 @@
             <span class="dot"></span>
             <span class="dot"></span>
             <span class="dot"></span>
-            <span style="margin-left: 8px;" data-i18n="wb.caption">CAD 矩阵画板实时运行预览</span>
+            <div class="hero-tab-btns">
+              <button class="hero-tab-btn active" data-preset="button">核心交互控件</button>
+              <button class="hero-tab-btn" data-preset="knob">旋钮与音频合成</button>
+              <button class="hero-tab-btn" data-preset="slider">数值滑动与微调</button>
+              <button class="hero-tab-btn" data-preset="color_picker">色彩与拾色器</button>
+              <button class="hero-tab-btn" data-preset="node_editor">节点图与拓扑</button>
+            </div>
           </div>
           <div class="workbench-tools">
-            <a href="benchmark.html" target="_blank" class="fullscreen-link" data-i18n="wb.openNewTab">新标签页打开 ↗</a>
+            <span class="brand-tag" style="background:#eff6ff; color:#2563eb; border-color:#bfdbfe;">Wasm-GC 原生内核</span>
+            <a href="gallery.html" class="fullscreen-link" data-i18n="wb.openGallery">进入完整展厅 ↗</a>
           </div>
         </div>
-        <iframe src="benchmark.html?embedded=1" class="workbench-iframe" title="moon-egui Live Canvas" data-i18n-attrs="title:wb.iframeTitle"></iframe>
+        <div class="hero-workbench-body">
+          <canvas id="hero-workbench-canvas" tabindex="0"></canvas>
+        </div>
       </div>
     </div>
   </header>
@@ -748,5 +803,7 @@
       }
     })();
   </script>
+  <script src="canvas.js?v=20260929a"></script>
+  <script src="js/hero_runner.js?v=20260929a"></script>
 </body>
 </html>
