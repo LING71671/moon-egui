@@ -70,10 +70,10 @@
 | **robust**| `AUDIT-ROBUST-03`| `Color::lerp` 非有限插值参数导致生成畸变 RGBA | **P2** | 已解决（迭代 1） |
 | **perf** | `AUDIT-PERF-01` | 文本度量缓存中的高频堆字符串分配与浮点截断 | **P1** | 已解决（迭代 1） |
 | **perf** | `AUDIT-PERF-02` | 节点连线绘制中细碎折线段大量消耗绘制指令 | **P2** | 已解决（迭代 9） |
-| **maint** | `AUDIT-MAINT-01` | 组件直接调用语义调色板令牌绕过系统主题机制 | **P1** | 积压中 |
+| **maint** | `AUDIT-MAINT-01` | 组件直接调用语义调色板令牌绕过系统主题机制 | **P1** | 已解决（迭代 10） |
 | **maint** | `AUDIT-MAINT-02` | `UIContext` 中遗留的特定控件标识符字段破坏解耦 | **P1** | 已解决（迭代 1） |
 | **maint** | `AUDIT-MAINT-03` | `Slider` 滑块中未缩放的尺寸字面量破坏全局缩放不变量 | **P2** | 已解决（迭代 1） |
-| **dogfood**| `AUDIT-DOGFOOD-01`| 跑分页面 (`benchmark.html`) 中的原生 HTML/DOM 顶栏 | **P1** | 积压中 |
+| **dogfood**| `AUDIT-DOGFOOD-01`| 跑分页面 (`benchmark.html`) 中的原生 HTML/DOM 顶栏 | **P1** | 已解决（迭代 11） |
 | **ux** | `AUDIT-UX-01` | 超宽数据表格缺乏水平滚动与表头吸顶固定 | **P2** | 已解决（迭代 3） |
 | **ux** | `AUDIT-UX-02` | 定宽数值容器导致数字文字截断与排版抖动 | **P2** | 已解决（迭代 2） |
 | **doc** | `AUDIT-DOC-01` | API 参考手册中包含过时方法签名并缺失新组件 | **P2** | 已解决（迭代 3） |
@@ -84,7 +84,7 @@
 | **robust**| `AUDIT-ROBUST-05`| Toast 手动关闭时由于索引失效造成位置跳跃 | **P2** | 已解决（迭代 1） |
 | **perf** | `AUDIT-PERF-03` | 2D 拾色器饱和度-明度区域产生 70 条网格绘制指令洪峰 | **P2** | 已解决（迭代 2） |
 | **maint** | `AUDIT-MAINT-04` | 滚动与 Toast 容器中未缩放的排版字面量与主题令牌 | **P2** | 已解决（迭代 1） |
-| **dogfood**| `AUDIT-DOGFOOD-02`| 扫雷游戏 (`minesweeper.html`) 大量模拟 HTML/DOM 顶栏与 HUD | **P1** | 积压中 |
+| **dogfood**| `AUDIT-DOGFOOD-02`| 扫雷游戏 (`minesweeper.html`) 大量模拟 HTML/DOM 顶栏与 HUD | **P1** | 已解决（迭代 12） |
 | **ux** | `AUDIT-UX-03` | 单行 `TextEdit` 缺乏横向视口滚动导致光标穿透裁剪 | **P1** | 已解决（迭代 2） |
 | **ux** | `AUDIT-UX-04` | `VirtualList` 滚动条滑块不可交互且缺乏键盘焦点导航 | **P2** | 已解决（迭代 2） |
 | **ux** | `AUDIT-UX-05` | 拾色器在选中黑、白或灰度色阶时色相被迫重置为 0° | **P2** | 已解决（迭代 2） |
