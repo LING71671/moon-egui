@@ -710,6 +710,125 @@ function _M0TPB9ArrayViewGUUsiEdEE(param0, param1, param2) {
   this.start = param1;
   this.end = param2;
 }
+function _M0TP49LING7167111moon_2degui3src7widgets11VirtualList(param0, param1, param2, param3, param4, param5) {
+  this.id_salt = param0;
+  this.total_items = param1;
+  this.height = param2;
+  this.width_val = param3;
+  this.item_height_val = param4;
+  this.overscan_val = param5;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets19VirtualListResponse(param0, param1, param2, param3, param4) {
+  this.rect = param0;
+  this.scroll_offset = param1;
+  this.first_visible = param2;
+  this.last_visible = param3;
+  this.hovered = param4;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets12TooltipStyle(param0, param1, param2, param3, param4, param5) {
+  this.padding_x = param0;
+  this.padding_y = param1;
+  this.corner_radius = param2;
+  this.font_size = param3;
+  this.offset = param4;
+  this.delay_frames = param5;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets7Tooltip(param0, param1, param2, param3) {
+  this.text = param0;
+  this.placement_val = param1;
+  this.custom_style = param2;
+  this.delay_frames_val = param3;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets8Checkbox(param0, param1) {
+  this.text = param0;
+  this.checked = param1;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets5Radio(param0, param1) {
+  this.label = param0;
+  this.selected = param1;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets6Toggle(param0, param1) {
+  this.text = param0;
+  this.checked = param1;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets5Toast(param0, param1, param2, param3, param4, param5) {
+  this.id = param0;
+  this.title = param1;
+  this.message = param2;
+  this.kind = param3;
+  this.elapsed = param4;
+  this.duration = param5;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets13ToastResponse(param0, param1) {
+  this.active_toasts = param0;
+  this.dismissed_id = param1;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets8StepItem(param0, param1, param2) {
+  this.title = param0;
+  this.description = param1;
+  this.status = param2;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets5Steps(param0, param1, param2, param3, param4) {
+  this.id_salt = param0;
+  this.current = param1;
+  this.items = param2;
+  this.clickable = param3;
+  this.width = param4;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets7Stepper(param0, param1, param2, param3, param4, param5, param6, param7, param8) {
+  this.id_salt = param0;
+  this.value = param1;
+  this.step = param2;
+  this.min = param3;
+  this.max = param4;
+  this.precision = param5;
+  this.prefix = param6;
+  this.suffix = param7;
+  this.width = param8;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets8Splitter(param0, param1, param2, param3, param4, param5, param6) {
+  this.id_salt = param0;
+  this.split_ratio = param1;
+  this.size = param2;
+  this.min_ratio = param3;
+  this.max_ratio = param4;
+  this.min_px = param5;
+  this.vertical = param6;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets6Slider(param0, param1, param2, param3, param4) {
+  this.label = param0;
+  this.value = param1;
+  this.min = param2;
+  this.max = param3;
+  this.step = param4;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets6Rating(param0, param1, param2, param3, param4, param5, param6) {
+  this.id_salt = param0;
+  this.value = param1;
+  this.max_stars = param2;
+  this.allow_half = param3;
+  this.read_only = param4;
+  this.star_size = param5;
+  this.spacing = param6;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets10Pagination(param0, param1, param2, param3, param4, param5) {
+  this.id_salt = param0;
+  this.current_page = param1;
+  this.total_pages = param2;
+  this.item_size = param3;
+  this.spacing = param4;
+  this.show_prev_next = param5;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets13PaginationRef(param0, param1) {
+  this.pagination = param0;
+  this.target = param1;
+}
+function _M0TP49LING7167111moon_2degui3src7widgets6Button(param0, param1, param2, param3) {
+  this.text = param0;
+  this.shortcut = param1;
+  this.primary = param2;
+  this.size = param3;
+}
 function _M0TP49LING7167111moon_2degui3src9composite8TreeNode(param0, param1, param2, param3) {
   this.id = param0;
   this.label = param1;
@@ -893,125 +1012,6 @@ function _M0TP49LING7167111moon_2degui3src9composite22CommandPaletteResponse(par
   this.query = param2;
   this.selected_index = param3;
 }
-function _M0TP49LING7167111moon_2degui3src7widgets11VirtualList(param0, param1, param2, param3, param4, param5) {
-  this.id_salt = param0;
-  this.total_items = param1;
-  this.height = param2;
-  this.width_val = param3;
-  this.item_height_val = param4;
-  this.overscan_val = param5;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets19VirtualListResponse(param0, param1, param2, param3, param4) {
-  this.rect = param0;
-  this.scroll_offset = param1;
-  this.first_visible = param2;
-  this.last_visible = param3;
-  this.hovered = param4;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets12TooltipStyle(param0, param1, param2, param3, param4, param5) {
-  this.padding_x = param0;
-  this.padding_y = param1;
-  this.corner_radius = param2;
-  this.font_size = param3;
-  this.offset = param4;
-  this.delay_frames = param5;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets7Tooltip(param0, param1, param2, param3) {
-  this.text = param0;
-  this.placement_val = param1;
-  this.custom_style = param2;
-  this.delay_frames_val = param3;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets8Checkbox(param0, param1) {
-  this.text = param0;
-  this.checked = param1;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets5Radio(param0, param1) {
-  this.label = param0;
-  this.selected = param1;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets6Toggle(param0, param1) {
-  this.text = param0;
-  this.checked = param1;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets5Toast(param0, param1, param2, param3, param4, param5) {
-  this.id = param0;
-  this.title = param1;
-  this.message = param2;
-  this.kind = param3;
-  this.elapsed = param4;
-  this.duration = param5;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets13ToastResponse(param0, param1) {
-  this.active_toasts = param0;
-  this.dismissed_id = param1;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets8StepItem(param0, param1, param2) {
-  this.title = param0;
-  this.description = param1;
-  this.status = param2;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets5Steps(param0, param1, param2, param3, param4) {
-  this.id_salt = param0;
-  this.current = param1;
-  this.items = param2;
-  this.clickable = param3;
-  this.width = param4;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets7Stepper(param0, param1, param2, param3, param4, param5, param6, param7, param8) {
-  this.id_salt = param0;
-  this.value = param1;
-  this.step = param2;
-  this.min = param3;
-  this.max = param4;
-  this.precision = param5;
-  this.prefix = param6;
-  this.suffix = param7;
-  this.width = param8;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets8Splitter(param0, param1, param2, param3, param4, param5, param6) {
-  this.id_salt = param0;
-  this.split_ratio = param1;
-  this.size = param2;
-  this.min_ratio = param3;
-  this.max_ratio = param4;
-  this.min_px = param5;
-  this.vertical = param6;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets6Slider(param0, param1, param2, param3, param4) {
-  this.label = param0;
-  this.value = param1;
-  this.min = param2;
-  this.max = param3;
-  this.step = param4;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets6Rating(param0, param1, param2, param3, param4, param5, param6) {
-  this.id_salt = param0;
-  this.value = param1;
-  this.max_stars = param2;
-  this.allow_half = param3;
-  this.read_only = param4;
-  this.star_size = param5;
-  this.spacing = param6;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets10Pagination(param0, param1, param2, param3, param4, param5) {
-  this.id_salt = param0;
-  this.current_page = param1;
-  this.total_pages = param2;
-  this.item_size = param3;
-  this.spacing = param4;
-  this.show_prev_next = param5;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets13PaginationRef(param0, param1) {
-  this.pagination = param0;
-  this.target = param1;
-}
-function _M0TP49LING7167111moon_2degui3src7widgets6Button(param0, param1, param2, param3) {
-  this.text = param0;
-  this.shortcut = param1;
-  this.primary = param2;
-  this.size = param3;
-}
 function _M0DTP49LING7167111moon_2degui3src4core5Event3Key(param0, param1, param2) {
   this._0 = param0;
   this._1 = param1;
@@ -1117,16 +1117,16 @@ const _M0MP49LING7167111moon_2degui3src4core2Id9with__intN5primeS273 = 109951162
 const _M0MP49LING7167111moon_2degui3src4core2Id10with__seedN5primeS294 = 1099511628211n;
 const _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579 = new _M0TP49LING7167111moon_2degui3src4core2Id(0n);
 const _M0MP49LING7167111moon_2degui3src4core9Modifiers4noneN6recordS1587 = new _M0TP49LING7167111moon_2degui3src4core9Modifiers(false, false, false, false);
-const _M0FP49LING7167111moon_2degui3src9composite9hex__byteN11hex__digitsS288 = "0123456789ABCDEF";
-const _M0MP49LING7167111moon_2degui3src9composite10TableStyle7defaultN6recordS3537 = new _M0TP49LING7167111moon_2degui3src9composite10TableStyle(32, 30, 6);
-const _M0MP49LING7167111moon_2degui3src9composite9PlotStyle7defaultN6recordS3538 = new _M0TP49LING7167111moon_2degui3src9composite9PlotStyle(280, 150, 38, 14, 14, 24, 280, 150, 8);
-const _M0MP49LING7167111moon_2degui3src9composite15NodeEditorStyle7defaultN6recordS3539 = new _M0TP49LING7167111moon_2degui3src9composite15NodeEditorStyle(160, 28, 5, 22, 6, 2, 24);
-const _M0MP49LING7167111moon_2degui3src9composite10FaderStyle7defaultN6recordS3541 = new _M0TP49LING7167111moon_2degui3src9composite10FaderStyle(44, 150, 6, 32, 20, 3);
-const _M0MP49LING7167111moon_2degui3src9composite15CodeEditorStyle7defaultN6recordS3542 = new _M0TP49LING7167111moon_2degui3src9composite15CodeEditorStyle(12.5, 11, 20, 44, 6);
 const _M0MP49LING7167111moon_2degui3src7widgets10Pagination4showN3symS530 = "‹";
 const _M0MP49LING7167111moon_2degui3src7widgets10Pagination4showN3symS546 = "...";
 const _M0MP49LING7167111moon_2degui3src7widgets10Pagination4showN3symS554 = "›";
 const _M0FP49LING7167111moon_2degui3src7widgets21wrap__dialog__messageN7_2abindS2862 = "\n";
+const _M0FP49LING7167111moon_2degui3src9composite9hex__byteN11hex__digitsS288 = "0123456789ABCDEF";
+const _M0MP49LING7167111moon_2degui3src9composite10TableStyle7defaultN6recordS3551 = new _M0TP49LING7167111moon_2degui3src9composite10TableStyle(32, 30, 6);
+const _M0MP49LING7167111moon_2degui3src9composite9PlotStyle7defaultN6recordS3552 = new _M0TP49LING7167111moon_2degui3src9composite9PlotStyle(280, 150, 38, 14, 14, 24, 280, 150, 8);
+const _M0MP49LING7167111moon_2degui3src9composite15NodeEditorStyle7defaultN6recordS3553 = new _M0TP49LING7167111moon_2degui3src9composite15NodeEditorStyle(160, 28, 5, 22, 6, 2, 24);
+const _M0MP49LING7167111moon_2degui3src9composite10FaderStyle7defaultN6recordS3555 = new _M0TP49LING7167111moon_2degui3src9composite10FaderStyle(44, 150, 6, 32, 20, 3);
+const _M0MP49LING7167111moon_2degui3src9composite15CodeEditorStyle7defaultN6recordS3556 = new _M0TP49LING7167111moon_2degui3src9composite15CodeEditorStyle(12.5, 11, 20, 44, 6);
 const _M0FP49LING7167111moon_2degui8examples6canvas19code__steps__sample = "// MoonBit Immediate-Mode Steps Navigation Widget\npub struct Steps {\n  id_salt : String\n  current : Int\n  items : Array[StepItem]\n}\n\npub fn Steps::show(self : Steps, ctx : @core.UIContext) -> Response {\n  let p = ctx.painter()\n  let count = self.items.length()\n  for i = 0; i < count; i = i + 1 {\n    let center = self.step_center(i)\n    let r = 12.0 * ctx.style.scale\n    if i < self.current {\n      // Centered vector checkmark geometry\n      p.add_circle(center, r, @color.Color::accent_primary())\n      let p1 = @math.Vec2::new(center.x - r * 0.42, center.y - r * 0.04)\n      let p2 = @math.Vec2::new(center.x - r * 0.10, center.y + r * 0.32)\n      let p3 = @math.Vec2::new(center.x + r * 0.44, center.y - r * 0.32)\n      p.add_line(p1, p2, @color.Color::white(), 1.8)\n      p.add_line(p2, p3, @color.Color::white(), 1.8)\n    }\n  }\n  ctx.allocate_space(@math.Vec2::new(ctx.available_width(), 48.0))\n}";
 const _M0FP49LING7167111moon_2degui8examples6canvas18code__mesh__sample = "// WebGL 2.0 2D Mesh Batching & Tessellation Pipeline\npub struct Vertex {\n  x : Float\n  y : Float\n  u : Float\n  v : Float\n  r : Float\n  g : Float\n  b : Float\n  a : Float\n} derive(Eq, Debug)\n\npub struct Mesh {\n  vertices : Array[Vertex]\n  indices : Array[Int]\n} derive(Eq, Debug)\n\npub fn tessellate_rect(\n  rect : @math.Rect,\n  color : @color.Color,\n  radius : Double\n) -> Mesh {\n  let mesh = Mesh::new()\n  // Direct zero-copy triangulation into GPU vertex buffer\n  mesh.append_rect_triangles(rect, color, radius)\n  mesh\n}";
 const _M0FP49LING7167111moon_2degui8examples6canvas21code__context__sample = "// Moon-EGUI Immediate-Mode Core Execution Context\npub struct UIContext {\n  input : InputState\n  id_stack : IdStack\n  layout : LayoutEngine\n  focus : FocusManager\n  layers : LayerManager\n  windows : WindowManager\n  memory : Memory\n  mut style : WidgetStyle\n  mut theme : Theme\n  mut cursor_icon : String\n  mut time : Double\n  mut frame_counter : Int\n}\n\npub fn UIContext::allocate_space(\n  self : UIContext,\n  size : @math.Vec2\n) -> (Id, @math.Rect, Response) {\n  let id = self.next_auto_id()\n  let rect = self.layout.allocate_rect(size)\n  // Hit-testing, focus, and pointer state evaluation\n  let resp = self.interact(id, rect)\n  (id, rect, resp)\n}";
@@ -1162,7 +1162,7 @@ const _M0MP49LING7167111moon_2degui3src4core9UIContext3newN6constrS1590 = 256;
 const _M0FP49LING7167111moon_2degui8examples6canvas12gallery__ctx = _M0MP49LING7167111moon_2degui3src4core9UIContext3new();
 const _M0FP49LING7167111moon_2degui8examples6canvas3ctx = _M0MP49LING7167111moon_2degui3src4core9UIContext3new();
 const _M0FP49LING7167111moon_2degui8examples6canvas11studio__ctx = _M0MP49LING7167111moon_2degui3src4core9UIContext3new();
-const _M0FP49LING7167111moon_2degui3src9composite20code__editor_2einnerN6constrS3543 = 0;
+const _M0FP49LING7167111moon_2degui3src9composite20code__editor_2einnerN6constrS3557 = 0;
 const _M0FP49LING7167111moon_2degui8examples6canvas13studio__state = new _M0TP49LING7167111moon_2degui8examples6canvas11StudioState([new _M0TP49LING7167111moon_2degui8examples6canvas10StudioFile("steps_mbt", "src/widgets/steps.mbt", "steps.mbt", _M0FP49LING7167111moon_2degui8examples6canvas19code__steps__sample), new _M0TP49LING7167111moon_2degui8examples6canvas10StudioFile("mesh_mbt", "src/draw/mesh.mbt", "mesh.mbt", _M0FP49LING7167111moon_2degui8examples6canvas18code__mesh__sample), new _M0TP49LING7167111moon_2degui8examples6canvas10StudioFile("context_mbt", "src/core/context.mbt", "context.mbt", _M0FP49LING7167111moon_2degui8examples6canvas21code__context__sample), new _M0TP49LING7167111moon_2degui8examples6canvas10StudioFile("moon_mod", "moon.mod", "moon.mod", _M0FP49LING7167111moon_2degui8examples6canvas17code__mod__sample), new _M0TP49LING7167111moon_2degui8examples6canvas10StudioFile("readme_md", "README.md", "README.md", _M0FP49LING7167111moon_2degui8examples6canvas20code__readme__sample)], [0, 1, 2], 0, 0.22, 0.72, [new _M0TP49LING7167111moon_2degui8examples6canvas12TerminalLine("=== Moon-EGUI Studio (100% Pure Canvas 2D / Wasm-GC) ===", _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary()), new _M0TP49LING7167111moon_2degui8examples6canvas12TerminalLine("Zero HTML DOM elements. Full immediate-mode pipeline active.", _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary()), new _M0TP49LING7167111moon_2degui8examples6canvas12TerminalLine("Click files on left to switch, edit code in center, run commands below.", _M0MP49LING7167111moon_2degui3src5color5Color11text__muted()), new _M0TP49LING7167111moon_2degui8examples6canvas12TerminalLine("$ moon test", _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover()), new _M0TP49LING7167111moon_2degui8examples6canvas12TerminalLine("Total tests: 335, passed: 335, failed: 0 (100% passing).", _M0MP49LING7167111moon_2degui3src5color5Color7success())], 0, false, "", 0, ["root", "src", "widgets", "draw", "core"], false);
 const _M0MP49LING7167111moon_2degui8examples6canvas9MineWorld3newN6constrS1643 = 64;
 const _M0FP49LING7167111moon_2degui8examples6canvas9mines__st = new _M0TP49LING7167111moon_2degui8examples6canvas10MinesState(_M0MP49LING7167111moon_2degui8examples6canvas9MineWorld3new(20260913n), -14, -12, 22, false, false, false, false, false, false, false);
@@ -7390,5143 +7390,6 @@ function _M0MP49LING7167111moon_2degui3src4core9UIContext18is__caret__visible(se
 function _M0MP49LING7167111moon_2degui3src4core9UIContext10set__theme(self, theme) {
   self.theme = theme;
 }
-function _M0IP49LING7167111moon_2degui3src9composite12TextSpanKindPB2Eq5equal(_x_1924, _x_1925) {
-  switch (_x_1924.$tag) {
-    case 0: {
-      if (_x_1925.$tag === 0) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    case 1: {
-      if (_x_1925.$tag === 1) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    case 2: {
-      if (_x_1925.$tag === 2) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    default: {
-      const _Link = _x_1924;
-      const _$42$x0_1926 = _Link._0;
-      if (_x_1925.$tag === 3) {
-        const _Link$2 = _x_1925;
-        const _$42$y0_1927 = _Link$2._0;
-        return _$42$x0_1926 === _$42$y0_1927;
-      } else {
-        return false;
-      }
-    }
-  }
-}
-function _M0FP49LING7167111moon_2degui3src9composite13string__slice(s, start, end) {
-  return _M0FP49LING7167111moon_2degui3src4core13string__slice(s, start, end);
-}
-function _M0FP49LING7167111moon_2degui3src9composite20prev__char__boundary(text, pos) {
-  return _M0FP49LING7167111moon_2degui3src4core20prev__char__boundary(text, pos);
-}
-function _M0FP49LING7167111moon_2degui3src9composite20next__char__boundary(text, pos) {
-  return _M0FP49LING7167111moon_2degui3src4core20next__char__boundary(text, pos);
-}
-function _M0FP49LING7167111moon_2degui3src9composite18delete__prev__char(text, pos) {
-  return _M0FP49LING7167111moon_2degui3src4core18delete__prev__char(text, pos);
-}
-function _M0FP49LING7167111moon_2degui3src9composite18delete__next__char(text, pos) {
-  return _M0FP49LING7167111moon_2degui3src4core18delete__next__char(text, pos);
-}
-function _M0FP49LING7167111moon_2degui3src9composite13is__cjk__char(code) {
-  return _M0FP49LING7167111moon_2degui3src4core13is__cjk__char(code);
-}
-function _M0FP49LING7167111moon_2degui3src9composite23is__cjk__closing__punct(code) {
-  return _M0FP49LING7167111moon_2degui3src4core23is__cjk__closing__punct(code);
-}
-function _M0MP49LING7167111moon_2degui3src9composite8TreeNode11new_2einner(id, label, children, icon) {
-  return new _M0TP49LING7167111moon_2degui3src9composite8TreeNode(id, label, icon, children);
-}
-function _M0MP49LING7167111moon_2degui3src9composite8TreeNode12leaf_2einner(id, label, icon) {
-  return new _M0TP49LING7167111moon_2degui3src9composite8TreeNode(id, label, icon, []);
-}
-function _M0FP49LING7167111moon_2degui3src9composite20flatten__tree__nodes(nodes, expanded_ids, depth, parent_id, out) {
-  const _bind = nodes.length;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind) {
-      const node = nodes[_];
-      const _p = node.children;
-      const has_children = !(_p.length === 0);
-      const is_expanded = has_children && _M0MPC15array5Array8containsGsE(expanded_ids, node.id);
-      _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(out, new _M0TP49LING7167111moon_2degui3src9composite12FlatTreeNode(node, depth, is_expanded, has_children, parent_id));
-      if (is_expanded) {
-        _M0FP49LING7167111moon_2degui3src9composite20flatten__tree__nodes(node.children, expanded_ids, depth + 1 | 0, node.id, out);
-      }
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      return;
-    }
-  }
-}
-function _M0FP49LING7167111moon_2degui3src9composite18tree__view_2einner(ctx, id_salt, nodes, selected_id, expanded_ids, indent_step, item_height, size) {
-  const scale = ctx.style.scale;
-  const eff_indent = indent_step * scale;
-  const eff_row_h = item_height > 0 ? item_height : (ctx.style.control_h_sm + ctx.style.radius_xs) * scale;
-  const flat_nodes = [];
-  _M0FP49LING7167111moon_2degui3src9composite20flatten__tree__nodes(nodes, expanded_ids, 0, undefined, flat_nodes);
-  const node_count = flat_nodes.length;
-  const content_height = node_count > 0 ? (node_count + 0) * eff_row_h + 4 * scale : eff_row_h + 4 * scale;
-  let total_w;
-  if (size === undefined) {
-    total_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) > 0 ? _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) : 240 * scale;
-  } else {
-    const _Some = size;
-    const _s = _Some;
-    total_w = _s.x;
-  }
-  let total_h;
-  if (size === undefined) {
-    total_h = content_height;
-  } else {
-    const _Some = size;
-    const _s = _Some;
-    total_h = _s.y;
-  }
-  const id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `tree_view::${id_salt}`);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(total_w, total_h));
-  const _rect = _bind._1;
-  const _response = _bind._2;
-  if (_response.hovered) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, id);
-  if (_response.pressed || _response.clicked) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext14request__focus(ctx, id);
-  }
-  const is_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, id);
-  const scroll_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `tree_view::${id_salt}::scroll`);
-  let scroll_y = _M0MP49LING7167111moon_2degui3src4core9UIContext19get__scroll__offset(ctx, scroll_id);
-  const max_scroll = content_height > total_h ? content_height - total_h : 0;
-  if (_response.hovered && (ctx.input.scroll_delta.y !== 0 && max_scroll > 0)) {
-    scroll_y = scroll_y - ctx.input.scroll_delta.y;
-  }
-  const tree_radius = ctx.style.radius_md * scale;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, ctx.theme.bg_window, tree_radius);
-  const border_color = is_focused ? ctx.theme.border_focus : ctx.theme.border_muted;
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, border_color, 1, tree_radius);
-  let cur_selected = selected_id;
-  const next_expanded = _M0MPC15array5Array4copyGsE(expanded_ids);
-  let clicked_id = undefined;
-  let toggled_id = undefined;
-  if (is_focused && node_count > 0) {
-    let sel_idx = -1;
-    let _tmp = 0;
-    while (true) {
-      const i = _tmp;
-      if (i < node_count) {
-        if (_M0IPC16option6OptionPB2Eq5equalGsE(_M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, i).node.id, cur_selected)) {
-          sel_idx = i;
-          break;
-        }
-        _tmp = i + 1 | 0;
-        continue;
-      } else {
-        break;
-      }
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
-      if (sel_idx > 0) {
-        cur_selected = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, sel_idx - 1 | 0).node.id;
-        clicked_id = cur_selected;
-      } else {
-        if (sel_idx === -1) {
-          cur_selected = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, 0).node.id;
-          clicked_id = cur_selected;
-        }
-      }
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
-      if (sel_idx >= 0 && sel_idx < (node_count - 1 | 0)) {
-        cur_selected = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, sel_idx + 1 | 0).node.id;
-        clicked_id = cur_selected;
-      } else {
-        if (sel_idx === -1) {
-          cur_selected = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, 0).node.id;
-          clicked_id = cur_selected;
-        }
-      }
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
-      if (sel_idx >= 0) {
-        const flat = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, sel_idx);
-        if (flat.has_children && !flat.is_expanded) {
-          _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(next_expanded, flat.node.id);
-          toggled_id = flat.node.id;
-        }
-      }
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
-      if (sel_idx >= 0) {
-        const flat = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, sel_idx);
-        if (flat.has_children && flat.is_expanded) {
-          let idx_to_remove = -1;
-          let _tmp$2 = 0;
-          while (true) {
-            const i = _tmp$2;
-            if (i < next_expanded.length) {
-              if (_M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(next_expanded, i) === flat.node.id) {
-                idx_to_remove = i;
-                break;
-              }
-              _tmp$2 = i + 1 | 0;
-              continue;
-            } else {
-              break;
-            }
-          }
-          if (idx_to_remove >= 0) {
-            _M0MPC15array5Array6removeGsE(next_expanded, idx_to_remove);
-            toggled_id = flat.node.id;
-          }
-        } else {
-          const _bind$2 = flat.parent_id;
-          if (_bind$2 === undefined) {
-          } else {
-            const _Some = _bind$2;
-            const _p_id = _Some;
-            cur_selected = _p_id;
-            clicked_id = _p_id;
-          }
-        }
-      }
-    }
-    const _bind$2 = cur_selected;
-    let target_idx;
-    if (_bind$2 === undefined) {
-      target_idx = -1;
-    } else {
-      const _Some = _bind$2;
-      const _sel_id = _Some;
-      let idx = -1;
-      let _tmp$2 = 0;
-      while (true) {
-        const i = _tmp$2;
-        if (i < node_count) {
-          if (_M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, i).node.id === _sel_id) {
-            idx = i;
-            break;
-          }
-          _tmp$2 = i + 1 | 0;
-          continue;
-        } else {
-          break;
-        }
-      }
-      target_idx = idx;
-    }
-    if (target_idx >= 0 && max_scroll > 0) {
-      const row_top = (target_idx + 0) * eff_row_h;
-      const row_bottom = row_top + eff_row_h;
-      if (row_top < scroll_y) {
-        scroll_y = row_top;
-      } else {
-        if (row_bottom > scroll_y + total_h - 4 * scale) {
-          scroll_y = row_bottom - (total_h - 4 * scale);
-        }
-      }
-    }
-  }
-  if (scroll_y < 0) {
-    scroll_y = 0;
-  }
-  if (scroll_y > max_scroll) {
-    scroll_y = max_scroll;
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, scroll_id, scroll_y);
-  if (node_count > 0) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, _rect);
-  }
-  const sb_reserve = max_scroll > 0 ? 6 * scale : 0;
-  let _tmp = 0;
-  while (true) {
-    const i = _tmp;
-    if (i < node_count) {
-      const flat = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, i);
-      const node = flat.node;
-      const row_y = _rect.y + 2 * scale + (i + 0) * eff_row_h - scroll_y;
-      const is_in_view = row_y + eff_row_h >= _rect.y && row_y <= _rect.y + _rect.h;
-      const row_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + 2 * scale, row_y, _rect.w - 4 * scale - sb_reserve, eff_row_h);
-      const is_row_hovered = is_in_view && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, row_rect);
-      const is_row_selected = _M0IPC16option6OptionPB2Eq5equalGsE(node.id, cur_selected);
-      const chevron_x = row_rect.x + 4 * scale + (flat.depth + 0) * eff_indent;
-      const chevron_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(chevron_x, row_y, 16 * scale, eff_row_h);
-      const is_chevron_hovered = flat.has_children && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, chevron_rect);
-      if (is_row_hovered || is_chevron_hovered) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-      }
-      if (ctx.input.mouse_pressed) {
-        if (is_chevron_hovered) {
-          if (flat.is_expanded) {
-            let found = -1;
-            let _tmp$2 = 0;
-            while (true) {
-              const j = _tmp$2;
-              if (j < next_expanded.length) {
-                if (_M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(next_expanded, j) === node.id) {
-                  found = j;
-                  break;
-                }
-                _tmp$2 = j + 1 | 0;
-                continue;
-              } else {
-                break;
-              }
-            }
-            if (found >= 0) {
-              _M0MPC15array5Array6removeGsE(next_expanded, found);
-            }
-          } else {
-            _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(next_expanded, node.id);
-          }
-          toggled_id = node.id;
-        } else {
-          if (is_row_hovered) {
-            cur_selected = node.id;
-            clicked_id = node.id;
-            _M0MP49LING7167111moon_2degui3src4core9UIContext14request__focus(ctx, id);
-          }
-        }
-      }
-      const row_radius = ctx.style.radius_sm * scale;
-      const font_sm = ctx.style.font_small * scale;
-      const font_nm = ctx.style.font_normal * scale;
-      if (is_row_selected) {
-        _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color19tree__row__selected(), row_radius);
-        _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(row_rect.x, row_rect.y + 2 * scale, 2.5 * scale, row_rect.h - 4 * scale), _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 1);
-      } else {
-        if (is_row_hovered) {
-          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, ctx.theme.bg_hover, row_radius);
-        }
-      }
-      let _tmp$2 = 0;
-      while (true) {
-        const d = _tmp$2;
-        if (d < flat.depth) {
-          const guide_x = row_rect.x + 4 * scale + (d + 0) * eff_indent + 7.5 * scale;
-          _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(guide_x, row_rect.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(guide_x, row_rect.y + row_rect.h), ctx.theme.border_muted, 1);
-          _tmp$2 = d + 1 | 0;
-          continue;
-        } else {
-          break;
-        }
-      }
-      if (flat.has_children) {
-        const chevron_glyph = flat.is_expanded ? "v" : ">";
-        const chevron_col = is_chevron_hovered ? ctx.theme.text_primary : ctx.theme.text_muted;
-        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(chevron_x + 3 * scale, row_y + 5 * scale), chevron_glyph, font_sm, chevron_col, "", 500);
-      }
-      const content_x = chevron_x + 18 * scale;
-      let text_x = content_x;
-      const _p = node.icon;
-      if (!(_p === "")) {
-        const icon_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, node.icon, font_sm);
-        const badge_w = icon_size.x + 8 * scale;
-        const badge_h = 16 * scale;
-        const badge_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(content_x, row_y + 4 * scale, badge_w, badge_h);
-        let badge_bg;
-        let badge_col;
-        _L: {
-          if (is_row_selected) {
-            badge_bg = ctx.theme.accent_soft;
-            badge_col = ctx.theme.accent_primary;
-            break _L;
-          } else {
-            badge_bg = ctx.theme.bg_subtle;
-            badge_col = ctx.theme.text_secondary;
-            break _L;
-          }
-        }
-        _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), badge_rect, badge_bg, 3 * scale);
-        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(content_x + 4 * scale, row_y + 6 * scale), node.icon, font_sm, badge_col, "", 500);
-        text_x = content_x + badge_w + 6 * scale;
-      }
-      const label_col = is_row_selected ? ctx.theme.accent_primary : is_row_hovered ? ctx.theme.text_primary : ctx.theme.text_body;
-      _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(text_x, row_y + 5.5 * scale), node.label, font_nm, label_col, "", 500);
-      _tmp = i + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  if (node_count > 0) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
-  }
-  if (max_scroll > 0) {
-    const sb_w = 4 * scale;
-    const sb_x = _rect.x + _rect.w - sb_w - 2 * scale;
-    const sb_track_y = _rect.y + 2 * scale;
-    const sb_track_h = _rect.h - 4 * scale;
-    const raw_thumb_h = sb_track_h * (total_h / content_height);
-    const min_thumb_h = 16 * scale;
-    const thumb_h = raw_thumb_h < min_thumb_h ? min_thumb_h : raw_thumb_h > sb_track_h ? sb_track_h : raw_thumb_h;
-    const usable_h = sb_track_h - thumb_h;
-    const thumb_y = sb_track_y + (max_scroll > 0 ? scroll_y / max_scroll * usable_h : 0);
-    const thumb_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sb_x, thumb_y, sb_w, thumb_h);
-    const track_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sb_x - 2 * scale, sb_track_y, sb_w + 4 * scale, sb_track_h);
-    const is_tb_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, thumb_rect);
-    const is_tk_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, track_rect);
-    const thumb_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `tree_view::${id_salt}::thumb`);
-    const grab_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `tree_view::${id_salt}::grab`);
-    let _tmp$2;
-    if (is_tb_hovered) {
-      _tmp$2 = true;
-    } else {
-      let _tmp$3;
-      if (is_tk_hovered) {
-        _tmp$3 = true;
-      } else {
-        const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-        _tmp$3 = BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, thumb_id.val);
-      }
-      _tmp$2 = _tmp$3;
-    }
-    if (_tmp$2) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-    }
-    if ((is_tb_hovered || is_tk_hovered) && ctx.input.mouse_pressed) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, thumb_id);
-      const initial_grab = is_tb_hovered ? ctx.input.mouse_pos.y - thumb_y : thumb_h * 0.5;
-      _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, grab_id, initial_grab);
-    }
-    const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-    if (BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, thumb_id.val)) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
-      if (ctx.input.mouse_down && usable_h > 0) {
-        const grab_offset = _M0MP49LING7167111moon_2degui3src4core9UIContext19get__scroll__offset(ctx, grab_id);
-        const rel_mouse_y = ctx.input.mouse_pos.y - sb_track_y - grab_offset;
-        let new_pct = rel_mouse_y / usable_h;
-        if (new_pct < 0) {
-          new_pct = 0;
-        }
-        if (new_pct > 1) {
-          new_pct = 1;
-        }
-        scroll_y = new_pct * max_scroll;
-        _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, scroll_id, scroll_y);
-      }
-      if (ctx.input.mouse_released) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-      }
-    }
-    const active_thumb_y = sb_track_y + (max_scroll > 0 ? scroll_y / max_scroll * usable_h : 0);
-    const active_thumb_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sb_x, active_thumb_y, sb_w, thumb_h);
-    let thumb_col;
-    let _tmp$3;
-    const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-    if (BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, thumb_id.val)) {
-      _tmp$3 = true;
-    } else {
-      _tmp$3 = is_tb_hovered;
-    }
-    if (_tmp$3) {
-      thumb_col = ctx.theme.accent_primary;
-    } else {
-      thumb_col = ctx.theme.border_muted;
-    }
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), active_thumb_rect, thumb_col, ctx.style.radius_sm * scale);
-  }
-  return new _M0TP49LING7167111moon_2degui3src9composite16TreeViewResponse(cur_selected, next_expanded, clicked_id, toggled_id, _response);
-}
-function _M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner(id, title, width, min_width, sortable) {
-  return new _M0TP49LING7167111moon_2degui3src9composite11TableColumn(id, title, width, min_width, sortable);
-}
-function _M0FP49LING7167111moon_2degui3src9composite13table_2einner(ctx, id_salt, size, columns, row_count, render_cell, row_height, header_height, selected_row, sort_column, sort_direction) {
-  const scale = ctx.style.scale;
-  const t_style = _M0MP49LING7167111moon_2degui3src9composite10TableStyle7defaultN6recordS3537;
-  const eff_row_h = row_height > 0 ? row_height : t_style.row_h * scale;
-  const eff_header_h = header_height > 0 ? header_height : t_style.header_h * scale;
-  const table_radius = t_style.radius * scale;
-  const container_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, id_salt);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, size);
-  const _table_id = _bind._0;
-  const _table_rect = _bind._1;
-  const _resp = _bind._2;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _table_id);
-  const is_focused = _resp.has_focus || (_M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _table_id) || _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, container_id));
-  let active_sort_col = sort_column;
-  let active_sort_dir = sort_direction;
-  let sort_changed = false;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _table_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), table_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _table_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, table_radius);
-  const header_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_table_rect.x, _table_rect.y, _table_rect.w, eff_header_h);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), header_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), table_radius);
-  const header_bottom_fill = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_table_rect.x, _table_rect.y + eff_header_h - table_radius, _table_rect.w, table_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), header_bottom_fill, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), 0);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_table_rect.x, _table_rect.y + eff_header_h), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_table_rect.x + _table_rect.w, _table_rect.y + eff_header_h), _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1);
-  let total_cols_w = 0;
-  const _bind$2 = columns.length;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind$2) {
-      const col = columns[_];
-      total_cols_w = total_cols_w + col.width;
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  const max_scroll_x = total_cols_w > _table_rect.w ? total_cols_w - _table_rect.w : 0;
-  let scroll_x = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, container_id, 0, "scroll_x");
-  if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _table_rect)) {
-    if (ctx.input.modifiers.shift && ctx.input.scroll_delta.y !== 0) {
-      scroll_x = scroll_x - ctx.input.scroll_delta.y;
-      _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
-    } else {
-      if (ctx.input.scroll_delta.x !== 0) {
-        scroll_x = scroll_x - ctx.input.scroll_delta.x;
-        _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
-      }
-    }
-  }
-  if (scroll_x < 0) {
-    scroll_x = 0;
-  }
-  if (scroll_x > max_scroll_x) {
-    scroll_x = max_scroll_x;
-  }
-  _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, container_id, scroll_x, "scroll_x", 0);
-  if (is_focused && max_scroll_x > 0) {
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6)) {
-      scroll_x = scroll_x - 30 * scale;
-      if (scroll_x < 0) {
-        scroll_x = 0;
-      }
-      _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, container_id, scroll_x, "scroll_x", 0);
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7)) {
-      scroll_x = scroll_x + 30 * scale;
-      if (scroll_x > max_scroll_x) {
-        scroll_x = max_scroll_x;
-      }
-      _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, container_id, scroll_x, "scroll_x", 0);
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
-    }
-  }
-  if (is_focused) {
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect6expand(_table_rect, 2 * scale), _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1.5, table_radius + 2 * scale);
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, header_rect);
-  let current_x = _table_rect.x - scroll_x;
-  const total_cols = columns.length;
-  let _tmp$2 = 0;
-  while (true) {
-    const c = _tmp$2;
-    if (c < total_cols) {
-      const col = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(columns, c);
-      const col_w = col.width;
-      const col_header_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(current_x, _table_rect.y, col_w, eff_header_h);
-      const handle_w = 8 * scale;
-      const handle_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(current_x + col_w - handle_w * 0.5, _table_rect.y, handle_w, eff_header_h);
-      const handle_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `table_col_handle::${id_salt}::${col.id}`);
-      const handle_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, handle_rect);
-      if (handle_hovered) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "col-resize");
-      }
-      if (handle_hovered && ctx.input.mouse_pressed) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, handle_id);
-      }
-      const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-      if (BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, handle_id.val)) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "col-resize");
-        _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
-        if (ctx.input.mouse_down) {
-          const mouse_delta = ctx.input.mouse_pos.x - current_x;
-          const clamped_w = mouse_delta < col.min_width ? col.min_width : mouse_delta;
-          col.width = clamped_w;
-        }
-        if (ctx.input.mouse_released) {
-          _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-        }
-      }
-      let is_header_hovered;
-      if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, col_header_rect)) {
-        let _tmp$3;
-        if (!handle_hovered) {
-          let _tmp$4;
-          const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-          if (BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579.val)) {
-            _tmp$4 = true;
-          } else {
-            const _p$3 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-            _tmp$4 = BigInt.asUintN(64, _p$3.val) === BigInt.asUintN(64, _table_id.val);
-          }
-          _tmp$3 = _tmp$4;
-        } else {
-          _tmp$3 = false;
-        }
-        is_header_hovered = _tmp$3;
-      } else {
-        is_header_hovered = false;
-      }
-      if (is_header_hovered && col.sortable) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-        if (ctx.input.mouse_pressed) {
-          if (active_sort_col === col.id) {
-            const _bind$3 = active_sort_dir;
-            let _tmp$3;
-            switch (_bind$3) {
-              case 0: {
-                _tmp$3 = 1;
-                break;
-              }
-              case 1: {
-                _tmp$3 = 0;
-                break;
-              }
-              default: {
-                _tmp$3 = 0;
-              }
-            }
-            active_sort_dir = _tmp$3;
-          } else {
-            active_sort_col = col.id;
-            active_sort_dir = 0;
-          }
-          sort_changed = true;
-        }
-      }
-      const font_sz = ctx.style.font_small * scale;
-      const title_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(current_x + 10 * scale, _table_rect.y + (eff_header_h - font_sz) * 0.5);
-      const title_color = active_sort_col === col.id ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : is_header_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color12text__strong() : _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary();
-      _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), title_pos, col.title, font_sz, title_color, "", 500);
-      if (active_sort_col === col.id) {
-        const _bind$3 = active_sort_dir;
-        let arrow_str;
-        switch (_bind$3) {
-          case 0: {
-            arrow_str = "^";
-            break;
-          }
-          case 1: {
-            arrow_str = "v";
-            break;
-          }
-          default: {
-            arrow_str = "";
-          }
-        }
-        const _p$2 = "";
-        if (!(arrow_str === _p$2)) {
-          const arrow_x = current_x + col.width - 16 * scale;
-          const arrow_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(arrow_x, title_pos.y);
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), arrow_pos, arrow_str, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), "", 500);
-        }
-      }
-      if (c < (total_cols - 1 | 0)) {
-        const divider_x = current_x + col.width;
-        _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(divider_x, _table_rect.y + 6 * scale), _M0MP49LING7167111moon_2degui3src4math4Vec23new(divider_x, _table_rect.y + eff_header_h - 6 * scale), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
-      }
-      current_x = current_x + col.width;
-      _tmp$2 = c + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
-  const body_y = _table_rect.y + eff_header_h;
-  const body_h = _table_rect.h - eff_header_h;
-  const body_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_table_rect.x, body_y, _table_rect.w, body_h);
-  const body_container_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `${id_salt}::table_body`);
-  let scroll_y = _M0MP49LING7167111moon_2degui3src4core9UIContext19get__scroll__offset(ctx, body_container_id);
-  const total_content_h = (row_count + 0) * eff_row_h;
-  const max_scroll = total_content_h > body_h ? total_content_h - body_h : 0;
-  if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, body_rect) && ctx.input.scroll_delta.y !== 0) {
-    scroll_y = scroll_y - ctx.input.scroll_delta.y;
-    _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
-  }
-  if (scroll_y < 0) {
-    scroll_y = 0;
-  }
-  if (scroll_y > max_scroll) {
-    scroll_y = max_scroll;
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, body_container_id, scroll_y);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext28set__scroll__content__height(ctx, body_container_id, total_content_h);
-  let hovered_row = undefined;
-  let clicked_row = undefined;
-  let kb_row = -1;
-  if (is_focused && row_count > 0) {
-    let cur = _M0MP49LING7167111moon_2degui3src4core6Memory29get__int__or__default_2einner(ctx.memory, container_id, 0, "kb_row");
-    if (cur < 0) {
-      cur = 0;
-    }
-    if (cur >= row_count) {
-      cur = row_count - 1 | 0;
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
-      cur = (cur + 1 | 0) < row_count ? cur + 1 | 0 : cur;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
-      cur = (cur - 1 | 0) >= 0 ? cur - 1 | 0 : cur;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
-    }
-    const row_top = (cur + 0) * eff_row_h;
-    if (row_top < scroll_y) {
-      scroll_y = row_top;
-    } else {
-      if (row_top + eff_row_h > scroll_y + body_h) {
-        scroll_y = row_top + eff_row_h - body_h;
-      }
-    }
-    if (scroll_y < 0) {
-      scroll_y = 0;
-    }
-    if (scroll_y > max_scroll) {
-      scroll_y = max_scroll;
-    }
-    _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, body_container_id, scroll_y);
-    _M0MP49LING7167111moon_2degui3src4core6Memory16set__int_2einner(ctx.memory, container_id, cur, "kb_row", 0);
-    kb_row = cur;
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
-      clicked_row = cur;
-    }
-  }
-  const start_row_raw = _M0MPC16double6Double7to__int(scroll_y / eff_row_h);
-  const start_row = start_row_raw < 0 ? 0 : start_row_raw >= row_count ? row_count : start_row_raw;
-  const visible_count = _M0MPC16double6Double7to__int(body_h / eff_row_h) + 2 | 0;
-  const end_row = (start_row + visible_count | 0) > row_count ? row_count : start_row + visible_count | 0;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, body_rect);
-  let _tmp$3 = start_row;
-  while (true) {
-    const r = _tmp$3;
-    if (r < end_row) {
-      const row_y = body_y - scroll_y + (r + 0) * eff_row_h;
-      const row_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(body_rect.x, row_y, body_rect.w, eff_row_h);
-      const is_row_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, body_rect) && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, row_rect);
-      if (is_row_hovered) {
-        hovered_row = r;
-        let _tmp$4;
-        if (ctx.input.mouse_pressed) {
-          let _tmp$5;
-          const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-          if (BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579.val)) {
-            _tmp$5 = true;
-          } else {
-            const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-            _tmp$5 = BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, _table_id.val);
-          }
-          _tmp$4 = _tmp$5;
-        } else {
-          _tmp$4 = false;
-        }
-        if (_tmp$4) {
-          clicked_row = r;
-        }
-      }
-      const is_kb_row = is_focused && r === kb_row;
-      if (r === selected_row) {
-        _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color20table__row__selected(), 0);
-      } else {
-        if (is_kb_row || is_row_hovered) {
-          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover(), 0);
-        } else {
-          if ((r % 2 | 0) === 1) {
-            _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), 0);
-          }
-        }
-      }
-      if (is_kb_row) {
-        _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1, 0);
-      }
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(row_rect.x, row_rect.y + eff_row_h), _M0MP49LING7167111moon_2degui3src4math4Vec23new(row_rect.x + row_rect.w, row_rect.y + eff_row_h), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
-      let cell_x = body_rect.x - scroll_x;
-      let _tmp$4 = 0;
-      while (true) {
-        const c = _tmp$4;
-        if (c < total_cols) {
-          const col = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(columns, c);
-          const cell_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(cell_x, row_y, col.width, eff_row_h);
-          const prev_cursor = _M0MP49LING7167111moon_2degui3src4core9UIContext6cursor(ctx);
-          const prev_avail = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
-          _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(cell_rect.x, cell_rect.y));
-          _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, cell_rect.w);
-          render_cell(ctx, r, c, cell_rect);
-          _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, prev_cursor);
-          _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, prev_avail);
-          cell_x = cell_x + col.width;
-          _tmp$4 = c + 1 | 0;
-          continue;
-        } else {
-          break;
-        }
-      }
-      _tmp$3 = r + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
-  const v_thumb_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `${id_salt}::table_v_thumb`);
-  const h_thumb_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `${id_salt}::table_h_thumb`);
-  if (max_scroll > 0 && total_content_h > 0) {
-    const scrollbar_w = 6 * scale;
-    const bar_x = body_rect.x + body_rect.w - scrollbar_w - 3 * scale;
-    const bar_track_y = body_rect.y + 2 * scale;
-    const bar_track_h = body_rect.h - 4 * scale - (max_scroll_x > 0 ? 8 * scale : 0);
-    const ratio = body_rect.h / total_content_h;
-    const raw_thumb_h = body_rect.h * ratio;
-    const min_thumb_h = 24 * scale;
-    const thumb_h = raw_thumb_h < min_thumb_h ? min_thumb_h : raw_thumb_h > bar_track_h ? bar_track_h : raw_thumb_h;
-    const travel_h = bar_track_h - thumb_h;
-    if (ctx.input.mouse_pressed) {
-      const scroll_pct = max_scroll > 0.0001 ? scroll_y / max_scroll : 0;
-      const cur_thumb_y = bar_track_y + scroll_pct * travel_h;
-      const thumb_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(bar_x, cur_thumb_y, scrollbar_w, thumb_h);
-      if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, thumb_rect)) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, v_thumb_id);
-        const grab_offset = ctx.input.mouse_pos.y - cur_thumb_y;
-        _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, container_id, grab_offset, "v_grab_offset", 0);
-      }
-    }
-    const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-    if (BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, v_thumb_id.val)) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-      _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
-      const grab_offset = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, container_id, thumb_h * 0.5, "v_grab_offset");
-      const target_thumb_y = ctx.input.mouse_pos.y - grab_offset;
-      const new_pct = travel_h > 0 ? (target_thumb_y - bar_track_y) / travel_h : 0;
-      const clamped_pct = new_pct < 0 ? 0 : new_pct > 1 ? 1 : new_pct;
-      scroll_y = clamped_pct * max_scroll;
-      _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, body_container_id, scroll_y);
-      if (ctx.input.mouse_released) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-      }
-    }
-    const scroll_pct = max_scroll > 0.0001 ? scroll_y / max_scroll : 0;
-    const thumb_y = bar_track_y + scroll_pct * travel_h;
-    const thumb_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(bar_x, thumb_y, scrollbar_w, thumb_h);
-    let is_bar_hovered;
-    if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, thumb_rect)) {
-      is_bar_hovered = true;
-    } else {
-      const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-      is_bar_hovered = BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, v_thumb_id.val);
-    }
-    if (is_bar_hovered) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-    }
-    const thumb_color = is_bar_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color13border__muted();
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), thumb_rect, thumb_color, 3 * scale);
-  }
-  if (max_scroll_x > 0 && total_cols_w > 0) {
-    const scrollbar_h = 6 * scale;
-    const bar_y = body_rect.y + body_rect.h - scrollbar_h - 2 * scale;
-    const bar_track_x = body_rect.x + 2 * scale;
-    const bar_track_w = body_rect.w - 4 * scale - (max_scroll > 0 ? 8 * scale : 0);
-    const ratio = body_rect.w / total_cols_w;
-    const raw_thumb_w = body_rect.w * ratio;
-    const min_thumb_w = 24 * scale;
-    const thumb_w = raw_thumb_w < min_thumb_w ? min_thumb_w : raw_thumb_w > bar_track_w ? bar_track_w : raw_thumb_w;
-    const travel_w = bar_track_w - thumb_w;
-    if (ctx.input.mouse_pressed) {
-      const scroll_pct_x = max_scroll_x > 0.0001 ? scroll_x / max_scroll_x : 0;
-      const cur_thumb_x = bar_track_x + scroll_pct_x * travel_w;
-      const thumb_rect_x = _M0MP49LING7167111moon_2degui3src4math4Rect3new(cur_thumb_x, bar_y, thumb_w, scrollbar_h);
-      if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, thumb_rect_x)) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, h_thumb_id);
-        const grab_offset = ctx.input.mouse_pos.x - cur_thumb_x;
-        _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, container_id, grab_offset, "h_grab_offset", 0);
-      }
-    }
-    const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-    if (BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, h_thumb_id.val)) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-      _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
-      const grab_offset = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, container_id, thumb_w * 0.5, "h_grab_offset");
-      const target_thumb_x = ctx.input.mouse_pos.x - grab_offset;
-      const new_pct = travel_w > 0 ? (target_thumb_x - bar_track_x) / travel_w : 0;
-      const clamped_pct = new_pct < 0 ? 0 : new_pct > 1 ? 1 : new_pct;
-      scroll_x = clamped_pct * max_scroll_x;
-      _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, container_id, scroll_x, "scroll_x", 0);
-      if (ctx.input.mouse_released) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-      }
-    }
-    const scroll_pct_x = max_scroll_x > 0.0001 ? scroll_x / max_scroll_x : 0;
-    const thumb_x = bar_track_x + scroll_pct_x * travel_w;
-    const thumb_rect_x = _M0MP49LING7167111moon_2degui3src4math4Rect3new(thumb_x, bar_y, thumb_w, scrollbar_h);
-    let is_bar_hovered;
-    if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, thumb_rect_x)) {
-      is_bar_hovered = true;
-    } else {
-      const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-      is_bar_hovered = BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, h_thumb_id.val);
-    }
-    if (is_bar_hovered) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-    }
-    const thumb_color = is_bar_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color13border__muted();
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), thumb_rect_x, thumb_color, 3 * scale);
-  }
-  return new _M0TP49LING7167111moon_2degui3src9composite13TableResponse(sort_changed, active_sort_col, active_sort_dir, hovered_row, clicked_row);
-}
-function _M0FP49LING7167111moon_2degui3src9composite17sparkline_2einner(ctx, id_salt, values, size, color, fill, show_hover) {
-  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, size);
-  const _rect = _bind._1;
-  const _resp = _bind._2;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
-  const count = values.length;
-  const scale = ctx.style.scale;
-  const radius = ctx.style.radius_sm * scale;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color15sparkline__wash(), radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1, radius);
-  if (count === 0) {
-    return { _0: undefined, _1: _resp };
-  }
-  const plot_w = _rect.w - 8;
-  const plot_h = _rect.h - 8;
-  const base_y = _rect.y + 4 + plot_h;
-  if (count === 1) {
-    const mid_y = _rect.y + 4 + plot_h * 0.5;
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + 4, mid_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + 4 + plot_w, mid_y), color, 1.5);
-    return { _0: undefined, _1: _resp };
-  }
-  let min_val = _M0MPC15array5Array2atGdE(values, 0);
-  let max_val = _M0MPC15array5Array2atGdE(values, 0);
-  const _bind$2 = values.length;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind$2) {
-      const v = values[_];
-      if (v < min_val) {
-        min_val = v;
-      }
-      if (v > max_val) {
-        max_val = v;
-      }
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  const delta = max_val - min_val;
-  const is_flat = delta < 1e-005;
-  const points = [];
-  const denom = (count - 1 | 0) + 0;
-  let _tmp$2 = 0;
-  while (true) {
-    const i = _tmp$2;
-    if (i < count) {
-      const px = _rect.x + 4 + (i + 0) / denom * plot_w;
-      let py;
-      if (is_flat) {
-        py = _rect.y + 4 + plot_h * 0.5;
-      } else {
-        const norm = (_M0MPC15array5Array2atGdE(values, i) - min_val) / delta;
-        py = _rect.y + 4 + (1 - norm) * plot_h;
-      }
-      _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(points, _M0MP49LING7167111moon_2degui3src4math4Vec23new(px, py));
-      _tmp$2 = i + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  if (fill) {
-    const fill_col = _M0MP49LING7167111moon_2degui3src5color5Color10area__wash(color);
-    let _tmp$3 = 0;
-    while (true) {
-      const i = _tmp$3;
-      if (i < (count - 1 | 0)) {
-        const p1 = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(points, i);
-        const p2 = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(points, i + 1 | 0);
-        const slice_w = p2.x - p1.x;
-        const avg_y = (p1.y + p2.y) * 0.5;
-        const slice_h = base_y - avg_y;
-        if (slice_h > 0) {
-          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(p1.x, avg_y, slice_w, slice_h), fill_col, 0);
-        }
-        _tmp$3 = i + 1 | 0;
-        continue;
-      } else {
-        break;
-      }
-    }
-  }
-  let _tmp$3 = 0;
-  while (true) {
-    const i = _tmp$3;
-    if (i < (count - 1 | 0)) {
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(points, i), _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(points, i + 1 | 0), color, 1.8);
-      _tmp$3 = i + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  let hovered_idx = undefined;
-  if (show_hover && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _rect)) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-    const mouse_rel = (ctx.input.mouse_pos.x - (_rect.x + 4)) / plot_w;
-    const raw_idx = _M0MPC16double6Double7to__int(mouse_rel * denom + 0.5);
-    const snapped_idx = raw_idx < 0 ? 0 : raw_idx >= count ? count - 1 | 0 : raw_idx;
-    hovered_idx = snapped_idx;
-    const pt = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(points, snapped_idx);
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(pt.x, _rect.y + 4), _M0MP49LING7167111moon_2degui3src4math4Vec23new(pt.x, base_y), _M0MP49LING7167111moon_2degui3src5color5Color15guideline__wash(color), 1);
-    _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), pt, 4 * scale, color);
-    _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), pt, 2 * scale, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window());
-  }
-  return { _0: hovered_idx, _1: _resp };
-}
-function _M0FP49LING7167111moon_2degui3src9composite9sparkline(ctx, id_salt, values, size$46$opt, color$46$opt, fill$46$opt, show_hover$46$opt) {
-  let size;
-  if (size$46$opt === undefined) {
-    size = _M0MP49LING7167111moon_2degui3src4math4Vec23new(120, 36);
-  } else {
-    const _Some = size$46$opt;
-    size = _Some;
-  }
-  let color;
-  if (color$46$opt === undefined) {
-    color = _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
-  } else {
-    const _Some = color$46$opt;
-    color = _Some;
-  }
-  const fill = fill$46$opt === -1 ? true : fill$46$opt;
-  const show_hover = show_hover$46$opt === -1 ? true : show_hover$46$opt;
-  return _M0FP49LING7167111moon_2degui3src9composite17sparkline_2einner(ctx, id_salt, values, size, color, fill, show_hover);
-}
-function _M0MP49LING7167111moon_2degui3src9composite8TextSpan6normal(text) {
-  return new _M0TP49LING7167111moon_2degui3src9composite8TextSpan(text, _M0DTP49LING7167111moon_2degui3src9composite12TextSpanKind6Normal__);
-}
-function _M0MP49LING7167111moon_2degui3src9composite8TextSpan4bold(text) {
-  return new _M0TP49LING7167111moon_2degui3src9composite8TextSpan(text, _M0DTP49LING7167111moon_2degui3src9composite12TextSpanKind4Bold__);
-}
-function _M0MP49LING7167111moon_2degui3src9composite8TextSpan4code(text) {
-  return new _M0TP49LING7167111moon_2degui3src9composite8TextSpan(text, _M0DTP49LING7167111moon_2degui3src9composite12TextSpanKind4Code__);
-}
-function _M0MP49LING7167111moon_2degui3src9composite8TextSpan4link(text, url) {
-  return new _M0TP49LING7167111moon_2degui3src9composite8TextSpan(text, new _M0DTP49LING7167111moon_2degui3src9composite12TextSpanKind4Link(url));
-}
-function _M0FP49LING7167111moon_2degui3src9composite20tokenize__text__span(span) {
-  const tokens = [];
-  const text = span.text;
-  const len = text.length;
-  let i = 0;
-  while (true) {
-    if (i < len) {
-      const _tmp = i;
-      const ch = _tmp >>> 0 < text.length ? text.charCodeAt(_tmp) : $oob();
-      const code = ch;
-      if (code === 32 || (code === 9 || code === 10)) {
-        if (tokens.length > 0) {
-          const last_idx = tokens.length - 1 | 0;
-          const last = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(tokens, last_idx);
-          _M0MPC15array5Array3setGmE(tokens, last_idx, new _M0TP49LING7167111moon_2degui3src9composite9RichToken(last.text, last.kind, last.is_cjk, true));
-        }
-        i = i + 1 | 0;
-      } else {
-        if (_M0FP49LING7167111moon_2degui3src9composite13is__cjk__char(code)) {
-          const char_end = _M0FP49LING7167111moon_2degui3src9composite20next__char__boundary(text, i);
-          const char_str = _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, i, char_end);
-          _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(tokens, new _M0TP49LING7167111moon_2degui3src9composite9RichToken(char_str, span.kind, true, false));
-          i = char_end;
-        } else {
-          const word_start = i;
-          while (true) {
-            if (i < len) {
-              const _tmp$2 = i;
-              const cur_ch = _tmp$2 >>> 0 < text.length ? text.charCodeAt(_tmp$2) : $oob();
-              const cur_code = cur_ch;
-              if (cur_code === 32 || (cur_code === 9 || (cur_code === 10 || _M0FP49LING7167111moon_2degui3src9composite13is__cjk__char(cur_code)))) {
-                break;
-              }
-              i = _M0FP49LING7167111moon_2degui3src9composite20next__char__boundary(text, i);
-              continue;
-            } else {
-              break;
-            }
-          }
-          const word_str = _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, word_start, i);
-          if (word_str.length > 0) {
-            _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(tokens, new _M0TP49LING7167111moon_2degui3src9composite9RichToken(word_str, span.kind, false, false));
-          }
-        }
-      }
-      continue;
-    } else {
-      break;
-    }
-  }
-  return tokens;
-}
-function _M0FP49LING7167111moon_2degui3src9composite18rich__text_2einner(ctx, id_salt, spans, wrap_width) {
-  const font_sz = ctx.style.font_normal * ctx.style.scale;
-  const line_h = (ctx.style.control_h_sm - ctx.style.radius_xs) * ctx.style.scale;
-  const max_w = wrap_width > 0 ? wrap_width : _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
-  const space_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, " ", font_sz).x;
-  let current_x = 0;
-  let current_line = 0;
-  let measured_max_w = 0;
-  const layout_items = [];
-  const _bind = spans.length;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind) {
-      const span = spans[_];
-      const tokens = _M0FP49LING7167111moon_2degui3src9composite20tokenize__text__span(span);
-      const _bind$2 = tokens.length;
-      let _tmp$2 = 0;
-      while (true) {
-        const _$2 = _tmp$2;
-        if (_$2 < _bind$2) {
-          const token = tokens[_$2];
-          const sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, token.text, font_sz);
-          const token_w = sz.x + (_M0IP49LING7167111moon_2degui3src9composite12TextSpanKindPB2Eq5equal(token.kind, _M0DTP49LING7167111moon_2degui3src9composite12TextSpanKind4Code__) ? 6 * ctx.style.scale : 0);
-          const trailing_w = token.has_trailing_space ? space_w : 0;
-          let is_closing;
-          if (token.is_cjk) {
-            let _tmp$3;
-            if (token.text.length > 0) {
-              const _tmp$4 = token.text;
-              _tmp$3 = _M0FP49LING7167111moon_2degui3src9composite23is__cjk__closing__punct(0 >>> 0 < _tmp$4.length ? _tmp$4.charCodeAt(0) : $oob());
-            } else {
-              _tmp$3 = false;
-            }
-            is_closing = _tmp$3;
-          } else {
-            is_closing = false;
-          }
-          if (current_x + token_w > max_w && (current_x > 0 && !is_closing)) {
-            current_line = current_line + 1 | 0;
-            current_x = 0;
-          }
-          const rel_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(current_x, (current_line + 0) * line_h, token_w, line_h);
-          _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(layout_items, { _0: token.text, _1: token.kind, _2: rel_rect });
-          current_x = current_x + token_w + trailing_w;
-          if (current_x > measured_max_w) {
-            measured_max_w = current_x;
-          }
-          _tmp$2 = _$2 + 1 | 0;
-          continue;
-        } else {
-          break;
-        }
-      }
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  const total_h = ((current_line + 1 | 0) + 0) * line_h;
-  const total_w = wrap_width > 0 ? wrap_width : measured_max_w;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
-  const _bind$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(total_w, total_h));
-  const _container_rect = _bind$2._1;
-  const _resp = _bind$2._2;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
-  let clicked_url = undefined;
-  const _bind$3 = layout_items.length;
-  let _tmp$2 = 0;
-  while (true) {
-    const _ = _tmp$2;
-    if (_ < _bind$3) {
-      const item = layout_items[_];
-      const _text = item._0;
-      const _kind = item._1;
-      const _rel = item._2;
-      const abs_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_container_rect.x + _rel.x, _container_rect.y + _rel.y, _rel.w, _rel.h);
-      const is_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, abs_rect);
-      if (is_hovered) {
-        if (_kind.$tag === 3) {
-        } else {
-          _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "text");
-        }
-      }
-      switch (_kind.$tag) {
-        case 0: {
-          const text_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(abs_rect.x, abs_rect.y + (line_h - font_sz) * 0.5);
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), text_pos, _text, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color10text__body(), "", 500);
-          break;
-        }
-        case 1: {
-          const text_pos$2 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(abs_rect.x, abs_rect.y + (line_h - font_sz) * 0.5);
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), text_pos$2, _text, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color12text__strong(), "", 700);
-          break;
-        }
-        case 2: {
-          const scale = ctx.style.scale;
-          const pad_x = 3 * scale;
-          const code_bg_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(abs_rect.x, abs_rect.y + 2 * scale, abs_rect.w, line_h - 4 * scale);
-          const code_radius = ctx.style.radius_sm * scale;
-          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), code_bg_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), code_radius);
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), code_bg_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1 * scale, code_radius);
-          const text_pos$3 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(abs_rect.x + pad_x, abs_rect.y + (line_h - font_sz) * 0.5);
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), text_pos$3, _text, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color12accent__deep(), "monospace", 500);
-          break;
-        }
-        default: {
-          const _Link = _kind;
-          const _url = _Link._0;
-          const scale$2 = ctx.style.scale;
-          if (is_hovered) {
-            _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-            if (ctx.input.mouse_pressed) {
-              clicked_url = _url;
-            }
-          }
-          const link_col = is_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover() : _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
-          const text_pos$4 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(abs_rect.x, abs_rect.y + (line_h - font_sz) * 0.5);
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), text_pos$4, _text, font_sz, link_col, "", 500);
-          if (is_hovered) {
-            const line_y = abs_rect.y + line_h - 2 * scale$2;
-            _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(abs_rect.x, line_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(abs_rect.x + abs_rect.w, line_y), link_col, 1 * scale$2);
-          }
-        }
-      }
-      _tmp$2 = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  return new _M0TP49LING7167111moon_2degui3src9composite16RichTextResponse(clicked_url, _resp);
-}
-function _M0FP49LING7167111moon_2degui3src9composite9hyperlink(ctx, text, _url) {
-  const font_sz = ctx.style.font_normal;
-  const text_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, text, font_sz);
-  const w = text_sz.x;
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(w, 20));
-  const _rect = _bind._1;
-  const _resp = _bind._2;
-  const is_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _rect);
-  if (is_hovered) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-  }
-  const link_col = is_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover() : _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
-  const text_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x, _rect.y + (20 - font_sz) * 0.5);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), text_pos, text, font_sz, link_col, "", 500);
-  if (is_hovered) {
-    const line_y = _rect.y + 20 - 2;
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x, line_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + w, line_y), link_col, 1);
-  }
-  const clicked = is_hovered && ctx.input.mouse_pressed;
-  return { _0: clicked, _1: _resp };
-}
-function _M0MP49LING7167111moon_2degui3src9composite9PlotPoint3new(x, y) {
-  return new _M0TP49LING7167111moon_2degui3src9composite9PlotPoint(x, y);
-}
-function _M0MP49LING7167111moon_2degui3src9composite10PlotSeries12line_2einner(name, points, color) {
-  return new _M0TP49LING7167111moon_2degui3src9composite10PlotSeries(name, points, color, 0);
-}
-function _M0MP49LING7167111moon_2degui3src9composite10PlotSeries15scatter_2einner(name, points, color) {
-  return new _M0TP49LING7167111moon_2degui3src9composite10PlotSeries(name, points, color, 1);
-}
-function _M0MP49LING7167111moon_2degui3src9composite10PlotSeries12area_2einner(name, points, color) {
-  return new _M0TP49LING7167111moon_2degui3src9composite10PlotSeries(name, points, color, 2);
-}
-function _M0FP49LING7167111moon_2degui3src9composite18format__coord__val(v) {
-  const rounded = _M0MPC16double6Double5round(v * 10) / 10;
-  const int_val = _M0MPC16double6Double7to__int(rounded);
-  return Math.abs(rounded - (int_val + 0)) < 0.01 ? _M0MPC13int3Int18to__string_2einner(int_val, 10) : String(rounded);
-}
-function _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1377(_env, pt) {
-  const min_x = _env._5;
-  const plot_rect = _env._4;
-  const span_x = _env._3;
-  const plot_bottom = _env._2;
-  const span_y = _env._1;
-  const min_y = _env._0;
-  const norm_x = (pt.x - min_x.val) / span_x;
-  const norm_y = (pt.y - min_y.val) / span_y;
-  const sx = plot_rect.x + norm_x * plot_rect.w;
-  const sy = plot_bottom - norm_y * plot_rect.h;
-  return _M0MP49LING7167111moon_2degui3src4math4Vec23new(sx, sy);
-}
-function _M0FP49LING7167111moon_2degui3src9composite12plot_2einner(ctx, id_salt, series, size, show_grid, show_crosshair, show_legend) {
-  const scale = ctx.style.scale;
-  const p_style = _M0MP49LING7167111moon_2degui3src9composite9PlotStyle7defaultN6recordS3538;
-  const default_w = p_style.default_w * scale;
-  const default_h = p_style.default_h * scale;
-  let chosen_size;
-  if (size === undefined) {
-    chosen_size = _M0MP49LING7167111moon_2degui3src4math4Vec23new(default_w, default_h);
-  } else {
-    const _Some = size;
-    chosen_size = _Some;
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, chosen_size);
-  const _rect = _bind._1;
-  const _resp = _bind._2;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
-  const radius = ctx.style.radius_md * scale;
-  const pad_left = p_style.pad_left * scale;
-  const pad_right = p_style.pad_right * scale;
-  const pad_top = p_style.pad_top * scale;
-  const pad_bottom = p_style.pad_bottom * scale;
-  const font_sz = ctx.style.font_small * scale;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1, radius);
-  const plot_w = _rect.w - pad_left - pad_right;
-  const plot_h = _rect.h - pad_top - pad_bottom;
-  if (plot_w <= 10 * scale || plot_h <= 10 * scale) {
-    return { _0: undefined, _1: _resp };
-  }
-  const plot_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + pad_left, _rect.y + pad_top, plot_w, plot_h);
-  const plot_right = plot_rect.x + plot_rect.w;
-  const plot_bottom = plot_rect.y + plot_rect.h;
-  const min_x = new _M0TPB8MutLocalGdE(0);
-  let max_x = 1;
-  const min_y = new _M0TPB8MutLocalGdE(0);
-  let max_y = 1;
-  let first = true;
-  const _bind$2 = series.length;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind$2) {
-      const s = series[_];
-      const _bind$3 = s.points;
-      const _bind$4 = _bind$3.length;
-      let _tmp$2 = 0;
-      while (true) {
-        const _$2 = _tmp$2;
-        if (_$2 < _bind$4) {
-          const pt = _bind$3[_$2];
-          if (first) {
-            min_x.val = pt.x;
-            max_x = pt.x;
-            min_y.val = pt.y;
-            max_y = pt.y;
-            first = false;
-          } else {
-            if (pt.x < min_x.val) {
-              min_x.val = pt.x;
-            }
-            if (pt.x > max_x) {
-              max_x = pt.x;
-            }
-            if (pt.y < min_y.val) {
-              min_y.val = pt.y;
-            }
-            if (pt.y > max_y) {
-              max_y = pt.y;
-            }
-          }
-          _tmp$2 = _$2 + 1 | 0;
-          continue;
-        } else {
-          break;
-        }
-      }
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  if (Math.abs(max_x - min_x.val) < 0.0001) {
-    max_x = min_x.val + 1;
-  }
-  if (Math.abs(max_y - min_y.val) < 0.0001) {
-    max_y = min_y.val + 1;
-  }
-  const span_x = max_x - min_x.val;
-  const span_y = max_y - min_y.val;
-  const _env = { _0: min_y, _1: span_y, _2: plot_bottom, _3: span_x, _4: plot_rect, _5: min_x };
-  if (show_grid) {
-    let _tmp$2 = 0;
-    while (true) {
-      const i = _tmp$2;
-      if (i <= 4) {
-        const t = (i + 0) / (4 + 0);
-        const gy = plot_bottom - t * plot_rect.h;
-        _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_rect.x, gy), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_right, gy), _M0MP49LING7167111moon_2degui3src5color5Color10grid__line(), 1);
-        const tick_val = min_y.val + t * span_y;
-        const label = _M0FP49LING7167111moon_2degui3src9composite18format__coord__val(tick_val);
-        const label_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, label, font_sz);
-        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_rect.x - label_sz.x - 4 * scale, gy - font_sz * 0.45), label, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
-        _tmp$2 = i + 1 | 0;
-        continue;
-      } else {
-        break;
-      }
-    }
-    let _tmp$3 = 0;
-    while (true) {
-      const i = _tmp$3;
-      if (i <= 4) {
-        const t = (i + 0) / (4 + 0);
-        const gx = plot_rect.x + t * plot_rect.w;
-        _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(gx, plot_rect.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(gx, plot_bottom), _M0MP49LING7167111moon_2degui3src5color5Color10grid__line(), 1);
-        const tick_val = min_x.val + t * span_x;
-        const label = _M0FP49LING7167111moon_2degui3src9composite18format__coord__val(tick_val);
-        const label_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, label, font_sz);
-        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(gx - label_sz.x * 0.5, plot_bottom + 4 * scale), label, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
-        _tmp$3 = i + 1 | 0;
-        continue;
-      } else {
-        break;
-      }
-    }
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, plot_rect);
-  const _bind$3 = series.length;
-  let _tmp$2 = 0;
-  while (true) {
-    const _ = _tmp$2;
-    if (_ < _bind$3) {
-      const s = series[_];
-      _L: {
-        const pts = s.points;
-        const count = pts.length;
-        if (count === 0) {
-          break _L;
-        }
-        const _bind$4 = s.kind;
-        switch (_bind$4) {
-          case 0: {
-            let prev_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1377(_env, _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(pts, 0));
-            let _tmp$3 = 1;
-            while (true) {
-              const i = _tmp$3;
-              if (i < count) {
-                const curr_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1377(_env, _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(pts, i));
-                _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), prev_screen, curr_screen, s.color, 2 * scale);
-                prev_screen = curr_screen;
-                _tmp$3 = i + 1 | 0;
-                continue;
-              } else {
-                break;
-              }
-            }
-            break;
-          }
-          case 1: {
-            const r = 3.5 * scale;
-            let _tmp$4 = 0;
-            while (true) {
-              const i = _tmp$4;
-              if (i < count) {
-                const pt_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1377(_env, _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(pts, i));
-                _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), pt_screen, r, s.color);
-                _tmp$4 = i + 1 | 0;
-                continue;
-              } else {
-                break;
-              }
-            }
-            break;
-          }
-          default: {
-            let prev_screen$2 = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1377(_env, _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(pts, 0));
-            let _tmp$5 = 1;
-            while (true) {
-              const i = _tmp$5;
-              if (i < count) {
-                const curr_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1377(_env, _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(pts, i));
-                const p_top = prev_screen$2.y < curr_screen.y ? prev_screen$2.y : curr_screen.y;
-                const seg_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(prev_screen$2.x, p_top, curr_screen.x - prev_screen$2.x, plot_bottom - p_top);
-                _M0MP49LING7167111moon_2degui3src4core7Painter21add__linear__gradient(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), seg_rect, _M0MP49LING7167111moon_2degui3src4math4Vec23new(seg_rect.x, seg_rect.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(seg_rect.x, seg_rect.y + seg_rect.h), _M0MP49LING7167111moon_2degui3src5color5Color11with__alpha(s.color, 100), _M0MP49LING7167111moon_2degui3src5color5Color11with__alpha(s.color, 15), 0);
-                _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), prev_screen$2, curr_screen, s.color, 2 * scale);
-                prev_screen$2 = curr_screen;
-                _tmp$5 = i + 1 | 0;
-                continue;
-              } else {
-                break;
-              }
-            }
-          }
-        }
-        break _L;
-      }
-      _tmp$2 = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
-  if (show_legend && series.length > 0) {
-    let leg_x = plot_right - 8 * scale;
-    let _tmp$3 = series.length - 1 | 0;
-    while (true) {
-      const i = _tmp$3;
-      if (i >= 0) {
-        const s = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(series, i);
-        const name_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, s.name, font_sz);
-        const leg_w = name_sz.x + 16 * scale;
-        leg_x = leg_x - leg_w;
-        const dot_r = 3 * scale;
-        const dot_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(leg_x + 5 * scale, plot_rect.y + 10 * scale);
-        _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), dot_center, dot_r, s.color);
-        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(leg_x + 12 * scale, plot_rect.y + 4 * scale), s.name, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
-        leg_x = leg_x - 8 * scale;
-        _tmp$3 = i - 1 | 0;
-        continue;
-      } else {
-        break;
-      }
-    }
-  }
-  const mouse_pos = ctx.input.mouse_pos;
-  const is_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, plot_rect);
-  let hovered_coord = undefined;
-  if (is_hovered) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
-  }
-  if (is_hovered && show_crosshair) {
-    hovered_coord = _M0MP49LING7167111moon_2degui3src4math4Vec23new(min_x.val + (mouse_pos.x - plot_rect.x) / plot_rect.w * span_x, min_y.val + (plot_bottom - mouse_pos.y) / plot_rect.h * span_y);
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(mouse_pos.x, plot_rect.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(mouse_pos.x, plot_bottom), _M0MP49LING7167111moon_2degui3src5color5Color15plot__crosshair(), 1);
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_rect.x, mouse_pos.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_right, mouse_pos.y), _M0MP49LING7167111moon_2degui3src5color5Color15plot__crosshair(), 1);
-    const _p = hovered_coord;
-    let _tmp$3;
-    if (_p === undefined) {
-      _tmp$3 = $panic();
-    } else {
-      const _p$2 = _p;
-      _tmp$3 = _p$2;
-    }
-    const hx = _tmp$3.x;
-    const _p$2 = hovered_coord;
-    let _tmp$4;
-    if (_p$2 === undefined) {
-      _tmp$4 = $panic();
-    } else {
-      const _p$3 = _p$2;
-      _tmp$4 = _p$3;
-    }
-    const hy = _tmp$4.y;
-    const text = `(${_M0FP49LING7167111moon_2degui3src9composite18format__coord__val(hx)}, ${_M0FP49LING7167111moon_2degui3src9composite18format__coord__val(hy)})`;
-    const text_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, text, font_sz);
-    const tip_pad_x = 6 * scale;
-    const tip_pad_y = 3 * scale;
-    const tip_w = text_sz.x + tip_pad_x * 2;
-    const tip_h = text_sz.y + tip_pad_y * 2;
-    let tip_x = mouse_pos.x + 8 * scale;
-    let tip_y = mouse_pos.y - tip_h - 6 * scale;
-    if (tip_x + tip_w > plot_right) {
-      tip_x = mouse_pos.x - tip_w - 8 * scale;
-    }
-    if (tip_y < plot_rect.y) {
-      tip_y = mouse_pos.y + 8 * scale;
-    }
-    const tip_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(tip_x, tip_y, tip_w, tip_h);
-    const tip_radius = ctx.style.radius_sm * scale;
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), tip_rect, _M0MP49LING7167111moon_2degui3src5color5Color12text__strong(), tip_radius);
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(tip_x + tip_pad_x, tip_y + tip_pad_y), text, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color13text__inverse(), "", 500);
-  }
-  return { _0: hovered_coord, _1: _resp };
-}
-function _M0FP49LING7167111moon_2degui3src9composite18bar__chart_2einner(ctx, id_salt, labels, values, size, bar_color) {
-  const scale = ctx.style.scale;
-  const p_style = _M0MP49LING7167111moon_2degui3src9composite9PlotStyle7defaultN6recordS3538;
-  const default_w = p_style.bar_chart_default_w * scale;
-  const default_h = p_style.bar_chart_default_h * scale;
-  let chosen_size;
-  if (size === undefined) {
-    chosen_size = _M0MP49LING7167111moon_2degui3src4math4Vec23new(default_w, default_h);
-  } else {
-    const _Some = size;
-    chosen_size = _Some;
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, chosen_size);
-  const _rect = _bind._1;
-  const _resp = _bind._2;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
-  const radius = ctx.style.radius_md * scale;
-  const pad_left = p_style.pad_left * scale;
-  const pad_right = p_style.pad_right * scale;
-  const pad_top = p_style.pad_top * scale;
-  const pad_bottom = p_style.pad_bottom * scale;
-  const font_sz = ctx.style.font_small * scale;
-  const gap = p_style.bar_chart_gap * scale;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1, radius);
-  const count = values.length;
-  if (count === 0) {
-    return { _0: undefined, _1: _resp };
-  }
-  const plot_w = _rect.w - pad_left - pad_right;
-  const plot_h = _rect.h - pad_top - pad_bottom;
-  if (plot_w <= 10 * scale || plot_h <= 10 * scale) {
-    return { _0: undefined, _1: _resp };
-  }
-  const plot_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + pad_left, _rect.y + pad_top, plot_w, plot_h);
-  const plot_right = plot_rect.x + plot_rect.w;
-  const plot_bottom = plot_rect.y + plot_rect.h;
-  let max_val = 1;
-  const _bind$2 = values.length;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind$2) {
-      const v = values[_];
-      if (v > max_val) {
-        max_val = v;
-      }
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  let _tmp$2 = 0;
-  while (true) {
-    const i = _tmp$2;
-    if (i <= 3) {
-      const t = (i + 0) / (3 + 0);
-      const gy = plot_bottom - t * plot_rect.h;
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_rect.x, gy), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_right, gy), _M0MP49LING7167111moon_2degui3src5color5Color10grid__line(), 1);
-      const val = t * max_val;
-      const label = _M0FP49LING7167111moon_2degui3src9composite18format__coord__val(val);
-      const label_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, label, font_sz);
-      _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_rect.x - label_sz.x - 4 * scale, gy - font_sz * 0.45), label, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
-      _tmp$2 = i + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  const total_gap = gap * ((count - 1 | 0) + 0);
-  const bar_w = total_gap < plot_w ? (plot_w - total_gap) / (count + 0) : 4 * scale;
-  let hovered_idx = undefined;
-  let _tmp$3 = 0;
-  while (true) {
-    const i = _tmp$3;
-    if (i < count) {
-      const val = _M0MPC15array5Array2atGdE(values, i);
-      const norm_val = max_val > 0 ? val / max_val : 0;
-      const bar_h = norm_val * plot_rect.h;
-      const bx = plot_rect.x + (i + 0) * (bar_w + gap);
-      const by = plot_bottom - bar_h;
-      const bar_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(bx, by, bar_w, bar_h);
-      const is_bar_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, bar_rect);
-      if (is_bar_hovered) {
-        hovered_idx = i;
-        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-      }
-      const col = is_bar_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover() : bar_color;
-      const bar_radius = ctx.style.radius_sm * scale;
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), bar_rect, col, bar_radius);
-      if (i < labels.length) {
-        const lbl = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(labels, i);
-        const lbl_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, lbl, font_sz);
-        const lx = bx + (bar_w - lbl_sz.x) * 0.5;
-        const ly = plot_bottom + 4 * scale;
-        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(lx, ly), lbl, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary(), "", 500);
-      }
-      if (is_bar_hovered) {
-        const val_str = _M0FP49LING7167111moon_2degui3src9composite18format__coord__val(val);
-        const val_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, val_str, font_sz);
-        const badge_pad_x = 6 * scale;
-        const badge_pad_y = 2 * scale;
-        const badge_w = val_sz.x + badge_pad_x * 2;
-        const badge_h = val_sz.y + badge_pad_y * 2;
-        const badge_x = bx + (bar_w - badge_w) * 0.5;
-        const badge_y = by - badge_h - 4 * scale;
-        const badge_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(badge_x, badge_y, badge_w, badge_h);
-        _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), badge_rect, _M0MP49LING7167111moon_2degui3src5color5Color12text__strong(), ctx.style.radius_sm * scale);
-        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(badge_x + badge_pad_x, badge_y + badge_pad_y), val_str, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color13text__inverse(), "", 500);
-      }
-      _tmp$3 = i + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  return { _0: hovered_idx, _1: _resp };
-}
-function _M0FP49LING7167111moon_2degui3src9composite10bar__chart(ctx, id_salt, labels, values, size, bar_color$46$opt) {
-  let bar_color;
-  if (bar_color$46$opt === undefined) {
-    bar_color = _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
-  } else {
-    const _Some = bar_color$46$opt;
-    bar_color = _Some;
-  }
-  return _M0FP49LING7167111moon_2degui3src9composite18bar__chart_2einner(ctx, id_salt, labels, values, size, bar_color);
-}
-function _M0MP49LING7167111moon_2degui3src9composite8NodePort5input(id, name, color) {
-  return new _M0TP49LING7167111moon_2degui3src9composite8NodePort(id, name, 0, color);
-}
-function _M0MP49LING7167111moon_2degui3src9composite8NodePort6output(id, name, color) {
-  return new _M0TP49LING7167111moon_2degui3src9composite8NodePort(id, name, 1, color);
-}
-function _M0MP49LING7167111moon_2degui3src9composite8NodeItem8set__pos(self, pos) {
-  self.pos = pos;
-}
-function _M0MP49LING7167111moon_2degui3src9composite8NodeItem11new_2einner(id, title, pos, inputs, outputs, accent_color, size) {
-  return new _M0TP49LING7167111moon_2degui3src9composite8NodeItem(id, title, pos, size, inputs, outputs, accent_color);
-}
-function _M0MP49LING7167111moon_2degui3src9composite8NodeItem3new(id, title, pos, inputs$46$opt, outputs$46$opt, accent_color, size) {
-  let inputs;
-  if (inputs$46$opt.$tag === 1) {
-    const _Some = inputs$46$opt;
-    inputs = _Some._0;
-  } else {
-    inputs = [];
-  }
-  let outputs;
-  if (outputs$46$opt.$tag === 1) {
-    const _Some = outputs$46$opt;
-    outputs = _Some._0;
-  } else {
-    outputs = [];
-  }
-  return _M0MP49LING7167111moon_2degui3src9composite8NodeItem11new_2einner(id, title, pos, inputs, outputs, accent_color, size);
-}
-function _M0MP49LING7167111moon_2degui3src9composite14NodeConnection3new(from_node, from_port, to_node, to_port) {
-  return new _M0TP49LING7167111moon_2degui3src9composite14NodeConnection(from_node, from_port, to_node, to_port);
-}
-function _M0FP49LING7167111moon_2degui3src9composite33draw__cubic__bezier__wire_2einner(painter, p0, p3, color, width, steps) {
-  const dx = Math.abs(p3.x - p0.x) * 0.5;
-  const curvature = dx < 32 ? 32 : dx;
-  const p1 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(p0.x + curvature, p0.y);
-  const p2 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(p3.x - curvature, p3.y);
-  _M0MP49LING7167111moon_2degui3src4core7Painter18add__bezier__curve(painter, p0, p1, p2, p3, color, width);
-}
-function _M0FP49LING7167111moon_2degui3src9composite20find__port__position(canvas_min, nodes, node_id, port_id, style, scale) {
-  const _bind = nodes.length;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind) {
-      const node = nodes[_];
-      if (node.id === node_id) {
-        const screen_x = canvas_min.x + node.pos.x;
-        const screen_y = canvas_min.y + node.pos.y;
-        const _bind$2 = node.size;
-        let node_w;
-        if (_bind$2 === undefined) {
-          node_w = style.node_min_w * scale;
-        } else {
-          const _Some = _bind$2;
-          const _sz = _Some;
-          node_w = _sz.x * scale;
-        }
-        const header_h = style.node_header_h * scale;
-        const port_spacing = style.port_spacing * scale;
-        const _bind$3 = node.inputs;
-        const _bind$4 = _bind$3.length;
-        let _tmp$2 = 0;
-        while (true) {
-          const i = _tmp$2;
-          if (i < _bind$4) {
-            const p = _bind$3[i];
-            if (p.id === port_id) {
-              const py = screen_y + header_h + 14 * scale + (i + 0) * port_spacing;
-              return _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x, py);
-            }
-            _tmp$2 = i + 1 | 0;
-            continue;
-          } else {
-            break;
-          }
-        }
-        const _bind$5 = node.outputs;
-        const _bind$6 = _bind$5.length;
-        let _tmp$3 = 0;
-        while (true) {
-          const j = _tmp$3;
-          if (j < _bind$6) {
-            const p = _bind$5[j];
-            if (p.id === port_id) {
-              const py = screen_y + header_h + 14 * scale + (j + 0) * port_spacing;
-              return _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + node_w, py);
-            }
-            _tmp$3 = j + 1 | 0;
-            continue;
-          } else {
-            break;
-          }
-        }
-      }
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  return undefined;
-}
-function _M0FP49LING7167111moon_2degui3src9composite20node__editor_2einner(ctx, id_salt, size, nodes, connections, custom_style, selected_node) {
-  const scale = ctx.style.scale;
-  let style;
-  if (custom_style === undefined) {
-    style = _M0MP49LING7167111moon_2degui3src9composite15NodeEditorStyle7defaultN6recordS3539;
-  } else {
-    const _Some = custom_style;
-    style = _Some;
-  }
-  const node_min_w = style.node_min_w * scale;
-  const header_h = style.node_header_h * scale;
-  const port_r = style.port_radius * scale;
-  const port_spacing = style.port_spacing * scale;
-  const card_radius = style.card_radius * scale;
-  const wire_width = style.wire_width * scale;
-  const font_title = ctx.style.font_normal * scale;
-  const font_port = ctx.style.font_small * scale;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, size);
-  const _canvas_id = _bind._0;
-  const _canvas_rect = _bind._1;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
-  const painter = _M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, _canvas_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), card_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, _canvas_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, card_radius);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, _canvas_rect);
-  _M0MP49LING7167111moon_2degui3src4core7Painter10push__clip(painter, _canvas_rect);
-  const grid_step = style.grid_size * scale;
-  let gx = _canvas_rect.x + grid_step * 0.5;
-  const canvas_right = _canvas_rect.x + _canvas_rect.w;
-  const canvas_bottom = _canvas_rect.y + _canvas_rect.h;
-  while (true) {
-    if (gx < canvas_right) {
-      let gy = _canvas_rect.y + grid_step * 0.5;
-      while (true) {
-        if (gy < canvas_bottom) {
-          _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, _M0MP49LING7167111moon_2degui3src4math4Vec23new(gx, gy), 1 * scale, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted());
-          gy = gy + grid_step;
-          continue;
-        } else {
-          break;
-        }
-      }
-      gx = gx + grid_step;
-      continue;
-    } else {
-      break;
-    }
-  }
-  let active_drag_node = _M0MP49LING7167111moon_2degui3src4core6Memory32get__string__or__default_2einner(ctx.memory, _canvas_id, "", "drag_node");
-  let active_conn_node = _M0MP49LING7167111moon_2degui3src4core6Memory32get__string__or__default_2einner(ctx.memory, _canvas_id, "", "conn_node");
-  let active_conn_port = _M0MP49LING7167111moon_2degui3src4core6Memory32get__string__or__default_2einner(ctx.memory, _canvas_id, "", "conn_port");
-  let cur_selected_node;
-  if (selected_node === undefined) {
-    cur_selected_node = _M0MP49LING7167111moon_2degui3src4core6Memory32get__string__or__default_2einner(ctx.memory, _canvas_id, "", "selected_node");
-  } else {
-    const _Some = selected_node;
-    cur_selected_node = _Some;
-  }
-  const mouse_pos = ctx.input.mouse_pos;
-  const mouse_down = ctx.input.mouse_down;
-  const mouse_pressed = ctx.input.mouse_pressed;
-  const is_canvas_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _canvas_rect);
-  let new_conn = undefined;
-  let changed = false;
-  const out_conns = [];
-  const _bind$2 = connections.length;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind$2) {
-      const c = connections[_];
-      _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(out_conns, c);
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  if (!mouse_down) {
-    let _tmp$2;
-    const _p = active_conn_node;
-    const _p$2 = "";
-    if (!(_p === _p$2)) {
-      const _p$3 = active_conn_port;
-      const _p$4 = "";
-      _tmp$2 = !(_p$3 === _p$4);
-    } else {
-      _tmp$2 = false;
-    }
-    if (_tmp$2) {
-      const _bind$3 = nodes.length;
-      let _tmp$3 = 0;
-      while (true) {
-        const _ = _tmp$3;
-        if (_ < _bind$3) {
-          const node = nodes[_];
-          const _p$3 = node.id;
-          const _p$4 = active_conn_node;
-          if (!(_p$3 === _p$4)) {
-            const screen_x = _canvas_rect.x + node.pos.x;
-            const screen_y = _canvas_rect.y + node.pos.y;
-            const _bind$4 = node.inputs;
-            const _bind$5 = _bind$4.length;
-            let _tmp$4 = 0;
-            while (true) {
-              const i = _tmp$4;
-              if (i < _bind$5) {
-                const in_port = _bind$4[i];
-                const py = screen_y + header_h + 14 * scale + (i + 0) * port_spacing;
-                const port_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x, py);
-                const dist = Math.abs(mouse_pos.x - port_center.x) + Math.abs(mouse_pos.y - port_center.y);
-                if (dist <= port_r * 2.5 + 4 * scale) {
-                  const conn = _M0MP49LING7167111moon_2degui3src9composite14NodeConnection3new(active_conn_node, active_conn_port, node.id, in_port.id);
-                  _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(out_conns, conn);
-                  new_conn = conn;
-                  changed = true;
-                }
-                _tmp$4 = i + 1 | 0;
-                continue;
-              } else {
-                break;
-              }
-            }
-          }
-          _tmp$3 = _ + 1 | 0;
-          continue;
-        } else {
-          break;
-        }
-      }
-      _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, "", "conn_node", 0);
-      _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, "", "conn_port", 0);
-      active_conn_node = "";
-      active_conn_port = "";
-    }
-    const _p$3 = active_drag_node;
-    const _p$4 = "";
-    if (!(_p$3 === _p$4)) {
-      _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, "", "drag_node", 0);
-      active_drag_node = "";
-    }
-  }
-  let _tmp$2;
-  if (mouse_down) {
-    const _p = active_drag_node;
-    const _p$2 = "";
-    _tmp$2 = !(_p === _p$2);
-  } else {
-    _tmp$2 = false;
-  }
-  if (_tmp$2) {
-    const anchor_x = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, _canvas_id, 0, "drag_anchor_x");
-    const anchor_y = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, _canvas_id, 0, "drag_anchor_y");
-    const _bind$3 = nodes.length;
-    let _tmp$3 = 0;
-    while (true) {
-      const _ = _tmp$3;
-      if (_ < _bind$3) {
-        const node = nodes[_];
-        if (node.id === active_drag_node) {
-          const new_x = mouse_pos.x - _canvas_rect.x - anchor_x;
-          const new_y = mouse_pos.y - _canvas_rect.y - anchor_y;
-          if (node.pos.x !== new_x || node.pos.y !== new_y) {
-            node.pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(new_x, new_y);
-            changed = true;
-          }
-          _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "move");
-        }
-        _tmp$3 = _ + 1 | 0;
-        continue;
-      } else {
-        break;
-      }
-    }
-  }
-  if (is_canvas_hovered && (mouse_pressed && (active_drag_node === "" && active_conn_node === ""))) {
-    let handled = false;
-    const _bind$3 = nodes.length;
-    let _tmp$3 = 0;
-    while (true) {
-      const _ = _tmp$3;
-      if (_ < _bind$3) {
-        const node = nodes[_];
-        if (handled) {
-          break;
-        }
-        const screen_x = _canvas_rect.x + node.pos.x;
-        const screen_y = _canvas_rect.y + node.pos.y;
-        const _bind$4 = node.size;
-        let node_w;
-        if (_bind$4 === undefined) {
-          node_w = node_min_w;
-        } else {
-          const _Some = _bind$4;
-          const _sz = _Some;
-          node_w = _sz.x * scale;
-        }
-        const _bind$5 = node.outputs;
-        const _bind$6 = _bind$5.length;
-        let _tmp$4 = 0;
-        while (true) {
-          const j = _tmp$4;
-          if (j < _bind$6) {
-            const out_port = _bind$5[j];
-            const py = screen_y + header_h + 14 * scale + (j + 0) * port_spacing;
-            const port_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + node_w, py);
-            const dist = Math.abs(mouse_pos.x - port_center.x) + Math.abs(mouse_pos.y - port_center.y);
-            if (dist <= port_r * 2 + 3 * scale) {
-              active_conn_node = node.id;
-              active_conn_port = out_port.id;
-              _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, node.id, "conn_node", 0);
-              _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, out_port.id, "conn_port", 0);
-              handled = true;
-              break;
-            }
-            _tmp$4 = j + 1 | 0;
-            continue;
-          } else {
-            break;
-          }
-        }
-        _tmp$3 = _ + 1 | 0;
-        continue;
-      } else {
-        break;
-      }
-    }
-    if (!handled) {
-      let _tmp$4 = nodes.length - 1 | 0;
-      while (true) {
-        const k = _tmp$4;
-        if (k >= 0) {
-          const node = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(nodes, k);
-          const screen_x = _canvas_rect.x + node.pos.x;
-          const screen_y = _canvas_rect.y + node.pos.y;
-          const _bind$4 = node.size;
-          let node_w;
-          if (_bind$4 === undefined) {
-            node_w = node_min_w;
-          } else {
-            const _Some = _bind$4;
-            const _sz = _Some;
-            node_w = _sz.x * scale;
-          }
-          const max_ports = node.inputs.length > node.outputs.length ? node.inputs.length : node.outputs.length;
-          const body_h = ((max_ports + 0) * style.port_spacing + 16) * scale;
-          const _bind$5 = node.size;
-          let total_h;
-          if (_bind$5 === undefined) {
-            total_h = header_h + body_h;
-          } else {
-            const _Some = _bind$5;
-            const _sz = _Some;
-            total_h = _sz.y * scale;
-          }
-          const node_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(screen_x, screen_y, node_w, total_h);
-          if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, node_rect)) {
-            cur_selected_node = node.id;
-            active_drag_node = node.id;
-            _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, node.id, "selected_node", 0);
-            _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, node.id, "drag_node", 0);
-            _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, _canvas_id, mouse_pos.x - _canvas_rect.x - node.pos.x, "drag_anchor_x", 0);
-            _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, _canvas_id, mouse_pos.y - _canvas_rect.y - node.pos.y, "drag_anchor_y", 0);
-            handled = true;
-            break;
-          }
-          _tmp$4 = k - 1 | 0;
-          continue;
-        } else {
-          break;
-        }
-      }
-    }
-  }
-  const canvas_min = _M0MP49LING7167111moon_2degui3src4math4Rect3min(_canvas_rect);
-  const _bind$3 = out_conns.length;
-  let _tmp$3 = 0;
-  while (true) {
-    const _ = _tmp$3;
-    if (_ < _bind$3) {
-      const conn = out_conns[_];
-      const p_start = _M0FP49LING7167111moon_2degui3src9composite20find__port__position(canvas_min, nodes, conn.from_node, conn.from_port, style, scale);
-      const p_end = _M0FP49LING7167111moon_2degui3src9composite20find__port__position(canvas_min, nodes, conn.to_node, conn.to_port, style, scale);
-      if (p_start === undefined) {
-      } else {
-        const _Some = p_start;
-        const _p0 = _Some;
-        if (p_end === undefined) {
-        } else {
-          const _Some$2 = p_end;
-          const _p3 = _Some$2;
-          _M0FP49LING7167111moon_2degui3src9composite33draw__cubic__bezier__wire_2einner(painter, _p0, _p3, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), wire_width, 16);
-        }
-      }
-      _tmp$3 = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  let _tmp$4;
-  const _p = active_conn_node;
-  const _p$2 = "";
-  if (!(_p === _p$2)) {
-    const _p$3 = active_conn_port;
-    const _p$4 = "";
-    _tmp$4 = !(_p$3 === _p$4);
-  } else {
-    _tmp$4 = false;
-  }
-  if (_tmp$4) {
-    const p_start = _M0FP49LING7167111moon_2degui3src9composite20find__port__position(canvas_min, nodes, active_conn_node, active_conn_port, style, scale);
-    if (p_start === undefined) {
-    } else {
-      const _Some = p_start;
-      const _p0 = _Some;
-      _M0FP49LING7167111moon_2degui3src9composite33draw__cubic__bezier__wire_2einner(painter, _p0, mouse_pos, _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover(), wire_width + 0.5, 16);
-      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
-    }
-  }
-  const _bind$4 = nodes.length;
-  let _tmp$5 = 0;
-  while (true) {
-    const _ = _tmp$5;
-    if (_ < _bind$4) {
-      const node = nodes[_];
-      const screen_x = _canvas_rect.x + node.pos.x;
-      const screen_y = _canvas_rect.y + node.pos.y;
-      const _bind$5 = node.size;
-      let node_w;
-      if (_bind$5 === undefined) {
-        node_w = node_min_w;
-      } else {
-        const _Some = _bind$5;
-        const _sz = _Some;
-        node_w = _sz.x * scale;
-      }
-      const max_ports = node.inputs.length > node.outputs.length ? node.inputs.length : node.outputs.length;
-      const body_h = ((max_ports + 0) * style.port_spacing + 16) * scale;
-      const _bind$6 = node.size;
-      let total_h;
-      if (_bind$6 === undefined) {
-        total_h = header_h + body_h;
-      } else {
-        const _Some = _bind$6;
-        const _sz = _Some;
-        total_h = _sz.y * scale;
-      }
-      const node_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(screen_x, screen_y, node_w, total_h);
-      const header_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(screen_x, screen_y, node_w, header_h);
-      const is_selected = cur_selected_node === node.id;
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, node_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), card_radius);
-      const _bind$7 = node.accent_color;
-      let header_color;
-      if (_bind$7 === undefined) {
-        header_color = _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface();
-      } else {
-        const _Some = _bind$7;
-        header_color = _Some;
-      }
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, header_rect, header_color, card_radius);
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, _M0MP49LING7167111moon_2degui3src4math4Rect3new(screen_x, screen_y + header_h - card_radius, node_w, card_radius), header_color, 0);
-      let border_col;
-      let stroke_w;
-      _L: {
-        if (is_selected) {
-          border_col = _M0MP49LING7167111moon_2degui3src5color5Color13border__focus();
-          stroke_w = 1.5 * scale;
-          break _L;
-        } else {
-          border_col = _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
-          stroke_w = 1;
-          break _L;
-        }
-      }
-      _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, node_rect, border_col, stroke_w, card_radius);
-      const _bind$8 = node.accent_color;
-      const title_color = _bind$8 === undefined ? _M0MP49LING7167111moon_2degui3src5color5Color12text__strong() : _M0MP49LING7167111moon_2degui3src5color5Color13text__inverse();
-      const title_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + 10 * scale, screen_y + (header_h - font_title) * 0.5);
-      _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(painter, title_pos, node.title, font_title, title_color, "", 500);
-      if (is_canvas_hovered && _M0MP49LING7167111moon_2degui3src4math4Rect8contains(header_rect, mouse_pos)) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "move");
-      }
-      const _bind$9 = node.inputs;
-      const _bind$10 = _bind$9.length;
-      let _tmp$6 = 0;
-      while (true) {
-        const i = _tmp$6;
-        if (i < _bind$10) {
-          const in_port = _bind$9[i];
-          const py = screen_y + header_h + 14 * scale + (i + 0) * port_spacing;
-          const port_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x, py);
-          const _bind$11 = in_port.color;
-          let p_col;
-          if (_bind$11 === undefined) {
-            p_col = _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
-          } else {
-            const _Some = _bind$11;
-            p_col = _Some;
-          }
-          const is_port_hovered = is_canvas_hovered && (Math.abs(mouse_pos.x - port_center.x) <= port_r * 2 && Math.abs(mouse_pos.y - port_center.y) <= port_r * 2);
-          if (is_port_hovered) {
-            _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
-            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, port_center, port_r + 2 * scale, p_col);
-          } else {
-            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, port_center, port_r, p_col);
-            _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(painter, port_center, port_r, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), 1.5);
-          }
-          const label_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + port_r + 6 * scale, py - font_port * 0.5);
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(painter, label_pos, in_port.name, font_port, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary(), "", 500);
-          _tmp$6 = i + 1 | 0;
-          continue;
-        } else {
-          break;
-        }
-      }
-      const _bind$11 = node.outputs;
-      const _bind$12 = _bind$11.length;
-      let _tmp$7 = 0;
-      while (true) {
-        const j = _tmp$7;
-        if (j < _bind$12) {
-          const out_port = _bind$11[j];
-          const py = screen_y + header_h + 14 * scale + (j + 0) * port_spacing;
-          const port_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + node_w, py);
-          const _bind$13 = out_port.color;
-          let p_col;
-          if (_bind$13 === undefined) {
-            p_col = _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
-          } else {
-            const _Some = _bind$13;
-            p_col = _Some;
-          }
-          const is_port_hovered = is_canvas_hovered && (Math.abs(mouse_pos.x - port_center.x) <= port_r * 2 && Math.abs(mouse_pos.y - port_center.y) <= port_r * 2);
-          if (is_port_hovered) {
-            _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
-            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, port_center, port_r + 2 * scale, p_col);
-          } else {
-            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, port_center, port_r, p_col);
-            _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(painter, port_center, port_r, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), 1.5);
-          }
-          const label_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, out_port.name, font_port);
-          const label_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + node_w - port_r - 6 * scale - label_sz.x, py - font_port * 0.5);
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(painter, label_pos, out_port.name, font_port, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary(), "", 500);
-          _tmp$7 = j + 1 | 0;
-          continue;
-        } else {
-          break;
-        }
-      }
-      _tmp$5 = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  _M0MP49LING7167111moon_2degui3src4core7Painter9pop__clip(painter);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
-  let active_drag;
-  const _p$3 = active_drag_node;
-  const _p$4 = "";
-  if (!(_p$3 === _p$4)) {
-    active_drag = active_drag_node;
-  } else {
-    active_drag = undefined;
-  }
-  let sel_node;
-  const _p$5 = cur_selected_node;
-  const _p$6 = "";
-  if (!(_p$5 === _p$6)) {
-    sel_node = cur_selected_node;
-  } else {
-    sel_node = undefined;
-  }
-  return new _M0TP49LING7167111moon_2degui3src9composite18NodeEditorResponse(_canvas_rect, nodes, out_conns, sel_node, active_drag, new_conn, changed);
-}
-function _M0FP49LING7167111moon_2degui3src9composite12node__editor(ctx, id_salt, size, nodes, connections, custom_style$46$opt, selected_node$46$opt) {
-  let custom_style;
-  if (custom_style$46$opt.$tag === 1) {
-    const _Some = custom_style$46$opt;
-    custom_style = _Some._0;
-  } else {
-    custom_style = undefined;
-  }
-  let selected_node;
-  if (selected_node$46$opt.$tag === 1) {
-    const _Some = selected_node$46$opt;
-    selected_node = _Some._0;
-  } else {
-    selected_node = undefined;
-  }
-  return _M0FP49LING7167111moon_2degui3src9composite20node__editor_2einner(ctx, id_salt, size, nodes, connections, custom_style, selected_node);
-}
-function _M0FP49LING7167111moon_2degui3src9composite9menu__bar(ctx, content) {
-  const scale = ctx.style.scale;
-  const bar_h = (ctx.style.control_h_sm + ctx.style.spacing_xs) * scale;
-  const bar_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
-  const bar_pos = _M0MP49LING7167111moon_2degui3src4core9UIContext6cursor(ctx);
-  const bar_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(bar_pos.x, bar_pos.y, bar_w, bar_h);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), bar_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), 0);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(bar_rect.x, bar_rect.y + bar_h), _M0MP49LING7167111moon_2degui3src4math4Vec23new(bar_rect.x + bar_w, bar_rect.y + bar_h), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
-  const prev_cursor = _M0MP49LING7167111moon_2degui3src4core9UIContext6cursor(ctx);
-  const prev_avail_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
-  const prev_spacing = _M0MP49LING7167111moon_2degui3src4core9UIContext13item__spacing(ctx);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(bar_pos.x + 8 * scale, bar_pos.y + 3 * scale));
-  _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, bar_w - 16 * scale);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext18set__item__spacing(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(4 * scale, 0));
-  _M0MP49LING7167111moon_2degui3src4core9UIContext10horizontal(ctx, content);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(prev_cursor.x, bar_pos.y + bar_h));
-  _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, prev_avail_w);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext18set__item__spacing(ctx, prev_spacing);
-}
-function _M0FP49LING7167111moon_2degui3src9composite4menu(ctx, title, content) {
-  const scale = ctx.style.scale;
-  const font_nm = ctx.style.font_normal * scale;
-  const menu_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `menu::${title}`);
-  const text_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, title, font_nm);
-  const btn_w = text_size.x + 16 * scale;
-  const btn_h = (ctx.style.control_h_sm - ctx.style.radius_xs) * scale;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, title);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(btn_w, btn_h));
-  const _id = _bind._0;
-  const _btn_rect = _bind._1;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _id);
-  const is_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _id);
-  const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext14open__menu__id(ctx);
-  const is_open = BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, menu_id.val);
-  const hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _btn_rect);
-  if (hovered) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-  }
-  const key_toggle = is_focused && (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2) || (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 5) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)));
-  if (key_toggle) {
-    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
-    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 5);
-    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
-    if (is_open) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-    } else {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, menu_id);
-    }
-  }
-  if (_M0IP016_24default__implPB2Eq10not__equalGRP49LING7167111moon_2degui3src4core2IdE(_M0MP49LING7167111moon_2degui3src4core9UIContext14open__menu__id(ctx), _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579) && (_M0IP016_24default__implPB2Eq10not__equalGRP49LING7167111moon_2degui3src4core2IdE(_M0MP49LING7167111moon_2degui3src4core9UIContext14open__menu__id(ctx), menu_id) && hovered)) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, menu_id);
-  } else {
-    if (hovered && ctx.input.mouse_pressed) {
-      if (is_open) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-      } else {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, menu_id);
-      }
-    }
-  }
-  const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext14open__menu__id(ctx);
-  const currently_open = BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, menu_id.val);
-  if (currently_open && _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 3)) {
-    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 3);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-  }
-  const btn_bg = currently_open ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__active() : hovered ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle() : _M0MP49LING7167111moon_2degui3src5color5Color11transparentN6recordS36;
-  const btn_text_col = currently_open ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13text__primary() : _M0MP49LING7167111moon_2degui3src5color5Color10text__body();
-  const radius = ctx.style.radius_sm * scale;
-  if (currently_open || hovered) {
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _btn_rect, btn_bg, radius);
-  }
-  if (is_focused) {
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _btn_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1, radius);
-  }
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_btn_rect.x + 8 * scale, _btn_rect.y + (btn_h - font_nm) * 0.5), title, font_nm, btn_text_col, "", 500);
-  if (currently_open) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext17begin__foreground(ctx);
-    const pad = 4 * scale;
-    const popup_w = 170 * scale;
-    let popup_x = _btn_rect.x;
-    const popup_y = _btn_rect.y + _btn_rect.h + 3 * scale;
-    if (popup_x + popup_w > _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx)) {
-      const clamped = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) - popup_w - 4 * scale;
-      if (clamped > 4 * scale) {
-        popup_x = clamped;
-      }
-    }
-    const prev_cursor = _M0MP49LING7167111moon_2degui3src4core9UIContext6cursor(ctx);
-    const prev_avail_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
-    const prev_spacing = _M0MP49LING7167111moon_2degui3src4core9UIContext13item__spacing(ctx);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(popup_x + pad, popup_y + pad));
-    _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, popup_w - pad * 2);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext18set__item__spacing(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(0, 2 * scale));
-    const item_draw_list = _M0MP49LING7167111moon_2degui3src4draw8DrawList3new();
-    const _p$3 = ctx.layers;
-    const saved_dl = _p$3.draw_list;
-    _M0MP49LING7167111moon_2degui3src4core12LayerManager15set__draw__list(ctx.layers, item_draw_list);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext8vertical(ctx, content);
-    _M0MP49LING7167111moon_2degui3src4core12LayerManager15set__draw__list(ctx.layers, saved_dl);
-    const content_h = _M0MP49LING7167111moon_2degui3src4core9UIContext6cursor(ctx).y - (popup_y + pad);
-    const total_h = content_h > 0 ? content_h + pad : 24;
-    const menu_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(popup_x, popup_y, popup_w, total_h);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext12block__hover(ctx, menu_rect);
-    if (ctx.input.mouse_pressed && (!_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, menu_rect) && !hovered)) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-    }
-    const shadow_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(menu_rect.x, menu_rect.y + 2, menu_rect.w, menu_rect.h);
-    const menu_radius = ctx.style.radius_md;
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), shadow_rect, _M0MP49LING7167111moon_2degui3src5color5Color15shadow__ambient(), menu_radius);
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), menu_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), menu_radius);
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), menu_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, menu_radius);
-    _M0MP49LING7167111moon_2degui3src4core7Painter6append(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), item_draw_list);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, prev_cursor);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, prev_avail_w);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext18set__item__spacing(ctx, prev_spacing);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
-    return;
-  } else {
-    return;
-  }
-}
-function _M0FP49LING7167111moon_2degui3src9composite18menu__item_2einner(ctx, label, shortcut, disabled) {
-  const scale = ctx.style.scale;
-  const item_h = 24 * scale;
-  const item_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, label);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(item_w, item_h));
-  const _id = _bind._0;
-  const _rect = _bind._1;
-  const _resp = _bind._2;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _id);
-  const is_focused = _resp.has_focus || _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _id);
-  const is_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _rect) && !disabled;
-  const item_radius = ctx.style.radius_sm * scale;
-  const font_nm = ctx.style.font_normal * scale;
-  const font_sm = ctx.style.font_small * scale;
-  if (is_hovered) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), item_radius);
-  }
-  if (is_focused) {
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1, item_radius);
-  }
-  const key_activate = is_focused && (!disabled && (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 5) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2)));
-  if (key_activate) {
-    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 5);
-    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
-  }
-  const clicked = disabled ? false : is_hovered && (ctx.input.mouse_pressed || _resp.clicked) || key_activate;
-  if (clicked) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-  }
-  const text_col = disabled ? _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled() : is_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color13text__primary();
-  const text_y = _rect.y + (item_h - font_nm) * 0.5;
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + 8 * scale, text_y), label, font_nm, text_col, "", 500);
-  if (!(shortcut === "")) {
-    const sc_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, shortcut, font_sm);
-    const sc_x = _rect.x + item_w - sc_size.x - 8 * scale;
-    const sc_y = _rect.y + (item_h - font_sm) * 0.5;
-    const sc_col = disabled ? _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled() : is_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sc_x, sc_y), shortcut, font_sm, sc_col, "", 500);
-  }
-  return _M0MP49LING7167111moon_2degui3src4core8Response11new_2einner(_id, _rect, is_hovered, clicked, _resp.pressed, false, false);
-}
-function _M0FP49LING7167111moon_2degui3src9composite15menu__separator(ctx) {
-  const scale = ctx.style.scale;
-  const sep_h = 7 * scale;
-  const item_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(item_w, sep_h));
-  const _rect = _bind._1;
-  const line_y = _rect.y + 3 * scale;
-  const pad_x = 4 * scale;
-  const stroke_w = 1 * scale;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + pad_x, line_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + item_w - pad_x, line_y), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), stroke_w);
-}
-function _M0FP49LING7167111moon_2degui3src9composite9draw__arc(p, center, radius, start_angle, end_angle, color, width, segments) {
-  const sweep = end_angle - start_angle;
-  if (Math.abs(sweep) < 0.001 || segments <= 0) {
-    return undefined;
-  }
-  const step = sweep / (segments + 0);
-  let prev_p = _M0MP49LING7167111moon_2degui3src4math4Vec23add(center, _M0MP49LING7167111moon_2degui3src4math4Vec211from__polar(radius, start_angle));
-  let _tmp = 1;
-  while (true) {
-    const i = _tmp;
-    if (i <= segments) {
-      const a = start_angle + step * (i + 0);
-      const cur_p = _M0MP49LING7167111moon_2degui3src4math4Vec23add(center, _M0MP49LING7167111moon_2degui3src4math4Vec211from__polar(radius, a));
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(p, prev_p, cur_p, color, width);
-      prev_p = cur_p;
-      _tmp = i + 1 | 0;
-      continue;
-    } else {
-      return;
-    }
-  }
-}
-function _M0MP49LING7167111moon_2degui3src9composite4Knob3new(id_salt, label, value) {
-  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(id_salt, label, value, 0, 1, 0.01, 0, "", 22, false);
-}
-function _M0MP49LING7167111moon_2degui3src9composite4Knob3min(self, min_val) {
-  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, min_val, self.max_val, self.step, self.default_val, self.unit, self.radius, self.bipolar);
-}
-function _M0MP49LING7167111moon_2degui3src9composite4Knob3max(self, max_val) {
-  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, self.min_val, max_val, self.step, self.default_val, self.unit, self.radius, self.bipolar);
-}
-function _M0MP49LING7167111moon_2degui3src9composite4Knob4step(self, step) {
-  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, self.min_val, self.max_val, step, self.default_val, self.unit, self.radius, self.bipolar);
-}
-function _M0MP49LING7167111moon_2degui3src9composite4Knob12default__val(self, default_val) {
-  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, default_val, self.unit, self.radius, self.bipolar);
-}
-function _M0MP49LING7167111moon_2degui3src9composite4Knob4unit(self, unit) {
-  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, self.default_val, unit, self.radius, self.bipolar);
-}
-function _M0MP49LING7167111moon_2degui3src9composite4Knob6radius(self, radius) {
-  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, self.default_val, self.unit, radius, self.bipolar);
-}
-function _M0MP49LING7167111moon_2degui3src9composite4Knob7bipolar(self, bipolar) {
-  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, self.default_val, self.unit, self.radius, bipolar);
-}
-function _M0MP49LING7167111moon_2degui3src9composite4Knob4show(self, ctx) {
-  const min_val = self.min_val;
-  const max_val = self.max_val;
-  const step = self.step;
-  const default_val = self.default_val;
-  const unit = self.unit;
-  const scale = ctx.style.scale;
-  const radius = self.radius * scale;
-  const bipolar = self.bipolar;
-  const label = self.label;
-  const value = self.value;
-  const range = max_val > min_val ? max_val - min_val : 1;
-  const raw_val = value !== value ? default_val : value;
-  const clamped_initial = raw_val < min_val ? min_val : raw_val > max_val ? max_val : raw_val;
-  const diameter = radius * 2;
-  const label_h = label === "" ? 0 : 15 * scale;
-  const val_h = 16 * scale;
-  const total_w = diameter + 16 * scale;
-  const total_h = diameter + label_h + val_h + 8 * scale;
-  const id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `knob::${self.id_salt}`);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(total_w, total_h));
-  const _rect = _bind._1;
-  const _response = _bind._2;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, id);
-  if (_response.pressed || _response.clicked) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext14request__focus(ctx, id);
-  }
-  if (_response.hovered || (_response.dragged || _response.pressed)) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "ns-resize");
-  }
-  const is_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, id);
-  let current_val = clamped_initial;
-  if (!ctx.input.modifiers.alt && (_response.dragged || _response.pressed && ctx.input.mouse_down)) {
-    const dy = -ctx.input.mouse_delta.y;
-    const dx = ctx.input.mouse_delta.x;
-    const delta = dy + dx;
-    const sensitivity = ctx.input.modifiers.shift ? 0.001 : 0.005;
-    current_val = current_val + delta * range * sensitivity;
-  }
-  if (_response.hovered && Math.abs(ctx.input.scroll_delta.y) > 0) {
-    const dir = ctx.input.scroll_delta.y > 0 ? 1 : -1;
-    current_val = current_val + dir * step;
-  }
-  if (is_focused) {
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7)) {
-      current_val = current_val + step;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6)) {
-      current_val = current_val - step;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 10)) {
-      current_val = min_val;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 10);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 11)) {
-      current_val = max_val;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 11);
-    }
-    const page_step = step * 10;
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 12)) {
-      current_val = current_val + page_step;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 12);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 13)) {
-      current_val = current_val - page_step;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 13);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 0) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 1)) {
-      current_val = default_val;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 0);
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 1);
-    }
-  }
-  if ((_response.pressed || _response.clicked) && ctx.input.modifiers.alt) {
-    current_val = default_val;
-  }
-  const _p = current_val;
-  if (_p !== _p) {
-    current_val = default_val;
-  }
-  if (step > 0) {
-    const steps_count = _M0MPC16double6Double7to__int((current_val - min_val) / step + 0.5) + 0;
-    current_val = min_val + steps_count * step;
-  }
-  const final_val = current_val < min_val ? min_val : current_val > max_val ? max_val : current_val;
-  const center_x = _rect.x + total_w * 0.5;
-  const center_y = _rect.y + label_h + 4 * scale + radius;
-  const center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(center_x, center_y);
-  const dial_radius = radius - 3.5 * scale;
-  const start_angle = 0.75 * _M0FP49LING7167111moon_2degui3src4math2pi;
-  const total_sweep = 1.5 * _M0FP49LING7167111moon_2degui3src4math2pi;
-  const end_angle = start_angle + total_sweep;
-  const p = _M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx);
-  _M0FP49LING7167111moon_2degui3src9composite9draw__arc(p, center, radius, start_angle, end_angle, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 3.5 * scale, 20);
-  const raw_norm = (final_val - min_val) / range;
-  const norm = raw_norm !== raw_norm || raw_norm < 0 ? 0 : raw_norm > 1 ? 1 : raw_norm;
-  if (bipolar) {
-    const mid_angle = 1.5 * _M0FP49LING7167111moon_2degui3src4math2pi;
-    const curr_angle = start_angle + norm * total_sweep;
-    const segs = _M0MPC16double6Double7to__int(Math.abs(curr_angle - mid_angle) / total_sweep * 16) + 2 | 0;
-    _M0FP49LING7167111moon_2degui3src9composite9draw__arc(p, center, radius, mid_angle, curr_angle, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 3.5 * scale, segs);
-  } else {
-    const curr_angle = start_angle + norm * total_sweep;
-    const segs = _M0MPC16double6Double7to__int(norm * 20) + 2 | 0;
-    _M0FP49LING7167111moon_2degui3src9composite9draw__arc(p, center, radius, start_angle, curr_angle, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 3.5 * scale, segs);
-  }
-  _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(p, _M0MP49LING7167111moon_2degui3src4math4Vec23add(center, _M0MP49LING7167111moon_2degui3src4math4Vec23new(0, 1.5 * scale)), dial_radius, _M0MP49LING7167111moon_2degui3src5color5Color6shadow());
-  const cap_col = _response.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__active() : _response.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover() : _M0MP49LING7167111moon_2degui3src5color5Color10bg__window();
-  _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(p, center, dial_radius, cap_col);
-  const border_col = is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color13border__focus() : _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
-  _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(p, center, dial_radius, border_col, 1 * scale);
-  const pointer_angle = start_angle + norm * total_sweep;
-  const tick_start = _M0MP49LING7167111moon_2degui3src4math4Vec23add(center, _M0MP49LING7167111moon_2degui3src4math4Vec211from__polar(dial_radius * 0.35, pointer_angle));
-  const tick_end = _M0MP49LING7167111moon_2degui3src4math4Vec23add(center, _M0MP49LING7167111moon_2degui3src4math4Vec211from__polar(dial_radius * 0.85, pointer_angle));
-  const tick_col = _response.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary();
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(p, tick_start, tick_end, tick_col, 2 * scale);
-  const font_sm = ctx.style.font_small * scale;
-  if (!(label === "")) {
-    const label_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, label, font_sm).x;
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(p, _M0MP49LING7167111moon_2degui3src4math4Vec23new(center_x - label_w * 0.5, _rect.y), label, font_sm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
-  }
-  const val_str = unit === "" ? String(final_val) : `${String(final_val)} ${unit}`;
-  const val_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, val_str, font_sm).x;
-  const val_col = is_focused || _response.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color12text__strong();
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(p, _M0MP49LING7167111moon_2degui3src4math4Vec23new(center_x - val_w * 0.5, center_y + radius + 4 * scale), val_str, font_sm, val_col, "", 500);
-  return { _0: final_val, _1: _response };
-}
-function _M0FP49LING7167111moon_2degui3src9composite12knob_2einner(ctx, id_salt, label, value, min_val, max_val, step, default_val, unit, radius, bipolar) {
-  return _M0MP49LING7167111moon_2degui3src9composite4Knob4show(_M0MP49LING7167111moon_2degui3src9composite4Knob7bipolar(_M0MP49LING7167111moon_2degui3src9composite4Knob6radius(_M0MP49LING7167111moon_2degui3src9composite4Knob4unit(_M0MP49LING7167111moon_2degui3src9composite4Knob12default__val(_M0MP49LING7167111moon_2degui3src9composite4Knob4step(_M0MP49LING7167111moon_2degui3src9composite4Knob3max(_M0MP49LING7167111moon_2degui3src9composite4Knob3min(_M0MP49LING7167111moon_2degui3src9composite4Knob3new(id_salt, label, value), min_val), max_val), step), default_val), unit), radius), bipolar), ctx);
-}
-function _M0MP49LING7167111moon_2degui3src9composite5Fader3new(id_salt, label, value) {
-  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(id_salt, label, value, 0, 1, 0.01, 0, "", true, undefined);
-}
-function _M0MP49LING7167111moon_2degui3src9composite5Fader3min(self, min_val) {
-  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, min_val, self.max_val, self.step, self.default_val, self.unit, self.show_ticks, self.size);
-}
-function _M0MP49LING7167111moon_2degui3src9composite5Fader3max(self, max_val) {
-  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, self.min_val, max_val, self.step, self.default_val, self.unit, self.show_ticks, self.size);
-}
-function _M0MP49LING7167111moon_2degui3src9composite5Fader4step(self, step) {
-  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, self.min_val, self.max_val, step, self.default_val, self.unit, self.show_ticks, self.size);
-}
-function _M0MP49LING7167111moon_2degui3src9composite5Fader12default__val(self, default_val) {
-  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, default_val, self.unit, self.show_ticks, self.size);
-}
-function _M0MP49LING7167111moon_2degui3src9composite5Fader4unit(self, unit) {
-  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, self.default_val, unit, self.show_ticks, self.size);
-}
-function _M0MP49LING7167111moon_2degui3src9composite5Fader11show__ticks(self, show_ticks) {
-  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, self.default_val, self.unit, show_ticks, self.size);
-}
-function _M0MP49LING7167111moon_2degui3src9composite5Fader4size(self, size) {
-  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, self.default_val, self.unit, self.show_ticks, size);
-}
-function _M0MP49LING7167111moon_2degui3src9composite5Fader4show(self, ctx) {
-  const scale = ctx.style.scale;
-  const font_nm = ctx.style.font_normal * scale;
-  const font_sm = ctx.style.font_small * scale;
-  const f_style = _M0MP49LING7167111moon_2degui3src9composite10FaderStyle7defaultN6recordS3541;
-  const _bind = self.size;
-  let total_w;
-  if (_bind === undefined) {
-    total_w = f_style.width * scale;
-  } else {
-    const _Some = _bind;
-    const _s = _Some;
-    total_w = _s.x;
-  }
-  const _bind$2 = self.size;
-  let total_h;
-  if (_bind$2 === undefined) {
-    total_h = f_style.height * scale;
-  } else {
-    const _Some = _bind$2;
-    const _s = _Some;
-    total_h = _s.y;
-  }
-  const track_w = f_style.track_w * scale;
-  const cap_w = f_style.cap_w * scale;
-  const cap_h = f_style.cap_h * scale;
-  const cap_radius = f_style.cap_radius * scale;
-  const min_val = self.min_val;
-  const max_val = self.max_val;
-  const step = self.step;
-  const default_val = self.default_val;
-  const unit = self.unit;
-  const show_ticks = self.show_ticks;
-  const label = self.label;
-  const value = self.value;
-  const range = max_val > min_val ? max_val - min_val : 1;
-  const raw_val = value !== value ? default_val : value;
-  const clamped_initial = raw_val < min_val ? min_val : raw_val > max_val ? max_val : raw_val;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, self.id_salt);
-  const _bind$3 = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(total_w, total_h));
-  const _id = _bind$3._0;
-  const _rect = _bind$3._1;
-  const _response = _bind$3._2;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _id);
-  if (_response.pressed || _response.clicked) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext14request__focus(ctx, _id);
-  }
-  if (_response.hovered || (_response.dragged || _response.pressed)) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "ns-resize");
-  }
-  const is_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _id) || _response.has_focus;
-  const label_h = label.length > 0 ? font_nm + 6 * scale : 0;
-  const readout_h = font_sm + 6 * scale;
-  const track_top_y = _rect.y + label_h + cap_h * 0.5;
-  const track_bottom_y = _rect.y + total_h - readout_h - cap_h * 0.5;
-  const track_travel_h = track_bottom_y > track_top_y ? track_bottom_y - track_top_y : 1;
-  const center_x = _rect.x + total_w * 0.5;
-  let current_val = clamped_initial;
-  if (!ctx.input.modifiers.alt && (_response.dragged || _response.pressed && ctx.input.mouse_down)) {
-    const dy = -ctx.input.mouse_delta.y;
-    const sensitivity = ctx.input.modifiers.shift ? 0.1 : ctx.input.modifiers.ctrl ? 10 : 1;
-    const delta = dy / track_travel_h * range * sensitivity;
-    current_val = current_val + delta;
-  }
-  if (_response.hovered && Math.abs(ctx.input.scroll_delta.y) > 0) {
-    const dir = ctx.input.scroll_delta.y > 0 ? 1 : -1;
-    const multiplier = ctx.input.modifiers.shift ? 0.1 : 1;
-    current_val = current_val + dir * step * multiplier;
-  }
-  if (is_focused) {
-    const key_step = ctx.input.modifiers.shift ? step * 0.1 : ctx.input.modifiers.ctrl ? step * 10 : step;
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7)) {
-      current_val = current_val + key_step;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6)) {
-      current_val = current_val - key_step;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 10)) {
-      current_val = max_val;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 10);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 11)) {
-      current_val = min_val;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 11);
-    }
-    const page_step = key_step * 10;
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 12)) {
-      current_val = current_val + page_step;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 12);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 13)) {
-      current_val = current_val - page_step;
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 13);
-    }
-  }
-  if (_response.clicked && ctx.input.modifiers.alt) {
-    current_val = default_val;
-  }
-  const _p = current_val;
-  if (_p !== _p) {
-    current_val = default_val;
-  }
-  if (current_val < min_val) {
-    current_val = min_val;
-  } else {
-    if (current_val > max_val) {
-      current_val = max_val;
-    }
-  }
-  const fraction = (current_val - min_val) / range;
-  const clamped_frac = fraction !== fraction || fraction < 0 ? 0 : fraction > 1 ? 1 : fraction;
-  const cap_center_y = track_bottom_y - clamped_frac * track_travel_h;
-  if (label.length > 0) {
-    const label_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, label, font_nm);
-    const label_x = center_x - label_sz.x * 0.5;
-    const label_y = _rect.y;
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(label_x, label_y), label, font_nm, _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary(), "", 500);
-  }
-  if (show_ticks) {
-    const left_x = center_x - track_w * 0.5 - 4 * scale;
-    const right_x = center_x + track_w * 0.5 + 4 * scale;
-    let _tmp = 0;
-    while (true) {
-      const i = _tmp;
-      if (i < 11) {
-        const t = (i + 0) / (10 + 0);
-        const tick_y = track_bottom_y - t * track_travel_h;
-        const is_major = i === 0 || (i === 5 || i === 10);
-        const tick_len = is_major ? 5 * scale : 3 * scale;
-        const tick_col = is_major ? _M0MP49LING7167111moon_2degui3src5color5Color14border__strong() : _M0MP49LING7167111moon_2degui3src5color5Color13border__muted();
-        _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(left_x - tick_len, tick_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(left_x, tick_y), tick_col, 1);
-        _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(right_x, tick_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(right_x + tick_len, tick_y), tick_col, 1);
-        _tmp = i + 1 | 0;
-        continue;
-      } else {
-        break;
-      }
-    }
-  }
-  const track_x = center_x - track_w * 0.5;
-  const track_h_total = track_travel_h + cap_h;
-  const track_y = track_top_y - cap_h * 0.5;
-  const track_radius = 3 * scale;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(track_x, track_y, track_w, track_h_total), _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), track_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(track_x, track_y, track_w, track_h_total), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1, track_radius);
-  const fill_h = track_bottom_y - cap_center_y;
-  if (fill_h > 0) {
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(track_x + 1 * scale, cap_center_y, track_w - 2 * scale, fill_h), _M0MP49LING7167111moon_2degui3src5color5Color11with__alpha(_M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 160), 2 * scale);
-  }
-  const cap_x = center_x - cap_w * 0.5;
-  const cap_y = cap_center_y - cap_h * 0.5;
-  const cap_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(cap_x, cap_y, cap_w, cap_h);
-  const is_active = _response.dragged || _response.pressed && ctx.input.mouse_down;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect9translate(cap_rect, _M0MP49LING7167111moon_2degui3src4math4Vec23new(0, 2 * scale)), _M0MP49LING7167111moon_2degui3src5color5Color6shadow(), cap_radius);
-  const cap_bg = is_active ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__active() : _response.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover() : _M0MP49LING7167111moon_2degui3src5color5Color10bg__window();
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), cap_rect, cap_bg, cap_radius);
-  const cap_border = is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color13border__focus() : _response.hovered || is_active ? _M0MP49LING7167111moon_2degui3src5color5Color14border__strong() : _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), cap_rect, cap_border, 1, cap_radius);
-  const index_inset = 4 * scale;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(cap_x + index_inset, cap_center_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(cap_x + cap_w - index_inset, cap_center_y), is_active ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color14border__strong(), 1.5 * scale);
-  if (is_focused) {
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect6expand(cap_rect, 2 * scale), _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1.5, cap_radius + 2 * scale);
-  }
-  const rounded_int = _M0MPC16double6Double7to__int(current_val * 10);
-  const whole = rounded_int / 10 | 0;
-  const _p$2 = rounded_int % 10 | 0;
-  const frac_part = _p$2 < 0 ? -_p$2 | 0 : _p$2;
-  let readout_str = `${_M0MPC13int3Int18to__string_2einner(whole, 10)}.${_M0MPC13int3Int18to__string_2einner(frac_part, 10)}`;
-  if (unit.length > 0) {
-    readout_str = `${readout_str}${unit}`;
-  }
-  const readout_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, readout_str, font_sm);
-  const readout_x = center_x - readout_sz.x * 0.5;
-  const readout_y = _rect.y + total_h - font_sm;
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(readout_x, readout_y), readout_str, font_sm, is_active || is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "monospace", 500);
-  return { _0: current_val, _1: _response };
-}
-function _M0FP49LING7167111moon_2degui3src9composite13fader_2einner(ctx, id_salt, label, value, min_val, max_val, step, default_val, unit, show_ticks, size) {
-  let f = _M0MP49LING7167111moon_2degui3src9composite5Fader11show__ticks(_M0MP49LING7167111moon_2degui3src9composite5Fader4unit(_M0MP49LING7167111moon_2degui3src9composite5Fader12default__val(_M0MP49LING7167111moon_2degui3src9composite5Fader4step(_M0MP49LING7167111moon_2degui3src9composite5Fader3max(_M0MP49LING7167111moon_2degui3src9composite5Fader3min(_M0MP49LING7167111moon_2degui3src9composite5Fader3new(id_salt, label, value), min_val), max_val), step), default_val), unit), show_ticks);
-  if (size === undefined) {
-  } else {
-    const _Some = size;
-    const _s = _Some;
-    f = _M0MP49LING7167111moon_2degui3src9composite5Fader4size(f, _s);
-  }
-  return _M0MP49LING7167111moon_2degui3src9composite5Fader4show(f, ctx);
-}
-function _M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner(id, title, closable) {
-  return new _M0TP49LING7167111moon_2degui3src9composite7DockTab(id, title, closable);
-}
-function _M0MP49LING7167111moon_2degui3src9composite8DockTree12leaf_2einner(tabs, active_tab) {
-  return new _M0TP49LING7167111moon_2degui3src9composite8DockTree(new _M0DTP49LING7167111moon_2degui3src9composite8DockNode4Leaf(tabs, active_tab));
-}
-function _M0MP49LING7167111moon_2degui3src9composite8DockTree5split(direction, ratio, first, second) {
-  return new _M0TP49LING7167111moon_2degui3src9composite8DockTree(new _M0DTP49LING7167111moon_2degui3src9composite8DockNode5Split(direction, ratio, first.root, second.root));
-}
-function _M0FP49LING7167111moon_2degui3src9composite18render__dock__node(ctx, node, rect, path, render_tab) {
-  const scale = ctx.style.scale;
-  const min_pane_size = 40 * scale;
-  switch (node.$tag) {
-    case 2: {
-      return { _0: _M0DTP49LING7167111moon_2degui3src9composite8DockNode5Empty__, _1: undefined, _2: undefined, _3: false };
-    }
-    case 0: {
-      const _Leaf = node;
-      const _tabs = _Leaf._0;
-      const _active_idx = _Leaf._1;
-      if (_tabs.length === 0) {
-        return { _0: _M0DTP49LING7167111moon_2degui3src9composite8DockNode5Empty__, _1: undefined, _2: undefined, _3: false };
-      }
-      const valid_active = _active_idx < 0 || _active_idx >= _tabs.length ? 0 : _active_idx;
-      const tab_bar_h = 28 * scale;
-      const header_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x, rect.y, rect.w, tab_bar_h);
-      const content_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x, rect.y + tab_bar_h, rect.w, rect.h - tab_bar_h);
-      const painter = _M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx);
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, header_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), 0);
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(painter, _M0MP49LING7167111moon_2degui3src4math4Vec23new(rect.x, rect.y + tab_bar_h), _M0MP49LING7167111moon_2degui3src4math4Vec23new(rect.x + rect.w, rect.y + tab_bar_h), _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1);
-      let cur_tab_x = rect.x + 4 * scale;
-      let new_active_idx = valid_active;
-      let tab_switched = undefined;
-      let closed_tab_id = undefined;
-      let _tmp = 0;
-      while (true) {
-        const i = _tmp;
-        if (i < _tabs.length) {
-          const tab = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(_tabs, i);
-          const font_sz = ctx.style.font_small * scale;
-          const title_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, tab.title, font_sz).x;
-          const close_btn_w = tab.closable ? 16 * scale : 0;
-          const tab_w = title_w + close_btn_w + 16 * scale;
-          const tab_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(cur_tab_x, rect.y + 2 * scale, tab_w, tab_bar_h - 2 * scale);
-          const is_current = i === valid_active;
-          const is_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, tab_rect);
-          const tab_focus_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `${path}_tab::${tab.id}`);
-          _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, tab_focus_id);
-          const tab_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, tab_focus_id);
-          const key_switch = tab_focused && (!is_current && (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 5)));
-          if (key_switch) {
-            _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
-            _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 5);
-          }
-          if (is_hovered) {
-            _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-          }
-          if (is_current) {
-            _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, tab_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), 4 * scale);
-            _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, tab_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, 4 * scale);
-            _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, _M0MP49LING7167111moon_2degui3src4math4Rect3new(cur_tab_x + 4 * scale, rect.y + 2 * scale, tab_w - 8 * scale, 2 * scale), _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 1);
-          } else {
-            if (is_hovered) {
-              _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, tab_rect, _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover(), 4 * scale);
-            }
-          }
-          if (tab_focused) {
-            _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, tab_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1, 4 * scale);
-          }
-          const text_col = is_current ? _M0MP49LING7167111moon_2degui3src5color5Color12text__strong() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(painter, _M0MP49LING7167111moon_2degui3src4math4Vec23new(cur_tab_x + 8 * scale, rect.y + 7 * scale), tab.title, font_sz, text_col, "", 500);
-          if (tab.closable) {
-            const close_x = cur_tab_x + tab_w - 14 * scale;
-            const close_y = rect.y + 8 * scale;
-            const close_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(close_x - 2 * scale, close_y - 2 * scale, 12 * scale, 12 * scale);
-            const close_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, close_rect);
-            if (close_hovered) {
-              _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, close_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__active(), 2 * scale);
-              _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-            }
-            const close_col = close_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color6danger() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
-            _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(painter, _M0MP49LING7167111moon_2degui3src4math4Vec23new(close_x, close_y - 1 * scale), "×", font_sz, close_col, "", 500);
-            if (close_hovered && ctx.input.mouse_released) {
-              closed_tab_id = tab.id;
-            }
-          }
-          _L: {
-            _L$2: {
-              _L$3: {
-                if (is_hovered) {
-                  if (ctx.input.mouse_released) {
-                    const _bind = closed_tab_id;
-                    if (_bind === undefined) {
-                      break _L$2;
-                    } else {
-                      break _L$3;
-                    }
-                  } else {
-                    break _L$3;
-                  }
-                } else {
-                  break _L$3;
-                }
-              }
-              if (key_switch) {
-                const _bind = closed_tab_id;
-                if (_bind === undefined) {
-                  break _L$2;
-                }
-              }
-              break _L;
-            }
-            if (i !== valid_active) {
-              tab_switched = { _0: _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(_tabs, valid_active).id, _1: tab.id };
-              new_active_idx = i;
-            }
-          }
-          cur_tab_x = cur_tab_x + tab_w + 4 * scale;
-          _tmp = i + 1 | 0;
-          continue;
-        } else {
-          break;
-        }
-      }
-      const _bind = closed_tab_id;
-      let result_node;
-      if (_bind === undefined) {
-        result_node = new _M0DTP49LING7167111moon_2degui3src9composite8DockNode4Leaf(_tabs, new_active_idx);
-      } else {
-        const _Some = _bind;
-        const _cid = _Some;
-        const remaining = [];
-        const _bind$2 = _tabs.length;
-        let _tmp$2 = 0;
-        while (true) {
-          const _ = _tmp$2;
-          if (_ < _bind$2) {
-            const t = _tabs[_];
-            const _p = t.id;
-            if (!(_p === _cid)) {
-              _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(remaining, t);
-            }
-            _tmp$2 = _ + 1 | 0;
-            continue;
-          } else {
-            break;
-          }
-        }
-        if (remaining.length === 0) {
-          result_node = _M0DTP49LING7167111moon_2degui3src9composite8DockNode5Empty__;
-        } else {
-          const next_active = new_active_idx >= remaining.length ? remaining.length - 1 | 0 : new_active_idx;
-          result_node = new _M0DTP49LING7167111moon_2degui3src9composite8DockNode4Leaf(remaining, next_active);
-        }
-      }
-      if (content_rect.w > 0 && content_rect.h > 0) {
-        const content_painter = _M0MP49LING7167111moon_2degui3src4core7Painter12sub__painter(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec24zeroN6recordS197, _M0DTPC16option6OptionGORP49LING7167111moon_2degui3src4math4RectE4None__);
-        _M0MP49LING7167111moon_2degui3src4core7Painter10push__clip(content_painter, content_rect);
-        _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(content_painter, content_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), 0);
-        _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, content_rect);
-        const active_tab_id = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(_tabs, valid_active).id;
-        render_tab(ctx, active_tab_id, content_rect);
-        _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
-        _M0MP49LING7167111moon_2degui3src4core7Painter9pop__clip(content_painter);
-      }
-      return { _0: result_node, _1: tab_switched, _2: closed_tab_id, _3: false };
-    }
-    default: {
-      const _Split = node;
-      const _direction = _Split._0;
-      const _ratio = _Split._1;
-      const _first = _Split._2;
-      const _second = _Split._3;
-      const handle_thick = 6 * scale;
-      let cur_ratio = _ratio;
-      let ratio_changed = false;
-      let first_rect;
-      let handle_rect;
-      let second_rect;
-      _L: {
-        if (_direction === 0) {
-          const total_w = rect.w - handle_thick;
-          let w1;
-          let w2;
-          _L$2: {
-            if (total_w <= 0) {
-              w1 = 0;
-              w2 = 0;
-              break _L$2;
-            } else {
-              if (total_w < min_pane_size * 2) {
-                const half = total_w * 0.5;
-                w1 = half;
-                w2 = total_w - half;
-                break _L$2;
-              } else {
-                let calculated_w1 = total_w * cur_ratio;
-                if (calculated_w1 < min_pane_size) {
-                  calculated_w1 = min_pane_size;
-                }
-                if (total_w - calculated_w1 < min_pane_size) {
-                  calculated_w1 = total_w - min_pane_size;
-                }
-                w1 = calculated_w1;
-                w2 = total_w - calculated_w1;
-                break _L$2;
-              }
-            }
-          }
-          const r1 = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x, rect.y, w1, rect.h);
-          const rh = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x + w1, rect.y, handle_thick, rect.h);
-          const r2 = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x + w1 + handle_thick, rect.y, w2, rect.h);
-          first_rect = r1;
-          handle_rect = rh;
-          second_rect = r2;
-          break _L;
-        } else {
-          const total_h = rect.h - handle_thick;
-          let h1;
-          let h2;
-          _L$2: {
-            if (total_h <= 0) {
-              h1 = 0;
-              h2 = 0;
-              break _L$2;
-            } else {
-              if (total_h < min_pane_size * 2) {
-                const half = total_h * 0.5;
-                h1 = half;
-                h2 = total_h - half;
-                break _L$2;
-              } else {
-                let calculated_h1 = total_h * cur_ratio;
-                if (calculated_h1 < min_pane_size) {
-                  calculated_h1 = min_pane_size;
-                }
-                if (total_h - calculated_h1 < min_pane_size) {
-                  calculated_h1 = total_h - min_pane_size;
-                }
-                h1 = calculated_h1;
-                h2 = total_h - calculated_h1;
-                break _L$2;
-              }
-            }
-          }
-          const r1 = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x, rect.y, rect.w, h1);
-          const rh = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x, rect.y + h1, rect.w, handle_thick);
-          const r2 = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x, rect.y + h1 + handle_thick, rect.w, h2);
-          first_rect = r1;
-          handle_rect = rh;
-          second_rect = r2;
-          break _L;
-        }
-      }
-      const handle_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, handle_rect);
-      const handle_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `${path}_spl`);
-      _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, handle_id);
-      const handle_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, handle_id);
-      let cursor_icon;
-      if (_direction === 0) {
-        cursor_icon = "col-resize";
-      } else {
-        cursor_icon = "row-resize";
-      }
-      if (handle_hovered) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, cursor_icon);
-      }
-      if (handle_hovered && ctx.input.mouse_pressed) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, handle_id);
-      }
-      const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-      const is_active = BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, handle_id.val);
-      if (is_active) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, cursor_icon);
-        if (ctx.input.mouse_down) {
-          if (_direction === 0) {
-            const avail = rect.w - handle_thick;
-            if (avail > 0) {
-              const _p$2 = ctx.input;
-              const local_x = _p$2.mouse_pos.x - rect.x;
-              const raw_ratio = local_x / avail;
-              const clamped_ratio = raw_ratio < 0.05 ? 0.05 : raw_ratio > 0.95 ? 0.95 : raw_ratio;
-              if (clamped_ratio !== cur_ratio) {
-                cur_ratio = clamped_ratio;
-                ratio_changed = true;
-              }
-            }
-          } else {
-            const avail = rect.h - handle_thick;
-            if (avail > 0) {
-              const _p$2 = ctx.input;
-              const local_y = _p$2.mouse_pos.y - rect.y;
-              const raw_ratio = local_y / avail;
-              const clamped_ratio = raw_ratio < 0.05 ? 0.05 : raw_ratio > 0.95 ? 0.95 : raw_ratio;
-              if (clamped_ratio !== cur_ratio) {
-                cur_ratio = clamped_ratio;
-                ratio_changed = true;
-              }
-            }
-          }
-        } else {
-          _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-        }
-      }
-      if (handle_focused) {
-        let grow_key;
-        if (_direction === 0) {
-          grow_key = 7;
-        } else {
-          grow_key = 9;
-        }
-        let shrink_key;
-        if (_direction === 0) {
-          shrink_key = 6;
-        } else {
-          shrink_key = 8;
-        }
-        if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, grow_key)) {
-          _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, grow_key);
-          cur_ratio = cur_ratio + 0.02 > 0.95 ? 0.95 : cur_ratio + 0.02;
-          ratio_changed = true;
-        }
-        if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, shrink_key)) {
-          _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, shrink_key);
-          cur_ratio = cur_ratio - 0.02 < 0.05 ? 0.05 : cur_ratio - 0.02;
-          ratio_changed = true;
-        }
-      }
-      const painter$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx);
-      const handle_col = is_active ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : handle_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover() : _M0MP49LING7167111moon_2degui3src5color5Color13border__muted();
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter$2, handle_rect, handle_col, 0);
-      if (handle_focused) {
-        _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter$2, _M0MP49LING7167111moon_2degui3src4math4Rect6expand(handle_rect, 1), _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1, 0);
-      }
-      const _bind$2 = _M0FP49LING7167111moon_2degui3src9composite18render__dock__node(ctx, _first, first_rect, `${path}_0`, render_tab);
-      const _new_first = _bind$2._0;
-      const _f_switched = _bind$2._1;
-      const _f_closed = _bind$2._2;
-      const _f_rc = _bind$2._3;
-      const _bind$3 = _M0FP49LING7167111moon_2degui3src9composite18render__dock__node(ctx, _second, second_rect, `${path}_1`, render_tab);
-      const _new_second = _bind$3._0;
-      const _s_switched = _bind$3._1;
-      const _s_closed = _bind$3._2;
-      const _s_rc = _bind$3._3;
-      const tab_switched$2 = _f_switched === undefined ? _s_switched : _f_switched;
-      const closed_tab = _f_closed === undefined ? _s_closed : _f_closed;
-      let updated_node;
-      if (_new_first.$tag === 2) {
-        updated_node = _new_second;
-      } else {
-        if (_new_second.$tag === 2) {
-          updated_node = _new_first;
-        } else {
-          updated_node = new _M0DTP49LING7167111moon_2degui3src9composite8DockNode5Split(_direction, cur_ratio, _new_first, _new_second);
-        }
-      }
-      return { _0: updated_node, _1: tab_switched$2, _2: closed_tab, _3: ratio_changed || (_f_rc || _s_rc) };
-    }
-  }
-}
-function _M0FP49LING7167111moon_2degui3src9composite10dock__area(ctx, id_salt, size, tree, render_tab) {
-  _M0MP49LING7167111moon_2degui3src4core7IdStack4push(ctx.id_stack, id_salt);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, size);
-  const _rect = _bind._1;
-  const _resp = _bind._2;
-  const painter = _M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, _rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, 4);
-  const _bind$2 = _M0FP49LING7167111moon_2degui3src9composite18render__dock__node(ctx, tree.root, _rect, id_salt, render_tab);
-  const _new_root = _bind$2._0;
-  const _active_tab_changed = _bind$2._1;
-  const _tab_closed = _bind$2._2;
-  const _ratio_changed = _bind$2._3;
-  tree.root = _new_root;
-  _M0MP49LING7167111moon_2degui3src4core7IdStack3pop(ctx.id_stack);
-  return new _M0TP49LING7167111moon_2degui3src9composite12DockResponse(_resp, _active_tab_changed, _tab_closed, _ratio_changed);
-}
-function _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem11new_2einner(id, label, shortcut, disabled, children) {
-  return new _M0TP49LING7167111moon_2degui3src9composite15ContextMenuItem(id, label, shortcut, disabled, false, children);
-}
-function _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem3new(id, label, shortcut$46$opt, disabled$46$opt, children$46$opt) {
-  let shortcut;
-  if (shortcut$46$opt === undefined) {
-    shortcut = "";
-  } else {
-    const _Some = shortcut$46$opt;
-    shortcut = _Some;
-  }
-  const disabled = disabled$46$opt === -1 ? false : disabled$46$opt;
-  let children;
-  if (children$46$opt.$tag === 1) {
-    const _Some = children$46$opt;
-    children = _Some._0;
-  } else {
-    children = [];
-  }
-  return _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem11new_2einner(id, label, shortcut, disabled, children);
-}
-function _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem9separator() {
-  return new _M0TP49LING7167111moon_2degui3src9composite15ContextMenuItem("", "", "", true, true, []);
-}
-function _M0FP49LING7167111moon_2degui3src9composite29calculate__context__menu__pos(anchor, size, viewport) {
-  let x = anchor.x + 2;
-  let y = anchor.y + 2;
-  if (x + size.x > viewport.x) {
-    const flipped_x = anchor.x - size.x - 2;
-    x = flipped_x >= 4 ? flipped_x : viewport.x - size.x - 4;
-  }
-  if (x < 4) {
-    x = 4;
-  }
-  if (y + size.y > viewport.y) {
-    const flipped_y = anchor.y - size.y - 2;
-    y = flipped_y >= 4 ? flipped_y : viewport.y - size.y - 4;
-  }
-  if (y < 4) {
-    y = 4;
-  }
-  return _M0MP49LING7167111moon_2degui3src4math4Vec23new(x, y);
-}
-function _M0FP49LING7167111moon_2degui3src9composite30compute__menu__content__height(items, item_h, sep_h, pad_y) {
-  let h = 0;
-  const _bind = items.length;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind) {
-      const item = items[_];
-      if (item.is_separator) {
-        h = h + sep_h;
-      } else {
-        h = h + item_h;
-      }
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  return h > 0 ? h + pad_y * 2 : 32;
-}
-function _M0FP49LING7167111moon_2degui3src9composite28context__menu__items_2einner(ctx, id_salt, open, pos, items, menu_width, viewport_size) {
-  if (!open) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, "");
-    return new _M0TP49LING7167111moon_2degui3src9composite19ContextMenuResponse(false, undefined, pos, _M0MP49LING7167111moon_2degui3src4math4Vec24zeroN6recordS197);
-  }
-  const scale = ctx.style.scale;
-  const item_h = 24 * scale;
-  const sep_h = 7 * scale;
-  const pad_y = 4 * scale;
-  const total_w = menu_width * scale;
-  const total_h = _M0FP49LING7167111moon_2degui3src9composite30compute__menu__content__height(items, item_h, sep_h, pad_y);
-  const menu_size = _M0MP49LING7167111moon_2degui3src4math4Vec23new(total_w, total_h);
-  let viewport;
-  if (viewport_size === undefined) {
-    const vw = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) > 0 ? _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) : 800;
-    viewport = _M0MP49LING7167111moon_2degui3src4math4Vec23new(vw, 600);
-  } else {
-    const _Some = viewport_size;
-    viewport = _Some;
-  }
-  const placed_pos = _M0FP49LING7167111moon_2degui3src9composite29calculate__context__menu__pos(pos, menu_size, viewport);
-  const menu_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(placed_pos.x, placed_pos.y, total_w, total_h);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext12block__hover(ctx, menu_rect);
-  if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 3)) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, "");
-    return new _M0TP49LING7167111moon_2degui3src9composite19ContextMenuResponse(false, undefined, placed_pos, menu_size);
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext17begin__foreground(ctx);
-  let cur_y = placed_pos.y + pad_y;
-  let active_sub_item = undefined;
-  let active_sub_row_y = 0;
-  let selected_id = undefined;
-  const _bind = items.length;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind) {
-      const item = items[_];
-      if (item.is_separator) {
-        cur_y = cur_y + sep_h;
-      } else {
-        const row_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(placed_pos.x + 4 * scale, cur_y, total_w - 8 * scale, item_h);
-        const hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, row_rect) && !item.disabled;
-        if (hovered) {
-          _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-          if (item.children.length > 0) {
-            _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, item.id);
-          } else {
-            let _tmp$2;
-            const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext19active__submenu__id(ctx);
-            const _p$2 = "";
-            if (!(_p === _p$2)) {
-              const _p$3 = item.children;
-              _tmp$2 = !(_p$3.length === 0) === false;
-            } else {
-              _tmp$2 = false;
-            }
-            if (_tmp$2) {
-              _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, "");
-            }
-          }
-        }
-        if (_M0MP49LING7167111moon_2degui3src4core9UIContext19active__submenu__id(ctx) === item.id && item.children.length > 0) {
-          active_sub_item = item;
-          active_sub_row_y = cur_y;
-        }
-        let _tmp$2;
-        if (hovered) {
-          let _tmp$3;
-          if (ctx.input.mouse_pressed) {
-            const _p = item.children;
-            _tmp$3 = _p.length === 0;
-          } else {
-            _tmp$3 = false;
-          }
-          _tmp$2 = _tmp$3;
-        } else {
-          _tmp$2 = false;
-        }
-        if (_tmp$2) {
-          selected_id = item.id;
-        }
-        cur_y = cur_y + item_h;
-      }
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  let sub_rect_opt = undefined;
-  const _bind$2 = active_sub_item;
-  if (_bind$2 === undefined) {
-  } else {
-    const _Some = _bind$2;
-    const _sub_item = _Some;
-    const sub_h = _M0FP49LING7167111moon_2degui3src9composite30compute__menu__content__height(_sub_item.children, item_h, sep_h, pad_y);
-    let sub_x = placed_pos.x + total_w - 2 * scale;
-    if (sub_x + total_w > viewport.x) {
-      sub_x = placed_pos.x - total_w + 2 * scale;
-    }
-    if (sub_x < 4) {
-      sub_x = 4;
-    }
-    let sub_y = active_sub_row_y - pad_y;
-    if (sub_y + sub_h > viewport.y) {
-      sub_y = viewport.y - sub_h - 4;
-    }
-    if (sub_y < 4) {
-      sub_y = 4;
-    }
-    const sub_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sub_x, sub_y, total_w, sub_h);
-    sub_rect_opt = sub_rect;
-    _M0MP49LING7167111moon_2degui3src4core9UIContext12block__hover(ctx, sub_rect);
-    let sub_cur_y = sub_y + pad_y;
-    const _bind$3 = _sub_item.children;
-    const _bind$4 = _bind$3.length;
-    let _tmp$2 = 0;
-    while (true) {
-      const _ = _tmp$2;
-      if (_ < _bind$4) {
-        const child = _bind$3[_];
-        if (child.is_separator) {
-          sub_cur_y = sub_cur_y + sep_h;
-        } else {
-          const child_row = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sub_x + 4 * scale, sub_cur_y, total_w - 8 * scale, item_h);
-          const child_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, child_row) && !child.disabled;
-          if (child_hovered) {
-            _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-            if (ctx.input.mouse_pressed) {
-              selected_id = child.id;
-            }
-          }
-          sub_cur_y = sub_cur_y + item_h;
-        }
-        _tmp$2 = _ + 1 | 0;
-        continue;
-      } else {
-        break;
-      }
-    }
-  }
-  const menu_kb_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `ctx_menu_kb::${id_salt}`);
-  const actionable = [];
-  const _bind$3 = items.length;
-  let _tmp$2 = 0;
-  while (true) {
-    const i = _tmp$2;
-    if (i < _bind$3) {
-      const it = items[i];
-      if (!it.is_separator && !it.disabled) {
-        _M0MPC15array5Array4pushGiE(actionable, i);
-      }
-      _tmp$2 = i + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  if (actionable.length > 0) {
-    let cur = _M0MP49LING7167111moon_2degui3src4core6Memory29get__int__or__default_2einner(ctx.memory, menu_kb_id, _M0MPC15array5Array2atGiE(actionable, 0), "kb");
-    let in_list = false;
-    const _bind$4 = actionable.length;
-    let _tmp$3 = 0;
-    while (true) {
-      const _ = _tmp$3;
-      if (_ < _bind$4) {
-        const i = actionable[_];
-        if (i === cur) {
-          in_list = true;
-          break;
-        }
-        _tmp$3 = _ + 1 | 0;
-        continue;
-      } else {
-        break;
-      }
-    }
-    if (!in_list) {
-      cur = _M0MPC15array5Array2atGiE(actionable, 0);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
-      let pos_in;
-      let _return_value;
-      _L: {
-        _L$2: {
-          const _bind$5 = actionable.length;
-          let _tmp$4 = 0;
-          while (true) {
-            const p = _tmp$4;
-            if (p < _bind$5) {
-              const i = actionable[p];
-              if (i === cur) {
-                _return_value = p;
-                break _L$2;
-              }
-              _tmp$4 = p + 1 | 0;
-              continue;
-            } else {
-              break;
-            }
-          }
-          pos_in = 0;
-          break _L;
-        }
-        pos_in = _return_value;
-      }
-      cur = _M0MPC15array5Array2atGiE(actionable, (pos_in + 1 | 0) < actionable.length ? pos_in + 1 | 0 : pos_in);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
-      let pos_in;
-      let _return_value;
-      _L: {
-        _L$2: {
-          const _bind$5 = actionable.length;
-          let _tmp$4 = 0;
-          while (true) {
-            const p = _tmp$4;
-            if (p < _bind$5) {
-              const i = actionable[p];
-              if (i === cur) {
-                _return_value = p;
-                break _L$2;
-              }
-              _tmp$4 = p + 1 | 0;
-              continue;
-            } else {
-              break;
-            }
-          }
-          pos_in = 0;
-          break _L;
-        }
-        pos_in = _return_value;
-      }
-      cur = _M0MPC15array5Array2atGiE(actionable, pos_in > 0 ? pos_in - 1 | 0 : 0);
-    }
-    _M0MP49LING7167111moon_2degui3src4core6Memory16set__int_2einner(ctx.memory, menu_kb_id, cur, "kb", 0);
-    const kb_item = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(items, cur);
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
-      if (kb_item.children.length > 0) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, kb_item.id);
-      } else {
-        selected_id = kb_item.id;
-      }
-    }
-  }
-  if (ctx.input.mouse_pressed) {
-    const in_main = _M0MP49LING7167111moon_2degui3src4math4Rect8contains(menu_rect, ctx.input.mouse_pos);
-    const _bind$4 = sub_rect_opt;
-    let in_sub;
-    if (_bind$4 === undefined) {
-      in_sub = false;
-    } else {
-      const _Some = _bind$4;
-      const _sr = _Some;
-      in_sub = _M0MP49LING7167111moon_2degui3src4math4Rect8contains(_sr, ctx.input.mouse_pos);
-    }
-    if (!in_main && !in_sub) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, "");
-      _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
-      return new _M0TP49LING7167111moon_2degui3src9composite19ContextMenuResponse(false, undefined, placed_pos, menu_size);
-    }
-  }
-  const _bind$4 = selected_id;
-  if (_bind$4 === undefined) {
-  } else {
-    const _Some = _bind$4;
-    const _id = _Some;
-    _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, "");
-    _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
-    return new _M0TP49LING7167111moon_2degui3src9composite19ContextMenuResponse(false, _id, placed_pos, menu_size);
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext17begin__foreground(ctx);
-  const menu_radius = ctx.style.radius_md * scale;
-  const row_radius = ctx.style.radius_sm * scale;
-  const font_nm = ctx.style.font_normal * scale;
-  const font_sm = ctx.style.font_small * scale;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(placed_pos.x, placed_pos.y + 4 * scale, total_w, total_h), _M0MP49LING7167111moon_2degui3src5color5Color15shadow__ambient(), menu_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(placed_pos.x, placed_pos.y + 1 * scale, total_w, total_h), _M0MP49LING7167111moon_2degui3src5color5Color11shadow__key(), menu_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), menu_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), menu_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), menu_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, menu_radius);
-  const kb_idx = _M0MP49LING7167111moon_2degui3src4core6Memory29get__int__or__default_2einner(ctx.memory, menu_kb_id, -1, "kb");
-  let cur_draw_y = placed_pos.y + pad_y;
-  const _bind$5 = items.length;
-  let _tmp$3 = 0;
-  while (true) {
-    const i = _tmp$3;
-    if (i < _bind$5) {
-      const item = items[i];
-      if (item.is_separator) {
-        const line_y = cur_draw_y + 3 * scale;
-        _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(placed_pos.x + 8 * scale, line_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(placed_pos.x + total_w - 8 * scale, line_y), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
-        cur_draw_y = cur_draw_y + sep_h;
-      } else {
-        const row_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(placed_pos.x + 4 * scale, cur_draw_y, total_w - 8 * scale, item_h);
-        const kb_selected = !item.is_separator && (!item.disabled && kb_idx === i);
-        const hovered = (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, row_rect) || (_M0MP49LING7167111moon_2degui3src4core9UIContext19active__submenu__id(ctx) === item.id || kb_selected)) && !item.disabled;
-        if (hovered) {
-          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), row_radius);
-        }
-        const text_col = item.disabled ? _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled() : hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color13text__primary();
-        const text_y = cur_draw_y + (item_h - font_nm) * 0.5;
-        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(placed_pos.x + 12 * scale, text_y), item.label, font_nm, text_col, "", 500);
-        if (item.children.length > 0) {
-          const chev_col = hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(placed_pos.x + total_w - 18 * scale, text_y), ">", font_sm, chev_col, "", 500);
-        } else {
-          const _p = item.shortcut;
-          if (!(_p === "")) {
-            const sc_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, item.shortcut, font_sm);
-            const sc_x = placed_pos.x + total_w - sc_size.x - 12 * scale;
-            const sc_col = item.disabled ? _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled() : hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
-            _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sc_x, text_y + 1 * scale), item.shortcut, font_sm, sc_col, "", 500);
-          }
-        }
-        cur_draw_y = cur_draw_y + item_h;
-      }
-      _tmp$3 = i + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  const _bind$6 = active_sub_item;
-  if (_bind$6 === undefined) {
-  } else {
-    const _Some = _bind$6;
-    const _sub_item = _Some;
-    const _bind$7 = sub_rect_opt;
-    if (_bind$7 === undefined) {
-    } else {
-      const _Some$2 = _bind$7;
-      const _sub_rect = _Some$2;
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(_sub_rect.x, _sub_rect.y + 4 * scale, _sub_rect.w, _sub_rect.h), _M0MP49LING7167111moon_2degui3src5color5Color15shadow__ambient(), menu_radius);
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(_sub_rect.x, _sub_rect.y + 1 * scale, _sub_rect.w, _sub_rect.h), _M0MP49LING7167111moon_2degui3src5color5Color11shadow__key(), menu_radius);
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _sub_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), menu_radius);
-      _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _sub_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, menu_radius);
-      let sub_draw_y = _sub_rect.y + pad_y;
-      const _bind$8 = _sub_item.children;
-      const _bind$9 = _bind$8.length;
-      let _tmp$4 = 0;
-      while (true) {
-        const _ = _tmp$4;
-        if (_ < _bind$9) {
-          const child = _bind$8[_];
-          if (child.is_separator) {
-            const line_y = sub_draw_y + 3 * scale;
-            _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_sub_rect.x + 8 * scale, line_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_sub_rect.x + _sub_rect.w - 8 * scale, line_y), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
-            sub_draw_y = sub_draw_y + sep_h;
-          } else {
-            const child_row = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_sub_rect.x + 4 * scale, sub_draw_y, _sub_rect.w - 8 * scale, item_h);
-            const child_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, child_row) && !child.disabled;
-            if (child_hovered) {
-              _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), child_row, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), row_radius);
-            }
-            const text_col = child.disabled ? _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled() : child_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color13text__primary();
-            const text_y = sub_draw_y + (item_h - font_nm) * 0.5;
-            _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_sub_rect.x + 12 * scale, text_y), child.label, font_nm, text_col, "", 500);
-            const _p = child.shortcut;
-            if (!(_p === "")) {
-              const sc_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, child.shortcut, font_sm);
-              const sc_x = _sub_rect.x + _sub_rect.w - sc_size.x - 12 * scale;
-              const sc_col = child.disabled ? _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled() : child_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
-              _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sc_x, text_y + 1 * scale), child.shortcut, font_sm, sc_col, "", 500);
-            }
-            sub_draw_y = sub_draw_y + item_h;
-          }
-          _tmp$4 = _ + 1 | 0;
-          continue;
-        } else {
-          break;
-        }
-      }
-    }
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
-  return new _M0TP49LING7167111moon_2degui3src9composite19ContextMenuResponse(true, undefined, placed_pos, menu_size);
-}
-function _M0MP49LING7167111moon_2degui3src9composite11CommandItem11new_2einner(id, title, category, shortcut) {
-  return new _M0TP49LING7167111moon_2degui3src9composite11CommandItem(id, title, category, shortcut);
-}
-function _M0FP49LING7167111moon_2degui3src9composite30string__contains__ignore__case(haystack, needle) {
-  const n_len = needle.length;
-  const h_len = haystack.length;
-  if (n_len === 0) {
-    return true;
-  }
-  if (n_len > h_len) {
-    return false;
-  }
-  let _tmp = 0;
-  while (true) {
-    const i = _tmp;
-    if (i <= (h_len - n_len | 0)) {
-      let matched = true;
-      let _tmp$2 = 0;
-      while (true) {
-        const j = _tmp$2;
-        if (j < n_len) {
-          const _tmp$3 = i + j | 0;
-          const _p = _tmp$3 >>> 0 < haystack.length ? haystack.charCodeAt(_tmp$3) : $oob();
-          const hc = _p >= 65 && _p <= 90 ? _p + 32 | 0 : _p;
-          const _p$2 = j >>> 0 < needle.length ? needle.charCodeAt(j) : $oob();
-          const nc = _p$2 >= 65 && _p$2 <= 90 ? _p$2 + 32 | 0 : _p$2;
-          if (hc !== nc) {
-            matched = false;
-            break;
-          }
-          _tmp$2 = j + 1 | 0;
-          continue;
-        } else {
-          break;
-        }
-      }
-      if (matched) {
-        return true;
-      }
-      _tmp = i + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  return false;
-}
-function _M0FP49LING7167111moon_2degui3src9composite24command__palette_2einner(ctx, open, query, commands, selected_index, viewport_size) {
-  if (!open) {
-    return new _M0TP49LING7167111moon_2degui3src9composite22CommandPaletteResponse(false, undefined, query, selected_index);
-  }
-  let new_query = query;
-  let new_selected_index = selected_index;
-  if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 0)) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext19reset__caret__blink(ctx);
-    const len = new_query.length;
-    if (len > 0) {
-      new_query = _M0FP49LING7167111moon_2degui3src9composite13string__slice(new_query, 0, len - 1 | 0);
-    }
-  }
-  const _p = ctx.input;
-  const text_in = _p.text_input;
-  if (!(text_in === "")) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext19reset__caret__blink(ctx);
-    new_query = `${new_query}${text_in}`;
-  }
-  const _p$2 = new_query;
-  if (!(_p$2 === query)) {
-    new_selected_index = 0;
-  }
-  const filtered = [];
-  const _bind = commands.length;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind) {
-      const item = commands[_];
-      let _tmp$2;
-      const _p$3 = new_query;
-      if (_p$3 === "") {
-        _tmp$2 = true;
-      } else {
-        _tmp$2 = _M0FP49LING7167111moon_2degui3src9composite30string__contains__ignore__case(item.title, new_query) || _M0FP49LING7167111moon_2degui3src9composite30string__contains__ignore__case(item.category, new_query);
-      }
-      if (_tmp$2) {
-        _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(filtered, item);
-      }
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  const filtered_count = filtered.length;
-  if (filtered_count > 0) {
-    if (new_selected_index >= filtered_count) {
-      new_selected_index = filtered_count - 1 | 0;
-    }
-    if (new_selected_index < 0) {
-      new_selected_index = 0;
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
-      new_selected_index = (new_selected_index + 1 | 0) % filtered_count | 0;
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
-      new_selected_index = new_selected_index <= 0 ? filtered_count - 1 | 0 : new_selected_index - 1 | 0;
-    }
-  } else {
-    new_selected_index = 0;
-  }
-  if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 3)) {
-    return new _M0TP49LING7167111moon_2degui3src9composite22CommandPaletteResponse(false, undefined, new_query, new_selected_index);
-  }
-  if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2)) {
-    const sel = filtered_count > 0 && new_selected_index < filtered_count ? _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(filtered, new_selected_index).id : undefined;
-    return new _M0TP49LING7167111moon_2degui3src9composite22CommandPaletteResponse(false, sel, new_query, new_selected_index);
-  }
-  const scale = ctx.style.scale;
-  const font_sm = ctx.style.font_small * scale;
-  const font_nm = ctx.style.font_normal * scale;
-  const font_lg = ctx.style.font_large * scale;
-  const card_radius = ctx.style.radius_lg * scale;
-  const row_radius = ctx.style.radius_sm * scale;
-  const viewport_w = viewport_size.x > 0 ? viewport_size.x : _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) > 0 ? _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) : 4000;
-  const viewport_h = viewport_size.y > 0 ? viewport_size.y : 4000;
-  const scrim_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(0, 0, viewport_w, viewport_h);
-  const card_container_w = viewport_size.x > 0 ? viewport_size.x : _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) > 0 ? _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) : 800;
-  const default_palette_w = 540 * scale;
-  const card_w = card_container_w < default_palette_w + 20 * scale ? card_container_w - 32 * scale : default_palette_w;
-  const card_x = (card_container_w - card_w) * 0.5;
-  const card_y = 64 * scale;
-  const header_h = (ctx.style.control_h_lg + ctx.style.radius_md) * scale;
-  const footer_h = (ctx.style.control_h_sm + ctx.style.spacing_xs) * scale;
-  const row_h = ctx.style.control_h_md * scale;
-  const cat_h = 24 * scale;
-  let content_h = 0;
-  let prev_cat = "";
-  if (filtered_count === 0) {
-    content_h = 48 * scale;
-  } else {
-    const _bind$2 = filtered.length;
-    let _tmp$2 = 0;
-    while (true) {
-      const _ = _tmp$2;
-      if (_ < _bind$2) {
-        const item = filtered[_];
-        let _tmp$3;
-        const _p$3 = item.category;
-        if (!(_p$3 === "")) {
-          const _p$4 = item.category;
-          const _p$5 = prev_cat;
-          _tmp$3 = !(_p$4 === _p$5);
-        } else {
-          _tmp$3 = false;
-        }
-        if (_tmp$3) {
-          content_h = content_h + cat_h;
-          prev_cat = item.category;
-        }
-        content_h = content_h + row_h;
-        _tmp$2 = _ + 1 | 0;
-        continue;
-      } else {
-        break;
-      }
-    }
-  }
-  const max_content_h = 320 * scale;
-  const visible_content_h = content_h > max_content_h ? max_content_h : content_h;
-  const card_h = header_h + visible_content_h + footer_h + 12 * scale;
-  const card_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x, card_y, card_w, card_h);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext17begin__foreground(ctx);
-  const content_clip_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x, card_y + header_h, card_w, visible_content_h + 12 * scale);
-  const scroll_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, "cmd_palette_scroll");
-  let scroll_y = _M0MP49LING7167111moon_2degui3src4core9UIContext19get__scroll__offset(ctx, scroll_id);
-  const max_scroll = content_h > visible_content_h ? content_h - visible_content_h : 0;
-  if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, content_clip_rect) && ctx.input.scroll_delta.y !== 0) {
-    scroll_y = scroll_y - ctx.input.scroll_delta.y;
-  }
-  const selected_top = (new_selected_index + 0) * row_h;
-  if (selected_top < scroll_y) {
-    scroll_y = selected_top;
-  } else {
-    if (selected_top + row_h > scroll_y + visible_content_h) {
-      scroll_y = selected_top + row_h - visible_content_h;
-    }
-  }
-  if (scroll_y < 0) {
-    scroll_y = 0;
-  }
-  if (scroll_y > max_scroll) {
-    scroll_y = max_scroll;
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, scroll_id, scroll_y);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext12block__hover(ctx, scrim_rect);
-  if (ctx.input.mouse_pressed && !_M0MP49LING7167111moon_2degui3src4math4Rect8contains(card_rect, ctx.input.mouse_pos)) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
-    return new _M0TP49LING7167111moon_2degui3src9composite22CommandPaletteResponse(false, undefined, new_query, new_selected_index);
-  }
-  const row_pad_x = row_radius * scale;
-  const row_w = card_w - row_pad_x * 2;
-  const elevation_key_y = 8 * scale;
-  const elevation_ambient_y = 2 * scale;
-  let cur_row_y = card_y + header_h + row_pad_x - scroll_y;
-  let prev_row_cat = "";
-  let clicked_id = undefined;
-  let _tmp$2 = 0;
-  while (true) {
-    const idx = _tmp$2;
-    if (idx < filtered_count) {
-      const item = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(filtered, idx);
-      let _tmp$3;
-      const _p$3 = item.category;
-      if (!(_p$3 === "")) {
-        const _p$4 = item.category;
-        const _p$5 = prev_row_cat;
-        _tmp$3 = !(_p$4 === _p$5);
-      } else {
-        _tmp$3 = false;
-      }
-      if (_tmp$3) {
-        cur_row_y = cur_row_y + cat_h;
-        prev_row_cat = item.category;
-      }
-      const row_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x + row_pad_x, cur_row_y, row_w, row_h);
-      if (_M0MP49LING7167111moon_2degui3src4math4Rect8contains(content_clip_rect, ctx.input.mouse_pos) && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, row_rect)) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
-        new_selected_index = idx;
-        if (ctx.input.mouse_pressed) {
-          clicked_id = item.id;
-        }
-      }
-      cur_row_y = cur_row_y + row_h;
-      _tmp$2 = idx + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  const _bind$2 = clicked_id;
-  if (_bind$2 === undefined) {
-  } else {
-    const _Some = _bind$2;
-    const _id = _Some;
-    _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
-    return new _M0TP49LING7167111moon_2degui3src9composite22CommandPaletteResponse(false, _id, new_query, new_selected_index);
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext17begin__foreground(ctx);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), scrim_rect, _M0MP49LING7167111moon_2degui3src5color5Color9bg__scrim(), 0);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x, card_y + elevation_key_y, card_w, card_h), _M0MP49LING7167111moon_2degui3src5color5Color11shadow__key(), card_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x, card_y + elevation_ambient_y, card_w, card_h), _M0MP49LING7167111moon_2degui3src5color5Color15shadow__ambient(), card_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), card_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), card_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), card_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, card_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + 16 * scale, card_y + 14 * scale), ">", font_lg, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), "", 500);
-  const _p$3 = new_query;
-  if (_p$3 === "") {
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + 36 * scale, card_y + 16 * scale), "键入命令或搜索动作...", font_nm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
-  } else {
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + 36 * scale, card_y + 16 * scale), new_query, font_nm, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary(), "", 500);
-    const q_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, new_query, font_nm);
-    const caret_x = card_x + 36 * scale + q_size.x + 2 * scale;
-    if (_M0MP49LING7167111moon_2degui3src4core9UIContext18is__caret__visible(ctx)) {
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(caret_x, card_y + 16 * scale), _M0MP49LING7167111moon_2degui3src4math4Vec23new(caret_x, card_y + 31 * scale), _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 1.5);
-    }
-  }
-  const esc_w = 32 * scale;
-  const esc_h = 18 * scale;
-  const esc_x = card_x + card_w - esc_w - 14 * scale;
-  const esc_y = card_y + 14 * scale;
-  const esc_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(esc_x, esc_y, esc_w, esc_h);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), esc_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), row_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), esc_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1, row_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(esc_x + 6 * scale, esc_y + 3 * scale), "Esc", font_sm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x, card_y + header_h), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + card_w, card_y + header_h), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, content_clip_rect);
-  let draw_y = card_y + header_h + row_pad_x - scroll_y;
-  let prev_draw_cat = "";
-  if (filtered_count === 0) {
-    const empty_text_y = draw_y + (48 * scale - font_nm) * 0.5;
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + 20 * scale, empty_text_y), "未找到匹配命令", font_nm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
-  } else {
-    const indicator_h = 20 * scale;
-    const indicator_w = 3 * scale;
-    const text_pad_left = card_x + row_pad_x + 12 * scale;
-    let _tmp$3 = 0;
-    while (true) {
-      const idx = _tmp$3;
-      if (idx < filtered_count) {
-        const item = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(filtered, idx);
-        let _tmp$4;
-        const _p$4 = item.category;
-        if (!(_p$4 === "")) {
-          const _p$5 = item.category;
-          const _p$6 = prev_draw_cat;
-          _tmp$4 = !(_p$5 === _p$6);
-        } else {
-          _tmp$4 = false;
-        }
-        if (_tmp$4) {
-          const cat_y = draw_y + (cat_h - font_sm) * 0.5;
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + 16 * scale, cat_y), item.category, font_sm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
-          draw_y = draw_y + cat_h;
-          prev_draw_cat = item.category;
-        }
-        const row_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x + row_pad_x, draw_y, row_w, row_h);
-        const is_selected = idx === new_selected_index;
-        const text_y = draw_y + (row_h - font_nm) * 0.5;
-        if (is_selected) {
-          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color19tree__row__selected(), row_radius);
-          const indicator_y = draw_y + (row_h - indicator_h) * 0.5;
-          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x + row_pad_x, indicator_y, indicator_w, indicator_h), _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), indicator_w * 0.5);
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(text_pad_left, text_y), item.title, font_nm, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary(), "", 500);
-        } else {
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(text_pad_left, text_y), item.title, font_nm, _M0MP49LING7167111moon_2degui3src5color5Color10text__body(), "", 500);
-        }
-        const _p$5 = item.shortcut;
-        if (!(_p$5 === "")) {
-          const sc_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, item.shortcut, font_sm);
-          const sc_x = card_x + card_w - sc_size.x - 20 * scale;
-          const sc_y = draw_y + (row_h - font_sm) * 0.5;
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sc_x, sc_y), item.shortcut, font_sm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
-        }
-        draw_y = draw_y + row_h;
-        _tmp$3 = idx + 1 | 0;
-        continue;
-      } else {
-        break;
-      }
-    }
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
-  const footer_y = card_y + card_h - footer_h;
-  const footer_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x, footer_y, card_w, footer_h);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), footer_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), card_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x, footer_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + card_w, footer_y), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + 16 * scale, footer_y + 8 * scale), "↑↓ 导航   ↵ 选择   Esc 退出", font_sm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
-  return new _M0TP49LING7167111moon_2degui3src9composite22CommandPaletteResponse(true, undefined, new_query, new_selected_index);
-}
-function _M0FP49LING7167111moon_2degui3src9composite16command__palette(ctx, open, query, commands, selected_index$46$opt, viewport_size$46$opt) {
-  let selected_index;
-  if (selected_index$46$opt === undefined) {
-    selected_index = 0;
-  } else {
-    const _Some = selected_index$46$opt;
-    selected_index = _Some;
-  }
-  let viewport_size;
-  if (viewport_size$46$opt === undefined) {
-    viewport_size = _M0MP49LING7167111moon_2degui3src4math4Vec24zeroN6recordS197;
-  } else {
-    const _Some = viewport_size$46$opt;
-    viewport_size = _Some;
-  }
-  return _M0FP49LING7167111moon_2degui3src9composite24command__palette_2einner(ctx, open, query, commands, selected_index, viewport_size);
-}
-function _M0FP49LING7167111moon_2degui3src9composite12hsv__to__rgb(h, s, v) {
-  const h_clamped = _M0IPC16double6DoublePB3Mod3mod(_M0IPC16double6DoublePB3Mod3mod(h, 360) + 360, 360);
-  const s_clamped = s < 0 ? 0 : s > 1 ? 1 : s;
-  const v_clamped = v < 0 ? 0 : v > 1 ? 1 : v;
-  const c = v_clamped * s_clamped;
-  const h_sector = h_clamped / 60;
-  const x = c * (1 - Math.abs(_M0IPC16double6DoublePB3Mod3mod(h_sector, 2) - 1));
-  const m = v_clamped - c;
-  let r1;
-  let g1;
-  let b1;
-  _L: {
-    if (h_sector < 1) {
-      r1 = c;
-      g1 = x;
-      b1 = 0;
-      break _L;
-    } else {
-      if (h_sector < 2) {
-        r1 = x;
-        g1 = c;
-        b1 = 0;
-        break _L;
-      } else {
-        if (h_sector < 3) {
-          r1 = 0;
-          g1 = c;
-          b1 = x;
-          break _L;
-        } else {
-          if (h_sector < 4) {
-            r1 = 0;
-            g1 = x;
-            b1 = c;
-            break _L;
-          } else {
-            if (h_sector < 5) {
-              r1 = x;
-              g1 = 0;
-              b1 = c;
-              break _L;
-            } else {
-              r1 = c;
-              g1 = 0;
-              b1 = x;
-              break _L;
-            }
-          }
-        }
-      }
-    }
-  }
-  const r = _M0MPC16double6Double7to__int((r1 + m) * 255 + 0.5);
-  const g = _M0MPC16double6Double7to__int((g1 + m) * 255 + 0.5);
-  const b = _M0MPC16double6Double7to__int((b1 + m) * 255 + 0.5);
-  return { _0: r, _1: g, _2: b };
-}
-function _M0FP49LING7167111moon_2degui3src9composite12rgb__to__hsv(r, g, b) {
-  const rf = (r + 0) / 255;
-  const gf = (g + 0) / 255;
-  const bf = (b + 0) / 255;
-  const cmax = rf > gf ? (rf > bf ? rf : bf) : gf > bf ? gf : bf;
-  const cmin = rf < gf ? (rf < bf ? rf : bf) : gf < bf ? gf : bf;
-  const delta = cmax - cmin;
-  const s = cmax > 1e-005 ? delta / cmax : 0;
-  let h;
-  if (delta < 1e-005) {
-    h = 0;
-  } else {
-    if (cmax === rf) {
-      let val = 60 * ((gf - bf) / delta);
-      if (val < 0) {
-        val = val + 360;
-      }
-      h = val;
-    } else {
-      h = cmax === gf ? 60 * ((bf - rf) / delta) + 120 : 60 * ((rf - gf) / delta) + 240;
-    }
-  }
-  return { _0: h, _1: s, _2: cmax };
-}
-function _M0FP49LING7167111moon_2degui3src9composite9hex__byte(val) {
-  const hi = val >> 4 & 15;
-  const lo = val & 15;
-  const hi_s = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(_M0FP49LING7167111moon_2degui3src9composite9hex__byteN11hex__digitsS288, hi, hi + 1 | 0));
-  const lo_s = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(_M0FP49LING7167111moon_2degui3src9composite9hex__byteN11hex__digitsS288, lo, lo + 1 | 0));
-  return `${hi_s}${lo_s}`;
-}
-function _M0FP49LING7167111moon_2degui3src9composite21color__picker_2einner(ctx, id_salt, color, show_alpha) {
-  const scale = ctx.style.scale;
-  const width = 180 * scale;
-  const height = (show_alpha ? 230 : 206) * scale;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(width, height));
-  const _rect = _bind._1;
-  const _resp = _bind._2;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
-  const card_radius = ctx.style.radius_md * scale;
-  const inner_radius = ctx.style.radius_sm * scale;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), card_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1 * scale, card_radius);
-  const pad = 10 * scale;
-  const sq_x = _rect.x + pad;
-  const sq_y = _rect.y + pad;
-  const sq_w = _rect.w - pad * 2;
-  const sq_h = 126 * scale;
-  const sq_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sq_x, sq_y, sq_w, sq_h);
-  const _bind$2 = _M0FP49LING7167111moon_2degui3src9composite12rgb__to__hsv(color.r, color.g, color.b);
-  const _init_h = _bind$2._0;
-  const _init_s = _bind$2._1;
-  const _init_v = _bind$2._2;
-  const panel_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `color_picker::${id_salt}`);
-  let h;
-  if (_init_s > 0.001 && _init_v > 0.001) {
-    _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, panel_id, _init_h, "hue", ctx.frame_counter);
-    h = _init_h;
-  } else {
-    h = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, panel_id, _init_h, "hue");
-  }
-  let s = _init_s;
-  let v = _init_v;
-  let a = color.a;
-  const sv_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `cp_sv::${id_salt}`);
-  const sv_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, sq_rect);
-  let _tmp;
-  if (sv_hovered) {
-    _tmp = true;
-  } else {
-    const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-    _tmp = BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, sv_id.val);
-  }
-  if (_tmp) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
-  }
-  if (sv_hovered && ctx.input.mouse_pressed) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, sv_id);
-  }
-  const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-  if (BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, sv_id.val)) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
-    if (ctx.input.mouse_down) {
-      const raw_s = (ctx.input.mouse_pos.x - sq_x) / sq_w;
-      const raw_v = 1 - (ctx.input.mouse_pos.y - sq_y) / sq_h;
-      s = raw_s < 0 ? 0 : raw_s > 1 ? 1 : raw_s;
-      v = raw_v < 0 ? 0 : raw_v > 1 ? 1 : raw_v;
-    }
-    if (ctx.input.mouse_released) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-    }
-  }
-  const _bind$3 = _M0FP49LING7167111moon_2degui3src9composite12hsv__to__rgb(h, 1, 1);
-  const _pure_r = _bind$3._0;
-  const _pure_g = _bind$3._1;
-  const _pure_b = _bind$3._2;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sq_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(_pure_r, _pure_g, _pure_b), inner_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter21add__linear__gradient(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sq_rect, _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x, sq_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x + sq_w, sq_y), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(255, 255, 255, 255), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(255, 255, 255, 0), inner_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter21add__linear__gradient(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sq_rect, _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x, sq_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x, sq_y + sq_h), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(0, 0, 0, 0), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(0, 0, 0, 255), inner_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sq_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1 * scale, inner_radius);
-  const cur_x = sq_x + s * sq_w;
-  const cur_y = sq_y + (1 - v) * sq_h;
-  const cur_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(cur_x, cur_y);
-  _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), cur_center, 5 * scale, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), 1.6 * scale);
-  _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), cur_center, 3.5 * scale, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary(), 1.2 * scale);
-  const hue_y = sq_y + sq_h + 8 * scale;
-  const hue_h = 12 * scale;
-  const hue_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sq_x, hue_y, sq_w, hue_h);
-  const hue_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `cp_hue::${id_salt}`);
-  const hue_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, hue_rect);
-  let _tmp$2;
-  if (hue_hovered) {
-    _tmp$2 = true;
-  } else {
-    const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-    _tmp$2 = BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, hue_id.val);
-  }
-  if (_tmp$2) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "ew-resize");
-  }
-  if (hue_hovered && ctx.input.mouse_pressed) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, hue_id);
-  }
-  const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-  if (BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, hue_id.val)) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
-    if (ctx.input.mouse_down) {
-      const raw_h = (ctx.input.mouse_pos.x - sq_x) / sq_w * 360;
-      h = raw_h < 0 ? 0 : raw_h > 360 ? 360 : raw_h;
-      _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, panel_id, h, "hue", ctx.frame_counter);
-    }
-    if (ctx.input.mouse_released) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-    }
-  }
-  const rainbow_stops = [{ _0: 0, _1: 60, _2: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 0, 0), _3: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 255, 0) }, { _0: 60, _1: 120, _2: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 255, 0), _3: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(0, 255, 0) }, { _0: 120, _1: 180, _2: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(0, 255, 0), _3: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(0, 255, 255) }, { _0: 180, _1: 240, _2: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(0, 255, 255), _3: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(0, 0, 255) }, { _0: 240, _1: 300, _2: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(0, 0, 255), _3: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 0, 255) }, { _0: 300, _1: 360, _2: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 0, 255), _3: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 0, 0) }];
-  const seg_w = sq_w / 6;
-  const _bind$4 = rainbow_stops.length;
-  let _tmp$3 = 0;
-  while (true) {
-    const idx = _tmp$3;
-    if (idx < _bind$4) {
-      const item = rainbow_stops[idx];
-      const _c_start = item._2;
-      const _c_end = item._3;
-      const seg_x = sq_x + (idx + 0) * seg_w;
-      const seg_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(seg_x, hue_y, seg_w + 0.5, hue_h);
-      const p_start = _M0MP49LING7167111moon_2degui3src4math4Vec23new(seg_x, hue_y);
-      const p_end = _M0MP49LING7167111moon_2degui3src4math4Vec23new(seg_x + seg_w, hue_y);
-      const corner_r = idx === 0 || idx === 5 ? inner_radius : 0;
-      _M0MP49LING7167111moon_2degui3src4core7Painter21add__linear__gradient(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), seg_rect, p_start, p_end, _c_start, _c_end, corner_r);
-      _tmp$3 = idx + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), hue_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1 * scale, inner_radius);
-  const hue_thumb_x = sq_x + h / 360 * sq_w;
-  const hue_thumb_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(hue_thumb_x, hue_y + hue_h * 0.5);
-  _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), hue_thumb_center, 6 * scale, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window());
-  _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), hue_thumb_center, 6 * scale, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1 * scale);
-  if (show_alpha) {
-    const alpha_y = hue_y + hue_h + 8 * scale;
-    const alpha_h = 12 * scale;
-    const alpha_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sq_x, alpha_y, sq_w, alpha_h);
-    const alpha_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `cp_alpha::${id_salt}`);
-    const alpha_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, alpha_rect);
-    let _tmp$4;
-    if (alpha_hovered) {
-      _tmp$4 = true;
-    } else {
-      const _p$3 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-      _tmp$4 = BigInt.asUintN(64, _p$3.val) === BigInt.asUintN(64, alpha_id.val);
-    }
-    if (_tmp$4) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "ew-resize");
-    }
-    if (alpha_hovered && ctx.input.mouse_pressed) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, alpha_id);
-    }
-    const _p$3 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
-    if (BigInt.asUintN(64, _p$3.val) === BigInt.asUintN(64, alpha_id.val)) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
-      if (ctx.input.mouse_down) {
-        const raw_a = (ctx.input.mouse_pos.x - sq_x) / sq_w * 255;
-        const val_a = _M0MPC16double6Double7to__int(raw_a);
-        a = val_a < 0 ? 0 : val_a > 255 ? 255 : val_a;
-      }
-      if (ctx.input.mouse_released) {
-        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-      }
-    }
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), alpha_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), inner_radius);
-    const _bind$5 = _M0FP49LING7167111moon_2degui3src9composite12hsv__to__rgb(h, s, v);
-    const _cur_r = _bind$5._0;
-    const _cur_g = _bind$5._1;
-    const _cur_b = _bind$5._2;
-    const c_start = _M0MP49LING7167111moon_2degui3src5color5Color4rgba(_cur_r, _cur_g, _cur_b, 0);
-    const c_end = _M0MP49LING7167111moon_2degui3src5color5Color4rgba(_cur_r, _cur_g, _cur_b, 255);
-    const p_start = _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x, alpha_y);
-    const p_end = _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x + sq_w, alpha_y);
-    _M0MP49LING7167111moon_2degui3src4core7Painter21add__linear__gradient(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), alpha_rect, p_start, p_end, c_start, c_end, inner_radius);
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), alpha_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1 * scale, inner_radius);
-    const alpha_thumb_x = sq_x + (a + 0) / 255 * sq_w;
-    const alpha_thumb_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(alpha_thumb_x, alpha_y + alpha_h * 0.5);
-    _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), alpha_thumb_center, 6 * scale, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window());
-    _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), alpha_thumb_center, 6 * scale, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1 * scale);
-  }
-  const _bind$5 = _M0FP49LING7167111moon_2degui3src9composite12hsv__to__rgb(h, s, v);
-  const _final_r = _bind$5._0;
-  const _final_g = _bind$5._1;
-  const _final_b = _bind$5._2;
-  const updated_color = _M0MP49LING7167111moon_2degui3src5color5Color4rgba(_final_r, _final_g, _final_b, a);
-  const footer_y = show_alpha ? hue_y + hue_h + 8 * scale + 12 * scale + 8 * scale : hue_y + hue_h + 8 * scale;
-  const swatch_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sq_x, footer_y, 22 * scale, 22 * scale);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), swatch_rect, updated_color, inner_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), swatch_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1 * scale, inner_radius);
-  const hex_text = show_alpha ? `#${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(_final_r)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(_final_g)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(_final_b)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(a)}` : `#${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(_final_r)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(_final_g)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(_final_b)}`;
-  const font_sz = ctx.style.font_small * scale;
-  const hex_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x + 30 * scale, footer_y + (22 * scale - font_sz) * 0.5);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), hex_pos, hex_text, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color12text__strong(), "", 500);
-  return { _0: updated_color, _1: _resp };
-}
-function _M0FP49LING7167111moon_2degui3src9composite29color__picker__button_2einner(ctx, id_salt, color, show_alpha) {
-  const scale = ctx.style.scale;
-  const font_sz = ctx.style.font_small * scale;
-  const hex_text = show_alpha ? `#${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.r)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.g)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.b)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.a)}` : `#${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.r)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.g)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.b)}`;
-  const txt_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, hex_text, font_sz);
-  const btn_w = 44 * scale + txt_sz.x;
-  const btn_h = (ctx.style.control_h_sm + ctx.style.spacing_xs) * scale;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(btn_w, btn_h));
-  const _id = _bind._0;
-  const _rect = _bind._1;
-  const _resp = _bind._2;
-  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _id);
-  const is_focused = _resp.has_focus || _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _id);
-  const is_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _rect);
-  const btn_bg = is_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover() : _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface();
-  const btn_radius = ctx.style.radius_sm * scale;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, btn_bg, btn_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color13border__focus() : _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, btn_radius);
-  if (is_focused) {
-    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect6expand(_rect, 2 * scale), _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1.5, btn_radius + 2 * scale);
-  }
-  const swatch_size = 16 * scale;
-  const swatch_pad = 6 * scale;
-  const swatch_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + swatch_pad, _rect.y + (btn_h - swatch_size) * 0.5, swatch_size, swatch_size);
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), swatch_rect, color, btn_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), swatch_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1, btn_radius);
-  const text_y = _rect.y + (btn_h - font_sz) * 0.5;
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + swatch_pad * 2 + swatch_size, text_y), hex_text, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color10text__body(), "", 500);
-  const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext15open__combo__id(ctx);
-  const is_open = BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, _id.val);
-  let next_color = color;
-  const key_toggle = is_focused && (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 5) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2));
-  if (key_toggle) {
-    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 5);
-    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
-  }
-  if (_resp.clicked || key_toggle) {
-    if (is_open) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext20set__open__combo__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-    } else {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext20set__open__combo__id(ctx, _id);
-    }
-  }
-  if (is_open) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext17begin__foreground(ctx);
-    const popup_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x, _rect.y + btn_h + 4 * scale);
-    const prev_cursor = _M0MP49LING7167111moon_2degui3src4core9UIContext6cursor(ctx);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, popup_pos);
-    const _bind$2 = _M0FP49LING7167111moon_2degui3src9composite21color__picker_2einner(ctx, `${id_salt}::popup`, color, show_alpha);
-    const _c = _bind$2._0;
-    next_color = _c;
-    _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, prev_cursor);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 3)) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext20set__open__combo__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 3);
-    }
-  }
-  return { _0: next_color, _1: _resp };
-}
-function _M0FP49LING7167111moon_2degui3src9composite21cursor__to__line__col(text, cursor_pos) {
-  let line = 0;
-  let col = 0;
-  const limit = cursor_pos > text.length ? text.length : cursor_pos < 0 ? 0 : cursor_pos;
-  let _tmp = 0;
-  while (true) {
-    const i = _tmp;
-    if (i < limit) {
-      const _p = i >>> 0 < text.length ? text.charCodeAt(i) : $oob();
-      const _p$2 = 10;
-      if (_p === _p$2) {
-        line = line + 1 | 0;
-        col = 0;
-      } else {
-        col = col + 1 | 0;
-      }
-      _tmp = i + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  return { _0: line, _1: col };
-}
-function _M0FP49LING7167111moon_2degui3src9composite20hit__test__char__pos(ctx, text, click_x, font_size) {
-  const len = text.length;
-  if (len === 0 || click_x <= 0) {
-    return 0;
-  }
-  const total_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, text, font_size).x;
-  if (click_x >= total_w) {
-    return len;
-  }
-  const boundaries = [0];
-  let idx = 0;
-  while (true) {
-    if (idx < len) {
-      idx = _M0FP49LING7167111moon_2degui3src9composite20next__char__boundary(text, idx);
-      _M0MPC15array5Array4pushGiE(boundaries, idx);
-      continue;
-    } else {
-      break;
-    }
-  }
-  const num_b = boundaries.length;
-  let low = 0;
-  let high = num_b - 1 | 0;
-  while (true) {
-    if (low < high) {
-      const mid = (low + high | 0) / 2 | 0;
-      const sub = _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, 0, _M0MPC15array5Array2atGiE(boundaries, mid));
-      const w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, sub, font_size).x;
-      if (w < click_x) {
-        low = mid + 1 | 0;
-      } else {
-        high = mid;
-      }
-      continue;
-    } else {
-      break;
-    }
-  }
-  const c1 = _M0MPC15array5Array2atGiE(boundaries, low);
-  const w1 = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, 0, c1), font_size).x;
-  const d1 = click_x > w1 ? click_x - w1 : w1 - click_x;
-  if (low > 0) {
-    const c0 = _M0MPC15array5Array2atGiE(boundaries, low - 1 | 0);
-    const w0 = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, 0, c0), font_size).x;
-    const d0 = click_x > w0 ? click_x - w0 : w0 - click_x;
-    return d0 <= d1 ? c0 : c1;
-  } else {
-    return c1;
-  }
-}
-function _M0FP49LING7167111moon_2degui3src9composite17is__comment__line(line) {
-  const len = line.length;
-  let i = 0;
-  while (true) {
-    let _tmp;
-    if (i < len) {
-      let _tmp$2;
-      const _tmp$3 = i;
-      const _p = _tmp$3 >>> 0 < line.length ? line.charCodeAt(_tmp$3) : $oob();
-      const _p$2 = 32;
-      if (_p === _p$2) {
-        _tmp$2 = true;
-      } else {
-        const _tmp$4 = i;
-        const _p$3 = _tmp$4 >>> 0 < line.length ? line.charCodeAt(_tmp$4) : $oob();
-        const _p$4 = 9;
-        _tmp$2 = _p$3 === _p$4;
-      }
-      _tmp = _tmp$2;
-    } else {
-      _tmp = false;
-    }
-    if (_tmp) {
-      i = i + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  if ((i + 1 | 0) < len) {
-    let _tmp;
-    const _tmp$2 = i;
-    const _p = _tmp$2 >>> 0 < line.length ? line.charCodeAt(_tmp$2) : $oob();
-    const _p$2 = 47;
-    if (_p === _p$2) {
-      const _tmp$3 = i + 1 | 0;
-      const _p$3 = _tmp$3 >>> 0 < line.length ? line.charCodeAt(_tmp$3) : $oob();
-      const _p$4 = 47;
-      _tmp = _p$3 === _p$4;
-    } else {
-      _tmp = false;
-    }
-    return _tmp;
-  } else {
-    return false;
-  }
-}
-function _M0FP49LING7167111moon_2degui3src9composite21line__col__to__cursor(lines, line, col) {
-  const num_lines = lines.length;
-  if (num_lines === 0) {
-    return 0;
-  }
-  const safe_line = line < 0 ? 0 : line >= num_lines ? num_lines - 1 | 0 : line;
-  let pos = 0;
-  let _tmp = 0;
-  while (true) {
-    const i = _tmp;
-    if (i < safe_line) {
-      pos = (pos + _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, i).length | 0) + 1 | 0;
-      _tmp = i + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  const line_len = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, safe_line).length;
-  const safe_col = col < 0 ? 0 : col > line_len ? line_len : col;
-  return pos + safe_col | 0;
-}
-function _M0FP49LING7167111moon_2degui3src9composite12split__lines(text) {
-  const lines = [];
-  let start = 0;
-  const len = text.length;
-  let _tmp = 0;
-  while (true) {
-    const i = _tmp;
-    if (i < len) {
-      const _p = i >>> 0 < text.length ? text.charCodeAt(i) : $oob();
-      const _p$2 = 10;
-      if (_p === _p$2) {
-        _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(lines, _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, start, i));
-        start = i + 1 | 0;
-      }
-      _tmp = i + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(lines, _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, start, len));
-  return lines;
-}
-function _M0FP49LING7167111moon_2degui3src9composite20code__editor_2einner(ctx, id_salt, text, size, show_line_numbers, read_only) {
-  const default_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) > 0 ? _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) : 480;
-  let editor_size;
-  if (size === undefined) {
-    editor_size = _M0MP49LING7167111moon_2degui3src4math4Vec23new(default_w, 220);
-  } else {
-    const _Some = size;
-    editor_size = _Some;
-  }
-  const id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `code_editor::${id_salt}`);
-  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, editor_size);
-  const _rect = _bind._1;
-  const _resp = _bind._2;
-  if (_resp.hovered) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "text");
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, id);
-  if (_resp.pressed || _resp.clicked) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext14request__focus(ctx, id);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext19reset__caret__blink(ctx);
-  }
-  const is_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, id);
-  let cursor_pos = _M0MP49LING7167111moon_2degui3src4core9UIContext22get__text__cursor__pos(ctx, id, text.length);
-  let selection_anchor = _M0MP49LING7167111moon_2degui3src4core9UIContext28get__text__selection__anchor(ctx, id);
-  let current_text = text;
-  let lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
-  const scale = ctx.style.scale;
-  const ce_style = _M0MP49LING7167111moon_2degui3src9composite15CodeEditorStyle7defaultN6recordS3542;
-  const code_font_sz = ce_style.font_size * scale;
-  const gutter_font_sz = ce_style.gutter_font_size * scale;
-  const gutter_w = show_line_numbers ? ce_style.gutter_w * scale : 0;
-  const line_h = ce_style.line_h * scale;
-  const pad_top = 8 * scale;
-  const pad_code_x = 10 * scale;
-  let scroll_y = _M0MP49LING7167111moon_2degui3src4core9UIContext19get__scroll__offset(ctx, id);
-  if ((_resp.hovered || _resp.pressed) && ctx.input.scroll_delta.y !== 0) {
-    scroll_y = scroll_y - ctx.input.scroll_delta.y;
-  }
-  const total_lines = lines.length;
-  const content_h = pad_top * 2 + (total_lines + 0) * line_h;
-  const max_scroll = content_h > _rect.h ? content_h - _rect.h : 0;
-  const code_x = _rect.x + gutter_w + pad_code_x;
-  const click_x = ctx.input.mouse_pos.x - code_x;
-  const my = ctx.input.mouse_pos.y - (_rect.y + pad_top) + scroll_y;
-  let click_line;
-  if (my < 0) {
-    click_line = 0;
-  } else {
-    const l = _M0MPC16double6Double7to__int(my / line_h);
-    click_line = l >= lines.length ? lines.length - 1 | 0 : l;
-  }
-  const target_line = click_line < 0 ? 0 : click_line;
-  const line_str = target_line < lines.length ? _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, target_line) : "";
-  const target_col = _M0FP49LING7167111moon_2degui3src9composite20hit__test__char__pos(ctx, line_str, click_x, code_font_sz);
-  const hit_cursor = _M0FP49LING7167111moon_2degui3src9composite21line__col__to__cursor(lines, target_line, target_col);
-  if (ctx.input.mouse_pressed && (_resp.hovered || _resp.pressed)) {
-    _M0MP49LING7167111moon_2degui3src4core9UIContext14request__focus(ctx, id);
-    _M0MP49LING7167111moon_2degui3src4core9UIContext19reset__caret__blink(ctx);
-    if (ctx.input.modifiers.shift) {
-      const _bind$2 = selection_anchor;
-      if (_bind$2 === undefined) {
-        selection_anchor = cursor_pos;
-      }
-    } else {
-      selection_anchor = undefined;
-    }
-    cursor_pos = hit_cursor;
-  } else {
-    if (_resp.dragged) {
-      const _bind$2 = selection_anchor;
-      if (_bind$2 === undefined) {
-        selection_anchor = cursor_pos;
-      }
-      cursor_pos = hit_cursor;
-    }
-  }
-  if (is_focused) {
-    let _tmp;
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6)) {
-      _tmp = true;
-    } else {
-      let _tmp$2;
-      if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7)) {
-        _tmp$2 = true;
-      } else {
-        let _tmp$3;
-        if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
-          _tmp$3 = true;
-        } else {
-          let _tmp$4;
-          if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
-            _tmp$4 = true;
-          } else {
-            let _tmp$5;
-            if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 10)) {
-              _tmp$5 = true;
-            } else {
-              let _tmp$6;
-              if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 11)) {
-                _tmp$6 = true;
-              } else {
-                let _tmp$7;
-                if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2)) {
-                  _tmp$7 = true;
-                } else {
-                  let _tmp$8;
-                  if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 4)) {
-                    _tmp$8 = true;
-                  } else {
-                    let _tmp$9;
-                    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 0)) {
-                      _tmp$9 = true;
-                    } else {
-                      let _tmp$10;
-                      if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 1)) {
-                        _tmp$10 = true;
-                      } else {
-                        const _p = ctx.input;
-                        const _p$2 = _p.text_input;
-                        _tmp$10 = !(_p$2 === "");
-                      }
-                      _tmp$9 = _tmp$10;
-                    }
-                    _tmp$8 = _tmp$9;
-                  }
-                  _tmp$7 = _tmp$8;
-                }
-                _tmp$6 = _tmp$7;
-              }
-              _tmp$5 = _tmp$6;
-            }
-            _tmp$4 = _tmp$5;
-          }
-          _tmp$3 = _tmp$4;
-        }
-        _tmp$2 = _tmp$3;
-      }
-      _tmp = _tmp$2;
-    }
-    if (_tmp) {
-      _M0MP49LING7167111moon_2degui3src4core9UIContext19reset__caret__blink(ctx);
-    }
-    const shift_held = ctx.input.modifiers.shift;
-    const ctrl_held = ctx.input.modifiers.ctrl || ctx.input.modifiers.meta;
-    if (ctrl_held && _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 14)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 14);
-      selection_anchor = _M0FP49LING7167111moon_2degui3src9composite20code__editor_2einnerN6constrS3543;
-      cursor_pos = current_text.length;
-    }
-    const _bind$2 = _M0FP49LING7167111moon_2degui3src9composite21cursor__to__line__col(current_text, cursor_pos);
-    const _cur_line = _bind$2._0;
-    const _cur_col = _bind$2._1;
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
-      _L: {
-        _L$2: {
-          if (shift_held) {
-            const _bind$3 = selection_anchor;
-            if (_bind$3 === undefined) {
-              selection_anchor = cursor_pos;
-            } else {
-              break _L$2;
-            }
-          } else {
-            break _L$2;
-          }
-          break _L;
-        }
-        if (!shift_held) {
-          selection_anchor = undefined;
-        }
-      }
-      cursor_pos = _M0FP49LING7167111moon_2degui3src9composite20prev__char__boundary(current_text, cursor_pos);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
-      _L: {
-        _L$2: {
-          if (shift_held) {
-            const _bind$3 = selection_anchor;
-            if (_bind$3 === undefined) {
-              selection_anchor = cursor_pos;
-            } else {
-              break _L$2;
-            }
-          } else {
-            break _L$2;
-          }
-          break _L;
-        }
-        if (!shift_held) {
-          selection_anchor = undefined;
-        }
-      }
-      cursor_pos = _M0FP49LING7167111moon_2degui3src9composite20next__char__boundary(current_text, cursor_pos);
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
-      _L: {
-        _L$2: {
-          if (shift_held) {
-            const _bind$3 = selection_anchor;
-            if (_bind$3 === undefined) {
-              selection_anchor = cursor_pos;
-            } else {
-              break _L$2;
-            }
-          } else {
-            break _L$2;
-          }
-          break _L;
-        }
-        if (!shift_held) {
-          selection_anchor = undefined;
-        }
-      }
-      if (_cur_line > 0) {
-        cursor_pos = _M0FP49LING7167111moon_2degui3src9composite21line__col__to__cursor(lines, _cur_line - 1 | 0, _cur_col);
-      } else {
-        cursor_pos = 0;
-      }
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
-      _L: {
-        _L$2: {
-          if (shift_held) {
-            const _bind$3 = selection_anchor;
-            if (_bind$3 === undefined) {
-              selection_anchor = cursor_pos;
-            } else {
-              break _L$2;
-            }
-          } else {
-            break _L$2;
-          }
-          break _L;
-        }
-        if (!shift_held) {
-          selection_anchor = undefined;
-        }
-      }
-      if (_cur_line < (lines.length - 1 | 0)) {
-        cursor_pos = _M0FP49LING7167111moon_2degui3src9composite21line__col__to__cursor(lines, _cur_line + 1 | 0, _cur_col);
-      } else {
-        cursor_pos = current_text.length;
-      }
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 10)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 10);
-      _L: {
-        _L$2: {
-          if (shift_held) {
-            const _bind$3 = selection_anchor;
-            if (_bind$3 === undefined) {
-              selection_anchor = cursor_pos;
-            } else {
-              break _L$2;
-            }
-          } else {
-            break _L$2;
-          }
-          break _L;
-        }
-        if (!shift_held) {
-          selection_anchor = undefined;
-        }
-      }
-      if (ctrl_held) {
-        cursor_pos = 0;
-      } else {
-        cursor_pos = _M0FP49LING7167111moon_2degui3src9composite21line__col__to__cursor(lines, _cur_line, 0);
-      }
-    }
-    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 11)) {
-      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 11);
-      _L: {
-        _L$2: {
-          if (shift_held) {
-            const _bind$3 = selection_anchor;
-            if (_bind$3 === undefined) {
-              selection_anchor = cursor_pos;
-            } else {
-              break _L$2;
-            }
-          } else {
-            break _L$2;
-          }
-          break _L;
-        }
-        if (!shift_held) {
-          selection_anchor = undefined;
-        }
-      }
-      if (ctrl_held) {
-        cursor_pos = current_text.length;
-      } else {
-        cursor_pos = _M0FP49LING7167111moon_2degui3src9composite21line__col__to__cursor(lines, _cur_line, _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, _cur_line).length);
-      }
-    }
-    if (!read_only) {
-      let has_sel;
-      let s_start;
-      let s_end;
-      _L: {
-        const _bind$3 = selection_anchor;
-        if (_bind$3 === undefined) {
-          has_sel = false;
-          s_start = 0;
-          s_end = 0;
-          break _L;
-        } else {
-          const _Some = _bind$3;
-          const _a = _Some;
-          if (_a !== cursor_pos) {
-            const s = _a < cursor_pos ? _a : cursor_pos;
-            const e = _a > cursor_pos ? _a : cursor_pos;
-            has_sel = true;
-            s_start = s;
-            s_end = e;
-            break _L;
-          } else {
-            has_sel = false;
-            s_start = 0;
-            s_end = 0;
-            break _L;
-          }
-        }
-      }
-      if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2)) {
-        _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
-        let insert_at;
-        let left;
-        let right;
-        _L$2: {
-          if (has_sel) {
-            insert_at = s_start;
-            left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, s_start);
-            right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, s_end, current_text.length);
-            break _L$2;
-          } else {
-            insert_at = cursor_pos;
-            left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, cursor_pos);
-            right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, cursor_pos, current_text.length);
-            break _L$2;
-          }
-        }
-        current_text = `${left}\n${right}`;
-        cursor_pos = insert_at + 1 | 0;
-        selection_anchor = undefined;
-        lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
-      }
-      if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 4)) {
-        _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 4);
-        let insert_at;
-        let left;
-        let right;
-        _L$2: {
-          if (has_sel) {
-            insert_at = s_start;
-            left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, s_start);
-            right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, s_end, current_text.length);
-            break _L$2;
-          } else {
-            insert_at = cursor_pos;
-            left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, cursor_pos);
-            right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, cursor_pos, current_text.length);
-            break _L$2;
-          }
-        }
-        current_text = `${left}  ${right}`;
-        cursor_pos = insert_at + 2 | 0;
-        selection_anchor = undefined;
-        lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
-      }
-      if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 0)) {
-        _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 0);
-        if (has_sel) {
-          const left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, s_start);
-          const right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, s_end, current_text.length);
-          current_text = `${left}${right}`;
-          cursor_pos = s_start;
-          selection_anchor = undefined;
-          lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
-        } else {
-          if (cursor_pos > 0 && current_text.length > 0) {
-            const _bind$3 = _M0FP49LING7167111moon_2degui3src9composite18delete__prev__char(current_text, cursor_pos);
-            const _new_text = _bind$3._0;
-            const _new_pos = _bind$3._1;
-            current_text = _new_text;
-            cursor_pos = _new_pos;
-            lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
-          }
-        }
-      }
-      if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 1)) {
-        _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 1);
-        if (has_sel) {
-          const left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, s_start);
-          const right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, s_end, current_text.length);
-          current_text = `${left}${right}`;
-          cursor_pos = s_start;
-          selection_anchor = undefined;
-          lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
-        } else {
-          if (cursor_pos < current_text.length) {
-            current_text = _M0FP49LING7167111moon_2degui3src9composite18delete__next__char(current_text, cursor_pos);
-            lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
-          }
-        }
-      }
-      const _p = ctx.input;
-      const input_str = _p.text_input;
-      if (!(input_str === "")) {
-        let insert_at;
-        let left;
-        let right;
-        _L$2: {
-          if (has_sel) {
-            insert_at = s_start;
-            left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, s_start);
-            right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, s_end, current_text.length);
-            break _L$2;
-          } else {
-            insert_at = cursor_pos;
-            left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, cursor_pos);
-            right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, cursor_pos, current_text.length);
-            break _L$2;
-          }
-        }
-        current_text = `${left}${input_str}${right}`;
-        cursor_pos = insert_at + input_str.length | 0;
-        selection_anchor = undefined;
-        lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
-      }
-    }
-  }
-  const _bind$2 = _M0FP49LING7167111moon_2degui3src9composite21cursor__to__line__col(current_text, cursor_pos);
-  const _active_line = _bind$2._0;
-  const _active_col = _bind$2._1;
-  if (is_focused) {
-    const caret_rel_y = pad_top + (_active_line + 0) * line_h;
-    if (caret_rel_y - scroll_y < pad_top) {
-      scroll_y = caret_rel_y - pad_top;
-    } else {
-      if (caret_rel_y + line_h - scroll_y > _rect.h - pad_top) {
-        scroll_y = caret_rel_y + line_h - (_rect.h - pad_top);
-      }
-    }
-  }
-  if (scroll_y > max_scroll) {
-    scroll_y = max_scroll;
-  }
-  if (scroll_y < 0) {
-    scroll_y = 0;
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, id, scroll_y);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext22set__text__cursor__pos(ctx, id, cursor_pos);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext28set__text__selection__anchor(ctx, id, selection_anchor);
-  let has_selection;
-  let sel_start;
-  let sel_end;
-  _L: {
-    const _bind$3 = selection_anchor;
-    if (_bind$3 === undefined) {
-      has_selection = false;
-      sel_start = 0;
-      sel_end = 0;
-      break _L;
-    } else {
-      const _Some = _bind$3;
-      const _a = _Some;
-      if (_a !== cursor_pos) {
-        const s = _a < cursor_pos ? _a : cursor_pos;
-        const e = _a > cursor_pos ? _a : cursor_pos;
-        has_selection = true;
-        sel_start = s;
-        sel_end = e;
-        break _L;
-      } else {
-        has_selection = false;
-        sel_start = 0;
-        sel_end = 0;
-        break _L;
-      }
-    }
-  }
-  const border_col = is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color13border__focus() : _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color14border__strong() : _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
-  const editor_radius = ce_style.radius * scale;
-  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), editor_radius);
-  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, border_col, 1, editor_radius);
-  const clip_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + 1, _rect.y + 1, _rect.w - 2, _rect.h - 2);
-  _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, clip_rect);
-  if (show_line_numbers) {
-    const gutter_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x, _rect.y, gutter_w, _rect.h);
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), gutter_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), 0);
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + gutter_w, _rect.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + gutter_w, _rect.y + _rect.h), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
-  }
-  if (is_focused && (!has_selection && _active_line < lines.length)) {
-    const active_y = _rect.y + pad_top + (_active_line + 0) * line_h - scroll_y;
-    if (active_y + line_h >= _rect.y && active_y <= _rect.y + _rect.h) {
-      const wash_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + gutter_w + 1, active_y, _rect.w - gutter_w - 2, line_h);
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), wash_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), 0);
-    }
-  }
-  if (has_selection) {
-    let offset = 0;
-    let _tmp = 0;
-    while (true) {
-      const idx = _tmp;
-      if (idx < lines.length) {
-        const line_len = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, idx).length;
-        const line_start = offset;
-        const line_end = offset + line_len | 0;
-        offset = line_end + 1 | 0;
-        const o_start = sel_start > line_start ? sel_start : line_start;
-        const o_end = sel_end < line_end ? sel_end : line_end;
-        if (o_start < o_end) {
-          const line_y = _rect.y + pad_top + (idx + 0) * line_h - scroll_y;
-          if (line_y + line_h >= _rect.y && line_y <= _rect.y + _rect.h) {
-            const pre = _M0FP49LING7167111moon_2degui3src9composite13string__slice(_M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, idx), 0, o_start - line_start | 0);
-            const sel = _M0FP49LING7167111moon_2degui3src9composite13string__slice(_M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, idx), o_start - line_start | 0, o_end - line_start | 0);
-            const pre_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, pre, code_font_sz).x;
-            const sel_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, sel, code_font_sz).x;
-            const sel_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(code_x + pre_w, line_y, sel_w, line_h);
-            _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sel_rect, _M0MP49LING7167111moon_2degui3src5color5Color12accent__soft(), 0);
-          }
-        }
-        _tmp = idx + 1 | 0;
-        continue;
-      } else {
-        break;
-      }
-    }
-  }
-  let _tmp = 0;
-  while (true) {
-    const idx = _tmp;
-    if (idx < lines.length) {
-      _L$2: {
-        const line_text = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, idx);
-        const line_y = _rect.y + pad_top + (idx + 0) * line_h - scroll_y;
-        if (line_y + line_h < _rect.y) {
-          break _L$2;
-        }
-        if (line_y > _rect.y + _rect.h) {
-          break;
-        }
-        if (show_line_numbers) {
-          const num_str = _M0MPC13int3Int18to__string_2einner(idx + 1 | 0, 10);
-          const num_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, num_str, gutter_font_sz);
-          const num_x = _rect.x + gutter_w - num_size.x - 8 * scale;
-          const num_col = idx === _active_line && is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled();
-          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(num_x, line_y + 3 * scale), num_str, gutter_font_sz, num_col, "monospace", 500);
-        }
-        const text_col = _M0FP49LING7167111moon_2degui3src9composite17is__comment__line(line_text) ? _M0MP49LING7167111moon_2degui3src5color5Color11text__muted() : _M0MP49LING7167111moon_2degui3src5color5Color13text__primary();
-        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(code_x, line_y + 3 * scale), line_text, code_font_sz, text_col, "monospace", 500);
-        break _L$2;
-      }
-      _tmp = idx + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  if (is_focused && (_M0MP49LING7167111moon_2degui3src4core9UIContext18is__caret__visible(ctx) && _active_line < lines.length)) {
-    const active_str = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, _active_line);
-    const prefix = _M0FP49LING7167111moon_2degui3src9composite13string__slice(active_str, 0, _active_col);
-    const prefix_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, prefix, code_font_sz).x;
-    const caret_x = _rect.x + gutter_w + pad_code_x + prefix_w;
-    const caret_y = _rect.y + pad_top + (_active_line + 0) * line_h - scroll_y + 3 * scale;
-    const caret_h = ctx.style.spacing_lg * scale;
-    if (caret_y + caret_h >= _rect.y && caret_y <= _rect.y + _rect.h) {
-      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(caret_x, caret_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(caret_x, caret_y + caret_h), _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 1.5 * scale);
-    }
-  }
-  if (max_scroll > 0 && content_h > 0) {
-    const bar_w = 4 * scale;
-    const bar_x = _rect.x + _rect.w - bar_w - 2 * scale;
-    const track_h = _rect.h - 4 * scale;
-    const thumb_ratio = _rect.h / content_h;
-    const raw_thumb_h = track_h * thumb_ratio;
-    const thumb_h = raw_thumb_h < 20 * scale ? 20 * scale : raw_thumb_h;
-    const scroll_ratio = scroll_y / max_scroll;
-    const thumb_y = _rect.y + 2 * scale + (track_h - thumb_h) * scroll_ratio;
-    const thumb_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(bar_x, thumb_y, bar_w, thumb_h);
-    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), thumb_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), ctx.style.radius_sm * scale);
-  }
-  _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
-  const editor_resp = _M0MP49LING7167111moon_2degui3src4core8Response19with__focus_2einner(id, _rect, _resp.hovered, _resp.clicked, _resp.pressed, _resp.dragged, is_focused, is_focused && _M0IP016_24default__implPB2Eq10not__equalGRP49LING7167111moon_2degui3src4core2IdE(_M0MP49LING7167111moon_2degui3src4core9UIContext17prev__focused__id(ctx), id), _M0MP49LING7167111moon_2degui3src4core9UIContext11lost__focus(ctx, id), _resp.secondary_clicked);
-  return { _0: current_text, _1: editor_resp };
-}
 function _M0FP49LING7167111moon_2degui3src7widgets18clamp__window__pos(pos, size, bounds) {
   const max_x = bounds.x + bounds.w - size.x;
   const max_y = bounds.y + bounds.h - size.y;
@@ -16647,6 +11510,5165 @@ function _M0FP49LING7167111moon_2degui3src7widgets11tag_2einner(ctx, id_salt, te
     _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(p, _M0MP49LING7167111moon_2degui3src4math4Vec23new(x_center.x - r, x_center.y + r), _M0MP49LING7167111moon_2degui3src4math4Vec23new(x_center.x + r, x_center.y - r), _fg, 1.2 * scale);
   }
   return { _0: closed, _1: _resp };
+}
+function _M0IP49LING7167111moon_2degui3src9composite12TextSpanKindPB2Eq5equal(_x_1932, _x_1933) {
+  switch (_x_1932.$tag) {
+    case 0: {
+      if (_x_1933.$tag === 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    case 1: {
+      if (_x_1933.$tag === 1) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    case 2: {
+      if (_x_1933.$tag === 2) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    default: {
+      const _Link = _x_1932;
+      const _$42$x0_1934 = _Link._0;
+      if (_x_1933.$tag === 3) {
+        const _Link$2 = _x_1933;
+        const _$42$y0_1935 = _Link$2._0;
+        return _$42$x0_1934 === _$42$y0_1935;
+      } else {
+        return false;
+      }
+    }
+  }
+}
+function _M0FP49LING7167111moon_2degui3src9composite13string__slice(s, start, end) {
+  return _M0FP49LING7167111moon_2degui3src4core13string__slice(s, start, end);
+}
+function _M0FP49LING7167111moon_2degui3src9composite20prev__char__boundary(text, pos) {
+  return _M0FP49LING7167111moon_2degui3src4core20prev__char__boundary(text, pos);
+}
+function _M0FP49LING7167111moon_2degui3src9composite20next__char__boundary(text, pos) {
+  return _M0FP49LING7167111moon_2degui3src4core20next__char__boundary(text, pos);
+}
+function _M0FP49LING7167111moon_2degui3src9composite18delete__prev__char(text, pos) {
+  return _M0FP49LING7167111moon_2degui3src4core18delete__prev__char(text, pos);
+}
+function _M0FP49LING7167111moon_2degui3src9composite18delete__next__char(text, pos) {
+  return _M0FP49LING7167111moon_2degui3src4core18delete__next__char(text, pos);
+}
+function _M0FP49LING7167111moon_2degui3src9composite13is__cjk__char(code) {
+  return _M0FP49LING7167111moon_2degui3src4core13is__cjk__char(code);
+}
+function _M0FP49LING7167111moon_2degui3src9composite23is__cjk__closing__punct(code) {
+  return _M0FP49LING7167111moon_2degui3src4core23is__cjk__closing__punct(code);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8TreeNode11new_2einner(id, label, children, icon) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8TreeNode(id, label, icon, children);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8TreeNode12leaf_2einner(id, label, icon) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8TreeNode(id, label, icon, []);
+}
+function _M0FP49LING7167111moon_2degui3src9composite20flatten__tree__nodes(nodes, expanded_ids, depth, parent_id, out) {
+  const _bind = nodes.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind) {
+      const node = nodes[_];
+      const _p = node.children;
+      const has_children = !(_p.length === 0);
+      const is_expanded = has_children && _M0MPC15array5Array8containsGsE(expanded_ids, node.id);
+      _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(out, new _M0TP49LING7167111moon_2degui3src9composite12FlatTreeNode(node, depth, is_expanded, has_children, parent_id));
+      if (is_expanded) {
+        _M0FP49LING7167111moon_2degui3src9composite20flatten__tree__nodes(node.children, expanded_ids, depth + 1 | 0, node.id, out);
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      return;
+    }
+  }
+}
+function _M0FP49LING7167111moon_2degui3src9composite18tree__view_2einner(ctx, id_salt, nodes, selected_id, expanded_ids, indent_step, item_height, size) {
+  const scale = ctx.style.scale;
+  const eff_indent = indent_step * scale;
+  const eff_row_h = item_height > 0 ? item_height : (ctx.style.control_h_sm + ctx.style.radius_xs) * scale;
+  const flat_nodes = [];
+  _M0FP49LING7167111moon_2degui3src9composite20flatten__tree__nodes(nodes, expanded_ids, 0, undefined, flat_nodes);
+  const node_count = flat_nodes.length;
+  const content_height = node_count > 0 ? (node_count + 0) * eff_row_h + 4 * scale : eff_row_h + 4 * scale;
+  let total_w;
+  if (size === undefined) {
+    total_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) > 0 ? _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) : 240 * scale;
+  } else {
+    const _Some = size;
+    const _s = _Some;
+    total_w = _s.x;
+  }
+  let total_h;
+  if (size === undefined) {
+    total_h = content_height;
+  } else {
+    const _Some = size;
+    const _s = _Some;
+    total_h = _s.y;
+  }
+  const id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `tree_view::${id_salt}`);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(total_w, total_h));
+  const _rect = _bind._1;
+  const _response = _bind._2;
+  if (_response.hovered) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, id);
+  if (_response.pressed || _response.clicked) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext14request__focus(ctx, id);
+  }
+  const is_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, id);
+  const scroll_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `tree_view::${id_salt}::scroll`);
+  let scroll_y = _M0MP49LING7167111moon_2degui3src4core9UIContext19get__scroll__offset(ctx, scroll_id);
+  const max_scroll = content_height > total_h ? content_height - total_h : 0;
+  if (_response.hovered && (ctx.input.scroll_delta.y !== 0 && max_scroll > 0)) {
+    scroll_y = scroll_y - ctx.input.scroll_delta.y;
+  }
+  const tree_radius = ctx.style.radius_md * scale;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, ctx.theme.bg_window, tree_radius);
+  const border_color = is_focused ? ctx.theme.border_focus : ctx.theme.border_muted;
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, border_color, 1, tree_radius);
+  let cur_selected = selected_id;
+  const next_expanded = _M0MPC15array5Array4copyGsE(expanded_ids);
+  let clicked_id = undefined;
+  let toggled_id = undefined;
+  if (is_focused && node_count > 0) {
+    let sel_idx = -1;
+    let _tmp = 0;
+    while (true) {
+      const i = _tmp;
+      if (i < node_count) {
+        if (_M0IPC16option6OptionPB2Eq5equalGsE(_M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, i).node.id, cur_selected)) {
+          sel_idx = i;
+          break;
+        }
+        _tmp = i + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
+      if (sel_idx > 0) {
+        cur_selected = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, sel_idx - 1 | 0).node.id;
+        clicked_id = cur_selected;
+      } else {
+        if (sel_idx === -1) {
+          cur_selected = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, 0).node.id;
+          clicked_id = cur_selected;
+        }
+      }
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
+      if (sel_idx >= 0 && sel_idx < (node_count - 1 | 0)) {
+        cur_selected = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, sel_idx + 1 | 0).node.id;
+        clicked_id = cur_selected;
+      } else {
+        if (sel_idx === -1) {
+          cur_selected = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, 0).node.id;
+          clicked_id = cur_selected;
+        }
+      }
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
+      if (sel_idx >= 0) {
+        const flat = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, sel_idx);
+        if (flat.has_children && !flat.is_expanded) {
+          _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(next_expanded, flat.node.id);
+          toggled_id = flat.node.id;
+        }
+      }
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
+      if (sel_idx >= 0) {
+        const flat = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, sel_idx);
+        if (flat.has_children && flat.is_expanded) {
+          let idx_to_remove = -1;
+          let _tmp$2 = 0;
+          while (true) {
+            const i = _tmp$2;
+            if (i < next_expanded.length) {
+              if (_M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(next_expanded, i) === flat.node.id) {
+                idx_to_remove = i;
+                break;
+              }
+              _tmp$2 = i + 1 | 0;
+              continue;
+            } else {
+              break;
+            }
+          }
+          if (idx_to_remove >= 0) {
+            _M0MPC15array5Array6removeGsE(next_expanded, idx_to_remove);
+            toggled_id = flat.node.id;
+          }
+        } else {
+          const _bind$2 = flat.parent_id;
+          if (_bind$2 === undefined) {
+          } else {
+            const _Some = _bind$2;
+            const _p_id = _Some;
+            cur_selected = _p_id;
+            clicked_id = _p_id;
+          }
+        }
+      }
+    }
+    const _bind$2 = cur_selected;
+    let target_idx;
+    if (_bind$2 === undefined) {
+      target_idx = -1;
+    } else {
+      const _Some = _bind$2;
+      const _sel_id = _Some;
+      let idx = -1;
+      let _tmp$2 = 0;
+      while (true) {
+        const i = _tmp$2;
+        if (i < node_count) {
+          if (_M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, i).node.id === _sel_id) {
+            idx = i;
+            break;
+          }
+          _tmp$2 = i + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      target_idx = idx;
+    }
+    if (target_idx >= 0 && max_scroll > 0) {
+      const row_top = (target_idx + 0) * eff_row_h;
+      const row_bottom = row_top + eff_row_h;
+      if (row_top < scroll_y) {
+        scroll_y = row_top;
+      } else {
+        if (row_bottom > scroll_y + total_h - 4 * scale) {
+          scroll_y = row_bottom - (total_h - 4 * scale);
+        }
+      }
+    }
+  }
+  if (scroll_y < 0) {
+    scroll_y = 0;
+  }
+  if (scroll_y > max_scroll) {
+    scroll_y = max_scroll;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, scroll_id, scroll_y);
+  if (node_count > 0) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, _rect);
+  }
+  const sb_reserve = max_scroll > 0 ? 6 * scale : 0;
+  let _tmp = 0;
+  while (true) {
+    const i = _tmp;
+    if (i < node_count) {
+      const flat = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(flat_nodes, i);
+      const node = flat.node;
+      const row_y = _rect.y + 2 * scale + (i + 0) * eff_row_h - scroll_y;
+      const is_in_view = row_y + eff_row_h >= _rect.y && row_y <= _rect.y + _rect.h;
+      const row_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + 2 * scale, row_y, _rect.w - 4 * scale - sb_reserve, eff_row_h);
+      const is_row_hovered = is_in_view && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, row_rect);
+      const is_row_selected = _M0IPC16option6OptionPB2Eq5equalGsE(node.id, cur_selected);
+      const chevron_x = row_rect.x + 4 * scale + (flat.depth + 0) * eff_indent;
+      const chevron_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(chevron_x, row_y, 16 * scale, eff_row_h);
+      const is_chevron_hovered = flat.has_children && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, chevron_rect);
+      if (is_row_hovered || is_chevron_hovered) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+      }
+      if (ctx.input.mouse_pressed) {
+        if (is_chevron_hovered) {
+          if (flat.is_expanded) {
+            let found = -1;
+            let _tmp$2 = 0;
+            while (true) {
+              const j = _tmp$2;
+              if (j < next_expanded.length) {
+                if (_M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(next_expanded, j) === node.id) {
+                  found = j;
+                  break;
+                }
+                _tmp$2 = j + 1 | 0;
+                continue;
+              } else {
+                break;
+              }
+            }
+            if (found >= 0) {
+              _M0MPC15array5Array6removeGsE(next_expanded, found);
+            }
+          } else {
+            _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(next_expanded, node.id);
+          }
+          toggled_id = node.id;
+        } else {
+          if (is_row_hovered) {
+            cur_selected = node.id;
+            clicked_id = node.id;
+            _M0MP49LING7167111moon_2degui3src4core9UIContext14request__focus(ctx, id);
+          }
+        }
+      }
+      const row_radius = ctx.style.radius_sm * scale;
+      const font_sm = ctx.style.font_small * scale;
+      const font_nm = ctx.style.font_normal * scale;
+      if (is_row_selected) {
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color19tree__row__selected(), row_radius);
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(row_rect.x, row_rect.y + 2 * scale, 2.5 * scale, row_rect.h - 4 * scale), _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 1);
+      } else {
+        if (is_row_hovered) {
+          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, ctx.theme.bg_hover, row_radius);
+        }
+      }
+      let _tmp$2 = 0;
+      while (true) {
+        const d = _tmp$2;
+        if (d < flat.depth) {
+          const guide_x = row_rect.x + 4 * scale + (d + 0) * eff_indent + 7.5 * scale;
+          _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(guide_x, row_rect.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(guide_x, row_rect.y + row_rect.h), ctx.theme.border_muted, 1);
+          _tmp$2 = d + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      if (flat.has_children) {
+        const chevron_glyph = flat.is_expanded ? "v" : ">";
+        const chevron_col = is_chevron_hovered ? ctx.theme.text_primary : ctx.theme.text_muted;
+        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(chevron_x + 3 * scale, row_y + 5 * scale), chevron_glyph, font_sm, chevron_col, "", 500);
+      }
+      const content_x = chevron_x + 18 * scale;
+      let text_x = content_x;
+      const _p = node.icon;
+      if (!(_p === "")) {
+        const icon_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, node.icon, font_sm);
+        const badge_w = icon_size.x + 8 * scale;
+        const badge_h = 16 * scale;
+        const badge_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(content_x, row_y + 4 * scale, badge_w, badge_h);
+        let badge_bg;
+        let badge_col;
+        _L: {
+          if (is_row_selected) {
+            badge_bg = ctx.theme.accent_soft;
+            badge_col = ctx.theme.accent_primary;
+            break _L;
+          } else {
+            badge_bg = ctx.theme.bg_subtle;
+            badge_col = ctx.theme.text_secondary;
+            break _L;
+          }
+        }
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), badge_rect, badge_bg, 3 * scale);
+        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(content_x + 4 * scale, row_y + 6 * scale), node.icon, font_sm, badge_col, "", 500);
+        text_x = content_x + badge_w + 6 * scale;
+      }
+      const label_col = is_row_selected ? ctx.theme.accent_primary : is_row_hovered ? ctx.theme.text_primary : ctx.theme.text_body;
+      _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(text_x, row_y + 5.5 * scale), node.label, font_nm, label_col, "", 500);
+      _tmp = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  if (node_count > 0) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
+  }
+  if (max_scroll > 0) {
+    const sb_w = 4 * scale;
+    const sb_x = _rect.x + _rect.w - sb_w - 2 * scale;
+    const sb_track_y = _rect.y + 2 * scale;
+    const sb_track_h = _rect.h - 4 * scale;
+    const raw_thumb_h = sb_track_h * (total_h / content_height);
+    const min_thumb_h = 16 * scale;
+    const thumb_h = raw_thumb_h < min_thumb_h ? min_thumb_h : raw_thumb_h > sb_track_h ? sb_track_h : raw_thumb_h;
+    const usable_h = sb_track_h - thumb_h;
+    const thumb_y = sb_track_y + (max_scroll > 0 ? scroll_y / max_scroll * usable_h : 0);
+    const thumb_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sb_x, thumb_y, sb_w, thumb_h);
+    const track_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sb_x - 2 * scale, sb_track_y, sb_w + 4 * scale, sb_track_h);
+    const is_tb_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, thumb_rect);
+    const is_tk_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, track_rect);
+    const thumb_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `tree_view::${id_salt}::thumb`);
+    const grab_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `tree_view::${id_salt}::grab`);
+    let _tmp$2;
+    if (is_tb_hovered) {
+      _tmp$2 = true;
+    } else {
+      let _tmp$3;
+      if (is_tk_hovered) {
+        _tmp$3 = true;
+      } else {
+        const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+        _tmp$3 = BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, thumb_id.val);
+      }
+      _tmp$2 = _tmp$3;
+    }
+    if (_tmp$2) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+    }
+    if ((is_tb_hovered || is_tk_hovered) && ctx.input.mouse_pressed) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, thumb_id);
+      const initial_grab = is_tb_hovered ? ctx.input.mouse_pos.y - thumb_y : thumb_h * 0.5;
+      _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, grab_id, initial_grab);
+    }
+    const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+    if (BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, thumb_id.val)) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
+      if (ctx.input.mouse_down && usable_h > 0) {
+        const grab_offset = _M0MP49LING7167111moon_2degui3src4core9UIContext19get__scroll__offset(ctx, grab_id);
+        const rel_mouse_y = ctx.input.mouse_pos.y - sb_track_y - grab_offset;
+        let new_pct = rel_mouse_y / usable_h;
+        if (new_pct < 0) {
+          new_pct = 0;
+        }
+        if (new_pct > 1) {
+          new_pct = 1;
+        }
+        scroll_y = new_pct * max_scroll;
+        _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, scroll_id, scroll_y);
+      }
+      if (ctx.input.mouse_released) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+      }
+    }
+    const active_thumb_y = sb_track_y + (max_scroll > 0 ? scroll_y / max_scroll * usable_h : 0);
+    const active_thumb_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sb_x, active_thumb_y, sb_w, thumb_h);
+    let thumb_col;
+    let _tmp$3;
+    const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+    if (BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, thumb_id.val)) {
+      _tmp$3 = true;
+    } else {
+      _tmp$3 = is_tb_hovered;
+    }
+    if (_tmp$3) {
+      thumb_col = ctx.theme.accent_primary;
+    } else {
+      thumb_col = ctx.theme.border_muted;
+    }
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), active_thumb_rect, thumb_col, ctx.style.radius_sm * scale);
+  }
+  return new _M0TP49LING7167111moon_2degui3src9composite16TreeViewResponse(cur_selected, next_expanded, clicked_id, toggled_id, _response);
+}
+function _M0MP49LING7167111moon_2degui3src9composite11TableColumn11new_2einner(id, title, width, min_width, sortable) {
+  return new _M0TP49LING7167111moon_2degui3src9composite11TableColumn(id, title, width, min_width, sortable);
+}
+function _M0FP49LING7167111moon_2degui3src9composite13table_2einner(ctx, id_salt, size, columns, row_count, render_cell, row_height, header_height, selected_row, sort_column, sort_direction) {
+  const scale = ctx.style.scale;
+  const t_style = _M0MP49LING7167111moon_2degui3src9composite10TableStyle7defaultN6recordS3551;
+  const eff_row_h = row_height > 0 ? row_height : t_style.row_h * scale;
+  const eff_header_h = header_height > 0 ? header_height : t_style.header_h * scale;
+  const table_radius = t_style.radius * scale;
+  const container_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, id_salt);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, size);
+  const _table_id = _bind._0;
+  const _table_rect = _bind._1;
+  const _resp = _bind._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _table_id);
+  const is_focused = _resp.has_focus || (_M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _table_id) || _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, container_id));
+  let active_sort_col = sort_column;
+  let active_sort_dir = sort_direction;
+  let sort_changed = false;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _table_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), table_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _table_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, table_radius);
+  const header_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_table_rect.x, _table_rect.y, _table_rect.w, eff_header_h);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), header_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), table_radius);
+  const header_bottom_fill = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_table_rect.x, _table_rect.y + eff_header_h - table_radius, _table_rect.w, table_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), header_bottom_fill, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), 0);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_table_rect.x, _table_rect.y + eff_header_h), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_table_rect.x + _table_rect.w, _table_rect.y + eff_header_h), _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1);
+  let total_cols_w = 0;
+  const _bind$2 = columns.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$2) {
+      const col = columns[_];
+      total_cols_w = total_cols_w + col.width;
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  const max_scroll_x = total_cols_w > _table_rect.w ? total_cols_w - _table_rect.w : 0;
+  let scroll_x = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, container_id, 0, "scroll_x");
+  if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _table_rect)) {
+    if (ctx.input.modifiers.shift && ctx.input.scroll_delta.y !== 0) {
+      scroll_x = scroll_x - ctx.input.scroll_delta.y;
+      _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
+    } else {
+      if (ctx.input.scroll_delta.x !== 0) {
+        scroll_x = scroll_x - ctx.input.scroll_delta.x;
+        _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
+      }
+    }
+  }
+  if (scroll_x < 0) {
+    scroll_x = 0;
+  }
+  if (scroll_x > max_scroll_x) {
+    scroll_x = max_scroll_x;
+  }
+  _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, container_id, scroll_x, "scroll_x", 0);
+  if (is_focused && max_scroll_x > 0) {
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6)) {
+      scroll_x = scroll_x - 30 * scale;
+      if (scroll_x < 0) {
+        scroll_x = 0;
+      }
+      _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, container_id, scroll_x, "scroll_x", 0);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7)) {
+      scroll_x = scroll_x + 30 * scale;
+      if (scroll_x > max_scroll_x) {
+        scroll_x = max_scroll_x;
+      }
+      _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, container_id, scroll_x, "scroll_x", 0);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
+    }
+  }
+  if (is_focused) {
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect6expand(_table_rect, 2 * scale), _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1.5, table_radius + 2 * scale);
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, header_rect);
+  let current_x = _table_rect.x - scroll_x;
+  const total_cols = columns.length;
+  let _tmp$2 = 0;
+  while (true) {
+    const c = _tmp$2;
+    if (c < total_cols) {
+      const col = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(columns, c);
+      const col_w = col.width;
+      const col_header_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(current_x, _table_rect.y, col_w, eff_header_h);
+      const handle_w = 8 * scale;
+      const handle_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(current_x + col_w - handle_w * 0.5, _table_rect.y, handle_w, eff_header_h);
+      const handle_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `table_col_handle::${id_salt}::${col.id}`);
+      const handle_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, handle_rect);
+      if (handle_hovered) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "col-resize");
+      }
+      if (handle_hovered && ctx.input.mouse_pressed) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, handle_id);
+      }
+      const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+      if (BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, handle_id.val)) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "col-resize");
+        _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
+        if (ctx.input.mouse_down) {
+          const mouse_delta = ctx.input.mouse_pos.x - current_x;
+          const clamped_w = mouse_delta < col.min_width ? col.min_width : mouse_delta;
+          col.width = clamped_w;
+        }
+        if (ctx.input.mouse_released) {
+          _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+        }
+      }
+      let is_header_hovered;
+      if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, col_header_rect)) {
+        let _tmp$3;
+        if (!handle_hovered) {
+          let _tmp$4;
+          const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+          if (BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579.val)) {
+            _tmp$4 = true;
+          } else {
+            const _p$3 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+            _tmp$4 = BigInt.asUintN(64, _p$3.val) === BigInt.asUintN(64, _table_id.val);
+          }
+          _tmp$3 = _tmp$4;
+        } else {
+          _tmp$3 = false;
+        }
+        is_header_hovered = _tmp$3;
+      } else {
+        is_header_hovered = false;
+      }
+      if (is_header_hovered && col.sortable) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+        if (ctx.input.mouse_pressed) {
+          if (active_sort_col === col.id) {
+            const _bind$3 = active_sort_dir;
+            let _tmp$3;
+            switch (_bind$3) {
+              case 0: {
+                _tmp$3 = 1;
+                break;
+              }
+              case 1: {
+                _tmp$3 = 0;
+                break;
+              }
+              default: {
+                _tmp$3 = 0;
+              }
+            }
+            active_sort_dir = _tmp$3;
+          } else {
+            active_sort_col = col.id;
+            active_sort_dir = 0;
+          }
+          sort_changed = true;
+        }
+      }
+      const font_sz = ctx.style.font_small * scale;
+      const title_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(current_x + 10 * scale, _table_rect.y + (eff_header_h - font_sz) * 0.5);
+      const title_color = active_sort_col === col.id ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : is_header_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color12text__strong() : _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary();
+      _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), title_pos, col.title, font_sz, title_color, "", 500);
+      if (active_sort_col === col.id) {
+        const _bind$3 = active_sort_dir;
+        let arrow_str;
+        switch (_bind$3) {
+          case 0: {
+            arrow_str = "^";
+            break;
+          }
+          case 1: {
+            arrow_str = "v";
+            break;
+          }
+          default: {
+            arrow_str = "";
+          }
+        }
+        const _p$2 = "";
+        if (!(arrow_str === _p$2)) {
+          const arrow_x = current_x + col.width - 16 * scale;
+          const arrow_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(arrow_x, title_pos.y);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), arrow_pos, arrow_str, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), "", 500);
+        }
+      }
+      if (c < (total_cols - 1 | 0)) {
+        const divider_x = current_x + col.width;
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(divider_x, _table_rect.y + 6 * scale), _M0MP49LING7167111moon_2degui3src4math4Vec23new(divider_x, _table_rect.y + eff_header_h - 6 * scale), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
+      }
+      current_x = current_x + col.width;
+      _tmp$2 = c + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
+  const body_y = _table_rect.y + eff_header_h;
+  const body_h = _table_rect.h - eff_header_h;
+  const body_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_table_rect.x, body_y, _table_rect.w, body_h);
+  const body_container_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `${id_salt}::table_body`);
+  let scroll_y = _M0MP49LING7167111moon_2degui3src4core9UIContext19get__scroll__offset(ctx, body_container_id);
+  const total_content_h = (row_count + 0) * eff_row_h;
+  const max_scroll = total_content_h > body_h ? total_content_h - body_h : 0;
+  if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, body_rect) && ctx.input.scroll_delta.y !== 0) {
+    scroll_y = scroll_y - ctx.input.scroll_delta.y;
+    _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
+  }
+  if (scroll_y < 0) {
+    scroll_y = 0;
+  }
+  if (scroll_y > max_scroll) {
+    scroll_y = max_scroll;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, body_container_id, scroll_y);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext28set__scroll__content__height(ctx, body_container_id, total_content_h);
+  let hovered_row = undefined;
+  let clicked_row = undefined;
+  let kb_row = -1;
+  if (is_focused && row_count > 0) {
+    let cur = _M0MP49LING7167111moon_2degui3src4core6Memory29get__int__or__default_2einner(ctx.memory, container_id, 0, "kb_row");
+    if (cur < 0) {
+      cur = 0;
+    }
+    if (cur >= row_count) {
+      cur = row_count - 1 | 0;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
+      cur = (cur + 1 | 0) < row_count ? cur + 1 | 0 : cur;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
+      cur = (cur - 1 | 0) >= 0 ? cur - 1 | 0 : cur;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
+    }
+    const row_top = (cur + 0) * eff_row_h;
+    if (row_top < scroll_y) {
+      scroll_y = row_top;
+    } else {
+      if (row_top + eff_row_h > scroll_y + body_h) {
+        scroll_y = row_top + eff_row_h - body_h;
+      }
+    }
+    if (scroll_y < 0) {
+      scroll_y = 0;
+    }
+    if (scroll_y > max_scroll) {
+      scroll_y = max_scroll;
+    }
+    _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, body_container_id, scroll_y);
+    _M0MP49LING7167111moon_2degui3src4core6Memory16set__int_2einner(ctx.memory, container_id, cur, "kb_row", 0);
+    kb_row = cur;
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
+      clicked_row = cur;
+    }
+  }
+  const start_row_raw = _M0MPC16double6Double7to__int(scroll_y / eff_row_h);
+  const start_row = start_row_raw < 0 ? 0 : start_row_raw >= row_count ? row_count : start_row_raw;
+  const visible_count = _M0MPC16double6Double7to__int(body_h / eff_row_h) + 2 | 0;
+  const end_row = (start_row + visible_count | 0) > row_count ? row_count : start_row + visible_count | 0;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, body_rect);
+  let _tmp$3 = start_row;
+  while (true) {
+    const r = _tmp$3;
+    if (r < end_row) {
+      const row_y = body_y - scroll_y + (r + 0) * eff_row_h;
+      const row_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(body_rect.x, row_y, body_rect.w, eff_row_h);
+      const is_row_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, body_rect) && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, row_rect);
+      if (is_row_hovered) {
+        hovered_row = r;
+        let _tmp$4;
+        if (ctx.input.mouse_pressed) {
+          let _tmp$5;
+          const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+          if (BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579.val)) {
+            _tmp$5 = true;
+          } else {
+            const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+            _tmp$5 = BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, _table_id.val);
+          }
+          _tmp$4 = _tmp$5;
+        } else {
+          _tmp$4 = false;
+        }
+        if (_tmp$4) {
+          clicked_row = r;
+        }
+      }
+      const is_kb_row = is_focused && r === kb_row;
+      if (r === selected_row) {
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color20table__row__selected(), 0);
+      } else {
+        if (is_kb_row || is_row_hovered) {
+          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover(), 0);
+        } else {
+          if ((r % 2 | 0) === 1) {
+            _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), 0);
+          }
+        }
+      }
+      if (is_kb_row) {
+        _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1, 0);
+      }
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(row_rect.x, row_rect.y + eff_row_h), _M0MP49LING7167111moon_2degui3src4math4Vec23new(row_rect.x + row_rect.w, row_rect.y + eff_row_h), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
+      let cell_x = body_rect.x - scroll_x;
+      let _tmp$4 = 0;
+      while (true) {
+        const c = _tmp$4;
+        if (c < total_cols) {
+          const col = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(columns, c);
+          const cell_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(cell_x, row_y, col.width, eff_row_h);
+          const prev_cursor = _M0MP49LING7167111moon_2degui3src4core9UIContext6cursor(ctx);
+          const prev_avail = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
+          _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(cell_rect.x, cell_rect.y));
+          _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, cell_rect.w);
+          render_cell(ctx, r, c, cell_rect);
+          _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, prev_cursor);
+          _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, prev_avail);
+          cell_x = cell_x + col.width;
+          _tmp$4 = c + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      _tmp$3 = r + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
+  const v_thumb_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `${id_salt}::table_v_thumb`);
+  const h_thumb_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `${id_salt}::table_h_thumb`);
+  if (max_scroll > 0 && total_content_h > 0) {
+    const scrollbar_w = 6 * scale;
+    const bar_x = body_rect.x + body_rect.w - scrollbar_w - 3 * scale;
+    const bar_track_y = body_rect.y + 2 * scale;
+    const bar_track_h = body_rect.h - 4 * scale - (max_scroll_x > 0 ? 8 * scale : 0);
+    const ratio = body_rect.h / total_content_h;
+    const raw_thumb_h = body_rect.h * ratio;
+    const min_thumb_h = 24 * scale;
+    const thumb_h = raw_thumb_h < min_thumb_h ? min_thumb_h : raw_thumb_h > bar_track_h ? bar_track_h : raw_thumb_h;
+    const travel_h = bar_track_h - thumb_h;
+    if (ctx.input.mouse_pressed) {
+      const scroll_pct = max_scroll > 0.0001 ? scroll_y / max_scroll : 0;
+      const cur_thumb_y = bar_track_y + scroll_pct * travel_h;
+      const thumb_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(bar_x, cur_thumb_y, scrollbar_w, thumb_h);
+      if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, thumb_rect)) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, v_thumb_id);
+        const grab_offset = ctx.input.mouse_pos.y - cur_thumb_y;
+        _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, container_id, grab_offset, "v_grab_offset", 0);
+      }
+    }
+    const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+    if (BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, v_thumb_id.val)) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+      _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
+      const grab_offset = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, container_id, thumb_h * 0.5, "v_grab_offset");
+      const target_thumb_y = ctx.input.mouse_pos.y - grab_offset;
+      const new_pct = travel_h > 0 ? (target_thumb_y - bar_track_y) / travel_h : 0;
+      const clamped_pct = new_pct < 0 ? 0 : new_pct > 1 ? 1 : new_pct;
+      scroll_y = clamped_pct * max_scroll;
+      _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, body_container_id, scroll_y);
+      if (ctx.input.mouse_released) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+      }
+    }
+    const scroll_pct = max_scroll > 0.0001 ? scroll_y / max_scroll : 0;
+    const thumb_y = bar_track_y + scroll_pct * travel_h;
+    const thumb_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(bar_x, thumb_y, scrollbar_w, thumb_h);
+    let is_bar_hovered;
+    if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, thumb_rect)) {
+      is_bar_hovered = true;
+    } else {
+      const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+      is_bar_hovered = BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, v_thumb_id.val);
+    }
+    if (is_bar_hovered) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+    }
+    const thumb_color = is_bar_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color13border__muted();
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), thumb_rect, thumb_color, 3 * scale);
+  }
+  if (max_scroll_x > 0 && total_cols_w > 0) {
+    const scrollbar_h = 6 * scale;
+    const bar_y = body_rect.y + body_rect.h - scrollbar_h - 2 * scale;
+    const bar_track_x = body_rect.x + 2 * scale;
+    const bar_track_w = body_rect.w - 4 * scale - (max_scroll > 0 ? 8 * scale : 0);
+    const ratio = body_rect.w / total_cols_w;
+    const raw_thumb_w = body_rect.w * ratio;
+    const min_thumb_w = 24 * scale;
+    const thumb_w = raw_thumb_w < min_thumb_w ? min_thumb_w : raw_thumb_w > bar_track_w ? bar_track_w : raw_thumb_w;
+    const travel_w = bar_track_w - thumb_w;
+    if (ctx.input.mouse_pressed) {
+      const scroll_pct_x = max_scroll_x > 0.0001 ? scroll_x / max_scroll_x : 0;
+      const cur_thumb_x = bar_track_x + scroll_pct_x * travel_w;
+      const thumb_rect_x = _M0MP49LING7167111moon_2degui3src4math4Rect3new(cur_thumb_x, bar_y, thumb_w, scrollbar_h);
+      if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, thumb_rect_x)) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, h_thumb_id);
+        const grab_offset = ctx.input.mouse_pos.x - cur_thumb_x;
+        _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, container_id, grab_offset, "h_grab_offset", 0);
+      }
+    }
+    const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+    if (BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, h_thumb_id.val)) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+      _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
+      const grab_offset = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, container_id, thumb_w * 0.5, "h_grab_offset");
+      const target_thumb_x = ctx.input.mouse_pos.x - grab_offset;
+      const new_pct = travel_w > 0 ? (target_thumb_x - bar_track_x) / travel_w : 0;
+      const clamped_pct = new_pct < 0 ? 0 : new_pct > 1 ? 1 : new_pct;
+      scroll_x = clamped_pct * max_scroll_x;
+      _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, container_id, scroll_x, "scroll_x", 0);
+      if (ctx.input.mouse_released) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+      }
+    }
+    const scroll_pct_x = max_scroll_x > 0.0001 ? scroll_x / max_scroll_x : 0;
+    const thumb_x = bar_track_x + scroll_pct_x * travel_w;
+    const thumb_rect_x = _M0MP49LING7167111moon_2degui3src4math4Rect3new(thumb_x, bar_y, thumb_w, scrollbar_h);
+    let is_bar_hovered;
+    if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, thumb_rect_x)) {
+      is_bar_hovered = true;
+    } else {
+      const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+      is_bar_hovered = BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, h_thumb_id.val);
+    }
+    if (is_bar_hovered) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+    }
+    const thumb_color = is_bar_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color13border__muted();
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), thumb_rect_x, thumb_color, 3 * scale);
+  }
+  return new _M0TP49LING7167111moon_2degui3src9composite13TableResponse(sort_changed, active_sort_col, active_sort_dir, hovered_row, clicked_row);
+}
+function _M0FP49LING7167111moon_2degui3src9composite17sparkline_2einner(ctx, id_salt, values, size, color, fill, show_hover) {
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, size);
+  const _rect = _bind._1;
+  const _resp = _bind._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  const count = values.length;
+  const scale = ctx.style.scale;
+  const radius = ctx.style.radius_sm * scale;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color15sparkline__wash(), radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1, radius);
+  if (count === 0) {
+    return { _0: undefined, _1: _resp };
+  }
+  const plot_w = _rect.w - 8;
+  const plot_h = _rect.h - 8;
+  const base_y = _rect.y + 4 + plot_h;
+  if (count === 1) {
+    const mid_y = _rect.y + 4 + plot_h * 0.5;
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + 4, mid_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + 4 + plot_w, mid_y), color, 1.5);
+    return { _0: undefined, _1: _resp };
+  }
+  let min_val = _M0MPC15array5Array2atGdE(values, 0);
+  let max_val = _M0MPC15array5Array2atGdE(values, 0);
+  const _bind$2 = values.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$2) {
+      const v = values[_];
+      if (v < min_val) {
+        min_val = v;
+      }
+      if (v > max_val) {
+        max_val = v;
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  const delta = max_val - min_val;
+  const is_flat = delta < 1e-005;
+  const points = [];
+  const denom = (count - 1 | 0) + 0;
+  let _tmp$2 = 0;
+  while (true) {
+    const i = _tmp$2;
+    if (i < count) {
+      const px = _rect.x + 4 + (i + 0) / denom * plot_w;
+      let py;
+      if (is_flat) {
+        py = _rect.y + 4 + plot_h * 0.5;
+      } else {
+        const norm = (_M0MPC15array5Array2atGdE(values, i) - min_val) / delta;
+        py = _rect.y + 4 + (1 - norm) * plot_h;
+      }
+      _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(points, _M0MP49LING7167111moon_2degui3src4math4Vec23new(px, py));
+      _tmp$2 = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  if (fill) {
+    const fill_col = _M0MP49LING7167111moon_2degui3src5color5Color10area__wash(color);
+    let _tmp$3 = 0;
+    while (true) {
+      const i = _tmp$3;
+      if (i < (count - 1 | 0)) {
+        const p1 = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(points, i);
+        const p2 = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(points, i + 1 | 0);
+        const slice_w = p2.x - p1.x;
+        const avg_y = (p1.y + p2.y) * 0.5;
+        const slice_h = base_y - avg_y;
+        if (slice_h > 0) {
+          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(p1.x, avg_y, slice_w, slice_h), fill_col, 0);
+        }
+        _tmp$3 = i + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+  }
+  let _tmp$3 = 0;
+  while (true) {
+    const i = _tmp$3;
+    if (i < (count - 1 | 0)) {
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(points, i), _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(points, i + 1 | 0), color, 1.8);
+      _tmp$3 = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  let hovered_idx = undefined;
+  if (show_hover && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _rect)) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+    const mouse_rel = (ctx.input.mouse_pos.x - (_rect.x + 4)) / plot_w;
+    const raw_idx = _M0MPC16double6Double7to__int(mouse_rel * denom + 0.5);
+    const snapped_idx = raw_idx < 0 ? 0 : raw_idx >= count ? count - 1 | 0 : raw_idx;
+    hovered_idx = snapped_idx;
+    const pt = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(points, snapped_idx);
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(pt.x, _rect.y + 4), _M0MP49LING7167111moon_2degui3src4math4Vec23new(pt.x, base_y), _M0MP49LING7167111moon_2degui3src5color5Color15guideline__wash(color), 1);
+    _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), pt, 4 * scale, color);
+    _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), pt, 2 * scale, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window());
+  }
+  return { _0: hovered_idx, _1: _resp };
+}
+function _M0FP49LING7167111moon_2degui3src9composite9sparkline(ctx, id_salt, values, size$46$opt, color$46$opt, fill$46$opt, show_hover$46$opt) {
+  let size;
+  if (size$46$opt === undefined) {
+    size = _M0MP49LING7167111moon_2degui3src4math4Vec23new(120, 36);
+  } else {
+    const _Some = size$46$opt;
+    size = _Some;
+  }
+  let color;
+  if (color$46$opt === undefined) {
+    color = _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
+  } else {
+    const _Some = color$46$opt;
+    color = _Some;
+  }
+  const fill = fill$46$opt === -1 ? true : fill$46$opt;
+  const show_hover = show_hover$46$opt === -1 ? true : show_hover$46$opt;
+  return _M0FP49LING7167111moon_2degui3src9composite17sparkline_2einner(ctx, id_salt, values, size, color, fill, show_hover);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8TextSpan6normal(text) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8TextSpan(text, _M0DTP49LING7167111moon_2degui3src9composite12TextSpanKind6Normal__);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8TextSpan4bold(text) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8TextSpan(text, _M0DTP49LING7167111moon_2degui3src9composite12TextSpanKind4Bold__);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8TextSpan4code(text) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8TextSpan(text, _M0DTP49LING7167111moon_2degui3src9composite12TextSpanKind4Code__);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8TextSpan4link(text, url) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8TextSpan(text, new _M0DTP49LING7167111moon_2degui3src9composite12TextSpanKind4Link(url));
+}
+function _M0FP49LING7167111moon_2degui3src9composite20tokenize__text__span(span) {
+  const tokens = [];
+  const text = span.text;
+  const len = text.length;
+  let i = 0;
+  while (true) {
+    if (i < len) {
+      const _tmp = i;
+      const ch = _tmp >>> 0 < text.length ? text.charCodeAt(_tmp) : $oob();
+      const code = ch;
+      if (code === 32 || (code === 9 || code === 10)) {
+        if (tokens.length > 0) {
+          const last_idx = tokens.length - 1 | 0;
+          const last = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(tokens, last_idx);
+          _M0MPC15array5Array3setGmE(tokens, last_idx, new _M0TP49LING7167111moon_2degui3src9composite9RichToken(last.text, last.kind, last.is_cjk, true));
+        }
+        i = i + 1 | 0;
+      } else {
+        if (_M0FP49LING7167111moon_2degui3src9composite13is__cjk__char(code)) {
+          const char_end = _M0FP49LING7167111moon_2degui3src9composite20next__char__boundary(text, i);
+          const char_str = _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, i, char_end);
+          _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(tokens, new _M0TP49LING7167111moon_2degui3src9composite9RichToken(char_str, span.kind, true, false));
+          i = char_end;
+        } else {
+          const word_start = i;
+          while (true) {
+            if (i < len) {
+              const _tmp$2 = i;
+              const cur_ch = _tmp$2 >>> 0 < text.length ? text.charCodeAt(_tmp$2) : $oob();
+              const cur_code = cur_ch;
+              if (cur_code === 32 || (cur_code === 9 || (cur_code === 10 || _M0FP49LING7167111moon_2degui3src9composite13is__cjk__char(cur_code)))) {
+                break;
+              }
+              i = _M0FP49LING7167111moon_2degui3src9composite20next__char__boundary(text, i);
+              continue;
+            } else {
+              break;
+            }
+          }
+          const word_str = _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, word_start, i);
+          if (word_str.length > 0) {
+            _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(tokens, new _M0TP49LING7167111moon_2degui3src9composite9RichToken(word_str, span.kind, false, false));
+          }
+        }
+      }
+      continue;
+    } else {
+      break;
+    }
+  }
+  return tokens;
+}
+function _M0FP49LING7167111moon_2degui3src9composite18rich__text_2einner(ctx, id_salt, spans, wrap_width) {
+  const font_sz = ctx.style.font_normal * ctx.style.scale;
+  const line_h = (ctx.style.control_h_sm - ctx.style.radius_xs) * ctx.style.scale;
+  const max_w = wrap_width > 0 ? wrap_width : _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
+  const space_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, " ", font_sz).x;
+  let current_x = 0;
+  let current_line = 0;
+  let measured_max_w = 0;
+  const layout_items = [];
+  const _bind = spans.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind) {
+      const span = spans[_];
+      const tokens = _M0FP49LING7167111moon_2degui3src9composite20tokenize__text__span(span);
+      const _bind$2 = tokens.length;
+      let _tmp$2 = 0;
+      while (true) {
+        const _$2 = _tmp$2;
+        if (_$2 < _bind$2) {
+          const token = tokens[_$2];
+          const sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, token.text, font_sz);
+          const token_w = sz.x + (_M0IP49LING7167111moon_2degui3src9composite12TextSpanKindPB2Eq5equal(token.kind, _M0DTP49LING7167111moon_2degui3src9composite12TextSpanKind4Code__) ? 6 * ctx.style.scale : 0);
+          const trailing_w = token.has_trailing_space ? space_w : 0;
+          let is_closing;
+          if (token.is_cjk) {
+            let _tmp$3;
+            if (token.text.length > 0) {
+              const _tmp$4 = token.text;
+              _tmp$3 = _M0FP49LING7167111moon_2degui3src9composite23is__cjk__closing__punct(0 >>> 0 < _tmp$4.length ? _tmp$4.charCodeAt(0) : $oob());
+            } else {
+              _tmp$3 = false;
+            }
+            is_closing = _tmp$3;
+          } else {
+            is_closing = false;
+          }
+          if (current_x + token_w > max_w && (current_x > 0 && !is_closing)) {
+            current_line = current_line + 1 | 0;
+            current_x = 0;
+          }
+          const rel_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(current_x, (current_line + 0) * line_h, token_w, line_h);
+          _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(layout_items, { _0: token.text, _1: token.kind, _2: rel_rect });
+          current_x = current_x + token_w + trailing_w;
+          if (current_x > measured_max_w) {
+            measured_max_w = current_x;
+          }
+          _tmp$2 = _$2 + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  const total_h = ((current_line + 1 | 0) + 0) * line_h;
+  const total_w = wrap_width > 0 ? wrap_width : measured_max_w;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
+  const _bind$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(total_w, total_h));
+  const _container_rect = _bind$2._1;
+  const _resp = _bind$2._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  let clicked_url = undefined;
+  const _bind$3 = layout_items.length;
+  let _tmp$2 = 0;
+  while (true) {
+    const _ = _tmp$2;
+    if (_ < _bind$3) {
+      const item = layout_items[_];
+      const _text = item._0;
+      const _kind = item._1;
+      const _rel = item._2;
+      const abs_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_container_rect.x + _rel.x, _container_rect.y + _rel.y, _rel.w, _rel.h);
+      const is_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, abs_rect);
+      if (is_hovered) {
+        if (_kind.$tag === 3) {
+        } else {
+          _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "text");
+        }
+      }
+      switch (_kind.$tag) {
+        case 0: {
+          const text_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(abs_rect.x, abs_rect.y + (line_h - font_sz) * 0.5);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), text_pos, _text, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color10text__body(), "", 500);
+          break;
+        }
+        case 1: {
+          const text_pos$2 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(abs_rect.x, abs_rect.y + (line_h - font_sz) * 0.5);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), text_pos$2, _text, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color12text__strong(), "", 700);
+          break;
+        }
+        case 2: {
+          const scale = ctx.style.scale;
+          const pad_x = 3 * scale;
+          const code_bg_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(abs_rect.x, abs_rect.y + 2 * scale, abs_rect.w, line_h - 4 * scale);
+          const code_radius = ctx.style.radius_sm * scale;
+          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), code_bg_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), code_radius);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), code_bg_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1 * scale, code_radius);
+          const text_pos$3 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(abs_rect.x + pad_x, abs_rect.y + (line_h - font_sz) * 0.5);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), text_pos$3, _text, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color12accent__deep(), "monospace", 500);
+          break;
+        }
+        default: {
+          const _Link = _kind;
+          const _url = _Link._0;
+          const scale$2 = ctx.style.scale;
+          if (is_hovered) {
+            _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+            if (ctx.input.mouse_pressed) {
+              clicked_url = _url;
+            }
+          }
+          const link_col = is_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover() : _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
+          const text_pos$4 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(abs_rect.x, abs_rect.y + (line_h - font_sz) * 0.5);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), text_pos$4, _text, font_sz, link_col, "", 500);
+          if (is_hovered) {
+            const line_y = abs_rect.y + line_h - 2 * scale$2;
+            _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(abs_rect.x, line_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(abs_rect.x + abs_rect.w, line_y), link_col, 1 * scale$2);
+          }
+        }
+      }
+      _tmp$2 = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return new _M0TP49LING7167111moon_2degui3src9composite16RichTextResponse(clicked_url, _resp);
+}
+function _M0FP49LING7167111moon_2degui3src9composite9hyperlink(ctx, text, _url) {
+  const font_sz = ctx.style.font_normal;
+  const text_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, text, font_sz);
+  const w = text_sz.x;
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(w, 20));
+  const _rect = _bind._1;
+  const _resp = _bind._2;
+  const is_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _rect);
+  if (is_hovered) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+  }
+  const link_col = is_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover() : _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
+  const text_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x, _rect.y + (20 - font_sz) * 0.5);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), text_pos, text, font_sz, link_col, "", 500);
+  if (is_hovered) {
+    const line_y = _rect.y + 20 - 2;
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x, line_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + w, line_y), link_col, 1);
+  }
+  const clicked = is_hovered && ctx.input.mouse_pressed;
+  return { _0: clicked, _1: _resp };
+}
+function _M0MP49LING7167111moon_2degui3src9composite9PlotPoint3new(x, y) {
+  return new _M0TP49LING7167111moon_2degui3src9composite9PlotPoint(x, y);
+}
+function _M0MP49LING7167111moon_2degui3src9composite10PlotSeries12line_2einner(name, points, color) {
+  return new _M0TP49LING7167111moon_2degui3src9composite10PlotSeries(name, points, color, 0);
+}
+function _M0MP49LING7167111moon_2degui3src9composite10PlotSeries15scatter_2einner(name, points, color) {
+  return new _M0TP49LING7167111moon_2degui3src9composite10PlotSeries(name, points, color, 1);
+}
+function _M0MP49LING7167111moon_2degui3src9composite10PlotSeries12area_2einner(name, points, color) {
+  return new _M0TP49LING7167111moon_2degui3src9composite10PlotSeries(name, points, color, 2);
+}
+function _M0FP49LING7167111moon_2degui3src9composite18format__coord__val(v) {
+  const rounded = _M0MPC16double6Double5round(v * 10) / 10;
+  const int_val = _M0MPC16double6Double7to__int(rounded);
+  return Math.abs(rounded - (int_val + 0)) < 0.01 ? _M0MPC13int3Int18to__string_2einner(int_val, 10) : String(rounded);
+}
+function _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1385(_env, pt) {
+  const plot_bottom = _env._5;
+  const plot_rect = _env._4;
+  const span_x = _env._3;
+  const min_y = _env._2;
+  const min_x = _env._1;
+  const span_y = _env._0;
+  const norm_x = (pt.x - min_x.val) / span_x;
+  const norm_y = (pt.y - min_y.val) / span_y;
+  const sx = plot_rect.x + norm_x * plot_rect.w;
+  const sy = plot_bottom - norm_y * plot_rect.h;
+  return _M0MP49LING7167111moon_2degui3src4math4Vec23new(sx, sy);
+}
+function _M0FP49LING7167111moon_2degui3src9composite12plot_2einner(ctx, id_salt, series, size, show_grid, show_crosshair, show_legend) {
+  const scale = ctx.style.scale;
+  const p_style = _M0MP49LING7167111moon_2degui3src9composite9PlotStyle7defaultN6recordS3552;
+  const default_w = p_style.default_w * scale;
+  const default_h = p_style.default_h * scale;
+  let chosen_size;
+  if (size === undefined) {
+    chosen_size = _M0MP49LING7167111moon_2degui3src4math4Vec23new(default_w, default_h);
+  } else {
+    const _Some = size;
+    chosen_size = _Some;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, chosen_size);
+  const _rect = _bind._1;
+  const _resp = _bind._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  const radius = ctx.style.radius_md * scale;
+  const pad_left = p_style.pad_left * scale;
+  const pad_right = p_style.pad_right * scale;
+  const pad_top = p_style.pad_top * scale;
+  const pad_bottom = p_style.pad_bottom * scale;
+  const font_sz = ctx.style.font_small * scale;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1, radius);
+  const plot_w = _rect.w - pad_left - pad_right;
+  const plot_h = _rect.h - pad_top - pad_bottom;
+  if (plot_w <= 10 * scale || plot_h <= 10 * scale) {
+    return { _0: undefined, _1: _resp };
+  }
+  const plot_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + pad_left, _rect.y + pad_top, plot_w, plot_h);
+  const plot_right = plot_rect.x + plot_rect.w;
+  const plot_bottom = plot_rect.y + plot_rect.h;
+  const min_x = new _M0TPB8MutLocalGdE(0);
+  let max_x = 1;
+  const min_y = new _M0TPB8MutLocalGdE(0);
+  let max_y = 1;
+  let first = true;
+  const _bind$2 = series.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$2) {
+      const s = series[_];
+      const _bind$3 = s.points;
+      const _bind$4 = _bind$3.length;
+      let _tmp$2 = 0;
+      while (true) {
+        const _$2 = _tmp$2;
+        if (_$2 < _bind$4) {
+          const pt = _bind$3[_$2];
+          if (first) {
+            min_x.val = pt.x;
+            max_x = pt.x;
+            min_y.val = pt.y;
+            max_y = pt.y;
+            first = false;
+          } else {
+            if (pt.x < min_x.val) {
+              min_x.val = pt.x;
+            }
+            if (pt.x > max_x) {
+              max_x = pt.x;
+            }
+            if (pt.y < min_y.val) {
+              min_y.val = pt.y;
+            }
+            if (pt.y > max_y) {
+              max_y = pt.y;
+            }
+          }
+          _tmp$2 = _$2 + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  if (Math.abs(max_x - min_x.val) < 0.0001) {
+    max_x = min_x.val + 1;
+  }
+  if (Math.abs(max_y - min_y.val) < 0.0001) {
+    max_y = min_y.val + 1;
+  }
+  const span_x = max_x - min_x.val;
+  const span_y = max_y - min_y.val;
+  const _env = { _0: span_y, _1: min_x, _2: min_y, _3: span_x, _4: plot_rect, _5: plot_bottom };
+  if (show_grid) {
+    let _tmp$2 = 0;
+    while (true) {
+      const i = _tmp$2;
+      if (i <= 4) {
+        const t = (i + 0) / (4 + 0);
+        const gy = plot_bottom - t * plot_rect.h;
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_rect.x, gy), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_right, gy), _M0MP49LING7167111moon_2degui3src5color5Color10grid__line(), 1);
+        const tick_val = min_y.val + t * span_y;
+        const label = _M0FP49LING7167111moon_2degui3src9composite18format__coord__val(tick_val);
+        const label_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, label, font_sz);
+        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_rect.x - label_sz.x - 4 * scale, gy - font_sz * 0.45), label, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
+        _tmp$2 = i + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+    let _tmp$3 = 0;
+    while (true) {
+      const i = _tmp$3;
+      if (i <= 4) {
+        const t = (i + 0) / (4 + 0);
+        const gx = plot_rect.x + t * plot_rect.w;
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(gx, plot_rect.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(gx, plot_bottom), _M0MP49LING7167111moon_2degui3src5color5Color10grid__line(), 1);
+        const tick_val = min_x.val + t * span_x;
+        const label = _M0FP49LING7167111moon_2degui3src9composite18format__coord__val(tick_val);
+        const label_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, label, font_sz);
+        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(gx - label_sz.x * 0.5, plot_bottom + 4 * scale), label, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
+        _tmp$3 = i + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, plot_rect);
+  const _bind$3 = series.length;
+  let _tmp$2 = 0;
+  while (true) {
+    const _ = _tmp$2;
+    if (_ < _bind$3) {
+      const s = series[_];
+      _L: {
+        const pts = s.points;
+        const count = pts.length;
+        if (count === 0) {
+          break _L;
+        }
+        const _bind$4 = s.kind;
+        switch (_bind$4) {
+          case 0: {
+            let prev_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1385(_env, _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(pts, 0));
+            let _tmp$3 = 1;
+            while (true) {
+              const i = _tmp$3;
+              if (i < count) {
+                const curr_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1385(_env, _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(pts, i));
+                _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), prev_screen, curr_screen, s.color, 2 * scale);
+                prev_screen = curr_screen;
+                _tmp$3 = i + 1 | 0;
+                continue;
+              } else {
+                break;
+              }
+            }
+            break;
+          }
+          case 1: {
+            const r = 3.5 * scale;
+            let _tmp$4 = 0;
+            while (true) {
+              const i = _tmp$4;
+              if (i < count) {
+                const pt_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1385(_env, _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(pts, i));
+                _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), pt_screen, r, s.color);
+                _tmp$4 = i + 1 | 0;
+                continue;
+              } else {
+                break;
+              }
+            }
+            break;
+          }
+          default: {
+            let prev_screen$2 = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1385(_env, _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(pts, 0));
+            let _tmp$5 = 1;
+            while (true) {
+              const i = _tmp$5;
+              if (i < count) {
+                const curr_screen = _M0FP49LING7167111moon_2degui3src9composite12plot_2einnerN21map__data__to__screenS1385(_env, _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(pts, i));
+                const p_top = prev_screen$2.y < curr_screen.y ? prev_screen$2.y : curr_screen.y;
+                const seg_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(prev_screen$2.x, p_top, curr_screen.x - prev_screen$2.x, plot_bottom - p_top);
+                _M0MP49LING7167111moon_2degui3src4core7Painter21add__linear__gradient(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), seg_rect, _M0MP49LING7167111moon_2degui3src4math4Vec23new(seg_rect.x, seg_rect.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(seg_rect.x, seg_rect.y + seg_rect.h), _M0MP49LING7167111moon_2degui3src5color5Color11with__alpha(s.color, 100), _M0MP49LING7167111moon_2degui3src5color5Color11with__alpha(s.color, 15), 0);
+                _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), prev_screen$2, curr_screen, s.color, 2 * scale);
+                prev_screen$2 = curr_screen;
+                _tmp$5 = i + 1 | 0;
+                continue;
+              } else {
+                break;
+              }
+            }
+          }
+        }
+        break _L;
+      }
+      _tmp$2 = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
+  if (show_legend && series.length > 0) {
+    let leg_x = plot_right - 8 * scale;
+    let _tmp$3 = series.length - 1 | 0;
+    while (true) {
+      const i = _tmp$3;
+      if (i >= 0) {
+        const s = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(series, i);
+        const name_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, s.name, font_sz);
+        const leg_w = name_sz.x + 16 * scale;
+        leg_x = leg_x - leg_w;
+        const dot_r = 3 * scale;
+        const dot_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(leg_x + 5 * scale, plot_rect.y + 10 * scale);
+        _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), dot_center, dot_r, s.color);
+        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(leg_x + 12 * scale, plot_rect.y + 4 * scale), s.name, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
+        leg_x = leg_x - 8 * scale;
+        _tmp$3 = i - 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+  }
+  const mouse_pos = ctx.input.mouse_pos;
+  const is_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, plot_rect);
+  let hovered_coord = undefined;
+  if (is_hovered) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
+  }
+  if (is_hovered && show_crosshair) {
+    hovered_coord = _M0MP49LING7167111moon_2degui3src4math4Vec23new(min_x.val + (mouse_pos.x - plot_rect.x) / plot_rect.w * span_x, min_y.val + (plot_bottom - mouse_pos.y) / plot_rect.h * span_y);
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(mouse_pos.x, plot_rect.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(mouse_pos.x, plot_bottom), _M0MP49LING7167111moon_2degui3src5color5Color15plot__crosshair(), 1);
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_rect.x, mouse_pos.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_right, mouse_pos.y), _M0MP49LING7167111moon_2degui3src5color5Color15plot__crosshair(), 1);
+    const _p = hovered_coord;
+    let _tmp$3;
+    if (_p === undefined) {
+      _tmp$3 = $panic();
+    } else {
+      const _p$2 = _p;
+      _tmp$3 = _p$2;
+    }
+    const hx = _tmp$3.x;
+    const _p$2 = hovered_coord;
+    let _tmp$4;
+    if (_p$2 === undefined) {
+      _tmp$4 = $panic();
+    } else {
+      const _p$3 = _p$2;
+      _tmp$4 = _p$3;
+    }
+    const hy = _tmp$4.y;
+    const text = `(${_M0FP49LING7167111moon_2degui3src9composite18format__coord__val(hx)}, ${_M0FP49LING7167111moon_2degui3src9composite18format__coord__val(hy)})`;
+    const text_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, text, font_sz);
+    const tip_pad_x = 6 * scale;
+    const tip_pad_y = 3 * scale;
+    const tip_w = text_sz.x + tip_pad_x * 2;
+    const tip_h = text_sz.y + tip_pad_y * 2;
+    let tip_x = mouse_pos.x + 8 * scale;
+    let tip_y = mouse_pos.y - tip_h - 6 * scale;
+    if (tip_x + tip_w > plot_right) {
+      tip_x = mouse_pos.x - tip_w - 8 * scale;
+    }
+    if (tip_y < plot_rect.y) {
+      tip_y = mouse_pos.y + 8 * scale;
+    }
+    const tip_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(tip_x, tip_y, tip_w, tip_h);
+    const tip_radius = ctx.style.radius_sm * scale;
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), tip_rect, _M0MP49LING7167111moon_2degui3src5color5Color12text__strong(), tip_radius);
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(tip_x + tip_pad_x, tip_y + tip_pad_y), text, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color13text__inverse(), "", 500);
+  }
+  return { _0: hovered_coord, _1: _resp };
+}
+function _M0FP49LING7167111moon_2degui3src9composite18bar__chart_2einner(ctx, id_salt, labels, values, size, bar_color) {
+  const scale = ctx.style.scale;
+  const p_style = _M0MP49LING7167111moon_2degui3src9composite9PlotStyle7defaultN6recordS3552;
+  const default_w = p_style.bar_chart_default_w * scale;
+  const default_h = p_style.bar_chart_default_h * scale;
+  let chosen_size;
+  if (size === undefined) {
+    chosen_size = _M0MP49LING7167111moon_2degui3src4math4Vec23new(default_w, default_h);
+  } else {
+    const _Some = size;
+    chosen_size = _Some;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, chosen_size);
+  const _rect = _bind._1;
+  const _resp = _bind._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  const radius = ctx.style.radius_md * scale;
+  const pad_left = p_style.pad_left * scale;
+  const pad_right = p_style.pad_right * scale;
+  const pad_top = p_style.pad_top * scale;
+  const pad_bottom = p_style.pad_bottom * scale;
+  const font_sz = ctx.style.font_small * scale;
+  const gap = p_style.bar_chart_gap * scale;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1, radius);
+  const count = values.length;
+  if (count === 0) {
+    return { _0: undefined, _1: _resp };
+  }
+  const plot_w = _rect.w - pad_left - pad_right;
+  const plot_h = _rect.h - pad_top - pad_bottom;
+  if (plot_w <= 10 * scale || plot_h <= 10 * scale) {
+    return { _0: undefined, _1: _resp };
+  }
+  const plot_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + pad_left, _rect.y + pad_top, plot_w, plot_h);
+  const plot_right = plot_rect.x + plot_rect.w;
+  const plot_bottom = plot_rect.y + plot_rect.h;
+  let max_val = 1;
+  const _bind$2 = values.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$2) {
+      const v = values[_];
+      if (v > max_val) {
+        max_val = v;
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  let _tmp$2 = 0;
+  while (true) {
+    const i = _tmp$2;
+    if (i <= 3) {
+      const t = (i + 0) / (3 + 0);
+      const gy = plot_bottom - t * plot_rect.h;
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_rect.x, gy), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_right, gy), _M0MP49LING7167111moon_2degui3src5color5Color10grid__line(), 1);
+      const val = t * max_val;
+      const label = _M0FP49LING7167111moon_2degui3src9composite18format__coord__val(val);
+      const label_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, label, font_sz);
+      _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(plot_rect.x - label_sz.x - 4 * scale, gy - font_sz * 0.45), label, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
+      _tmp$2 = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  const total_gap = gap * ((count - 1 | 0) + 0);
+  const bar_w = total_gap < plot_w ? (plot_w - total_gap) / (count + 0) : 4 * scale;
+  let hovered_idx = undefined;
+  let _tmp$3 = 0;
+  while (true) {
+    const i = _tmp$3;
+    if (i < count) {
+      const val = _M0MPC15array5Array2atGdE(values, i);
+      const norm_val = max_val > 0 ? val / max_val : 0;
+      const bar_h = norm_val * plot_rect.h;
+      const bx = plot_rect.x + (i + 0) * (bar_w + gap);
+      const by = plot_bottom - bar_h;
+      const bar_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(bx, by, bar_w, bar_h);
+      const is_bar_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, bar_rect);
+      if (is_bar_hovered) {
+        hovered_idx = i;
+        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+      }
+      const col = is_bar_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover() : bar_color;
+      const bar_radius = ctx.style.radius_sm * scale;
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), bar_rect, col, bar_radius);
+      if (i < labels.length) {
+        const lbl = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(labels, i);
+        const lbl_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, lbl, font_sz);
+        const lx = bx + (bar_w - lbl_sz.x) * 0.5;
+        const ly = plot_bottom + 4 * scale;
+        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(lx, ly), lbl, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary(), "", 500);
+      }
+      if (is_bar_hovered) {
+        const val_str = _M0FP49LING7167111moon_2degui3src9composite18format__coord__val(val);
+        const val_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, val_str, font_sz);
+        const badge_pad_x = 6 * scale;
+        const badge_pad_y = 2 * scale;
+        const badge_w = val_sz.x + badge_pad_x * 2;
+        const badge_h = val_sz.y + badge_pad_y * 2;
+        const badge_x = bx + (bar_w - badge_w) * 0.5;
+        const badge_y = by - badge_h - 4 * scale;
+        const badge_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(badge_x, badge_y, badge_w, badge_h);
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), badge_rect, _M0MP49LING7167111moon_2degui3src5color5Color12text__strong(), ctx.style.radius_sm * scale);
+        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(badge_x + badge_pad_x, badge_y + badge_pad_y), val_str, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color13text__inverse(), "", 500);
+      }
+      _tmp$3 = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return { _0: hovered_idx, _1: _resp };
+}
+function _M0FP49LING7167111moon_2degui3src9composite10bar__chart(ctx, id_salt, labels, values, size, bar_color$46$opt) {
+  let bar_color;
+  if (bar_color$46$opt === undefined) {
+    bar_color = _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
+  } else {
+    const _Some = bar_color$46$opt;
+    bar_color = _Some;
+  }
+  return _M0FP49LING7167111moon_2degui3src9composite18bar__chart_2einner(ctx, id_salt, labels, values, size, bar_color);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8NodePort5input(id, name, color) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8NodePort(id, name, 0, color);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8NodePort6output(id, name, color) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8NodePort(id, name, 1, color);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8NodeItem8set__pos(self, pos) {
+  self.pos = pos;
+}
+function _M0MP49LING7167111moon_2degui3src9composite8NodeItem11new_2einner(id, title, pos, inputs, outputs, accent_color, size) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8NodeItem(id, title, pos, size, inputs, outputs, accent_color);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8NodeItem3new(id, title, pos, inputs$46$opt, outputs$46$opt, accent_color, size) {
+  let inputs;
+  if (inputs$46$opt.$tag === 1) {
+    const _Some = inputs$46$opt;
+    inputs = _Some._0;
+  } else {
+    inputs = [];
+  }
+  let outputs;
+  if (outputs$46$opt.$tag === 1) {
+    const _Some = outputs$46$opt;
+    outputs = _Some._0;
+  } else {
+    outputs = [];
+  }
+  return _M0MP49LING7167111moon_2degui3src9composite8NodeItem11new_2einner(id, title, pos, inputs, outputs, accent_color, size);
+}
+function _M0MP49LING7167111moon_2degui3src9composite14NodeConnection3new(from_node, from_port, to_node, to_port) {
+  return new _M0TP49LING7167111moon_2degui3src9composite14NodeConnection(from_node, from_port, to_node, to_port);
+}
+function _M0FP49LING7167111moon_2degui3src9composite33draw__cubic__bezier__wire_2einner(painter, p0, p3, color, width, steps) {
+  const dx = Math.abs(p3.x - p0.x) * 0.5;
+  const curvature = dx < 32 ? 32 : dx;
+  const p1 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(p0.x + curvature, p0.y);
+  const p2 = _M0MP49LING7167111moon_2degui3src4math4Vec23new(p3.x - curvature, p3.y);
+  _M0MP49LING7167111moon_2degui3src4core7Painter18add__bezier__curve(painter, p0, p1, p2, p3, color, width);
+}
+function _M0FP49LING7167111moon_2degui3src9composite20find__port__position(canvas_min, nodes, node_id, port_id, style, scale) {
+  const _bind = nodes.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind) {
+      const node = nodes[_];
+      if (node.id === node_id) {
+        const screen_x = canvas_min.x + node.pos.x;
+        const screen_y = canvas_min.y + node.pos.y;
+        const _bind$2 = node.size;
+        let node_w;
+        if (_bind$2 === undefined) {
+          node_w = style.node_min_w * scale;
+        } else {
+          const _Some = _bind$2;
+          const _sz = _Some;
+          node_w = _sz.x * scale;
+        }
+        const header_h = style.node_header_h * scale;
+        const port_spacing = style.port_spacing * scale;
+        const _bind$3 = node.inputs;
+        const _bind$4 = _bind$3.length;
+        let _tmp$2 = 0;
+        while (true) {
+          const i = _tmp$2;
+          if (i < _bind$4) {
+            const p = _bind$3[i];
+            if (p.id === port_id) {
+              const py = screen_y + header_h + 14 * scale + (i + 0) * port_spacing;
+              return _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x, py);
+            }
+            _tmp$2 = i + 1 | 0;
+            continue;
+          } else {
+            break;
+          }
+        }
+        const _bind$5 = node.outputs;
+        const _bind$6 = _bind$5.length;
+        let _tmp$3 = 0;
+        while (true) {
+          const j = _tmp$3;
+          if (j < _bind$6) {
+            const p = _bind$5[j];
+            if (p.id === port_id) {
+              const py = screen_y + header_h + 14 * scale + (j + 0) * port_spacing;
+              return _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + node_w, py);
+            }
+            _tmp$3 = j + 1 | 0;
+            continue;
+          } else {
+            break;
+          }
+        }
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return undefined;
+}
+function _M0FP49LING7167111moon_2degui3src9composite20node__editor_2einner(ctx, id_salt, size, nodes, connections, custom_style, selected_node) {
+  const scale = ctx.style.scale;
+  let style;
+  if (custom_style === undefined) {
+    style = _M0MP49LING7167111moon_2degui3src9composite15NodeEditorStyle7defaultN6recordS3553;
+  } else {
+    const _Some = custom_style;
+    style = _Some;
+  }
+  const node_min_w = style.node_min_w * scale;
+  const header_h = style.node_header_h * scale;
+  const port_r = style.port_radius * scale;
+  const port_spacing = style.port_spacing * scale;
+  const card_radius = style.card_radius * scale;
+  const wire_width = style.wire_width * scale;
+  const font_title = ctx.style.font_normal * scale;
+  const font_port = ctx.style.font_small * scale;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, size);
+  const _canvas_id = _bind._0;
+  const _canvas_rect = _bind._1;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  const painter = _M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, _canvas_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), card_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, _canvas_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, card_radius);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, _canvas_rect);
+  _M0MP49LING7167111moon_2degui3src4core7Painter10push__clip(painter, _canvas_rect);
+  const grid_step = style.grid_size * scale;
+  let gx = _canvas_rect.x + grid_step * 0.5;
+  const canvas_right = _canvas_rect.x + _canvas_rect.w;
+  const canvas_bottom = _canvas_rect.y + _canvas_rect.h;
+  while (true) {
+    if (gx < canvas_right) {
+      let gy = _canvas_rect.y + grid_step * 0.5;
+      while (true) {
+        if (gy < canvas_bottom) {
+          _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, _M0MP49LING7167111moon_2degui3src4math4Vec23new(gx, gy), 1 * scale, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted());
+          gy = gy + grid_step;
+          continue;
+        } else {
+          break;
+        }
+      }
+      gx = gx + grid_step;
+      continue;
+    } else {
+      break;
+    }
+  }
+  let active_drag_node = _M0MP49LING7167111moon_2degui3src4core6Memory32get__string__or__default_2einner(ctx.memory, _canvas_id, "", "drag_node");
+  let active_conn_node = _M0MP49LING7167111moon_2degui3src4core6Memory32get__string__or__default_2einner(ctx.memory, _canvas_id, "", "conn_node");
+  let active_conn_port = _M0MP49LING7167111moon_2degui3src4core6Memory32get__string__or__default_2einner(ctx.memory, _canvas_id, "", "conn_port");
+  let cur_selected_node;
+  if (selected_node === undefined) {
+    cur_selected_node = _M0MP49LING7167111moon_2degui3src4core6Memory32get__string__or__default_2einner(ctx.memory, _canvas_id, "", "selected_node");
+  } else {
+    const _Some = selected_node;
+    cur_selected_node = _Some;
+  }
+  const mouse_pos = ctx.input.mouse_pos;
+  const mouse_down = ctx.input.mouse_down;
+  const mouse_pressed = ctx.input.mouse_pressed;
+  const is_canvas_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _canvas_rect);
+  let new_conn = undefined;
+  let changed = false;
+  const out_conns = [];
+  const _bind$2 = connections.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$2) {
+      const c = connections[_];
+      _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(out_conns, c);
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  if (!mouse_down) {
+    let _tmp$2;
+    const _p = active_conn_node;
+    const _p$2 = "";
+    if (!(_p === _p$2)) {
+      const _p$3 = active_conn_port;
+      const _p$4 = "";
+      _tmp$2 = !(_p$3 === _p$4);
+    } else {
+      _tmp$2 = false;
+    }
+    if (_tmp$2) {
+      const _bind$3 = nodes.length;
+      let _tmp$3 = 0;
+      while (true) {
+        const _ = _tmp$3;
+        if (_ < _bind$3) {
+          const node = nodes[_];
+          const _p$3 = node.id;
+          const _p$4 = active_conn_node;
+          if (!(_p$3 === _p$4)) {
+            const screen_x = _canvas_rect.x + node.pos.x;
+            const screen_y = _canvas_rect.y + node.pos.y;
+            const _bind$4 = node.inputs;
+            const _bind$5 = _bind$4.length;
+            let _tmp$4 = 0;
+            while (true) {
+              const i = _tmp$4;
+              if (i < _bind$5) {
+                const in_port = _bind$4[i];
+                const py = screen_y + header_h + 14 * scale + (i + 0) * port_spacing;
+                const port_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x, py);
+                const dist = Math.abs(mouse_pos.x - port_center.x) + Math.abs(mouse_pos.y - port_center.y);
+                if (dist <= port_r * 2.5 + 4 * scale) {
+                  const conn = _M0MP49LING7167111moon_2degui3src9composite14NodeConnection3new(active_conn_node, active_conn_port, node.id, in_port.id);
+                  _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(out_conns, conn);
+                  new_conn = conn;
+                  changed = true;
+                }
+                _tmp$4 = i + 1 | 0;
+                continue;
+              } else {
+                break;
+              }
+            }
+          }
+          _tmp$3 = _ + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, "", "conn_node", 0);
+      _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, "", "conn_port", 0);
+      active_conn_node = "";
+      active_conn_port = "";
+    }
+    const _p$3 = active_drag_node;
+    const _p$4 = "";
+    if (!(_p$3 === _p$4)) {
+      _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, "", "drag_node", 0);
+      active_drag_node = "";
+    }
+  }
+  let _tmp$2;
+  if (mouse_down) {
+    const _p = active_drag_node;
+    const _p$2 = "";
+    _tmp$2 = !(_p === _p$2);
+  } else {
+    _tmp$2 = false;
+  }
+  if (_tmp$2) {
+    const anchor_x = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, _canvas_id, 0, "drag_anchor_x");
+    const anchor_y = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, _canvas_id, 0, "drag_anchor_y");
+    const _bind$3 = nodes.length;
+    let _tmp$3 = 0;
+    while (true) {
+      const _ = _tmp$3;
+      if (_ < _bind$3) {
+        const node = nodes[_];
+        if (node.id === active_drag_node) {
+          const new_x = mouse_pos.x - _canvas_rect.x - anchor_x;
+          const new_y = mouse_pos.y - _canvas_rect.y - anchor_y;
+          if (node.pos.x !== new_x || node.pos.y !== new_y) {
+            node.pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(new_x, new_y);
+            changed = true;
+          }
+          _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "move");
+        }
+        _tmp$3 = _ + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+  }
+  if (is_canvas_hovered && (mouse_pressed && (active_drag_node === "" && active_conn_node === ""))) {
+    let handled = false;
+    const _bind$3 = nodes.length;
+    let _tmp$3 = 0;
+    while (true) {
+      const _ = _tmp$3;
+      if (_ < _bind$3) {
+        const node = nodes[_];
+        if (handled) {
+          break;
+        }
+        const screen_x = _canvas_rect.x + node.pos.x;
+        const screen_y = _canvas_rect.y + node.pos.y;
+        const _bind$4 = node.size;
+        let node_w;
+        if (_bind$4 === undefined) {
+          node_w = node_min_w;
+        } else {
+          const _Some = _bind$4;
+          const _sz = _Some;
+          node_w = _sz.x * scale;
+        }
+        const _bind$5 = node.outputs;
+        const _bind$6 = _bind$5.length;
+        let _tmp$4 = 0;
+        while (true) {
+          const j = _tmp$4;
+          if (j < _bind$6) {
+            const out_port = _bind$5[j];
+            const py = screen_y + header_h + 14 * scale + (j + 0) * port_spacing;
+            const port_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + node_w, py);
+            const dist = Math.abs(mouse_pos.x - port_center.x) + Math.abs(mouse_pos.y - port_center.y);
+            if (dist <= port_r * 2 + 3 * scale) {
+              active_conn_node = node.id;
+              active_conn_port = out_port.id;
+              _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, node.id, "conn_node", 0);
+              _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, out_port.id, "conn_port", 0);
+              handled = true;
+              break;
+            }
+            _tmp$4 = j + 1 | 0;
+            continue;
+          } else {
+            break;
+          }
+        }
+        _tmp$3 = _ + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+    if (!handled) {
+      let _tmp$4 = nodes.length - 1 | 0;
+      while (true) {
+        const k = _tmp$4;
+        if (k >= 0) {
+          const node = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(nodes, k);
+          const screen_x = _canvas_rect.x + node.pos.x;
+          const screen_y = _canvas_rect.y + node.pos.y;
+          const _bind$4 = node.size;
+          let node_w;
+          if (_bind$4 === undefined) {
+            node_w = node_min_w;
+          } else {
+            const _Some = _bind$4;
+            const _sz = _Some;
+            node_w = _sz.x * scale;
+          }
+          const max_ports = node.inputs.length > node.outputs.length ? node.inputs.length : node.outputs.length;
+          const body_h = ((max_ports + 0) * style.port_spacing + 16) * scale;
+          const _bind$5 = node.size;
+          let total_h;
+          if (_bind$5 === undefined) {
+            total_h = header_h + body_h;
+          } else {
+            const _Some = _bind$5;
+            const _sz = _Some;
+            total_h = _sz.y * scale;
+          }
+          const node_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(screen_x, screen_y, node_w, total_h);
+          if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, node_rect)) {
+            cur_selected_node = node.id;
+            active_drag_node = node.id;
+            _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, node.id, "selected_node", 0);
+            _M0MP49LING7167111moon_2degui3src4core6Memory19set__string_2einner(ctx.memory, _canvas_id, node.id, "drag_node", 0);
+            _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, _canvas_id, mouse_pos.x - _canvas_rect.x - node.pos.x, "drag_anchor_x", 0);
+            _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, _canvas_id, mouse_pos.y - _canvas_rect.y - node.pos.y, "drag_anchor_y", 0);
+            handled = true;
+            break;
+          }
+          _tmp$4 = k - 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+    }
+  }
+  const canvas_min = _M0MP49LING7167111moon_2degui3src4math4Rect3min(_canvas_rect);
+  const _bind$3 = out_conns.length;
+  let _tmp$3 = 0;
+  while (true) {
+    const _ = _tmp$3;
+    if (_ < _bind$3) {
+      const conn = out_conns[_];
+      const p_start = _M0FP49LING7167111moon_2degui3src9composite20find__port__position(canvas_min, nodes, conn.from_node, conn.from_port, style, scale);
+      const p_end = _M0FP49LING7167111moon_2degui3src9composite20find__port__position(canvas_min, nodes, conn.to_node, conn.to_port, style, scale);
+      if (p_start === undefined) {
+      } else {
+        const _Some = p_start;
+        const _p0 = _Some;
+        if (p_end === undefined) {
+        } else {
+          const _Some$2 = p_end;
+          const _p3 = _Some$2;
+          _M0FP49LING7167111moon_2degui3src9composite33draw__cubic__bezier__wire_2einner(painter, _p0, _p3, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), wire_width, 16);
+        }
+      }
+      _tmp$3 = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  let _tmp$4;
+  const _p = active_conn_node;
+  const _p$2 = "";
+  if (!(_p === _p$2)) {
+    const _p$3 = active_conn_port;
+    const _p$4 = "";
+    _tmp$4 = !(_p$3 === _p$4);
+  } else {
+    _tmp$4 = false;
+  }
+  if (_tmp$4) {
+    const p_start = _M0FP49LING7167111moon_2degui3src9composite20find__port__position(canvas_min, nodes, active_conn_node, active_conn_port, style, scale);
+    if (p_start === undefined) {
+    } else {
+      const _Some = p_start;
+      const _p0 = _Some;
+      _M0FP49LING7167111moon_2degui3src9composite33draw__cubic__bezier__wire_2einner(painter, _p0, mouse_pos, _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover(), wire_width + 0.5, 16);
+      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
+    }
+  }
+  const _bind$4 = nodes.length;
+  let _tmp$5 = 0;
+  while (true) {
+    const _ = _tmp$5;
+    if (_ < _bind$4) {
+      const node = nodes[_];
+      const screen_x = _canvas_rect.x + node.pos.x;
+      const screen_y = _canvas_rect.y + node.pos.y;
+      const _bind$5 = node.size;
+      let node_w;
+      if (_bind$5 === undefined) {
+        node_w = node_min_w;
+      } else {
+        const _Some = _bind$5;
+        const _sz = _Some;
+        node_w = _sz.x * scale;
+      }
+      const max_ports = node.inputs.length > node.outputs.length ? node.inputs.length : node.outputs.length;
+      const body_h = ((max_ports + 0) * style.port_spacing + 16) * scale;
+      const _bind$6 = node.size;
+      let total_h;
+      if (_bind$6 === undefined) {
+        total_h = header_h + body_h;
+      } else {
+        const _Some = _bind$6;
+        const _sz = _Some;
+        total_h = _sz.y * scale;
+      }
+      const node_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(screen_x, screen_y, node_w, total_h);
+      const header_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(screen_x, screen_y, node_w, header_h);
+      const is_selected = cur_selected_node === node.id;
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, node_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), card_radius);
+      const _bind$7 = node.accent_color;
+      let header_color;
+      if (_bind$7 === undefined) {
+        header_color = _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface();
+      } else {
+        const _Some = _bind$7;
+        header_color = _Some;
+      }
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, header_rect, header_color, card_radius);
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, _M0MP49LING7167111moon_2degui3src4math4Rect3new(screen_x, screen_y + header_h - card_radius, node_w, card_radius), header_color, 0);
+      let border_col;
+      let stroke_w;
+      _L: {
+        if (is_selected) {
+          border_col = _M0MP49LING7167111moon_2degui3src5color5Color13border__focus();
+          stroke_w = 1.5 * scale;
+          break _L;
+        } else {
+          border_col = _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
+          stroke_w = 1;
+          break _L;
+        }
+      }
+      _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, node_rect, border_col, stroke_w, card_radius);
+      const _bind$8 = node.accent_color;
+      const title_color = _bind$8 === undefined ? _M0MP49LING7167111moon_2degui3src5color5Color12text__strong() : _M0MP49LING7167111moon_2degui3src5color5Color13text__inverse();
+      const title_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + 10 * scale, screen_y + (header_h - font_title) * 0.5);
+      _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(painter, title_pos, node.title, font_title, title_color, "", 500);
+      if (is_canvas_hovered && _M0MP49LING7167111moon_2degui3src4math4Rect8contains(header_rect, mouse_pos)) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "move");
+      }
+      const _bind$9 = node.inputs;
+      const _bind$10 = _bind$9.length;
+      let _tmp$6 = 0;
+      while (true) {
+        const i = _tmp$6;
+        if (i < _bind$10) {
+          const in_port = _bind$9[i];
+          const py = screen_y + header_h + 14 * scale + (i + 0) * port_spacing;
+          const port_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x, py);
+          const _bind$11 = in_port.color;
+          let p_col;
+          if (_bind$11 === undefined) {
+            p_col = _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
+          } else {
+            const _Some = _bind$11;
+            p_col = _Some;
+          }
+          const is_port_hovered = is_canvas_hovered && (Math.abs(mouse_pos.x - port_center.x) <= port_r * 2 && Math.abs(mouse_pos.y - port_center.y) <= port_r * 2);
+          if (is_port_hovered) {
+            _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
+            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, port_center, port_r + 2 * scale, p_col);
+          } else {
+            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, port_center, port_r, p_col);
+            _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(painter, port_center, port_r, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), 1.5);
+          }
+          const label_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + port_r + 6 * scale, py - font_port * 0.5);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(painter, label_pos, in_port.name, font_port, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary(), "", 500);
+          _tmp$6 = i + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      const _bind$11 = node.outputs;
+      const _bind$12 = _bind$11.length;
+      let _tmp$7 = 0;
+      while (true) {
+        const j = _tmp$7;
+        if (j < _bind$12) {
+          const out_port = _bind$11[j];
+          const py = screen_y + header_h + 14 * scale + (j + 0) * port_spacing;
+          const port_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + node_w, py);
+          const _bind$13 = out_port.color;
+          let p_col;
+          if (_bind$13 === undefined) {
+            p_col = _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary();
+          } else {
+            const _Some = _bind$13;
+            p_col = _Some;
+          }
+          const is_port_hovered = is_canvas_hovered && (Math.abs(mouse_pos.x - port_center.x) <= port_r * 2 && Math.abs(mouse_pos.y - port_center.y) <= port_r * 2);
+          if (is_port_hovered) {
+            _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
+            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, port_center, port_r + 2 * scale, p_col);
+          } else {
+            _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(painter, port_center, port_r, p_col);
+            _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(painter, port_center, port_r, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), 1.5);
+          }
+          const label_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, out_port.name, font_port);
+          const label_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(screen_x + node_w - port_r - 6 * scale - label_sz.x, py - font_port * 0.5);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(painter, label_pos, out_port.name, font_port, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary(), "", 500);
+          _tmp$7 = j + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      _tmp$5 = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  _M0MP49LING7167111moon_2degui3src4core7Painter9pop__clip(painter);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
+  let active_drag;
+  const _p$3 = active_drag_node;
+  const _p$4 = "";
+  if (!(_p$3 === _p$4)) {
+    active_drag = active_drag_node;
+  } else {
+    active_drag = undefined;
+  }
+  let sel_node;
+  const _p$5 = cur_selected_node;
+  const _p$6 = "";
+  if (!(_p$5 === _p$6)) {
+    sel_node = cur_selected_node;
+  } else {
+    sel_node = undefined;
+  }
+  return new _M0TP49LING7167111moon_2degui3src9composite18NodeEditorResponse(_canvas_rect, nodes, out_conns, sel_node, active_drag, new_conn, changed);
+}
+function _M0FP49LING7167111moon_2degui3src9composite12node__editor(ctx, id_salt, size, nodes, connections, custom_style$46$opt, selected_node$46$opt) {
+  let custom_style;
+  if (custom_style$46$opt.$tag === 1) {
+    const _Some = custom_style$46$opt;
+    custom_style = _Some._0;
+  } else {
+    custom_style = undefined;
+  }
+  let selected_node;
+  if (selected_node$46$opt.$tag === 1) {
+    const _Some = selected_node$46$opt;
+    selected_node = _Some._0;
+  } else {
+    selected_node = undefined;
+  }
+  return _M0FP49LING7167111moon_2degui3src9composite20node__editor_2einner(ctx, id_salt, size, nodes, connections, custom_style, selected_node);
+}
+function _M0FP49LING7167111moon_2degui3src9composite9menu__bar(ctx, content) {
+  const scale = ctx.style.scale;
+  const bar_h = (ctx.style.control_h_sm + ctx.style.spacing_xs) * scale;
+  const bar_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
+  const bar_pos = _M0MP49LING7167111moon_2degui3src4core9UIContext6cursor(ctx);
+  const bar_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(bar_pos.x, bar_pos.y, bar_w, bar_h);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), bar_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), 0);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(bar_rect.x, bar_rect.y + bar_h), _M0MP49LING7167111moon_2degui3src4math4Vec23new(bar_rect.x + bar_w, bar_rect.y + bar_h), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
+  const prev_cursor = _M0MP49LING7167111moon_2degui3src4core9UIContext6cursor(ctx);
+  const prev_avail_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
+  const prev_spacing = _M0MP49LING7167111moon_2degui3src4core9UIContext13item__spacing(ctx);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(bar_pos.x + 8 * scale, bar_pos.y + 3 * scale));
+  _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, bar_w - 16 * scale);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext18set__item__spacing(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(4 * scale, 0));
+  _M0MP49LING7167111moon_2degui3src4core9UIContext10horizontal(ctx, content);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(prev_cursor.x, bar_pos.y + bar_h));
+  _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, prev_avail_w);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext18set__item__spacing(ctx, prev_spacing);
+}
+function _M0FP49LING7167111moon_2degui3src9composite4menu(ctx, title, content) {
+  const scale = ctx.style.scale;
+  const font_nm = ctx.style.font_normal * scale;
+  const menu_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `menu::${title}`);
+  const text_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, title, font_nm);
+  const btn_w = text_size.x + 16 * scale;
+  const btn_h = (ctx.style.control_h_sm - ctx.style.radius_xs) * scale;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, title);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(btn_w, btn_h));
+  const _id = _bind._0;
+  const _btn_rect = _bind._1;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _id);
+  const is_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _id);
+  const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext14open__menu__id(ctx);
+  const is_open = BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, menu_id.val);
+  const hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _btn_rect);
+  if (hovered) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+  }
+  const key_toggle = is_focused && (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2) || (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 5) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)));
+  if (key_toggle) {
+    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
+    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 5);
+    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
+    if (is_open) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+    } else {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, menu_id);
+    }
+  }
+  if (_M0IP016_24default__implPB2Eq10not__equalGRP49LING7167111moon_2degui3src4core2IdE(_M0MP49LING7167111moon_2degui3src4core9UIContext14open__menu__id(ctx), _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579) && (_M0IP016_24default__implPB2Eq10not__equalGRP49LING7167111moon_2degui3src4core2IdE(_M0MP49LING7167111moon_2degui3src4core9UIContext14open__menu__id(ctx), menu_id) && hovered)) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, menu_id);
+  } else {
+    if (hovered && ctx.input.mouse_pressed) {
+      if (is_open) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+      } else {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, menu_id);
+      }
+    }
+  }
+  const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext14open__menu__id(ctx);
+  const currently_open = BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, menu_id.val);
+  if (currently_open && _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 3)) {
+    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 3);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+  }
+  const btn_bg = currently_open ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__active() : hovered ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle() : _M0MP49LING7167111moon_2degui3src5color5Color11transparentN6recordS36;
+  const btn_text_col = currently_open ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13text__primary() : _M0MP49LING7167111moon_2degui3src5color5Color10text__body();
+  const radius = ctx.style.radius_sm * scale;
+  if (currently_open || hovered) {
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _btn_rect, btn_bg, radius);
+  }
+  if (is_focused) {
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _btn_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1, radius);
+  }
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_btn_rect.x + 8 * scale, _btn_rect.y + (btn_h - font_nm) * 0.5), title, font_nm, btn_text_col, "", 500);
+  if (currently_open) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17begin__foreground(ctx);
+    const pad = 4 * scale;
+    const popup_w = 170 * scale;
+    let popup_x = _btn_rect.x;
+    const popup_y = _btn_rect.y + _btn_rect.h + 3 * scale;
+    if (popup_x + popup_w > _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx)) {
+      const clamped = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) - popup_w - 4 * scale;
+      if (clamped > 4 * scale) {
+        popup_x = clamped;
+      }
+    }
+    const prev_cursor = _M0MP49LING7167111moon_2degui3src4core9UIContext6cursor(ctx);
+    const prev_avail_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
+    const prev_spacing = _M0MP49LING7167111moon_2degui3src4core9UIContext13item__spacing(ctx);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(popup_x + pad, popup_y + pad));
+    _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, popup_w - pad * 2);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext18set__item__spacing(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(0, 2 * scale));
+    const item_draw_list = _M0MP49LING7167111moon_2degui3src4draw8DrawList3new();
+    const _p$3 = ctx.layers;
+    const saved_dl = _p$3.draw_list;
+    _M0MP49LING7167111moon_2degui3src4core12LayerManager15set__draw__list(ctx.layers, item_draw_list);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext8vertical(ctx, content);
+    _M0MP49LING7167111moon_2degui3src4core12LayerManager15set__draw__list(ctx.layers, saved_dl);
+    const content_h = _M0MP49LING7167111moon_2degui3src4core9UIContext6cursor(ctx).y - (popup_y + pad);
+    const total_h = content_h > 0 ? content_h + pad : 24;
+    const menu_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(popup_x, popup_y, popup_w, total_h);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext12block__hover(ctx, menu_rect);
+    if (ctx.input.mouse_pressed && (!_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, menu_rect) && !hovered)) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+    }
+    const shadow_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(menu_rect.x, menu_rect.y + 2, menu_rect.w, menu_rect.h);
+    const menu_radius = ctx.style.radius_md;
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), shadow_rect, _M0MP49LING7167111moon_2degui3src5color5Color15shadow__ambient(), menu_radius);
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), menu_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), menu_radius);
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), menu_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, menu_radius);
+    _M0MP49LING7167111moon_2degui3src4core7Painter6append(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), item_draw_list);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, prev_cursor);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, prev_avail_w);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext18set__item__spacing(ctx, prev_spacing);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
+    return;
+  } else {
+    return;
+  }
+}
+function _M0FP49LING7167111moon_2degui3src9composite18menu__item_2einner(ctx, label, shortcut, disabled) {
+  const scale = ctx.style.scale;
+  const item_h = 24 * scale;
+  const item_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, label);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(item_w, item_h));
+  const _id = _bind._0;
+  const _rect = _bind._1;
+  const _resp = _bind._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _id);
+  const is_focused = _resp.has_focus || _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _id);
+  const is_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _rect) && !disabled;
+  const item_radius = ctx.style.radius_sm * scale;
+  const font_nm = ctx.style.font_normal * scale;
+  const font_sm = ctx.style.font_small * scale;
+  if (is_hovered) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), item_radius);
+  }
+  if (is_focused) {
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1, item_radius);
+  }
+  const key_activate = is_focused && (!disabled && (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 5) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2)));
+  if (key_activate) {
+    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 5);
+    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
+  }
+  const clicked = disabled ? false : is_hovered && (ctx.input.mouse_pressed || _resp.clicked) || key_activate;
+  if (clicked) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext19set__open__menu__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+  }
+  const text_col = disabled ? _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled() : is_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color13text__primary();
+  const text_y = _rect.y + (item_h - font_nm) * 0.5;
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + 8 * scale, text_y), label, font_nm, text_col, "", 500);
+  if (!(shortcut === "")) {
+    const sc_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, shortcut, font_sm);
+    const sc_x = _rect.x + item_w - sc_size.x - 8 * scale;
+    const sc_y = _rect.y + (item_h - font_sm) * 0.5;
+    const sc_col = disabled ? _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled() : is_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sc_x, sc_y), shortcut, font_sm, sc_col, "", 500);
+  }
+  return _M0MP49LING7167111moon_2degui3src4core8Response11new_2einner(_id, _rect, is_hovered, clicked, _resp.pressed, false, false);
+}
+function _M0FP49LING7167111moon_2degui3src9composite15menu__separator(ctx) {
+  const scale = ctx.style.scale;
+  const sep_h = 7 * scale;
+  const item_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(item_w, sep_h));
+  const _rect = _bind._1;
+  const line_y = _rect.y + 3 * scale;
+  const pad_x = 4 * scale;
+  const stroke_w = 1 * scale;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + pad_x, line_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + item_w - pad_x, line_y), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), stroke_w);
+}
+function _M0FP49LING7167111moon_2degui3src9composite9draw__arc(p, center, radius, start_angle, end_angle, color, width, segments) {
+  const sweep = end_angle - start_angle;
+  if (Math.abs(sweep) < 0.001 || segments <= 0) {
+    return undefined;
+  }
+  const step = sweep / (segments + 0);
+  let prev_p = _M0MP49LING7167111moon_2degui3src4math4Vec23add(center, _M0MP49LING7167111moon_2degui3src4math4Vec211from__polar(radius, start_angle));
+  let _tmp = 1;
+  while (true) {
+    const i = _tmp;
+    if (i <= segments) {
+      const a = start_angle + step * (i + 0);
+      const cur_p = _M0MP49LING7167111moon_2degui3src4math4Vec23add(center, _M0MP49LING7167111moon_2degui3src4math4Vec211from__polar(radius, a));
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(p, prev_p, cur_p, color, width);
+      prev_p = cur_p;
+      _tmp = i + 1 | 0;
+      continue;
+    } else {
+      return;
+    }
+  }
+}
+function _M0MP49LING7167111moon_2degui3src9composite4Knob3new(id_salt, label, value) {
+  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(id_salt, label, value, 0, 1, 0.01, 0, "", 22, false);
+}
+function _M0MP49LING7167111moon_2degui3src9composite4Knob3min(self, min_val) {
+  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, min_val, self.max_val, self.step, self.default_val, self.unit, self.radius, self.bipolar);
+}
+function _M0MP49LING7167111moon_2degui3src9composite4Knob3max(self, max_val) {
+  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, self.min_val, max_val, self.step, self.default_val, self.unit, self.radius, self.bipolar);
+}
+function _M0MP49LING7167111moon_2degui3src9composite4Knob4step(self, step) {
+  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, self.min_val, self.max_val, step, self.default_val, self.unit, self.radius, self.bipolar);
+}
+function _M0MP49LING7167111moon_2degui3src9composite4Knob12default__val(self, default_val) {
+  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, default_val, self.unit, self.radius, self.bipolar);
+}
+function _M0MP49LING7167111moon_2degui3src9composite4Knob4unit(self, unit) {
+  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, self.default_val, unit, self.radius, self.bipolar);
+}
+function _M0MP49LING7167111moon_2degui3src9composite4Knob6radius(self, radius) {
+  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, self.default_val, self.unit, radius, self.bipolar);
+}
+function _M0MP49LING7167111moon_2degui3src9composite4Knob7bipolar(self, bipolar) {
+  return new _M0TP49LING7167111moon_2degui3src9composite4Knob(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, self.default_val, self.unit, self.radius, bipolar);
+}
+function _M0MP49LING7167111moon_2degui3src9composite4Knob4show(self, ctx) {
+  const min_val = self.min_val;
+  const max_val = self.max_val;
+  const step = self.step;
+  const default_val = self.default_val;
+  const unit = self.unit;
+  const scale = ctx.style.scale;
+  const radius = self.radius * scale;
+  const bipolar = self.bipolar;
+  const label = self.label;
+  const value = self.value;
+  const range = max_val > min_val ? max_val - min_val : 1;
+  const raw_val = value !== value ? default_val : value;
+  const clamped_initial = raw_val < min_val ? min_val : raw_val > max_val ? max_val : raw_val;
+  const diameter = radius * 2;
+  const label_h = label === "" ? 0 : 15 * scale;
+  const val_h = 16 * scale;
+  const total_w = diameter + 16 * scale;
+  const total_h = diameter + label_h + val_h + 8 * scale;
+  const id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `knob::${self.id_salt}`);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(total_w, total_h));
+  const _rect = _bind._1;
+  const _response = _bind._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, id);
+  if (_response.pressed || _response.clicked) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext14request__focus(ctx, id);
+  }
+  if (_response.hovered || (_response.dragged || _response.pressed)) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "ns-resize");
+  }
+  const is_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, id);
+  let current_val = clamped_initial;
+  if (!ctx.input.modifiers.alt && (_response.dragged || _response.pressed && ctx.input.mouse_down)) {
+    const dy = -ctx.input.mouse_delta.y;
+    const dx = ctx.input.mouse_delta.x;
+    const delta = dy + dx;
+    const sensitivity = ctx.input.modifiers.shift ? 0.001 : 0.005;
+    current_val = current_val + delta * range * sensitivity;
+  }
+  if (_response.hovered && Math.abs(ctx.input.scroll_delta.y) > 0) {
+    const dir = ctx.input.scroll_delta.y > 0 ? 1 : -1;
+    current_val = current_val + dir * step;
+  }
+  if (is_focused) {
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7)) {
+      current_val = current_val + step;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6)) {
+      current_val = current_val - step;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 10)) {
+      current_val = min_val;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 10);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 11)) {
+      current_val = max_val;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 11);
+    }
+    const page_step = step * 10;
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 12)) {
+      current_val = current_val + page_step;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 12);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 13)) {
+      current_val = current_val - page_step;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 13);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 0) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 1)) {
+      current_val = default_val;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 0);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 1);
+    }
+  }
+  if ((_response.pressed || _response.clicked) && ctx.input.modifiers.alt) {
+    current_val = default_val;
+  }
+  const _p = current_val;
+  if (_p !== _p) {
+    current_val = default_val;
+  }
+  if (step > 0) {
+    const steps_count = _M0MPC16double6Double7to__int((current_val - min_val) / step + 0.5) + 0;
+    current_val = min_val + steps_count * step;
+  }
+  const final_val = current_val < min_val ? min_val : current_val > max_val ? max_val : current_val;
+  const center_x = _rect.x + total_w * 0.5;
+  const center_y = _rect.y + label_h + 4 * scale + radius;
+  const center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(center_x, center_y);
+  const dial_radius = radius - 3.5 * scale;
+  const start_angle = 0.75 * _M0FP49LING7167111moon_2degui3src4math2pi;
+  const total_sweep = 1.5 * _M0FP49LING7167111moon_2degui3src4math2pi;
+  const end_angle = start_angle + total_sweep;
+  const p = _M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx);
+  _M0FP49LING7167111moon_2degui3src9composite9draw__arc(p, center, radius, start_angle, end_angle, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 3.5 * scale, 20);
+  const raw_norm = (final_val - min_val) / range;
+  const norm = raw_norm !== raw_norm || raw_norm < 0 ? 0 : raw_norm > 1 ? 1 : raw_norm;
+  if (bipolar) {
+    const mid_angle = 1.5 * _M0FP49LING7167111moon_2degui3src4math2pi;
+    const curr_angle = start_angle + norm * total_sweep;
+    const segs = _M0MPC16double6Double7to__int(Math.abs(curr_angle - mid_angle) / total_sweep * 16) + 2 | 0;
+    _M0FP49LING7167111moon_2degui3src9composite9draw__arc(p, center, radius, mid_angle, curr_angle, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 3.5 * scale, segs);
+  } else {
+    const curr_angle = start_angle + norm * total_sweep;
+    const segs = _M0MPC16double6Double7to__int(norm * 20) + 2 | 0;
+    _M0FP49LING7167111moon_2degui3src9composite9draw__arc(p, center, radius, start_angle, curr_angle, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 3.5 * scale, segs);
+  }
+  _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(p, _M0MP49LING7167111moon_2degui3src4math4Vec23add(center, _M0MP49LING7167111moon_2degui3src4math4Vec23new(0, 1.5 * scale)), dial_radius, _M0MP49LING7167111moon_2degui3src5color5Color6shadow());
+  const cap_col = _response.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__active() : _response.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover() : _M0MP49LING7167111moon_2degui3src5color5Color10bg__window();
+  _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(p, center, dial_radius, cap_col);
+  const border_col = is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color13border__focus() : _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
+  _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(p, center, dial_radius, border_col, 1 * scale);
+  const pointer_angle = start_angle + norm * total_sweep;
+  const tick_start = _M0MP49LING7167111moon_2degui3src4math4Vec23add(center, _M0MP49LING7167111moon_2degui3src4math4Vec211from__polar(dial_radius * 0.35, pointer_angle));
+  const tick_end = _M0MP49LING7167111moon_2degui3src4math4Vec23add(center, _M0MP49LING7167111moon_2degui3src4math4Vec211from__polar(dial_radius * 0.85, pointer_angle));
+  const tick_col = _response.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary();
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(p, tick_start, tick_end, tick_col, 2 * scale);
+  const font_sm = ctx.style.font_small * scale;
+  if (!(label === "")) {
+    const label_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, label, font_sm).x;
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(p, _M0MP49LING7167111moon_2degui3src4math4Vec23new(center_x - label_w * 0.5, _rect.y), label, font_sm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
+  }
+  const val_str = unit === "" ? String(final_val) : `${String(final_val)} ${unit}`;
+  const val_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, val_str, font_sm).x;
+  const val_col = is_focused || _response.pressed ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color12text__strong();
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(p, _M0MP49LING7167111moon_2degui3src4math4Vec23new(center_x - val_w * 0.5, center_y + radius + 4 * scale), val_str, font_sm, val_col, "", 500);
+  return { _0: final_val, _1: _response };
+}
+function _M0FP49LING7167111moon_2degui3src9composite12knob_2einner(ctx, id_salt, label, value, min_val, max_val, step, default_val, unit, radius, bipolar) {
+  return _M0MP49LING7167111moon_2degui3src9composite4Knob4show(_M0MP49LING7167111moon_2degui3src9composite4Knob7bipolar(_M0MP49LING7167111moon_2degui3src9composite4Knob6radius(_M0MP49LING7167111moon_2degui3src9composite4Knob4unit(_M0MP49LING7167111moon_2degui3src9composite4Knob12default__val(_M0MP49LING7167111moon_2degui3src9composite4Knob4step(_M0MP49LING7167111moon_2degui3src9composite4Knob3max(_M0MP49LING7167111moon_2degui3src9composite4Knob3min(_M0MP49LING7167111moon_2degui3src9composite4Knob3new(id_salt, label, value), min_val), max_val), step), default_val), unit), radius), bipolar), ctx);
+}
+function _M0MP49LING7167111moon_2degui3src9composite5Fader3new(id_salt, label, value) {
+  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(id_salt, label, value, 0, 1, 0.01, 0, "", true, undefined);
+}
+function _M0MP49LING7167111moon_2degui3src9composite5Fader3min(self, min_val) {
+  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, min_val, self.max_val, self.step, self.default_val, self.unit, self.show_ticks, self.size);
+}
+function _M0MP49LING7167111moon_2degui3src9composite5Fader3max(self, max_val) {
+  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, self.min_val, max_val, self.step, self.default_val, self.unit, self.show_ticks, self.size);
+}
+function _M0MP49LING7167111moon_2degui3src9composite5Fader4step(self, step) {
+  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, self.min_val, self.max_val, step, self.default_val, self.unit, self.show_ticks, self.size);
+}
+function _M0MP49LING7167111moon_2degui3src9composite5Fader12default__val(self, default_val) {
+  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, default_val, self.unit, self.show_ticks, self.size);
+}
+function _M0MP49LING7167111moon_2degui3src9composite5Fader4unit(self, unit) {
+  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, self.default_val, unit, self.show_ticks, self.size);
+}
+function _M0MP49LING7167111moon_2degui3src9composite5Fader11show__ticks(self, show_ticks) {
+  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, self.default_val, self.unit, show_ticks, self.size);
+}
+function _M0MP49LING7167111moon_2degui3src9composite5Fader4size(self, size) {
+  return new _M0TP49LING7167111moon_2degui3src9composite5Fader(self.id_salt, self.label, self.value, self.min_val, self.max_val, self.step, self.default_val, self.unit, self.show_ticks, size);
+}
+function _M0MP49LING7167111moon_2degui3src9composite5Fader4show(self, ctx) {
+  const scale = ctx.style.scale;
+  const font_nm = ctx.style.font_normal * scale;
+  const font_sm = ctx.style.font_small * scale;
+  const f_style = _M0MP49LING7167111moon_2degui3src9composite10FaderStyle7defaultN6recordS3555;
+  const _bind = self.size;
+  let total_w;
+  if (_bind === undefined) {
+    total_w = f_style.width * scale;
+  } else {
+    const _Some = _bind;
+    const _s = _Some;
+    total_w = _s.x;
+  }
+  const _bind$2 = self.size;
+  let total_h;
+  if (_bind$2 === undefined) {
+    total_h = f_style.height * scale;
+  } else {
+    const _Some = _bind$2;
+    const _s = _Some;
+    total_h = _s.y;
+  }
+  const track_w = f_style.track_w * scale;
+  const cap_w = f_style.cap_w * scale;
+  const cap_h = f_style.cap_h * scale;
+  const cap_radius = f_style.cap_radius * scale;
+  const min_val = self.min_val;
+  const max_val = self.max_val;
+  const step = self.step;
+  const default_val = self.default_val;
+  const unit = self.unit;
+  const show_ticks = self.show_ticks;
+  const label = self.label;
+  const value = self.value;
+  const range = max_val > min_val ? max_val - min_val : 1;
+  const raw_val = value !== value ? default_val : value;
+  const clamped_initial = raw_val < min_val ? min_val : raw_val > max_val ? max_val : raw_val;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, self.id_salt);
+  const _bind$3 = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(total_w, total_h));
+  const _id = _bind$3._0;
+  const _rect = _bind$3._1;
+  const _response = _bind$3._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _id);
+  if (_response.pressed || _response.clicked) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext14request__focus(ctx, _id);
+  }
+  if (_response.hovered || (_response.dragged || _response.pressed)) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "ns-resize");
+  }
+  const is_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _id) || _response.has_focus;
+  const label_h = label.length > 0 ? font_nm + 6 * scale : 0;
+  const readout_h = font_sm + 6 * scale;
+  const track_top_y = _rect.y + label_h + cap_h * 0.5;
+  const track_bottom_y = _rect.y + total_h - readout_h - cap_h * 0.5;
+  const track_travel_h = track_bottom_y > track_top_y ? track_bottom_y - track_top_y : 1;
+  const center_x = _rect.x + total_w * 0.5;
+  let current_val = clamped_initial;
+  if (!ctx.input.modifiers.alt && (_response.dragged || _response.pressed && ctx.input.mouse_down)) {
+    const dy = -ctx.input.mouse_delta.y;
+    const sensitivity = ctx.input.modifiers.shift ? 0.1 : ctx.input.modifiers.ctrl ? 10 : 1;
+    const delta = dy / track_travel_h * range * sensitivity;
+    current_val = current_val + delta;
+  }
+  if (_response.hovered && Math.abs(ctx.input.scroll_delta.y) > 0) {
+    const dir = ctx.input.scroll_delta.y > 0 ? 1 : -1;
+    const multiplier = ctx.input.modifiers.shift ? 0.1 : 1;
+    current_val = current_val + dir * step * multiplier;
+  }
+  if (is_focused) {
+    const key_step = ctx.input.modifiers.shift ? step * 0.1 : ctx.input.modifiers.ctrl ? step * 10 : step;
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7)) {
+      current_val = current_val + key_step;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6)) {
+      current_val = current_val - key_step;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 10)) {
+      current_val = max_val;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 10);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 11)) {
+      current_val = min_val;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 11);
+    }
+    const page_step = key_step * 10;
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 12)) {
+      current_val = current_val + page_step;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 12);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 13)) {
+      current_val = current_val - page_step;
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 13);
+    }
+  }
+  if (_response.clicked && ctx.input.modifiers.alt) {
+    current_val = default_val;
+  }
+  const _p = current_val;
+  if (_p !== _p) {
+    current_val = default_val;
+  }
+  if (current_val < min_val) {
+    current_val = min_val;
+  } else {
+    if (current_val > max_val) {
+      current_val = max_val;
+    }
+  }
+  const fraction = (current_val - min_val) / range;
+  const clamped_frac = fraction !== fraction || fraction < 0 ? 0 : fraction > 1 ? 1 : fraction;
+  const cap_center_y = track_bottom_y - clamped_frac * track_travel_h;
+  if (label.length > 0) {
+    const label_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, label, font_nm);
+    const label_x = center_x - label_sz.x * 0.5;
+    const label_y = _rect.y;
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(label_x, label_y), label, font_nm, _M0MP49LING7167111moon_2degui3src5color5Color15text__secondary(), "", 500);
+  }
+  if (show_ticks) {
+    const left_x = center_x - track_w * 0.5 - 4 * scale;
+    const right_x = center_x + track_w * 0.5 + 4 * scale;
+    let _tmp = 0;
+    while (true) {
+      const i = _tmp;
+      if (i < 11) {
+        const t = (i + 0) / (10 + 0);
+        const tick_y = track_bottom_y - t * track_travel_h;
+        const is_major = i === 0 || (i === 5 || i === 10);
+        const tick_len = is_major ? 5 * scale : 3 * scale;
+        const tick_col = is_major ? _M0MP49LING7167111moon_2degui3src5color5Color14border__strong() : _M0MP49LING7167111moon_2degui3src5color5Color13border__muted();
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(left_x - tick_len, tick_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(left_x, tick_y), tick_col, 1);
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(right_x, tick_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(right_x + tick_len, tick_y), tick_col, 1);
+        _tmp = i + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+  }
+  const track_x = center_x - track_w * 0.5;
+  const track_h_total = track_travel_h + cap_h;
+  const track_y = track_top_y - cap_h * 0.5;
+  const track_radius = 3 * scale;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(track_x, track_y, track_w, track_h_total), _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), track_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(track_x, track_y, track_w, track_h_total), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1, track_radius);
+  const fill_h = track_bottom_y - cap_center_y;
+  if (fill_h > 0) {
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(track_x + 1 * scale, cap_center_y, track_w - 2 * scale, fill_h), _M0MP49LING7167111moon_2degui3src5color5Color11with__alpha(_M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 160), 2 * scale);
+  }
+  const cap_x = center_x - cap_w * 0.5;
+  const cap_y = cap_center_y - cap_h * 0.5;
+  const cap_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(cap_x, cap_y, cap_w, cap_h);
+  const is_active = _response.dragged || _response.pressed && ctx.input.mouse_down;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect9translate(cap_rect, _M0MP49LING7167111moon_2degui3src4math4Vec23new(0, 2 * scale)), _M0MP49LING7167111moon_2degui3src5color5Color6shadow(), cap_radius);
+  const cap_bg = is_active ? _M0MP49LING7167111moon_2degui3src5color5Color10bg__active() : _response.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover() : _M0MP49LING7167111moon_2degui3src5color5Color10bg__window();
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), cap_rect, cap_bg, cap_radius);
+  const cap_border = is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color13border__focus() : _response.hovered || is_active ? _M0MP49LING7167111moon_2degui3src5color5Color14border__strong() : _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), cap_rect, cap_border, 1, cap_radius);
+  const index_inset = 4 * scale;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(cap_x + index_inset, cap_center_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(cap_x + cap_w - index_inset, cap_center_y), is_active ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color14border__strong(), 1.5 * scale);
+  if (is_focused) {
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect6expand(cap_rect, 2 * scale), _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1.5, cap_radius + 2 * scale);
+  }
+  const rounded_int = _M0MPC16double6Double7to__int(current_val * 10);
+  const whole = rounded_int / 10 | 0;
+  const _p$2 = rounded_int % 10 | 0;
+  const frac_part = _p$2 < 0 ? -_p$2 | 0 : _p$2;
+  let readout_str = `${_M0MPC13int3Int18to__string_2einner(whole, 10)}.${_M0MPC13int3Int18to__string_2einner(frac_part, 10)}`;
+  if (unit.length > 0) {
+    readout_str = `${readout_str}${unit}`;
+  }
+  const readout_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, readout_str, font_sm);
+  const readout_x = center_x - readout_sz.x * 0.5;
+  const readout_y = _rect.y + total_h - font_sm;
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(readout_x, readout_y), readout_str, font_sm, is_active || is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "monospace", 500);
+  return { _0: current_val, _1: _response };
+}
+function _M0FP49LING7167111moon_2degui3src9composite13fader_2einner(ctx, id_salt, label, value, min_val, max_val, step, default_val, unit, show_ticks, size) {
+  let f = _M0MP49LING7167111moon_2degui3src9composite5Fader11show__ticks(_M0MP49LING7167111moon_2degui3src9composite5Fader4unit(_M0MP49LING7167111moon_2degui3src9composite5Fader12default__val(_M0MP49LING7167111moon_2degui3src9composite5Fader4step(_M0MP49LING7167111moon_2degui3src9composite5Fader3max(_M0MP49LING7167111moon_2degui3src9composite5Fader3min(_M0MP49LING7167111moon_2degui3src9composite5Fader3new(id_salt, label, value), min_val), max_val), step), default_val), unit), show_ticks);
+  if (size === undefined) {
+  } else {
+    const _Some = size;
+    const _s = _Some;
+    f = _M0MP49LING7167111moon_2degui3src9composite5Fader4size(f, _s);
+  }
+  return _M0MP49LING7167111moon_2degui3src9composite5Fader4show(f, ctx);
+}
+function _M0MP49LING7167111moon_2degui3src9composite7DockTab11new_2einner(id, title, closable) {
+  return new _M0TP49LING7167111moon_2degui3src9composite7DockTab(id, title, closable);
+}
+function _M0MP49LING7167111moon_2degui3src9composite8DockTree12leaf_2einner(tabs, active_tab) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8DockTree(new _M0DTP49LING7167111moon_2degui3src9composite8DockNode4Leaf(tabs, active_tab));
+}
+function _M0MP49LING7167111moon_2degui3src9composite8DockTree5split(direction, ratio, first, second) {
+  return new _M0TP49LING7167111moon_2degui3src9composite8DockTree(new _M0DTP49LING7167111moon_2degui3src9composite8DockNode5Split(direction, ratio, first.root, second.root));
+}
+function _M0FP49LING7167111moon_2degui3src9composite18render__dock__node(ctx, node, rect, path, render_tab) {
+  let _tmp = node;
+  _L: while (true) {
+    const node$2 = _tmp;
+    const scale = ctx.style.scale;
+    const min_pane_size = 40 * scale;
+    switch (node$2.$tag) {
+      case 2: {
+        if (rect.w > 60 * scale && rect.h > 30 * scale) {
+          const painter = _M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx);
+          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, rect, ctx.theme.bg_subtle, 4 * scale);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, rect, ctx.theme.border_muted, 1 * scale, 4 * scale);
+          const font_sz = ctx.style.font_small * scale;
+          const text_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, "无活动标签页", font_sz);
+          const pad_x = ctx.style.spacing_sm * scale;
+          const badge_w = pad_x * 2 + text_sz.x;
+          const badge_h = (ctx.style.control_h_sm - ctx.style.radius_xs) * scale;
+          const old_cursor = _M0MP49LING7167111moon_2degui3src4core9UIContext6cursor(ctx);
+          const old_avail = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx);
+          _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(rect.x + (rect.w - badge_w) * 0.5, rect.y + (rect.h - badge_h) * 0.5));
+          _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, badge_w);
+          _M0FP49LING7167111moon_2degui3src7widgets13badge_2einner(ctx, "无活动标签页", 0, false, false);
+          _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, old_cursor);
+          _M0MP49LING7167111moon_2degui3src4core9UIContext21set__available__width(ctx, old_avail);
+        }
+        return { _0: _M0DTP49LING7167111moon_2degui3src9composite8DockNode5Empty__, _1: undefined, _2: undefined, _3: false };
+      }
+      case 0: {
+        const _Leaf = node$2;
+        const _tabs = _Leaf._0;
+        const _active_idx = _Leaf._1;
+        if (_tabs.length === 0) {
+          _tmp = _M0DTP49LING7167111moon_2degui3src9composite8DockNode5Empty__;
+          continue _L;
+        }
+        const valid_active = _active_idx < 0 || _active_idx >= _tabs.length ? 0 : _active_idx;
+        const tab_bar_h = 28 * scale;
+        const header_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x, rect.y, rect.w, tab_bar_h);
+        const content_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x, rect.y + tab_bar_h, rect.w, rect.h - tab_bar_h);
+        const painter = _M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx);
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, header_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), 0);
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(painter, _M0MP49LING7167111moon_2degui3src4math4Vec23new(rect.x, rect.y + tab_bar_h), _M0MP49LING7167111moon_2degui3src4math4Vec23new(rect.x + rect.w, rect.y + tab_bar_h), _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1);
+        let cur_tab_x = rect.x + 4 * scale;
+        let new_active_idx = valid_active;
+        let tab_switched = undefined;
+        let closed_tab_id = undefined;
+        let _tmp$2 = 0;
+        while (true) {
+          const i = _tmp$2;
+          if (i < _tabs.length) {
+            const tab = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(_tabs, i);
+            const font_sz = ctx.style.font_small * scale;
+            const title_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, tab.title, font_sz).x;
+            const close_btn_w = tab.closable ? 16 * scale : 0;
+            const tab_w = title_w + close_btn_w + 16 * scale;
+            const tab_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(cur_tab_x, rect.y + 2 * scale, tab_w, tab_bar_h - 2 * scale);
+            const is_current = i === valid_active;
+            const is_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, tab_rect);
+            const tab_focus_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `${path}_tab::${tab.id}`);
+            _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, tab_focus_id);
+            const tab_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, tab_focus_id);
+            const key_switch = tab_focused && (!is_current && (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 5)));
+            if (key_switch) {
+              _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
+              _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 5);
+            }
+            if (is_hovered) {
+              _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+            }
+            if (is_current) {
+              _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, tab_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), 4 * scale);
+              _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, tab_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, 4 * scale);
+              _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, _M0MP49LING7167111moon_2degui3src4math4Rect3new(cur_tab_x + 4 * scale, rect.y + 2 * scale, tab_w - 8 * scale, 2 * scale), _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 1);
+            } else {
+              if (is_hovered) {
+                _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, tab_rect, _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover(), 4 * scale);
+              }
+            }
+            if (tab_focused) {
+              _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, tab_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1, 4 * scale);
+            }
+            const text_col = is_current ? _M0MP49LING7167111moon_2degui3src5color5Color12text__strong() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
+            _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(painter, _M0MP49LING7167111moon_2degui3src4math4Vec23new(cur_tab_x + 8 * scale, rect.y + 7 * scale), tab.title, font_sz, text_col, "", 500);
+            if (tab.closable) {
+              const close_x = cur_tab_x + tab_w - 14 * scale;
+              const close_y = rect.y + 8 * scale;
+              const close_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(close_x - 2 * scale, close_y - 2 * scale, 12 * scale, 12 * scale);
+              const close_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, close_rect);
+              if (close_hovered) {
+                _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter, close_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__active(), 2 * scale);
+                _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+              }
+              const close_col = close_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color6danger() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
+              _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(painter, _M0MP49LING7167111moon_2degui3src4math4Vec23new(close_x, close_y - 1 * scale), "×", font_sz, close_col, "", 500);
+              if (close_hovered && ctx.input.mouse_released) {
+                closed_tab_id = tab.id;
+              }
+            }
+            _L$2: {
+              _L$3: {
+                _L$4: {
+                  if (is_hovered) {
+                    if (ctx.input.mouse_released) {
+                      const _bind = closed_tab_id;
+                      if (_bind === undefined) {
+                        break _L$3;
+                      } else {
+                        break _L$4;
+                      }
+                    } else {
+                      break _L$4;
+                    }
+                  } else {
+                    break _L$4;
+                  }
+                }
+                if (key_switch) {
+                  const _bind = closed_tab_id;
+                  if (_bind === undefined) {
+                    break _L$3;
+                  }
+                }
+                break _L$2;
+              }
+              if (i !== valid_active) {
+                tab_switched = { _0: _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(_tabs, valid_active).id, _1: tab.id };
+                new_active_idx = i;
+              }
+            }
+            cur_tab_x = cur_tab_x + tab_w + 4 * scale;
+            _tmp$2 = i + 1 | 0;
+            continue;
+          } else {
+            break;
+          }
+        }
+        const _bind = closed_tab_id;
+        let result_node;
+        if (_bind === undefined) {
+          result_node = new _M0DTP49LING7167111moon_2degui3src9composite8DockNode4Leaf(_tabs, new_active_idx);
+        } else {
+          const _Some = _bind;
+          const _cid = _Some;
+          const remaining = [];
+          const _bind$2 = _tabs.length;
+          let _tmp$3 = 0;
+          while (true) {
+            const _ = _tmp$3;
+            if (_ < _bind$2) {
+              const t = _tabs[_];
+              const _p = t.id;
+              if (!(_p === _cid)) {
+                _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(remaining, t);
+              }
+              _tmp$3 = _ + 1 | 0;
+              continue;
+            } else {
+              break;
+            }
+          }
+          if (remaining.length === 0) {
+            result_node = _M0DTP49LING7167111moon_2degui3src9composite8DockNode5Empty__;
+          } else {
+            const next_active = new_active_idx >= remaining.length ? remaining.length - 1 | 0 : new_active_idx;
+            result_node = new _M0DTP49LING7167111moon_2degui3src9composite8DockNode4Leaf(remaining, next_active);
+          }
+        }
+        if (content_rect.w > 0 && content_rect.h > 0) {
+          const content_painter = _M0MP49LING7167111moon_2degui3src4core7Painter12sub__painter(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec24zeroN6recordS197, _M0DTPC16option6OptionGORP49LING7167111moon_2degui3src4math4RectE4None__);
+          _M0MP49LING7167111moon_2degui3src4core7Painter10push__clip(content_painter, content_rect);
+          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(content_painter, content_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), 0);
+          _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, content_rect);
+          const active_tab_id = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(_tabs, valid_active).id;
+          render_tab(ctx, active_tab_id, content_rect);
+          _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
+          _M0MP49LING7167111moon_2degui3src4core7Painter9pop__clip(content_painter);
+        }
+        return { _0: result_node, _1: tab_switched, _2: closed_tab_id, _3: false };
+      }
+      default: {
+        const _Split = node$2;
+        const _direction = _Split._0;
+        const _ratio = _Split._1;
+        const _first = _Split._2;
+        const _second = _Split._3;
+        const handle_thick = 6 * scale;
+        let cur_ratio = _ratio;
+        let ratio_changed = false;
+        let first_rect;
+        let handle_rect;
+        let second_rect;
+        _L$2: {
+          if (_direction === 0) {
+            const total_w = rect.w - handle_thick;
+            let w1;
+            let w2;
+            _L$3: {
+              if (total_w <= 0) {
+                w1 = 0;
+                w2 = 0;
+                break _L$3;
+              } else {
+                if (total_w < min_pane_size * 2) {
+                  const half = total_w * 0.5;
+                  w1 = half;
+                  w2 = total_w - half;
+                  break _L$3;
+                } else {
+                  let calculated_w1 = total_w * cur_ratio;
+                  if (calculated_w1 < min_pane_size) {
+                    calculated_w1 = min_pane_size;
+                  }
+                  if (total_w - calculated_w1 < min_pane_size) {
+                    calculated_w1 = total_w - min_pane_size;
+                  }
+                  w1 = calculated_w1;
+                  w2 = total_w - calculated_w1;
+                  break _L$3;
+                }
+              }
+            }
+            const r1 = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x, rect.y, w1, rect.h);
+            const rh = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x + w1, rect.y, handle_thick, rect.h);
+            const r2 = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x + w1 + handle_thick, rect.y, w2, rect.h);
+            first_rect = r1;
+            handle_rect = rh;
+            second_rect = r2;
+            break _L$2;
+          } else {
+            const total_h = rect.h - handle_thick;
+            let h1;
+            let h2;
+            _L$3: {
+              if (total_h <= 0) {
+                h1 = 0;
+                h2 = 0;
+                break _L$3;
+              } else {
+                if (total_h < min_pane_size * 2) {
+                  const half = total_h * 0.5;
+                  h1 = half;
+                  h2 = total_h - half;
+                  break _L$3;
+                } else {
+                  let calculated_h1 = total_h * cur_ratio;
+                  if (calculated_h1 < min_pane_size) {
+                    calculated_h1 = min_pane_size;
+                  }
+                  if (total_h - calculated_h1 < min_pane_size) {
+                    calculated_h1 = total_h - min_pane_size;
+                  }
+                  h1 = calculated_h1;
+                  h2 = total_h - calculated_h1;
+                  break _L$3;
+                }
+              }
+            }
+            const r1 = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x, rect.y, rect.w, h1);
+            const rh = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x, rect.y + h1, rect.w, handle_thick);
+            const r2 = _M0MP49LING7167111moon_2degui3src4math4Rect3new(rect.x, rect.y + h1 + handle_thick, rect.w, h2);
+            first_rect = r1;
+            handle_rect = rh;
+            second_rect = r2;
+            break _L$2;
+          }
+        }
+        const handle_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, handle_rect);
+        const handle_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `${path}_spl`);
+        _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, handle_id);
+        const handle_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, handle_id);
+        let cursor_icon;
+        if (_direction === 0) {
+          cursor_icon = "col-resize";
+        } else {
+          cursor_icon = "row-resize";
+        }
+        if (handle_hovered) {
+          _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, cursor_icon);
+        }
+        if (handle_hovered && ctx.input.mouse_pressed) {
+          _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, handle_id);
+        }
+        const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+        const is_active = BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, handle_id.val);
+        if (is_active) {
+          _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, cursor_icon);
+          if (ctx.input.mouse_down) {
+            if (_direction === 0) {
+              const avail = rect.w - handle_thick;
+              if (avail > 0) {
+                const _p$2 = ctx.input;
+                const local_x = _p$2.mouse_pos.x - rect.x;
+                const raw_ratio = local_x / avail;
+                const clamped_ratio = raw_ratio < 0.05 ? 0.05 : raw_ratio > 0.95 ? 0.95 : raw_ratio;
+                if (clamped_ratio !== cur_ratio) {
+                  cur_ratio = clamped_ratio;
+                  ratio_changed = true;
+                }
+              }
+            } else {
+              const avail = rect.h - handle_thick;
+              if (avail > 0) {
+                const _p$2 = ctx.input;
+                const local_y = _p$2.mouse_pos.y - rect.y;
+                const raw_ratio = local_y / avail;
+                const clamped_ratio = raw_ratio < 0.05 ? 0.05 : raw_ratio > 0.95 ? 0.95 : raw_ratio;
+                if (clamped_ratio !== cur_ratio) {
+                  cur_ratio = clamped_ratio;
+                  ratio_changed = true;
+                }
+              }
+            }
+          } else {
+            _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+          }
+        }
+        if (handle_focused) {
+          let grow_key;
+          if (_direction === 0) {
+            grow_key = 7;
+          } else {
+            grow_key = 9;
+          }
+          let shrink_key;
+          if (_direction === 0) {
+            shrink_key = 6;
+          } else {
+            shrink_key = 8;
+          }
+          if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, grow_key)) {
+            _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, grow_key);
+            cur_ratio = cur_ratio + 0.02 > 0.95 ? 0.95 : cur_ratio + 0.02;
+            ratio_changed = true;
+          }
+          if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, shrink_key)) {
+            _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, shrink_key);
+            cur_ratio = cur_ratio - 0.02 < 0.05 ? 0.05 : cur_ratio - 0.02;
+            ratio_changed = true;
+          }
+        }
+        const painter$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx);
+        const handle_col = is_active ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : handle_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color13accent__hover() : _M0MP49LING7167111moon_2degui3src5color5Color13border__muted();
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(painter$2, handle_rect, handle_col, 0);
+        if (handle_focused) {
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter$2, _M0MP49LING7167111moon_2degui3src4math4Rect6expand(handle_rect, 1), _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1, 0);
+        }
+        const _bind$2 = _M0FP49LING7167111moon_2degui3src9composite18render__dock__node(ctx, _first, first_rect, `${path}_0`, render_tab);
+        const _new_first = _bind$2._0;
+        const _f_switched = _bind$2._1;
+        const _f_closed = _bind$2._2;
+        const _f_rc = _bind$2._3;
+        const _bind$3 = _M0FP49LING7167111moon_2degui3src9composite18render__dock__node(ctx, _second, second_rect, `${path}_1`, render_tab);
+        const _new_second = _bind$3._0;
+        const _s_switched = _bind$3._1;
+        const _s_closed = _bind$3._2;
+        const _s_rc = _bind$3._3;
+        const tab_switched$2 = _f_switched === undefined ? _s_switched : _f_switched;
+        const closed_tab = _f_closed === undefined ? _s_closed : _f_closed;
+        let updated_node;
+        if (_new_first.$tag === 2) {
+          updated_node = _new_second;
+        } else {
+          if (_new_second.$tag === 2) {
+            updated_node = _new_first;
+          } else {
+            updated_node = new _M0DTP49LING7167111moon_2degui3src9composite8DockNode5Split(_direction, cur_ratio, _new_first, _new_second);
+          }
+        }
+        return { _0: updated_node, _1: tab_switched$2, _2: closed_tab, _3: ratio_changed || (_f_rc || _s_rc) };
+      }
+    }
+  }
+}
+function _M0FP49LING7167111moon_2degui3src9composite10dock__area(ctx, id_salt, size, tree, render_tab) {
+  _M0MP49LING7167111moon_2degui3src4core7IdStack4push(ctx.id_stack, id_salt);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, size);
+  const _rect = _bind._1;
+  const _resp = _bind._2;
+  const painter = _M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(painter, _rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, 4);
+  const _bind$2 = _M0FP49LING7167111moon_2degui3src9composite18render__dock__node(ctx, tree.root, _rect, id_salt, render_tab);
+  const _new_root = _bind$2._0;
+  const _active_tab_changed = _bind$2._1;
+  const _tab_closed = _bind$2._2;
+  const _ratio_changed = _bind$2._3;
+  tree.root = _new_root;
+  _M0MP49LING7167111moon_2degui3src4core7IdStack3pop(ctx.id_stack);
+  return new _M0TP49LING7167111moon_2degui3src9composite12DockResponse(_resp, _active_tab_changed, _tab_closed, _ratio_changed);
+}
+function _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem11new_2einner(id, label, shortcut, disabled, children) {
+  return new _M0TP49LING7167111moon_2degui3src9composite15ContextMenuItem(id, label, shortcut, disabled, false, children);
+}
+function _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem3new(id, label, shortcut$46$opt, disabled$46$opt, children$46$opt) {
+  let shortcut;
+  if (shortcut$46$opt === undefined) {
+    shortcut = "";
+  } else {
+    const _Some = shortcut$46$opt;
+    shortcut = _Some;
+  }
+  const disabled = disabled$46$opt === -1 ? false : disabled$46$opt;
+  let children;
+  if (children$46$opt.$tag === 1) {
+    const _Some = children$46$opt;
+    children = _Some._0;
+  } else {
+    children = [];
+  }
+  return _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem11new_2einner(id, label, shortcut, disabled, children);
+}
+function _M0MP49LING7167111moon_2degui3src9composite15ContextMenuItem9separator() {
+  return new _M0TP49LING7167111moon_2degui3src9composite15ContextMenuItem("", "", "", true, true, []);
+}
+function _M0FP49LING7167111moon_2degui3src9composite29calculate__context__menu__pos(anchor, size, viewport) {
+  let x = anchor.x + 2;
+  let y = anchor.y + 2;
+  if (x + size.x > viewport.x) {
+    const flipped_x = anchor.x - size.x - 2;
+    x = flipped_x >= 4 ? flipped_x : viewport.x - size.x - 4;
+  }
+  if (x < 4) {
+    x = 4;
+  }
+  if (y + size.y > viewport.y) {
+    const flipped_y = anchor.y - size.y - 2;
+    y = flipped_y >= 4 ? flipped_y : viewport.y - size.y - 4;
+  }
+  if (y < 4) {
+    y = 4;
+  }
+  return _M0MP49LING7167111moon_2degui3src4math4Vec23new(x, y);
+}
+function _M0FP49LING7167111moon_2degui3src9composite30compute__menu__content__height(items, item_h, sep_h, pad_y) {
+  let h = 0;
+  const _bind = items.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind) {
+      const item = items[_];
+      if (item.is_separator) {
+        h = h + sep_h;
+      } else {
+        h = h + item_h;
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return h > 0 ? h + pad_y * 2 : 32;
+}
+function _M0FP49LING7167111moon_2degui3src9composite28context__menu__items_2einner(ctx, id_salt, open, pos, items, menu_width, viewport_size) {
+  if (!open) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, "");
+    return new _M0TP49LING7167111moon_2degui3src9composite19ContextMenuResponse(false, undefined, pos, _M0MP49LING7167111moon_2degui3src4math4Vec24zeroN6recordS197);
+  }
+  const scale = ctx.style.scale;
+  const item_h = 24 * scale;
+  const sep_h = 7 * scale;
+  const pad_y = 4 * scale;
+  const total_w = menu_width * scale;
+  const total_h = _M0FP49LING7167111moon_2degui3src9composite30compute__menu__content__height(items, item_h, sep_h, pad_y);
+  const menu_size = _M0MP49LING7167111moon_2degui3src4math4Vec23new(total_w, total_h);
+  let viewport;
+  if (viewport_size === undefined) {
+    const vw = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) > 0 ? _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) : 800;
+    viewport = _M0MP49LING7167111moon_2degui3src4math4Vec23new(vw, 600);
+  } else {
+    const _Some = viewport_size;
+    viewport = _Some;
+  }
+  const placed_pos = _M0FP49LING7167111moon_2degui3src9composite29calculate__context__menu__pos(pos, menu_size, viewport);
+  const menu_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(placed_pos.x, placed_pos.y, total_w, total_h);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext12block__hover(ctx, menu_rect);
+  if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 3)) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, "");
+    return new _M0TP49LING7167111moon_2degui3src9composite19ContextMenuResponse(false, undefined, placed_pos, menu_size);
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext17begin__foreground(ctx);
+  let cur_y = placed_pos.y + pad_y;
+  let active_sub_item = undefined;
+  let active_sub_row_y = 0;
+  let selected_id = undefined;
+  const _bind = items.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind) {
+      const item = items[_];
+      if (item.is_separator) {
+        cur_y = cur_y + sep_h;
+      } else {
+        const row_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(placed_pos.x + 4 * scale, cur_y, total_w - 8 * scale, item_h);
+        const hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, row_rect) && !item.disabled;
+        if (hovered) {
+          _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+          if (item.children.length > 0) {
+            _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, item.id);
+          } else {
+            let _tmp$2;
+            const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext19active__submenu__id(ctx);
+            const _p$2 = "";
+            if (!(_p === _p$2)) {
+              const _p$3 = item.children;
+              _tmp$2 = !(_p$3.length === 0) === false;
+            } else {
+              _tmp$2 = false;
+            }
+            if (_tmp$2) {
+              _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, "");
+            }
+          }
+        }
+        if (_M0MP49LING7167111moon_2degui3src4core9UIContext19active__submenu__id(ctx) === item.id && item.children.length > 0) {
+          active_sub_item = item;
+          active_sub_row_y = cur_y;
+        }
+        let _tmp$2;
+        if (hovered) {
+          let _tmp$3;
+          if (ctx.input.mouse_pressed) {
+            const _p = item.children;
+            _tmp$3 = _p.length === 0;
+          } else {
+            _tmp$3 = false;
+          }
+          _tmp$2 = _tmp$3;
+        } else {
+          _tmp$2 = false;
+        }
+        if (_tmp$2) {
+          selected_id = item.id;
+        }
+        cur_y = cur_y + item_h;
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  let sub_rect_opt = undefined;
+  const _bind$2 = active_sub_item;
+  if (_bind$2 === undefined) {
+  } else {
+    const _Some = _bind$2;
+    const _sub_item = _Some;
+    const sub_h = _M0FP49LING7167111moon_2degui3src9composite30compute__menu__content__height(_sub_item.children, item_h, sep_h, pad_y);
+    let sub_x = placed_pos.x + total_w - 2 * scale;
+    if (sub_x + total_w > viewport.x) {
+      sub_x = placed_pos.x - total_w + 2 * scale;
+    }
+    if (sub_x < 4) {
+      sub_x = 4;
+    }
+    let sub_y = active_sub_row_y - pad_y;
+    if (sub_y + sub_h > viewport.y) {
+      sub_y = viewport.y - sub_h - 4;
+    }
+    if (sub_y < 4) {
+      sub_y = 4;
+    }
+    const sub_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sub_x, sub_y, total_w, sub_h);
+    sub_rect_opt = sub_rect;
+    _M0MP49LING7167111moon_2degui3src4core9UIContext12block__hover(ctx, sub_rect);
+    let sub_cur_y = sub_y + pad_y;
+    const _bind$3 = _sub_item.children;
+    const _bind$4 = _bind$3.length;
+    let _tmp$2 = 0;
+    while (true) {
+      const _ = _tmp$2;
+      if (_ < _bind$4) {
+        const child = _bind$3[_];
+        if (child.is_separator) {
+          sub_cur_y = sub_cur_y + sep_h;
+        } else {
+          const child_row = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sub_x + 4 * scale, sub_cur_y, total_w - 8 * scale, item_h);
+          const child_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, child_row) && !child.disabled;
+          if (child_hovered) {
+            _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+            if (ctx.input.mouse_pressed) {
+              selected_id = child.id;
+            }
+          }
+          sub_cur_y = sub_cur_y + item_h;
+        }
+        _tmp$2 = _ + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+  }
+  const menu_kb_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `ctx_menu_kb::${id_salt}`);
+  const actionable = [];
+  const _bind$3 = items.length;
+  let _tmp$2 = 0;
+  while (true) {
+    const i = _tmp$2;
+    if (i < _bind$3) {
+      const it = items[i];
+      if (!it.is_separator && !it.disabled) {
+        _M0MPC15array5Array4pushGiE(actionable, i);
+      }
+      _tmp$2 = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  if (actionable.length > 0) {
+    let cur = _M0MP49LING7167111moon_2degui3src4core6Memory29get__int__or__default_2einner(ctx.memory, menu_kb_id, _M0MPC15array5Array2atGiE(actionable, 0), "kb");
+    let in_list = false;
+    const _bind$4 = actionable.length;
+    let _tmp$3 = 0;
+    while (true) {
+      const _ = _tmp$3;
+      if (_ < _bind$4) {
+        const i = actionable[_];
+        if (i === cur) {
+          in_list = true;
+          break;
+        }
+        _tmp$3 = _ + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+    if (!in_list) {
+      cur = _M0MPC15array5Array2atGiE(actionable, 0);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
+      let pos_in;
+      let _return_value;
+      _L: {
+        _L$2: {
+          const _bind$5 = actionable.length;
+          let _tmp$4 = 0;
+          while (true) {
+            const p = _tmp$4;
+            if (p < _bind$5) {
+              const i = actionable[p];
+              if (i === cur) {
+                _return_value = p;
+                break _L$2;
+              }
+              _tmp$4 = p + 1 | 0;
+              continue;
+            } else {
+              break;
+            }
+          }
+          pos_in = 0;
+          break _L;
+        }
+        pos_in = _return_value;
+      }
+      cur = _M0MPC15array5Array2atGiE(actionable, (pos_in + 1 | 0) < actionable.length ? pos_in + 1 | 0 : pos_in);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
+      let pos_in;
+      let _return_value;
+      _L: {
+        _L$2: {
+          const _bind$5 = actionable.length;
+          let _tmp$4 = 0;
+          while (true) {
+            const p = _tmp$4;
+            if (p < _bind$5) {
+              const i = actionable[p];
+              if (i === cur) {
+                _return_value = p;
+                break _L$2;
+              }
+              _tmp$4 = p + 1 | 0;
+              continue;
+            } else {
+              break;
+            }
+          }
+          pos_in = 0;
+          break _L;
+        }
+        pos_in = _return_value;
+      }
+      cur = _M0MPC15array5Array2atGiE(actionable, pos_in > 0 ? pos_in - 1 | 0 : 0);
+    }
+    _M0MP49LING7167111moon_2degui3src4core6Memory16set__int_2einner(ctx.memory, menu_kb_id, cur, "kb", 0);
+    const kb_item = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(items, cur);
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
+      if (kb_item.children.length > 0) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, kb_item.id);
+      } else {
+        selected_id = kb_item.id;
+      }
+    }
+  }
+  if (ctx.input.mouse_pressed) {
+    const in_main = _M0MP49LING7167111moon_2degui3src4math4Rect8contains(menu_rect, ctx.input.mouse_pos);
+    const _bind$4 = sub_rect_opt;
+    let in_sub;
+    if (_bind$4 === undefined) {
+      in_sub = false;
+    } else {
+      const _Some = _bind$4;
+      const _sr = _Some;
+      in_sub = _M0MP49LING7167111moon_2degui3src4math4Rect8contains(_sr, ctx.input.mouse_pos);
+    }
+    if (!in_main && !in_sub) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, "");
+      _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
+      return new _M0TP49LING7167111moon_2degui3src9composite19ContextMenuResponse(false, undefined, placed_pos, menu_size);
+    }
+  }
+  const _bind$4 = selected_id;
+  if (_bind$4 === undefined) {
+  } else {
+    const _Some = _bind$4;
+    const _id = _Some;
+    _M0MP49LING7167111moon_2degui3src4core9UIContext24set__active__submenu__id(ctx, "");
+    _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
+    return new _M0TP49LING7167111moon_2degui3src9composite19ContextMenuResponse(false, _id, placed_pos, menu_size);
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext17begin__foreground(ctx);
+  const menu_radius = ctx.style.radius_md * scale;
+  const row_radius = ctx.style.radius_sm * scale;
+  const font_nm = ctx.style.font_normal * scale;
+  const font_sm = ctx.style.font_small * scale;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(placed_pos.x, placed_pos.y + 4 * scale, total_w, total_h), _M0MP49LING7167111moon_2degui3src5color5Color15shadow__ambient(), menu_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(placed_pos.x, placed_pos.y + 1 * scale, total_w, total_h), _M0MP49LING7167111moon_2degui3src5color5Color11shadow__key(), menu_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), menu_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), menu_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), menu_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, menu_radius);
+  const kb_idx = _M0MP49LING7167111moon_2degui3src4core6Memory29get__int__or__default_2einner(ctx.memory, menu_kb_id, -1, "kb");
+  let cur_draw_y = placed_pos.y + pad_y;
+  const _bind$5 = items.length;
+  let _tmp$3 = 0;
+  while (true) {
+    const i = _tmp$3;
+    if (i < _bind$5) {
+      const item = items[i];
+      if (item.is_separator) {
+        const line_y = cur_draw_y + 3 * scale;
+        _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(placed_pos.x + 8 * scale, line_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(placed_pos.x + total_w - 8 * scale, line_y), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
+        cur_draw_y = cur_draw_y + sep_h;
+      } else {
+        const row_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(placed_pos.x + 4 * scale, cur_draw_y, total_w - 8 * scale, item_h);
+        const kb_selected = !item.is_separator && (!item.disabled && kb_idx === i);
+        const hovered = (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, row_rect) || (_M0MP49LING7167111moon_2degui3src4core9UIContext19active__submenu__id(ctx) === item.id || kb_selected)) && !item.disabled;
+        if (hovered) {
+          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), row_radius);
+        }
+        const text_col = item.disabled ? _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled() : hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color13text__primary();
+        const text_y = cur_draw_y + (item_h - font_nm) * 0.5;
+        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(placed_pos.x + 12 * scale, text_y), item.label, font_nm, text_col, "", 500);
+        if (item.children.length > 0) {
+          const chev_col = hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(placed_pos.x + total_w - 18 * scale, text_y), ">", font_sm, chev_col, "", 500);
+        } else {
+          const _p = item.shortcut;
+          if (!(_p === "")) {
+            const sc_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, item.shortcut, font_sm);
+            const sc_x = placed_pos.x + total_w - sc_size.x - 12 * scale;
+            const sc_col = item.disabled ? _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled() : hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
+            _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sc_x, text_y + 1 * scale), item.shortcut, font_sm, sc_col, "", 500);
+          }
+        }
+        cur_draw_y = cur_draw_y + item_h;
+      }
+      _tmp$3 = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  const _bind$6 = active_sub_item;
+  if (_bind$6 === undefined) {
+  } else {
+    const _Some = _bind$6;
+    const _sub_item = _Some;
+    const _bind$7 = sub_rect_opt;
+    if (_bind$7 === undefined) {
+    } else {
+      const _Some$2 = _bind$7;
+      const _sub_rect = _Some$2;
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(_sub_rect.x, _sub_rect.y + 4 * scale, _sub_rect.w, _sub_rect.h), _M0MP49LING7167111moon_2degui3src5color5Color15shadow__ambient(), menu_radius);
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(_sub_rect.x, _sub_rect.y + 1 * scale, _sub_rect.w, _sub_rect.h), _M0MP49LING7167111moon_2degui3src5color5Color11shadow__key(), menu_radius);
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _sub_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), menu_radius);
+      _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _sub_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, menu_radius);
+      let sub_draw_y = _sub_rect.y + pad_y;
+      const _bind$8 = _sub_item.children;
+      const _bind$9 = _bind$8.length;
+      let _tmp$4 = 0;
+      while (true) {
+        const _ = _tmp$4;
+        if (_ < _bind$9) {
+          const child = _bind$8[_];
+          if (child.is_separator) {
+            const line_y = sub_draw_y + 3 * scale;
+            _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_sub_rect.x + 8 * scale, line_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_sub_rect.x + _sub_rect.w - 8 * scale, line_y), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
+            sub_draw_y = sub_draw_y + sep_h;
+          } else {
+            const child_row = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_sub_rect.x + 4 * scale, sub_draw_y, _sub_rect.w - 8 * scale, item_h);
+            const child_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, child_row) && !child.disabled;
+            if (child_hovered) {
+              _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), child_row, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), row_radius);
+            }
+            const text_col = child.disabled ? _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled() : child_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color13text__primary();
+            const text_y = sub_draw_y + (item_h - font_nm) * 0.5;
+            _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_sub_rect.x + 12 * scale, text_y), child.label, font_nm, text_col, "", 500);
+            const _p = child.shortcut;
+            if (!(_p === "")) {
+              const sc_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, child.shortcut, font_sm);
+              const sc_x = _sub_rect.x + _sub_rect.w - sc_size.x - 12 * scale;
+              const sc_col = child.disabled ? _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled() : child_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color11text__muted();
+              _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sc_x, text_y + 1 * scale), child.shortcut, font_sm, sc_col, "", 500);
+            }
+            sub_draw_y = sub_draw_y + item_h;
+          }
+          _tmp$4 = _ + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+    }
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
+  return new _M0TP49LING7167111moon_2degui3src9composite19ContextMenuResponse(true, undefined, placed_pos, menu_size);
+}
+function _M0MP49LING7167111moon_2degui3src9composite11CommandItem11new_2einner(id, title, category, shortcut) {
+  return new _M0TP49LING7167111moon_2degui3src9composite11CommandItem(id, title, category, shortcut);
+}
+function _M0FP49LING7167111moon_2degui3src9composite30string__contains__ignore__case(haystack, needle) {
+  const n_len = needle.length;
+  const h_len = haystack.length;
+  if (n_len === 0) {
+    return true;
+  }
+  if (n_len > h_len) {
+    return false;
+  }
+  let _tmp = 0;
+  while (true) {
+    const i = _tmp;
+    if (i <= (h_len - n_len | 0)) {
+      let matched = true;
+      let _tmp$2 = 0;
+      while (true) {
+        const j = _tmp$2;
+        if (j < n_len) {
+          const _tmp$3 = i + j | 0;
+          const _p = _tmp$3 >>> 0 < haystack.length ? haystack.charCodeAt(_tmp$3) : $oob();
+          const hc = _p >= 65 && _p <= 90 ? _p + 32 | 0 : _p;
+          const _p$2 = j >>> 0 < needle.length ? needle.charCodeAt(j) : $oob();
+          const nc = _p$2 >= 65 && _p$2 <= 90 ? _p$2 + 32 | 0 : _p$2;
+          if (hc !== nc) {
+            matched = false;
+            break;
+          }
+          _tmp$2 = j + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      if (matched) {
+        return true;
+      }
+      _tmp = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return false;
+}
+function _M0FP49LING7167111moon_2degui3src9composite24command__palette_2einner(ctx, open, query, commands, selected_index, viewport_size) {
+  if (!open) {
+    return new _M0TP49LING7167111moon_2degui3src9composite22CommandPaletteResponse(false, undefined, query, selected_index);
+  }
+  let new_query = query;
+  let new_selected_index = selected_index;
+  if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 0)) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext19reset__caret__blink(ctx);
+    const len = new_query.length;
+    if (len > 0) {
+      new_query = _M0FP49LING7167111moon_2degui3src9composite13string__slice(new_query, 0, len - 1 | 0);
+    }
+  }
+  const _p = ctx.input;
+  const text_in = _p.text_input;
+  if (!(text_in === "")) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext19reset__caret__blink(ctx);
+    new_query = `${new_query}${text_in}`;
+  }
+  const _p$2 = new_query;
+  if (!(_p$2 === query)) {
+    new_selected_index = 0;
+  }
+  const filtered = [];
+  const _bind = commands.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind) {
+      const item = commands[_];
+      let _tmp$2;
+      const _p$3 = new_query;
+      if (_p$3 === "") {
+        _tmp$2 = true;
+      } else {
+        _tmp$2 = _M0FP49LING7167111moon_2degui3src9composite30string__contains__ignore__case(item.title, new_query) || _M0FP49LING7167111moon_2degui3src9composite30string__contains__ignore__case(item.category, new_query);
+      }
+      if (_tmp$2) {
+        _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(filtered, item);
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  const filtered_count = filtered.length;
+  if (filtered_count > 0) {
+    if (new_selected_index >= filtered_count) {
+      new_selected_index = filtered_count - 1 | 0;
+    }
+    if (new_selected_index < 0) {
+      new_selected_index = 0;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
+      new_selected_index = (new_selected_index + 1 | 0) % filtered_count | 0;
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
+      new_selected_index = new_selected_index <= 0 ? filtered_count - 1 | 0 : new_selected_index - 1 | 0;
+    }
+  } else {
+    new_selected_index = 0;
+  }
+  if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 3)) {
+    return new _M0TP49LING7167111moon_2degui3src9composite22CommandPaletteResponse(false, undefined, new_query, new_selected_index);
+  }
+  if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2)) {
+    const sel = filtered_count > 0 && new_selected_index < filtered_count ? _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(filtered, new_selected_index).id : undefined;
+    return new _M0TP49LING7167111moon_2degui3src9composite22CommandPaletteResponse(false, sel, new_query, new_selected_index);
+  }
+  const scale = ctx.style.scale;
+  const font_sm = ctx.style.font_small * scale;
+  const font_nm = ctx.style.font_normal * scale;
+  const font_lg = ctx.style.font_large * scale;
+  const card_radius = ctx.style.radius_lg * scale;
+  const row_radius = ctx.style.radius_sm * scale;
+  const viewport_w = viewport_size.x > 0 ? viewport_size.x : _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) > 0 ? _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) : 4000;
+  const viewport_h = viewport_size.y > 0 ? viewport_size.y : 4000;
+  const scrim_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(0, 0, viewport_w, viewport_h);
+  const card_container_w = viewport_size.x > 0 ? viewport_size.x : _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) > 0 ? _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) : 800;
+  const default_palette_w = 540 * scale;
+  const card_w = card_container_w < default_palette_w + 20 * scale ? card_container_w - 32 * scale : default_palette_w;
+  const card_x = (card_container_w - card_w) * 0.5;
+  const card_y = 64 * scale;
+  const header_h = (ctx.style.control_h_lg + ctx.style.radius_md) * scale;
+  const footer_h = (ctx.style.control_h_sm + ctx.style.spacing_xs) * scale;
+  const row_h = ctx.style.control_h_md * scale;
+  const cat_h = 24 * scale;
+  let content_h = 0;
+  let prev_cat = "";
+  if (filtered_count === 0) {
+    content_h = 48 * scale;
+  } else {
+    const _bind$2 = filtered.length;
+    let _tmp$2 = 0;
+    while (true) {
+      const _ = _tmp$2;
+      if (_ < _bind$2) {
+        const item = filtered[_];
+        let _tmp$3;
+        const _p$3 = item.category;
+        if (!(_p$3 === "")) {
+          const _p$4 = item.category;
+          const _p$5 = prev_cat;
+          _tmp$3 = !(_p$4 === _p$5);
+        } else {
+          _tmp$3 = false;
+        }
+        if (_tmp$3) {
+          content_h = content_h + cat_h;
+          prev_cat = item.category;
+        }
+        content_h = content_h + row_h;
+        _tmp$2 = _ + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+  }
+  const max_content_h = 320 * scale;
+  const visible_content_h = content_h > max_content_h ? max_content_h : content_h;
+  const card_h = header_h + visible_content_h + footer_h + 12 * scale;
+  const card_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x, card_y, card_w, card_h);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext17begin__foreground(ctx);
+  const content_clip_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x, card_y + header_h, card_w, visible_content_h + 12 * scale);
+  const scroll_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, "cmd_palette_scroll");
+  let scroll_y = _M0MP49LING7167111moon_2degui3src4core9UIContext19get__scroll__offset(ctx, scroll_id);
+  const max_scroll = content_h > visible_content_h ? content_h - visible_content_h : 0;
+  if (_M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, content_clip_rect) && ctx.input.scroll_delta.y !== 0) {
+    scroll_y = scroll_y - ctx.input.scroll_delta.y;
+  }
+  const selected_top = (new_selected_index + 0) * row_h;
+  if (selected_top < scroll_y) {
+    scroll_y = selected_top;
+  } else {
+    if (selected_top + row_h > scroll_y + visible_content_h) {
+      scroll_y = selected_top + row_h - visible_content_h;
+    }
+  }
+  if (scroll_y < 0) {
+    scroll_y = 0;
+  }
+  if (scroll_y > max_scroll) {
+    scroll_y = max_scroll;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, scroll_id, scroll_y);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext12block__hover(ctx, scrim_rect);
+  if (ctx.input.mouse_pressed && !_M0MP49LING7167111moon_2degui3src4math4Rect8contains(card_rect, ctx.input.mouse_pos)) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
+    return new _M0TP49LING7167111moon_2degui3src9composite22CommandPaletteResponse(false, undefined, new_query, new_selected_index);
+  }
+  const row_pad_x = row_radius * scale;
+  const row_w = card_w - row_pad_x * 2;
+  const elevation_key_y = 8 * scale;
+  const elevation_ambient_y = 2 * scale;
+  let cur_row_y = card_y + header_h + row_pad_x - scroll_y;
+  let prev_row_cat = "";
+  let clicked_id = undefined;
+  let _tmp$2 = 0;
+  while (true) {
+    const idx = _tmp$2;
+    if (idx < filtered_count) {
+      const item = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(filtered, idx);
+      let _tmp$3;
+      const _p$3 = item.category;
+      if (!(_p$3 === "")) {
+        const _p$4 = item.category;
+        const _p$5 = prev_row_cat;
+        _tmp$3 = !(_p$4 === _p$5);
+      } else {
+        _tmp$3 = false;
+      }
+      if (_tmp$3) {
+        cur_row_y = cur_row_y + cat_h;
+        prev_row_cat = item.category;
+      }
+      const row_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x + row_pad_x, cur_row_y, row_w, row_h);
+      if (_M0MP49LING7167111moon_2degui3src4math4Rect8contains(content_clip_rect, ctx.input.mouse_pos) && _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, row_rect)) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "pointer");
+        new_selected_index = idx;
+        if (ctx.input.mouse_pressed) {
+          clicked_id = item.id;
+        }
+      }
+      cur_row_y = cur_row_y + row_h;
+      _tmp$2 = idx + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  const _bind$2 = clicked_id;
+  if (_bind$2 === undefined) {
+  } else {
+    const _Some = _bind$2;
+    const _id = _Some;
+    _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
+    return new _M0TP49LING7167111moon_2degui3src9composite22CommandPaletteResponse(false, _id, new_query, new_selected_index);
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext17begin__foreground(ctx);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), scrim_rect, _M0MP49LING7167111moon_2degui3src5color5Color9bg__scrim(), 0);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x, card_y + elevation_key_y, card_w, card_h), _M0MP49LING7167111moon_2degui3src5color5Color11shadow__key(), card_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x, card_y + elevation_ambient_y, card_w, card_h), _M0MP49LING7167111moon_2degui3src5color5Color15shadow__ambient(), card_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), card_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), card_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), card_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, card_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + 16 * scale, card_y + 14 * scale), ">", font_lg, _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), "", 500);
+  const _p$3 = new_query;
+  if (_p$3 === "") {
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + 36 * scale, card_y + 16 * scale), "键入命令或搜索动作...", font_nm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
+  } else {
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + 36 * scale, card_y + 16 * scale), new_query, font_nm, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary(), "", 500);
+    const q_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, new_query, font_nm);
+    const caret_x = card_x + 36 * scale + q_size.x + 2 * scale;
+    if (_M0MP49LING7167111moon_2degui3src4core9UIContext18is__caret__visible(ctx)) {
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(caret_x, card_y + 16 * scale), _M0MP49LING7167111moon_2degui3src4math4Vec23new(caret_x, card_y + 31 * scale), _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 1.5);
+    }
+  }
+  const esc_w = 32 * scale;
+  const esc_h = 18 * scale;
+  const esc_x = card_x + card_w - esc_w - 14 * scale;
+  const esc_y = card_y + 14 * scale;
+  const esc_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(esc_x, esc_y, esc_w, esc_h);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), esc_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), row_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), esc_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1, row_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(esc_x + 6 * scale, esc_y + 3 * scale), "Esc", font_sm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x, card_y + header_h), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + card_w, card_y + header_h), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, content_clip_rect);
+  let draw_y = card_y + header_h + row_pad_x - scroll_y;
+  let prev_draw_cat = "";
+  if (filtered_count === 0) {
+    const empty_text_y = draw_y + (48 * scale - font_nm) * 0.5;
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + 20 * scale, empty_text_y), "未找到匹配命令", font_nm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
+  } else {
+    const indicator_h = 20 * scale;
+    const indicator_w = 3 * scale;
+    const text_pad_left = card_x + row_pad_x + 12 * scale;
+    let _tmp$3 = 0;
+    while (true) {
+      const idx = _tmp$3;
+      if (idx < filtered_count) {
+        const item = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(filtered, idx);
+        let _tmp$4;
+        const _p$4 = item.category;
+        if (!(_p$4 === "")) {
+          const _p$5 = item.category;
+          const _p$6 = prev_draw_cat;
+          _tmp$4 = !(_p$5 === _p$6);
+        } else {
+          _tmp$4 = false;
+        }
+        if (_tmp$4) {
+          const cat_y = draw_y + (cat_h - font_sm) * 0.5;
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + 16 * scale, cat_y), item.category, font_sm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
+          draw_y = draw_y + cat_h;
+          prev_draw_cat = item.category;
+        }
+        const row_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x + row_pad_x, draw_y, row_w, row_h);
+        const is_selected = idx === new_selected_index;
+        const text_y = draw_y + (row_h - font_nm) * 0.5;
+        if (is_selected) {
+          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), row_rect, _M0MP49LING7167111moon_2degui3src5color5Color19tree__row__selected(), row_radius);
+          const indicator_y = draw_y + (row_h - indicator_h) * 0.5;
+          _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x + row_pad_x, indicator_y, indicator_w, indicator_h), _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), indicator_w * 0.5);
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(text_pad_left, text_y), item.title, font_nm, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary(), "", 500);
+        } else {
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(text_pad_left, text_y), item.title, font_nm, _M0MP49LING7167111moon_2degui3src5color5Color10text__body(), "", 500);
+        }
+        const _p$5 = item.shortcut;
+        if (!(_p$5 === "")) {
+          const sc_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, item.shortcut, font_sm);
+          const sc_x = card_x + card_w - sc_size.x - 20 * scale;
+          const sc_y = draw_y + (row_h - font_sm) * 0.5;
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sc_x, sc_y), item.shortcut, font_sm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
+        }
+        draw_y = draw_y + row_h;
+        _tmp$3 = idx + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
+  const footer_y = card_y + card_h - footer_h;
+  const footer_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(card_x, footer_y, card_w, footer_h);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), footer_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), card_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x, footer_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + card_w, footer_y), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(card_x + 16 * scale, footer_y + 8 * scale), "↑↓ 导航   ↵ 选择   Esc 退出", font_sm, _M0MP49LING7167111moon_2degui3src5color5Color11text__muted(), "", 500);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
+  return new _M0TP49LING7167111moon_2degui3src9composite22CommandPaletteResponse(true, undefined, new_query, new_selected_index);
+}
+function _M0FP49LING7167111moon_2degui3src9composite16command__palette(ctx, open, query, commands, selected_index$46$opt, viewport_size$46$opt) {
+  let selected_index;
+  if (selected_index$46$opt === undefined) {
+    selected_index = 0;
+  } else {
+    const _Some = selected_index$46$opt;
+    selected_index = _Some;
+  }
+  let viewport_size;
+  if (viewport_size$46$opt === undefined) {
+    viewport_size = _M0MP49LING7167111moon_2degui3src4math4Vec24zeroN6recordS197;
+  } else {
+    const _Some = viewport_size$46$opt;
+    viewport_size = _Some;
+  }
+  return _M0FP49LING7167111moon_2degui3src9composite24command__palette_2einner(ctx, open, query, commands, selected_index, viewport_size);
+}
+function _M0FP49LING7167111moon_2degui3src9composite12hsv__to__rgb(h, s, v) {
+  const h_clamped = _M0IPC16double6DoublePB3Mod3mod(_M0IPC16double6DoublePB3Mod3mod(h, 360) + 360, 360);
+  const s_clamped = s < 0 ? 0 : s > 1 ? 1 : s;
+  const v_clamped = v < 0 ? 0 : v > 1 ? 1 : v;
+  const c = v_clamped * s_clamped;
+  const h_sector = h_clamped / 60;
+  const x = c * (1 - Math.abs(_M0IPC16double6DoublePB3Mod3mod(h_sector, 2) - 1));
+  const m = v_clamped - c;
+  let r1;
+  let g1;
+  let b1;
+  _L: {
+    if (h_sector < 1) {
+      r1 = c;
+      g1 = x;
+      b1 = 0;
+      break _L;
+    } else {
+      if (h_sector < 2) {
+        r1 = x;
+        g1 = c;
+        b1 = 0;
+        break _L;
+      } else {
+        if (h_sector < 3) {
+          r1 = 0;
+          g1 = c;
+          b1 = x;
+          break _L;
+        } else {
+          if (h_sector < 4) {
+            r1 = 0;
+            g1 = x;
+            b1 = c;
+            break _L;
+          } else {
+            if (h_sector < 5) {
+              r1 = x;
+              g1 = 0;
+              b1 = c;
+              break _L;
+            } else {
+              r1 = c;
+              g1 = 0;
+              b1 = x;
+              break _L;
+            }
+          }
+        }
+      }
+    }
+  }
+  const r = _M0MPC16double6Double7to__int((r1 + m) * 255 + 0.5);
+  const g = _M0MPC16double6Double7to__int((g1 + m) * 255 + 0.5);
+  const b = _M0MPC16double6Double7to__int((b1 + m) * 255 + 0.5);
+  return { _0: r, _1: g, _2: b };
+}
+function _M0FP49LING7167111moon_2degui3src9composite12rgb__to__hsv(r, g, b) {
+  const rf = (r + 0) / 255;
+  const gf = (g + 0) / 255;
+  const bf = (b + 0) / 255;
+  const cmax = rf > gf ? (rf > bf ? rf : bf) : gf > bf ? gf : bf;
+  const cmin = rf < gf ? (rf < bf ? rf : bf) : gf < bf ? gf : bf;
+  const delta = cmax - cmin;
+  const s = cmax > 1e-005 ? delta / cmax : 0;
+  let h;
+  if (delta < 1e-005) {
+    h = 0;
+  } else {
+    if (cmax === rf) {
+      let val = 60 * ((gf - bf) / delta);
+      if (val < 0) {
+        val = val + 360;
+      }
+      h = val;
+    } else {
+      h = cmax === gf ? 60 * ((bf - rf) / delta) + 120 : 60 * ((rf - gf) / delta) + 240;
+    }
+  }
+  return { _0: h, _1: s, _2: cmax };
+}
+function _M0FP49LING7167111moon_2degui3src9composite9hex__byte(val) {
+  const hi = val >> 4 & 15;
+  const lo = val & 15;
+  const hi_s = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(_M0FP49LING7167111moon_2degui3src9composite9hex__byteN11hex__digitsS288, hi, hi + 1 | 0));
+  const lo_s = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(_M0FP49LING7167111moon_2degui3src9composite9hex__byteN11hex__digitsS288, lo, lo + 1 | 0));
+  return `${hi_s}${lo_s}`;
+}
+function _M0FP49LING7167111moon_2degui3src9composite21color__picker_2einner(ctx, id_salt, color, show_alpha) {
+  const scale = ctx.style.scale;
+  const width = 180 * scale;
+  const height = (show_alpha ? 230 : 206) * scale;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(width, height));
+  const _rect = _bind._1;
+  const _resp = _bind._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  const card_radius = ctx.style.radius_md * scale;
+  const inner_radius = ctx.style.radius_sm * scale;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), card_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1 * scale, card_radius);
+  const pad = 10 * scale;
+  const sq_x = _rect.x + pad;
+  const sq_y = _rect.y + pad;
+  const sq_w = _rect.w - pad * 2;
+  const sq_h = 126 * scale;
+  const sq_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sq_x, sq_y, sq_w, sq_h);
+  const _bind$2 = _M0FP49LING7167111moon_2degui3src9composite12rgb__to__hsv(color.r, color.g, color.b);
+  const _init_h = _bind$2._0;
+  const _init_s = _bind$2._1;
+  const _init_v = _bind$2._2;
+  const panel_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `color_picker::${id_salt}`);
+  let h;
+  if (_init_s > 0.001 && _init_v > 0.001) {
+    _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, panel_id, _init_h, "hue", ctx.frame_counter);
+    h = _init_h;
+  } else {
+    h = _M0MP49LING7167111moon_2degui3src4core6Memory32get__double__or__default_2einner(ctx.memory, panel_id, _init_h, "hue");
+  }
+  let s = _init_s;
+  let v = _init_v;
+  let a = color.a;
+  const sv_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `cp_sv::${id_salt}`);
+  const sv_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, sq_rect);
+  let _tmp;
+  if (sv_hovered) {
+    _tmp = true;
+  } else {
+    const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+    _tmp = BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, sv_id.val);
+  }
+  if (_tmp) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "crosshair");
+  }
+  if (sv_hovered && ctx.input.mouse_pressed) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, sv_id);
+  }
+  const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+  if (BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, sv_id.val)) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
+    if (ctx.input.mouse_down) {
+      const raw_s = (ctx.input.mouse_pos.x - sq_x) / sq_w;
+      const raw_v = 1 - (ctx.input.mouse_pos.y - sq_y) / sq_h;
+      s = raw_s < 0 ? 0 : raw_s > 1 ? 1 : raw_s;
+      v = raw_v < 0 ? 0 : raw_v > 1 ? 1 : raw_v;
+    }
+    if (ctx.input.mouse_released) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+    }
+  }
+  const _bind$3 = _M0FP49LING7167111moon_2degui3src9composite12hsv__to__rgb(h, 1, 1);
+  const _pure_r = _bind$3._0;
+  const _pure_g = _bind$3._1;
+  const _pure_b = _bind$3._2;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sq_rect, _M0MP49LING7167111moon_2degui3src5color5Color3rgb(_pure_r, _pure_g, _pure_b), inner_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter21add__linear__gradient(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sq_rect, _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x, sq_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x + sq_w, sq_y), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(255, 255, 255, 255), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(255, 255, 255, 0), inner_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter21add__linear__gradient(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sq_rect, _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x, sq_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x, sq_y + sq_h), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(0, 0, 0, 0), _M0MP49LING7167111moon_2degui3src5color5Color4rgba(0, 0, 0, 255), inner_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sq_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1 * scale, inner_radius);
+  const cur_x = sq_x + s * sq_w;
+  const cur_y = sq_y + (1 - v) * sq_h;
+  const cur_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(cur_x, cur_y);
+  _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), cur_center, 5 * scale, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), 1.6 * scale);
+  _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), cur_center, 3.5 * scale, _M0MP49LING7167111moon_2degui3src5color5Color13text__primary(), 1.2 * scale);
+  const hue_y = sq_y + sq_h + 8 * scale;
+  const hue_h = 12 * scale;
+  const hue_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sq_x, hue_y, sq_w, hue_h);
+  const hue_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `cp_hue::${id_salt}`);
+  const hue_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, hue_rect);
+  let _tmp$2;
+  if (hue_hovered) {
+    _tmp$2 = true;
+  } else {
+    const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+    _tmp$2 = BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, hue_id.val);
+  }
+  if (_tmp$2) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "ew-resize");
+  }
+  if (hue_hovered && ctx.input.mouse_pressed) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, hue_id);
+  }
+  const _p$2 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+  if (BigInt.asUintN(64, _p$2.val) === BigInt.asUintN(64, hue_id.val)) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
+    if (ctx.input.mouse_down) {
+      const raw_h = (ctx.input.mouse_pos.x - sq_x) / sq_w * 360;
+      h = raw_h < 0 ? 0 : raw_h > 360 ? 360 : raw_h;
+      _M0MP49LING7167111moon_2degui3src4core6Memory19set__double_2einner(ctx.memory, panel_id, h, "hue", ctx.frame_counter);
+    }
+    if (ctx.input.mouse_released) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+    }
+  }
+  const rainbow_stops = [{ _0: 0, _1: 60, _2: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 0, 0), _3: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 255, 0) }, { _0: 60, _1: 120, _2: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 255, 0), _3: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(0, 255, 0) }, { _0: 120, _1: 180, _2: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(0, 255, 0), _3: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(0, 255, 255) }, { _0: 180, _1: 240, _2: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(0, 255, 255), _3: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(0, 0, 255) }, { _0: 240, _1: 300, _2: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(0, 0, 255), _3: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 0, 255) }, { _0: 300, _1: 360, _2: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 0, 255), _3: _M0MP49LING7167111moon_2degui3src5color5Color3rgb(255, 0, 0) }];
+  const seg_w = sq_w / 6;
+  const _bind$4 = rainbow_stops.length;
+  let _tmp$3 = 0;
+  while (true) {
+    const idx = _tmp$3;
+    if (idx < _bind$4) {
+      const item = rainbow_stops[idx];
+      const _c_start = item._2;
+      const _c_end = item._3;
+      const seg_x = sq_x + (idx + 0) * seg_w;
+      const seg_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(seg_x, hue_y, seg_w + 0.5, hue_h);
+      const p_start = _M0MP49LING7167111moon_2degui3src4math4Vec23new(seg_x, hue_y);
+      const p_end = _M0MP49LING7167111moon_2degui3src4math4Vec23new(seg_x + seg_w, hue_y);
+      const corner_r = idx === 0 || idx === 5 ? inner_radius : 0;
+      _M0MP49LING7167111moon_2degui3src4core7Painter21add__linear__gradient(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), seg_rect, p_start, p_end, _c_start, _c_end, corner_r);
+      _tmp$3 = idx + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), hue_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1 * scale, inner_radius);
+  const hue_thumb_x = sq_x + h / 360 * sq_w;
+  const hue_thumb_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(hue_thumb_x, hue_y + hue_h * 0.5);
+  _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), hue_thumb_center, 6 * scale, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window());
+  _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), hue_thumb_center, 6 * scale, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1 * scale);
+  if (show_alpha) {
+    const alpha_y = hue_y + hue_h + 8 * scale;
+    const alpha_h = 12 * scale;
+    const alpha_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sq_x, alpha_y, sq_w, alpha_h);
+    const alpha_id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `cp_alpha::${id_salt}`);
+    const alpha_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, alpha_rect);
+    let _tmp$4;
+    if (alpha_hovered) {
+      _tmp$4 = true;
+    } else {
+      const _p$3 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+      _tmp$4 = BigInt.asUintN(64, _p$3.val) === BigInt.asUintN(64, alpha_id.val);
+    }
+    if (_tmp$4) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "ew-resize");
+    }
+    if (alpha_hovered && ctx.input.mouse_pressed) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, alpha_id);
+    }
+    const _p$3 = _M0MP49LING7167111moon_2degui3src4core9UIContext10active__id(ctx);
+    if (BigInt.asUintN(64, _p$3.val) === BigInt.asUintN(64, alpha_id.val)) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext26set__wants__capture__mouse(ctx, true);
+      if (ctx.input.mouse_down) {
+        const raw_a = (ctx.input.mouse_pos.x - sq_x) / sq_w * 255;
+        const val_a = _M0MPC16double6Double7to__int(raw_a);
+        a = val_a < 0 ? 0 : val_a > 255 ? 255 : val_a;
+      }
+      if (ctx.input.mouse_released) {
+        _M0MP49LING7167111moon_2degui3src4core9UIContext15set__active__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+      }
+    }
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), alpha_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), inner_radius);
+    const _bind$5 = _M0FP49LING7167111moon_2degui3src9composite12hsv__to__rgb(h, s, v);
+    const _cur_r = _bind$5._0;
+    const _cur_g = _bind$5._1;
+    const _cur_b = _bind$5._2;
+    const c_start = _M0MP49LING7167111moon_2degui3src5color5Color4rgba(_cur_r, _cur_g, _cur_b, 0);
+    const c_end = _M0MP49LING7167111moon_2degui3src5color5Color4rgba(_cur_r, _cur_g, _cur_b, 255);
+    const p_start = _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x, alpha_y);
+    const p_end = _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x + sq_w, alpha_y);
+    _M0MP49LING7167111moon_2degui3src4core7Painter21add__linear__gradient(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), alpha_rect, p_start, p_end, c_start, c_end, inner_radius);
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), alpha_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1 * scale, inner_radius);
+    const alpha_thumb_x = sq_x + (a + 0) / 255 * sq_w;
+    const alpha_thumb_center = _M0MP49LING7167111moon_2degui3src4math4Vec23new(alpha_thumb_x, alpha_y + alpha_h * 0.5);
+    _M0MP49LING7167111moon_2degui3src4core7Painter11add__circle(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), alpha_thumb_center, 6 * scale, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window());
+    _M0MP49LING7167111moon_2degui3src4core7Painter19add__circle__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), alpha_thumb_center, 6 * scale, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1 * scale);
+  }
+  const _bind$5 = _M0FP49LING7167111moon_2degui3src9composite12hsv__to__rgb(h, s, v);
+  const _final_r = _bind$5._0;
+  const _final_g = _bind$5._1;
+  const _final_b = _bind$5._2;
+  const updated_color = _M0MP49LING7167111moon_2degui3src5color5Color4rgba(_final_r, _final_g, _final_b, a);
+  const footer_y = show_alpha ? hue_y + hue_h + 8 * scale + 12 * scale + 8 * scale : hue_y + hue_h + 8 * scale;
+  const swatch_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(sq_x, footer_y, 22 * scale, 22 * scale);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), swatch_rect, updated_color, inner_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), swatch_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1 * scale, inner_radius);
+  const hex_text = show_alpha ? `#${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(_final_r)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(_final_g)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(_final_b)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(a)}` : `#${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(_final_r)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(_final_g)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(_final_b)}`;
+  const font_sz = ctx.style.font_small * scale;
+  const hex_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(sq_x + 30 * scale, footer_y + (22 * scale - font_sz) * 0.5);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), hex_pos, hex_text, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color12text__strong(), "", 500);
+  return { _0: updated_color, _1: _resp };
+}
+function _M0FP49LING7167111moon_2degui3src9composite29color__picker__button_2einner(ctx, id_salt, color, show_alpha) {
+  const scale = ctx.style.scale;
+  const font_sz = ctx.style.font_small * scale;
+  const hex_text = show_alpha ? `#${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.r)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.g)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.b)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.a)}` : `#${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.r)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.g)}${_M0FP49LING7167111moon_2degui3src9composite9hex__byte(color.b)}`;
+  const txt_sz = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, hex_text, font_sz);
+  const btn_w = 44 * scale + txt_sz.x;
+  const btn_h = (ctx.style.control_h_sm + ctx.style.spacing_xs) * scale;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext8push__id(ctx, id_salt);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, _M0MP49LING7167111moon_2degui3src4math4Vec23new(btn_w, btn_h));
+  const _id = _bind._0;
+  const _rect = _bind._1;
+  const _resp = _bind._2;
+  _M0MP49LING7167111moon_2degui3src4core9UIContext7pop__id(ctx);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, _id);
+  const is_focused = _resp.has_focus || _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, _id);
+  const is_hovered = _M0MP49LING7167111moon_2degui3src4core9UIContext11is__hovered(ctx, _rect);
+  const btn_bg = is_hovered ? _M0MP49LING7167111moon_2degui3src5color5Color9bg__hover() : _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface();
+  const btn_radius = ctx.style.radius_sm * scale;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, btn_bg, btn_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color13border__focus() : _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), 1, btn_radius);
+  if (is_focused) {
+    _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Rect6expand(_rect, 2 * scale), _M0MP49LING7167111moon_2degui3src5color5Color13border__focus(), 1.5, btn_radius + 2 * scale);
+  }
+  const swatch_size = 16 * scale;
+  const swatch_pad = 6 * scale;
+  const swatch_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + swatch_pad, _rect.y + (btn_h - swatch_size) * 0.5, swatch_size, swatch_size);
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), swatch_rect, color, btn_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), swatch_rect, _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1, btn_radius);
+  const text_y = _rect.y + (btn_h - font_sz) * 0.5;
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + swatch_pad * 2 + swatch_size, text_y), hex_text, font_sz, _M0MP49LING7167111moon_2degui3src5color5Color10text__body(), "", 500);
+  const _p = _M0MP49LING7167111moon_2degui3src4core9UIContext15open__combo__id(ctx);
+  const is_open = BigInt.asUintN(64, _p.val) === BigInt.asUintN(64, _id.val);
+  let next_color = color;
+  const key_toggle = is_focused && (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 5) || _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2));
+  if (key_toggle) {
+    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 5);
+    _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
+  }
+  if (_resp.clicked || key_toggle) {
+    if (is_open) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext20set__open__combo__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+    } else {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext20set__open__combo__id(ctx, _id);
+    }
+  }
+  if (is_open) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17begin__foreground(ctx);
+    const popup_pos = _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x, _rect.y + btn_h + 4 * scale);
+    const prev_cursor = _M0MP49LING7167111moon_2degui3src4core9UIContext6cursor(ctx);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, popup_pos);
+    const _bind$2 = _M0FP49LING7167111moon_2degui3src9composite21color__picker_2einner(ctx, `${id_salt}::popup`, color, show_alpha);
+    const _c = _bind$2._0;
+    next_color = _c;
+    _M0MP49LING7167111moon_2degui3src4core9UIContext11set__cursor(ctx, prev_cursor);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext15end__foreground(ctx);
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 3)) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext20set__open__combo__id(ctx, _M0MP49LING7167111moon_2degui3src4core2Id4zeroN6recordS1579);
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 3);
+    }
+  }
+  return { _0: next_color, _1: _resp };
+}
+function _M0FP49LING7167111moon_2degui3src9composite21cursor__to__line__col(text, cursor_pos) {
+  let line = 0;
+  let col = 0;
+  const limit = cursor_pos > text.length ? text.length : cursor_pos < 0 ? 0 : cursor_pos;
+  let _tmp = 0;
+  while (true) {
+    const i = _tmp;
+    if (i < limit) {
+      const _p = i >>> 0 < text.length ? text.charCodeAt(i) : $oob();
+      const _p$2 = 10;
+      if (_p === _p$2) {
+        line = line + 1 | 0;
+        col = 0;
+      } else {
+        col = col + 1 | 0;
+      }
+      _tmp = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return { _0: line, _1: col };
+}
+function _M0FP49LING7167111moon_2degui3src9composite20hit__test__char__pos(ctx, text, click_x, font_size) {
+  const len = text.length;
+  if (len === 0 || click_x <= 0) {
+    return 0;
+  }
+  const total_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, text, font_size).x;
+  if (click_x >= total_w) {
+    return len;
+  }
+  const boundaries = [0];
+  let idx = 0;
+  while (true) {
+    if (idx < len) {
+      idx = _M0FP49LING7167111moon_2degui3src9composite20next__char__boundary(text, idx);
+      _M0MPC15array5Array4pushGiE(boundaries, idx);
+      continue;
+    } else {
+      break;
+    }
+  }
+  const num_b = boundaries.length;
+  let low = 0;
+  let high = num_b - 1 | 0;
+  while (true) {
+    if (low < high) {
+      const mid = (low + high | 0) / 2 | 0;
+      const sub = _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, 0, _M0MPC15array5Array2atGiE(boundaries, mid));
+      const w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, sub, font_size).x;
+      if (w < click_x) {
+        low = mid + 1 | 0;
+      } else {
+        high = mid;
+      }
+      continue;
+    } else {
+      break;
+    }
+  }
+  const c1 = _M0MPC15array5Array2atGiE(boundaries, low);
+  const w1 = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, 0, c1), font_size).x;
+  const d1 = click_x > w1 ? click_x - w1 : w1 - click_x;
+  if (low > 0) {
+    const c0 = _M0MPC15array5Array2atGiE(boundaries, low - 1 | 0);
+    const w0 = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, 0, c0), font_size).x;
+    const d0 = click_x > w0 ? click_x - w0 : w0 - click_x;
+    return d0 <= d1 ? c0 : c1;
+  } else {
+    return c1;
+  }
+}
+function _M0FP49LING7167111moon_2degui3src9composite17is__comment__line(line) {
+  const len = line.length;
+  let i = 0;
+  while (true) {
+    let _tmp;
+    if (i < len) {
+      let _tmp$2;
+      const _tmp$3 = i;
+      const _p = _tmp$3 >>> 0 < line.length ? line.charCodeAt(_tmp$3) : $oob();
+      const _p$2 = 32;
+      if (_p === _p$2) {
+        _tmp$2 = true;
+      } else {
+        const _tmp$4 = i;
+        const _p$3 = _tmp$4 >>> 0 < line.length ? line.charCodeAt(_tmp$4) : $oob();
+        const _p$4 = 9;
+        _tmp$2 = _p$3 === _p$4;
+      }
+      _tmp = _tmp$2;
+    } else {
+      _tmp = false;
+    }
+    if (_tmp) {
+      i = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  if ((i + 1 | 0) < len) {
+    let _tmp;
+    const _tmp$2 = i;
+    const _p = _tmp$2 >>> 0 < line.length ? line.charCodeAt(_tmp$2) : $oob();
+    const _p$2 = 47;
+    if (_p === _p$2) {
+      const _tmp$3 = i + 1 | 0;
+      const _p$3 = _tmp$3 >>> 0 < line.length ? line.charCodeAt(_tmp$3) : $oob();
+      const _p$4 = 47;
+      _tmp = _p$3 === _p$4;
+    } else {
+      _tmp = false;
+    }
+    return _tmp;
+  } else {
+    return false;
+  }
+}
+function _M0FP49LING7167111moon_2degui3src9composite21line__col__to__cursor(lines, line, col) {
+  const num_lines = lines.length;
+  if (num_lines === 0) {
+    return 0;
+  }
+  const safe_line = line < 0 ? 0 : line >= num_lines ? num_lines - 1 | 0 : line;
+  let pos = 0;
+  let _tmp = 0;
+  while (true) {
+    const i = _tmp;
+    if (i < safe_line) {
+      pos = (pos + _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, i).length | 0) + 1 | 0;
+      _tmp = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  const line_len = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, safe_line).length;
+  const safe_col = col < 0 ? 0 : col > line_len ? line_len : col;
+  return pos + safe_col | 0;
+}
+function _M0FP49LING7167111moon_2degui3src9composite12split__lines(text) {
+  const lines = [];
+  let start = 0;
+  const len = text.length;
+  let _tmp = 0;
+  while (true) {
+    const i = _tmp;
+    if (i < len) {
+      const _p = i >>> 0 < text.length ? text.charCodeAt(i) : $oob();
+      const _p$2 = 10;
+      if (_p === _p$2) {
+        _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(lines, _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, start, i));
+        start = i + 1 | 0;
+      }
+      _tmp = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  _M0MPC15array5Array4pushGRP49LING7167111moon_2degui8examples6canvas12TerminalLineE(lines, _M0FP49LING7167111moon_2degui3src9composite13string__slice(text, start, len));
+  return lines;
+}
+function _M0FP49LING7167111moon_2degui3src9composite20code__editor_2einner(ctx, id_salt, text, size, show_line_numbers, read_only) {
+  const default_w = _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) > 0 ? _M0MP49LING7167111moon_2degui3src4core9UIContext16available__width(ctx) : 480;
+  let editor_size;
+  if (size === undefined) {
+    editor_size = _M0MP49LING7167111moon_2degui3src4math4Vec23new(default_w, 220);
+  } else {
+    const _Some = size;
+    editor_size = _Some;
+  }
+  const id = _M0MP49LING7167111moon_2degui3src4core7IdStack10derive__id(ctx.id_stack, `code_editor::${id_salt}`);
+  const _bind = _M0MP49LING7167111moon_2degui3src4core9UIContext15allocate__space(ctx, editor_size);
+  const _rect = _bind._1;
+  const _resp = _bind._2;
+  if (_resp.hovered) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext17set__cursor__icon(ctx, "text");
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19register__focusable(ctx, id);
+  if (_resp.pressed || _resp.clicked) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext14request__focus(ctx, id);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext19reset__caret__blink(ctx);
+  }
+  const is_focused = _M0MP49LING7167111moon_2degui3src4core9UIContext10has__focus(ctx, id);
+  let cursor_pos = _M0MP49LING7167111moon_2degui3src4core9UIContext22get__text__cursor__pos(ctx, id, text.length);
+  let selection_anchor = _M0MP49LING7167111moon_2degui3src4core9UIContext28get__text__selection__anchor(ctx, id);
+  let current_text = text;
+  let lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
+  const scale = ctx.style.scale;
+  const ce_style = _M0MP49LING7167111moon_2degui3src9composite15CodeEditorStyle7defaultN6recordS3556;
+  const code_font_sz = ce_style.font_size * scale;
+  const gutter_font_sz = ce_style.gutter_font_size * scale;
+  const gutter_w = show_line_numbers ? ce_style.gutter_w * scale : 0;
+  const line_h = ce_style.line_h * scale;
+  const pad_top = 8 * scale;
+  const pad_code_x = 10 * scale;
+  let scroll_y = _M0MP49LING7167111moon_2degui3src4core9UIContext19get__scroll__offset(ctx, id);
+  if ((_resp.hovered || _resp.pressed) && ctx.input.scroll_delta.y !== 0) {
+    scroll_y = scroll_y - ctx.input.scroll_delta.y;
+  }
+  const total_lines = lines.length;
+  const content_h = pad_top * 2 + (total_lines + 0) * line_h;
+  const max_scroll = content_h > _rect.h ? content_h - _rect.h : 0;
+  const code_x = _rect.x + gutter_w + pad_code_x;
+  const click_x = ctx.input.mouse_pos.x - code_x;
+  const my = ctx.input.mouse_pos.y - (_rect.y + pad_top) + scroll_y;
+  let click_line;
+  if (my < 0) {
+    click_line = 0;
+  } else {
+    const l = _M0MPC16double6Double7to__int(my / line_h);
+    click_line = l >= lines.length ? lines.length - 1 | 0 : l;
+  }
+  const target_line = click_line < 0 ? 0 : click_line;
+  const line_str = target_line < lines.length ? _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, target_line) : "";
+  const target_col = _M0FP49LING7167111moon_2degui3src9composite20hit__test__char__pos(ctx, line_str, click_x, code_font_sz);
+  const hit_cursor = _M0FP49LING7167111moon_2degui3src9composite21line__col__to__cursor(lines, target_line, target_col);
+  if (ctx.input.mouse_pressed && (_resp.hovered || _resp.pressed)) {
+    _M0MP49LING7167111moon_2degui3src4core9UIContext14request__focus(ctx, id);
+    _M0MP49LING7167111moon_2degui3src4core9UIContext19reset__caret__blink(ctx);
+    if (ctx.input.modifiers.shift) {
+      const _bind$2 = selection_anchor;
+      if (_bind$2 === undefined) {
+        selection_anchor = cursor_pos;
+      }
+    } else {
+      selection_anchor = undefined;
+    }
+    cursor_pos = hit_cursor;
+  } else {
+    if (_resp.dragged) {
+      const _bind$2 = selection_anchor;
+      if (_bind$2 === undefined) {
+        selection_anchor = cursor_pos;
+      }
+      cursor_pos = hit_cursor;
+    }
+  }
+  if (is_focused) {
+    let _tmp;
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6)) {
+      _tmp = true;
+    } else {
+      let _tmp$2;
+      if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7)) {
+        _tmp$2 = true;
+      } else {
+        let _tmp$3;
+        if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
+          _tmp$3 = true;
+        } else {
+          let _tmp$4;
+          if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
+            _tmp$4 = true;
+          } else {
+            let _tmp$5;
+            if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 10)) {
+              _tmp$5 = true;
+            } else {
+              let _tmp$6;
+              if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 11)) {
+                _tmp$6 = true;
+              } else {
+                let _tmp$7;
+                if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2)) {
+                  _tmp$7 = true;
+                } else {
+                  let _tmp$8;
+                  if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 4)) {
+                    _tmp$8 = true;
+                  } else {
+                    let _tmp$9;
+                    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 0)) {
+                      _tmp$9 = true;
+                    } else {
+                      let _tmp$10;
+                      if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 1)) {
+                        _tmp$10 = true;
+                      } else {
+                        const _p = ctx.input;
+                        const _p$2 = _p.text_input;
+                        _tmp$10 = !(_p$2 === "");
+                      }
+                      _tmp$9 = _tmp$10;
+                    }
+                    _tmp$8 = _tmp$9;
+                  }
+                  _tmp$7 = _tmp$8;
+                }
+                _tmp$6 = _tmp$7;
+              }
+              _tmp$5 = _tmp$6;
+            }
+            _tmp$4 = _tmp$5;
+          }
+          _tmp$3 = _tmp$4;
+        }
+        _tmp$2 = _tmp$3;
+      }
+      _tmp = _tmp$2;
+    }
+    if (_tmp) {
+      _M0MP49LING7167111moon_2degui3src4core9UIContext19reset__caret__blink(ctx);
+    }
+    const shift_held = ctx.input.modifiers.shift;
+    const ctrl_held = ctx.input.modifiers.ctrl || ctx.input.modifiers.meta;
+    if (ctrl_held && _M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 14)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 14);
+      selection_anchor = _M0FP49LING7167111moon_2degui3src9composite20code__editor_2einnerN6constrS3557;
+      cursor_pos = current_text.length;
+    }
+    const _bind$2 = _M0FP49LING7167111moon_2degui3src9composite21cursor__to__line__col(current_text, cursor_pos);
+    const _cur_line = _bind$2._0;
+    const _cur_col = _bind$2._1;
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 6)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 6);
+      _L: {
+        _L$2: {
+          if (shift_held) {
+            const _bind$3 = selection_anchor;
+            if (_bind$3 === undefined) {
+              selection_anchor = cursor_pos;
+            } else {
+              break _L$2;
+            }
+          } else {
+            break _L$2;
+          }
+          break _L;
+        }
+        if (!shift_held) {
+          selection_anchor = undefined;
+        }
+      }
+      cursor_pos = _M0FP49LING7167111moon_2degui3src9composite20prev__char__boundary(current_text, cursor_pos);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 7)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 7);
+      _L: {
+        _L$2: {
+          if (shift_held) {
+            const _bind$3 = selection_anchor;
+            if (_bind$3 === undefined) {
+              selection_anchor = cursor_pos;
+            } else {
+              break _L$2;
+            }
+          } else {
+            break _L$2;
+          }
+          break _L;
+        }
+        if (!shift_held) {
+          selection_anchor = undefined;
+        }
+      }
+      cursor_pos = _M0FP49LING7167111moon_2degui3src9composite20next__char__boundary(current_text, cursor_pos);
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 8)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 8);
+      _L: {
+        _L$2: {
+          if (shift_held) {
+            const _bind$3 = selection_anchor;
+            if (_bind$3 === undefined) {
+              selection_anchor = cursor_pos;
+            } else {
+              break _L$2;
+            }
+          } else {
+            break _L$2;
+          }
+          break _L;
+        }
+        if (!shift_held) {
+          selection_anchor = undefined;
+        }
+      }
+      if (_cur_line > 0) {
+        cursor_pos = _M0FP49LING7167111moon_2degui3src9composite21line__col__to__cursor(lines, _cur_line - 1 | 0, _cur_col);
+      } else {
+        cursor_pos = 0;
+      }
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 9)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 9);
+      _L: {
+        _L$2: {
+          if (shift_held) {
+            const _bind$3 = selection_anchor;
+            if (_bind$3 === undefined) {
+              selection_anchor = cursor_pos;
+            } else {
+              break _L$2;
+            }
+          } else {
+            break _L$2;
+          }
+          break _L;
+        }
+        if (!shift_held) {
+          selection_anchor = undefined;
+        }
+      }
+      if (_cur_line < (lines.length - 1 | 0)) {
+        cursor_pos = _M0FP49LING7167111moon_2degui3src9composite21line__col__to__cursor(lines, _cur_line + 1 | 0, _cur_col);
+      } else {
+        cursor_pos = current_text.length;
+      }
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 10)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 10);
+      _L: {
+        _L$2: {
+          if (shift_held) {
+            const _bind$3 = selection_anchor;
+            if (_bind$3 === undefined) {
+              selection_anchor = cursor_pos;
+            } else {
+              break _L$2;
+            }
+          } else {
+            break _L$2;
+          }
+          break _L;
+        }
+        if (!shift_held) {
+          selection_anchor = undefined;
+        }
+      }
+      if (ctrl_held) {
+        cursor_pos = 0;
+      } else {
+        cursor_pos = _M0FP49LING7167111moon_2degui3src9composite21line__col__to__cursor(lines, _cur_line, 0);
+      }
+    }
+    if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 11)) {
+      _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 11);
+      _L: {
+        _L$2: {
+          if (shift_held) {
+            const _bind$3 = selection_anchor;
+            if (_bind$3 === undefined) {
+              selection_anchor = cursor_pos;
+            } else {
+              break _L$2;
+            }
+          } else {
+            break _L$2;
+          }
+          break _L;
+        }
+        if (!shift_held) {
+          selection_anchor = undefined;
+        }
+      }
+      if (ctrl_held) {
+        cursor_pos = current_text.length;
+      } else {
+        cursor_pos = _M0FP49LING7167111moon_2degui3src9composite21line__col__to__cursor(lines, _cur_line, _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, _cur_line).length);
+      }
+    }
+    if (!read_only) {
+      let has_sel;
+      let s_start;
+      let s_end;
+      _L: {
+        const _bind$3 = selection_anchor;
+        if (_bind$3 === undefined) {
+          has_sel = false;
+          s_start = 0;
+          s_end = 0;
+          break _L;
+        } else {
+          const _Some = _bind$3;
+          const _a = _Some;
+          if (_a !== cursor_pos) {
+            const s = _a < cursor_pos ? _a : cursor_pos;
+            const e = _a > cursor_pos ? _a : cursor_pos;
+            has_sel = true;
+            s_start = s;
+            s_end = e;
+            break _L;
+          } else {
+            has_sel = false;
+            s_start = 0;
+            s_end = 0;
+            break _L;
+          }
+        }
+      }
+      if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 2)) {
+        _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 2);
+        let insert_at;
+        let left;
+        let right;
+        _L$2: {
+          if (has_sel) {
+            insert_at = s_start;
+            left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, s_start);
+            right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, s_end, current_text.length);
+            break _L$2;
+          } else {
+            insert_at = cursor_pos;
+            left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, cursor_pos);
+            right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, cursor_pos, current_text.length);
+            break _L$2;
+          }
+        }
+        current_text = `${left}\n${right}`;
+        cursor_pos = insert_at + 1 | 0;
+        selection_anchor = undefined;
+        lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
+      }
+      if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 4)) {
+        _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 4);
+        let insert_at;
+        let left;
+        let right;
+        _L$2: {
+          if (has_sel) {
+            insert_at = s_start;
+            left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, s_start);
+            right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, s_end, current_text.length);
+            break _L$2;
+          } else {
+            insert_at = cursor_pos;
+            left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, cursor_pos);
+            right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, cursor_pos, current_text.length);
+            break _L$2;
+          }
+        }
+        current_text = `${left}  ${right}`;
+        cursor_pos = insert_at + 2 | 0;
+        selection_anchor = undefined;
+        lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
+      }
+      if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 0)) {
+        _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 0);
+        if (has_sel) {
+          const left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, s_start);
+          const right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, s_end, current_text.length);
+          current_text = `${left}${right}`;
+          cursor_pos = s_start;
+          selection_anchor = undefined;
+          lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
+        } else {
+          if (cursor_pos > 0 && current_text.length > 0) {
+            const _bind$3 = _M0FP49LING7167111moon_2degui3src9composite18delete__prev__char(current_text, cursor_pos);
+            const _new_text = _bind$3._0;
+            const _new_pos = _bind$3._1;
+            current_text = _new_text;
+            cursor_pos = _new_pos;
+            lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
+          }
+        }
+      }
+      if (_M0MP49LING7167111moon_2degui3src4core10InputState12key__pressed(ctx.input, 1)) {
+        _M0MP49LING7167111moon_2degui3src4core10InputState12consume__key(ctx.input, 1);
+        if (has_sel) {
+          const left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, s_start);
+          const right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, s_end, current_text.length);
+          current_text = `${left}${right}`;
+          cursor_pos = s_start;
+          selection_anchor = undefined;
+          lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
+        } else {
+          if (cursor_pos < current_text.length) {
+            current_text = _M0FP49LING7167111moon_2degui3src9composite18delete__next__char(current_text, cursor_pos);
+            lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
+          }
+        }
+      }
+      const _p = ctx.input;
+      const input_str = _p.text_input;
+      if (!(input_str === "")) {
+        let insert_at;
+        let left;
+        let right;
+        _L$2: {
+          if (has_sel) {
+            insert_at = s_start;
+            left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, s_start);
+            right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, s_end, current_text.length);
+            break _L$2;
+          } else {
+            insert_at = cursor_pos;
+            left = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, 0, cursor_pos);
+            right = _M0FP49LING7167111moon_2degui3src9composite13string__slice(current_text, cursor_pos, current_text.length);
+            break _L$2;
+          }
+        }
+        current_text = `${left}${input_str}${right}`;
+        cursor_pos = insert_at + input_str.length | 0;
+        selection_anchor = undefined;
+        lines = _M0FP49LING7167111moon_2degui3src9composite12split__lines(current_text);
+      }
+    }
+  }
+  const _bind$2 = _M0FP49LING7167111moon_2degui3src9composite21cursor__to__line__col(current_text, cursor_pos);
+  const _active_line = _bind$2._0;
+  const _active_col = _bind$2._1;
+  if (is_focused) {
+    const caret_rel_y = pad_top + (_active_line + 0) * line_h;
+    if (caret_rel_y - scroll_y < pad_top) {
+      scroll_y = caret_rel_y - pad_top;
+    } else {
+      if (caret_rel_y + line_h - scroll_y > _rect.h - pad_top) {
+        scroll_y = caret_rel_y + line_h - (_rect.h - pad_top);
+      }
+    }
+  }
+  if (scroll_y > max_scroll) {
+    scroll_y = max_scroll;
+  }
+  if (scroll_y < 0) {
+    scroll_y = 0;
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext19set__scroll__offset(ctx, id, scroll_y);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext22set__text__cursor__pos(ctx, id, cursor_pos);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext28set__text__selection__anchor(ctx, id, selection_anchor);
+  let has_selection;
+  let sel_start;
+  let sel_end;
+  _L: {
+    const _bind$3 = selection_anchor;
+    if (_bind$3 === undefined) {
+      has_selection = false;
+      sel_start = 0;
+      sel_end = 0;
+      break _L;
+    } else {
+      const _Some = _bind$3;
+      const _a = _Some;
+      if (_a !== cursor_pos) {
+        const s = _a < cursor_pos ? _a : cursor_pos;
+        const e = _a > cursor_pos ? _a : cursor_pos;
+        has_selection = true;
+        sel_start = s;
+        sel_end = e;
+        break _L;
+      } else {
+        has_selection = false;
+        sel_start = 0;
+        sel_end = 0;
+        break _L;
+      }
+    }
+  }
+  const border_col = is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color13border__focus() : _resp.hovered ? _M0MP49LING7167111moon_2degui3src5color5Color14border__strong() : _M0MP49LING7167111moon_2degui3src5color5Color15border__default();
+  const editor_radius = ce_style.radius * scale;
+  _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__window(), editor_radius);
+  _M0MP49LING7167111moon_2degui3src4core7Painter17add__rect__stroke(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _rect, border_col, 1, editor_radius);
+  const clip_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + 1, _rect.y + 1, _rect.w - 2, _rect.h - 2);
+  _M0MP49LING7167111moon_2degui3src4core9UIContext10push__clip(ctx, clip_rect);
+  if (show_line_numbers) {
+    const gutter_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x, _rect.y, gutter_w, _rect.h);
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), gutter_rect, _M0MP49LING7167111moon_2degui3src5color5Color10bg__subtle(), 0);
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + gutter_w, _rect.y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(_rect.x + gutter_w, _rect.y + _rect.h), _M0MP49LING7167111moon_2degui3src5color5Color13border__muted(), 1);
+  }
+  if (is_focused && (!has_selection && _active_line < lines.length)) {
+    const active_y = _rect.y + pad_top + (_active_line + 0) * line_h - scroll_y;
+    if (active_y + line_h >= _rect.y && active_y <= _rect.y + _rect.h) {
+      const wash_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(_rect.x + gutter_w + 1, active_y, _rect.w - gutter_w - 2, line_h);
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), wash_rect, _M0MP49LING7167111moon_2degui3src5color5Color11bg__surface(), 0);
+    }
+  }
+  if (has_selection) {
+    let offset = 0;
+    let _tmp = 0;
+    while (true) {
+      const idx = _tmp;
+      if (idx < lines.length) {
+        const line_len = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, idx).length;
+        const line_start = offset;
+        const line_end = offset + line_len | 0;
+        offset = line_end + 1 | 0;
+        const o_start = sel_start > line_start ? sel_start : line_start;
+        const o_end = sel_end < line_end ? sel_end : line_end;
+        if (o_start < o_end) {
+          const line_y = _rect.y + pad_top + (idx + 0) * line_h - scroll_y;
+          if (line_y + line_h >= _rect.y && line_y <= _rect.y + _rect.h) {
+            const pre = _M0FP49LING7167111moon_2degui3src9composite13string__slice(_M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, idx), 0, o_start - line_start | 0);
+            const sel = _M0FP49LING7167111moon_2degui3src9composite13string__slice(_M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, idx), o_start - line_start | 0, o_end - line_start | 0);
+            const pre_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, pre, code_font_sz).x;
+            const sel_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, sel, code_font_sz).x;
+            const sel_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(code_x + pre_w, line_y, sel_w, line_h);
+            _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), sel_rect, _M0MP49LING7167111moon_2degui3src5color5Color12accent__soft(), 0);
+          }
+        }
+        _tmp = idx + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+  }
+  let _tmp = 0;
+  while (true) {
+    const idx = _tmp;
+    if (idx < lines.length) {
+      _L$2: {
+        const line_text = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, idx);
+        const line_y = _rect.y + pad_top + (idx + 0) * line_h - scroll_y;
+        if (line_y + line_h < _rect.y) {
+          break _L$2;
+        }
+        if (line_y > _rect.y + _rect.h) {
+          break;
+        }
+        if (show_line_numbers) {
+          const num_str = _M0MPC13int3Int18to__string_2einner(idx + 1 | 0, 10);
+          const num_size = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, num_str, gutter_font_sz);
+          const num_x = _rect.x + gutter_w - num_size.x - 8 * scale;
+          const num_col = idx === _active_line && is_focused ? _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary() : _M0MP49LING7167111moon_2degui3src5color5Color14text__disabled();
+          _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(num_x, line_y + 3 * scale), num_str, gutter_font_sz, num_col, "monospace", 500);
+        }
+        const text_col = _M0FP49LING7167111moon_2degui3src9composite17is__comment__line(line_text) ? _M0MP49LING7167111moon_2degui3src5color5Color11text__muted() : _M0MP49LING7167111moon_2degui3src5color5Color13text__primary();
+        _M0MP49LING7167111moon_2degui3src4core7Painter17add__text_2einner(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(code_x, line_y + 3 * scale), line_text, code_font_sz, text_col, "monospace", 500);
+        break _L$2;
+      }
+      _tmp = idx + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  if (is_focused && (_M0MP49LING7167111moon_2degui3src4core9UIContext18is__caret__visible(ctx) && _active_line < lines.length)) {
+    const active_str = _M0MPC15array5Array2atGRP49LING7167111moon_2degui8examples6canvas10StudioFileE(lines, _active_line);
+    const prefix = _M0FP49LING7167111moon_2degui3src9composite13string__slice(active_str, 0, _active_col);
+    const prefix_w = _M0MP49LING7167111moon_2degui3src4core9UIContext13measure__text(ctx, prefix, code_font_sz).x;
+    const caret_x = _rect.x + gutter_w + pad_code_x + prefix_w;
+    const caret_y = _rect.y + pad_top + (_active_line + 0) * line_h - scroll_y + 3 * scale;
+    const caret_h = ctx.style.spacing_lg * scale;
+    if (caret_y + caret_h >= _rect.y && caret_y <= _rect.y + _rect.h) {
+      _M0MP49LING7167111moon_2degui3src4core7Painter9add__line(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), _M0MP49LING7167111moon_2degui3src4math4Vec23new(caret_x, caret_y), _M0MP49LING7167111moon_2degui3src4math4Vec23new(caret_x, caret_y + caret_h), _M0MP49LING7167111moon_2degui3src5color5Color15accent__primary(), 1.5 * scale);
+    }
+  }
+  if (max_scroll > 0 && content_h > 0) {
+    const bar_w = 4 * scale;
+    const bar_x = _rect.x + _rect.w - bar_w - 2 * scale;
+    const track_h = _rect.h - 4 * scale;
+    const thumb_ratio = _rect.h / content_h;
+    const raw_thumb_h = track_h * thumb_ratio;
+    const thumb_h = raw_thumb_h < 20 * scale ? 20 * scale : raw_thumb_h;
+    const scroll_ratio = scroll_y / max_scroll;
+    const thumb_y = _rect.y + 2 * scale + (track_h - thumb_h) * scroll_ratio;
+    const thumb_rect = _M0MP49LING7167111moon_2degui3src4math4Rect3new(bar_x, thumb_y, bar_w, thumb_h);
+    _M0MP49LING7167111moon_2degui3src4core7Painter9add__rect(_M0MP49LING7167111moon_2degui3src4core9UIContext7painter(ctx), thumb_rect, _M0MP49LING7167111moon_2degui3src5color5Color15border__default(), ctx.style.radius_sm * scale);
+  }
+  _M0MP49LING7167111moon_2degui3src4core9UIContext9pop__clip(ctx);
+  const editor_resp = _M0MP49LING7167111moon_2degui3src4core8Response19with__focus_2einner(id, _rect, _resp.hovered, _resp.clicked, _resp.pressed, _resp.dragged, is_focused, is_focused && _M0IP016_24default__implPB2Eq10not__equalGRP49LING7167111moon_2degui3src4core2IdE(_M0MP49LING7167111moon_2degui3src4core9UIContext17prev__focused__id(ctx), id), _M0MP49LING7167111moon_2degui3src4core9UIContext11lost__focus(ctx, id), _resp.secondary_clicked);
+  return { _0: current_text, _1: editor_resp };
 }
 function _M0FP49LING7167111moon_2degui8examples6canvas26build__studio__tree__nodes() {
   return [_M0MP49LING7167111moon_2degui3src9composite8TreeNode11new_2einner("root", "moon-project", [_M0MP49LING7167111moon_2degui3src9composite8TreeNode12leaf_2einner("moon_mod", "moon.mod", "📦"), _M0MP49LING7167111moon_2degui3src9composite8TreeNode12leaf_2einner("readme_md", "README.md", "📝"), _M0MP49LING7167111moon_2degui3src9composite8TreeNode11new_2einner("src", "src", [_M0MP49LING7167111moon_2degui3src9composite8TreeNode11new_2einner("core", "core", [_M0MP49LING7167111moon_2degui3src9composite8TreeNode12leaf_2einner("context_mbt", "context.mbt", "📄")], "📁"), _M0MP49LING7167111moon_2degui3src9composite8TreeNode11new_2einner("widgets", "widgets", [_M0MP49LING7167111moon_2degui3src9composite8TreeNode12leaf_2einner("steps_mbt", "steps.mbt", "📄")], "📁"), _M0MP49LING7167111moon_2degui3src9composite8TreeNode11new_2einner("draw", "draw", [_M0MP49LING7167111moon_2degui3src9composite8TreeNode12leaf_2einner("mesh_mbt", "mesh.mbt", "📄")], "📁")], "📁")], "📂")];
