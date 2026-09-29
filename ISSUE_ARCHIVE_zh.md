@@ -1204,4 +1204,29 @@
 - **修复方案**:
   系统化落实 `register_focusable` 注册、基于 Scoped Memory 的键盘索引持久化、方向键与功能键的事件消费机制，以及统一的 `theme.border_focus` 轮廓光栅化渲染。
 
+---
+
+### FEAT-SHOWCASE-04 (P3) [已解决]: 在 `wiki.html` 中嵌入交互式架构流水线单步可视化器
+- **代码位置**: [examples/canvas/wiki.html](file:///a:/moonbit-project/examples/canvas/wiki.html), [examples/canvas/js/wiki_visualizer.js](file:///a:/moonbit-project/examples/canvas/js/wiki_visualizer.js), [examples/canvas/css/docs.css](file:///a:/moonbit-project/examples/canvas/css/docs.css)
+- **状态**: **已解决**（迭代 17）。在 `examples/canvas/wiki.html` 架构技术 Wiki 中研发并嵌入了原生 5 阶段逐帧生命周期流水线单步可视化器（包含阶段切换控制、自动轮播演示、内核代码联动与瞬时指标卡）以及实时 `DrawCmd` 矢量指令流探测器。通过 `window.moon_gallery_step(...)` 调度求值原生 MoonBit 控件（`Button`、`Slider`、`Knob`、`ColorPicker`、`NodeEditor`），光栅化至独立 `<canvas id="inspectorCanvas">`，并在右侧控制台实时解码呈现流式 `DrawCmd` 绘制指令标签、物理坐标与十六进制色彩，零 DOM 界面模拟。
+- **优先级**: **P3**
+- **类别**: 架构全景与管线检视
+- **问题描述**:
+  `wiki.html` 此前为纯静态文本与 ASCII 字符流程图，缺乏动态交互性与直观的管线数据检视机制。
+- **修复方案**:
+  嵌入 100% 由原生 MoonBit 运行时求值支持的交互式管线步进器与 DrawCmd 指令流检视器。
+
+---
+
+### FEAT-SHOWCASE-05 (P3) [已解决]: 在官网首页 `index.html` Hero 横幅中内嵌即时交互微操展台
+- **代码位置**: [examples/canvas/index.html](file:///a:/moonbit-project/examples/canvas/index.html), [examples/canvas/js/hero_runner.js](file:///a:/moonbit-project/examples/canvas/js/hero_runner.js)
+- **状态**: **已解决**（迭代 17）。彻底移除 `index.html` Hero 区域中沉重的外部 `iframe` 页面嵌入，替换为 100% 由 MoonBit 运行时直接驱动的原生 `<canvas id="hero-workbench-canvas">` 即时交互微展台。编写 `hero_runner.js` 统一渲染与事件分发控制器，集成 5 组核心预设切换器（`button`、`knob`、`slider`、`color_picker`、`node_editor`），全面支持指针拖拽、滚轮微调、键盘聚焦导航以及触控交互。严格继承设计系统 Studio Light 瓷白质感主题，引入 `IntersectionObserver` 视口惰性执行，实现零 DOM 模拟与极致秒开性能。
+- **优先级**: **P3**
+- **类别**: 展厅与引擎自宿主
+- **问题描述**:
+  官网首页此前通过 `iframe` 嵌入完整子应用，不仅加载缓慢，而且违背了即时模式引擎纯 Canvas 自举的原则。
+- **修复方案**:
+  使用纯 MoonBit Wasm-GC 编译产物与原生 `<canvas>` 视口构建响应式微操展台，直接呈现原汁原味的即时模式 GUI 能力。
+
+
 

@@ -1631,5 +1631,30 @@ This review evaluates seven foundational dimensions:
 - **Remediation**:
   Systematically implemented `register_focusable`, memory-backed keyboard indices, directional arrow and Tab event consumption, and standard `theme.border_focus` focus rings across all 16 interactive engine surfaces.
 
+---
+
+### FEAT-SHOWCASE-04 (P3) [RESOLVED]: Interactive Architecture & Pipeline Visualizers in `wiki.html`
+- **Location**: [examples/canvas/wiki.html](file:///a:/moonbit-project/examples/canvas/wiki.html), [examples/canvas/js/wiki_visualizer.js](file:///a:/moonbit-project/examples/canvas/js/wiki_visualizer.js), [examples/canvas/css/docs.css](file:///a:/moonbit-project/examples/canvas/css/docs.css)
+- **Status**: **RESOLVED** (Iteration 17). Engineered an interactive 5-stage frame lifecycle stepper (`Input Gathering` -> `Context Frame Init` -> `IM Evaluation` -> `Layer Composition` -> `Backend Render Dispatch`) with manual prev/next navigation, auto-play animation, real-time code snippet previews, and performance metrics. Built a live `DrawCmd` vector instruction stream inspector that evaluates native MoonBit widgets (`Button`, `Slider`, `Knob`, `ColorPicker`, `NodeEditor`) via `window.moon_gallery_step(...)`, rasterizes them to an HTML5 `<canvas id="inspectorCanvas">`, and decodes and streams live `DrawCmd` tags, coordinates, and color values into an interactive stream inspector in real-time.
+- **Priority**: **P3**
+- **Category**: Architecture Showcase & Pipeline Inspection
+- **Description**:
+  `wiki.html` was previously a static HTML document containing text and ASCII flowcharts without interactive validation of pipeline execution.
+- **Remediation**:
+  Embedded native MoonBit-driven interactive pipeline step visualizer and live DrawCmd stream inspector without HTML/DOM simulation.
+
+---
+
+### FEAT-SHOWCASE-05 (P3) [RESOLVED]: Embedded Interactive Micro-Playground in `index.html` Hero Section
+- **Location**: [examples/canvas/index.html](file:///a:/moonbit-project/examples/canvas/index.html), [examples/canvas/js/hero_runner.js](file:///a:/moonbit-project/examples/canvas/js/hero_runner.js)
+- **Status**: **RESOLVED** (Iteration 17). Replaced the static subpage iframe in the `index.html` Hero section with a native, zero-DOM-simulation MoonBit immediate-mode micro-playground (`<canvas id="hero-workbench-canvas">`). Implemented `hero_runner.js` high-performance Canvas 2D rasterizer, multi-preset interactive switcher (`button`, `knob`, `slider`, `color_picker`, `node_editor`), full mouse/touch/wheel/keyboard interaction dispatch hooking into `window.moon_gallery_step`, porcelain styling matching the design system, and lazy `IntersectionObserver` viewport execution.
+- **Priority**: **P3**
+- **Category**: Showcase & Engine Dogfooding
+- **Description**:
+  The official homepage Hero banner previously loaded an iframe pointing to a heavy subpage, violating the single-canvas dogfooding standard and slowing initial load.
+- **Remediation**:
+  Replaced the iframe with a native MoonBit immediate-mode `<canvas>` micro-workbench driven directly by the core runtime.
+
+
 
 
