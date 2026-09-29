@@ -196,6 +196,7 @@ pub struct DockTree {
   mut root : DockNode
 } derive(Eq, @debug.Debug)
 pub fn DockTree::close_tab(Self, String) -> Bool
+pub fn DockTree::empty() -> Self
 pub fn DockTree::find_tab(Self, String) -> (DockTab, Int)?
 pub fn DockTree::leaf(Array[DockTab], active_tab? : Int) -> Self
 pub fn DockTree::new(DockNode) -> Self

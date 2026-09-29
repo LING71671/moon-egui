@@ -68,6 +68,12 @@ pub fn DockTree::new(root : DockNode) -> DockTree {
 }
 
 ///|
+/// Create an empty dock tree.
+pub fn DockTree::empty() -> DockTree {
+  { root: Empty, }
+}
+
+///|
 /// Create a leaf dock tree with tabs.
 pub fn DockTree::leaf(tabs : Array[DockTab], active_tab? : Int = 0) -> DockTree {
   { root: Leaf(tabs, active_tab), }
@@ -270,10 +276,43 @@ fn render_dock_node(
   let min_pane_size = 40.0 * scale
 
   match node {
-    Empty => (Empty, None, None, false)
+    Empty => {
+      if rect.w > 60.0 * scale && rect.h > 30.0 * scale {
+        let painter = ctx.painter()
+        painter.add_rect(rect, ctx.theme.bg_subtle, 4.0 * scale)
+        painter.add_rect_stroke(
+          rect,
+          ctx.theme.border_muted,
+          1.0 * scale,
+          4.0 * scale,
+        )
+        let font_sz = ctx.style.font_small * scale
+        let text_sz = ctx.measure_text("无活动标签页", font_sz)
+        let pad_x = ctx.style.spacing_sm * scale
+        let badge_w = pad_x * 2.0 + text_sz.x
+        let badge_h = (ctx.style.control_h_sm - ctx.style.radius_xs) * scale
+        let old_cursor = ctx.cursor()
+        let old_avail = ctx.available_width()
+        ctx.set_cursor(
+          @math.Vec2::new(
+            rect.x + (rect.w - badge_w) * 0.5,
+            rect.y + (rect.h - badge_h) * 0.5,
+          ),
+        )
+        ctx.set_available_width(badge_w)
+        let _ = @widgets.badge(
+          ctx,
+          "无活动标签页",
+          kind=@widgets.BadgeKind::Default,
+        )
+        ctx.set_cursor(old_cursor)
+        ctx.set_available_width(old_avail)
+      }
+      (Empty, None, None, false)
+    }
     Leaf(tabs, active_idx) => {
       if tabs.is_empty() {
-        return (Empty, None, None, false)
+        return render_dock_node(ctx, Empty, rect, path, render_tab)
       }
 
       let valid_active = if active_idx < 0 || active_idx >= tabs.length() {
