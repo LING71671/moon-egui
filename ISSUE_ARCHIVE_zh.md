@@ -1122,4 +1122,19 @@
 - **修复方案**:
   所有标准控件一律经由 `ctx.theme` 获取背景、边框、前景色与状态色，杜绝硬编码静态调色板；通过自动化测试验证主题切换效果。
 
+---
+
+### AUDIT-DOGFOOD-01 (P1) [已解决]: 跑分页面 (`benchmark.html`) 中的原生 HTML/DOM 顶栏违反纯 Canvas 标准
+- **代码位置**: [examples/canvas/benchmark.html](file:///a:/moonbit-project/examples/canvas/benchmark.html), [examples/canvas/header_bar.mbt](file:///a:/moonbit-project/examples/canvas/header_bar.mbt), [examples/canvas/main.mbt](file:///a:/moonbit-project/examples/canvas/main.mbt)
+- **状态**: **已解决**（迭代 11）。彻底移除 `benchmark.html` 中以 HTML/CSS DOM 模拟的顶栏 `<header class="studio-header">` 及对应样式与事件监听。在 `examples/canvas/header_bar.mbt` 中以 100% 纯 MoonBit 原生即时模式实现顶栏控件（涵盖 Moon 矢量品牌图标、`@widgets.segmented_control` 矩阵多尺度规格切换、水波/磁力物理动力学开关、全屏/居中相机预设、悬浮控制面板切换与遥测状态胶囊），并在单 `<canvas id="moon-canvas">` 视口中统一渲染与命中判定。
+- **优先级**: **P1**
+- **类别**: 全管线自宿主规范遵从
+- **问题描述**:
+  `benchmark.html` 此前通过悬浮在 Canvas 之上的 HTML DOM `<header>` 元素模拟 CAD 顶栏控制栏，并通过 JS 事件跨界通信。
+- **失效机制**:
+  直接违反了《Pure MoonBit Engine Dogfooding & Interface Harmony Standard》第一条禁令（“Strictly Forbid HTML/CSS DOM Simulation... 所有应用界面、顶栏、树控件、代码编辑器与控制面板必须由 MoonBit UIContext 直接驱动”）。
+- **修复方案**:
+  在 MoonBit 引擎侧编写原生即时模式顶栏 `render_benchmark_header_bar`，彻底剥离 HTML DOM 伪造顶栏与配套冗余脚本。
+
+
 

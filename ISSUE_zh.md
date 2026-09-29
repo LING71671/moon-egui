@@ -13,13 +13,6 @@
 # 第一部分：活跃缺陷与代码审查审计 (`bug` / `audit`)
 
 
-### AUDIT-DOGFOOD-01 (P1) [待处理]: 跑分页面 (`benchmark.html`) 中的原生 HTML/DOM 顶栏违反纯 Canvas 标准
-- **代码位置**: [examples/canvas/benchmark.html](file:///a:/moonbit-project/examples/canvas/benchmark.html)
-- **状态**: **待处理**。
-
----
-
-
 ### AUDIT-DOGFOOD-02 (P1) [待处理]: 扫雷游戏 (`minesweeper.html`) 大量模拟 HTML/DOM 顶栏、工具条与 HUD
 - **代码位置**: [examples/canvas/minesweeper.html](file:///a:/moonbit-project/examples/canvas/minesweeper.html)
 - **状态**: **待处理**。

@@ -1549,4 +1549,19 @@ This review evaluates seven foundational dimensions:
 - **Remediation**:
   All standard widgets route their surface, text, border, focus, and state colors through `ctx.theme`. Added 5 new automated whitebox tests asserting theme color emission.
 
+---
+
+### AUDIT-DOGFOOD-01 (P1) [RESOLVED]: Raw HTML/DOM Top Header Bar in Benchmark Violating Pure Canvas Dogfooding Standard
+- **Location**: [examples/canvas/benchmark.html](file:///a:/moonbit-project/examples/canvas/benchmark.html), [examples/canvas/header_bar.mbt](file:///a:/moonbit-project/examples/canvas/header_bar.mbt), [examples/canvas/main.mbt](file:///a:/moonbit-project/examples/canvas/main.mbt)
+- **Status**: **RESOLVED** (Iteration 11). Replaced the HTML DOM `.studio-header` in `benchmark.html` with a native MoonBit immediate-mode header bar rendered directly on the single `<canvas id="moon-canvas">` viewport via `UIContext` (`render_benchmark_header_bar` in `header_bar.mbt`). Added brand logo, navigation links, `@widgets.segmented_control` dimension selector (128/256/512/1024), physics toggles, camera view presets, panel toggle, and telemetry badges in pure MoonBit.
+- **Priority**: **P1**
+- **Category**: Dogfooding Standard Compliance
+- **Description**:
+  `examples/canvas/benchmark.html` previously rendered a simulated top application header using raw HTML/CSS DOM: `<header class="studio-header"><div class="brand">...</div><div class="metrics">...</div></header>`.
+- **Failure Mechanism**:
+  Directly violated Section 1 of the *Pure MoonBit Engine Dogfooding & Interface Harmony Standard* ("Strictly Forbid HTML/CSS DOM Simulation... All window chrome, docking panels, tree views, code editors, menu bars, and command palettes must be driven directly by MoonBit's UIContext").
+- **Remediation**:
+  Completely removed the HTML DOM `.studio-header` and associated CSS from `benchmark.html`. Engineered a 100% pure MoonBit immediate-mode header bar inside `examples/canvas/header_bar.mbt` and integrated it into `examples/canvas/main.mbt`.
+
+
 

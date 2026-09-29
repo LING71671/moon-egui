@@ -13,21 +13,6 @@
 # Part I: Active Defects & Code Review Audit (`bug` / `audit`)
 
 
-### AUDIT-DOGFOOD-01 (P1) [OPEN]: Raw HTML/DOM Top Header Bar in Benchmark Violating Pure Canvas Dogfooding Standard
-- **Location**: [examples/canvas/benchmark.html#L244-L321](file:///a:/moonbit-project/examples/canvas/benchmark.html#L244-L321)
-- **Status**: **Backlog**
-- **Priority**: **P1**
-- **Category**: Dogfooding Standard Compliance
-- **Description**:
-  `examples/canvas/benchmark.html` renders a simulated top application header using raw HTML/CSS DOM: `<header class="studio-header"><div class="brand">...</div><div class="metrics">...</div></header>`.
-- **Failure Mechanism**:
-  This directly violates Section 1 of the *Pure MoonBit Engine Dogfooding & Interface Harmony Standard* ("Strictly Forbid HTML/CSS DOM Simulation... All window chrome, docking panels, tree views, code editors, menu bars, and command palettes must be driven directly by MoonBit's UIContext").
-- **Remediation**:
-  Replace the HTML DOM `.studio-header` in `benchmark.html` with a native MoonBit immediate-mode header bar rendered directly on the single canvas viewport.
-
----
-
-
 ### AUDIT-DOGFOOD-02 (P1) [OPEN]: Extensive HTML/DOM Simulation of App Header, Toolbar, and HUD in Minesweeper
 - **Location**: [examples/canvas/minesweeper.html#L373-L487](file:///a:/moonbit-project/examples/canvas/minesweeper.html#L373-L487)
 - **Status**: **Backlog**
