@@ -24,6 +24,27 @@
 
 # 第二部分：引擎能力与业务自举路线图 (`feat`)
 
+### FEAT-SHOWCASE-04 (低优先级) [待规划]: 在 `wiki.html` 中嵌入交互式架构与管线可视化器
+- **目标文件**: [examples/canvas/wiki.html](file:///a:/moonbit-project/examples/canvas/wiki.html)
+- **当前现状**:
+  `wiki.html` 目前为纯静态文本与 ASCII 字符流程图。
+- **规划设想**:
+  内嵌纯 MoonBit Wasm 驱动的原生可视化沙箱：
+  1. **帧生命周期单步执行器**: 通过前进/后退按钮直观单步调试 `begin_frame` -> `allocate_space` -> `clip_stack` -> `end_frame`。
+  2. **DrawCmd 指令流检视器**: 实时打印并高亮当帧由活跃控件发射的矢量绘制指令队列。
+  3. **空间视口裁剪 LOD 演示器**: 提供可缩放/平移的视口视锥，直观展示世界坐标如何被实时剔除截断。
+
+---
+
+### FEAT-SHOWCASE-05 (低优先级) [待规划]: 在官网首页 `index.html` Hero 横幅中内嵌即时交互微操展台
+- **目标文件**: [examples/canvas/index.html](file:///a:/moonbit-project/examples/canvas/index.html)
+- **当前现状**:
+  首页目前为静态 HTML/CSS 结构，访问者必须点击跳转至演示子页面才能体验 MoonBit 即时模式。
+- **规划设想**:
+  在 Hero 主横幅右侧内嵌响应式原生即时渲染卡片，实时运行滑动条、开关胶囊、动态折线图与粒子微交互。
+
+---
+
 ## 16. 全量优先级路线图与里程碑矩阵表
 
 | 追踪类别 | 编号 | 标题 | 优先级 | 状态 |
