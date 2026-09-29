@@ -1150,6 +1150,16 @@
 - **修复方案**:
   将扫雷的全部应用 Chrome 与 HUD 迁移为 MoonBit 原生即时模式渲染，并基于单一 `<canvas id="mines-canvas">` 视口完成全部输入捕获与绘制。
 
+---
 
-
-
+### DEBT-ARCH-01 (P3) [已解决]: 声明 `composite -> widgets` 单向物理依赖边
+- **代码位置**: [src/composite/moon.pkg](file:///a:/moonbit-project/src/composite/moon.pkg), [src/composite/dock.mbt](file:///a:/moonbit-project/src/composite/dock.mbt), [src/composite/dock_wbtest.mbt](file:///a:/moonbit-project/src/composite/dock_wbtest.mbt)
+- **状态**: **已解决**（迭代 13）。在 `src/composite/moon.pkg` 中正式声明引入 `"LING71671/moon-egui/src/widgets"` 物理依赖边。在 `src/composite/dock.mbt` 的 `Empty` 停靠分支中集成 `@widgets.badge`（"无活动标签页"）与微弱圆角背景容器。新增 `DockTree::empty()` 构造函数，并在 `src/composite/dock_wbtest.mbt` 中编写针对空停靠面板占位徽章绘制的白盒测试（全部 382 项测试 100% 通过，并通过 Wasm-GC 编译检查）。
+- **优先级**: **P3**
+- **类别**: 包物理分层架构
+- **问题描述**:
+  分层规范允许 `composite -> widgets`，但此前没有 composite 复合组件在生产代码中嵌入标准控件，因此为了避免编译器 `unused_package` 告警，该物理依赖边未在 `src/composite/moon.pkg` 中声明。
+- **失效机制**:
+  导致 composite 容器在需要展示占位徽章或提示信息时无法直接复用 widgets 现成控件，且空停靠窗格在关闭所有标签页后呈现完全空白状态，缺乏友好的界面引导。
+- **修复方案**:
+  在 `src/composite/moon.pkg` 中正式声明引入 widgets 包，在 `dock.mbt` 中对空停靠窗格渲染 `@widgets.badge` 占位徽章，并通过自动化测试验证。

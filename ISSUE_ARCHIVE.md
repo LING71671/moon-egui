@@ -1577,6 +1577,16 @@ This review evaluates seven foundational dimensions:
 - **Remediation**:
   Re-engineered the entire chrome and HUD of Minesweeper in native MoonBit using `UIContext` widgets (`@widgets.badge`, `@widgets.button_sized`, labels, interactive minimap), rendering entirely within a single `<canvas>` viewport.
 
+---
 
-
-
+### DEBT-ARCH-01 (P3) [RESOLVED]: `composite -> widgets` Dependency Edge Not Yet Declared
+- **Location**: [src/composite/moon.pkg](file:///a:/moonbit-project/src/composite/moon.pkg), [src/composite/dock.mbt](file:///a:/moonbit-project/src/composite/dock.mbt), [src/composite/dock_wbtest.mbt](file:///a:/moonbit-project/src/composite/dock_wbtest.mbt)
+- **Status**: **RESOLVED** (Iteration 13). Declared physical dependency edge `"LING71671/moon-egui/src/widgets"` in `src/composite/moon.pkg`. Implemented empty-dock placeholder pane rendering in `src/composite/dock.mbt` using `@widgets.badge` and subtle styled borders when tab lists are empty or node is `Empty`. Added `DockTree::empty()` builder and verified via whitebox tests asserting draw list command emission.
+- **Priority**: **P3**
+- **Category**: Package Architecture
+- **Description**:
+  The layering rules permit `composite -> widgets`, but no composite component previously embedded a standard control in production code, leaving the edge undeclared in `src/composite/moon.pkg` to avoid `unused_package` warnings.
+- **Failure Mechanism**:
+  Without standard widgets integrated into composite structures, composite containers had to reinvent simple controls or leave empty states unstyled and without visual affordances.
+- **Remediation**:
+  Formalized the unidirectional dependency edge by having empty dock panes render a standard placeholder badge (`@widgets.badge`) inside a subtle rounded container. Added unit tests and verified 100% test pass rate and Wasm-GC compatibility.
